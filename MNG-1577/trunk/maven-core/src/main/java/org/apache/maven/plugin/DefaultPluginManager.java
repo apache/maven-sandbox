@@ -621,7 +621,6 @@ public class DefaultPluginManager
             repositories.addAll( project.getRemoteArtifactRepositories() );
 
             ArtifactResolutionResult result = artifactResolver.resolveTransitively( dependencies, pluginArtifact,
-                                                                                    project.getManagedVersionMap(),
                                                                                     localRepository, repositories,
                                                                                     artifactMetadataSource,
                                                                                     artifactFilter );
@@ -1158,9 +1157,7 @@ public class DefaultPluginManager
             project.setDependencyArtifacts( project.createArtifacts( artifactFactory, null, null ) );
         }
         ArtifactResolutionResult result = artifactResolver.resolveTransitively( project.getDependencyArtifacts(),
-                                                                                artifact,
-                                                                                project.getManagedVersionMap(),
-                                                                                context.getLocalRepository(),
+                                                                                artifact, context.getLocalRepository(),
                                                                                 project.getRemoteArtifactRepositories(),
                                                                                 artifactMetadataSource, filter );
 

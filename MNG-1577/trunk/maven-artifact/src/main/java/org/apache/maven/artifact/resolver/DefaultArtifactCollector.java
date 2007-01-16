@@ -22,11 +22,9 @@ import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.metadata.ResolutionGroup;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.OverConstrainedVersionException;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.apache.maven.artifact.versioning.ManagedVersionMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,10 +64,7 @@ public class DefaultArtifactCollector
 
         root.addDependencies( artifacts, remoteRepositories, filter );
 
-        ManagedVersionMap versionMap = (managedVersions != null && managedVersions instanceof ManagedVersionMap) ?
-            (ManagedVersionMap)managedVersions : new ManagedVersionMap(managedVersions);
-
-        recurse( root, resolvedArtifacts, versionMap, localRepository, remoteRepositories, source, filter,
+        recurse( root, resolvedArtifacts, managedVersions, localRepository, remoteRepositories, source, filter,
                  listeners );
 
         Set set = new HashSet();
@@ -104,7 +99,7 @@ public class DefaultArtifactCollector
         return result;
     }
 
-    private void recurse( ResolutionNode node, Map resolvedArtifacts, ManagedVersionMap managedVersions,
+    private void recurse( ResolutionNode node, Map resolvedArtifacts, Map managedVersions,
                           ArtifactRepository localRepository, List remoteRepositories, ArtifactMetadataSource source,
                           ArtifactFilter filter, List listeners )
         throws CyclicDependencyException, ArtifactResolutionException, OverConstrainedVersionException
@@ -119,20 +114,11 @@ public class DefaultArtifactCollector
 
             fireEvent( ResolutionListener.MANAGE_ARTIFACT, listeners, node, artifact );
 
-            // Before we update the version of the artifact, we need to know
-            // whether we are working on a transitive dependency or not.  This
-            // allows depMgmt to always override transitive dependencies, while
-            // explicit child override depMgmt.  (viz. depMgmt should only
-            // provide defaults to children, but should override transitives)
-
-            if ( artifact.getVersion() != null
-                            && ( node.isChildOfRootNode() ? node.getArtifact().getVersion() == null : true ) )
+            if ( artifact.getVersion() != null )
             {
                 node.getArtifact().setVersion( artifact.getVersion() );
             }
-
-            if ( artifact.getScope() != null
-                            && ( node.isChildOfRootNode() ? node.getArtifact().getScope() == null : true ) )
+            if ( artifact.getScope() != null )
             {
                 node.getArtifact().setScope( artifact.getScope() );
             }
@@ -285,31 +271,6 @@ public class DefaultArtifactCollector
                             fireEvent( ResolutionListener.SELECT_VERSION_FROM_RANGE, listeners, child );
                         }
 
-                        if ( managedVersions.containsKey( child.getKey() ) )
-                        {
-                            // If this child node is a managed dependency, then we
-                            // need to ensure that any exclusions it presents are
-                            // added to the artifact before we retrive the metadata
-                            // for the artifact; otherwise we may end up with unwanted
-                            // dependencies.
-                            Artifact ma = (Artifact) managedVersions.get( child.getKey() );
-                            ArtifactFilter managedExclusionFilter = ma.getDependencyFilter();
-                            if ( null != managedExclusionFilter )
-                            {
-                                if ( null != artifact.getDependencyFilter() )
-                                {
-                                    AndArtifactFilter aaf = new AndArtifactFilter();
-                                    aaf.add( artifact.getDependencyFilter() );
-                                    aaf.add( managedExclusionFilter );
-                                    artifact.setDependencyFilter( aaf );
-                                }
-                                else
-                                {
-                                    artifact.setDependencyFilter( managedExclusionFilter );
-                                }
-                            }
-                        }
-                        
                         artifact.setDependencyTrail( node.getDependencyTrail() );
                         ResolutionGroup rGroup = source.retrieve( artifact, localRepository, remoteRepositories );
 
@@ -322,7 +283,6 @@ public class DefaultArtifactCollector
                         }
 
                         child.addDependencies( rGroup.getArtifacts(), rGroup.getResolutionRepositories(), filter );
-
                     }
                     catch ( CyclicDependencyException e )
                     {

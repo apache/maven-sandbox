@@ -28,7 +28,6 @@ import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.apache.maven.artifact.versioning.ManagedVersionMap;
 import org.codehaus.plexus.PlexusTestCase;
 
 import java.util.ArrayList;
