@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.maven.surefire</groupId>
+    <artifactId>surefire</artifactId>
+    <version>2.3-SNAPSHOT</version>
+  </parent>
+  <artifactId>surefire-site</artifactId>
+  <name>Surefire</name>
+  <distributionManagement>
+    <site>
+      <id>website</id>
+      <url>scpexe://minotaur.apache.org/www/maven.apache.org/surefire/</url>
+    </site>
+  </distributionManagement>
+</project>
