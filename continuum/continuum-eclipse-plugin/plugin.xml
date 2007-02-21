@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+  <extension point="org.eclipse.ui.views">
+    <category name="Apache Continuum"
+      id="org.apache.continuum.eclipse.plugin">
+    </category>
+    <view name="Projects View" icon="icons/sample.gif"
+      category="org.apache.continuum.eclipse.plugin"
+      class="org.apache.continuum.ui.views.ProjectsView"
+      id="org.apache.continuum.ui.views.ProjectsView">
+    </view>
+  </extension>
+  <extension point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+      targetID="org.eclipse.ui.resourcePerspective">
+      <view ratio="0.5" relative="org.eclipse.ui.views.TaskList"
+        relationship="right"
+        id="org.apache.continuum.ui.views.ProjectsView">
+      </view>
+    </perspectiveExtension>
+  </extension>
+  <!-- Connection Profile wizard -->
+  <extension point="org.eclipse.ui.newWizards">
+    <category id="org.apache.continuum.connection.profile.new"
+      name="Apache Continuum">
+    </category>
+    <wizard id="org.eclipse.ui.examples.readmetool.wizards.new.file"
+      name="%NewWizard.name"
+      class="org.apache.continuum.ui.wizard.CreateConnectionProfileWizard"
+      category="org.apache.continuum.connection.profile.new"
+      icon="icons/sample.gif">
+      <description>Create new connection to a Continuum instance</description>
+      <selection class="org.eclipse.core.resources.IResource" />
+    </wizard>
+  </extension>
+  
+  <!-- Extension for Tabbed Property View purposes -->
+  <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor">  		
+      <propertyContributor contributorId="org.apache.continuum.ui.views.ProjectsView">
+          <propertyCategory category="continuum" />
+      </propertyContributor>
+  </extension>
+  <!-- Extension for added Property tabs to our view -->
+  <extension point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs contributorId="org.apache.continuum.ui.views.ProjectsView">
+          <!-- note the afterTab attr that controls the order of display of tabs -->
+          <propertyTab 
+              category="continuum"
+              id="continuum.project"
+              label="Project Info"
+              />
+          <propertyTab               
+              category="continuum"
+              id="continuum.project.builds"
+              label="Builds"
+              afterTab="continuum.project"
+              />              
+      </propertyTabs>      
+  </extension>
+  <!-- Extension to add Property Sections to a tab -->
+  <extension point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections contributorId="org.apache.continuum.ui.views.ProjectsView">
+          <propertySection 
+              class="org.apache.continuum.ui.views.ProjectInfoSection"
+              id="org.apache.continuum.ui.views.ProjectDetailsSection"
+              tab="continuum.project"              
+              >
+              <input type="org.apache.continuum.internal.model.ProjectAdapter" />
+          </propertySection>
+          <propertySection 
+              class="org.apache.continuum.ui.views.BuildDefinitionInfoSection"
+              id="org.apache.continuum.ui.views.BuildDetailsSection"
+              tab="continuum.project.builds"              
+              >              
+              <input type="org.apache.continuum.internal.model.ProjectAdapter" />    
+              <!-- Reuse the section in case a BuildDefinition was selected for view -->          
+              <input type="org.apache.continuum.internal.model.BuildDefinitionAdapter" />
+          </propertySection>      
+      </propertySections>
+  </extension>
+  
+</plugin>
+
