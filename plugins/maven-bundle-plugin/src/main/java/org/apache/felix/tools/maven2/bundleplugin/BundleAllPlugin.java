@@ -255,10 +255,10 @@ public class BundleAllPlugin
             Map instructions = new HashMap();
             instructions.put( Analyzer.EXPORT_PACKAGE, "*" );
 
-            project.setFile( getFile( artifact ) );
+            project.getArtifact().setFile( getFile( artifact ) );
             File outputFile = getOutputFile( artifact );
 
-            if ( project.getFile().equals( outputFile ) )
+            if ( project.getArtifact().getFile().equals( outputFile ) )
             {
                 /* TODO find the cause why it's getting here */
                 return;
@@ -271,7 +271,7 @@ public class BundleAllPlugin
 
             Analyzer analyzer = getAnalyzer( project, getClasspath( project ) );
             checkDuplicatedPackages( project, analyzer.getExports().keySet() );
-            Jar osgiJar = new Jar( project.getArtifactId(), project.getFile() );
+            Jar osgiJar = new Jar( project.getArtifactId(), project.getArtifact().getFile() );
             Manifest manifest = analyzer.getJar().getManifest();
             osgiJar.setManifest( manifest );
             outputFile.getParentFile().mkdirs();

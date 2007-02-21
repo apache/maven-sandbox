@@ -103,7 +103,7 @@ public class ManifestPlugin
             analyzer.getProperties().putAll( properties );
         }
 
-        analyzer.setJar( project.getFile() );
+        analyzer.setJar( project.getArtifact().getFile() );
 
         if ( analyzer.getProperty( Analyzer.IMPORT_PACKAGE ) == null )
             analyzer.setProperty( Analyzer.IMPORT_PACKAGE, "*" );
