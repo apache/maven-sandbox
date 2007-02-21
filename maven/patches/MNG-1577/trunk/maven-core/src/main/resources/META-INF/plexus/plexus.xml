@@ -1,0 +1,18 @@
+<plexus>
+  <component-discoverer-manager implementation="org.codehaus.plexus.component.discovery.DefaultComponentDiscovererManager">
+    <listeners>
+      <listener implementation="org.codehaus.plexus.component.discovery.DiscoveryListenerDescriptor">
+        <role>org.apache.maven.plugin.MavenPluginCollector</role>
+      </listener>
+    </listeners>
+    <component-discoverers>
+      <component-discoverer implementation="org.apache.maven.plugin.MavenPluginDiscoverer"/>
+    </component-discoverers>
+  </component-discoverer-manager>
+  <components>
+    <component>
+      <role>org.apache.maven.plugin.MavenPluginCollector</role>
+      <implementation>org.apache.maven.plugin.MavenPluginCollector</implementation>
+    </component>
+  </components>
+</plexus>

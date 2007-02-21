@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# set up a timing matrix
+# collect values at revisions for comparison
+# try to at least stay at fast with changes
+
+ant_cmd="ant jar"
+ant_log=log.ant.txt
+
+m1_cmd="maven jar"
+m1_log=log.m1.txt
+
+m2_cmd="m2 -B package"
+m2_log=log.m2.txt
+
+iterations=16
+
+rm -f $m2_log $m1_log $ant_log
+
+for i in `seq 1 $iterations`
+do
+  rm -rf target
+  (exec 2>&1; time -p  $m2_cmd ) | grep real >> $m2_log
+  
+  rm -rf target
+  (exec 2>&1; time -p  $m1_cmd ) | grep real >> $m1_log
+  
+  rm -rf target
+  (exec 2>&1; time -p $ant_cmd ) | grep real >> $ant_log
+done
