@@ -1,0 +1,23 @@
+  ---
+  Maven Plugin-IT Plugin (plug-it)
+  ---
+  John Casey
+  ---
+  05 December 2006
+  ---
+
+Maven Plugin-IT Plugin (plug-it)
+
+  This plugin deals with those tasks which are unique for integration-testing of
+  Maven plugins. Specifically, it currently contains a mojo for staging a plugin
+  jar out to a test-time local repository, against which multiple integration-test
+  builds can be run. When the plugin is staged to this testing repository, its
+  version is reset, to allow the tests to use a version which is unlikely to be
+  used in any sort of release (and therefore unlikely to be resolved from a remote
+  repository by accident).
+
+  * For more information about this plugin, see the {{{usage.html}usage instructions}}.
+
+  * For examples, see the {{{examples/index.html}examples index}}.
+
+  []

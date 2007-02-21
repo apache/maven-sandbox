@@ -1,0 +1,188 @@
+ ------
+ Generating Resolved Issues Report
+ ------
+ John Tolentino
+ ------
+ 09 December 2006
+
+~~ Copyright 2006 The Apache Software Foundation.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~      http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+
+~~ NOTE: For help with the syntax of this file, see:
+~~ http://maven.apache.org/guides/mini/guide-apt-format.html
+
+Generating Resolved Issues Report
+
+ You can use the supplied velocity template of plexus-swizzle by specifying
+ <<<RELEASE>>> as your template. Generated report will be in xdoc format. See
+ {{{http://maven.apache.org/maven-1.x/plugins/xdoc/}Maven 1.x XDoc Plug-in}}
+ for more details on xdoc.
+
+*POM configuration
+
+ Here's a rundown of the POM fields where the plugin retrieves the values for the report.
+
++-------+
+<project>
+  [...]
+  <artifactId>maven-swizzle-plugin</artifactId>
+  <groupId>org.apache.maven.plugins</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-swizzle-plugin</artifactId>
+        <configuration>
+          <projectKey>SWIZZLE</projectKey>
+          <template>RELEASE</template>
+          <result>target/test-classes/unit/release-report.xml</result>
+          <scmRevisionId>107</scmRevisionId>
+          <docckPassed>true</docckPassed>
+          <docckResultDetails>target/test-classes/unit/docck-successful.txt</docckResultDetails>
+          <licenseCheckPassed>false</licenseCheckPassed>
+          <licenseCheckResultDetails>target/test-classes/unit/license-failed.txt</licenseCheckResultDetails>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <scm>
+    <connection>scm:svn:http://svn.yoursvn.org/yourproject/trunk</connection>
+  </scm>
+  <distributionManagement>
+    <downloadUrl>http://download-it-here.org/repo</downloadUrl>
+    <site>
+      <url>http://yoururl.org/~yourname/yourstagingsite</url>
+    </site>
+  </distributionManagement>
+  [...]
+</project>
++-------+
+
+*Maven WAR Plugin example
+
+ Here's an example on how to generate a report on resolved issues for the maven-war-plugin that is scheduled for its
+ 2.0.2 release:
+
++-------+
+<project>
+  [...]
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-swizzle-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <projectKey>MWAR</projectKey>
+          <template>RELEASE</template>
+          <result>target/test-classes/unit/release-report.xml</result>
+          <scmRevisionId>107</scmRevisionId>
+          <docckPassed>true</docckPassed>
+          <docckResultDetails>target/test-classes/unit/docck-successful.txt</docckResultDetails>
+          <licenseCheckPassed>false</licenseCheckPassed>
+          <licenseCheckResultDetails>target/test-classes/unit/license-failed.txt</licenseCheckResultDetails>
+        </configuration>
+       </plugin>
+    </plugins>
+  </build>
+  <scm>
+    <connection>scm:svn:http://svn.yoursvn.org/yourproject/trunk</connection>
+  </scm>
+  <distributionManagement>
+    <downloadUrl>http://download-it-here.org/repo</downloadUrl>
+    <site>
+      <url>http://yoururl.org/~yourname/yourstagingsite</url>
+    </site>
+  </distributionManagement>
+  [...]
+</project>
++-------+
+
+*Default Values example
+
+ We're using default values already found in this project's POM or provided through default values in the parameters
+ so the configuration will be shorter:
+
++-------+
+<project>
+  [...]
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-swizzle-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <projectKey>MWAR</projectKey>
+          <template>RELEASE</template>
+          <result>target/test-classes/unit/release-report.xml</result>
+          <scmRevisionId>107</scmRevisionId>
+          <docckPassed>true</docckPassed>
+          <licenseCheckPassed>false</licenseCheckPassed>
+        </configuration>
+       </plugin>
+    </plugins>
+  </build>
+  <scm>
+    <connection>scm:svn:http://svn.yoursvn.org/yourproject/trunk</connection>
+  </scm>
+  <distributionManagement>
+    <downloadUrl>http://download-it-here.org/repo</downloadUrl>
+    <site>
+      <url>http://yoururl.org/~yourname/yourstagingsite</url>
+    </site>
+  </distributionManagement>
+  [...]
+</project>
++-------+
+
+*Overriding Default Values example
+
+ Here's an example of how to override all the default values of available parameters:
+
++-------+
+<project>
+  [...]
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-swizzle-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <username>swizzletester</username>
+          <password>swizzle</password>
+          <jiraServerUrl>http://jira.codehaus.org</jiraServerUrl>
+          <projectKey>SWIZZLE</projectKey>
+          <projectVersion>Test 0.3.0</projectVersion>
+          <template>RELEASE</template>
+          <result>target/test-classes/unit/my-release-report.xml</result>
+          <groupId>org.codehaus.plexus.swizzle</groupId>
+          <scmConnection>scm:svn:http://svn.mysvn.org/myproject/trunk</scmConnection>
+          <artifactId>swizzle</artifactId>
+          <scmRevisionId>107</scmRevisionId>
+          <downloadUrl>http://myurl.org/repo/myproject-1.0.jar</downloadUrl>
+          <stagingSiteUrl>http://myurl.org/release-reports</stagingSiteUrl>
+          <docckPassed>true</docckPassed>
+          <docckResultDetails>mytestresults/docck-successful.txt</docckResultDetails>
+          <licenseCheckPassed>false</licenseCheckPassed>
+          <licenseCheckResultDetails>mytestresults/license-failed.txt</licenseCheckResultDetails>
+          <dateFormat>MM/dd/yy hh:mm</dateFormat>
+        </configuration>
+       </plugin>
+    </plugins>
+  </build>
+  [...]
+</project>
++-------+

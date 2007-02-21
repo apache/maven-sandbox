@@ -1,0 +1,55 @@
+  ---
+  Maven Plugin-IT Plugin: Stage Mojo: Minimal Example
+  ---
+  John Casey
+  ---
+  05 December 2006
+  ---
+
+Minimal Configuration for the <<<stage>>> Mojo
+
+  This example describes the minimalist case for integration-testing your plugin
+  using Maven builds. We're assuming your tests will be fine with the following
+  default information:
+
+  * Skip Unit Tests during Plugin Staging: <<Yes.>>
+
+  * Staged Plugin Version: <<testing>>
+
+  * Plugin Staging Local Repository: <<$\{project.build.directory\}/local-repository>>
+
+    <Usually <<<target/local-repository>>>.>
+
+  []
+
+  If all of this information is acceptable, simply add the following to your POM:
+
+---
+<project>
+  [...]
+  <build>
+    [...]
+    <plugins>
+      <plugin>
+        <artifactId>maven-plug-it-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>stage-plugin</id>
+            <goals>
+              <goal>stage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+---
+
+  <NOTE: Of course, you will have to add some other plugin to your POM to actually
+  execute the integration-test builds, such as the maven-invoker-plugin.>
+
+  The above configuration will result in your plugin being staged to the default local
+  repository location for integration testing (<<not>> your <<<$HOME/.m2/repository>>>
+  directory). This process will take place during the <<<pre-integration-test>>> phase,
+  so your plugin is ready to test when the <<<integration-test>>> phase starts.

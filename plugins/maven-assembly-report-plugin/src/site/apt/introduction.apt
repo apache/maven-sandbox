@@ -1,0 +1,16 @@
+ ------
+ Maven 2 Assembly Report Plugin
+ ------
+ Vincent Siveton
+ <vincent.siveton@gmail.com>
+ ------
+ November 25, 2005
+
+Introduction
+
+ This plugin provides the capability to create a download report.
+
+ To learn how to use the plugin, click {{{howto.html}here}}.
+
+
+

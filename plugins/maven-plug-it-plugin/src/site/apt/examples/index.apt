@@ -1,0 +1,13 @@
+  ---
+  Maven Plugin-IT Plugin: Examples Index
+  ---
+  John Casey
+  ---
+  05 December 2006
+  ---
+
+Examples Index
+
+* <<<stage>>> Mojo
+
+  * Minimal Configuration: Staging a plugin for integration testing. \[{{{stage/minimal.html}link}}\]

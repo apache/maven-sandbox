@@ -1,0 +1,7 @@
+package ${package};
+
+import org.codehaus.plexus.PlexusTestCase;
+
+public abstract class ${class} extends PlexusTestCase
+{
+}
