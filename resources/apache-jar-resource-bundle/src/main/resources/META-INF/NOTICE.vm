@@ -6,10 +6,12 @@
 
 #if ($projectName)$projectName#else${project.name}#end
 
-Copyright ${projectTimespan} The Apache Software Foundation
+Copyright ${projectTimespan}#if($project.organization.name) $project.organization.name#else The Apache Software Foundation#end
+
 
 This product includes software developed at
-The Apache Software Foundation (http://www.apache.org/).
+#if($project.organization.name)$project.organization.name ($project.organization.url).#else
+The Apache Software Foundation (http://www.apache.org/).#end
 
 #if($preProjectText)
 $preProjectText
