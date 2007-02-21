@@ -1,0 +1,15 @@
+- put these in JIRA :-)
+- create a ruby shell for JIRA
+- generate the soap goop as part of the build
+- if a jira.yaml file isn't present just prompt the operator for u/p
+- needs to be properly rdoc'd
+- needs to be tested well
+  - create a project
+  - check schemes
+  - add components and check status
+  - add issues and check status
+  - delete components
+  - delete issues
+  - delete project
+x see if the SOAP library for ruby will work. SOAP stuff works great
+x create a normal ruby installer for the issue manager, use ruby gems

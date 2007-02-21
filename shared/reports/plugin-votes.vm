@@ -1,0 +1,38 @@
+#set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
+#set( $projects = $jira.getProjects().matches("name", "Maven 2.*Plugin") )
+
+        
+<document>
+  <properties>
+    <title>Articles on Maven</title>
+    <author email="jason@maven.org">Jason van Zyl</author>
+  </properties>
+  <body>
+    <section name="Plugins">
+#foreach( $project in $projects )
+#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&&pid=${project.id}&status=1&sorter/field=issuekey&sorter/order=DESC&tempMax=100&reset=true&decorator=none" )
+#set( $jirarss = $rss.fetch( $url ) )
+#set( $project.attributes.totalVotes = $jirarss.issues.sum("votes") )
+## keep the issues in case you want them later
+#set( $project.attributes.issues = $jirarss.issues )
+#end
+
+
+#foreach( $project in $projects.descending("@totalVotes") )
+      <table>
+        <tr>
+          <th>$project.attributes.totalVotes</th>
+          <th>$project.name</th>
+        </tr>
+#foreach( $issue in $project.attributes.issues.descending("votes") )
+        <tr>
+          <td>$issue.votes</td>
+          <td>$issue.summary</td>
+        </tr>
+#end
+      </table>
+#end
+
+    </section>
+  </body>
+</document>

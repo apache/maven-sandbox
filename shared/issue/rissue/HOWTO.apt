@@ -1,0 +1,44 @@
+ -----
+ Ruby Gem for manipulating JIRA
+ -----
+ Jason van Zyl
+ -----
+
+How to use
+
+* Install Ruby Gems
+ 
+ http://docs.rubygems.org/read/chapter/3
+
+* Install Rake
+
+ sudo gem install --remote rake
+
+* Checkout & Install SOAP4R
+
+ http://dev.ctor.org/svn/soap4r/trunk
+
+ Right now this seems to be the only way to get it to work. You need the trunk.
+
+ Normally you should just be able to download the release version and use
+ that to geneate the wsdl.
+
+ http://dev.ctor.org/soap4r
+
+* Generate the SOAP crap
+
+ ./wsdl2ruby.rb --wsdl <random-unversioned-wsdl-that-jira-gives-you> --type client
+
+* Build the JIRA Ruby Gem
+
+ rake gem 
+
+* Install the JIRA Ruby Gem
+
+ cd pkg; sudo gem install jiraruby-<version>.gem
+
+* Developing the Ruby Gem
+
+ Once you have installed the RubyGem it will land in /usr/lib/ruby/gems/1.8/gems/jiraruby-0.1.0/lib 
+ so on unix it is easy to create a symlink to /usr/lib/ruby/gems/1.8/gems/jiraruby-0.1.0/lib/jiraruby.rb
+ and then you can just edit/run/test.

@@ -1,0 +1,23 @@
+#!/usr/bin/ruby
+
+require 'rubygems'
+require_gem 'jiraruby'
+
+if ARGV[0] == nil
+  puts "", "You must specify an issue id!", ""
+  exit
+end    
+
+issueId = ARGV[0].upcase
+
+im = IssueManager.new()
+
+begin
+  issue = im.getIssue( issueId )
+rescue Exception => e
+  puts "No such issue."
+  exit 1
+end
+
+puts "[#{issue.key}] #{issue.summary}"
+puts "     URL: #{im.issueUrl(issue)}"

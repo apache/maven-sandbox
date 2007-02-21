@@ -1,0 +1,22 @@
+require 'rubygems'
+require 'rake/gempackagetask'
+
+spec = Gem::Specification.new do |s|
+  s.name = "jiraruby"
+  s.version = "0.1.0"
+  s.author = "Jason van Zyl"
+  s.email = "jason at maven dot org"
+  s.homepage = "http://maven.apache.org/issue"
+  s.platform = Gem::Platform::RUBY
+  s.summary = "Ruby library for manipulating JIRA"
+  s.files = FileList["{lib}/**/*"]
+  s.require_path = "lib"
+  s.autorequire = "jiraruby"
+  s.has_rdoc = false
+  s.extra_rdoc_files = ["HOWTO.apt"]
+end
+
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.need_tar = true
+  pkg.need_zip = true
+end

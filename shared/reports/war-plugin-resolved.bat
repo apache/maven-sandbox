@@ -1,0 +1,1 @@
+@java -jar swizzle-jirareport-1.2.1-SNAPSHOT-dep.jar war-plugin-resolved.vm > war-plugin-resolved.xml

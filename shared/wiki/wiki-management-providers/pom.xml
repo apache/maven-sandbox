@@ -1,0 +1,30 @@
+<project>
+  <parent>
+    <groupId>org.apache.maven.wiki</groupId>  
+    <artifactId>wiki</artifactId>
+    <version>1</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>wiki-management-providers</artifactId>
+  <packaging>pom</packaging>
+  <name>Maven Wiki Management Providers</name>
+  <version>1</version>
+  <dependencies>
+    <!--
+    <dependency>
+      <groupId>org.apache.maven.wiki</groupId>
+      <artifactId>wagon-provider-test</artifactId>
+      <version>1.0-alpha-6-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    -->
+    <dependency>
+      <groupId>org.apache.maven.wiki</groupId>
+      <artifactId>wiki-management-api</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  <modules>
+    <module>wiki-management-provider-confluence</module>
+  </modules>  
+</project>

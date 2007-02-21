@@ -1,0 +1,29 @@
+11124,Maven 2.x Ant Plugin,http://jira.codehaus.org/browse/MANT,jason,Maven 2.x Ant Plugin,3
+11123,Maven 2.x Antlr Plugin,http://jira.codehaus.org/browse/MANTLR,jason,Maven 2.x Antlr Plugin,3
+11125,Maven 2.x Antrun Plugin,http://jira.codehaus.org/browse/MANTRUN,jason,Maven 2.x Antrun Plugin,3
+11126,Maven 2.x Assembly Plugin,http://jira.codehaus.org/browse/MASSEMBLY,brett,Maven 2.x Assembly Plugin,3
+11127,Maven 2.x Checkstyle Plugin,http://jira.codehaus.org/browse/MCHECKSTYLE,jason,Maven 2.x Checkstyle Plugin,3
+11128,Maven 2.x Clean Plugin,http://jira.codehaus.org/browse/MCLEAN,jason,Maven 2.x Clean Plugin,3
+11129,Maven 2.x Clover Plugin,http://jira.codehaus.org/browse/MCLOVER,vmassol,Maven 2.x Clover Plugin,3
+11130,Maven 2.x Compiler Plugin,http://jira.codehaus.org/browse/MCOMPILER,jason,Maven 2.x Compiler Plugin,3
+11131,Maven 2.x Deploy Plugin,http://jira.codehaus.org/browse/MDEPLOY,jason,Maven 2.x Deploy Plugin,3
+11132,Maven 2.x Ear Plugin,http://jira.codehaus.org/browse/MEAR,sni,Maven 2.x Ear Plugin,3
+11133,Maven 2.x Eclipse Plugin,http://jira.codehaus.org/browse/MECLIPSE,jason,Maven 2.x Eclipse Plugin,3
+11134,Maven 2.x Ejb Plugin,http://jira.codehaus.org/browse/MEJB,jason,Maven 2.x Ejb Plugin,3
+11135,Maven 2.x Idea Plugin,http://jira.codehaus.org/browse/MIDEA,jason,Maven 2.x Idea Plugin,3
+11136,Maven 2.x Install Plugin,http://jira.codehaus.org/browse/MINSTALL,jason,Maven 2.x Install Plugin,3
+11137,Maven 2.x Jar Plugin,http://jira.codehaus.org/browse/MJAR,jason,Maven 2.x Jar Plugin,3
+11138,Maven 2.x Javadoc Plugin,http://jira.codehaus.org/browse/MJAVADOC,jason,Maven 2.x Javadoc Plugin,3
+11093,Maven 2.x Plug-in for Eclipse,http://jira.codehaus.org/browse/MNGECLIPSE,eu,A Maven 2.x plug-in for the Eclipse IDE,3
+11139,Maven 2.x Plugin Plugin,http://jira.codehaus.org/browse/MPLUGIN,jason,Maven 2.x Plugin Plugin,3
+11140,Maven 2.x Pmd Plugin,http://jira.codehaus.org/browse/MPMD,jason,Maven 2.x Pmd Plugin,3
+11141,Maven 2.x Project Help Plugin,http://jira.codehaus.org/browse/MPH,jason,Maven 2.x Project Help Plugin,3
+11142,Maven 2.x Project Info Reports Plugin,http://jira.codehaus.org/browse/MPIR,jason,Maven 2.x Project Info Reports Plugin,3
+11143,Maven 2.x Rar Plugin,http://jira.codehaus.org/browse/MRAR,sni,Maven 2.x Rar Plugin,3
+11144,Maven 2.x Release Plugin,http://jira.codehaus.org/browse/MRELEASE,jason,Maven 2.x Release Plugin,3
+11145,Maven 2.x Resources Plugin,http://jira.codehaus.org/browse/MRESOURCES,jason,Maven 2.x Resources Plugin,3
+11146,Maven 2.x Site Plugin,http://jira.codehaus.org/browse/MSITE,jason,Maven 2.x Site Plugin,3
+11147,Maven 2.x Sources Plugin,http://jira.codehaus.org/browse/MSOURCES,jason,Maven 2.x Sources Plugin,3
+11148,Maven 2.x Surefire Plugin,http://jira.codehaus.org/browse/MSUREFIRE,jason,Maven 2.x Surefire Plugin,3
+11149,Maven 2.x Verifier Plugin,http://jira.codehaus.org/browse/MVERIFIER,jason,Maven 2.x Verifier Plugin,3
+11150,Maven 2.x War Plugin,http://jira.codehaus.org/browse/MWAR,sni,Maven 2.x War Plugin,3

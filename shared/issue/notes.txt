@@ -1,0 +1,3 @@
+o note that if you want to try this stuff you'll need to change the fake
+  passwords in various places, not very centralized yet. Just search for
+  "jason" and "jira913". i'll setup a test account shortly.

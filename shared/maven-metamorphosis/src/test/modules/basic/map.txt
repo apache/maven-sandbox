@@ -1,0 +1,10 @@
+groupId: no.bbs
+artifactId: bbs-artifact
+version: 1.0-SNAPSHOT
+packaging: ejb
+jarDir: lib
+resourceDir: src/META-INF
+resourceDir: etc
+resourceDir: src, *.xml|*.properties
+srcDir: src
+testSrcDir: unittest

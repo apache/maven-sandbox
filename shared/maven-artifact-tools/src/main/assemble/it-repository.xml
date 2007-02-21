@@ -1,0 +1,24 @@
+<assembly>
+  <id>it-repository</id>
+  <formats>
+    <format>dir</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <files>
+    <file>
+      <source>target/${artifactId}-${version}.jar</source>
+      <outputDirectory>org/apache/maven/shared/${artifactId}/${version}</outputDirectory>
+      <destName>${artifactId}-${version}.jar</destName>
+    </file>
+    <file>
+      <source>target/${artifactId}-${version}-jar-with-dependencies.jar</source>
+      <outputDirectory>org/apache/maven/shared/${artifactId}/${version}</outputDirectory>
+      <destName>${artifactId}-${version}-jar-with-dependencies.jar</destName>
+    </file>
+    <file>
+      <source>pom.xml</source>
+      <outputDirectory>org/apache/maven/shared/${artifactId}/${version}</outputDirectory>
+      <destName>${artifactId}-${version}.pom</destName>
+    </file>
+  </files>
+</assembly>
