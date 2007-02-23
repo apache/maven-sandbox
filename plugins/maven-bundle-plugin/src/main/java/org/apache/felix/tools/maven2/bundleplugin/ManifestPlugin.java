@@ -44,10 +44,9 @@ public class ManifestPlugin
 
     /**
      * Directory where the manifest will be written
-     * @parameter
-     * @default ""
+     * @parameter expression="${project.build.outputDirectory}/META-INF"
      */
-    private String manifestLocation = "";
+    private String manifestLocation;
 
     protected void execute( MavenProject project, Map instructions, Properties properties, Jar[] classpath )
         throws MojoExecutionException
@@ -55,14 +54,14 @@ public class ManifestPlugin
         Manifest manifest;
         try
         {
-            manifest = getManifest( project, properties, classpath );
+            manifest = getManifest( project, instructions, properties, classpath );
         }
         catch ( IOException e )
         {
             throw new MojoExecutionException( "Error trying to generate Manifest", e );
         }
 
-        File outputFile = new File( getBuildDirectory(), manifestLocation + "/MANIFEST.MF" );
+        File outputFile = new File( manifestLocation + "/MANIFEST.MF" );
 
         try
         {
@@ -77,22 +76,22 @@ public class ManifestPlugin
     public Manifest getManifest( MavenProject project, Jar[] classpath )
         throws IOException
     {
-        return getManifest( project, null, classpath );
+        return getManifest( project, null, null, classpath );
     }
 
-    public Manifest getManifest( MavenProject project, Properties properties, Jar[] classpath )
+    public Manifest getManifest( MavenProject project, Map instructions, Properties properties, Jar[] classpath )
         throws IOException
     {
-        return getAnalyzer( project, properties, classpath ).getJar().getManifest();
+        return getAnalyzer( project, instructions, properties, classpath ).getJar().getManifest();
     }
 
     protected Analyzer getAnalyzer( MavenProject project, Jar[] classpath )
         throws IOException
     {
-        return getAnalyzer( project, null, classpath );
+        return getAnalyzer( project, null, null, classpath );
     }
 
-    protected Analyzer getAnalyzer( MavenProject project, Properties properties, Jar[] classpath )
+    protected Analyzer getAnalyzer( MavenProject project, Map instructions, Properties properties, Jar[] classpath )
         throws IOException
     {
         PackageVersionAnalyzer analyzer = new PackageVersionAnalyzer();
@@ -103,15 +102,20 @@ public class ManifestPlugin
             analyzer.getProperties().putAll( properties );
         }
 
+        analyzer.getProperties().putAll( instructions );
+
         analyzer.setJar( project.getArtifact().getFile() );
 
         if ( analyzer.getProperty( Analyzer.IMPORT_PACKAGE ) == null )
             analyzer.setProperty( Analyzer.IMPORT_PACKAGE, "*" );
 
-        if ( analyzer.getProperty( Analyzer.EXPORT_PACKAGE ) == null )
+        if ( !instructions.containsKey( Analyzer.PRIVATE_PACKAGE ) )
         {
-            String export = analyzer.calculateExportsFromContents( analyzer.getJar() );
-            analyzer.setProperty( Analyzer.EXPORT_PACKAGE, export );
+            if ( analyzer.getProperty( Analyzer.EXPORT_PACKAGE ) == null )
+            {
+                String export = analyzer.calculateExportsFromContents( analyzer.getJar() );
+                analyzer.setProperty( Analyzer.EXPORT_PACKAGE, export );
+            }
         }
 
         if ( classpath != null )
