@@ -96,27 +96,26 @@ public class ManifestPlugin
     {
         PackageVersionAnalyzer analyzer = new PackageVersionAnalyzer();
 
-        analyzer.setProperties( getDefaultProperties( project ) );
-        if ( properties != null )
+        Properties props = getDefaultProperties( project );
+        props.putAll( properties );
+
+        if ( !instructions.containsKey( Analyzer.IMPORT_PACKAGE ) )
         {
-            analyzer.getProperties().putAll( properties );
+            props.put( Analyzer.IMPORT_PACKAGE, "*" );
         }
 
-        analyzer.getProperties().putAll( instructions );
+        if ( !instructions.containsKey( Analyzer.PRIVATE_PACKAGE )
+            && !instructions.containsKey( Analyzer.EXPORT_PACKAGE ) )
+        {
+            String export = analyzer.calculateExportsFromContents( analyzer.getJar() );
+            analyzer.setProperty( Analyzer.EXPORT_PACKAGE, export );
+        }
+
+        props.putAll( instructions );
+
+        analyzer.setProperties( props );
 
         analyzer.setJar( project.getArtifact().getFile() );
-
-        if ( analyzer.getProperty( Analyzer.IMPORT_PACKAGE ) == null )
-            analyzer.setProperty( Analyzer.IMPORT_PACKAGE, "*" );
-
-        if ( !instructions.containsKey( Analyzer.PRIVATE_PACKAGE ) )
-        {
-            if ( analyzer.getProperty( Analyzer.EXPORT_PACKAGE ) == null )
-            {
-                String export = analyzer.calculateExportsFromContents( analyzer.getJar() );
-                analyzer.setProperty( Analyzer.EXPORT_PACKAGE, export );
-            }
-        }
 
         if ( classpath != null )
             analyzer.setClasspath( classpath );
