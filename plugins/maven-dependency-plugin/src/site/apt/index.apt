@@ -1,0 +1,100 @@
+~~ Licensed to the Apache Software Foundation (ASF) under one
+~~ or more contributor license agreements.  See the NOTICE file
+~~ distributed with this work for additional information
+~~ regarding copyright ownership.  The ASF licenses this file
+~~ to you under the Apache License, Version 2.0 (the
+~~ "License"); you may not use this file except in compliance
+~~ with the License.  You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing,
+~~ software distributed under the License is distributed on an
+~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~~ KIND, either express or implied.  See the License for the
+~~ specific language governing permissions and limitations
+~~ under the License.    
+ 
+  ------
+  Introduction
+  ------
+  Allan Ramirez
+  Brian Fox
+  ------
+  Jan 2007
+  ------
+
+Maven Dependency Plugin
+
+  The dependency plugin provides the capability to manipulate artifacts. It
+  can copy and/or unpack artifacts from local or remote repositories to a
+  specified location.
+
+* Goals Overview
+
+  Dependency plugin has 10 goals:
+
+  *{{{copy-mojo.html}dependency:copy}} takes a list of artifacts defined in
+  the plugin configuration section and copies them to a specified location,
+  renaming them or stripping the version if desired. This goal can resolve
+  the artifacts from remote repositories if they don't exist in local.
+
+  *{{{copy-dependencies-mojo.html}dependency:copy-dependencies}} takes the
+  list of project direct dependencies and optionally transitive dependencies and
+  copies them to a specified location, stripping the version if desired.
+  This goal can also be run from the command line.
+
+  *{{{unpack-mojo.html}dependency:unpack}} like copy but unpacks.
+
+  *{{{unpack-dependencies-mojo.html}dependency:unpack-dependencies}} like
+  copy-dependencies but unpacks.
+
+  *{{{resolve-mojo.html}dependency:resolve}} tells Maven to resolve all dependencies and displays the version.
+
+  *{{{sources-mojo.html}dependency:sources}} tells Maven to resolve all dependencies and their source attachments, and displays the version.
+
+  *{{{resolve-plugins-mojo.html}dependency:resolve-plugins}} Tells Maven to
+  resolve plugins and their dependencies.
+
+  *{{{go-offline-mojo.html}dependency:go-offline}} tells Maven to resolve
+  everything this project is dependent on (dependencies, plugins, reports)
+  in preparation for going offline.
+
+  *{{{purge-local-repository-mojo.html}dependency:purge-local-repository}} tells
+  Maven to clear all dependency-artifact files out of the local repository,
+  and optionally re-resolve them.
+
+  *{{{build-classpath-mojo.html}dependency:build-classpath}} tells
+  Maven to output the path of the dependencies from the local repository in a classpath format to be used in java -cp
+
+
+  []
+
+* Usage
+
+  Instructions on how to use the dependency plugin can be found {{{usage.html}here}}.
+
+* Examples
+
+  The following examples show how to use the dependency plugin in more advanced use-cases:
+
+  * {{{examples/copying-artifacts.html}Copying Specific Artifacts}}
+
+  * {{{examples/copying-project-dependencies.html}Copying Project Dependencies}}
+
+  * {{{examples/unpacking-artifacts.html}Unpacking Specific Artifacts}}
+
+  * {{{examples/copying-project-dependencies.html}Unpacking the Project Dependencies}}
+
+  []
+
+* Resources
+
+  Here is a link that provides more reference regarding dependencies
+  (i.e. dependency management, transitive dependencies).
+
+  * {{{http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html}Dependency Mechanism}}
+
+  []
+
+
