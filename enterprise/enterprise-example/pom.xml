@@ -10,9 +10,9 @@
   <url>http://localhost:8080/site/index.html</url>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/enterprise/enterprise-example</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/enterprise/enterprise-example</developerConnection>
-    <url>http://svn.apache.org/viewvc/maven/sandbox/enterprise/enterprise-example</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/trunk/enterprise/enterprise-example</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/enterprise/enterprise-example</developerConnection>
+    <url>http://svn.apache.org/viewvc/maven/sandbox/trunk/enterprise/enterprise-example</url>
   </scm>
 
   <ciManagement>
