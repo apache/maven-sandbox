@@ -15,9 +15,9 @@
   <name>Maven Enterprise</name>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/enterprise</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/enterprise</developerConnection>
-    <url>http://svn.apache.org/viewvc/maven/sandbox/enterprise</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/enterprise</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/enterprise</developerConnection>
+    <url>http://svn.apache.org/viewvc/maven/sandbox/trunk/enterprise</url>
   </scm>
 
   <modules>
