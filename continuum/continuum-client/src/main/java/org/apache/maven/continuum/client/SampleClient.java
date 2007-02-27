@@ -2,8 +2,10 @@ package org.apache.maven.continuum.client;
 
 import org.apache.maven.continuum.client.project.Project;
 import org.apache.maven.continuum.client.project.ProjectSummary;
+import org.apache.maven.continuum.client.project.BuildResult;
 
 import java.net.URL;
+import java.util.Date;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -78,6 +80,12 @@ public class SampleClient
 
                     System.out.println( "State: " + ContinuumClient.getStatusMessage( project.getState() ) );
 
+                    BuildResult build = client.getBuildResult( project.getLatestBuildId() );
+
+                    System.out.println( "Latest build:" );
+                    System.out.println( "    BuildId: " + build.getId() );
+                    System.out.println( "    Start time: " + new Date( build.getStartTime() ) );
+                    System.out.println( "    End time: " + new Date( build.getEndTime() ) );
                 }
                 catch ( Exception e )
                 {

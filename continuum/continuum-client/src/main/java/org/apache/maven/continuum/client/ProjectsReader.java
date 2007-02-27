@@ -26,6 +26,7 @@ import org.apache.maven.continuum.client.project.ProjectDependency;
 import org.apache.maven.continuum.client.project.ProjectDeveloper;
 import org.apache.maven.continuum.client.project.Schedule;
 import org.apache.maven.continuum.client.project.ProjectSummary;
+import org.apache.maven.continuum.client.project.BuildResult;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
 
@@ -236,22 +237,7 @@ public class ProjectsReader
         instance.setState( Integer.parseInt( (String) hashtable.get( "state" ) ) );
         instance.setOldState( Integer.parseInt( (String) hashtable.get( "oldState" ) ) );
         instance.setBuildNumber( Integer.parseInt( (String) hashtable.get( "buildNumber" ) ) );
-        Vector deps = (Vector) hashtable.get( "dependencies" );
-        if ( deps != null )
-        {
-            Iterator it = deps.iterator();
-            List vals = new ArrayList();
-            while ( it.hasNext() )
-            {
-                Hashtable dep = (Hashtable) it.next();
-                ProjectDependency dependency = new ProjectDependency();
-                dependency.setArtifactId( (String) dep.get( "artifactId" ) );
-                dependency.setGroupId( (String) dep.get( "groupId" ) );
-                dependency.setVersion( (String) dep.get( "version" ) );
-                vals.add( dependency );
-            }
-            instance.setDependencies( vals );
-        }
+        instance.setDependencies( parseDependencies( (Vector) hashtable.get( "dependencies" ) ) );
         Hashtable par = (Hashtable) hashtable.get( "parent" );
         if ( par != null )
         {
@@ -342,6 +328,72 @@ public class ProjectsReader
         return instance;
     }
 
+    public BuildResult[] readBuildResultsForProject( int projectId )
+        throws XmlRpcException, IOException
+    {
+        XmlRpcClient client = new XmlRpcClient( server );
+        Vector vect = new Vector();
+        vect.add( new Integer( projectId ) );
+        Object obj = client.execute( "continuum.getBuildResultsForProject", vect );
+        Collection set = new ArrayList();
+        System.out.println( obj );
+        if ( obj instanceof Hashtable )
+        {
+            Hashtable table = (Hashtable) obj;
+            Vector builds = (Vector) table.get( "builds" );
+            Iterator it = builds.iterator();
+            while ( it.hasNext() )
+            {
+                Hashtable build = (Hashtable) it.next();
+                set.add( populateBuildResult( build, new BuildResult() ) );
+            }
+        }
+        else if ( obj instanceof XmlRpcException )
+        {
+            throw (XmlRpcException) obj;
+        }
+
+        return (BuildResult[]) set.toArray( new BuildResult[set.size()] );
+    }
+
+    public void refreshBuildResult( BuildResult build )
+        throws XmlRpcException, IOException
+    {
+        XmlRpcClient client = new XmlRpcClient( server );
+        Vector vect = new Vector();
+        vect.add( new Integer( build.getId() ) );
+        Object obj = client.execute( "continuum.getBuildResult", vect );
+        if ( obj instanceof Hashtable )
+        {
+            Hashtable table = (Hashtable) obj;
+            populateBuildResult( (Hashtable) table.get( "build" ), build );
+        }
+        else if ( obj instanceof XmlRpcException )
+        {
+            throw (XmlRpcException) obj;
+        }
+    }
+
+    BuildResult populateBuildResult( Hashtable hashtable, BuildResult instance )
+    {
+        instance.setId( Integer.parseInt( (String) hashtable.get( "id" ) ) );
+        instance.setState( Integer.parseInt( (String) hashtable.get( "state" ) ) );
+        instance.setBuildNumber( Integer.parseInt( (String) hashtable.get( "buildNumber" ) ) );
+        instance.setTrigger( Integer.parseInt( (String) hashtable.get( "trigger" ) ) );
+        instance.setStartTime( Long.parseLong( (String) hashtable.get( "startTime") ) );
+        instance.setEndTime( Long.parseLong( (String) hashtable.get( "endTime" ) ) );
+        instance.setError( (String) hashtable.get( "error" ) );
+        instance.setSuccess( hashtable.get( "success" ).equals( "true" ) );
+        instance.setExitCode( Integer.parseInt( (String) hashtable.get( "exitCode" ) ) );
+// TODO: build the ScmResult
+//        instance.setScmResult( (ScmResult) hashtable.get( "scmResult" ) );
+// TODO: build the TestResult
+//        instance.setTestResult( ( TestResult ) hashtable.get( "testResult" ) );
+        instance.setModifiedDependencies( parseDependencies( (Vector) hashtable.get( "modifiedDependencies" ) ) );
+
+        return instance;
+    }
+
     private Hashtable projectToHashtable( Project project )
     {
         Hashtable map = new Hashtable();
@@ -366,4 +418,25 @@ public class ProjectsReader
         }
     }
 
+    private List parseDependencies( Vector deps )
+    {
+        if ( deps == null )
+        {
+            return null;
+        }
+
+        Iterator it = deps.iterator();
+        List vals = new ArrayList();
+        while ( it.hasNext() )
+        {
+            Hashtable dep = (Hashtable) it.next();
+            ProjectDependency dependency = new ProjectDependency();
+            dependency.setArtifactId( (String) dep.get( "artifactId" ) );
+            dependency.setGroupId( (String) dep.get( "groupId" ) );
+            dependency.setVersion( (String) dep.get( "version" ) );
+            vals.add( dependency );
+        }
+
+        return vals;
+    }
 }

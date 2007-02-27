@@ -24,6 +24,7 @@ import org.apache.maven.continuum.client.ProjectsReader;
 import org.apache.maven.continuum.client.ClientException;
 import org.apache.maven.continuum.client.project.Project;
 import org.apache.maven.continuum.client.project.ProjectSummary;
+import org.apache.maven.continuum.client.project.BuildResult;
 
 import java.util.Hashtable;
 import java.net.URL;
@@ -128,5 +129,42 @@ public class ContinuumClient
         throws ClientException
     {
         return getProject( summary.getId() );
+    }
+
+    public BuildResult[] getBuildResultsForProject( int projectId )
+        throws ClientException
+    {
+        try
+        {
+            return source.readBuildResultsForProject( projectId );
+        }
+        catch ( Exception e )
+        {
+            throw new ClientException( e );
+        }
+    }
+
+    public BuildResult[] getBuildResultsForProject( Project project )
+        throws ClientException
+    {
+        return getBuildResultsForProject( project.getId() );
+    }
+
+    public BuildResult getBuildResult( int buildId )
+        throws ClientException
+    {
+        try
+        {
+            BuildResult ret = new BuildResult();
+
+            ret.setId( buildId );
+            source.refreshBuildResult( ret );
+
+            return ret;
+        }
+        catch ( Exception e )
+        {
+            throw new ClientException( e );
+        }
     }
 }
