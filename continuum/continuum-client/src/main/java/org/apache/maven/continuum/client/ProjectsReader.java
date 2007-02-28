@@ -379,13 +379,17 @@ public class ProjectsReader
         instance.setId( Integer.parseInt( (String) hashtable.get( "id" ) ) );
         instance.setState( Integer.parseInt( (String) hashtable.get( "state" ) ) );
         instance.setBuildNumber( Integer.parseInt( (String) hashtable.get( "buildNumber" ) ) );
-        instance.setTrigger( Integer.parseInt( (String) hashtable.get( "trigger" ) ) );
+        String trigger = (String) hashtable.get( "trigger" );
+        if ( trigger != null )
+        {
+            instance.setTrigger( Integer.parseInt( trigger ) );
+        }
         instance.setStartTime( Long.parseLong( (String) hashtable.get( "startTime") ) );
         instance.setEndTime( Long.parseLong( (String) hashtable.get( "endTime" ) ) );
         instance.setError( (String) hashtable.get( "error" ) );
         instance.setSuccess( hashtable.get( "success" ).equals( "true" ) );
         instance.setExitCode( Integer.parseInt( (String) hashtable.get( "exitCode" ) ) );
-// TODO: build the ScmResult
+// TODO: build the ScmResult (if not summary)
 //        instance.setScmResult( (ScmResult) hashtable.get( "scmResult" ) );
 // TODO: build the TestResult
 //        instance.setTestResult( ( TestResult ) hashtable.get( "testResult" ) );
