@@ -110,6 +110,11 @@ public class ContinuumClient
     public Project getProject( int id )
         throws ClientException
     {
+        if ( id < 1 )
+        {
+            return null;
+        }
+
         try
         {
             Project ret = new Project();
@@ -153,6 +158,11 @@ public class ContinuumClient
     public BuildResult getBuildResult( int buildId )
         throws ClientException
     {
+        if ( buildId < 1 )
+        {
+            return null;
+        }
+
         try
         {
             BuildResult ret = new BuildResult();
