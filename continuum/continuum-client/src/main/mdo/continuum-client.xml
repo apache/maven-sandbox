@@ -445,21 +445,6 @@
             <type>ScmResult</type>
           </association>
         </field>
-        <field>
-          <name>testResult</name>
-          <version>1.1.0+</version>
-          <association>
-            <type>TestResult</type>
-          </association>
-        </field>
-        <field>
-          <name>modifiedDependencies</name>
-          <version>1.1.0+</version>
-          <association>
-            <type>ProjectDependency</type>
-            <multiplicity>*</multiplicity>
-          </association>
-        </field>
       </fields>
     </class>
 
