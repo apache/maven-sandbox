@@ -21,6 +21,7 @@ package org.apache.felix.tools.maven2.bundleplugin;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.jar.Manifest;
@@ -88,7 +89,7 @@ public class ManifestPlugin
     protected Analyzer getAnalyzer( MavenProject project, Jar[] classpath )
         throws IOException
     {
-        return getAnalyzer( project, null, null, classpath );
+        return getAnalyzer( project, new HashMap(), new Properties(), classpath );
     }
 
     protected Analyzer getAnalyzer( MavenProject project, Map instructions, Properties properties, Jar[] classpath )
@@ -104,13 +105,6 @@ public class ManifestPlugin
             props.put( Analyzer.IMPORT_PACKAGE, "*" );
         }
 
-        if ( !instructions.containsKey( Analyzer.PRIVATE_PACKAGE )
-            && !instructions.containsKey( Analyzer.EXPORT_PACKAGE ) )
-        {
-            String export = analyzer.calculateExportsFromContents( analyzer.getJar() );
-            analyzer.setProperty( Analyzer.EXPORT_PACKAGE, export );
-        }
-
         props.putAll( instructions );
 
         analyzer.setProperties( props );
@@ -119,6 +113,13 @@ public class ManifestPlugin
 
         if ( classpath != null )
             analyzer.setClasspath( classpath );
+
+        if ( !instructions.containsKey( Analyzer.PRIVATE_PACKAGE )
+            && !instructions.containsKey( Analyzer.EXPORT_PACKAGE ) )
+        {
+            String export = analyzer.calculateExportsFromContents( analyzer.getJar() );
+            analyzer.setProperty( Analyzer.EXPORT_PACKAGE, export );
+        }
 
         analyzer.mergeManifest( analyzer.getJar().getManifest() );
 
