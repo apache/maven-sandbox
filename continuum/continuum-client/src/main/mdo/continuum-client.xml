@@ -386,10 +386,10 @@
     </class>
 
     <class>
-      <name>BuildResult</name>
+      <name>BuildResultSummary</name>
       <version>1.1.0+</version>
       <description><![CDATA[
-        This class is a single continuum build.
+        This class is a summary of a single continuum build.
       ]]></description>
       <fields>
         <field>
@@ -409,11 +409,6 @@
           <type>int</type>
         </field>
         <field>
-          <name>trigger</name>
-          <version>1.1.0+</version>
-          <type>int</type>
-        </field>
-        <field>
           <name>startTime</name>
           <version>1.1.0+</version>
           <type>long</type>
@@ -424,11 +419,6 @@
           <type>long</type>
         </field>
         <field>
-          <name>error</name>
-          <version>1.1.0+</version>
-          <type>String</type>
-        </field>
-        <field>
           <name>success</name>
           <version>1.1.0+</version>
           <type>boolean</type>
@@ -437,6 +427,27 @@
           <name>exitCode</name>
           <version>1.1.0+</version>
           <type>int</type>
+        </field>
+      </fields>
+    </class>
+
+    <class>
+      <name>BuildResult</name>
+      <version>1.1.0+</version>
+      <superClass>BuildResultSummary</superClass>
+      <description><![CDATA[
+        This class is a summary of a single continuum build.
+      ]]></description>
+      <fields>
+        <field>
+          <name>trigger</name>
+          <version>1.1.0+</version>
+          <type>int</type>
+        </field>
+        <field>
+          <name>error</name>
+          <version>1.1.0+</version>
+          <type>String</type>
         </field>
         <field>
           <name>scmResult</name>

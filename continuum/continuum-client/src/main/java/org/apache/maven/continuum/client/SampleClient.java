@@ -3,6 +3,7 @@ package org.apache.maven.continuum.client;
 import org.apache.maven.continuum.client.project.Project;
 import org.apache.maven.continuum.client.project.ProjectSummary;
 import org.apache.maven.continuum.client.project.BuildResult;
+import org.apache.maven.continuum.client.project.BuildResultSummary;
 
 import java.net.URL;
 import java.util.Date;

@@ -27,6 +27,7 @@ import org.apache.maven.continuum.client.project.ProjectDeveloper;
 import org.apache.maven.continuum.client.project.Schedule;
 import org.apache.maven.continuum.client.project.ProjectSummary;
 import org.apache.maven.continuum.client.project.BuildResult;
+import org.apache.maven.continuum.client.project.BuildResultSummary;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
 
@@ -328,7 +329,7 @@ public class ProjectsReader
         return instance;
     }
 
-    public BuildResult[] readBuildResultsForProject( int projectId )
+    public BuildResultSummary[] readBuildResultsForProject( int projectId )
         throws XmlRpcException, IOException
     {
         XmlRpcClient client = new XmlRpcClient( server );
@@ -336,7 +337,6 @@ public class ProjectsReader
         vect.add( new Integer( projectId ) );
         Object obj = client.execute( "continuum.getBuildResultsForProject", vect );
         Collection set = new ArrayList();
-        System.out.println( obj );
         if ( obj instanceof Hashtable )
         {
             Hashtable table = (Hashtable) obj;
@@ -374,26 +374,31 @@ public class ProjectsReader
         }
     }
 
-    BuildResult populateBuildResult( Hashtable hashtable, BuildResult instance )
+    private BuildResultSummary populateBuildResultSummary( Hashtable hashtable, BuildResultSummary instance )
     {
         instance.setId( Integer.parseInt( (String) hashtable.get( "id" ) ) );
         instance.setState( Integer.parseInt( (String) hashtable.get( "state" ) ) );
         instance.setBuildNumber( Integer.parseInt( (String) hashtable.get( "buildNumber" ) ) );
+        instance.setStartTime( Long.parseLong( (String) hashtable.get( "startTime") ) );
+        instance.setEndTime( Long.parseLong( (String) hashtable.get( "endTime" ) ) );
+        instance.setSuccess( hashtable.get( "success" ).equals( "true" ) );
+        instance.setExitCode( Integer.parseInt( (String) hashtable.get( "exitCode" ) ) );
+
+        return instance;
+    }
+
+    private BuildResult populateBuildResult( Hashtable hashtable, BuildResult instance )
+    {
+        populateBuildResultSummary( hashtable, instance );
+
         String trigger = (String) hashtable.get( "trigger" );
         if ( trigger != null )
         {
             instance.setTrigger( Integer.parseInt( trigger ) );
         }
-        instance.setStartTime( Long.parseLong( (String) hashtable.get( "startTime") ) );
-        instance.setEndTime( Long.parseLong( (String) hashtable.get( "endTime" ) ) );
         instance.setError( (String) hashtable.get( "error" ) );
-        instance.setSuccess( hashtable.get( "success" ).equals( "true" ) );
-        instance.setExitCode( Integer.parseInt( (String) hashtable.get( "exitCode" ) ) );
-// TODO: build the ScmResult (if not summary)
+// TODO: build the ScmResult
 //        instance.setScmResult( (ScmResult) hashtable.get( "scmResult" ) );
-// TODO: build the TestResult
-//        instance.setTestResult( ( TestResult ) hashtable.get( "testResult" ) );
-        instance.setModifiedDependencies( parseDependencies( (Vector) hashtable.get( "modifiedDependencies" ) ) );
 
         return instance;
     }
