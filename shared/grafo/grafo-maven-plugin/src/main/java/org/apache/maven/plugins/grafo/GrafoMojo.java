@@ -16,22 +16,20 @@ package org.apache.maven.plugins.grafo;
  * limitations under the License.
  */
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
-import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactCollector;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.maven.project.MavenProjectBuilder;
+import org.apache.maven.shared.dependency.tree.DependencyTreeBuilder;
 
 /**
  * <p>
@@ -44,7 +42,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @version $Id$
  */
 public class GrafoMojo
-  extends AbstractMojo
+    extends AbstractMojo
 {
 
     /**
@@ -56,7 +54,7 @@ public class GrafoMojo
      * @component
      */
     private ArtifactFactory artifactFactory;
-    
+
     /**
      * @component
      */
@@ -71,7 +69,6 @@ public class GrafoMojo
      * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout" roleHint="default"
      */
     private ArtifactRepositoryLayout defaultArtifactRepositoryLayout;
-
 
     /**
      * @parameter expression="${localRepository}"
@@ -102,59 +99,28 @@ public class GrafoMojo
     private List pomRemoteRepositories;
 
     /**
-     * @parameter expression="${remoteRepositories}"
-     */
-    private String remoteRepositories;
-
-    /**
      * @parameter expression="${project}"
      */
     private MavenProject project;
-    
+
+    /**
+     * @component
+     */
+    private DependencyTreeBuilder dependencyTreeBuilder;
+
+    /**
+     * @component
+     */
+    private ArtifactCollector collector;
+
+    /**
+     * @component
+     */
+    private MavenProjectBuilder mavenProjectBuilder;
+
     public void execute()
         throws MojoExecutionException
     {
-        // TODO: prompt for missing values
-        // TODO: configurable license
-
-        // ----------------------------------------------------------------------
-        // archetypeGroupId
-        // archetypeArtifactId
-        // archetypeVersion
-        //
-        // localRepository
-        // remoteRepository
-        // parameters
-        // ----------------------------------------------------------------------
-
-        if ( project.getFile() != null && groupId == null )
-        {
-            groupId = project.getGroupId();
-        }
-
-        if ( project.getFile() != null && artifactId == null )
-        {
-            artifactId = project.getArtifactId();
-        }
-
-        String basedir = System.getProperty( "user.dir" );
-
-        List archetypeRemoteRepositories = new ArrayList( pomRemoteRepositories );
-
-        if ( remoteRepositories != null )
-        {
-            getLog().info( "We are using command line specified remote repositories: " + remoteRepositories );
-
-            archetypeRemoteRepositories = new ArrayList();
-
-            String[] s = StringUtils.split( remoteRepositories, "," );
-
-            for ( int i = 0; i < s.length; i++ )
-            {
-                archetypeRemoteRepositories.add( createRepository( s[i], "id" + i ) );
-            }
-        }
-
         if ( artifactResolver == null )
         {
             throw new NullPointerException( "artifactResolver can not be null" );
@@ -163,45 +129,9 @@ public class GrafoMojo
         {
             throw new NullPointerException( "artifactFactory can not be null" );
         }
-        
-        Grafo grafo = new Grafo( artifactResolver, artifactFactory, artifactMetadataSource );
-        try
-        {
-            grafo.execute( groupId, artifactId, version,
-                           localRepository, archetypeRemoteRepositories );
-        }
-        catch ( ArtifactResolutionException e )
-        {
-            throw new MojoExecutionException( "Error during artifact resolution", e );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            throw new MojoExecutionException( "Artifact not found", e );
-        }
+
+        Grafo grafo = new Grafo( artifactResolver, artifactFactory, artifactMetadataSource, dependencyTreeBuilder,
+                                 collector, mavenProjectBuilder );
+        grafo.execute( project, localRepository, pomRemoteRepositories );
     }
-
-    //TODO: this should be put in John's artifact utils and used from there instead of being repeated here. Creating
-    // artifact repositories is someowhat cumbersome atm.
-    public ArtifactRepository createRepository( String url, String repositoryId )
-    {
-        // snapshots vs releases
-        // offline = to turning the update policy off
-
-        //TODO: we'll need to allow finer grained creation of repositories but this will do for now
-
-        String updatePolicyFlag = ArtifactRepositoryPolicy.UPDATE_POLICY_ALWAYS;
-
-        String checksumPolicyFlag = ArtifactRepositoryPolicy.CHECKSUM_POLICY_WARN;
-
-        ArtifactRepositoryPolicy snapshotsPolicy =
-            new ArtifactRepositoryPolicy( true, updatePolicyFlag, checksumPolicyFlag );
-
-        ArtifactRepositoryPolicy releasesPolicy =
-            new ArtifactRepositoryPolicy( true, updatePolicyFlag, checksumPolicyFlag );
-
-        return artifactRepositoryFactory.createArtifactRepository( repositoryId, url, defaultArtifactRepositoryLayout,
-                                                                   snapshotsPolicy, releasesPolicy );
-    }
-    
 }
-
