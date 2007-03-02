@@ -21,17 +21,17 @@
     <dependency>
       <groupId>org.codehaus.plexus.webdav</groupId>
       <artifactId>plexus-webdav-simple</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
+      <version>1.0-alpha-1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-ui-web-integration</artifactId>
-      <version>1.0-alpha-10-SNAPSHOT</version>
+      <version>1.0-alpha-10</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-xwork-integration</artifactId>
-      <version>1.0-alpha-5-SNAPSHOT</version>
+      <version>1.0-alpha-5</version>
     </dependency>
   </dependencies>
 </project>
