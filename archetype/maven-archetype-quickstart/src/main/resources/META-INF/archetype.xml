@@ -2,7 +2,12 @@
   <id>quickstart</id>
   <sources>
     <source>src/main/java/App.java</source>
+    <source>src/main/java/package.html</source>
+    <source>src/main/resources/App.properties</source>
   </sources>
+  <resources>
+    <resource>src/main/java/overview.html</resource>
+  </resources>
   <testSources>
     <source>src/test/java/AppTest.java</source>
   </testSources>
