@@ -82,3 +82,15 @@ I have also listed the overview.html file in archetype.xml:
   </resources>
 
 This works, and places the overview.html file directly in src/main/java.
+
+* Related Links
+ 
+ Allow Non-Java Resources in sources/testSources to be included in an archetype
+ http://jira.codehaus.org/browse/ARCHETYPE-62
+ 
+ Archetype: create resources as companions to java source files
+ http://www.mail-archive.com/users@maven.apache.org/msg62117.html
+ 
+ Wrong groupId for the archetypes?
+ http://www.mail-archive.com/dev@maven.apache.org/msg63136.html
+
