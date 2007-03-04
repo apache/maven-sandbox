@@ -2,8 +2,13 @@
   <id>quickstart</id>
   <sources>
     <source>src/main/java/App.java</source>
-    <source>src/main/java/package.html</source>
+    
+    <!-- package.html is always ignored.  See ARCHETYPE-62 -->
+    <!-- <source>src/main/java/package.html</source> -->
+    
+    <!-- source elements in other than src/main/java cause an error -->
     <source>src/main/resources/App.properties</source>
+    
   </sources>
   <resources>
     <resource>src/main/java/overview.html</resource>

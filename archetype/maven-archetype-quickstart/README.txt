@@ -10,11 +10,14 @@ non-Java resources.
 Observations:
 
  * <resource> elements in the archetype descriptor are placed relative to
- src/main/resources, not src/main/resources/[package]
+ src/main/resources, not src/main/resources/[package].
+ This is the desired behavior and should not be changed.
 
  * In prior versions of the archetype plugin, it was possible to list non-Java
  resources under <sources> and have them "packaged". For example:
- <source>src/main/resources/App.properties</source>
+ <source>src/main/resources/App.properties</source> and 
+ "mvn archetype:create ... -DgroupId=com.example" would result in
+ src/main/resources/com/example/App.properties
 
  * Some non-Java files in src/main/java are simply ignored. Javadoc related
  files such as package.html belong with the source code so that (by default)
@@ -83,7 +86,27 @@ I have also listed the overview.html file in archetype.xml:
 
 This works, and places the overview.html file directly in src/main/java.
 
+* Research
+
+ http://jira.codehaus.org/browse/ARCHETYPE-62
+ The package.html file is being excluded by maven-jar-plugin.
+ http://maven.apache.org/plugins/maven-jar-plugin/xref/org/apache/maven/plugin/jar/AbstractJarMojo.html
+ 39 private static final String[] DEFAULT_EXCLUDES = new String[]{"**/package.html"};
+ ...
+ 152 archiver.getArchiver().addDirectory( contentDirectory, DEFAULT_INCLUDES, DEFAULT_EXCLUDES );
+ It does not appear to be configurable.
+
+ Re: the inability to arrange non-Java resources in a package structure,
+ r390971 20060403 brett added the 'Template X not in directory Y' exception
+ DefaultArchetype.java:867
+ 
+ DefaultArchetype.java:803 has 'false' to indicate no packaging for resources
+ (This is correct, otherwise src/main/resources/META-INF would not work.)
+ 
 * Related Links
+
+ Restore the ability to "package" non-Java resources
+ http://jira.codehaus.org/browse/ARCHETYPE-65
  
  Allow Non-Java Resources in sources/testSources to be included in an archetype
  http://jira.codehaus.org/browse/ARCHETYPE-62
