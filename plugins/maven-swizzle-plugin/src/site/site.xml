@@ -30,9 +30,10 @@ under the License.
       <item name="FAQ" href="faq.html"/>
     </menu>
     <menu name="Examples">
-      <item name="Generating Votes Report" href="examples/generating-votes-report.html"/>
-      <item name="Generating Resolved Issues Report" href="examples/generating-resolved-issues-report.html"/>
       <item name="Generating A Custom Report" href="examples/generating-custom-report.html"/>
+      <item name="Generating Release Report" href="examples/generating-release-report.html"/>
+      <item name="Generating Resolved Issues Report" href="examples/generating-resolved-issues-report.html"/>
+      <item name="Generating Votes Report" href="examples/generating-votes-report.html"/>
     </menu>
   </body>
 </project>

@@ -1,9 +1,10 @@
  ------
- Generating Resolved Issues Report
+ Generating Release Report
  ------
  John Tolentino
  ------
  09 December 2006
+ ------
 
 ~~ Copyright 2006 The Apache Software Foundation.
 ~~
@@ -22,10 +23,10 @@
 ~~ NOTE: For help with the syntax of this file, see:
 ~~ http://maven.apache.org/guides/mini/guide-apt-format.html
 
-Generating Resolved Issues Report
+Generating Release Report
 
- You can use the supplied velocity template of plexus-swizzle by specifying
- <<<RELEASE>>> as your template. Generated report will be in xdoc format. See
+ You can use this supplied velocity template of plexus-swizzle by specifying
+ <<<RELEASE>>> as your template. The generated report will be in xdoc format. See
  {{{http://maven.apache.org/maven-1.x/plugins/xdoc/}Maven 1.x XDoc Plug-in}}
  for more details on xdoc.
 
@@ -93,7 +94,7 @@ Generating Resolved Issues Report
           <licenseCheckPassed>false</licenseCheckPassed>
           <licenseCheckResultDetails>target/test-classes/unit/license-failed.txt</licenseCheckResultDetails>
         </configuration>
-       </plugin>
+      </plugin>
     </plugins>
   </build>
   <scm>
@@ -112,7 +113,7 @@ Generating Resolved Issues Report
 *Default Values example
 
  We're using default values already found in this project's POM or provided through default values in the parameters
- so the configuration will be shorter:
+ so the configuration can be made shorter:
 
 +-------+
 <project>
@@ -131,7 +132,7 @@ Generating Resolved Issues Report
           <docckPassed>true</docckPassed>
           <licenseCheckPassed>false</licenseCheckPassed>
         </configuration>
-       </plugin>
+      </plugin>
     </plugins>
   </build>
   <scm>
@@ -180,7 +181,7 @@ Generating Resolved Issues Report
           <licenseCheckResultDetails>mytestresults/license-failed.txt</licenseCheckResultDetails>
           <dateFormat>MM/dd/yy hh:mm</dateFormat>
         </configuration>
-       </plugin>
+      </plugin>
     </plugins>
   </build>
   [...]

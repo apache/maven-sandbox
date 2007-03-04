@@ -4,6 +4,7 @@
  John Tolentino
  ------
  09 December 2006
+ ------
 
 ~~ Copyright 2006 The Apache Software Foundation.
 ~~
@@ -24,8 +25,8 @@
 
 Generating Resolved Issues Report
 
- You can use the supplied velocity template of plexus-swizzle by specifying
- <<<RESOLVED_ISSUES>>> as your template. Generated
+ You can use this supplied velocity template of plexus-swizzle by specifying
+ <<<RESOLVED_ISSUES>>> as your template. The generated
  report will be in xdoc format. See {{{http://maven.apache.org/maven-1.x/plugins/xdoc/}Maven 1.x XDoc Plug-in}}
  for more details on xdoc.
 
@@ -47,7 +48,7 @@ Generating Resolved Issues Report
           <template>RESOLVED_ISSUES</template>
           <result>my-output/ResolvedIssuesActualResult.txt</result>
         </configuration>
-       </plugin>
+      </plugin>
     </plugins>
   </build>
   [...]
@@ -75,7 +76,7 @@ Generating Resolved Issues Report
           <template>RESOLVED_ISSUES</template>
           <result>my-output/MavenWARPluginResolvedIssues.xml</result>
         </configuration>
-       </plugin>
+      </plugin>
     </plugins>
   </build>
   [...]
@@ -101,7 +102,7 @@ Generating Resolved Issues Report
           <projectVersion>2.0.2</projectVersion>
           <result>my-output/MavenWARPluginResolvedIssues.xml</result>
         </configuration>
-       </plugin>
+      </plugin>
     </plugins>
   </build>
   [...]

@@ -24,10 +24,16 @@ under the License.
    <faq id="availableTemplates">
      <question>What templates can I use to generate reports?</question>
      <answer>
-       <p>There are currently two templates available. <a href="examples/generating-votes-report.html">Votes</a>
-       and <a href="examples/generating-resolved-issues-report.html">Resolved Issues.</a></p>
-       <p>You can also provide <a href="examples/generating-custom-report.html">your own template</a> by specifying
-       the path where it's located.</p>
+       <p>
+       There are currently three templates available.
+       <a href="examples/generating-release-report.html">Release</a>,
+       <a href="examples/generating-resolved-issues-report.html">Resolved Issues.</a>
+       and <a href="examples/generating-votes-report.html">Votes</a>.
+       </p>
+       <p>
+       You can also create a <a href="examples/generating-custom-report.html">custom report</a> by specifying
+       the path to your own template.
+       </p>
      </answer>
    </faq>
  </part>

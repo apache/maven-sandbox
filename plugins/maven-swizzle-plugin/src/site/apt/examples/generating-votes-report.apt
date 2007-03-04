@@ -4,6 +4,7 @@
  John Tolentino
  ------
  09 December 2006
+ ------
 
 ~~ Copyright 2006 The Apache Software Foundation.
 ~~
@@ -24,9 +25,9 @@
 
 Generating Votes Report
 
- You can use the supplied velocity template of plexus-swizzle by specifying
+ You can use this supplied velocity template of plexus-swizzle by specifying
  <<<VOTES>>> as your template. This report's main
- use is to identify issues that is of high priority to the community. Generated
+ use is to identify issues that is of high priority to the community. The generated
  report will be in xdoc format. See {{{http://maven.apache.org/maven-1.x/plugins/xdoc/}Maven 1.x XDoc Plug-in}}
  for more details on xdoc.
 
@@ -48,7 +49,7 @@ Generating Votes Report
           <template>VOTES</template>
           <result>my-output/Votes.txt</result>
         </configuration>
-       </plugin>
+      </plugin>
     </plugins>
   </build>
   [...]
@@ -57,7 +58,7 @@ Generating Votes Report
 
 *Maven WAR Plugin example
 
- Here's an example on how to generate a report on votes made on each open maven-war-plugin issue:
+ Here's an example on how to generate a report on votes made on open maven-war-plugin issues:
 
 +-------+
 <project>
@@ -75,7 +76,7 @@ Generating Votes Report
           <template>VOTES</template>
           <result>my-output/MavenWARPluginVotes.xml</result>
         </configuration>
-       </plugin>
+      </plugin>
     </plugins>
   </build>
   [...]

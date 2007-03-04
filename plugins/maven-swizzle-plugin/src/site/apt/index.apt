@@ -4,6 +4,7 @@
  John Tolentino
  ------
  09 December 2006
+ ------
 
 ~~ Copyright 2006 The Apache Software Foundation.
 ~~
@@ -24,16 +25,16 @@
 
 Maven Swizzle Plugin
 
- The Swizzle plugin is an adaptation of David Blevin's {{{http://swizzle.codehaus.org/Home}Swizzle}}
+ The Swizzle Plugin is an adaptation of David Blevin's {{{http://swizzle.codehaus.org/Home}Swizzle}}
  project to generate reports from an issue tracking system (JIRA). The default templates from the
- swizzle-plexus component can be used to generate two reports:
+ swizzle-plexus component can be used to generate these reports:
 
  * {{{examples/generating-release-report.html}Release Report}}
 
- * {{{examples/generating-votes-report.html}Votes Report}}
- 
  * {{{examples/generating-resolved-issues-report.html}Resolved Issues Report}}
 
+ * {{{examples/generating-votes-report.html}Votes Report}}
+ 
  The plugin's aim is to help developers check their project's health (through resolved issues report) and
  identify which issues to prioritize (through votes report). Using both reports could help the project
  perform a release more often as well as address users' needs.
@@ -51,12 +52,10 @@ Maven Swizzle Plugin
  To provide you with better understanding on some usages of the Maven Swizzle Plugin,
  you can take a look into the following examples:
 
- * {{{examples/generating-release-report.html}Release Report}}
+ * {{{examples/generating-custom-report.html}Custom Report}}
 
- * {{{examples/generating-votes-report.html}Votes Report}}
+ * {{{examples/generating-release-report.html}Release Report}}
 
  * {{{examples/generating-resolved-issues-report.html}Resolved Issues Report}}
 
- * {{{examples/generating-custom-report.html}Using custom templates}}
-
-
+ * {{{examples/generating-votes-report.html}Votes Report}}

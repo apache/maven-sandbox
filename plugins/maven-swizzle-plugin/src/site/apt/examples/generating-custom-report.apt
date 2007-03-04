@@ -1,9 +1,10 @@
  ------
- Generating Resolved Issues Report
+ Generating A Custom Report
  ------
  John Tolentino
  ------
  09 December 2006
+ ------
 
 ~~ Copyright 2006 The Apache Software Foundation.
 ~~
@@ -22,10 +23,10 @@
 ~~ NOTE: For help with the syntax of this file, see:
 ~~ http://maven.apache.org/guides/mini/guide-apt-format.html
 
-Generating Resolved Issues Report
+Generating A Custom Report
 
  You can use the supply your own template by providing the path where you placed your custom
- velocity template. Generated report will be in xdoc format. See
+ velocity template. The generated report will be in xdoc format. See
  {{{http://maven.apache.org/maven-1.x/plugins/xdoc/}Maven 1.x XDoc Plug-in}} for more details on xdoc.
 
 *POM configuration
@@ -46,7 +47,7 @@ Generating Resolved Issues Report
           <template>unit/MyResolvedIssuesTemplate.vm</template>
           <result>my-output/ResolvedIssuesActualResult.txt</result>
         </configuration>
-       </plugin>
+      </plugin>
     </plugins>
   </build>
   [...]

@@ -4,6 +4,7 @@
  John Tolentino
  ------
  09 December 2006
+ ------
 
 ~~ Copyright 2006 The Apache Software Foundation.
 ~~
@@ -25,7 +26,7 @@
 Usage
 
  The Maven Swizzle Plugin generate reports from a project's issue tracking system (currently only JIRA is supported).
- It requires 5 parameters--4 parameters through the ReportConfiguration and 1 for the result output path.
+ It requires 5 parameters -- 4 parameters through the ReportConfiguration and 1 for the result output path.
 
  Here's an example:
 
@@ -45,7 +46,7 @@ Usage
           <template>RESOLVED_ISSUES</template>
           <result>my-output/MavenWARPluginResolvedIssues.xml</result>
         </configuration>
-       </plugin>
+      </plugin>
     </plugins>
   </build>
   [...]
