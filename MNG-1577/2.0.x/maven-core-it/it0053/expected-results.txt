@@ -1,0 +1,2 @@
+target/maven-core-it0053-1.0-SNAPSHOT.jar
+!target/maven-core-it0053-1.0-SNAPSHOT-sources.jar
