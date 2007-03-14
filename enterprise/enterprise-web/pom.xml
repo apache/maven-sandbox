@@ -26,12 +26,22 @@
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-ui-web-integration</artifactId>
-      <version>1.0-alpha-10</version>
+      <version>1.0-alpha-11-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-xwork-integration</artifactId>
       <version>1.0-alpha-5</version>
+    </dependency>
+
+    <!-- override any inherited dependencies, as dependencyManagement does not yet apply to transtive deps -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-component-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
     </dependency>
   </dependencies>
 </project>
