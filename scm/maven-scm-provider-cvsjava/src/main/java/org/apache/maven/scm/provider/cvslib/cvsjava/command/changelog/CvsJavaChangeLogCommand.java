@@ -46,13 +46,14 @@ public class CvsJavaChangeLogCommand
 
         try
         {
-            boolean isSuccess = CvsConnection.processCommand( cl.getArguments(), cl.getWorkingDirectory().getAbsolutePath(), logListener,
-                                          getLogger() );
+            boolean isSuccess = CvsConnection.processCommand( cl.getArguments(),
+                                                              cl.getWorkingDirectory().getAbsolutePath(), logListener,
+                                                              getLogger() );
 
-            if ( !isSuccess)
+            if ( !isSuccess )
             {
-                return new ChangeLogScmResult( cl.toString(), "The cvs command failed.", logListener.getStderr().toString(),
-                                               false );
+                return new ChangeLogScmResult( cl.toString(), "The cvs command failed.",
+                                               logListener.getStderr().toString(), false );
             }
             BufferedReader stream = new BufferedReader(
                 new InputStreamReader( new ByteArrayInputStream( logListener.getStdout().toString().getBytes() ) ) );
@@ -66,12 +67,17 @@ public class CvsJavaChangeLogCommand
         }
         catch ( Exception e )
         {
-            e.printStackTrace( );
+            e.printStackTrace();
             return new ChangeLogScmResult( cl.toString(), "The cvs command failed.", logListener.getStdout().toString(),
                                            false );
         }
 
         return new ChangeLogScmResult( cl.toString(),
                                        new ChangeLogSet( consumer.getModifications(), startDate, endDate ) );
+    }
+
+    protected void addDateRangeParameter( Commandline cl, String dateRange )
+    {
+        cl.createArgument().setValue( dateRange );
     }
 }

@@ -20,6 +20,15 @@ import org.apache.maven.scm.command.Command;
 import org.apache.maven.scm.provider.cvslib.AbstractCvsScmProvider;
 import org.apache.maven.scm.provider.cvslib.command.login.CvsLoginCommand;
 import org.apache.maven.scm.provider.cvslib.cvsjava.command.changelog.CvsJavaChangeLogCommand;
+import org.apache.maven.scm.provider.cvslib.cvsjava.command.add.CvsJavaAddCommand;
+import org.apache.maven.scm.provider.cvslib.cvsjava.command.checkin.CvsJavaCheckInCommand;
+import org.apache.maven.scm.provider.cvslib.cvsjava.command.checkout.CvsJavaCheckOutCommand;
+import org.apache.maven.scm.provider.cvslib.cvsjava.command.diff.CvsJavaDiffCommand;
+import org.apache.maven.scm.provider.cvslib.cvsjava.command.list.CvsJavaListCommand;
+import org.apache.maven.scm.provider.cvslib.cvsjava.command.remove.CvsJavaRemoveCommand;
+import org.apache.maven.scm.provider.cvslib.cvsjava.command.status.CvsJavaStatusCommand;
+import org.apache.maven.scm.provider.cvslib.cvsjava.command.tag.CvsJavaTagCommand;
+import org.apache.maven.scm.provider.cvslib.cvsjava.command.update.CvsJavaUpdateCommand;
 
 /**
  * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
@@ -30,7 +39,7 @@ public class CvsJavaScmProvider
 {
     protected Command getAddCommand()
     {
-        return null;//return new CvsJavaAddCommand();
+        return new CvsJavaAddCommand();
     }
 
     protected Command getChangeLogCommand()
@@ -40,17 +49,22 @@ public class CvsJavaScmProvider
 
     protected Command getCheckInCommand()
     {
-        return null;//return new CvsJavaCheckInCommand();
+        return new CvsJavaCheckInCommand();
     }
 
     protected Command getCheckOutCommand()
     {
-        return null;//return new CvsJavaCheckOutCommand();
+        return new CvsJavaCheckOutCommand();
     }
 
     protected Command getDiffCommand()
     {
-        return null;//return new CvsJavaDiffCommand();
+        return new CvsJavaDiffCommand();
+    }
+
+    protected Command getListCommand()
+    {
+        return new CvsJavaListCommand();
     }
 
     protected Command getLoginCommand()
@@ -60,21 +74,21 @@ public class CvsJavaScmProvider
 
     protected Command getRemoveCommand()
     {
-        return null;//return new CvsJavaRemoveCommand();
+        return new CvsJavaRemoveCommand();
     }
 
     protected Command getStatusCommand()
     {
-        return null;//return new CvsJavaStatusCommand();
+        return new CvsJavaStatusCommand();
     }
 
     protected Command getTagCommand()
     {
-        return null;//return new CvsJavaTagCommand();
+        return new CvsJavaTagCommand();
     }
 
     protected Command getUpdateCommand()
     {
-        return null;//return new CvsJavaUpdateCommand();
+        return new CvsJavaUpdateCommand();
     }
 }

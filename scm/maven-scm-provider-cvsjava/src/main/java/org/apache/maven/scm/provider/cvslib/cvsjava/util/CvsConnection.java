@@ -326,7 +326,6 @@ public class CvsConnection
     public static boolean processCommand( String[] args, String localPath, CVSListener listener, ScmLogger logger )
         throws Exception
     {
-
         // Set up the CVSRoot. Note that it might still be null after this
         // call if the user has decided to set it with the -d command line
         // global option
