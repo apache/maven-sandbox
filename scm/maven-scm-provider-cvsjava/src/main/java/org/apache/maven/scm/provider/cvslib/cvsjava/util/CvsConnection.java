@@ -21,6 +21,7 @@ package org.apache.maven.scm.provider.cvslib.cvsjava.util;
 
 import org.apache.maven.scm.log.ScmLogger;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.netbeans.lib.cvsclient.CVSRoot;
 import org.netbeans.lib.cvsclient.Client;
 import org.netbeans.lib.cvsclient.admin.StandardAdminHandler;
@@ -30,6 +31,7 @@ import org.netbeans.lib.cvsclient.command.CommandException;
 import org.netbeans.lib.cvsclient.command.GlobalOptions;
 import org.netbeans.lib.cvsclient.commandLine.CommandFactory;
 import org.netbeans.lib.cvsclient.commandLine.GetOpt;
+import org.netbeans.lib.cvsclient.connection.AbstractConnection;
 import org.netbeans.lib.cvsclient.connection.AuthenticationException;
 import org.netbeans.lib.cvsclient.connection.Connection;
 import org.netbeans.lib.cvsclient.connection.ConnectionFactory;
@@ -113,10 +115,51 @@ public class CvsConnection
     private void connect( CVSRoot root, String password )
         throws IllegalArgumentException, AuthenticationException, CommandAbortedException
     {
-        connection = ConnectionFactory.getConnection( root );
-        if ( CVSRoot.METHOD_PSERVER.equals( root.getMethod() ) )
+        if ( CVSRoot.METHOD_EXT.equals( root.getMethod() ) )
         {
-            ( (PServerConnection) connection ).setEncodedPassword( password );
+            String cvs_rsh = System.getProperty( "maven.scm.cvs.java.cvs_rsh" );
+            if ( cvs_rsh == null )
+            {
+                try
+                {
+                    cvs_rsh = CommandLineUtils.getSystemEnvVars().getProperty( "CVS_RSH" );
+                }
+                catch ( IOException e )
+                {
+                }
+            }
+
+            if ( cvs_rsh != null )
+            {
+                if ( cvs_rsh.indexOf( ' ' ) < 0 )
+                {
+                    //cvs_rsh should be 'rsh' or 'ssh'
+                    //Complete the command to use
+                    String username = root.getUserName();
+                    if ( username == null )
+                    {
+                        username = System.getProperty( "user.name" );
+                    }
+
+                    cvs_rsh += " " + username + "@" + root.getHostName() + " cvs server";
+                }
+
+                AbstractConnection conn = new org.netbeans.lib.cvsclient.connection.ExtConnection( cvs_rsh );
+                conn.setRepository( root.getRepository() );
+                connection = conn;
+            }
+            else
+            {
+                connection = new ExtConnection( root );
+            }
+        }
+        else
+        {
+            connection = ConnectionFactory.getConnection( root );
+            if ( CVSRoot.METHOD_PSERVER.equals( root.getMethod() ) )
+            {
+                ( (PServerConnection) connection ).setEncodedPassword( password );
+            }
         }
         connection.open();
 
