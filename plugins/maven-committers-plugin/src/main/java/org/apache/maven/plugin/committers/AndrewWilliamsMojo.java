@@ -19,18 +19,18 @@ package org.apache.maven.plugin.committers;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Goal that displays an ascii-art pic of jesse
+ * Goal that displays an ascii-art pic of handyande
  *
- * @goal jesse
+ * @goal handyande
  */
-public class JesseMcconnellMojo
+public class AndrewWilliamsMojo
     extends AbstractCommitterPicMojo
 {
-    private static final String PIC_RESOURCE = "jesse-pic.txt";
+    private static final String PIC_RESOURCE = "handyande-pic.txt";
     
     public void execute()
         throws MojoExecutionException
     {
-        printPic( PIC_RESOURCE, "jesse" );
+        printPic( PIC_RESOURCE, "handyande" );
     }
 }

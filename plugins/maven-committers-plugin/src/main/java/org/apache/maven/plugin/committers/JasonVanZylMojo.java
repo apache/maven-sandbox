@@ -26,11 +26,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 public class JasonVanZylMojo
     extends AbstractCommitterPicMojo
 {
-    private static final String JASON_PIC_RESOURCE = "jason-pic.txt";
+    private static final String PIC_RESOURCE = "jason-pic.txt";
     
     public void execute()
         throws MojoExecutionException
     {
-        printPic( JASON_PIC_RESOURCE, "jason" );
+        printPic( PIC_RESOURCE, "jason" );
     }
 }
