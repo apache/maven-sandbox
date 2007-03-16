@@ -18,6 +18,7 @@ package org.apache.maven.plugin.lifecycle;
 
 import org.apache.maven.lifecycle.LifecycleLoaderException;
 import org.apache.maven.lifecycle.LifecycleSpecificationException;
+import org.apache.maven.lifecycle.binding.LifecycleBindingManager;
 import org.apache.maven.lifecycle.plan.BuildPlan;
 import org.apache.maven.lifecycle.plan.BuildPlanUtils;
 import org.apache.maven.lifecycle.plan.BuildPlanner;
@@ -51,6 +52,13 @@ public class BuildPlanMojo
     private File output;
     
     /**
+     * Whether to list extended information about each mojo in the build plan. Default is false.
+     *  
+     * @parameter expression="${extendedInfo}" default-value="false"
+     */
+    private boolean extendedInfo;
+    
+    /**
      * Comma-separated list of tasks to complete in the proposed build.
      * 
      * @parameter expression="${tasks}" default-value="${package}"
@@ -69,6 +77,11 @@ public class BuildPlanMojo
      * @component
      */
     private BuildPlanner buildPlanner;
+
+    /**
+     * @component
+     */
+    private LifecycleBindingManager lifecycleBindingManager;
     
     public void execute()
         throws MojoExecutionException
@@ -84,7 +97,7 @@ public class BuildPlanMojo
         BuildPlan buildPlan;
         try
         {
-            buildPlan = buildPlanner.constructLifecyclePlan( taskList, project );
+            buildPlan = buildPlanner.constructBuildPlan( taskList, project );
         }
         catch ( LifecycleLoaderException e )
         {
@@ -102,13 +115,17 @@ public class BuildPlanMojo
         String listing;
         try
         {
-            listing = BuildPlanUtils.listBuildPlan( buildPlan );
+            listing = BuildPlanUtils.listBuildPlan( buildPlan, project, lifecycleBindingManager, extendedInfo );
         }
         catch ( LifecycleSpecificationException e )
         {
             throw new MojoExecutionException( "Failed to list build plan. Reason: " + e.getMessage(), e );
         }
         catch ( LifecyclePlannerException e )
+        {
+            throw new MojoExecutionException( "Failed to list build plan. Reason: " + e.getMessage(), e );
+        }
+        catch ( LifecycleLoaderException e )
         {
             throw new MojoExecutionException( "Failed to list build plan. Reason: " + e.getMessage(), e );
         }

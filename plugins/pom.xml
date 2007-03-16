@@ -18,6 +18,7 @@
     <module>maven-plug-it-plugin</module>
     <module>maven-swizzle-plugin</module>
     <module>maven-enforcer-plugin</module>
+    <module>maven-committers-plugin</module>
   </modules>
 
 </project>
