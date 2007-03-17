@@ -24,6 +24,7 @@ import org.apache.maven.surefire.report.ReportEntry;
 import org.apache.maven.surefire.report.ReporterException;
 import org.apache.maven.surefire.report.ReporterManager;
 import org.apache.maven.surefire.suite.SurefireTestSuite;
+import org.testng.IResultMap;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
 import org.testng.ITestContext;
@@ -31,6 +32,8 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.TestNG;
 
+import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 /**
@@ -101,7 +104,6 @@ public class TestNGReporter
         // because they are considered configuration methods, but if one of them fails we need to change the
         // test count and start it in case it wasn't already started so that all failures / tests are properly
         // reported
-        
         if (!testStarted) {
             
             onTestStart(result);
@@ -181,8 +183,24 @@ public class TestNGReporter
      */
     public void cleanupAfterTestsRun()
     {
+        Method failed = TestNGExecutor.getMethod(_finishContext.getClass(), "getFailedConfigurations", 0);
+        if (failed != null) {
+            try {
+                
+                IResultMap map = (IResultMap) failed.invoke(_finishContext, new Object[0]);
+                
+                Iterator results = map.getAllResults().iterator();
+                while (results.hasNext()) {
+                    
+                    ITestResult result = (ITestResult) results.next();
+                    onTestFailure(result);
+                }
+                
+            } catch (Throwable t) { t.printStackTrace(); }
+        }
+        
         String rawString = bundle.getString( "testSetCompletedNormally" );
-
+        
         ReportEntry report =
             new ReportEntry( source, _finishContext.getName(), groupString( _finishContext.getIncludedGroups(), null ), rawString );
 

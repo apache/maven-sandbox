@@ -27,7 +27,6 @@ import org.apache.maven.surefire.testset.TestSetFailedException;
 import org.testng.ISuiteListener;
 import org.testng.ITestListener;
 import org.testng.TestNG;
-import org.testng.internal.annotations.AnnotationConfiguration;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
@@ -104,9 +103,19 @@ public class TestNGDirectoryTestSuite
         }
 
         XmlSuite suite = new XmlSuite();
-        suite.setParallel( parallel );
-        suite.setThreadCount( threadCount );
+        
+        suite.setThreadCount(threadCount);
+        
+        // have to invoke via reflection because TestNG version 5.5 broke things
+        
+        try {
+            
+            TestNGExecutor.execute(suite, "setParallel", Boolean.valueOf(parallel));
 
+        } catch (Throwable t) {
+            throw new RuntimeException("Failed to configure TestNG properly", t);
+        }
+        
         createXmlTest( suite, testSet );
 
         executeTestNG( suite, reporterManager, classLoader );
@@ -121,8 +130,18 @@ public class TestNGDirectoryTestSuite
         }
 
         XmlSuite suite = new XmlSuite();
-        suite.setParallel( parallel );
-        suite.setThreadCount( threadCount );
+        
+        suite.setThreadCount(threadCount);
+        
+        // have to invoke via reflection because TestNG version 5.5 broke things
+        
+        try {
+            
+            TestNGExecutor.execute(suite, "setParallel", Boolean.valueOf(parallel));
+
+        } catch (Throwable t) {
+            throw new RuntimeException("Failed to configure TestNG properly", t);
+        }
 
         for ( Iterator i = testSets.values().iterator(); i.hasNext(); )
         {
@@ -183,13 +202,7 @@ public class TestNGDirectoryTestSuite
         testNG.addListener( (ITestListener) reporter );
         testNG.addListener( (ISuiteListener) reporter );
         
-        String jre = System.getProperty("java.vm.version");
-        if (jre.indexOf("1.4") > -1) {
-            AnnotationConfiguration.getInstance().initialize(AnnotationConfiguration.JVM_14_CONFIG);
-            AnnotationConfiguration.getInstance().getAnnotationFinder().addSourceDirs(new String[]{testSourceDirectory});
-        } else {
-            AnnotationConfiguration.getInstance().initialize(AnnotationConfiguration.JVM_15_CONFIG);
-        }
+        TestNGExecutor.configureJreType(testNG, testSourceDirectory);
         
         // Set source path so testng can find javadoc annotations if not in 1.5 jvm
         if ( testSourceDirectory != null )

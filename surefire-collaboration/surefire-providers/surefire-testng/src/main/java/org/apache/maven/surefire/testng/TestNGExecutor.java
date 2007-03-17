@@ -27,6 +27,7 @@ import org.testng.TestNG;
 import org.testng.internal.annotations.AnnotationConfiguration;
 import org.testng.xml.XmlSuite;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -41,6 +42,61 @@ public class TestNGExecutor
     {
     }
 
+    static void execute(Object target, String methodName, Object param)
+    throws Exception
+    {
+        Method m = getMethod(target.getClass(), methodName, 1);
+        
+        if (m.getParameterTypes()[0] == boolean.class) {
+            
+            m.invoke(target, new Object[] { param });
+        } else if (m.getParameterTypes()[0] == String.class) {
+            
+            m.invoke(target, new Object[] { param.toString() });
+        }
+    }
+    
+    static Method getMethod(Class clazz, String name, int argCount)
+    {
+        Method[] methods = clazz.getMethods();
+        for (int i = 0; i < methods.length; i++) {
+            if (methods[i].getName().equals(name) && methods[i].getParameterTypes().length == argCount)
+                return methods[i];
+        }
+        
+        return null;
+    }
+    
+    static void configureJreType(TestNG testNG, String testSourceDirectory)
+    {
+        try {
+
+            String jre = System.getProperty("java.vm.version");
+
+            Method annotType = TestNGExecutor.getMethod(testNG.getClass(), "setAnnotations", 1);
+            if (annotType != null) {
+
+                annotType.invoke(testNG, new Object[]{ jre.indexOf("1.4") > -1 ? "javadoc" : "jdk"});
+
+                Method init = testNG.getClass().getDeclaredMethod("initializeAnnotationFinders", new Class[0]);
+                init.setAccessible(true);
+                init.invoke(testNG, new Object[0]);
+                
+            } else if (Class.forName("org.testng.internal.annotations.AnnotationConfiguration") != null
+                    && AnnotationConfiguration.class.getMethod("getInstance", new Class[0]) != null) {
+
+                if (jre.indexOf("1.4") > -1) {
+                    AnnotationConfiguration.getInstance().initialize(AnnotationConfiguration.JVM_14_CONFIG);
+                    AnnotationConfiguration.getInstance().getAnnotationFinder().addSourceDirs(new String[]{testSourceDirectory});
+                } else {
+                    AnnotationConfiguration.getInstance().initialize(AnnotationConfiguration.JVM_15_CONFIG);
+                }
+            }
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        }
+    }
+    
     static void executeTestNG( SurefireTestSuite surefireSuite, String testSourceDirectory, XmlSuite suite,
                                ReporterManager reporterManager )
     {
@@ -57,13 +113,7 @@ public class TestNGExecutor
         testNG.addListener( (ITestListener) reporter );
         testNG.addListener( (ISuiteListener) reporter );
 
-        String jre = System.getProperty("java.vm.version");
-        if (jre.indexOf("1.4") > -1) {
-            AnnotationConfiguration.getInstance().initialize(AnnotationConfiguration.JVM_14_CONFIG);
-            AnnotationConfiguration.getInstance().getAnnotationFinder().addSourceDirs(new String[]{testSourceDirectory});
-        } else {
-            AnnotationConfiguration.getInstance().initialize(AnnotationConfiguration.JVM_15_CONFIG);
-        }
+        configureJreType(testNG, testSourceDirectory);
         
         // Set source path so testng can find javadoc annotations if not in 1.5 jvm
         if ( testSourceDirectory != null )
