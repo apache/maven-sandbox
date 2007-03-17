@@ -289,7 +289,7 @@ public class SurefireBooter
 
             Boolean result = (Boolean) run.invoke( surefire, new Object[]{reports, testSuites, surefireClassLoader,
                 testsClassLoader} );
-System.out.println("Surefirebooter finished");
+            
             return result.booleanValue();
         }
         catch ( InvocationTargetException e )
