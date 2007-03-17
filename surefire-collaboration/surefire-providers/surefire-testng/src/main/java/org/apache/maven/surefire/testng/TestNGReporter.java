@@ -37,8 +37,6 @@ import java.util.ResourceBundle;
  * Listens for and provides and adaptor layer so that
  * TestNG tests can report their status to the current
  * {@link org.apache.maven.surefire.report.ReporterManager}.
- *
- * @author jkuhnert
  */
 public class TestNGReporter
     implements ITestListener, ISuiteListener
@@ -52,6 +50,10 @@ public class TestNGReporter
 
     private Object source;
 
+    private boolean testStarted = false;
+    
+    private ITestContext _finishContext;
+    
     /**
      * Constructs a new instance that will listen to
      * test updates from a {@link TestNG} class instance.
@@ -76,6 +78,8 @@ public class TestNGReporter
 
     public void onTestStart( ITestResult result )
     {
+        testStarted = true;
+        
         String rawString = bundle.getString( "testStarting" );
         String group = groupString( result.getMethod().getGroups(), result.getTestClass().getName() );
         ReportEntry report = new ReportEntry( source, getUserFriendlyTestName( result ), group, rawString );
@@ -85,6 +89,7 @@ public class TestNGReporter
 
     public void onTestSuccess( ITestResult result )
     {
+        testStarted = false;
         ReportEntry report =
             new ReportEntry( source, getUserFriendlyTestName( result ), bundle.getString( "testSuccessful" ) );
         reportManager.testSucceeded( report );
@@ -92,11 +97,22 @@ public class TestNGReporter
 
     public void onTestFailure( ITestResult result )
     {
+        // methods run after/before suite and other similar tests don't get explicit test started calls
+        // because they are considered configuration methods, but if one of them fails we need to change the
+        // test count and start it in case it wasn't already started so that all failures / tests are properly
+        // reported
+        
+        if (!testStarted) {
+            
+            onTestStart(result);
+        }
+        
+        testStarted = false;
         String rawString = bundle.getString( "executeException" );
 
         ReportEntry report = new ReportEntry( source, getUserFriendlyTestName( result ), rawString,
                                               new TestNGStackTraceWriter( result ) );
-
+        
         reportManager.testFailed( report );
     }
 
@@ -108,6 +124,7 @@ public class TestNGReporter
 
     public void onTestSkipped( ITestResult result )
     {
+        testStarted = false;
         ReportEntry report =
             new ReportEntry( source, getUserFriendlyTestName( result ), bundle.getString( "testSkipped" ) );
 
@@ -118,6 +135,7 @@ public class TestNGReporter
     {
         String rawString = bundle.getString( "executeException" );
 
+        testStarted = false;
         ReportEntry report = new ReportEntry( source, getUserFriendlyTestName( result ), rawString,
                                               new TestNGStackTraceWriter( result ) );
 
@@ -144,14 +162,7 @@ public class TestNGReporter
 
     public void onFinish( ITestContext context )
     {
-        String rawString = bundle.getString( "testSetCompletedNormally" );
-
-        ReportEntry report =
-            new ReportEntry( source, context.getName(), groupString( context.getIncludedGroups(), null ), rawString );
-
-        reportManager.testSetCompleted( report );
-
-        reportManager.reset();
+        _finishContext = context;
     }
 
     public void onFinish( ISuite suite )
@@ -161,7 +172,25 @@ public class TestNGReporter
     public void onStart( ISuite suite )
     {
     }
+    
+    /**
+     * Should <em>always</em> be run after the entire TestNG suite has finished running so that the 
+     * report set correctly captures all failures / success within the suite - especially those that happen in
+     * before/after suite configuration methods that would normally report 0 tests but have to be included as a test
+     * when they fail.
+     */
+    public void cleanupAfterTestsRun()
+    {
+        String rawString = bundle.getString( "testSetCompletedNormally" );
 
+        ReportEntry report =
+            new ReportEntry( source, _finishContext.getName(), groupString( _finishContext.getIncludedGroups(), null ), rawString );
+
+        reportManager.testSetCompleted( report );
+
+        reportManager.reset();
+    }
+    
     /**
      * Creates a string out of the list of testng groups in the
      * form of <pre>"group1,group2,group3"</pre>.

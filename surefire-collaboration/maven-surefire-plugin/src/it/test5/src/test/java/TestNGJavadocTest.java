@@ -2,11 +2,7 @@ import org.testng.Assert;
 
 
 /**
- * Tests that forcing testng to run tests via the 
- * <code>"${maven.test.forcetestng}"</code> configuration option
- * works.
- * 
- * @author jkuhnert
+ * Simple javadoc based 1.4 jre unit test.
  */
 public class TestNGJavadocTest {
 

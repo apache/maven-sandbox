@@ -573,7 +573,7 @@ public class SurefirePlugin
                 if ( includes == null || includes.size() == 0 )
                 {
                     includes = new ArrayList(
-                        Arrays.asList( new String[]{"**/Test*.java", "**/*Test.java", "**/*TestCase.java"} ) );
+                        Arrays.asList( new String[]{"**/*Test*.java", "**/*Test.java", "**/*TestCase.java"} ) );
                 }
                 if ( excludes == null || excludes.size() == 0 )
                 {

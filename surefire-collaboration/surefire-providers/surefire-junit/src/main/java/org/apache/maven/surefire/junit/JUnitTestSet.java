@@ -108,7 +108,7 @@ public final class JUnitTestSet
             Class[] addListenerParamTypes = interfacesImplementedByDynamicProxy;
 
             addListenerMethod = testResultClass.getMethod( ADD_LISTENER_METHOD, addListenerParamTypes );
-
+            
             if ( testInterface.isAssignableFrom( testClass ) )//testObject.getClass() ) )
             {
                 countTestCasesMethod = testInterface.getMethod( COUNT_TEST_CASES_METHOD, EMPTY_CLASS_ARRAY );

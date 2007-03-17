@@ -144,7 +144,7 @@ public class Surefire
     {
         String suiteClass = (String) definition[0];
         Object[] params = (Object[]) definition[1];
-
+System.out.println("createSuiteFromDefinintion() : suiteClass " + suiteClass);
         SurefireTestSuite suite = instantiateSuite( suiteClass, params, surefireClassLoader );
 
         suite.locateTestSets( testsClassLoader );

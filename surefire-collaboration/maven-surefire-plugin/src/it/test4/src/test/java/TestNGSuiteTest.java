@@ -6,8 +6,6 @@ import org.testng.annotations.Test;
  * Tests that forcing testng to run tests via the 
  * <code>"${maven.test.forcetestng}"</code> configuration option
  * works.
- * 
- * @author jkuhnert
  */
 public class TestNGSuiteTest {
 

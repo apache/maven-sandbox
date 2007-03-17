@@ -1,3 +1,6 @@
+
+import static org.testng.Assert.*;
+
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -21,11 +24,11 @@ public class TestNGTest {
 		testObject = new Object();
 	}
 	
-	@AfterSuite(alwaysRun = true, groups = "functional")
+	@AfterSuite(groups = "functional")
 	public void check_Test_Count()
 	{
 		System.out.println("check_Test_Count(): " + m_testCount);
-		
+        
 		assert m_testCount == 3 : "Expected 3 tests to be run but local count was " + m_testCount;
 	}
 	

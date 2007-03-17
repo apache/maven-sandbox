@@ -192,7 +192,7 @@ public class SurefireBooter
         throws SurefireBooterForkException, SurefireExecutionException
     {
         boolean result = false;
-
+        
         if ( ForkConfiguration.FORK_NEVER.equals( forkConfiguration.getForkMode() ) )
         {
             result = runSuitesInProcess();
@@ -219,7 +219,7 @@ public class SurefireBooter
         {
             throw new IllegalArgumentException( "Cannot only specify testSet for single test suites" );
         }
-
+        
         // TODO: replace with plexus
 
         //noinspection CatchGenericClass,OverlyBroadCatchBlock
@@ -267,7 +267,7 @@ public class SurefireBooter
 
         //noinspection CatchGenericClass,OverlyBroadCatchBlock
         ClassLoader oldContextClassLoader = Thread.currentThread().getContextClassLoader();
-
+        
         try
         {
             // The test classloader must be constructed first to avoid issues with commons-logging until we properly
@@ -289,7 +289,7 @@ public class SurefireBooter
 
             Boolean result = (Boolean) run.invoke( surefire, new Object[]{reports, testSuites, surefireClassLoader,
                 testsClassLoader} );
-
+System.out.println("Surefirebooter finished");
             return result.booleanValue();
         }
         catch ( InvocationTargetException e )

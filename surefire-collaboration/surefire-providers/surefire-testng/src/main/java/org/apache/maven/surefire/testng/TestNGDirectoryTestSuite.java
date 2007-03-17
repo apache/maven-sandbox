@@ -27,6 +27,7 @@ import org.apache.maven.surefire.testset.TestSetFailedException;
 import org.testng.ISuiteListener;
 import org.testng.ITestListener;
 import org.testng.TestNG;
+import org.testng.internal.annotations.AnnotationConfiguration;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
@@ -177,21 +178,35 @@ public class TestNGDirectoryTestSuite
         testNG.setXmlSuites( Collections.singletonList( suite ) );
 
         testNG.setListenerClasses( new ArrayList() );
-
+        
         TestNGReporter reporter = new TestNGReporter( reporterManager, this );
         testNG.addListener( (ITestListener) reporter );
         testNG.addListener( (ISuiteListener) reporter );
-
+        
+        String jre = System.getProperty("java.vm.version");
+        if (jre.indexOf("1.4") > -1) {
+            AnnotationConfiguration.getInstance().initialize(AnnotationConfiguration.JVM_14_CONFIG);
+            AnnotationConfiguration.getInstance().getAnnotationFinder().addSourceDirs(new String[]{testSourceDirectory});
+        } else {
+            AnnotationConfiguration.getInstance().initialize(AnnotationConfiguration.JVM_15_CONFIG);
+        }
+        
         // Set source path so testng can find javadoc annotations if not in 1.5 jvm
         if ( testSourceDirectory != null )
         {
             testNG.setSourcePath( testSourceDirectory );
         }
-
+        
         // workaround for SUREFIRE-49
         // TestNG always creates an output directory, and if not set the name for the directory is "null"
         testNG.setOutputDirectory( System.getProperty( "java.io.tmpdir" ) );
-
+        
         testNG.runSuitesLocally();
+        
+        // need to execute report end after testng has completely finished as the 
+        // reporter methods don't get called in the order that would allow for capturing
+        // failures that happen in before/after suite configuration methods
+        
+        reporter.cleanupAfterTestsRun();
     }
 }
