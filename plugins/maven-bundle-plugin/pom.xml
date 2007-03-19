@@ -30,13 +30,6 @@
  <groupId>org.apache.maven.plugins</groupId>
  <artifactId>maven-bundle-plugin</artifactId>
 
- <repositories>
-  <repository>
-   <id>aQute</id>
-   <url>http://www.aQute.biz/repo</url>
-   </repository>
- </repositories>
- 
  <packaging>maven-plugin</packaging>
  <name>Maven Bundle Plugin</name>
  <description> provides a maven plugin that allows that builds the jar by
@@ -48,8 +41,8 @@
  <dependencies>
   <dependency>
    <groupId>biz.aQute</groupId>
-   <artifactId>bnd</artifactId>
-   <version>0.0.111</version>
+   <artifactId>bndlib</artifactId>
+   <version>0.0.116</version>
   </dependency>
   <dependency>
    <groupId>junit</groupId>
