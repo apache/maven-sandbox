@@ -29,10 +29,14 @@
 
   <servlet>
     <servlet-name>site</servlet-name>
-    <servlet-class>org.apache.maven.enterprise.web.EnterpriseSiteWebDavServlet</servlet-class>
+    <servlet-class>org.apache.maven.enterprise.web.EnterpriseWebDavServlet</servlet-class>
     <init-param>
       <param-name>dav.root</param-name>
       <param-value>site</param-value>
+    </init-param>
+    <init-param>
+      <param-name>dav.use.index.html</param-name>
+      <param-value>true</param-value>
     </init-param>
   </servlet>
 
