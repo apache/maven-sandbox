@@ -25,7 +25,37 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authentication-api</artifactId>
+      <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
+      <version>1.0-alpha-11-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authentication-provider-keystore</artifactId>
+      <version>1.0-alpha-11-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-keys-jdo</artifactId>
+      <version>1.0-alpha-11-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authentication-provider-user-manager</artifactId>
+      <version>1.0-alpha-11-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-user-management-provider-jdo</artifactId>
+      <version>1.0-alpha-11-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
+      <version>1.0-alpha-11-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-system</artifactId>
       <version>1.0-alpha-11-SNAPSHOT</version>
     </dependency>
     <dependency>
