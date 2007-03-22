@@ -25,6 +25,11 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authentication-api</artifactId>
+      <version>1.0-alpha-11-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-ui-web-integration</artifactId>
       <version>1.0-alpha-11-SNAPSHOT</version>
     </dependency>
