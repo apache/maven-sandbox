@@ -26,42 +26,42 @@
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
+      <version>${securityVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authentication-provider-keystore</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
+      <version>${securityVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-keys-jdo</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
+      <version>${securityVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authentication-provider-user-manager</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
+      <version>${securityVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-user-management-provider-jdo</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
+      <version>${securityVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
+      <version>${securityVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-system</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
+      <version>${securityVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-ui-web-integration</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
+      <version>${securityVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -79,4 +79,8 @@
       <artifactId>plexus-container-default</artifactId>
     </dependency>
   </dependencies>
+
+  <properties>
+    <securityVersion>1.0-alpha-11</securityVersion>
+  </properties>
 </project>
