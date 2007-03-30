@@ -1,0 +1,57 @@
+package org.apache.maven.artifact.ant;
+
+import java.io.File;
+
+/*
+ * Copyright 2001-2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Container for specification of an attached artifact.
+ *
+ * @version $Rev$ $Date$
+ */
+public class AttachedArtifact
+{
+    private File file;
+
+    private String type = "jar";
+
+    private String classifier;
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(final File file) {
+        this.file = file;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(final String type) {
+        this.type = type;
+    }
+
+    public String getClassifier() {
+        return classifier;
+    }
+
+    public void setClassifier(final String classifier) {
+        this.classifier = classifier;
+    }
+}

@@ -17,6 +17,7 @@ package org.apache.maven.artifact.ant;
  */
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.metadata.ArtifactMetadata;
@@ -26,6 +27,9 @@ import org.apache.maven.project.artifact.ProjectArtifactMetadata;
 import org.apache.tools.ant.BuildException;
 
 import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Install task, using maven-artifact.
@@ -35,10 +39,8 @@ import java.io.File;
  * @todo should be able to incorporate into the install mojo?
  */
 public class InstallTask
-    extends AbstractArtifactTask
+    extends InstallDeployTaskSupport
 {
-    private File file;
-
     protected void doExecute()
     {
         ArtifactRepository localRepo = createLocalArtifactRepository();
@@ -72,15 +74,23 @@ public class InstallTask
             throw new BuildException(
                 "Error installing artifact '" + artifact.getDependencyConflictId() + "': " + e.getMessage(), e );
         }
-    }
 
-    public File getFile()
-    {
-        return file;
-    }
+        // Install any attached artifacts
+        if (attachedArtifacts != null) {
+            Iterator iter = attachedArtifacts.iterator();
 
-    public void setFile( File file )
-    {
-        this.file = file;
+            while (iter.hasNext()) {
+                AttachedArtifact attached = (AttachedArtifact)iter.next();
+                Artifact attachedArtifact = createArtifactFromAttached(attached, artifact);
+
+                try {
+                    installer.install( attachedArtifact.getFile(), attachedArtifact, localRepo );
+                }
+                catch (ArtifactInstallationException e) {
+                    throw new BuildException(
+                        "Error installing attached artifact '" + attachedArtifact.getDependencyConflictId() + "': " + e.getMessage(), e );
+                }
+            }
+        }
     }
 }
