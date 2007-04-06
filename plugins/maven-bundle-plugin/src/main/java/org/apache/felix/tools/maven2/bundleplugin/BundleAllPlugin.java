@@ -20,15 +20,12 @@ package org.apache.felix.tools.maven2.bundleplugin;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -125,45 +122,11 @@ public class BundleAllPlugin
      */
     private MavenProjectBuilder mavenProjectBuilder;
 
-    /**
-     * {@link Map} &lt; {@link String}, {@link List} &lt; {@link Artifact} > >
-     * Used to check for duplicated exports. Key is package name and value list of artifacts where it's exported.
-     */
-    private Map exportedPackages;
-
     public void execute()
         throws MojoExecutionException
     {
-        exportedPackages = new HashMap();
-        bundleAll( project );
-
-        for ( Iterator it = exportedPackages.entrySet().iterator(); it.hasNext(); )
-        {
-            Map.Entry entry = (Map.Entry) it.next();
-            List artifacts = (List) entry.getValue();
-            if ( artifacts.size() > 1 )
-            {
-                /* remove warnings caused by different versions of same artifact */
-                Set artifactKeys = new HashSet();
-
-                String packageName = (String) entry.getKey();
-                for ( Iterator it2 = artifacts.iterator(); it2.hasNext(); )
-                {
-                    Artifact artifact = (Artifact) it2.next();
-                    artifactKeys.add( artifact.getGroupId() + "." + artifact.getArtifactId() );
-                }
-
-                if ( artifactKeys.size() > 1 )
-                {
-                    getLog().warn( "Package " + packageName + " is exported in more than a bundle: " );
-                    for ( Iterator it2 = artifacts.iterator(); it2.hasNext(); )
-                    {
-                        Artifact artifact = (Artifact) it2.next();
-                        getLog().warn( "  " + artifact );
-                    }
-                }
-            }
-        }
+        BundleInfo bundleInfo = bundleAll( project );
+        logDuplicatedPackages( bundleInfo );
     }
 
     /**
@@ -172,14 +135,27 @@ public class BundleAllPlugin
      * @param project
      * @throws MojoExecutionException
      */
-    private void bundleAll( MavenProject project )
+    private BundleInfo bundleAll( MavenProject project )
+        throws MojoExecutionException
+    {
+        return bundleAll( project, Integer.MAX_VALUE );
+    }
+
+    /**
+     * Bundle a project and its transitive dependencies up to some depth level
+     * 
+     * @param project
+     * @param depth how deep to process the dependency tree
+     * @throws MojoExecutionException
+     */
+    protected BundleInfo bundleAll( MavenProject project, int depth )
         throws MojoExecutionException
     {
 
         if ( alreadyBundled( project.getArtifact() ) )
         {
             getLog().debug( "Ignoring project already processed " + project.getArtifact() );
-            return;
+            return null;
         }
 
         DependencyTree dependencyTree;
@@ -196,6 +172,8 @@ public class BundleAllPlugin
 
         getLog().debug( "Will bundle the following dependency tree\n" + dependencyTree );
 
+        BundleInfo bundleInfo = new BundleInfo();
+
         for ( Iterator it = dependencyTree.inverseIterator(); it.hasNext(); )
         {
             DependencyNode node = (DependencyNode) it.next();
@@ -204,6 +182,13 @@ public class BundleAllPlugin
                 /* this is the root, current project */
                 break;
             }
+
+            if ( node.getDepth() > depth )
+            {
+                /* node is deeper than we want */
+                break;
+            }
+
             Artifact artifact = resolveArtifact( node.getArtifact() );
             MavenProject childProject;
             try
@@ -221,7 +206,11 @@ public class BundleAllPlugin
             if ( ( artifact.getScope().equals( Artifact.SCOPE_COMPILE ) )
                 || ( artifact.getScope().equals( Artifact.SCOPE_RUNTIME ) ) )
             {
-                bundleAll( childProject );
+                BundleInfo subBundleInfo = bundleAll( childProject, depth );
+                if ( subBundleInfo != null )
+                {
+                    bundleInfo.merge( subBundleInfo );
+                }
             }
             else
             {
@@ -234,8 +223,15 @@ public class BundleAllPlugin
         if ( this.project != project )
         {
             getLog().debug( "Project artifact location: " + project.getArtifact().getFile() );
-            bundle( project );
+
+            BundleInfo subBundleInfo = bundle( project );
+            if ( subBundleInfo != null )
+            {
+                bundleInfo.merge( subBundleInfo );
+            }
         }
+
+        return bundleInfo;
     }
 
     /**
@@ -244,7 +240,7 @@ public class BundleAllPlugin
      * @param project
      * @throws MojoExecutionException
      */
-    void bundle( MavenProject project )
+    BundleInfo bundle( MavenProject project )
         throws MojoExecutionException
     {
         Artifact artifact = project.getArtifact();
@@ -261,7 +257,7 @@ public class BundleAllPlugin
             if ( project.getArtifact().getFile().equals( outputFile ) )
             {
                 /* TODO find the cause why it's getting here */
-                return;
+                return null;
                 //                getLog().error(
                 //                                "Trying to read and write " + artifact + " to the same file, try cleaning: "
                 //                                    + outputFile );
@@ -270,12 +266,16 @@ public class BundleAllPlugin
             }
 
             Analyzer analyzer = getAnalyzer( project, getClasspath( project ) );
-            checkDuplicatedPackages( project, analyzer.getExports().keySet() );
+
+            BundleInfo bundleInfo = addExportedPackages( project, analyzer.getExports().keySet() );
+
             Jar osgiJar = new Jar( project.getArtifactId(), project.getArtifact().getFile() );
             Manifest manifest = analyzer.getJar().getManifest();
             osgiJar.setManifest( manifest );
             outputFile.getParentFile().mkdirs();
             osgiJar.write( outputFile );
+
+            return bundleInfo;
         }
         /* too bad Jar.write throws Exception */
         catch ( Exception e )
@@ -285,19 +285,15 @@ public class BundleAllPlugin
         }
     }
 
-    private void checkDuplicatedPackages( MavenProject project, Collection packages )
+    private BundleInfo addExportedPackages( MavenProject project, Collection packages )
     {
+        BundleInfo bundleInfo = new BundleInfo();
         for ( Iterator it = packages.iterator(); it.hasNext(); )
         {
             String packageName = (String) it.next();
-            List artifactsWithPackage = (List) exportedPackages.get( packageName );
-            if ( artifactsWithPackage == null )
-            {
-                artifactsWithPackage = new ArrayList();
-                exportedPackages.put( packageName, artifactsWithPackage );
-            }
-            artifactsWithPackage.add( project.getArtifact() );
+            bundleInfo.addExportedPackage( packageName, project.getArtifact() );
         }
+        return bundleInfo;
     }
 
     private String getArtifactKey( Artifact artifact )
@@ -442,5 +438,28 @@ public class BundleAllPlugin
         }
 
         return resolvedArtifact;
+    }
+
+    /**
+     * Log what packages are exported in more than one bundle
+     */
+    protected void logDuplicatedPackages( BundleInfo bundleInfo )
+    {
+        Map duplicatedExports = bundleInfo.getDuplicatedExports();
+
+        for ( Iterator it = duplicatedExports.entrySet().iterator(); it.hasNext(); )
+        {
+            Map.Entry entry = (Map.Entry) it.next();
+            String packageName = (String) entry.getKey();
+            Collection artifacts = (Collection) entry.getValue();
+
+            getLog().warn( "Package " + packageName + " is exported in more than a bundle: " );
+            for ( Iterator it2 = artifacts.iterator(); it2.hasNext(); )
+            {
+                Artifact artifact = (Artifact) it2.next();
+                getLog().warn( "  " + artifact );
+            }
+
+        }
     }
 }
