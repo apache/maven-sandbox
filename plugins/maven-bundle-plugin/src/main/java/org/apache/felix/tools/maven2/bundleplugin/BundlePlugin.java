@@ -88,6 +88,10 @@ public class BundlePlugin extends AbstractMojo {
   */
  private Map    instructions = new HashMap();
  
+ protected MavenProject getProject() {
+  return project;
+ }
+
  public void execute() throws MojoExecutionException {
   Properties properties = new Properties();
 

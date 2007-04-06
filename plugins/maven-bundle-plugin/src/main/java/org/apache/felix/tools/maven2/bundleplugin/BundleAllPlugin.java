@@ -64,15 +64,6 @@ public class BundleAllPlugin
     private static final Pattern SNAPSHOT_VERSION_PATTERN = Pattern.compile( "[0-9]{8}_[0-9]{6}_[0-9]+" );
 
     /**
-     * The Maven Project.
-     *
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
-
-    /**
      * Local Repository.
      *
      * @parameter expression="${localRepository}"
@@ -125,7 +116,7 @@ public class BundleAllPlugin
     public void execute()
         throws MojoExecutionException
     {
-        BundleInfo bundleInfo = bundleAll( project );
+        BundleInfo bundleInfo = bundleAll( getProject() );
         logDuplicatedPackages( bundleInfo );
     }
 
@@ -183,13 +174,16 @@ public class BundleAllPlugin
                 break;
             }
 
+            Artifact artifact = resolveArtifact( node.getArtifact() );
+            node.getArtifact().setFile( artifact.getFile() );
+
             if ( node.getDepth() > depth )
             {
                 /* node is deeper than we want */
-                break;
+                getLog().debug( "Ignoring " + node.getArtifact() + ", depth is " + node.getDepth() + ", bigger than " + depth );
+                continue;
             }
 
-            Artifact artifact = resolveArtifact( node.getArtifact() );
             MavenProject childProject;
             try
             {
@@ -206,7 +200,7 @@ public class BundleAllPlugin
             if ( ( artifact.getScope().equals( Artifact.SCOPE_COMPILE ) )
                 || ( artifact.getScope().equals( Artifact.SCOPE_RUNTIME ) ) )
             {
-                BundleInfo subBundleInfo = bundleAll( childProject, depth );
+                BundleInfo subBundleInfo = bundleAll( childProject, depth - 1 );
                 if ( subBundleInfo != null )
                 {
                     bundleInfo.merge( subBundleInfo );
@@ -220,7 +214,7 @@ public class BundleAllPlugin
             }
         }
 
-        if ( this.project != project )
+        if ( getProject() != project )
         {
             getLog().debug( "Project artifact location: " + project.getArtifact().getFile() );
 

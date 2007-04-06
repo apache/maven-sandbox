@@ -19,7 +19,6 @@
 package org.apache.felix.tools.maven2.bundleplugin;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 
 /**
  * 
@@ -32,19 +31,10 @@ public class WrapPlugin
     extends BundleAllPlugin
 {
 
-    /**
-     * The Maven Project.
-     *
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
-
     public void execute()
         throws MojoExecutionException
     {
-        BundleInfo bundleInfo = bundleAll( project, 1 );
+        BundleInfo bundleInfo = bundleAll( getProject(), 1 );
         logDuplicatedPackages( bundleInfo );
     }
 
