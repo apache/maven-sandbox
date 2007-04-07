@@ -101,6 +101,7 @@ public class TestNGXmlTestSuite
                 i.remove();
             }
         }
+        
         TestNGExecutor.executeTestNG( this, testSourceDirectory, suite, reporterManager );
 
         suite.getTests().clear();
