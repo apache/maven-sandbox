@@ -1,7 +1,0 @@
-core.address_prefix: 
-- "!"
-irc.nick: faqbot
-server.name: irc.codehaus.org
-irc.join_channels: 
-- "#mavenfaq"
-datadir: /home/jvanzyl/js/org/apache/maven/sandbox/issue/rbot/dist/share/rbot

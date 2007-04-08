@@ -1,1 +1,0 @@
-/home/jvanzyl/js/org/apache/maven/sandbox/issue/rissue/jira4r.rb

@@ -1,6 +1,0 @@
-- xmlrpc plugin contains SAX classes which causes a constraints error so
-  this is not generally usable until that issue is resolved. i could just make
-  a patched JAR.
-  
-- custom field in jira for a patch or a marker in the body of the text, this
-  would just require some project setup but could probably be automated.
