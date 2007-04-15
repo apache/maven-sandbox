@@ -38,24 +38,11 @@ import org.apache.maven.surefire.booter.ForkConfiguration;
 import org.apache.maven.surefire.booter.SurefireBooter;
 import org.apache.maven.surefire.booter.SurefireBooterForkException;
 import org.apache.maven.surefire.booter.SurefireExecutionException;
-import org.apache.maven.surefire.report.BriefConsoleReporter;
-import org.apache.maven.surefire.report.BriefFileReporter;
-import org.apache.maven.surefire.report.ConsoleReporter;
-import org.apache.maven.surefire.report.DetailedConsoleReporter;
-import org.apache.maven.surefire.report.FileReporter;
-import org.apache.maven.surefire.report.ForkingConsoleReporter;
-import org.apache.maven.surefire.report.XMLReporter;
+import org.apache.maven.surefire.report.*;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Run tests using Surefire.
@@ -322,9 +309,10 @@ public class SurefirePlugin
      *
      * @parameter expression="${parallel}"
      * default-value="false"
+     * 
      * @todo test how this works with forking, and console/file output parallelism
      */
-    private boolean parallel;
+    private String parallel;
 
     /**
      * Whether to trim the stack trace in the reports to just the lines within the test, or show the full trace.
@@ -442,7 +430,7 @@ public class SurefirePlugin
             return false;
         }
 
-        if ( parallel )
+        if ( parallel != null)
         {
             if ( threadCount < 1 )
             {
@@ -585,7 +573,7 @@ public class SurefirePlugin
             if ( testNgArtifact != null )
             {
                 surefireBooter.addTestSuite( "org.apache.maven.surefire.testng.TestNGDirectoryTestSuite", new Object[]{
-                    testClassesDirectory, includes, excludes, groups, excludedGroups, Boolean.valueOf( parallel ),
+                    testClassesDirectory, includes, excludes, groups, excludedGroups, parallel,
                     new Integer( threadCount ), testSourceDirectory.getAbsolutePath()} );
             }
             else

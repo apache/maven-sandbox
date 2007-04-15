@@ -42,18 +42,33 @@ public class TestNGExecutor
     {
     }
 
-    static void execute(Object target, String methodName, Object param)
+    static Object execute(Object target, String methodName, Object param)
     throws Exception
     {
-        Method m = getMethod(target.getClass(), methodName, 1);
-        
-        if (m.getParameterTypes()[0] == boolean.class) {
-            
-            m.invoke(target, new Object[] { param });
+        Method m = getMethod(target.getClass(), methodName, param != null ? 1 : 0);
+        Object ret = null;
+
+        if (m == null)
+            throw new IllegalArgumentException("No method found with name <" + methodName + "> on object " + target);
+
+        if (m.getParameterTypes().length <= 0) {
+
+            ret = m.invoke(target, new Object[0]);
+        } else if (m.getParameterTypes()[0] == boolean.class) {
+
+            Object[] args = { param };
+            if (!Boolean.class.isInstance(param))
+            {
+                args[0] = Boolean.valueOf(param.toString());
+            }
+
+            ret = m.invoke(target, args);
         } else if (m.getParameterTypes()[0] == String.class) {
-            
-            m.invoke(target, new Object[] { param.toString() });
+
+            ret = m.invoke(target, new Object[] { param.toString() });
         }
+
+        return ret;
     }
     
     static Method getMethod(Class clazz, String name, int argCount)

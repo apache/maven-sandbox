@@ -32,11 +32,7 @@ import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Test suite for TestNG based on a directory of Java test classes. Can also execute JUnit tests.
@@ -50,14 +46,14 @@ public class TestNGDirectoryTestSuite
 
     private String excludedGroups;
 
-    private boolean parallel;
+    private String parallel;
 
     private int threadCount;
 
     private String testSourceDirectory;
 
     public TestNGDirectoryTestSuite( File basedir, ArrayList includes, ArrayList excludes, String groups,
-                                     String excludedGroups, Boolean parallel, Integer threadCount,
+                                     String excludedGroups, String parallel, Integer threadCount,
                                      String testSourceDirectory )
     {
         super( basedir, includes, excludes );
@@ -66,7 +62,7 @@ public class TestNGDirectoryTestSuite
 
         this.excludedGroups = excludedGroups;
 
-        this.parallel = parallel.booleanValue();
+        this.parallel = parallel;
 
         this.threadCount = threadCount.intValue();
 
@@ -110,7 +106,7 @@ public class TestNGDirectoryTestSuite
         
         try {
             
-            TestNGExecutor.execute(suite, "setParallel", Boolean.valueOf(parallel));
+            TestNGExecutor.execute(suite, "setParallel", parallel);
 
         } catch (Throwable t) {
             throw new RuntimeException("Failed to configure TestNG properly", t);
@@ -137,9 +133,10 @@ public class TestNGDirectoryTestSuite
         
         try {
             
-            TestNGExecutor.execute(suite, "setParallel", Boolean.valueOf(parallel));
+            TestNGExecutor.execute(suite, "setParallel", parallel);
 
         } catch (Throwable t) {
+
             throw new RuntimeException("Failed to configure TestNG properly", t);
         }
 

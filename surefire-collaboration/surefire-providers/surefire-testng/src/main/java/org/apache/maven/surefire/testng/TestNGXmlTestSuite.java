@@ -30,16 +30,11 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Handles suite xml file definitions for TestNG.
- *
- * @author jkuhnert
  */
 public class TestNGXmlTestSuite
     implements SurefireTestSuite
@@ -47,8 +42,8 @@ public class TestNGXmlTestSuite
     private File suiteFile;
 
     private String testSourceDirectory;
-
-    private XmlSuite suite;
+    
+    private Collection suites;
 
     private Map testSets;
 
@@ -75,7 +70,13 @@ public class TestNGXmlTestSuite
             throw new IllegalStateException( "You must call locateTestSets before calling execute" );
         }
 
-        TestNGExecutor.executeTestNG( this, testSourceDirectory, suite, reporterManager );
+        Iterator it = suites.iterator();
+        while (it.hasNext())
+        {
+            XmlSuite suite = (XmlSuite)it.next();
+
+            TestNGExecutor.executeTestNG( this, testSourceDirectory, suite, reporterManager );
+        }
     }
 
     public void execute( String testSetName, ReporterManager reporterManager, ClassLoader classLoader )
@@ -92,6 +93,27 @@ public class TestNGXmlTestSuite
             throw new TestSetFailedException( "Unable to find test set '" + testSetName + "' in suite" );
         }
 
+        Iterator it = suites.iterator();
+        while (it.hasNext())
+        {
+            XmlSuite suite = (XmlSuite)it.next();
+
+            List originalTests = new ArrayList( suite.getTests() );
+            for ( Iterator i = suite.getTests().iterator(); i.hasNext(); )
+            {
+                XmlTest test = (XmlTest) i.next();
+                if ( !test.getName().equals( testSetName ) )
+                {
+                    i.remove();
+                }
+            }
+
+            TestNGExecutor.executeTestNG( this, testSourceDirectory, suite, reporterManager );
+
+            suite.getTests().clear();
+            suite.getTests().addAll( originalTests );
+        }
+        /*
         List originalTests = new ArrayList( suite.getTests() );
         for ( Iterator i = suite.getTests().iterator(); i.hasNext(); )
         {
@@ -106,6 +128,7 @@ public class TestNGXmlTestSuite
 
         suite.getTests().clear();
         suite.getTests().addAll( originalTests );
+        */
     }
 
     public int getNumTests()
@@ -116,7 +139,17 @@ public class TestNGXmlTestSuite
 
     public int getNumTestSets()
     {
-        return suite.getTests().size();
+        int count = 0;
+        Iterator it = suites.iterator();
+
+        while (it.hasNext())
+        {
+            XmlSuite suite = (XmlSuite)it.next();
+
+            count += suite.getTests().size();
+        }
+
+        return count;
     }
 
     public Map locateTestSets( ClassLoader classLoader )
@@ -130,7 +163,24 @@ public class TestNGXmlTestSuite
 
         try
         {
-            suite = new Parser( suiteFile.getAbsolutePath() ).parse();
+            Parser p = new Parser( suiteFile.getAbsolutePath() );
+
+            Method m = TestNGExecutor.getMethod(p.getClass(), "parse", 0);
+
+            if (m == null)
+                throw new IllegalStateException("TestNG suite parser parse() method could not be found.");
+
+            if (Collection.class.isAssignableFrom(m.getReturnType())) {
+
+                suites = (Collection) TestNGExecutor.execute(p, "parse", null);
+            } else {
+
+                List parsedSuites = new ArrayList();
+
+                parsedSuites.add(TestNGExecutor.execute(p, "parse", null));
+                
+                suites = parsedSuites;
+            }
         }
         catch ( IOException e )
         {
@@ -144,7 +194,30 @@ public class TestNGXmlTestSuite
         {
             throw new TestSetFailedException( "Error reading test suite", e );
         }
+        catch ( Exception e )
+        {
+            throw new TestSetFailedException( "Error parsing test suite", e );
+        }
 
+        Iterator it = suites.iterator();
+        while (it.hasNext())
+        {
+            XmlSuite suite = (XmlSuite)it.next();
+
+            for ( Iterator i = suite.getTests().iterator(); i.hasNext(); )
+            {
+                XmlTest xmlTest = (XmlTest) i.next();
+
+                if ( testSets.containsKey( xmlTest.getName() ) )
+                {
+                    throw new TestSetFailedException( "Duplicate test set '" + xmlTest.getName() + "'" );
+                }
+
+                // We don't need to put real test sets in here, the key is the important part
+                testSets.put( xmlTest.getName(), xmlTest );
+            }
+        }
+        /*
         for ( Iterator i = suite.getTests().iterator(); i.hasNext(); )
         {
             XmlTest xmlTest = (XmlTest) i.next();
@@ -156,7 +229,8 @@ public class TestNGXmlTestSuite
 
             // We don't need to put real test sets in here, the key is the important part
             testSets.put( xmlTest.getName(), xmlTest );
-        }
+        }*/
+        
         return testSets;
     }
 }

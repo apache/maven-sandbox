@@ -1,7 +1,4 @@
-
-import static org.testng.Assert.*;
-
-import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -24,11 +21,9 @@ public class TestNGTest {
 		testObject = new Object();
 	}
 	
-	@AfterSuite(groups = "functional")
+	@AfterClass(groups = "functional")
 	public void check_Test_Count()
 	{
-		System.out.println("check_Test_Count(): " + m_testCount);
-        
 		assert m_testCount == 3 : "Expected 3 tests to be run but local count was " + m_testCount;
 	}
 	
@@ -37,10 +32,10 @@ public class TestNGTest {
 	/**
 	 * Tests reporting an error
 	 */
-	@Test(groups = {"functional", "notincluded"})
+	@Test(groups = {"functional", "notincluded"}, threadPoolSize = 3, invocationCount = 3)
 	public void isTestObjectNull()
 	{
-		m_testCount++;
+        m_testCount++;
 		assert testObject != null : "testObject is null";
 	}
 	
