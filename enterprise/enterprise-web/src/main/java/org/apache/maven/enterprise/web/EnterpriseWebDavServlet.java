@@ -111,6 +111,7 @@ public class  EnterpriseWebDavServlet
                 return false;
             }
 
+            return true;
         }
         catch ( AuthenticationException e )
         {
@@ -127,7 +128,7 @@ public class  EnterpriseWebDavServlet
             httpAuth.challenge( request, response, "Enterprise Repository",
                                 new AuthenticationException( "User account password expired" ) );
         }
-        return true;
+        return false;
     }
 
     public boolean isAuthorized( DavServerRequest davRequest, HttpServletResponse response )
