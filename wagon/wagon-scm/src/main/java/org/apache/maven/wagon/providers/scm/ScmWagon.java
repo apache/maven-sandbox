@@ -318,7 +318,7 @@ public class ScmWagon
                 }
             }
 
-            result = scmProvider.checkIn( scmRepository, new ScmFileSet( checkoutDirectory ), null, msg );
+            result = scmProvider.checkIn( scmRepository, new ScmFileSet( checkoutDirectory ), (String) null, msg );
 
             checkScmResult( result );
         }
@@ -368,7 +368,7 @@ public class ScmWagon
         try
         {
             while ( target.length() > 0 && !scmProvider
-                .list( scmRepository, new ScmFileSet( new File( "." ), new File( target ) ), false, null )
+                .list( scmRepository, new ScmFileSet( new File( "." ), new File( target ) ), false, (String) null )
                 .isSuccess() )
             {
                 stack.push( FileUtils.filename( target ) );
@@ -390,7 +390,7 @@ public class ScmWagon
             scmRepository = getScmRepository( getRepository().getUrl() + "/" + target );
 
             CheckOutScmResult ret =
-                scmProvider.checkOut( scmRepository, new ScmFileSet( new File( checkoutDirectory, "" ) ), null, false );
+                scmProvider.checkOut( scmRepository, new ScmFileSet( new File( checkoutDirectory, "" ) ), (String) null, false );
 
             checkScmResult( ret );
         }
@@ -574,14 +574,14 @@ public class ScmWagon
 
             if ( reservedScmFile != null && new File( basedir, reservedScmFile ).exists() )
             {
-                scmProvider.update( scmRepository, new ScmFileSet( basedir ), null );
+                scmProvider.update( scmRepository, new ScmFileSet( basedir ), (String) null );
             }
             else
             {
                 // TODO: this should be checking out a full hierachy (requires the -d equiv)
                 basedir.mkdirs();
 
-                scmProvider.checkOut( scmRepository, new ScmFileSet( basedir ), null );
+                scmProvider.checkOut( scmRepository, new ScmFileSet( basedir ), (String) null );
             }
 
             if ( !scmFile.exists() )
@@ -622,7 +622,7 @@ public class ScmWagon
             ScmProvider provider = getScmProvider( repository.getProvider() );
 
             ListScmResult result =
-                provider.list( repository, new ScmFileSet( new File( "." ), new File( resourcePath ) ), false, null );
+                provider.list( repository, new ScmFileSet( new File( "." ), new File( resourcePath ) ), false, (String) null );
 
             if ( !result.isSuccess() )
             {
