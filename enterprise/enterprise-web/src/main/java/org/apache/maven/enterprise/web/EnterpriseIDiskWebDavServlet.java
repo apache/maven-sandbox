@@ -114,7 +114,7 @@ public class EnterpriseIDiskWebDavServlet
 
         if ( isRead )
         {
-            /* if the repositories are public we do not require authentication for non-idisk requests */
+            /* if the idisks are public we do not require authentication for read requests */
             if ( config.getWebdav().isPublicIDisk() )
             {
                 return true;
