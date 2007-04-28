@@ -24,13 +24,7 @@ import org.apache.maven.surefire.report.ReportEntry;
 import org.apache.maven.surefire.report.ReporterException;
 import org.apache.maven.surefire.report.ReporterManager;
 import org.apache.maven.surefire.suite.SurefireTestSuite;
-import org.testng.IResultMap;
-import org.testng.ISuite;
-import org.testng.ISuiteListener;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
-import org.testng.TestNG;
+import org.testng.*;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
@@ -86,15 +80,17 @@ public class TestNGReporter
         String rawString = bundle.getString( "testStarting" );
         String group = groupString( result.getMethod().getGroups(), result.getTestClass().getName() );
         ReportEntry report = new ReportEntry( source, getUserFriendlyTestName( result ), group, rawString );
-
+        
         reportManager.testStarting( report );
     }
 
     public void onTestSuccess( ITestResult result )
     {
         testStarted = false;
-        ReportEntry report =
-            new ReportEntry( source, getUserFriendlyTestName( result ), bundle.getString( "testSuccessful" ) );
+
+        String group = groupString( result.getMethod().getGroups(), result.getTestClass().getName() );
+        ReportEntry report = new ReportEntry( source, getUserFriendlyTestName( result ), group, bundle.getString( "testSuccessful" ) );
+
         reportManager.testSucceeded( report );
     }
 
@@ -149,7 +145,6 @@ public class TestNGReporter
         String rawString = bundle.getString( "testSetStarting" );
 
         String group = groupString( context.getIncludedGroups(), context.getName() );
-
         ReportEntry report = new ReportEntry( source, context.getName(), group, rawString );
 
         try
@@ -165,6 +160,7 @@ public class TestNGReporter
     public void onFinish( ITestContext context )
     {
         _finishContext = context;
+        cleanupAfterTestsRun();
     }
 
     public void onFinish( ISuite suite )
