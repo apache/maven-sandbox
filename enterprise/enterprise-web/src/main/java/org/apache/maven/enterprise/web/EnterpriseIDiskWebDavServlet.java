@@ -76,9 +76,16 @@ public class EnterpriseIDiskWebDavServlet
         throws ServletException, IOException
     {
         HttpServletRequest request = davRequest.getRequest();
+        boolean isRead = WebdavMethodUtil.isReadMethod( request.getMethod() );
 
         /* we don't always need to authenticate read requests */
         if ( isAnonRequest( davRequest ) )
+        {
+            return true;
+        }
+
+        /* All users can read all areas, a bit useless otherwise! */
+        if ( isRead )
         {
             return true;
         }
