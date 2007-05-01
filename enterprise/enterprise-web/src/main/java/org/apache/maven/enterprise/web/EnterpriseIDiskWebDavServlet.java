@@ -53,7 +53,7 @@ public class EnterpriseIDiskWebDavServlet
         {
             if ( httpAuth.getSessionUser() != null )
             {
-                String user = httpAuth.getSessionUser().getUsername();
+                String user = davRequest.getRequest().getRemoteUser();
 
                 HttpServletRequest request = davRequest.getRequest();
                 if ( request.getPathInfo().equals( "/" + user ) ||
@@ -92,10 +92,6 @@ public class EnterpriseIDiskWebDavServlet
 
         String resource = davRequest.getLogicalResource();
         String user = httpAuth.getSessionUser().getUsername();
-
-        if ( resource.equals( "" ) || resource.equals( "/" ) ) {
-            return true;
-        }
 
         if ( resource.equals( "/" + user ) || resource.startsWith( "/" + user + "/" ) )
         {
