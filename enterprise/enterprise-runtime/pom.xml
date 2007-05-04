@@ -27,27 +27,27 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-appserver-host</artifactId>
-      <version>2.0-alpha-8</version>
+      <version>2.0-alpha-9-SNAPSHOT</version>
     </dependency>
 
     <!-- Applications -->
     <dependency>
       <groupId>org.apache.maven.enterprise</groupId>
-      <artifactId>enterprise-plexus-application</artifactId>
+      <artifactId>enterprise-web</artifactId>
       <version>1.0-SNAPSHOT</version>
-      <type>plexus-application</type>
+      <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.continuum</groupId>
-      <artifactId>continuum-plexus-application</artifactId>
+      <artifactId>continuum-webapp</artifactId>
       <version>1.1-SNAPSHOT</version>
-      <type>plexus-application</type>
+      <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.archiva</groupId>
-      <artifactId>archiva-plexus-application</artifactId>
+      <artifactId>archiva-webapp</artifactId>
       <version>1.0-SNAPSHOT</version>
-      <type>plexus-application</type>
+      <type>war</type>
     </dependency>
 
     <!-- Services -->
@@ -106,7 +106,7 @@
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-appserver-maven-plugin</artifactId>
-        <version>2.0-alpha-8</version>
+        <version>2.0-alpha-9-SNAPSHOT</version>
         <extensions>true</extensions>
         <executions>
           <execution>
@@ -114,6 +114,7 @@
               <goal>assemble-runtime</goal>
               <goal>add-services</goal>
               <goal>add-apps</goal>
+              <goal>add-webapps</goal>
             </goals>
           </execution>
         </executions>
@@ -138,6 +139,21 @@
 
 
           </additionalCoreArtifacts>
+          <webappPort>8080</webappPort>
+          <webappMappings>
+            <property>
+              <name>org.apache.maven.enterprise:enterprise-web</name>
+              <value>/</value>
+            </property>
+            <property>
+              <name>org.apache.maven.continuum:continuum-webapp</name>
+              <value>/continuum</value>
+            </property>
+            <property>
+              <name>org.apache.maven.archiva:archiva-webapp</name>
+              <value>/archiva</value>
+            </property>
+          </webappMappings>
         </configuration>
       </plugin>
     </plugins>
