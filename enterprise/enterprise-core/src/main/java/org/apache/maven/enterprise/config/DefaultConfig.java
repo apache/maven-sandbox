@@ -41,7 +41,7 @@ public class DefaultConfig
     public void start()
         throws StartingException
     {
-        String plexusHome = "";
+        String plexusHome = ".";
         try
         {
             plexusHome = (String) (new InitialContext()).lookup( "java:comp/env/enterprise/dataDir" );
