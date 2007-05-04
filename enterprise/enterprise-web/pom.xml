@@ -65,8 +65,8 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-xwork-integration</artifactId>
-      <version>1.0-alpha-5</version>
+      <artifactId>plexus-servlet</artifactId>
+      <version>1.0-beta-7-SNAPSHOT</version>
     </dependency>
 
     <!-- override any inherited dependencies, as dependencyManagement does not yet apply to transtive deps -->

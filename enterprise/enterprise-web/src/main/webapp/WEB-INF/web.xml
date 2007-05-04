@@ -5,7 +5,7 @@
   <display-name>Maven Enterprise</display-name>
 
   <listener>
-    <listener-class>org.codehaus.plexus.xwork.PlexusLifecycleListener</listener-class>
+    <listener-class>org.codehaus.plexus.servlet.PlexusServletContextListener</listener-class>
   </listener>
 
 
