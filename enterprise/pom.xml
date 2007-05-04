@@ -24,7 +24,6 @@
     <module>enterprise-model</module>
     <module>enterprise-core</module>
     <module>enterprise-web</module>
-    <module>enterprise-plexus-application</module>
     <module>enterprise-runtime</module>
   </modules>
 
