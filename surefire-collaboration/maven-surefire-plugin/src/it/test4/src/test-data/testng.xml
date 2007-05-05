@@ -21,10 +21,11 @@
 
 <suite name="Suite 1 Test" verbose="4">
 
-  <test name="Sample Test">
-    <classes>
-      <class name="TestNGSuiteTest"/>
-    </classes>
-  </test>
+    <test name="Sample Test">
+        <classes>
+            <class name="TestNGSuiteTest" />
+            <class name="TestSuiteRun" />
+        </classes>
+    </test>
 
 </suite>

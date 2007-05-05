@@ -47,6 +47,19 @@ public class TestNGXmlTestSuite
 
     private Map testSets;
 
+    private Properties config;
+
+    /**
+     * Constructur used with TestNG >= 5.6.
+     *
+     * @param config
+     *          The generic map of testng configuration properties gathered from plugin.
+     */
+    public TestNGXmlTestSuite( Properties config )
+    {
+        this.config = config;
+    }
+    
     /**
      * Creates a testng testset to be configured by the specified
      * xml file.
@@ -65,6 +78,16 @@ public class TestNGXmlTestSuite
 
     public void execute( ReporterManager reporterManager, ClassLoader classLoader )
     {
+        if ( config != null )
+        {
+            config.put("classloader", classLoader);
+
+            TestNGExecutor.executeTestNG( this, config, reporterManager );
+
+            config.remove("classloader");
+            return;
+        }
+
         if ( testSets == null )
         {
             throw new IllegalStateException( "You must call locateTestSets before calling execute" );
@@ -82,6 +105,12 @@ public class TestNGXmlTestSuite
     public void execute( String testSetName, ReporterManager reporterManager, ClassLoader classLoader )
         throws TestSetFailedException
     {
+        if (config != null)
+        {
+            executeSingle( testSetName, reporterManager, classLoader);
+            return;
+        }
+        
         if ( testSets == null )
         {
             throw new IllegalStateException( "You must call locateTestSets before calling execute" );
@@ -113,22 +142,18 @@ public class TestNGXmlTestSuite
             suite.getTests().clear();
             suite.getTests().addAll( originalTests );
         }
-        /*
-        List originalTests = new ArrayList( suite.getTests() );
-        for ( Iterator i = suite.getTests().iterator(); i.hasNext(); )
-        {
-            XmlTest test = (XmlTest) i.next();
-            if ( !test.getName().equals( testSetName ) )
-            {
-                i.remove();
-            }
-        }
-        
-        TestNGExecutor.executeTestNG( this, testSourceDirectory, suite, reporterManager );
+    }
 
-        suite.getTests().clear();
-        suite.getTests().addAll( originalTests );
-        */
+    void executeSingle( String testSetName, ReporterManager reporterManager, ClassLoader classLoader )
+        throws TestSetFailedException
+    {
+        config.put("testSetName", testSetName);
+        config.put("classloader", classLoader);
+
+        TestNGExecutor.executeTestNG( this, config, reporterManager );
+        
+        config.remove("testSetName");
+        config.remove("classloader");
     }
 
     public int getNumTests()
@@ -139,6 +164,11 @@ public class TestNGXmlTestSuite
 
     public int getNumTestSets()
     {
+        if (config != null)
+        {
+            return 1;
+        }
+        
         int count = 0;
         Iterator it = suites.iterator();
 
@@ -155,6 +185,11 @@ public class TestNGXmlTestSuite
     public Map locateTestSets( ClassLoader classLoader )
         throws TestSetFailedException
     {
+        if (config != null)
+        {
+            return locateTestSets(classLoader, config);
+        }
+
         if ( testSets != null )
         {
             throw new IllegalStateException( "You can't call locateTestSets twice" );
@@ -217,20 +252,12 @@ public class TestNGXmlTestSuite
                 testSets.put( xmlTest.getName(), xmlTest );
             }
         }
-        /*
-        for ( Iterator i = suite.getTests().iterator(); i.hasNext(); )
-        {
-            XmlTest xmlTest = (XmlTest) i.next();
-
-            if ( testSets.containsKey( xmlTest.getName() ) )
-            {
-                throw new TestSetFailedException( "Duplicate test set '" + xmlTest.getName() + "'" );
-            }
-
-            // We don't need to put real test sets in here, the key is the important part
-            testSets.put( xmlTest.getName(), xmlTest );
-        }*/
         
         return testSets;
+    }
+
+    Map locateTestSets( ClassLoader classLoader, Properties props)
+    {
+        return config;
     }
 }

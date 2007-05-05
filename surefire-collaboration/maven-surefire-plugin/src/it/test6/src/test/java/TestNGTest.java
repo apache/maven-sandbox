@@ -25,7 +25,7 @@ public class TestNGTest {
 	public void check_Test_Count()
 	{
 		assert m_testCount == 3 : "Expected 3 tests to be run but local count was " + m_testCount;
-	}
+    }
 	
 	Object testObject;
 	

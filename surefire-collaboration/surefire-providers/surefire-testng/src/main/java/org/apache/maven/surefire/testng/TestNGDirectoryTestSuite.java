@@ -51,7 +51,16 @@ public class TestNGDirectoryTestSuite
     private int threadCount;
 
     private String testSourceDirectory;
-
+    
+    private Properties config;
+    
+    public TestNGDirectoryTestSuite( File basedir, ArrayList includes, ArrayList excludes, Properties config)
+    {
+        super( basedir, includes, excludes );
+        
+        this.config = config;
+    }
+    
     public TestNGDirectoryTestSuite( File basedir, ArrayList includes, ArrayList excludes, String groups,
                                      String excludedGroups, String parallel, Integer threadCount,
                                      String testSourceDirectory )
@@ -70,12 +79,31 @@ public class TestNGDirectoryTestSuite
 
     }
 
+    public TestNGDirectoryTestSuite( File basedir, ArrayList includes, ArrayList excludes, String groups,
+                                     String excludedGroups, Boolean parallel, Integer threadCount,
+                                     String testSourceDirectory )
+    {
+        super( basedir, includes, excludes );
+
+        this.groups = groups;
+
+        this.excludedGroups = excludedGroups;
+
+        this.parallel = parallel.toString();
+
+        this.threadCount = threadCount.intValue();
+
+        this.testSourceDirectory = testSourceDirectory;
+
+    }
+
     public Map locateTestSets( ClassLoader classLoader )
         throws TestSetFailedException
     {
         // TODO: fix
         // override classloader. That keeps us all together for now, which makes it work, but could pose problems of
         // classloader separation if the tests use plexus-utils.
+        
         return super.locateTestSets( classLoader );
     }
 
@@ -98,6 +126,22 @@ public class TestNGDirectoryTestSuite
             throw new TestSetFailedException( "Unable to find test set '" + testSetName + "' in suite" );
         }
 
+        if ( config != null )
+        {
+            config.put("classloader", classLoader);
+            config.put("testclass", testSet.getTestClass() );
+            config.put("suitename", "Single Test");
+            config.put("testname", testSet.getName() );
+
+            TestNGExecutor.executeTestNG( this, config, reporterManager );
+
+            config.remove("classloader");
+            config.remove("testclass");
+            config.remove("suitename");
+            config.remove("testname");
+            return;
+        }
+        
         XmlSuite suite = new XmlSuite();
         
         suite.setThreadCount(threadCount);
@@ -123,6 +167,36 @@ public class TestNGDirectoryTestSuite
         if ( testSets == null )
         {
             throw new IllegalStateException( "You must call locateTestSets before calling execute" );
+        }
+
+        if ( config != null )
+        {
+            StringBuffer classNames = new StringBuffer();
+            for ( Iterator i = testSets.values().iterator(); i.hasNext(); )
+            {
+                SurefireTestSet testSet = (SurefireTestSet) i.next();
+
+                classNames.append(testSet.getTestClass().getName());
+
+                if (i.hasNext())
+                {
+                    classNames.append(",");
+                }
+            }
+
+            config.put("classloader", classLoader);
+            config.put("testclass", classNames.toString() );
+            config.put("suitename", "Directory Suite");
+            config.put("testname", "Directory tests");
+
+            TestNGExecutor.executeTestNG( this, config, reporterManager );
+            
+            config.remove("classloader");
+            config.remove("testclass");
+            config.remove("suitename");
+            config.remove("testname");
+
+            return;
         }
 
         XmlSuite suite = new XmlSuite();
@@ -165,8 +239,6 @@ public class TestNGDirectoryTestSuite
             xmlTest.setExcludedGroups( Arrays.asList( excludedGroups.split( "," ) ) );
         }
 
-        // if ( !TestNGClassFinder.isTestNGClass( testSet.getTestClass(), annotationFinder ) )
-        // TODO: this is a bit dodgy, but isTestNGClass wasn't working
         try
         {
             Class junitClass = Class.forName( "junit.framework.Test" );
@@ -198,9 +270,7 @@ public class TestNGDirectoryTestSuite
         TestNGReporter reporter = new TestNGReporter( reporterManager, this );
         testNG.addListener( (ITestListener) reporter );
         testNG.addListener( (ISuiteListener) reporter );
-        
-        TestNGExecutor.configureJreType(testNG, testSourceDirectory);
-        
+
         // Set source path so testng can find javadoc annotations if not in 1.5 jvm
         if ( testSourceDirectory != null )
         {
@@ -210,10 +280,12 @@ public class TestNGDirectoryTestSuite
         // workaround for SUREFIRE-49
         // TestNG always creates an output directory, and if not set the name for the directory is "null"
         testNG.setOutputDirectory( System.getProperty( "java.io.tmpdir" ) );
-        
+
+        TestNGExecutor.configureJreType(testNG, testSourceDirectory);
+
         testNG.runSuitesLocally();
         
-        // need to execute report end after testng has completely finished as the 
+        // need to execute report end after testng has completely finished as the
         // reporter methods don't get called in the order that would allow for capturing
         // failures that happen in before/after suite configuration methods
         

@@ -170,6 +170,14 @@ public class SurefirePlugin
     private Properties systemProperties;
 
     /**
+     * List of properties for configuring all TestNG related configurations. This is the new
+     * preferred method of configuring TestNG.
+     *
+     * @parameter
+     */
+    private Properties properties;
+
+    /**
      * Map of of plugin artifacts.
      *
      * @parameter expression="${plugin.artifactMap}"
@@ -309,7 +317,7 @@ public class SurefirePlugin
      *
      * @parameter expression="${parallel}"
      * default-value="false"
-     * 
+     *
      * @todo test how this works with forking, and console/file output parallelism
      */
     private String parallel;
@@ -446,6 +454,44 @@ public class SurefirePlugin
         return true;
     }
 
+    /**
+     * Converts old TestNG configuration parameters over to new properties based configuration
+     * method. (if any are defined the old way)
+     */
+    void convertTestNGParameters()
+    {
+        if ( properties == null )
+        {
+            properties = new Properties();
+        }
+
+        if (this.parallel != null)
+            properties.put("parallel", this.parallel);
+        if (this.excludedGroups != null)
+            properties.put("excludegroups", this.excludedGroups);
+        if (this.groups != null)
+            properties.put("groups", this.groups);
+        if (this.threadCount > 0)
+            properties.put("threadcount", Integer.valueOf(this.threadCount));
+
+        if (this.suiteXmlFiles != null) {
+            String list = "";
+            for (int i=0; i < this.suiteXmlFiles.length; i++) {
+                list += this.suiteXmlFiles[i].getAbsolutePath();
+
+                if ((i + 1) < this.suiteXmlFiles.length)
+                    list += ",";
+            }
+            
+            properties.put("testng.suite.definitions", list);
+        }
+
+        if (this.testSourceDirectory != null)
+            properties.put("sourcedir", testSourceDirectory.getAbsolutePath());
+        if (this.testClassesDirectory != null)
+            properties.put("testng.test.classpath", testClassesDirectory.getAbsolutePath());
+    }
+
     private SurefireBooter constructSurefireBooter()
         throws MojoExecutionException, MojoFailureException
     {
@@ -484,7 +530,10 @@ public class SurefirePlugin
 
                 // The plugin uses a JDK based profile to select the right testng. We might be explicity using a
                 // different one since its based on the source level, not the JVM. Prune using the filter.
+
                 addProvider( surefireBooter, "surefire-testng", surefireArtifact.getBaseVersion(), testNgArtifact );
+
+                convertTestNGParameters();
             }
             else if ( junitArtifact != null && junitArtifact.getBaseVersion().startsWith( "4" ) )
             {
@@ -511,24 +560,45 @@ public class SurefirePlugin
             throw new MojoExecutionException( "Error to resolving surefire provider dependency: " + e.getMessage(), e );
         }
 
-        if ( suiteXmlFiles != null && suiteXmlFiles.length > 0 )
+        if ( testNgArtifact != null && properties != null && properties.get("testng.suite.definitions") != null)
         {
-            if ( testNgArtifact == null )
-            {
-                throw new MojoExecutionException( "suiteXmlFiles is configured, but there is no TestNG dependency" );
-            }
-            for ( int i = 0; i < suiteXmlFiles.length; i++ )
-            {
-                File file = suiteXmlFiles[i];
-                if ( file.exists() )
+            try {
+
+                VersionRange range = VersionRange.createFromVersionSpec( "[5.6,)" );
+                if ( !range.containsVersion( testNgArtifact.getSelectedVersion() ) && suiteXmlFiles != null)
                 {
-                    surefireBooter.addTestSuite( "org.apache.maven.surefire.testng.TestNGXmlTestSuite",
-                                                 new Object[]{file, testSourceDirectory.getAbsolutePath()} );
+                    // if earlier than 5.6 need to construct and execute the old non-properties way
+
+                    for ( int i = 0; i < suiteXmlFiles.length; i++ )
+                    {
+                        File file = suiteXmlFiles[i];
+                        if ( file.exists() )
+                        {
+                            surefireBooter.addTestSuite( "org.apache.maven.surefire.testng.TestNGXmlTestSuite",
+                                                         new Object[]{file, testSourceDirectory.getAbsolutePath()} );
+                        }
+                    }
+                } else {
+
+                    // do it the new way
+
+                    surefireBooter.addTestSuite( "org.apache.maven.surefire.testng.TestNGXmlTestSuite", new Object[]{ properties } );
                 }
+
+            }
+            catch ( InvalidVersionSpecificationException e )
+            {
+                throw new MojoExecutionException( "Error determining the TestNG version requested: " + e.getMessage(), e );
+            }
+            catch ( ArtifactResolutionException e )
+            {
+                throw new MojoExecutionException( "Error to resolving surefire provider dependency: " + e.getMessage(), e );
             }
         }
+
         else
         {
+
             List includes;
             List excludes;
 
@@ -561,20 +631,44 @@ public class SurefirePlugin
                 if ( includes == null || includes.size() == 0 )
                 {
                     includes = new ArrayList(
-                        Arrays.asList( new String[]{"**/*Test*.java", "**/*Test.java", "**/*TestCase.java"} ) );
+                            Arrays.asList( new String[]{"**/*Test*.java", "**/*Test.java", "**/*TestCase.java"} ) );
                 }
                 if ( excludes == null || excludes.size() == 0 )
                 {
                     excludes = new ArrayList(
-                        Arrays.asList( new String[]{"**/Abstract*Test.java", "**/Abstract*TestCase.java", "**/*$*"} ) );
+                            Arrays.asList( new String[]{"**/Abstract*Test.java", "**/Abstract*TestCase.java", "**/*$*"} ) );
                 }
             }
 
             if ( testNgArtifact != null )
             {
-                surefireBooter.addTestSuite( "org.apache.maven.surefire.testng.TestNGDirectoryTestSuite", new Object[]{
-                    testClassesDirectory, includes, excludes, groups, excludedGroups, parallel,
-                    new Integer( threadCount ), testSourceDirectory.getAbsolutePath()} );
+
+                try {
+
+                    VersionRange range = VersionRange.createFromVersionSpec( "[5.6,)" );
+                    if ( !range.containsVersion( testNgArtifact.getSelectedVersion() ))
+                    {
+                        // if earlier than 5.6 need to construct and execute the old non-properties way
+
+                        surefireBooter.addTestSuite( "org.apache.maven.surefire.testng.TestNGDirectoryTestSuite", new Object[]{
+                                testClassesDirectory, includes, excludes, groups, excludedGroups, Boolean.valueOf( parallel ),
+                                new Integer( threadCount ), testSourceDirectory.getAbsolutePath()} );
+
+                    } else {
+
+                        surefireBooter.addTestSuite( "org.apache.maven.surefire.testng.TestNGDirectoryTestSuite",
+                                new Object[] { testClassesDirectory, includes, excludes, properties });
+                    }
+
+                }
+                catch ( InvalidVersionSpecificationException e )
+                {
+                    throw new MojoExecutionException( "Error determining the TestNG version requested: " + e.getMessage(), e );
+                }
+                catch ( ArtifactResolutionException e )
+                {
+                    throw new MojoExecutionException( "Error to resolving surefire provider dependency: " + e.getMessage(), e );
+                }
             }
             else
             {
@@ -591,8 +685,9 @@ public class SurefirePlugin
                 // fall back to JUnit, which also contains POJO support. Also it can run
                 // classes compiled against JUnit since it has a dependency on JUnit itself.
                 surefireBooter.addTestSuite( junitDirectoryTestSuite,
-                                             new Object[]{testClassesDirectory, includes, excludes} );
+                        new Object[]{testClassesDirectory, includes, excludes} );
             }
+
         }
 
         // ----------------------------------------------------------------------

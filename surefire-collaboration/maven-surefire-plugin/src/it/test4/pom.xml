@@ -33,7 +33,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>5.5</version>
+            <version>5.6</version>
             <classifier>jdk15</classifier>
             <scope>test</scope>
         </dependency>
@@ -45,9 +45,29 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <!--
                     <suiteXmlFiles>
                         <file>src/test-data/testng.xml</file>
                     </suiteXmlFiles>
+                    -->
+                    <properties>
+                        <property>
+                            <name>log</name>
+                            <value>0</value>
+                        </property>
+                        <property>
+                            <name>testng.suite.definitions</name>
+                            <value>src/test-data/testng.xml</value>
+                        </property>
+                    </properties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
                 </configuration>
             </plugin>
 
@@ -69,5 +89,13 @@
         </plugins>
     </build>
 
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>

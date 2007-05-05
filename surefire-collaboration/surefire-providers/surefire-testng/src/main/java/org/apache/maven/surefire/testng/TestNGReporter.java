@@ -50,7 +50,9 @@ public class TestNGReporter
     private boolean testStarted = false;
     
     private ITestContext _finishContext;
-    
+
+    private boolean testSetCompleted = false;
+
     /**
      * Constructs a new instance that will listen to
      * test updates from a {@link TestNG} class instance.
@@ -155,6 +157,8 @@ public class TestNGReporter
         {
             // TODO: remove this exception from the report manager
         }
+
+        testSetCompleted = false;
     }
 
     public void onFinish( ITestContext context )
@@ -194,7 +198,13 @@ public class TestNGReporter
                 
             } catch (Throwable t) { t.printStackTrace(); }
         }
-        
+
+        // Don't execute twice
+        if (testSetCompleted)
+        {
+            return;
+        }
+
         String rawString = bundle.getString( "testSetCompletedNormally" );
         
         ReportEntry report =
@@ -203,6 +213,8 @@ public class TestNGReporter
         reportManager.testSetCompleted( report );
 
         reportManager.reset();
+
+        testSetCompleted = true;
     }
     
     /**

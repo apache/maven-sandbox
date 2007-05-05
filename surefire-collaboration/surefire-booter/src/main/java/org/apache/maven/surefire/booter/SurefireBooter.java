@@ -20,12 +20,7 @@ package org.apache.maven.surefire.booter;
  */
 
 import org.apache.maven.surefire.Surefire;
-import org.apache.maven.surefire.booter.output.FileOutputConsumerProxy;
-import org.apache.maven.surefire.booter.output.ForkingStreamConsumer;
-import org.apache.maven.surefire.booter.output.OutputConsumer;
-import org.apache.maven.surefire.booter.output.StandardOutputConsumer;
-import org.apache.maven.surefire.booter.output.SupressFooterOutputConsumerProxy;
-import org.apache.maven.surefire.booter.output.SupressHeaderOutputConsumerProxy;
+import org.apache.maven.surefire.booter.output.*;
 import org.apache.maven.surefire.testset.TestSetFailedException;
 import org.apache.maven.surefire.util.NestedRuntimeException;
 import org.apache.maven.surefire.util.UrlUtils;
@@ -35,22 +30,12 @@ import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author Jason van Zyl
@@ -655,6 +640,31 @@ public class SurefireBooter
         return list;
     }
 
+    private static Properties processPropertiesList( String propertiesList )
+    {
+        String sl = propertiesList;
+
+        if ( sl.startsWith( "{" ) && sl.endsWith( "}" ) )
+        {
+            sl = sl.substring( 1, sl.length() - 1 );
+        }
+
+        Properties props = new Properties();
+
+        String[] stringArray = StringUtils.split( sl, "," );
+
+        for ( int i = 0; i < stringArray.length; i++ )
+        {
+            String[] keyValue = StringUtils.split( stringArray[i], "=");
+            if (keyValue.length != 2)
+                throw new IllegalStateException("Expected to find key/value pair in configuration string: " + stringArray[i]);
+
+            props.put(keyValue[0].trim(), keyValue[1].trim());
+        }
+        
+        return props;
+    }
+
     private static Properties loadProperties( File file )
         throws IOException
     {
@@ -728,10 +738,14 @@ public class SurefireBooter
                 {
                     paramObjects[i] = Integer.valueOf( params[i] );
                 }
+                else if ( types[i].equals( Properties.class.getName() ) )
+                {
+                    paramObjects[i] = processPropertiesList(params[i]);
+                }
                 else
                 {
                     // TODO: could attempt to construct with a String constructor if needed
-                    throw new IllegalArgumentException( "Unknown parameter type: " + types[i] );
+                    throw new IllegalArgumentException( "Unknown parameter type: " + types[i]);
                 }
             }
         }

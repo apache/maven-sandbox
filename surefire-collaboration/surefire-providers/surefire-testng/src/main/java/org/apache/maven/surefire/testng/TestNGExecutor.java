@@ -30,6 +30,7 @@ import org.testng.xml.XmlSuite;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Properties;
 
 /**
  * Contains utility methods for executing TestNG.
@@ -87,16 +88,31 @@ public class TestNGExecutor
         try {
 
             String jre = System.getProperty("java.vm.version");
-
             Method annotType = TestNGExecutor.getMethod(testNG.getClass(), "setAnnotations", 1);
+            
             if (annotType != null) {
 
                 annotType.invoke(testNG, new Object[]{ jre.indexOf("1.4") > -1 ? "javadoc" : "jdk"});
 
-                Method init = testNG.getClass().getDeclaredMethod("initializeAnnotationFinders", new Class[0]);
+                Method init = testNG.getClass().getDeclaredMethod("initializeListeners", new Class[0]);
                 init.setAccessible(true);
                 init.invoke(testNG, new Object[0]);
-                
+
+                init = testNG.getClass().getDeclaredMethod("initializeAnnotationFinders", new Class[0]);
+                init.setAccessible(true);
+                init.invoke(testNG, new Object[0]);
+
+                init = testNG.getClass().getDeclaredMethod("initializeCommandLineSuites", new Class[0]);
+                init.setAccessible(true);
+                init.invoke(testNG, new Object[0]);
+
+                init = testNG.getClass().getDeclaredMethod("initializeCommandLineSuitesParams", new Class[0]);
+                init.setAccessible(true);
+                init.invoke(testNG, new Object[0]);
+
+                init = testNG.getClass().getDeclaredMethod("initializeCommandLineSuitesGroups", new Class[0]);
+                init.setAccessible(true);
+                init.invoke(testNG, new Object[0]);
             } else if (Class.forName("org.testng.internal.annotations.AnnotationConfiguration") != null
                     && AnnotationConfiguration.class.getMethod("getInstance", new Class[0]) != null) {
 
@@ -106,14 +122,16 @@ public class TestNGExecutor
                 } else {
                     AnnotationConfiguration.getInstance().initialize(AnnotationConfiguration.JVM_15_CONFIG);
                 }
+            } else {
+                throw new IllegalStateException("Unable to configure TestNG jre type.");
             }
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
     }
     
-    static void executeTestNG( SurefireTestSuite surefireSuite, String testSourceDirectory, XmlSuite suite,
-                               ReporterManager reporterManager )
+    static void executeTestNG( SurefireTestSuite surefireSuite, String testSourceDirectory,
+                               XmlSuite suite, ReporterManager reporterManager )
     {
         TestNG testNG = new TestNG( false );
 
@@ -147,5 +165,27 @@ public class TestNGExecutor
         // failures that happen in before/after suite configuration methods
         
         reporter.cleanupAfterTestsRun();
+    }
+
+    static void executeTestNG( SurefireTestSuite suite, Properties config, ReporterManager reporterManager )
+    {
+        TestNG testNG = new TestNG( false );
+
+        Method execMethod = getMethod(testNG.getClass(), "configureAndRun", 1);
+        if (execMethod == null)
+            throw new IllegalArgumentException("Unable to find method <configureAndRun(Map)> on TestNG class provided");
+
+        TestNGReporter reporter = new TestNGReporter( reporterManager, suite );
+        config.put("listener", reporter);
+        config.put("suitelistener", reporter);
+
+        try {
+
+            execMethod.invoke(testNG, new Object[] { config });
+        } catch (Throwable t)
+        {
+            t.printStackTrace();
+            return;
+        }
     }
 }
