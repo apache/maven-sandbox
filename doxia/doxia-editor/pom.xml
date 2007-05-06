@@ -36,9 +36,9 @@ under the License.
       <version>1.0-alpha-9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-8</version>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>doxia-module-xdoc</artifactId>
+      <version>1.0-alpha-9-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

@@ -17,18 +17,18 @@
  * limitations under the License.
  */
  -->
- 
+
 <model>
   <id>book</id>
   <name>BookModel</name>
   <description>
     <![CDATA[
     <p>
-      This descriptor specifies the metadatas and the content for 
+      This descriptor specifies the metadatas and the content for
       a book.
     </p>
     <p>
-      A book is defined by a collection of chapters, a chapter by a 
+      A book is defined by a collection of chapters, a chapter by a
       collection of sections, a section by a file.
     </p>
     ]]>
@@ -40,7 +40,7 @@
     </default>
   </defaults>
   <classes>
-    <class rootElement="true" xml.tagName="project">
+    <class rootElement="true" xml.tagName="book">
       <name>BookModel</name>
       <description>
         Describes the book layout and packaging.

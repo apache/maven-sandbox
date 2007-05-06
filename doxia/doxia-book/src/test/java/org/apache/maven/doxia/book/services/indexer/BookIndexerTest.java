@@ -23,7 +23,7 @@ import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.services.io.BookIo;
 import org.apache.maven.doxia.index.IndexEntry;
-import org.apache.maven.doxia.module.HtmlTools;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
 
