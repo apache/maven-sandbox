@@ -471,8 +471,13 @@ public class SurefirePlugin
             properties.put("excludegroups", this.excludedGroups);
         if (this.groups != null)
             properties.put("groups", this.groups);
-        if (this.threadCount > 0)
-            properties.put("threadcount", Integer.valueOf(this.threadCount));
+
+        try {
+            if (this.threadCount > 0)
+                properties.put("threadcount", new Integer(this.threadCount));
+        } catch (NumberFormatException e) {
+            //ignore 
+        }
 
         if (this.suiteXmlFiles != null) {
             String list = "";
