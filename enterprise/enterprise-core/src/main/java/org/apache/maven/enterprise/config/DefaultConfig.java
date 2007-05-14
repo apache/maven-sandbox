@@ -30,13 +30,13 @@ public class DefaultConfig
 {
     EnterpriseConfig delegate;
 
-    EnterpriseXpp3Reader reader = new EnterpriseXpp3Reader();
+    transient EnterpriseXpp3Reader reader = new EnterpriseXpp3Reader();
 
-    EnterpriseXpp3Writer writer = new EnterpriseXpp3Writer();
+    transient EnterpriseXpp3Writer writer = new EnterpriseXpp3Writer();
 
     File configFile;
 
-    Logger logger;
+    transient Logger logger;
 
     public void start()
         throws StartingException
