@@ -53,7 +53,7 @@ public class EnterpriseIDiskWebDavServlet
         {
             if ( httpAuth.getSessionUser() != null )
             {
-                String user = davRequest.getRequest().getRemoteUser();
+                String user = httpAuth.getSecuritySession().getUser().getUsername();
 
                 HttpServletRequest request = davRequest.getRequest();
                 if ( request.getPathInfo().equals( "/" + user ) ||
@@ -93,7 +93,8 @@ public class EnterpriseIDiskWebDavServlet
         String resource = davRequest.getLogicalResource();
         String user = httpAuth.getSessionUser().getUsername();
 
-        if ( resource.equals( "/" + user ) || resource.startsWith( "/" + user + "/" ) )
+        if ( resource.equals( "/" + user ) || resource.startsWith( "/" + user + "/" ) ||
+            resource.equals( "/.DS_Store") ) // Hush little apple, let folk write root metadata
         {
             return true;
         }
