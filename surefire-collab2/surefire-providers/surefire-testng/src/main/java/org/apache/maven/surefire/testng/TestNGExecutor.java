@@ -19,12 +19,17 @@ package org.apache.maven.surefire.testng;
  * under the License.
  */
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+import org.apache.maven.artifact.versioning.VersionRange;
+import org.apache.maven.surefire.testng.conf.IConfigurator;
+import org.apache.maven.surefire.testng.conf.TestNG4751Configurator;
+import org.apache.maven.surefire.testng.conf.TestNG52Configurator;
+import org.apache.maven.surefire.testng.conf.TestNGMapConfigurator;
+import org.apache.maven.surefire.util.NestedRuntimeException;
 import org.testng.TestNG;
 
 /**
@@ -36,7 +41,6 @@ import org.testng.TestNG;
 public class TestNGExecutor
 {
 	public static final String SOURCE_DIRS_OPTION = "maven.testng.src.dir";
-	public static final String PARALLEL_MODE_OPTION = "parallel";
 	
     private TestNGExecutor()
     {
@@ -58,13 +62,28 @@ public class TestNGExecutor
 		testng.run();
 	}
 	
-	private static interface IConfigurator {
-		void configure(TestNG testng, Map options);
-	}
-	
 	private static IConfigurator getConfigurator(ArtifactVersion version) {
-		return null;
+		try {
+			VersionRange range = VersionRange.createFromVersionSpec("[4.7,5.1]");
+			if(range.containsVersion(version)) {
+				return new TestNG4751Configurator();
+			}
+			range = VersionRange.createFromVersion("5.2");
+			if(range.containsVersion(version)) {
+				return new TestNG52Configurator();
+			}
+			range = VersionRange.createFromVersionSpec( "[5.3,)" );
+			if(range.containsVersion(version)) {
+				return new TestNGMapConfigurator();
+			}
+			
+			throw new NestedRuntimeException("Unknown TestNG version " + version);
+		}
+		catch(InvalidVersionSpecificationException invsex) {
+			throw new NestedRuntimeException("", invsex);
+		}
 	}
+		
 	
 	private static TestNG initialize(ExecEnv env, String sourcePath) {
 		TestNG testNG = new TestNG( false );
@@ -72,10 +91,9 @@ public class TestNGExecutor
 		// turn off all TestNG output
 		testNG.setVerbose( 0 );
 		
-        testNG.setListenerClasses( new ArrayList() );
-	
         TestNGReporter reporter = new TestNGReporter( env.getReportManager(), env.getSuite() );
         testNG.addListener( (Object) reporter );
+        // TODO: we should have the Profile so that we can decide if this is needed or not
         if(sourcePath != null) {
         	testNG.setSourcePath(sourcePath);
         }
@@ -84,5 +102,5 @@ public class TestNGExecutor
         testNG.setOutputDirectory( System.getProperty( "java.io.tmpdir" ) );
         
         return testNG;
-	}	
+	}
 }
