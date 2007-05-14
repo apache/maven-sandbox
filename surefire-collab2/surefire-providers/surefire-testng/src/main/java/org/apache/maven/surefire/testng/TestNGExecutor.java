@@ -47,17 +47,23 @@ public class TestNGExecutor
     }
 	
 	public static void run(Class[] testClasses, Map options, ExecEnv execEnv) {
-		TestNG testng = initialize(execEnv, (String) options.remove(SOURCE_DIRS_OPTION));
+		String testSrcPath = (String) options.remove(SOURCE_DIRS_OPTION);
+		TestNG testng = new TestNG(false);
 		IConfigurator configurator = getConfigurator(execEnv.getVersion());
 		configurator.configure(testng, options);
+		postConfigure(testng, testSrcPath, execEnv);
+		
 		testng.setTestClasses(testClasses);
 		testng.run();
 	}
 
 	public static void run(List suiteFiles, Map options, ExecEnv execEnv) {
-		TestNG testng = initialize(execEnv, (String) options.remove(SOURCE_DIRS_OPTION));
+		String testSrcPath = (String) options.remove(SOURCE_DIRS_OPTION);
+		TestNG testng = new TestNG(false);
 		IConfigurator configurator = getConfigurator(execEnv.getVersion());
 		configurator.configure(testng, options);
+		postConfigure(testng, testSrcPath, execEnv);
+		
 		testng.setTestSuites(suiteFiles);
 		testng.run();
 	}
@@ -80,14 +86,12 @@ public class TestNGExecutor
 			throw new NestedRuntimeException("Unknown TestNG version " + version);
 		}
 		catch(InvalidVersionSpecificationException invsex) {
-			throw new NestedRuntimeException("", invsex);
+			throw new NestedRuntimeException("Bug in plugin. Please report it with the attached stacktrace", invsex);
 		}
 	}
 		
 	
-	private static TestNG initialize(ExecEnv env, String sourcePath) {
-		TestNG testNG = new TestNG( false );
-		
+	private static void postConfigure(TestNG testNG, String sourcePath, ExecEnv env) {
 		// turn off all TestNG output
 		testNG.setVerbose( 0 );
 		
@@ -100,7 +104,5 @@ public class TestNGExecutor
         // workaround for SUREFIRE-49
         // TestNG always creates an output directory, and if not set the name for the directory is "null"
         testNG.setOutputDirectory( System.getProperty( "java.io.tmpdir" ) );
-        
-        return testNG;
 	}
 }

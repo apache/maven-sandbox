@@ -16,7 +16,7 @@ abstract public class AbstractDirectConfigurator implements IConfigurator {
 	protected void setOptions(TestNG testng, Map options) throws NestedRuntimeException {
 		Map setters = getSetters();
 		
-		for(Iterator it = options.keySet().iterator(); it.hasNext(); ) {
+		for(Iterator it = options.entrySet().iterator(); it.hasNext(); ) {
 			Map.Entry entry = (Map.Entry) it.next();
 			String key = (String) entry.getKey();
 			Object val = entry.getValue();
