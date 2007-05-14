@@ -104,14 +104,14 @@ public class  EnterpriseWebDavServlet
         {
             AuthenticationResult result = httpAuth.getAuthenticationResult( request, response );
 
-            if ( ( result == null ) || !result.isAuthenticated() )
+            if ( ( result != null ) && result.isAuthenticated() )
             {
-                httpAuth.challenge( request, response, "Enterprise Repository",
-                                    new AuthenticationException( "User credentials are invalid" ) );
-                return false;
+                return true;
             }
 
-            return true;
+            httpAuth.challenge( request, response, "Enterprise Repository",
+                                new AuthenticationException( "User credentials are invalid" ) );
+            return false;
         }
         catch ( AuthenticationException e )
         {
@@ -157,7 +157,7 @@ public class  EnterpriseWebDavServlet
 
         if ( isRead )
         {
-            /* if the repositories are public we do not require authentication for non-idisk requests */
+            /* if the repositories are public we do not require authentication for non-idisk read requests */
             if ( config.getWebdav().isPublicRepositories() )
             {
                 return true;
