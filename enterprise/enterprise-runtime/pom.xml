@@ -168,6 +168,8 @@
           </execution>
         </executions>
         <configuration>
+          <finalName>maven-enterprise-${project.version}</finalName>
+          <appendAssemblyId>false</appendAssemblyId>
           <descriptors>
             <descriptor>src/main/assembly/bin.xml</descriptor>
           </descriptors>
