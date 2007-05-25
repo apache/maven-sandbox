@@ -2,7 +2,7 @@ package org.apache.maven.enterprise.web;
 
 import org.codehaus.plexus.webdav.servlet.DavServerRequest;
 import org.codehaus.plexus.webdav.util.WebdavMethodUtil;
-import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.redback.authentication.AuthenticationException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -51,11 +51,12 @@ public class EnterpriseIDiskWebDavServlet
 
         if ( authenticated )
         {
-            if ( httpAuth.getSessionUser() != null )
-            {
-                String user = httpAuth.getSecuritySession().getUser().getUsername();
+            HttpServletRequest request = davRequest.getRequest();
 
-                HttpServletRequest request = davRequest.getRequest();
+            if ( httpAuth.getSessionUser( request.getSession() ) != null )
+            {
+                String user = httpAuth.getSecuritySession( request.getSession() ).getUser().getUsername();
+
                 if ( request.getPathInfo().equals( "/" + user ) ||
                     request.getPathInfo().startsWith( "/" + user + "/" ) )
                 {
@@ -91,7 +92,7 @@ public class EnterpriseIDiskWebDavServlet
         }
 
         String resource = davRequest.getLogicalResource();
-        String user = httpAuth.getSessionUser().getUsername();
+        String user = httpAuth.getSessionUser( request.getSession() ).getUsername();
 
         if ( resource.equals( "/" + user ) || resource.startsWith( "/" + user + "/" ) ||
             resource.equals( "/.DS_Store") ) // Hush little apple, let folk write root metadata

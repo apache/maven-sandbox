@@ -3,11 +3,12 @@ package org.apache.maven.enterprise.web;
 import org.codehaus.plexus.webdav.servlet.basic.BasicWebDavServlet;
 import org.codehaus.plexus.webdav.servlet.DavServerRequest;
 import org.codehaus.plexus.webdav.util.WebdavMethodUtil;
-import org.codehaus.plexus.security.authentication.AuthenticationResult;
-import org.codehaus.plexus.security.authentication.AuthenticationException;
-import org.codehaus.plexus.security.policy.AccountLockedException;
-import org.codehaus.plexus.security.policy.MustChangePasswordException;
-import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator;
+import org.codehaus.plexus.redback.authentication.AuthenticationResult;
+import org.codehaus.plexus.redback.authentication.AuthenticationException;
+import org.codehaus.plexus.redback.policy.AccountLockedException;
+import org.codehaus.plexus.redback.policy.MustChangePasswordException;
+import org.codehaus.plexus.redback.http.authentication.HttpAuthenticator;
+import org.codehaus.plexus.redback.http.authentication.SessionBasedHttpAuthenticator;
 import org.codehaus.plexus.util.StringUtils;
 import org.apache.maven.enterprise.model.EnterpriseConfig;
 
@@ -31,7 +32,7 @@ import java.io.IOException;
 public class  EnterpriseWebDavServlet
     extends BasicWebDavServlet
 {
-    protected HttpAuthenticator httpAuth;
+    protected SessionBasedHttpAuthenticator httpAuth;
 
     protected File enterpriseDavRoot;
 
@@ -71,7 +72,7 @@ public class  EnterpriseWebDavServlet
         setDebug(false); // TODO perhaps debug should be off by default?
         super.initComponents();
 
-        httpAuth = (HttpAuthenticator) lookup( HttpAuthenticator.ROLE, "basic" );
+        httpAuth = (SessionBasedHttpAuthenticator) lookup( HttpAuthenticator.ROLE, "basic" );
 
         String plexusHome = "";
 

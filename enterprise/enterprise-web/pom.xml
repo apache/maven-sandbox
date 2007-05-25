@@ -24,44 +24,44 @@
       <version>1.0-alpha-2</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
-      <version>${securityVersion}</version>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-rbac-jdo</artifactId>
+      <version>${redbackVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authentication-provider-keystore</artifactId>
-      <version>${securityVersion}</version>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-authentication-keys</artifactId>
+      <version>${redbackVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-keys-jdo</artifactId>
-      <version>${securityVersion}</version>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-keys-jdo</artifactId>
+      <version>${redbackVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authentication-provider-user-manager</artifactId>
-      <version>${securityVersion}</version>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-authentication-users</artifactId>
+      <version>${redbackVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-user-management-provider-jdo</artifactId>
-      <version>${securityVersion}</version>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-users-jdo</artifactId>
+      <version>${redbackVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
-      <version>${securityVersion}</version>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-authorization-rbac</artifactId>
+      <version>${redbackVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-system</artifactId>
-      <version>${securityVersion}</version>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-system</artifactId>
+      <version>${redbackVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-ui-web-integration</artifactId>
-      <version>${securityVersion}</version>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-jee-web-integration</artifactId>
+      <version>${redbackVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -81,6 +81,18 @@
   </dependencies>
 
   <properties>
-    <securityVersion>1.0-alpha-11</securityVersion>
+    <redbackVersion>1.0-alpha-2-SNAPSHOT</redbackVersion>
   </properties>
+
+  <!-- we need this for latest redback snapshots -->
+  <repositories>
+    <repository>
+      <id>codehaus.snapshots</id>
+      <name>Codehaus Snapshot Repository</name>
+      <url>http://snapshots.repository.codehaus.org/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>
