@@ -55,4 +55,30 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <!-- snapshot of appserver -->
+  <pluginRepositories>
+    <pluginRepository>
+      <id>codehaus-snapshot</id>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <url>http://snapshots.repository.codehaus.org</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <repositories>
+    <repository>
+      <id>codehaus-snapshot</id>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <url>http://snapshots.repository.codehaus.org</url>
+    </repository>
+  </repositories>
 </project>
