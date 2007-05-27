@@ -18,7 +18,6 @@ package org.apache.maven.plugin.lifecycle;
 
 import org.apache.maven.lifecycle.LifecycleLoaderException;
 import org.apache.maven.lifecycle.LifecycleSpecificationException;
-import org.apache.maven.lifecycle.binding.LifecycleBindingManager;
 import org.apache.maven.lifecycle.plan.BuildPlan;
 import org.apache.maven.lifecycle.plan.BuildPlanUtils;
 import org.apache.maven.lifecycle.plan.BuildPlanner;
@@ -36,9 +35,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * Retrieves the build plan for the current project, and displays it to the logger's INFO log-level,
- * or a file.
- *
+ * Retrieves the build plan for the current project, and displays it to the logger's INFO log-level, or a file.
+ * 
  * @goal build-plan
  */
 public class BuildPlanMojo
@@ -50,14 +48,14 @@ public class BuildPlanMojo
      * @parameter
      */
     private File output;
-    
+
     /**
      * Whether to list extended information about each mojo in the build plan. Default is false.
-     *  
+     * 
      * @parameter expression="${extendedInfo}" default-value="false"
      */
     private boolean extendedInfo;
-    
+
     /**
      * Comma-separated list of tasks to complete in the proposed build.
      * 
@@ -65,35 +63,30 @@ public class BuildPlanMojo
      * @required
      */
     private String tasks;
-    
+
     /**
      * @parameter default-value="${project}"
      * @required
      * @readonly
      */
     private MavenProject project;
-    
+
     /**
      * @component
      */
     private BuildPlanner buildPlanner;
 
-    /**
-     * @component
-     */
-    private LifecycleBindingManager lifecycleBindingManager;
-    
     public void execute()
         throws MojoExecutionException
     {
         StringTokenizer tokens = new StringTokenizer( tasks, "," );
         List taskList = new ArrayList( tokens.countTokens() );
-        
-        while( tokens.hasMoreTokens() )
+
+        while ( tokens.hasMoreTokens() )
         {
             taskList.add( tokens.nextToken().trim() );
         }
-        
+
         BuildPlan buildPlan;
         try
         {
@@ -111,11 +104,11 @@ public class BuildPlanMojo
         {
             throw new MojoExecutionException( "Failed to construct build plan. Reason: " + e.getMessage(), e );
         }
-        
+
         String listing;
         try
         {
-            listing = BuildPlanUtils.listBuildPlan( buildPlan, project, lifecycleBindingManager, extendedInfo );
+            listing = BuildPlanUtils.listBuildPlan( buildPlan, extendedInfo );
         }
         catch ( LifecycleSpecificationException e )
         {
@@ -125,23 +118,19 @@ public class BuildPlanMojo
         {
             throw new MojoExecutionException( "Failed to list build plan. Reason: " + e.getMessage(), e );
         }
-        catch ( LifecycleLoaderException e )
-        {
-            throw new MojoExecutionException( "Failed to list build plan. Reason: " + e.getMessage(), e );
-        }
-        
+
         if ( output != null )
         {
             if ( output.getParentFile() != null )
             {
                 output.getParentFile().mkdirs();
             }
-            
+
             FileWriter writer = null;
             try
             {
                 writer = new FileWriter( output );
-                
+
                 writer.write( "Project: " + project.getId() );
                 writer.write( "\nTasks: " + tasks );
                 writer.write( "\nBuildPlan:\n" );
@@ -150,7 +139,8 @@ public class BuildPlanMojo
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "Failed to write build plan to: " + output + ". Reason: " + e.getMessage(), e );
+                throw new MojoExecutionException( "Failed to write build plan to: " + output + ". Reason: "
+                                                  + e.getMessage(), e );
             }
             finally
             {
@@ -159,7 +149,9 @@ public class BuildPlanMojo
         }
         else
         {
-            getLog().info( "\n\nProject: " + project.getId() + "\nTasks: " + tasks + "\nBuild Plan:\n" + listing + "\n\n" );
+            getLog().info(
+                           "\n\nProject: " + project.getId() + "\nTasks: " + tasks + "\nBuild Plan:\n" + listing
+                                           + "\n\n" );
         }
     }
 }
