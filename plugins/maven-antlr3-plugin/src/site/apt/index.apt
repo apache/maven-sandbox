@@ -1,0 +1,7 @@
+Introduction
+
+ The maven-antlr3-plugin will use the {{{http://www.antlr.org}ANTLR tool}}
+ to process grammars included in your project and generate code (typically
+ Java source code) during the generate-sources phase of the build.
+
+ The plugin doesn't expose all ANTLR features yet.

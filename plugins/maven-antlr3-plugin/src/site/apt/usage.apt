@@ -1,0 +1,76 @@
+Usage
+
+ To enable the plugin, add the following to you project's pom.xml,
+
++-----+
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>uk.co.badgersinfoil.maven.plugins</groupId>
+        <artifactId>maven-antlr3-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>antlr</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  ...
+</project>
++-----+
+
+ You should place your ANTLRv3 grammar files in <<<src/main/antlr>>>, and
+ the plugin with scan the subfolders of this folder looking for grammar files
+ (names ending with '.g').
+
+ The generated files will automatically be included in the list of elements
+ to be built in the project's compile phase.
+
+* Alternative Filename Extensions
+
+ To use an extension other than .g for grammar files, use the <<<includes>>>
+ configuration element (remember to have an entry in this list for .g files
+ if you still want them to work as well),
+
++-----+
+      ...
+      <plugin>
+        <groupId>uk.co.badgersinfoil.maven.plugins</groupId>
+        <artifactId>maven-antlr3-plugin</artifactId>
+        ...
+        <configuration>
+          <includes>
+            <include>**/*.g</include>
+            <include>**/*.g3</include>
+          </includes>
+        </configuration>
+      </plugin>
+      ...
++-----+
+
+Compiling generated code
+
+ The generated code should just get compiled by running <<<mvn compile>>> etc.
+ but you will need to include the ANTLR runtime classes as a dependancy of
+ your project.  Add the following dependancy to your POM,
+
++-----+
+  ...
+  <dependency>
+    <groupId>org.antlr</groupId>
+    <artifactId>antlr-java-runtime</artifactId>
+    <packaging>jar</packaging>
+    <version>05-14-2007.17</version>
+  </dependency>
+  ...
++-----+
+
+ Ensure you add a dependancy on the Java runtime rather than on the ANTLR tool
+ artifact, or you will end up adding the transative dependancies on
+ StringTemplate and the old ANTLRv2 to your project, when all you need are the
+ runtime support classes.

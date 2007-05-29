@@ -1,0 +1,16 @@
+<project>
+  <body>
+    <links>
+      <item name="ANTLR" href="http://www.antlr.org/"/>
+    </links>
+
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="Installation" href="install.html"/>
+      <item name="Usage" href="usage.html"/>
+      <item name="Goals" href="plugin-info.html"/>
+    </menu>
+
+    <menu ref="reports"/>
+  </body>
+</project>

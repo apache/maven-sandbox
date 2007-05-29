@@ -1,0 +1,110 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-plugins</artifactId>
+    <version>8</version>
+  </parent>
+
+  <groupId>org.apache.maven.plugin.antlrv3</groupId>
+  <artifactId>maven-antlr3-plugin</artifactId>
+  <packaging>maven-plugin</packaging>
+  <version>0.4-SNAPSHOT</version>
+  <name>Maven ANTLR-v3 Plugin</name>
+  <description>Generate code from ANTLR version 3 grammar descriptions</description>
+  <developers>
+    <developer>
+      <id>dave</id>
+      <name>David Holroyd</name>
+      <url>http://david.holroyd.me.uk/</url>
+    </developer>
+  </developers>
+  <inceptionYear>2007</inceptionYear>
+  <organization>
+    <name>David Holroyd</name>
+    <url>http://david.holroyd.me.uk/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>LICENSE.txt</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:svn:http://svn.badgers-in-foil.co.uk/maven-antlr3-plugin/maven-antlr3-plugin/trunk</connection>
+    <developerConnection>scm:svn:http://svn.badgers-in-foil.co.uk/maven-antlr3-plugin/maven-antlr3-plugin/trunk</developerConnection>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-project</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-compiler-manager</artifactId>
+      <version>1.5.3</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr</artifactId>
+      <version>3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.shared</groupId>
+      <artifactId>maven-plugin-testing-harness</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <distributionManagement>
+    <repository>
+      <id>bif-repository</id>
+      <url>scp://maven.badgers-in-foil.co.uk/home/maven/www/maven2</url>
+    </repository>
+    <site>
+      <id>maven-antlr3-plugin-site</id>
+      <url>scp://maven.badgers-in-foil.co.uk/home/maven/www/sites/maven-antlr3-plugin</url>
+    </site>
+  </distributionManagement>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <!-- override the default report set; just reports with useful info -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>dependencies</report>
+              <report>project-team</report>
+              <report>license</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
