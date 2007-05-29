@@ -1,3 +1,5 @@
+package org.apache.maven.plugin.antlr3;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,8 +19,6 @@
  * under the License.
  */
 
-package org.apache.maven.plugin.antlr3;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,16 +28,26 @@ import org.apache.maven.plugin.antlr3.AntlrHelper;
 
 import junit.framework.TestCase;
 
+/**
+ * @author <a href="mailto:dave@badgers-in-foil.co.uk">David Holroyd</a>
+ * @version $Id $
+ */
 public class AntlrHelperTest extends TestCase
 {
     private File tmpDir;
 
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
     public void setUp() throws IOException
     {
         tmpDir = new File( System.getProperty( "java.io.tmpdir" ), "maven-antlr3-plugin-test" );
         tmpDir.mkdir();
     }
 
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
     public void tearDown()
     {
         // delete files (assumes no subdirs created),
@@ -61,7 +71,7 @@ public class AntlrHelperTest extends TestCase
 
         targets.add( fileB );
         assertFalse( AntlrHelper.buildRequired( fileA.getPath(), targets ) );
-        
+
         targets.clear();
         targets.add( fileA );
         assertTrue( AntlrHelper.buildRequired( fileB.getPath(), targets ) );

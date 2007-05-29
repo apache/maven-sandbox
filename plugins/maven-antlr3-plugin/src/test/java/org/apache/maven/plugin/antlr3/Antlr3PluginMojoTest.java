@@ -1,3 +1,5 @@
+package org.apache.maven.plugin.antlr3;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,15 +19,20 @@
  * under the License.
  */
 
-package org.apache.maven.plugin.antlr3;
-
 import java.io.File;
 import java.util.Collections;
 import org.apache.maven.plugin.antlr3.Antlr3PluginMojo;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 
+/**
+ * @author <a href="mailto:dave@badgers-in-foil.co.uk">David Holroyd</a>
+ * @version $Id $
+ */
 public class Antlr3PluginMojoTest extends AbstractMojoTestCase
 {
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
     protected void tearDown() throws Exception
     {
         // if we don't override this, the superclass implementation is used,

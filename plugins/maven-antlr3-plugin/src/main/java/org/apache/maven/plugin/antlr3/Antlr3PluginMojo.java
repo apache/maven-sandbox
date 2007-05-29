@@ -1,3 +1,5 @@
+package org.apache.maven.plugin.antlr3;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -16,8 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.maven.plugin.antlr3;
 
 import org.antlr.Tool;
 import org.antlr.analysis.DFA;
@@ -47,6 +47,8 @@ import java.util.Set;
 /**
  * Generate source code from ANTLRv3 grammar specifications.
  *
+ * @author <a href="mailto:dave@badgers-in-foil.co.uk">David Holroyd</a>
+ * @version $Id $
  * @goal antlr
  * @phase generate-sources
  */
@@ -54,7 +56,7 @@ public class Antlr3PluginMojo extends AbstractMojo
 {
     /**
      * Specifies the Antlr directory containing grammar files.
-     * 
+     *
      * @parameter expression="${basedir}/src/main/antlr"
      * @required
      */
@@ -63,14 +65,14 @@ public class Antlr3PluginMojo extends AbstractMojo
     /**
      * A set of patterns matching files from the sourceDirectory that
      * should be processed as grammers.
-     * 
+     *
      * @parameter
      */
     Set includes = new HashSet();
 
     /**
      * Set of exclude patterns
-     * 
+     *
      * @parameter
      */
     Set excludes = new HashSet();
@@ -78,21 +80,21 @@ public class Antlr3PluginMojo extends AbstractMojo
     /**
      * Enables ANTLR-specific network debugging. Requires a tool able to
      * talk this protocol e.g. ANTLRWorks
-     * 
+     *
      * @parameter
      */
     protected boolean debug = false;
 
     /**
      * Generate a parser that logs rule entry/exit messages.
-     * 
+     *
      * @parameter
      */
     protected boolean trace = false;
 
     /**
      * Generate a parser that computes profiling information.
-     * 
+     *
      * @parameter
      */
     protected boolean profile = false;
@@ -101,7 +103,7 @@ public class Antlr3PluginMojo extends AbstractMojo
 
     /**
      * Location for generated Java files.
-     * 
+     *
      * @parameter expression="${project.build.directory}/generated-sources/antlr"
      * @required
      */
@@ -110,7 +112,7 @@ public class Antlr3PluginMojo extends AbstractMojo
     /**
      * The number of milliseconds ANTLR will wait for analysis of each
      * alternative in the grammar to complete before giving up.
-     * 
+     *
      * @parameter
      */
     private int conversionTimeout;
@@ -121,6 +123,9 @@ public class Antlr3PluginMojo extends AbstractMojo
      */
     private MavenProject project;
 
+    /**
+     * @see org.apache.maven.plugin.Mojo#execute()
+     */
     public void execute() throws MojoExecutionException
     {
         File f = outputDirectory;

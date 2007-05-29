@@ -1,3 +1,5 @@
+package org.apache.maven.plugin.antlr3;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,19 +19,25 @@
  * under the License.
  */
 
-package org.apache.maven.plugin.antlr3;
-
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @author <a href="mailto:dave@badgers-in-foil.co.uk">David Holroyd</a>
+ * @version $Id $
+ */
 public class AntlrHelper
 {
     /**
      * Checks to see if the list of outputFiles all exist, and have
      * last-modified timestamps which are later than the last-modified
      * timestamp of the grammar file. If these conditions hold, the method
-     * returns false, otherwise, it returns true,
+     * returns false, otherwise, it returns true.
+     *
+     * @param grammarFileName
+     * @param outputFiles
+     * @return
      */
     public static boolean buildRequired( String grammarFileName, List outputFiles )
     {
