@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
 
 /**
  * Retrieves the build plan for the current project, and displays it to the logger's INFO log-level, or a file.
- * 
+ *
  * @goal build-plan
  */
 public class BuildPlanMojo
@@ -44,21 +44,21 @@ public class BuildPlanMojo
 {
     /**
      * File for writing the build-plan.
-     * 
-     * @parameter
+     *
+     * @parameter expression="${output}"
      */
     private File output;
 
     /**
      * Whether to list extended information about each mojo in the build plan. Default is false.
-     * 
+     *
      * @parameter expression="${extendedInfo}" default-value="false"
      */
     private boolean extendedInfo;
 
     /**
      * Comma-separated list of tasks to complete in the proposed build.
-     * 
+     *
      * @parameter expression="${tasks}" default-value="${package}"
      * @required
      */
