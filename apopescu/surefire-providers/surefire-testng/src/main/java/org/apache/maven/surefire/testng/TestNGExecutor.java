@@ -52,10 +52,12 @@ public class TestNGExecutor
                             String classifier, ReporterManager reportManager, SurefireTestSuite suite )
         throws TestSetFailedException
     {
+        // kind of ugly, but listeners are configured differently
+        final String listeners = (String) options.remove("listener");
         TestNG testng = new TestNG( false );
         Configurator configurator = getConfigurator( version );
         configurator.configure( testng, options );
-        postConfigure( testng, testSourceDirectory, (String) options.get("listener"), classifier, reportManager, suite );
+        postConfigure( testng, testSourceDirectory, listeners, classifier, reportManager, suite );
         testng.setTestClasses( testClasses );
         testng.run();
     }
