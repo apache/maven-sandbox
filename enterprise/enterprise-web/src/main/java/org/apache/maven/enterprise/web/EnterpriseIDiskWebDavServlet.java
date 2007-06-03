@@ -124,6 +124,21 @@ public class EnterpriseIDiskWebDavServlet
             {
                 return true;
             }
+            else if ( config.getWebdav().isPublicIDiskFolder() )
+            {
+                String path = request.getPathInfo();
+                int pos = path.indexOf("/", 1);
+
+                if ( pos > 0 )
+                {
+                    String subPath = path.substring( pos + 1 ).toLowerCase();
+
+                    if ( subPath.equals( "public" ) || subPath.startsWith( "public/") )
+                    {
+                        return true;
+                    }
+                }
+            }
         }
 
         return false;
