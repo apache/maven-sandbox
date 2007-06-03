@@ -561,7 +561,8 @@ public class SurefirePlugin
 
             // TODO: properties should be passed in here too
             surefireBooter.addTestSuite( "org.apache.maven.surefire.testng.TestNGXmlTestSuite", new Object[]{
-                suiteXmlFiles, testSourceDirectory.getAbsolutePath(), testNgArtifact.getVersion()} );
+                suiteXmlFiles, testSourceDirectory.getAbsolutePath(), 
+                testNgArtifact.getVersion(), testNgArtifact.getClassifier(), properties} );
         }
         else
         {
@@ -610,7 +611,7 @@ public class SurefirePlugin
             {
                 surefireBooter.addTestSuite( "org.apache.maven.surefire.testng.TestNGDirectoryTestSuite", new Object[]{
                     testClassesDirectory, includes, excludes, testSourceDirectory.getAbsolutePath(),
-                    testNgArtifact.getVersion(), properties} );
+                    testNgArtifact.getVersion(), testNgArtifact.getClassifier(), properties} );
             }
             else
             {

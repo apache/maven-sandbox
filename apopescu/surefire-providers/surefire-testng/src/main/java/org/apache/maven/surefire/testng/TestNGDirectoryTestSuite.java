@@ -20,6 +20,7 @@ package org.apache.maven.surefire.testng;
  */
 
 import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.surefire.report.ReporterException;
 import org.apache.maven.surefire.report.ReporterManager;
 import org.apache.maven.surefire.suite.AbstractDirectoryTestSuite;
@@ -42,18 +43,24 @@ public class TestNGDirectoryTestSuite
 {
     private ArtifactVersion version;
 
+    private String classifier;
+    
     private Map options;
 
     private String testSourceDirectory;
 
     public TestNGDirectoryTestSuite( File basedir, List includes, List excludes, String testSourceDirectory,
-                                     ArtifactVersion artifactVersion, Map confOptions )
+                                     String artifactVersion, String artifactClassifier, Map confOptions )
     {
         super( basedir, includes, excludes );
 
         this.options = confOptions;
+        
         this.testSourceDirectory = testSourceDirectory;
-        this.version = artifactVersion;
+        
+        this.version = new DefaultArtifactVersion( artifactVersion );
+        
+        this.classifier = artifactClassifier;
     }
 
     protected SurefireTestSet createTestSet( Class testClass, ClassLoader classLoader )
@@ -77,7 +84,7 @@ public class TestNGDirectoryTestSuite
         }
 
         TestNGExecutor.run( new Class[]{testSet.getTestClass()}, this.testSourceDirectory, this.options, this.version,
-                            reporterManager, this );
+                            this.classifier, reporterManager, this );
     }
 
     public void execute( ReporterManager reporterManager, ClassLoader classLoader )
@@ -96,6 +103,7 @@ public class TestNGDirectoryTestSuite
             testClasses[i++] = testSet.getTestClass();
         }
 
-        TestNGExecutor.run( testClasses, this.testSourceDirectory, this.options, this.version, reporterManager, this );
+        TestNGExecutor.run( testClasses, this.testSourceDirectory, this.options, this.version, 
+                            this.classifier, reporterManager, this );
     }
 }

@@ -21,6 +21,7 @@ package org.apache.maven.surefire.testng;
 
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.apache.maven.surefire.report.ReporterException;
 import org.apache.maven.surefire.report.ReporterManager;
 import org.apache.maven.surefire.suite.SurefireTestSuite;
 import org.apache.maven.surefire.testset.TestSetFailedException;
@@ -49,34 +50,42 @@ public class TestNGXmlTestSuite
     private String testSourceDirectory;
 
     private ArtifactVersion version;
+    
+    private String classifier;
 
-    private Map options = new HashMap();
+    private Map options;
 
     // Not really used
     private Map testSets;
 
     /**
      * Creates a testng testset to be configured by the specified
-     * xml file.
+     * xml file(s). The XML files are suite definitions files according to TestNG DTD.
      */
-    public TestNGXmlTestSuite( File[] suiteFiles, String testSourceDirectory, String artifactVersion )
+    public TestNGXmlTestSuite( File[] suiteFiles, String testSourceDirectory, String artifactVersion,
+                               String artifactClassifier, Map confOptions)
     {
         this.suiteFiles = suiteFiles;
 
+        this.options = confOptions;
+        
         this.version = new DefaultArtifactVersion( artifactVersion );
+        
+        this.classifier = artifactClassifier;
 
         this.testSourceDirectory = testSourceDirectory;
     }
 
     public void execute( ReporterManager reporterManager, ClassLoader classLoader )
+        throws ReporterException, TestSetFailedException
     {
         if ( testSets == null )
         {
             throw new IllegalStateException( "You must call locateTestSets before calling execute" );
         }
 
-        TestNGExecutor.run( this.suiteFilePaths, this.testSourceDirectory, this.options, this.version, reporterManager,
-                            this );
+        TestNGExecutor.run( this.suiteFilePaths, this.testSourceDirectory, this.options, this.version, 
+                            this.classifier, reporterManager, this );
     }
 
     public void execute( String testSetName, ReporterManager reporterManager, ClassLoader classLoader )
@@ -87,7 +96,6 @@ public class TestNGXmlTestSuite
 
     public int getNumTests()
     {
-        // TODO: this is not correct
         return suiteFiles.length;
     }
 
