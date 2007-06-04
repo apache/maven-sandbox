@@ -56,7 +56,14 @@ public class TestNGMapConfigurator
             {
                 val = convert( val, String.class );
             }
-            convertedOptions.put( "-" + key, val );
+            if ( key.startsWith("-") ) 
+            {
+              convertedOptions.put( key, val );
+            }
+            else 
+            {
+              convertedOptions.put( "-" + key, val );
+            }
         }
 
         testng.configure( convertedOptions );
