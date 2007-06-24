@@ -51,12 +51,23 @@ under the License.
       <artifactId>doxia-sink-api</artifactId>
       <version>${projectVersion}</version>
     </dependency>
+    <dependency> 
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
+      <version>1.4</version>
+    </dependency>
     <!-- test dependencies -->
     <dependency>
       <groupId>fop</groupId>
       <artifactId>fop</artifactId>
       <version>0.93</version>
       <classifier>jdk14</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
     <!-- This should'n be needed, see DOXIA-101 -->
