@@ -20,7 +20,10 @@ package org.apache.maven.doxia.module.fo;
  */
 
 import java.io.File;
-import java.io.StringWriter;
+import java.io.Reader;
+import java.io.FileWriter;
+import java.io.Writer;
+
 
 import org.apache.maven.doxia.module.apt.AptParser;
 import org.apache.maven.doxia.parser.Parser;
@@ -39,11 +42,23 @@ public class FoSinkTest extends AbstractSinkTestCase
         new AptParser().parse( getTestReader(), createSink() );
 
         // then generate PDF
-        File outputDirectory = new File( getBasedirFile(), "target/output" );
-        File resourceDirectory = new File( getBasedirFile(), "target/test-classes" );
-        File foFile = new File( outputDirectory, "test." + outputExtension() );
-        File pdfFile = new File( outputDirectory, "test.pdf" );
-        FoTestUtils.convertFO2PDF( foFile, pdfFile, resourceDirectory.getCanonicalPath() );
+        fo2pdf( "test" );
+    }
+
+    public void testAggregateMode() throws Exception
+    {
+        AptParser parser = new AptParser();
+        Reader source = getTestReader();
+        FoSink fosink = new FoSink( getFOTestWriter( "aggregate" ), true );
+        fosink.beginDocument();
+        parser.parse( source, fosink );
+        // re-use the same source
+        source = getTestReader();
+        parser.parse( source, fosink );
+        fosink.endDocument();
+
+        // then generate PDF
+        fo2pdf( "aggregate" );
     }
 
     /** {@inheritDoc} */
@@ -64,5 +79,28 @@ public class FoSinkTest extends AbstractSinkTestCase
     {
         return new FoSink( getTestWriter() );
     }
+
+    private void fo2pdf( String baseName ) throws Exception
+    {
+        File outputDirectory = new File( getBasedirFile(), "target/output" );
+        File resourceDirectory = new File( getBasedirFile(), "target/test-classes" );
+        File foFile = new File( outputDirectory, baseName + "." + outputExtension() );
+        File pdfFile = new File( outputDirectory, baseName + ".pdf" );
+        FoTestUtils.convertFO2PDF( foFile, pdfFile, resourceDirectory.getCanonicalPath() );
+    }
+
+    private Writer getFOTestWriter( String baseName )
+        throws Exception
+    {
+        File outputDirectory = new File( getBasedirFile(), "target/output" );
+
+        if ( !outputDirectory.exists() )
+        {
+            outputDirectory.mkdirs();
+        }
+
+        return new FileWriter( new File( outputDirectory, baseName + "." + outputExtension() ) );
+    }
+
 
 }

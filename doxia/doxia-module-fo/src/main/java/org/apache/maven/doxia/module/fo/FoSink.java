@@ -44,6 +44,9 @@ public class FoSink implements Sink
     /** Used to get attributes for a given FO element. */
     private final FoConfiguration config;
 
+    /** Counts the current chapter level. */
+    private int chapter = 0;
+
     /** Counts the current section level. */
     private int section = 0;
 
@@ -65,89 +68,130 @@ public class FoSink implements Sink
     /** Verbatim flag. */
     private boolean verbatim;
 
+    /** Flag that indicates if the document to be written is only a fragment. */
+    private boolean fragmentDocument;
+
+    /** In fragment mode, some text has to be ignored (title...). */
+    private boolean ignoreText;
+
     /** Constructor.
      * @param writer The writer for writing the result.
      */
     public FoSink( Writer writer )
     {
+        this( writer, false );
+    }
+
+    /** Constructor.
+     * @param writer The writer for writing the result.
+     
+     */
+    public FoSink( Writer writer, boolean fragment )
+    {
         this.out = new LineBreaker( writer );
         this.config = new FoConfiguration();
+        this.fragmentDocument = fragment;
     }
 
     // TODO page headers, page numbering
-    // TODO add aggregate mode?
     // TODO add FOP compliance mode?
 
     /** {@inheritDoc} */
     public void head()
     {
-        writeln( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
+        if ( fragmentDocument )
+        {
+            return;
+        }
 
-        writeln( "<fo:root xmlns:fo=\"http://www.w3.org/1999/XSL/Format\">" );
-
-        writeStartTag( "layout-master-set", null );
-        writeStartTag( "simple-page-master", "layout.master.set.body" );
-
-        writeEmptyTag( "region-body", "layout.master.set.body.region-body" );
-        writeEmptyTag( "region-before", "layout.master.set.body.region-before" );
-        writeEmptyTag( "region-after", "layout.master.set.body.region-after" );
-
-        writeEndTag( "simple-page-master" );
-        writeEndTag( "layout-master-set" );
-
-        newline();
-
-        writeln( "<fo:page-sequence initial-page-number=\"1\" master-reference=\"body\">" );
-
-        writeln( "  <fo:flow flow-name=\"xsl-region-body\">" );
+        beginDocument();
+        startPageSequence();
     }
 
     /** {@inheritDoc} */
     public void head_()
     {
-        // nothing?
+        newline();
     }
 
     /** {@inheritDoc} */
     public void title()
     {
-        writeStartTag( "block", "doc.header.title" );
+        if ( fragmentDocument )
+        {
+            ignoreText = true;
+        }
+        else
+        {
+            writeStartTag( "block", "doc.header.title" );
+        }
     }
 
     /** {@inheritDoc} */
     public void title_()
     {
-        writeEndTag( "block" );
+        ignoreText = false;
+        if ( !fragmentDocument )
+        {
+            writeEndTag( "block" );
+        }
     }
 
     /** {@inheritDoc} */
     public void author()
     {
-        writeStartTag( "block", "doc.header.author" );
+        if ( fragmentDocument )
+        {
+            ignoreText = true;
+        }
+        else
+        {
+            writeStartTag( "block", "doc.header.author" );
+        }
     }
 
     /** {@inheritDoc} */
     public void author_()
     {
-        writeEndTag( "block" );
+        ignoreText = false;
+        if ( !fragmentDocument )
+        {
+            writeEndTag( "block" );
+        }
     }
 
     /** {@inheritDoc} */
     public void date()
     {
-        writeStartTag( "block", "doc.header.date" );
+        if ( fragmentDocument )
+        {
+            ignoreText = true;
+        }
+        else
+        {
+            writeStartTag( "block", "doc.header.date" );
+        }
     }
 
     /** {@inheritDoc} */
     public void date_()
     {
-        writeEndTag( "block" );
+        ignoreText = false;
+        if ( !fragmentDocument )
+        {
+            writeEndTag( "block" );
+        }
     }
 
     /** {@inheritDoc} */
     public void body()
     {
-        // nothing?
+        if ( fragmentDocument )
+        {
+            startPageSequence();
+        }
+
+        chapter++;
     }
 
     /** {@inheritDoc} */
@@ -156,9 +200,10 @@ public class FoSink implements Sink
          newline();
          writeEndTag( "flow" );
          writeEndTag( "page-sequence" );
-         writeEndTag( "root" );
-         flush();
-         close();
+         if ( !fragmentDocument )
+         {
+            endDocument();
+         }
     }
 
     // -----------------------------------------------------------------------
@@ -729,7 +774,12 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void anchor( String name )
     {
-        writeStartTag( "inline", "id", name );
+        String anchor = name;
+        if ( fragmentDocument )
+        {
+            anchor = anchor + String.valueOf( chapter );
+        }
+        writeStartTag( "inline", "id", anchor );
     }
 
     /** {@inheritDoc} */
@@ -741,6 +791,11 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void link( String name )
     {
+        String anchor = name;
+        if ( fragmentDocument )
+        {
+            anchor = anchor + String.valueOf( chapter );
+        }
         if ( name.startsWith( "http", 0 ) || name.startsWith( "mailto", 0 )
             || name.startsWith( "ftp", 0 ) )
         {
@@ -755,7 +810,7 @@ public class FoSink implements Sink
         else
         {
             // TODO: aggregate mode: link to another document, construct relative path
-            writeStartTag( "basic-link", "internal-destination", name );
+            writeStartTag( "basic-link", "internal-destination", anchor );
             writeStartTag( "inline", "href.internal" );
         }
     }
@@ -819,7 +874,10 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void text( String text )
     {
-        content( text );
+        if ( !ignoreText )
+        {
+            content( text );
+        }
     }
 
     /** {@inheritDoc} */
@@ -840,6 +898,33 @@ public class FoSink implements Sink
         out.close();
     }
 
+    /** Writes the beginning of a FO document in aggregate mode. */
+    public void beginDocument()
+    {
+        writeln( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
+
+        writeln( "<fo:root xmlns:fo=\"http://www.w3.org/1999/XSL/Format\">" );
+
+        writeStartTag( "layout-master-set", null );
+        writeStartTag( "simple-page-master", "layout.master.set.body" );
+
+        writeEmptyTag( "region-body", "layout.master.set.body.region-body" );
+        writeEmptyTag( "region-before", "layout.master.set.body.region-before" );
+        writeEmptyTag( "region-after", "layout.master.set.body.region-after" );
+
+        writeEndTag( "simple-page-master" );
+        writeEndTag( "layout-master-set" );
+    }
+
+    /** Writes the end of a FO document in aggregate mode,
+     * flushes and closes the stream.
+     */
+    public void endDocument()
+    {
+        writeEndTag( "root" );
+        flush();
+        close();
+    }
 
     // ----------------------------------------------------------------------
     //
@@ -935,6 +1020,20 @@ public class FoSink implements Sink
         }
 
         return buffer.toString();
+    }
+
+    private void startPageSequence()
+    {
+        if ( chapter == 0 )
+        {
+            writeln( "<fo:page-sequence initial-page-number=\"1\" master-reference=\"body\">" );
+        }
+        else
+        {
+            writeln( "<fo:page-sequence initial-page-number=\"auto\" master-reference=\"body\">" );
+        }
+
+        writeln( "  <fo:flow flow-name=\"xsl-region-body\">" );
     }
 
 
