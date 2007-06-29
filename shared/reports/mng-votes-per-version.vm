@@ -1,0 +1,23 @@
+## For the MNG project
+## Sort versions by their name, descending
+## For each version get all issues that has some votes,
+## sorted by the number of votes descending first and by id ascending second
+##
+#set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
+#set( $projects = $jira.getProjects().matches("key", "MNG") )
+#foreach( $project in $projects )
+Project: $project.name
+#set( $allVersions = $jira.getVersions($project.key) )
+#set( $unreleasedVersions = $allVersions.matches("released", "false") )
+#foreach( $version in $unreleasedVersions.descending("name") )
+
+Version: $version.name
+
+Votes  Issue     Summary
+#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&fixfor=${version.id}&pid=${project.id}&status=1&sorter/field=votes&sorter/order=DESC" )
+#set( $jirarss = $rss.fetch( $url ) )
+#foreach( $issue in $jirarss.issues.ascending("id").descending("votes").greater("votes", 0) )
+  $issue.votes    $issue.key  $issue.summary
+#end
+#end
+#end
