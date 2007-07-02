@@ -19,7 +19,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project name="Plugins">
+<project>
   <!-- TODO: banners, skin, publish date, version should be inherited from Maven itself -->
   <bannerLeft>
     <name>${project.name}</name>
