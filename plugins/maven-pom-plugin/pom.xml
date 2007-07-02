@@ -7,6 +7,13 @@
   <version>1.0-SNAPSHOT</version>
   <name>Maven Pom Plugin</name>
   <description>Plugin for altering pom files in a target directory in a number of ways.  Does not operate on projects in a reactor.</description>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/trunk/plugins/maven-pom-plugin</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/plugins/maven-pom-plugin</developerConnection>
+    <url>http://svn.apache.org/repos/asf/maven/sandbox/trunk/plugins/maven-pom-plugin</url>
+  </scm>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
