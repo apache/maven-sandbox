@@ -58,10 +58,9 @@ under the License.
     </dependency>
     <!-- test dependencies -->
     <dependency>
-      <groupId>fop</groupId>
+      <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>fop</artifactId>
       <version>0.93</version>
-      <classifier>jdk14</classifier>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -75,31 +74,6 @@ under the License.
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-apt</artifactId>
       <version>${projectVersion}</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- These are transitive deps of fop, but there is no pom in the repo -->
-    <dependency>
-      <groupId>avalon-framework</groupId>
-      <artifactId>avalon-framework</artifactId>
-      <version>4.1.5</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.xmlgraphics</groupId>
-      <artifactId>xmlgraphics-commons</artifactId>
-      <version>1.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>batik</groupId>
-      <artifactId>batik-util</artifactId>
-      <version>1.6</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
