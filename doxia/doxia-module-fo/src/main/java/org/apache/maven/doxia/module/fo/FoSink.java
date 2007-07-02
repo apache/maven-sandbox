@@ -19,11 +19,11 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
+import java.io.IOException;
 import java.io.Writer;
 import java.util.Stack;
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.util.LineBreaker;
 import org.apache.maven.doxia.parser.Parser;
 
 /**
@@ -35,8 +35,8 @@ public class FoSink implements Sink
     /** System-dependent end-of-line string. */
     private static final String EOL = System.getProperty( "line.separator" );
 
-    /** Linebreaker for writing the result. */
-    private final LineBreaker out;
+    /** For writing the result. */
+    private final Writer out;
 
     /** Used to get the current position in numbered lists. */
     private final Stack listStack = new Stack();
@@ -84,11 +84,11 @@ public class FoSink implements Sink
 
     /** Constructor.
      * @param writer The writer for writing the result.
-     
+       @param fragment Indicates if the document is only a fragment.
      */
     public FoSink( Writer writer, boolean fragment )
     {
-        this.out = new LineBreaker( writer );
+        this.out = writer;
         this.config = new FoConfiguration();
         this.fragmentDocument = fragment;
     }
@@ -889,13 +889,27 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void flush()
     {
-        out.flush();
+        try
+        {
+            out.flush();
+        }
+        catch ( IOException e )
+        {
+            // TODO
+        }
     }
 
     /** {@inheritDoc} */
     public void close()
     {
-        out.close();
+        try
+        {
+            out.close();
+        }
+        catch ( IOException e )
+        {
+            // TODO
+        }
     }
 
     /** Writes the beginning of a FO document in aggregate mode. */
@@ -956,23 +970,30 @@ public class FoSink implements Sink
 
     private void write( String text )
     {
-        out.write( text, true );
+        try
+        {
+            out.write( text );
+        }
+        catch ( IOException e )
+        {
+            // TODO
+        }
     }
 
     private void writeln( String text )
     {
-        out.write( text, true );
+        write( text );
         newline();
     }
 
     private void content( String text )
     {
-        out.write( escaped( text ), true );
+        write( escaped( text ) );
     }
 
     private void newline()
     {
-        out.write( EOL, false );
+        write( EOL );
     }
 
     private String escaped( String text )
