@@ -87,7 +87,7 @@ public class AddByXPathMojo extends AbstractSingleAlterationMojo
 
             xmlTool.removeNamespaces();
 
-            if( xmlTool.hasElement( skipXPath ) )
+            if( skipXPath != null && xmlTool.hasElement( skipXPath ) )
             {
             	getLog().info( "skipXPath element located, skipping execution" );
             	return;
@@ -97,11 +97,11 @@ public class AddByXPathMojo extends AbstractSingleAlterationMojo
             {
             	Element node = xmlTool.getElement( xpath );
             	
-            	node.addElement( newElement );
+            	Element newNode = node.addElement( newElement );
             	
             	if ( newValue != null )
             	{
-            		node.setText( newValue );
+            		newNode.setText( newValue );
             	}
             } 
             else if ( failFast )
