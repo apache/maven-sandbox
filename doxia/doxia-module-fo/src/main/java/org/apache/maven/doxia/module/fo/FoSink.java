@@ -84,13 +84,21 @@ public class FoSink implements Sink
 
     /** Constructor.
      * @param writer The writer for writing the result.
-       @param fragment Indicates if the document is only a fragment.
+     * @param fragment Indicates if the document is only a fragment.
      */
     public FoSink( Writer writer, boolean fragment )
     {
         this.out = writer;
         this.config = new FoConfiguration();
         this.fragmentDocument = fragment;
+    }
+
+    /** Returns the configuration object of this sink.
+     * @return The configuration object of this sink.
+     */
+    public FoConfiguration getFoConfiguration()
+    {
+        return config;
     }
 
     // TODO page headers, page numbering
@@ -425,7 +433,7 @@ public class FoSink implements Sink
     {
         writeStartTag( "list-item", "list.item" );
         // TODO customize?
-        writeln( "    <fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label>" );
+        writeln( "<fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label>" );
         writeStartTag( "list-item-body", "list.item" );
         writeStartTag( "block", null );
     }
@@ -608,7 +616,7 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void pageBreak()
     {
-        writeln( "  <fo:block break-before=\"page\"/>" );
+        writeln( "<fo:block break-before=\"page\"/>" );
     }
 
     /** {@inheritDoc} */
@@ -642,15 +650,15 @@ public class FoSink implements Sink
 
         // FOP hack to center the table, see
         // http://xmlgraphics.apache.org/fop/fo.html#fo-center-table-horizon
-        writeln( "      <fo:table-column column-width=\"proportional-column-width(1)\"/>" );
+        writeln( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
 
         // TODO: calculate width[i]
         for ( int i = 0;  i < cellJustif.length; i++ )
         {
-            writeln( "      <fo:table-column column-width=\"1in\"/>" );
+            writeln( "<fo:table-column column-width=\"1in\"/>" );
         }
 
-        writeln( "      <fo:table-column column-width=\"proportional-column-width(1)\"/>" );
+        writeln( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
         writeStartTag( "table-body", null );
     }
 
@@ -684,19 +692,22 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void tableCell( String width )
     {
-        // nop
+        // TODO: fop can't handle cell width
+        tableCell( false );
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell()
     {
         // TODO: how to implement?
+        tableCell( true );
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell( String width )
     {
-        // nop
+        // TODO: fop can't handle cell width
+        tableCell( true );
     }
 
     /** Writes a table cell.
@@ -751,7 +762,7 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
-        // nop
+        tableCell_();
     }
 
     /** {@inheritDoc} */
@@ -792,10 +803,12 @@ public class FoSink implements Sink
     public void link( String name )
     {
         String anchor = name;
+
         if ( fragmentDocument )
         {
             anchor = anchor + String.valueOf( chapter );
         }
+
         if ( name.startsWith( "http", 0 ) || name.startsWith( "mailto", 0 )
             || name.startsWith( "ftp", 0 ) )
         {
@@ -883,7 +896,10 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void rawText( String text )
     {
-        // nop
+        if ( !ignoreText )
+        {
+            write( text );
+        }
     }
 
     /** {@inheritDoc} */
@@ -948,24 +964,24 @@ public class FoSink implements Sink
     {
         String attribs = config.getAttributeSet( attributeId );
         newline();
-        write( "<fo:" + tag + attribs + ">");
+        write( "<fo:" + tag + attribs + ">" );
     }
 
     private void writeStartTag( String tag, String id, String name )
     {
         newline();
-        write( "<fo:" + tag + " " + id + "=\"" + name + "\">");
+        write( "<fo:" + tag + " " + id + "=\"" + name + "\">" );
     }
 
     private void writeEndTag( String tag )
     {
-        writeln( "</fo:" + tag + ">");
+        writeln( "</fo:" + tag + ">" );
     }
 
     private void writeEmptyTag( String tag, String attributeId )
     {
         String attribs = config.getAttributeSet( attributeId );
-        writeln( "<fo:" + tag + attribs + "/>");
+        writeln( "<fo:" + tag + attribs + "/>" );
     }
 
     private void write( String text )
@@ -988,7 +1004,7 @@ public class FoSink implements Sink
 
     private void content( String text )
     {
-        write( escaped( text ) );
+        write( escaped( text, verbatim ) );
     }
 
     private void newline()
@@ -996,7 +1012,13 @@ public class FoSink implements Sink
         write( EOL );
     }
 
-    private String escaped( String text )
+    /**
+     * Escapes special characters so that the text can be included in a fo file.
+     * @param text The text to process.
+     * @param verb In verbatim mode, white space and newlines are escaped.
+     * @return The text with special characters escaped.
+     */
+    public static String escaped( String text, boolean verb )
     {
         int length = text.length();
         StringBuffer buffer = new StringBuffer( length );
@@ -1007,7 +1029,7 @@ public class FoSink implements Sink
             switch ( c )
             {
                 case ' ':
-                    if ( verbatim )
+                    if ( verb )
                     {
                         buffer.append( "&#160;" );
                     }
@@ -1030,7 +1052,7 @@ public class FoSink implements Sink
                     break;
                 case '\n':
                     buffer.append( EOL );
-                    if ( verbatim )
+                    if ( verb )
                     {
                         buffer.append( "<fo:block/>" + EOL );
                     }
@@ -1054,7 +1076,7 @@ public class FoSink implements Sink
             writeln( "<fo:page-sequence initial-page-number=\"auto\" master-reference=\"body\">" );
         }
 
-        writeln( "  <fo:flow flow-name=\"xsl-region-body\">" );
+        writeln( "<fo:flow flow-name=\"xsl-region-body\">" );
     }
 
 

@@ -19,7 +19,6 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -27,7 +26,7 @@ import org.apache.commons.configuration.XMLConfiguration;
 
 
 /**
- * A utility class to construct FO configuration parameters..
+ * A utility class to construct FO configuration parameters.
  */
 public class FoConfiguration
 {
