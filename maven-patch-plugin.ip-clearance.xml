@@ -177,8 +177,9 @@ MD5 or SHA1 sum for donated software:  (<em>Note versioned software used to calc
             </tr>
           </table>
           <p>
-Identify name recorded for software grant: <em>the name of the grant as record 
-in the grants.txt document so that the grant can be easily identified</em> 
+          <!-- FIXME: Check that this is the intended value, if this is indeed a field... -->
+          <!-- FIXME: Do we need to execute some sort of Code Grant document, via fax or other?? -->
+Identify name recorded for software grant: <em>CodeHaus</em> 
           </p>
         </section>
         <section id="Verify+distribution+rights">
@@ -197,26 +198,26 @@ Corporations and individuals holding existing distribution rights:
               <th>item</th>
             </tr>
             <tr>
-              <td>....-..-..</td>
+              <td>2007-06-08</td>
               <td>Check that all active committers have a signed CLA on
                   record.</td>
             </tr>
             <tr>
-              <td>....-..-..</td>
+              <td>2007-06-08</td>
               <td>Remind active committers that they are responsible for
                   ensuring that a Corporate CLA is recorded if such is
                   required to authorize their contributions under their
                   individual CLA.</td>
             </tr>
             <tr>
-              <td>....-..-..</td>
+              <td>2007-06-08</td>
               <td>Check and make sure that for all items included with the
                   distribution that is not under the Apache license, we have
                   the right to combine with Apache-licensed code and
                   redistribute.</td>
             </tr>
             <tr>
-              <td>....-..-..</td>
+              <td>2007-06-08</td>
               <td>Check and make sure that all items depended upon by the
                   project is covered by one or more of the following approved
                   licenses: Apache, BSD, Artistic, MIT/X, MIT/W3C, MPL 1.1, or
