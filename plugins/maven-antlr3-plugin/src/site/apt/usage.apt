@@ -84,21 +84,44 @@ Usage
 Compiling generated code
 
  The generated code should just get compiled by running <<<mvn compile>>> etc.
- but you will need to include the ANTLR runtime classes as a dependancy of
- your project.  Add the following dependancy to your POM,
+ but you will need to include the ANTLR runtime classes as a dependency of
+ your project.  Add the following dependency to your POM,
 
 +-----+
   ...
   <dependency>
     <groupId>org.antlr</groupId>
-    <artifactId>antlr-java-runtime</artifactId>
+    <artifactId>antlr-runtime</artifactId>
     <packaging>jar</packaging>
-    <version>05-14-2007.17</version>
+    <version>3.0</version>
   </dependency>
   ...
 +-----+
 
- Ensure you add a dependancy on the Java runtime rather than on the ANTLR tool
- artifact, or you will end up adding the transative dependancies on
+ Ensure you add a dependency on the Java runtime rather than on the ANTLR tool
+ artifact, or you will end up adding the transitive dependencies on
  StringTemplate and the old ANTLRv2 to your project, when all you need are the
  runtime support classes.
+
+
+Building the Java Package Structure
+
+ If you include java <<<package>>> directives in your grammar, e.g.
+
++-----+
+   @parser::header {
+       package com.example;
+   }
++-----+
+
+ You will need the generated Java files to be created within the appropriate
+ folder structure (i.e. <<<com/example>>>) otherwise the the Java compiler
+ will report error messages.
+
+ To achieve the desired result, just put the source grammar file into a folder
+ structure that matches the package structure, just as you would structure the
+ folder containing a Java source file.
+
+ i.e. assuming the default source directory, the grammar with the header
+ in the example above would need to be placed in the folder
+ <<<src/main/antlr/com/example>>>.
