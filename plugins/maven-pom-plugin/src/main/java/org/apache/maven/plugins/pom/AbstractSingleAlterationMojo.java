@@ -35,7 +35,7 @@ public abstract class AbstractSingleAlterationMojo extends AbstractMojo
 {
 
     /**
-     * @parameter
+     * @parameter expression="${projectFile}"
      * @required
      */
     protected String projectFile;

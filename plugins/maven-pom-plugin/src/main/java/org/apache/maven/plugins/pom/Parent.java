@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.pom;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,23 +16,35 @@ package org.apache.maven.plugins.pom;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.pom;
 
 /**
- *
- * @author <a href="mailto:jmcconnell@apache.org">Jesse McConnell</a>
- * @version $Id:$
+ * A Parent element
+ * @author eredmond
  */
-public class Dependency extends Coordinate
+public class Parent extends Coordinate
 {
-    private String scope;
+    private String relativePath;
 
-	public String getScope()
-	{
-		return scope;
-	}
+    private boolean removeRelativePath;
 
-	public void setScope(String scope)
-	{
-		this.scope = scope;
-	}
+    public String getRelativePath()
+    {
+        return relativePath;
+    }
+
+    public void setRelativePath( String relativePath )
+    {
+        this.relativePath = relativePath;
+    }
+
+    public boolean isRemoveRelativePath()
+    {
+        return removeRelativePath;
+    }
+
+    public void setRemoveRelativePath( boolean removeRelativePath )
+    {
+        this.removeRelativePath = removeRelativePath;
+    }
 }

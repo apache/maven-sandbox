@@ -43,30 +43,30 @@ public class AlterParentMojo extends AbstractSingleAlterationMojo
      * @parameter
      * @required
      */
-    private String newParentGroupId;
+    String newParentGroupId;
 
     /**
      * @parameter
      * @required
      */
-    private String newParentArtifactId;
+    String newParentArtifactId;
 
     /**
      * @parameter
      * @required
      */
-    private String newParentVersion;
+    String newParentVersion;
 
     /**
      * @parameter
      * @parameter
      */
-    private String relativePath;
+    String relativePath;
 
     /**
      * @parameter default-value="false"
      */
-    private boolean suppressRelativePath;
+    boolean suppressRelativePath;
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {

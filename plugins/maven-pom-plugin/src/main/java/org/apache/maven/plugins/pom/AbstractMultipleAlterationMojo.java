@@ -46,7 +46,7 @@ public abstract class AbstractMultipleAlterationMojo extends AbstractMojo
     /**
      * @parameter default-value="**\/test\/**"
      */
-    private String projectExcludes;
+    protected String projectExcludes;
     /**
      * 
      */
