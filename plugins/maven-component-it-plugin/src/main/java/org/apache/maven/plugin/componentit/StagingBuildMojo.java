@@ -18,7 +18,7 @@ import java.io.File;
  * 
  * @author jdcasey
  */
-public class StagePluginMojo
+public class StagingBuildMojo
     extends AbstractMojo
 {
     
@@ -65,12 +65,12 @@ public class StagePluginMojo
      */
     private ComponentTestTool componentTestTool;
     
-    public StagePluginMojo()
+    public StagingBuildMojo()
     {
         // used by Maven
     }
 
-    StagePluginMojo( File pomFile, boolean skipUnitTests, String pluginVersion, File repositoryDirectory,
+    StagingBuildMojo( File pomFile, boolean skipUnitTests, String pluginVersion, File repositoryDirectory,
                      ComponentTestTool componentTestTool )
     {
         this.pomFile = pomFile;

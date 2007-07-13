@@ -2,7 +2,7 @@ package org.apache.maven.plugin.componentit;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.componentit.StagePluginMojo;
+import org.apache.maven.plugin.componentit.StagingBuildMojo;
 import org.apache.maven.shared.test.plugin.ComponentTestTool;
 import org.apache.maven.shared.tools.easymock.TestFileManager;
 import org.codehaus.plexus.PlexusTestCase;
@@ -10,13 +10,13 @@ import org.codehaus.plexus.PlexusTestCase;
 import java.io.File;
 import java.io.IOException;
 
-public class StagePluginMojoTest
+public class StagingBuildMojoTest
     extends PlexusTestCase
 {
     
     private ComponentTestTool componentTestTool;
     
-    private TestFileManager fileManager = new TestFileManager( "StagePluginMojo.test", "" );
+    private TestFileManager fileManager = new TestFileManager( "StagingBuildMojo.test", "" );
     
     public void setUp() throws Exception
     {
@@ -41,7 +41,7 @@ public class StagePluginMojoTest
         assertFalse( localRepo.exists() );
         
         // we must ALWAYS skip unit tests for this unit test...
-        new StagePluginMojo( new File( "pom.xml" ).getCanonicalFile(), true, "testing", localRepo, componentTestTool ).execute();
+        new StagingBuildMojo( new File( "pom.xml" ).getCanonicalFile(), true, "testing", localRepo, componentTestTool ).execute();
         
         assertTrue( localRepo.exists() );
     }
