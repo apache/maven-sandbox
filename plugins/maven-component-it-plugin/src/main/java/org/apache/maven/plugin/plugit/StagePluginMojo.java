@@ -54,7 +54,6 @@ public class StagePluginMojo
      * 
      * @parameter default-value="${project.file}"
      * @required
-     * @readonly
      */
     private File pomFile;
 
