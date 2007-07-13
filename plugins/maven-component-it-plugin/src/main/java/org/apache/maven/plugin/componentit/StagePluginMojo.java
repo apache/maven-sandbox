@@ -1,4 +1,4 @@
-package org.apache.maven.plugin.plugit;
+package org.apache.maven.plugin.componentit;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

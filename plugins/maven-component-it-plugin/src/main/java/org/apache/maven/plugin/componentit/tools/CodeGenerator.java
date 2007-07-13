@@ -1,4 +1,4 @@
-package org.apache.maven.plugin.plugit.tools;
+package org.apache.maven.plugin.componentit.tools;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;

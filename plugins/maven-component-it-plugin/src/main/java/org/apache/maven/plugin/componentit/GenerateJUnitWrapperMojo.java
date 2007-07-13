@@ -1,11 +1,11 @@
-package org.apache.maven.plugin.plugit;
+package org.apache.maven.plugin.componentit;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.plugit.tools.CodeGenerator;
-import org.apache.maven.plugin.plugit.tools.ToolException;
+import org.apache.maven.plugin.componentit.tools.CodeGenerator;
+import org.apache.maven.plugin.componentit.tools.ToolException;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.plexus.velocity.VelocityComponent;
@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Generate JUnit wrappers for each integration-test build matched.
- * 
+ *
  * @goal junit-wrappers
  * @author jdcasey
  *
@@ -30,18 +30,18 @@ public class GenerateJUnitWrapperMojo
     private static final String JUNIT_GROUP_ID = "junit";
 
     private static final String JUNIT_ARTIFACT_ID = "junit";
-    
+
     private static final String ABSTRACT_TEST_CLASS_TEMPLATE = "AbstractJUnitWrapperTest.vm";
-    
+
     private static final String BUILD_WRAPPER_TEMPLATE = "JUnitWrapperTest.vm";
 
     private static final String ABSTRACT_TEST_CLASS = "AbstractJUnitWrapperTest";
-    
+
     private static final String BUILD_WRAPPER_CLASS_BASENAME = "JUnitWrapperTest";
-    
+
     /**
      * This is the Java package name for the generated wrapper classes.
-     * 
+     *
      * @parameter expression="wrapperPackage" default-value="integrationTests"
      * @required
      */
@@ -49,7 +49,7 @@ public class GenerateJUnitWrapperMojo
 
     /**
      * List of direct dependencies of this project, to verify that junit is present.
-     * 
+     *
      * @parameter default-value="${project.dependencies}"
      * @required
      * @readonly
@@ -66,7 +66,7 @@ public class GenerateJUnitWrapperMojo
     /**
      * List of included integration-test POM path patterns. By default, includes all poms under the
      * itBasedir directory.
-     * 
+     *
      * @parameter expression="itIncludes"
      */
     private List itPomIncludes = Collections.singletonList( "**/pom.xml" );
@@ -74,7 +74,7 @@ public class GenerateJUnitWrapperMojo
     /**
      * List of excluded integration-test POM path patterns, such as child-projects of multimodule
      * integration tests. By default, this will exclude all poms under a child* directory structure.
-     * 
+     *
      * @parameter expression="itExcludes"
      */
     private List itPomExcludes = Collections.singletonList( "**/child*/**/pom.xml" );
@@ -86,7 +86,7 @@ public class GenerateJUnitWrapperMojo
 
     /**
      * Source directory where generated wrapper classes will be located.
-     * 
+     *
      * @parameter expression="wrapperSourceDir" default-value="${project.build.directory}/generated-sources/plug-it"
      * @required
      */
@@ -96,7 +96,7 @@ public class GenerateJUnitWrapperMojo
     private CodeGenerator codeGenerator;
 
     private int wrapperCounter;
-    
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -112,12 +112,12 @@ public class GenerateJUnitWrapperMojo
             throw new MojoExecutionException( "Search for IT projects failed.", e );
         }
 
-        if ( poms != null && poms.length > 0 )
+        if ( ( poms != null ) && ( poms.length > 0 ) )
         {
             wrapperCounter = 0;
-            
+
             initializeCodeGenerator();
-            
+
             try
             {
                 generateAbstractTestClass();
@@ -158,7 +158,7 @@ public class GenerateJUnitWrapperMojo
     private void generateTestWrapper( File pomFile ) throws ToolException
     {
         String wrapperName = BUILD_WRAPPER_CLASS_BASENAME + wrapperCounter++;
-        
+
         codeGenerator.generateCode( pomFile.getPath(), wrapperName, BUILD_WRAPPER_TEMPLATE );
     }
 

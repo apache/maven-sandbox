@@ -1,4 +1,4 @@
-package org.apache.maven.plugin.plugit.tools;
+package org.apache.maven.plugin.componentit.tools;
 
 public class ToolException
     extends Exception

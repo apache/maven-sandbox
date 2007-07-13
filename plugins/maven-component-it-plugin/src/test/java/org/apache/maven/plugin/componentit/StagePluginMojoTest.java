@@ -1,7 +1,8 @@
-package org.apache.maven.plugin.plugit;
+package org.apache.maven.plugin.componentit;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.componentit.StagePluginMojo;
 import org.apache.maven.shared.test.plugin.ComponentTestTool;
 import org.apache.maven.shared.tools.easymock.TestFileManager;
 import org.codehaus.plexus.PlexusTestCase;
