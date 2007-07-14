@@ -92,7 +92,6 @@ Compiling generated code
   <dependency>
     <groupId>org.antlr</groupId>
     <artifactId>antlr-runtime</artifactId>
-    <packaging>jar</packaging>
     <version>3.0</version>
   </dependency>
   ...
