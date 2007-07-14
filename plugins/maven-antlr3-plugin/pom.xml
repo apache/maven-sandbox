@@ -49,7 +49,7 @@ under the License.
   </scm>
   <issueManagement>
     <system>jira</system>
-    <url>http://jira.codehaus.org/browse/MANTLR</url>
+    <url>http://jira.codehaus.org/browse/MSANDBOX</url>
   </issueManagement>
 
   <dependencies>
