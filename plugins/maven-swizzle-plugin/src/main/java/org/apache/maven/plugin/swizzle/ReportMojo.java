@@ -32,8 +32,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Goal which generates a swizzle report based on velocity template
- * supplied through a ReportConfiguration
+ * Goal which generates a swizzle report based on a velocity template
+ * supplied through a ReportConfiguration.
  *
  * @goal generate
  */
@@ -46,28 +46,29 @@ public class ReportMojo
     private JiraReport report;
 
     /**
-     * Username to use in connecting to the issue tracking system
+     * Username to use when connecting to the issue tracking system.
      *
      * @parameter default-value="swizzletester"
      */
     private String username;
 
     /**
-     * Password to use in connecting to the issue tracking system
+     * Password to use when connecting to the issue tracking system.
      *
      * @parameter default-value="swizzle"
      */
     private String password;
 
     /**
-     * Base URL of the issue tracking server
+     * Base URL of the issue tracking server.
      *
      * @parameter default-value="http://jira.codehaus.org"
      */
     private String jiraServerUrl;
 
     /**
-     * Identifying code for the project. E.g. SWIZZLE. Wildcards may be used for this parameter.
+     * Identifying key for the project. E.g. SWIZZLE. Wildcards may be used for
+     * this parameter.
      *
      * @parameter
      * @required
@@ -75,15 +76,17 @@ public class ReportMojo
     private String projectKey;
 
     /**
-     * Version of the project. E.g. 2.0.2. Wildcards may be used for this parameter.
+     * Version of the project. E.g. 2.0.2. Wildcards may be used for this
+     * parameter.
      *
      * @parameter expression="${project.version}"
      */
     private String projectVersion;
 
     /**
-     * Template to use in generating the reports. Either provide the name of default templates (e.g. RESOLVED_ISSUES,
-     * VOTES, or XDOC_SECTION) or the path and filename of the custom template to use
+     * Template to use when generating the reports. Either provide the name for
+     * one of default templates (e.g. RESOLVED_ISSUES, VOTES, or XDOC_SECTION)
+     * or the path and filename of the custom template to use
      * (e.g. my-path/my-custom-template.vm).
      *
      * @parameter default-value="RESOLVED_ISSUES"
@@ -100,7 +103,8 @@ public class ReportMojo
     private String result;
 
     /**
-     * If this is set to true or if the RELEASE template is used, parameters for the release info will be retrieved
+     * If this is set to <code>true</code> or if the RELEASE template is used,
+     * parameters for the release info will be retrieved
      * from the POM and placed in the velocity context.
      *
      * @parameter default-value=false
@@ -115,14 +119,15 @@ public class ReportMojo
     private String groupId;
 
     /**
-     * Retrieved from <pre>${project.groupId}</pre> or provided by the user.
+     * Retrieved from <pre>${project.artifactId}</pre> or provided by the user.
      *
      * @parameter expression="${project.artifactId}"
      */
     private String artifactId;
 
     /**
-     * Retrieved from <pre>${project.scm.connection}</pre> or provided by the user. Should follow the format
+     * Retrieved from <pre>${project.scm.connection}</pre> or provided by the
+     * user. Should follow the format
      * <pre>scm:[provider]:[provider_specific]</pre>
      *
      * @parameter expression="${project.scm.connection}"
@@ -130,8 +135,9 @@ public class ReportMojo
     private String scmConnection;
 
     /**
-     * The additional information that uniquely identifies the source version from the scm you want to release. For
-     * svn, the revision number should be put here. For cvs, the timestamp should be put here.
+     * The additional information that uniquely identifies the source version
+     * from the scm you want to release. For svn, the revision number should be
+     * put here. For cvs, the timestamp should be put here.
      *
      * @parameter default-value=""
      */
@@ -139,7 +145,8 @@ public class ReportMojo
 
     /**
      * Where the artifact can be downloaded by the user. Retrieved from
-     * <pre>${project.distributionManagement.downloadUrl}</pre> or provided by the user.
+     * <pre>${project.distributionManagement.downloadUrl}</pre> or provided by
+     * the user.
      *
      * @parameter expression="${project.distributionManagement.downloadUrl}"
      */
@@ -147,23 +154,26 @@ public class ReportMojo
 
     /**
      * The staging site where the documentation can be found. Retrieved from
-     * <pre>${project.distributionManagement.site.url}</pre> or provided by the user.
+     * <pre>${project.distributionManagement.site.url}</pre> or provided by the
+     * user.
      *
      * @parameter expression="${project.distributionManagement.site.url}"
      */
     private String stagingSiteUrl;
 
     /**
-     * If the docck passed. Right now this is user provided but later will be hooked up to the maven-docck-plugin
-     * to automate the check and the report details generation.
+     * If the passed the docck check. Right now this is user provided but later
+     * will be hooked up to the maven-docck-plugin to automate the check and
+     * the report details generation.
      *
      * @parameter default-value=false
      */
     private boolean docckPassed;
 
     /**
-     * The result details of the maven-docck-plugin. Right now this is user provided but later will be hooked up to the
-     * maven-docck-plugin to automate the check and the report details generation.
+     * The result details of the maven-docck-plugin. Right now this is user
+     * provided but later will be hooked up to the maven-docck-plugin to
+     * automate the check and the report details generation.
 
      * @parameter default-value="${project.build.directory}/docck.txt"
      */
@@ -186,7 +196,7 @@ public class ReportMojo
     /**
      * The date format to use when reporting the date of the project's last release.
      *
-     * @parameter default-value="yyyy/MM/dd hh:mm:ss z"
+     * @parameter default-value="yyyy-MM-dd hh:mm:ss z"
      */
     private String dateFormat;
 
