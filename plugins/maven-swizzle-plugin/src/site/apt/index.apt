@@ -37,10 +37,12 @@ Maven Swizzle Plugin
  * {{{examples/generating-resolved-issues-report.html}Resolved Issues Report}}
 
  * {{{examples/generating-votes-report.html}Votes Report}}
+
+ []
  
  The plugin's aim is to help developers check their project's health (through resolved issues report) and
  identify which issues to prioritize (through votes report). Using both reports could help the project
- perform a release more often as well as address users' needs.
+ perform a release more often as well as address users' needs better.
 
 * Goal Overview
 
