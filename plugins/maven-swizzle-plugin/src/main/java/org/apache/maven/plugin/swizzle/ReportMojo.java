@@ -200,6 +200,9 @@ public class ReportMojo
      */
     private String dateFormat;
 
+    /**
+     * {@inheritDoc}
+     */
     public void execute()
         throws MojoExecutionException
     {
