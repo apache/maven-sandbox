@@ -28,9 +28,8 @@
 
 Generating A Custom Report
 
- You can use the supply your own template by providing the path where you placed your custom
- velocity template. The generated report will be in xdoc format. See
- {{{http://maven.apache.org/maven-1.x/plugins/xdoc/}Maven 1.x XDoc Plug-in}} for more details on xdoc.
+ You can supply your own template by providing the path to where you placed your custom
+ velocity template.
 
 *POM configuration
 
