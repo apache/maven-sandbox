@@ -21,15 +21,15 @@ package org.apache.maven.plugin.swizzle;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-
 import org.codehaus.plexus.swizzle.JiraReport;
 import org.codehaus.plexus.swizzle.ReportConfiguration;
-import org.codehaus.plexus.swizzle.ReportGenerationException;
 import org.codehaus.plexus.swizzle.ReportConfigurationException;
+import org.codehaus.plexus.swizzle.ReportGenerationException;
 
-import java.io.PrintStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 /**
  * Goal which generates a swizzle report based on a velocity template
@@ -238,6 +238,13 @@ public class ReportMojo
                 reportConfiguration.setDateFormat( dateFormat );
             }
 
+            // Create the path to the result file if it doesn't exist
+            File file = new File( result );
+            if ( file.getParentFile() != null && !file.getParentFile().exists() )
+            {
+                file.getParentFile().mkdirs();
+            }
+            
             FileOutputStream out = new FileOutputStream( result );
             PrintStream printStream = new PrintStream( out );
 
