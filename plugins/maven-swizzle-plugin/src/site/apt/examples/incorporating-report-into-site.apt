@@ -1,0 +1,88 @@
+ ------
+ Incorporating a Report Into a Site
+ ------
+ Dennis Lundberg
+ ------
+ 2007-07-21
+ ------
+
+ ~~ Licensed to the Apache Software Foundation (ASF) under one
+ ~~ or more contributor license agreements.  See the NOTICE file
+ ~~ distributed with this work for additional information
+ ~~ regarding copyright ownership.  The ASF licenses this file
+ ~~ to you under the Apache License, Version 2.0 (the
+ ~~ "License"); you may not use this file except in compliance
+ ~~ with the License.  You may obtain a copy of the License at
+ ~~
+ ~~   http://www.apache.org/licenses/LICENSE-2.0
+ ~~
+ ~~ Unless required by applicable law or agreed to in writing,
+ ~~ software distributed under the License is distributed on an
+ ~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~~ KIND, either express or implied.  See the License for the
+ ~~ specific language governing permissions and limitations
+ ~~ under the License.
+
+~~ NOTE: For help with the syntax of this file, see:
+~~ http://maven.apache.org/guides/mini/guide-apt-format.html
+
+
+Incorporating a Report Into a Site
+
+  You might want to incorporate a report into your project's site. This can be
+  achieved by adding an <<<execution>>> to your <<<pom.xml>>>. The execution
+  will be bound to the <<<pre-site>>> phase. That means that it will be run
+  <before> the site is created. The xdoc that we generate here will be picked
+  up by the site plugin, because we put it into the <<<generated-site>>>
+  directory.
+
+  The following example uses the maven-war-plugin again. We will create a
+  report which will contain open issues that has been voted on.
+
++-------+
+<project>
+  [...]
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-swizzle-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <id>votes</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <jiraServerUrl>http://jira.codehaus.org</jiraServerUrl>
+              <projectKey>MWAR</projectKey>
+              <projectVersion>*</projectVersion>
+              <template>VOTES</template>
+              <result>target/generated-site/xdoc/votes.xml</result>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  [...]
+</project>
++-------+
+
+  You can then link to this page from your site. Here's what it would look like if
+  you added a link in the site descriptor (<<<site.xml>>>) for your project:
+
++-------+
+<project>
+  [...]
+  <body>
+    <menu name="Overview">
+      [...]
+      <item name="Votes" href="votes.html"/>
+    </menu>
+    [...]
+  </body>
+</project>
++-------+

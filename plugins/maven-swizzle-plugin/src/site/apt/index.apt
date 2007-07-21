@@ -64,3 +64,5 @@ Maven Swizzle Plugin
  * {{{examples/generating-resolved-issues-report.html}Resolved Issues Report}}
 
  * {{{examples/generating-votes-report.html}Votes Report}}
+
+ * {{{examples/incorporating-report-into-site.html}Incorporating a Report Into a Site}}

@@ -32,6 +32,7 @@ under the License.
       <item name="Generating Release Report" href="examples/generating-release-report.html"/>
       <item name="Generating Resolved Issues Report" href="examples/generating-resolved-issues-report.html"/>
       <item name="Generating Votes Report" href="examples/generating-votes-report.html"/>
+      <item name="Incorporating a Report Into a Site" href="examples/incorporating-report-into-site.html"/>
     </menu>
   </body>
 </project>
