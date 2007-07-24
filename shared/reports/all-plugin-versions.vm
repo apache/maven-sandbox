@@ -1,0 +1,69 @@
+## Produce a report in text format that shows all versions for all Maven 2
+## plugins. It tries to show if plugins are in need of a release, based purely
+## on when the last release was made.
+##
+## It also checks if data is missing from the versions in JIRA.
+##
+## 
+## Return the number of months that has passed since the given date
+##
+#macro( monthsAgo $d )
+#set( $nowYear = $strings.asInt( $date.format("yyyy") ) )
+#set( $nowMonth = $strings.asInt( $date.format("MM") ) )
+#set( $thenYear = $strings.asInt( $date.format( $d, "yyyy" ) ) )
+#set( $thenMonth = $strings.asInt( $date.format( $d, "MM" ) ) )
+#set( $years = $nowYear - $thenYear )
+#set( $months = ( $years * 12 ) + ( $nowMonth - $thenMonth ) )
+$months#end
+
+## If the given date is older than the limit (12 months) issue a warning
+##
+#macro( oldWarning $d )
+#set( $limit = 12 )
+#set( $nowYear = $strings.asInt( $date.format("yyyy") ) )
+#set( $nowMonth = $strings.asInt( $date.format("MM") ) )
+#set( $thenYear = $strings.asInt( $date.format( $d, "yyyy" ) ) )
+#set( $thenMonth = $strings.asInt( $date.format( $d, "MM" ) ) )
+#set( $years = $nowYear - $thenYear )
+#set( $months = ( $years * 12 ) + ( $nowMonth - $thenMonth ) )
+#if( $months > $limit )OLD #end
+#end
+
+#set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
+#set( $projects = $jira.getProjects().matches("name", "Maven 2.*Plugin") )
+#foreach( $project in $projects )
+#set( $allVersions = $jira.getVersions($project.key) )
+#set( $project.attributes.allVersionsSize = $allVersions.size() )
+#set( $project.attributes.unreleasedVersions = $allVersions.matches("released", "false").descending("name") )
+#set( $project.attributes.releasedVersions = $allVersions.matches("released", "true").descending("name") )
+#end
+
+#foreach( $project in $projects.ascending("name") )
+$project.name ($project.attributes.allVersionsSize version#if( $project.attributes.allVersionsSize != 1 )s#end)
+  Last released
+#if( $project.attributes.releasedVersions.size() == 0)
+    NEVER
+#else
+#set( $lastReleasedVersion = $collections.first( $project.attributes.releasedVersions ) )
+#set( $lastReleasedDate = $date.format( $lastReleasedVersion.releaseDate, "yyyy-MM-dd" ) )
+#if( $lastReleasedDate == $date.format("yyyy-MM-dd") )
+    UNKNOWN
+#else
+    #oldWarning( $lastReleasedVersion.releaseDate )#monthsAgo( $lastReleasedVersion.releaseDate ) months ago
+#end
+#end
+  Unreleased versions ($project.attributes.unreleasedVersions.size())
+#foreach( $version in $project.attributes.unreleasedVersions )
+#set( $scheduledReleaseDate = $date.format( $version.releaseDate, "yyyy-MM-dd" ) )
+    $version#if( $scheduledReleaseDate != $date.format("yyyy-MM-dd") ) (scheduled for release $scheduledReleaseDate)#end
+
+#end
+  Released versions ($project.attributes.releasedVersions.size())
+#foreach( $version in $project.attributes.releasedVersions )
+#set( $releaseDate = $date.format( $version.releaseDate, "yyyy-MM-dd" ) )
+#set( $releaseMonth = $date.format( $version.releaseDate, "MM" ) )
+#set( $releaseYear = $date.format( $version.releaseDate, "yyyy" ) )
+    $version (#if( $releaseDate == $date.format("yyyy-MM-dd") )MISSING RELEASE DATE#else$releaseDate#end)
+#end
+
+#end
