@@ -1,3 +1,7 @@
+## Produce a report in xdoc format that shows plugins and their open issues,
+## sorted descending by the total number of votes for each plugin.
+##
+##
 #set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
 #set( $projects = $jira.getProjects().matches("name", "Maven 2.*Plugin") )
 <?xml version="1.0"?>       
