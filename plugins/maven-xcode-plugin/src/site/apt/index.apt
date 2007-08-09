@@ -1,9 +1,7 @@
  ------
  Introduction
  ------
- Edwin Punzalan
  ------
- 05 July 2006
  ------
 
 ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -24,38 +22,38 @@
 ~~ under the License.
 
 
-Maven IDEA Plugin
+Maven Xcode Plugin
 
-  The IDEA Plugin is used to generate files (ipr, iml, and iws) for a project
-  so you can work on it using the IDE, IntelliJ IDEA.
+  The Xcode Plugin is used to generate an .xcodeproj directory for a project
+  so you can work on it using Xcode 2.1 or later from Apple, Inc.
 
 * Goals Overview
 
-  The IDEA Plugin has five goals.
+  The Xcode Plugin has five goals.
 
-  * {{{idea-mojo.html}idea:idea}} is used to execute the other three goals of
+  * {{{xcode-mojo.html}xcode:xcode}} is used to execute the other three goals of
   this plugin: <<<project>>>, <<<module>>>, and <<<workspace>>>.
 
-  * {{{project-mojo.html}idea:project}} is used to generate the project files
-  (*.ipr) needed for an IntelliJ IDEA Project.
+  * {{{project-mojo.html}xcode:project}} is used to generate the project files
+  (*.ipr) needed for an Xcode Project.
 
-  * {{{module-mojo.html}idea:module}} is used to generate the module files
-  (*.iml) needed for an IntelliJ IDEA Module.
+  * {{{module-mojo.html}xcode:module}} is used to generate the module files
+  (*.iml) needed for an Xcode Module.
 
-  * {{{workspace-mojo.html}idea:workspace}} is used to generate the workspace
-  files (*.iws) needed for an IntelliJ IDEA Project.
+  * {{{workspace-mojo.html}xcode:workspace}} is used to generate the workspace
+  files (*.iws) needed for an Xcode Project.
 
-  * {{{clean-mojo.html}idea:clean}} is used to delete the files relevant to
-  IntelliJ IDEA.
+  * {{{clean-mojo.html}xcode:clean}} is used to delete the files relevant to
+  Xcode.
 
 * How To Use
 
-  Instructions on how to use the Maven IDEA Plugin can be found
+  Instructions on how to use the Maven Xcode Plugin can be found
   {{{usage.html}here}}.
 
 * Examples
 
-  To provide you with better understanding on some usages of the Maven IDEA
+  To provide you with better understanding on some usages of the Maven Xcode
   Plugin, you can take a look into the following examples:
 
   * {{{examples/attach-library-src-doc.html}Attach Library Sources And/Or Javadocs}}

@@ -21,9 +21,9 @@ under the License.
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-idea-plugin</artifactId>
+        <artifactId>maven-xcode-plugin</artifactId>
         <configuration>
-          <executedProject implementation="org.apache.maven.plugin.idea.stubs.MavenProjectWithVssScmConnectionStub"/>
+          <executedProject implementation="org.apache.maven.plugin.xcode.stubs.MavenProjectWithVssScmConnectionStub"/>
           <localRepo>${localRepository}</localRepo>
           <overwrite>false</overwrite>
         </configuration>

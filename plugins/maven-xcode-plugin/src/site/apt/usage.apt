@@ -1,9 +1,7 @@
  ------
  Usage
  ------
- Edwin Punzalan
  ------
- 05 July 2006
  ------
 
 ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -26,18 +24,18 @@
 
 Usage
 
-* Generating the IntelliJ IDEA project files
+* Generating the Xcode project directory
 
-  To generate the files needed for an IntelliJ IDEA Project setup, you only
-  need to execute the main plugin goal, which is <<<idea:idea>>> like so:
+  To generate the files needed for an Xcode Project setup, you only
+  need to execute the main plugin goal, which is <<<xcode:xcode>>> like so:
 
 +-----
-mvn idea:idea
+mvn xcode:xcode
 +-----
 
   The above command will execute the other three goals needed to setup your
-  project for IntelliJ IDEA: <<<idea:project>>>, <<<idea:module>>>, and
-  <<<idea:workspace>>>.
+  project for Xcode: <<<xcode:project>>>, <<<xcode:module>>>, and
+  <<<xcode:workspace>>>.
 
   Please note that this plugin has no way to determine the name of the JDK
   you are using.  By default, this uses the JDK name equivalent to
@@ -45,19 +43,19 @@ mvn idea:idea
   to use, for example, 1.5, you can then execute:
 
 +-----
-mvn idea:idea -DjdkName=1.5
+mvn xcode:xcode -DjdkName=1.5
 +-----
 
-* Deleting IDEA project files
+* Deleting Xcode project directory
 
-  To delete the project files used by IntelliJ IDEA, you can execute the
+  To delete the project directory used by Xcode, you can execute the
   command below:
 
 +-----
-mvn idea:clean
+mvn xcode:clean
 +-----
 
-* Creating the IDEA project files separately
+* Creating the Xcode project files separately
 
   If, for some reason, you want to create just one of the <<<ipr>>>,
   <<<iml>>>, or <<<iws>>> files, you can still do it.
@@ -65,17 +63,17 @@ mvn idea:clean
   To generate just the <<<ipr>>> file, use:
 
 +-----
-mvn idea:project
+mvn xcode:project
 +-----
 
   To generate just the <<<iml>>> files, use:
 
 +-----
-mvn idea:module
+mvn xcode:module
 +-----
 
   To generate just the <<<iws>>> file, use:
 
 +-----
-mvn idea:workspace
+mvn xcode:workspace
 +-----

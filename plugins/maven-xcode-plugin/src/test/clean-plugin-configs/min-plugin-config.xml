@@ -21,9 +21,9 @@ under the License.
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-idea-plugin</artifactId>
+        <artifactId>maven-xcode-plugin</artifactId>
         <configuration>
-          <project implementation="org.apache.maven.plugin.idea.stubs.SimpleMavenProjectStub"/>
+          <project implementation="org.apache.maven.plugin.xcode.stubs.SimpleMavenProjectStub"/>
         </configuration>
       </plugin>
     </plugins>

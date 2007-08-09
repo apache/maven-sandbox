@@ -21,15 +21,15 @@ under the License.
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-idea-plugin</artifactId>
+        <artifactId>maven-xcode-plugin</artifactId>
         <configuration>
-          <executedProject implementation="org.apache.maven.plugin.idea.stubs.WarMavenProjectStub"/>
+          <executedProject implementation="org.apache.maven.plugin.xcode.stubs.WarMavenProjectStub"/>
           <localRepo>${localRepository}</localRepo>
           <overwrite>false</overwrite>
           <reactorProjects>
-            <reactorProject implementation="org.apache.maven.plugin.idea.stubs.ReactorMavenProjectStub"/>
-            <reactorProject implementation="org.apache.maven.plugin.idea.stubs.ReactorMavenProjectStub"/>
-            <reactorProject implementation="org.apache.maven.plugin.idea.stubs.ReactorMavenProjectStub"/>
+            <reactorProject implementation="org.apache.maven.plugin.xcode.stubs.ReactorMavenProjectStub"/>
+            <reactorProject implementation="org.apache.maven.plugin.xcode.stubs.ReactorMavenProjectStub"/>
+            <reactorProject implementation="org.apache.maven.plugin.xcode.stubs.ReactorMavenProjectStub"/>
           </reactorProjects>
           <linkModules>true</linkModules>
           <useFullNames>false</useFullNames>
