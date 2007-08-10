@@ -63,15 +63,15 @@ public class BookIndexerTest
 
         IndexEntry s1 = assertIndexEntry( c1, 0, "Section 1", "section-1", 5 );
 
-        IndexEntry ss1 = assertIndexEntry( s1, 0, "Subsection 1", "subsection_1", 1 );
+        IndexEntry ss1 = assertIndexEntry( s1, 0, "Subsection 1", "Subsection_1", 1 );
 
-        assertIndexEntry( ss1, 0, "Subsubsection 1", "subsubsection_1", 0 );
+        assertIndexEntry( ss1, 0, "Subsubsection 1", "Subsubsection_1", 0 );
 
-        assertIndexEntry( s1, 1, "Subsection 2", "subsection_2", 0 );
+        assertIndexEntry( s1, 1, "Subsection 2", "Subsection_2", 0 );
 
-        assertIndexEntry( s1, 2, "Subsection 3", "subsection_3", 0 );
+        assertIndexEntry( s1, 2, "Subsection 3", "Subsection_3", 0 );
 
-        assertIndexEntry( s1, 3, "Subsection 4", "subsection_4", 0 );
+        assertIndexEntry( s1, 3, "Subsection 4", "Subsection_4", 0 );
 
         // -----------------------------------------------------------------------
         // Section 2
@@ -80,7 +80,7 @@ public class BookIndexerTest
         IndexEntry s2 = assertIndexEntry( c1, 1, "Section 2", "section-2", 1 );
 
         assertIndexEntry( s2, 0, "Section 1.10.32 of \"de Finibus Bonorum et Malorum\", written by Cicero in 45 BC",
-                          "section_1.10.32_of_\"de_finibus_bonorum_et_malorum\",_written_by_cicero_in_45_bc", 0 );
+                          "Section_1.10.32_of_\"de_Finibus_Bonorum_et_Malorum\",_written_by_Cicero_in_45_BC", 0 );
 
         // -----------------------------------------------------------------------
         // Chapter 2
@@ -90,12 +90,12 @@ public class BookIndexerTest
 
         IndexEntry s3 = assertIndexEntry( c2, 0, "Section 3", "section-3", 1 );
 
-        assertIndexEntry( s3, 0, "1914 translation by H. Rackham", "1914_translation_by_h._rackham", 0 );
+        assertIndexEntry( s3, 0, "1914 translation by H. Rackham", "1914_translation_by_H._Rackham", 0 );
 
         IndexEntry s4 = assertIndexEntry( c2, 1, "Section 4", "section-4", 1 );
 
         assertIndexEntry( s4, 0, "Section 1.10.33 of \"de Finibus Bonorum et Malorum\", written by Cicero in 45 BC",
-                          "section_1.10.33_of_\"de_finibus_bonorum_et_malorum\",_written_by_cicero_in_45_bc", 0 );
+                          "Section_1.10.33_of_\"de_Finibus_Bonorum_et_Malorum\",_written_by_Cicero_in_45_BC", 0 );
     }
 
     private IndexEntry assertIndexEntry( IndexEntry parent, int childIndex, String title, String id, int childCount )
