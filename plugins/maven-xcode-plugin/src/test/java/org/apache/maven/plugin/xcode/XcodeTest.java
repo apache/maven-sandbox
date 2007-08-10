@@ -1,4 +1,4 @@
-package org.apache.maven.plugin.idea;
+package org.apache.maven.plugin.xcode;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -39,7 +39,7 @@ public class XcodeTest
     {
         File pluginXmlFile = new File( getBasedir(), "src/test/xcode-plugin-configs/min-plugin-config.xml" );
 
-        Mojo mojo = lookupMojo( "idea", pluginXmlFile );
+        Mojo mojo = lookupMojo( "xcode", pluginXmlFile );
 
         mojo.execute();
 
@@ -62,7 +62,7 @@ public class XcodeTest
     {
         File pluginXmlFile = new File( getBasedir(), "src/test/xcode-plugin-configs/macro-plugin-config.xml" );
 
-        Mojo mojo = lookupMojo( "idea", pluginXmlFile );
+        Mojo mojo = lookupMojo( "xcode", pluginXmlFile );
 
         mojo.execute();
 

@@ -31,7 +31,7 @@ import java.util.Set;
  * Goal for generating IDEA files from a POM.
  * This plug-in provides the ability to generate IDEA project files (.ipr, .iml and .iws files) for IDEA.
  *
- * @goal idea
+ * @goal xcode
  * @execute phase="generate-sources"
  */
 public class XcodeMojo
