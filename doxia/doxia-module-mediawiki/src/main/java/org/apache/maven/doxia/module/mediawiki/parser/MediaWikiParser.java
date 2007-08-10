@@ -1,11 +1,12 @@
 package org.apache.maven.doxia.module.mediawiki.parser;
 
-import org.apache.maven.doxia.module.common.ByLineReaderSource;
 import org.apache.maven.doxia.module.mediawiki.parser.state.StateFactory;
 import org.apache.maven.doxia.module.mediawiki.parser.state.StateParser;
+import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
@@ -14,6 +15,7 @@ import java.io.Reader;
 import java.util.Stack;
 
 public class MediaWikiParser
+    extends AbstractTextParser
     implements Parser, LogEnabled
 {
 
