@@ -23,8 +23,8 @@ import org.apache.maven.doxia.book.model.io.xpp3.BookModelXpp3Reader;
 import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.BookDoxiaException;
 import org.apache.maven.doxia.book.context.BookContext;
-import org.apache.maven.doxia.site.module.SiteModule;
-import org.apache.maven.doxia.site.module.manager.SiteModuleManager;
+import org.apache.maven.doxia.module.site.SiteModule;
+import org.apache.maven.doxia.module.site.manager.SiteModuleManager;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
