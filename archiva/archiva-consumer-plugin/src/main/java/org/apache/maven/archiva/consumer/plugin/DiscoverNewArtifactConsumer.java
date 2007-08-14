@@ -24,15 +24,12 @@ import org.apache.maven.archiva.consumers.KnownRepositoryContentConsumer;
 import org.apache.maven.archiva.consumers.ConsumerException;
 import org.apache.maven.archiva.configuration.ArchivaConfiguration;
 import org.apache.maven.archiva.configuration.FileTypes;
-import org.apache.maven.archiva.repository.layout.BidirectionalRepositoryLayoutFactory;
-import org.apache.maven.archiva.repository.layout.BidirectionalRepositoryLayout;
-import org.apache.maven.archiva.repository.layout.LayoutException;
 import org.apache.maven.archiva.model.ArchivaRepository;
-import org.apache.maven.archiva.model.ArchivaArtifact;
 import org.apache.maven.archiva.indexer.search.CrossRepositorySearch;
 import org.apache.maven.archiva.indexer.search.SearchResults;
 import org.apache.maven.archiva.indexer.search.SearchResultLimits;
 import org.apache.maven.archiva.indexer.search.SearchResultHit;
+import org.apache.commons.io.IOUtils;
 import org.codehaus.plexus.registry.RegistryListener;
 import org.codehaus.plexus.registry.Registry;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -41,6 +38,10 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
@@ -75,11 +76,6 @@ public class DiscoverNewArtifactConsumer
     /**
      * @plexus.requirement
      */
-    private BidirectionalRepositoryLayoutFactory layoutFactory;
-
-    /**
-     * @plexus.requirement
-     */
     private ArchivaConfiguration configuration;
 
     private List propertyNameTriggers = new ArrayList();
@@ -88,9 +84,9 @@ public class DiscoverNewArtifactConsumer
 
     private ArchivaRepository repository;
 
-    private List newArtifacts = new ArrayList();
+    private File dumpFile;
 
-    private BidirectionalRepositoryLayout repositoryLayout;
+    private static final String DUMP_FILE_NAME = "new-artifacts.zzz";
 
     public String getId()
     {
@@ -126,60 +122,60 @@ public class DiscoverNewArtifactConsumer
         }
 
         this.repository = repository;
+        dumpFile = new File( repository.getUrl().getPath() + "/" + DUMP_FILE_NAME );
 
         try
         {
-            this.repositoryLayout = layoutFactory.getLayout( this.repository.getLayoutType() );
+            if ( dumpFile.exists() )
+            {
+                dumpFile.delete();
+                dumpFile = null;
+                dumpFile = new File( repository.getUrl().getPath() + "/" + DUMP_FILE_NAME );
+            }
+
+            dumpFile.createNewFile();
         }
-        catch ( LayoutException e )
+        catch ( IOException ie )
         {
-            throw new ConsumerException(
-                "Unable to initialize consumer due to unknown repository layout: " + e.getMessage(), e );
+            throw new ConsumerException( ie.getMessage() );
         }
     }
 
     public void processFile( String path )
         throws ConsumerException
     {
-        // @todo needs to be tested!
-        SearchResults results =
-            repoSearch.searchForTerm( repository.getId() + "/" + path, new SearchResultLimits( 0 ) );
+        String id = repository.getId() + "/" + path;
+
+        SearchResults results = repoSearch.searchForTerm( path, new SearchResultLimits( 0 ) );
+
         List hits = results.getHits();
         boolean found = false;
+
         for ( Iterator iter = hits.iterator(); iter.hasNext(); )
         {
             SearchResultHit hit = (SearchResultHit) iter.next();
-            if ( ( repository.getId() + "/" + path ).equalsIgnoreCase( hit.getUrl() ) )
+            if ( id.equalsIgnoreCase( hit.getUrl() ) )
             {
                 found = true;
                 break;
             }
         }
 
-        if ( found )
+        if ( !found )
         {
             try
             {
-                ArchivaArtifact artifact = this.repositoryLayout.toArtifact( path );
-                newArtifacts.add( artifact );
+                dumpToFile( id );
             }
-            catch ( LayoutException e )
+            catch ( IOException ie )
             {
-                // Not an artifact.
+                throw new ConsumerException( ie.getMessage() );
             }
         }
     }
 
     public void completeScan()
     {
-        // @todo dump into file
-        for ( Iterator iter = newArtifacts.iterator(); iter.hasNext(); )
-        {
-            ArchivaArtifact artifact = (ArchivaArtifact) iter.next();
-            //System.out.println( "\n %%%%%% NEW ARTIFACT == " + artifact.getGroupId() + ":" +
-            //  artifact.getArtifactId() + ":" + artifact.getVersion() + ":" + artifact.getType() );
-        }
-
         /* do nothing */
     }
 
@@ -218,4 +214,10 @@ public class DiscoverNewArtifactConsumer
         initIncludes();
     }
 
+    private void dumpToFile( String id )
+        throws IOException
+    {
+        IOUtils.write( ( IOUtils.toString( new FileInputStream( dumpFile ) ) + "\n" + id ),
+                       new FileOutputStream( dumpFile ) );
+    }
 }
