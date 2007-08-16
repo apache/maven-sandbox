@@ -20,8 +20,8 @@ package org.apache.maven.doxia.editor.io;
  */
 
 import org.apache.maven.doxia.editor.model.DoxiaAttribute;
+import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 
 import javax.swing.text.AttributeSet;
@@ -35,7 +35,7 @@ import java.io.Reader;
  * @version $Id$
  */
 public class DocumentParser
-    implements Parser
+    extends AbstractParser
 {
     public static ThreadLocal document = new ThreadLocal();
 

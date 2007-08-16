@@ -20,7 +20,9 @@ package org.apache.maven.doxia.editor;
  */
 
 import org.apache.maven.doxia.editor.windows.EditorWindow;
-import org.codehaus.plexus.embed.Embedder;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.DefaultContainerConfiguration;
+import org.codehaus.plexus.DefaultPlexusContainer;
 
 import javax.swing.*;
 
@@ -39,11 +41,12 @@ public class DoxiaEditor
     private void work()
         throws Exception
     {
-        Embedder embedder = new Embedder();
+        ContainerConfiguration c = new DefaultContainerConfiguration()
+        .setName( "Doxia editor" );
 
-        embedder.start();
+        DefaultPlexusContainer container = new DefaultPlexusContainer( c );
 
-        Application application = (Application) embedder.lookup( Application.ROLE );
+        Application application = (Application) container.lookup( Application.ROLE );
 
         EditorWindow window = new EditorWindow( application );
 
@@ -63,6 +66,6 @@ public class DoxiaEditor
         // Power off
         // ----------------------------------------------------------------------
 
-        embedder.release( application );
+        container.release( application );
     }
 }
