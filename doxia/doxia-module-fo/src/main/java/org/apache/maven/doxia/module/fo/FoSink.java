@@ -936,13 +936,23 @@ public class FoSink implements Sink
         writeln( "<fo:root xmlns:fo=\"http://www.w3.org/1999/XSL/Format\">" );
 
         writeStartTag( "layout-master-set", null );
-        writeStartTag( "simple-page-master", "layout.master.set.body" );
 
+        writeStartTag( "simple-page-master", "layout.master.set.cover-page" );
+        writeEmptyTag( "region-body", "layout.master.set.cover-page.region-body" );
+        writeEndTag( "simple-page-master" );
+
+        writeStartTag( "simple-page-master", "layout.master.set.toc" );
+        writeEmptyTag( "region-body", "layout.master.set.toc.region-body" );
+        writeEmptyTag( "region-before", "layout.master.set.toc.region-before" );
+        writeEmptyTag( "region-after", "layout.master.set.toc.region-after" );
+        writeEndTag( "simple-page-master" );
+
+        writeStartTag( "simple-page-master", "layout.master.set.body" );
         writeEmptyTag( "region-body", "layout.master.set.body.region-body" );
         writeEmptyTag( "region-before", "layout.master.set.body.region-before" );
         writeEmptyTag( "region-after", "layout.master.set.body.region-after" );
-
         writeEndTag( "simple-page-master" );
+
         writeEndTag( "layout-master-set" );
     }
 

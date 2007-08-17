@@ -29,9 +29,14 @@
         <xsl:attribute name="margin-left">1in</xsl:attribute>
         <xsl:attribute name="margin-right">1in</xsl:attribute>
     </xsl:attribute-set>
+
     <xsl:attribute-set name="layout.master.set.cover-page" use-attribute-sets="layout.master.set.base">
         <xsl:attribute name="master-name">cover-page</xsl:attribute>
     </xsl:attribute-set>
+    <xsl:attribute-set name="layout.master.set.cover-page.region-body">
+        <xsl:attribute name="margin-top">0.7in</xsl:attribute>
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="layout.master.set.cover-inside" use-attribute-sets="layout.master.set.base">
         <xsl:attribute name="master-name">cover-inside</xsl:attribute>
         <xsl:attribute name="margin-top">0in</xsl:attribute>
@@ -39,13 +44,24 @@
         <xsl:attribute name="margin-left">0in</xsl:attribute>
         <xsl:attribute name="margin-right">0in</xsl:attribute>
     </xsl:attribute-set>
+
     <xsl:attribute-set name="layout.master.set.toc" use-attribute-sets="layout.master.set.base">
         <xsl:attribute name="master-name">toc</xsl:attribute>
     </xsl:attribute-set>
+    <xsl:attribute-set name="layout.master.set.toc.region-body">
+        <xsl:attribute name="margin-top">0.7in</xsl:attribute>
+        <xsl:attribute name="margin-bottom">0.8in</xsl:attribute>
+    </xsl:attribute-set>
+    <xsl:attribute-set name="layout.master.set.toc.region-before">
+        <xsl:attribute name="extent">0.35in</xsl:attribute>
+    </xsl:attribute-set>
+    <xsl:attribute-set name="layout.master.set.toc.region-after">
+        <xsl:attribute name="extent">0.125in</xsl:attribute>
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="layout.master.set.body" use-attribute-sets="layout.master.set.base">
         <xsl:attribute name="master-name">body</xsl:attribute>
     </xsl:attribute-set>
-
     <xsl:attribute-set name="layout.master.set.body.region-body">
         <xsl:attribute name="margin-top">0.7in</xsl:attribute>
         <xsl:attribute name="margin-bottom">0.8in</xsl:attribute>

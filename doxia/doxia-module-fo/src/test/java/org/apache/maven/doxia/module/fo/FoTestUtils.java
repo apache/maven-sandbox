@@ -83,7 +83,10 @@ public class FoTestUtils
         }
         finally
         {
-            out.close();
+            if ( out != null )
+            {
+                out.close();
+            }
         }
     }
 

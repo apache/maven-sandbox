@@ -20,46 +20,59 @@ package org.apache.maven.doxia.module.fo;
  */
 
 import java.io.File;
-import java.io.Reader;
-import java.io.FileWriter;
 import java.io.Writer;
 
-
-import org.apache.maven.doxia.module.apt.AptParser;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.AbstractSinkTestCase;
+import org.apache.maven.doxia.sink.AbstractSinkTest;
+import org.apache.maven.doxia.sink.SinkTestDocument;
 
 /**
  * <code>FO Sink</code> Test case.
  */
-public class FoSinkTest extends AbstractSinkTestCase
+public class FoSinkTest extends AbstractSinkTest
 {
+    private FoConfiguration config;
 
+    // ----------------------------------------------------------------------
+    // Specific test methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * Uses fop to generate a pdf from a test document.
+     * @throws Exception If the conversion fails.
+     */
     public void testConvertFO2PDF() throws Exception
     {
-        // first create fo file from apt
-        new AptParser().parse( getTestReader(), createSink() );
+        String fileName = "test";
+        // first create fo
+        FoSink fosink = new FoSink( getTestWriter( fileName ) );
+        SinkTestDocument.generate( fosink );
+        fosink.close();
 
         // then generate PDF
-        fo2pdf( "test" );
+        fo2pdf( fileName );
     }
 
+    /**
+     * Uses fop to generate an aggregated pdf from two test documents.
+     * @throws Exception If the conversion fails.
+     */
     public void testAggregateMode() throws Exception
     {
-        AptParser parser = new AptParser();
-        Reader source = getTestReader();
-        FoSink fosink = new FoSink( getFOTestWriter( "aggregate" ), true );
+        FoSink fosink = new FoSink( getTestWriter( "aggregate" ), true );
         fosink.beginDocument();
-        parser.parse( source, fosink );
+        SinkTestDocument.generate( fosink );
         // re-use the same source
-        source = getTestReader();
-        parser.parse( source, fosink );
+        SinkTestDocument.generate( fosink );
         fosink.endDocument();
 
         // then generate PDF
         fo2pdf( "aggregate" );
     }
+
+    // ----------------------------------------------------------------------
+    // Abstract methods the individual SinkTests must provide
+    // ----------------------------------------------------------------------
 
     /** {@inheritDoc} */
     protected String outputExtension()
@@ -68,39 +81,274 @@ public class FoSinkTest extends AbstractSinkTestCase
     }
 
     /** {@inheritDoc} */
-    protected Parser createParser()
+    protected Sink createSink( Writer writer )
     {
-        // fo parser?
-        return new AptParser();
+        return new FoSink( writer );
     }
 
     /** {@inheritDoc} */
-    protected Sink createSink() throws Exception
+    protected String getTitleBlock( String title )
     {
-        return new FoSink( getTestWriter() );
+        String attribs = getConfig().getAttributeSet( "doc.header.title" );
+        return "<fo:block" + attribs + ">" + title + "</fo:block>";
     }
+
+    /** {@inheritDoc} */
+    protected String getAuthorBlock( String author )
+    {
+        String attribs = getConfig().getAttributeSet( "doc.header.author" );
+        return "<fo:block" + attribs + ">" + author + "</fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getDateBlock( String date )
+    {
+        String attribs = getConfig().getAttributeSet( "doc.header.date" );
+        return "<fo:block" + attribs + ">" + date + "</fo:block>";
+    }
+
+    // TODO
+    protected String getHeadBlock()
+    {
+        return "";
+    }
+
+    // TODO: remove
+    public void testHead()
+    {
+        String expected = "";
+        assertEquals( "Wrong head!", expected, getHeadBlock() );
+    }
+
+    /** {@inheritDoc} */
+    protected String getBodyBlock()
+    {
+        return "</fo:flow></fo:page-sequence></fo:root>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSectionTitleBlock( String title )
+    {
+        return title;
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection1Block( String title )
+    {
+        String attribs = getConfig().getAttributeSet( "body.text" );
+        String attrib2 = getConfig().getAttributeSet( "body.h1" );
+        return "<fo:block" + attribs + "><fo:block" + attrib2 + ">1   "
+            + title + "</fo:block></fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection2Block( String title )
+    {
+        String attribs = getConfig().getAttributeSet( "body.text" );
+        String attrib2 = getConfig().getAttributeSet( "body.h2" );
+        return "<fo:block" + attribs + "><fo:block" + attrib2 + ">0.1   "
+            + title + "</fo:block></fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection3Block( String title )
+    {
+        String attribs = getConfig().getAttributeSet( "body.text" );
+        String attrib2 = getConfig().getAttributeSet( "body.h3" );
+        return "<fo:block" + attribs + "><fo:block" + attrib2 + ">0.0.1   "
+            + title + "</fo:block></fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection4Block( String title )
+    {
+        String attribs = getConfig().getAttributeSet( "body.text" );
+        String attrib2 = getConfig().getAttributeSet( "body.h4" );
+        return "<fo:block" + attribs + "><fo:block" + attrib2 + ">"
+            + title + "</fo:block></fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection5Block( String title )
+    {
+        String attribs = getConfig().getAttributeSet( "body.text" );
+        String attrib2 = getConfig().getAttributeSet( "body.h5" );
+        return "<fo:block" + attribs + "><fo:block" + attrib2 + ">"
+            + title + "</fo:block></fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getListBlock( String item )
+    {
+        String attribs = getConfig().getAttributeSet( "list" );
+        String itemAttribs = getConfig().getAttributeSet( "list.item" );
+        return "<fo:list-block" + attribs + "><fo:list-item" + itemAttribs
+            + "><fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label><fo:list-item-body"
+            + itemAttribs + "><fo:block>" + item
+            + "</fo:block></fo:list-item-body></fo:list-item></fo:list-block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getNumberedListBlock( String item )
+    {
+        String attribs = getConfig().getAttributeSet( "list" );
+        String itemAttribs = getConfig().getAttributeSet( "list.item" );
+        return "<fo:list-block" + attribs + "><fo:list-item" + itemAttribs
+            + "><fo:list-item-label><fo:block>i</fo:block></fo:list-item-label>"
+            + "<fo:list-item-body" + itemAttribs
+            + "><fo:block>" + item + "</fo:block></fo:list-item-body>"
+            + "</fo:list-item></fo:list-block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getDefinitionListBlock( String definum, String definition )
+    {
+        String dlAtts = getConfig().getAttributeSet( "dl" );
+        String dtAtts = getConfig().getAttributeSet( "dt" );
+        String ddAtts = getConfig().getAttributeSet( "dd" );
+        return "<fo:block" + dlAtts + "><fo:block" + dtAtts + ">" + definum
+        + "</fo:block><fo:block" + ddAtts + ">" + definition
+        + "</fo:block></fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getFigureBlock( String source, String caption )
+    {
+        String dlAtts = getConfig().getAttributeSet( "figure.display" );
+        String dtAtts = getConfig().getAttributeSet( "figure.graphics" );
+        String ddAtts = getConfig().getAttributeSet( "figure.caption" );
+        return "<fo:block" + dlAtts + "><fo:external-graphic" + dtAtts
+            + " src=\"" + source + ".png" + "\"/><fo:block" + ddAtts
+            + ">" + caption + "</fo:block></fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getTableBlock( String cell, String caption )
+    {
+        String dlAtts = getConfig().getAttributeSet( "table.padding" );
+        String dtAtts = getConfig().getAttributeSet( "table.layout" );
+        String ddAtts = getConfig().getAttributeSet( "table.body.row" );
+        String deAtts = getConfig().getAttributeSet( "table.body.cell" );
+        return "<fo:block" + dlAtts + "><fo:table" + dtAtts + ">"
+            + "<fo:table-column column-width=\"proportional-column-width(1)\"/>"
+            + "<fo:table-column column-width=\"1in\"/>"
+            + "<fo:table-column column-width=\"proportional-column-width(1)\"/>"
+            + "<fo:table-body><fo:table-row" + ddAtts
+            + "><fo:table-cell column-number=\"2\"" + deAtts
+            + "><fo:block text-align=\"center\">" + cell
+            + "</fo:block></fo:table-cell></fo:table-row></fo:table-body>"
+            + caption + "</fo:table></fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getParagraphBlock( String text )
+    {
+        String attribs = getConfig().getAttributeSet( "normal.paragraph" );
+        return "<fo:block" + attribs + ">" + text + "</fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getVerbatimBlock( String text )
+    {
+        String attribs = getConfig().getAttributeSet( "body.source" );
+        return "<fo:block" + attribs + ">" + text + "</fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getHorizontalRuleBlock()
+    {
+        String attribs = getConfig().getAttributeSet( "body.rule" );
+        return "<fo:block><fo:leader" + attribs + "/></fo:block>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getPageBreakBlock()
+    {
+        return "<fo:block break-before=\"page\"/>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getAnchorBlock( String anchor )
+    {
+        return "<fo:inline id=\"" + anchor + "\">" + anchor + "</fo:inline>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getLinkBlock( String link, String text )
+    {
+        String attribs = getConfig().getAttributeSet( "href.internal" );
+        return "<fo:basic-link internal-destination=\"" + link + "\"><fo:inline"
+            + attribs + ">" + text + "</fo:inline></fo:basic-link>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getItalicBlock( String text )
+    {
+        String attribs = getConfig().getAttributeSet( "italic" );
+        return "<fo:inline" + attribs + ">" + text + "</fo:inline>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getBoldBlock( String text )
+    {
+        String attribs = getConfig().getAttributeSet( "bold" );
+        return "<fo:inline" + attribs + ">" + text + "</fo:inline>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getMonospacedBlock( String text )
+    {
+        String attribs = getConfig().getAttributeSet( "monospace" );
+        return "<fo:inline" + attribs + ">" + text + "</fo:inline>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getLineBreakBlock()
+    {
+        return "<fo:block/>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getNonBreakingSpaceBlock()
+    {
+        return "&#160;";
+    }
+
+    /** {@inheritDoc} */
+    protected String getTextBlock( String text )
+    {
+        return FoSink.escaped( text, false );
+    }
+
+    /** {@inheritDoc} */
+    protected String getRawTextBlock( String text )
+    {
+        return text;
+    }
+
+    // ----------------------------------------------------------------------
+    // Auxiliary methods 
+    // ----------------------------------------------------------------------
+
 
     private void fo2pdf( String baseName ) throws Exception
     {
-        File outputDirectory = new File( getBasedirFile(), "target/output" );
+        //File outputDirectory = new File( getBasedirFile(), getOutputDir() );
+        File outputDirectory = new File( getBasedir(), outputBaseDir() + getOutputDir() );
         File resourceDirectory = new File( getBasedirFile(), "target/test-classes" );
         File foFile = new File( outputDirectory, baseName + "." + outputExtension() );
         File pdfFile = new File( outputDirectory, baseName + ".pdf" );
         FoTestUtils.convertFO2PDF( foFile, pdfFile, resourceDirectory.getCanonicalPath() );
     }
 
-    private Writer getFOTestWriter( String baseName )
-        throws Exception
+    private FoConfiguration getConfig()
     {
-        File outputDirectory = new File( getBasedirFile(), "target/output" );
-
-        if ( !outputDirectory.exists() )
+        if ( config == null )
         {
-            outputDirectory.mkdirs();
+            config = ((FoSink) getSink()).getFoConfiguration();
         }
 
-        return new FileWriter( new File( outputDirectory, baseName + "." + outputExtension() ) );
+        return config;
     }
-
 
 }

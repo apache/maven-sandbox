@@ -39,7 +39,7 @@ public class FoConfigurationTest extends TestCase
             "", attributes.getAttributeSet( "a.dummy.attribute" ) );
 
         assertEquals(
-            "Wrong attributes returned!",
+            "Wrong attributes returned for body.pre!",
             " font-size=\"10pt\" font-family=\"monospace\"",
             attributes.getAttributeSet( "body.pre" ) );
     }
