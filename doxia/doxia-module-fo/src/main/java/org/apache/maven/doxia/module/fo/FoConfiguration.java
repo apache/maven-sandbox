@@ -42,10 +42,13 @@ public class FoConfiguration
 
     // TODO: add constructor to override default configuration
 
-    /** Constructor. */
+    /**
+     * Constructor.
+     */
     public FoConfiguration()
     {
         this.config = new XMLConfiguration();
+
         // necessary because some attributes contain commas:
         config.setDelimiterParsingDisabled( true );
 
@@ -62,7 +65,9 @@ public class FoConfiguration
         reset();
     }
 
-    /** Builds a list of attributes.
+    /**
+     * Builds a list of attributes.
+     *
      * @param attributeId A unique id to identify the set of attributes.
      * This should correspond to the name of an attribute-set
      * defined in the configuration file.
@@ -83,6 +88,13 @@ public class FoConfiguration
         return buffer.toString();
     }
 
+    /**
+     * Adds an attribute to the current StringBuffer.
+     *
+     * @param attributeId A unique id to identify the set of attributes.
+     * This should correspond to the name of an attribute-set
+     * defined in the configuration file.
+     */
     private void addAttributes( String attributeId )
     {
         int index = sets.indexOf( attributeId );
@@ -112,6 +124,9 @@ public class FoConfiguration
         }
     }
 
+    /**
+     * Re-initialize the StringBuffer.
+     */
     private void reset()
     {
         this.buffer = new StringBuffer( 512 );

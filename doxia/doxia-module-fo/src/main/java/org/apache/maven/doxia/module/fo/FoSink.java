@@ -74,7 +74,9 @@ public class FoSink implements Sink
     /** In fragment mode, some text has to be ignored (title...). */
     private boolean ignoreText;
 
-    /** Constructor.
+    /**
+     * Constructor.
+     *
      * @param writer The writer for writing the result.
      */
     public FoSink( Writer writer )
@@ -82,7 +84,9 @@ public class FoSink implements Sink
         this( writer, false );
     }
 
-    /** Constructor.
+    /**
+     * Constructor.
+     *
      * @param writer The writer for writing the result.
      * @param fragment Indicates if the document is only a fragment.
      */
@@ -93,7 +97,9 @@ public class FoSink implements Sink
         this.fragmentDocument = fragment;
     }
 
-    /** Returns the configuration object of this sink.
+    /**
+     * Returns the configuration object of this sink.
+     *
      * @return The configuration object of this sink.
      */
     public FoConfiguration getFoConfiguration()
@@ -242,7 +248,7 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void sectionTitle1()
     {
-        onSectionTitle( 1 );
+        onSectionTitle( Sink.SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
@@ -268,7 +274,7 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        onSectionTitle( 2 );
+        onSectionTitle( Sink.SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
@@ -293,7 +299,7 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        onSectionTitle( 3 );
+        onSectionTitle( Sink.SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
@@ -317,7 +323,7 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        onSectionTitle( 4 );
+        onSectionTitle( Sink.SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
@@ -341,7 +347,7 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        onSectionTitle( 5 );
+        onSectionTitle( Sink.SECTION_LEVEL_5 );
     }
 
     /** {@inheritDoc} */
@@ -363,31 +369,35 @@ public class FoSink implements Sink
         writeStartTag( "block", "body.text" );
     }
 
-    /** Starts a section title. */
+    /**
+     * Starts a section title.
+     *
+     * @param depth The section level.
+     */
     private void onSectionTitle( int depth )
     {
-        StringBuffer title = new StringBuffer( 10 );
+        StringBuffer title = new StringBuffer( 16 );
 
         newline();
-        if ( depth == 1 )
+        if ( depth == Sink.SECTION_LEVEL_1 )
         {
             writeStartTag( "block", "body.h1" );
             title.append( section ).append( "   " );
         }
-        else if ( depth == 2 )
+        else if ( depth == Sink.SECTION_LEVEL_2 )
         {
             writeStartTag( "block", "body.h2" );
             title.append( section ).append( "." );
             title.append( subsection ).append( "   " );
         }
-        else if ( depth == 3 )
+        else if ( depth == Sink.SECTION_LEVEL_3 )
         {
             writeStartTag( "block", "body.h3" );
             title.append( section ).append( "." );
             title.append( subsection ).append( "." );
             title.append( subsubsection ).append( "   " );
         }
-        else if ( depth == 4 )
+        else if ( depth == Sink.SECTION_LEVEL_4 )
         {
             writeStartTag( "block", "body.h4" );
         }
@@ -710,7 +720,9 @@ public class FoSink implements Sink
         tableCell( true );
     }
 
-    /** Writes a table cell.
+    /**
+     * Writes a table cell.
+     *
      * @param headerRow Currently not used.
      */
     private void tableCell( boolean headerRow )
@@ -911,7 +923,7 @@ public class FoSink implements Sink
         }
         catch ( IOException e )
         {
-            // TODO
+            // TODO: log
         }
     }
 
@@ -924,11 +936,13 @@ public class FoSink implements Sink
         }
         catch ( IOException e )
         {
-            // TODO
+            // TODO: log
         }
     }
 
-    /** Writes the beginning of a FO document in aggregate mode. */
+    /**
+     * Writes the beginning of a FO document in aggregate mode.
+     */
     public void beginDocument()
     {
         writeln( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
@@ -956,8 +970,8 @@ public class FoSink implements Sink
         writeEndTag( "layout-master-set" );
     }
 
-    /** Writes the end of a FO document in aggregate mode,
-     * flushes and closes the stream.
+    /**
+     * Writes the end of a FO document in aggregate mode, flushes and closes the stream.
      */
     public void endDocument()
     {
@@ -970,6 +984,12 @@ public class FoSink implements Sink
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * Writes a start tag, prepending EOL.
+     *
+     * @param tag The tag name.
+     * @param attributeId An id identifying the attribute set.
+     */
     private void writeStartTag( String tag, String attributeId )
     {
         String attribs = config.getAttributeSet( attributeId );
@@ -977,23 +997,46 @@ public class FoSink implements Sink
         write( "<fo:" + tag + attribs + ">" );
     }
 
+    /**
+     * Writes a start tag, prepending EOL.
+     *
+     * @param tag The tag name.
+     * @param id An id to add.
+     * @param name The name (value) of the id.
+     */
     private void writeStartTag( String tag, String id, String name )
     {
         newline();
         write( "<fo:" + tag + " " + id + "=\"" + name + "\">" );
     }
 
+    /**
+     * Writes an end tag, appending EOL.
+     *
+     * @param tag The tag name.
+     */
     private void writeEndTag( String tag )
     {
         writeln( "</fo:" + tag + ">" );
     }
 
+    /**
+     * Writes a simple tag, appending EOL.
+     *
+     * @param tag The tag name.
+     * @param attributeId An id identifying the attribute set.
+     */
     private void writeEmptyTag( String tag, String attributeId )
     {
         String attribs = config.getAttributeSet( attributeId );
         writeln( "<fo:" + tag + attribs + "/>" );
     }
 
+    /**
+     * Writes a text, swallowing any exceptions.
+     *
+     * @param text The text to write.
+     */
     private void write( String text )
     {
         try
@@ -1002,21 +1045,32 @@ public class FoSink implements Sink
         }
         catch ( IOException e )
         {
-            // TODO
+            // TODO: log
         }
     }
 
+    /**
+     * Writes a text, appending EOL.
+     *
+     * @param text The text to write.
+     */
     private void writeln( String text )
     {
         write( text );
         newline();
     }
 
+    /**
+     * Writes content, escaping special characters.
+     *
+     * @param text The text to write.
+     */
     private void content( String text )
     {
         write( escaped( text, verbatim ) );
     }
 
+    /** Writes EOL. */
     private void newline()
     {
         write( EOL );
@@ -1024,6 +1078,7 @@ public class FoSink implements Sink
 
     /**
      * Escapes special characters so that the text can be included in a fo file.
+     *
      * @param text The text to process.
      * @param verb In verbatim mode, white space and newlines are escaped.
      * @return The text with special characters escaped.
@@ -1075,6 +1130,7 @@ public class FoSink implements Sink
         return buffer.toString();
     }
 
+    /** Starts a page sequence. */
     private void startPageSequence()
     {
         if ( chapter == 0 )
