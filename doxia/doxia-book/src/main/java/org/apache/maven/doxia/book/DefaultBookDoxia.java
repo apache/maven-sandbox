@@ -111,11 +111,13 @@ public class DefaultBookDoxia
         // Render the book
         // ----------------------------------------------------------------------
 
+        System.out.println( "Book-renderers available: " + bookRenderers.keySet() );
+        
         BookRenderer bookRenderer = (BookRenderer) bookRenderers.get( bookRendererId );
 
         if ( bookRenderer == null )
         {
-            throw new BookDoxiaException( "No such book rendered '" + bookRendererId + "'." );
+            throw new BookDoxiaException( "No such book renderer '" + bookRendererId + "'." );
         }
 
         bookRenderer.renderBook( context );

@@ -68,6 +68,11 @@ under the License.
       <version>1.0-alpha-9-SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>doxia-module-docbook-simple</artifactId>
+      <version>1.0-alpha-9-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-i18n</artifactId>
       <version>1.0-beta-6</version>
