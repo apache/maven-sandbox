@@ -38,7 +38,7 @@ import org.apache.maven.doxia.book.model.Section;
 import org.apache.maven.doxia.book.services.renderer.xdoc.ChapterXdocBookSink;
 import org.apache.maven.doxia.book.services.renderer.xdoc.IndexXdocBookSink;
 import org.apache.maven.doxia.book.services.renderer.xdoc.SectionXdocBookSink;
-import org.apache.maven.doxia.editor.io.PipelineSink;
+import org.apache.maven.doxia.sink.PipelineSink;
 import org.apache.maven.doxia.index.IndexEntry;
 import org.apache.maven.doxia.module.xdoc.XdocSink;
 import org.apache.maven.doxia.parser.ParseException;
