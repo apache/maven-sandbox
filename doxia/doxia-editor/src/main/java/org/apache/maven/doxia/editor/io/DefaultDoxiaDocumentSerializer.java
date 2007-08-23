@@ -24,6 +24,7 @@ import org.apache.maven.doxia.editor.Application;
 import org.apache.maven.doxia.module.xdoc.XdocSink;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
+import org.apache.maven.doxia.sink.PipelineSink;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import javax.swing.text.Document;

@@ -22,7 +22,7 @@ package org.apache.maven.doxia.editor.action;
 import org.apache.maven.doxia.Doxia;
 import org.apache.maven.doxia.editor.io.DebugSink;
 import org.apache.maven.doxia.editor.io.EditorSink;
-import org.apache.maven.doxia.editor.io.PipelineSink;
+import org.apache.maven.doxia.sink.PipelineSink;
 import org.apache.maven.doxia.editor.model.DoxiaDocument;
 
 import java.awt.event.ActionEvent;
