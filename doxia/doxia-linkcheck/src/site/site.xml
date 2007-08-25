@@ -21,7 +21,7 @@
  */
  -->
 
-<project name="Doxia :: LinkCheck">
+<project>
   <bannerLeft>
     <name>Doxia :: LinkCheck</name>
     <src>http://maven.apache.org/images/apache-maven-project-2.png</src>

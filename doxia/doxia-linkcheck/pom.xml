@@ -27,7 +27,7 @@ under the License.
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-linkcheck</artifactId>
-  <name>Doxia Linkcheck</name>
+  <name>Doxia :: Linkcheck</name>
   <version>1.0-alpha-9-SNAPSHOT</version>
   <dependencies>
     <!-- compile dependencies -->
