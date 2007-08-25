@@ -109,11 +109,11 @@ public class LinkValidatorManager implements Serializable
     public LinkValidationResult validateLink( LinkValidationItem lvi ) throws Exception
     {
         {
-            LinkValidationResult status = getCachedResult( lvi );
+            LinkValidationResult cachedResult = getCachedResult( lvi );
 
-            if ( status != null )
+            if ( cachedResult != null )
             {
-                return status;
+                return cachedResult;
             }
         }
 

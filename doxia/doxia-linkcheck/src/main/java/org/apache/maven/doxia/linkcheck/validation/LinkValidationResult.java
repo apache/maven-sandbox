@@ -94,14 +94,14 @@ public class LinkValidationResult implements Serializable
      * Constructor: initializes status, persistent and errorMessage.
      *
      * @param stat The status.
-     * @param pers The persistent.
+     * @param persistent The persistent.
      * @param message The errorMessage.
      */
-    public LinkValidationResult( int stat, boolean pers, String message )
+    public LinkValidationResult( int stat, boolean persistent, String message )
     {
         this.status = stat;
 
-        this.persistent = pers;
+        this.persistent = persistent;
 
         this.errorMessage = message;
     }

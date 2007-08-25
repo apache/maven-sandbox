@@ -20,7 +20,7 @@ package org.apache.maven.doxia.linkcheck.validation;
  */
 
 /**
- * Validates mailto links
+ * Validates mailto links.
  *
  * @author <a href="mailto:bwalding@apache.org">Ben Walding</a>
  * @author <a href="mailto:aheritier@apache.org">Arnaud Heritier</a>

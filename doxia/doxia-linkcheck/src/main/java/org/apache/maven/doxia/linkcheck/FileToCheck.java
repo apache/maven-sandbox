@@ -120,7 +120,7 @@ public final class FileToCheck
     }
 
     /**
-     * Returns the successful.
+     * Returns the number of successfully validated links.
      *
      * @return int
      */
@@ -130,7 +130,7 @@ public final class FileToCheck
     }
 
     /**
-     * Returns the unsuccessful.
+     * Returns the number of unsuccessfully validated links.
      *
      * @return int
      */
@@ -284,7 +284,7 @@ public final class FileToCheck
     }
 
     /**
-     * Returns an XML representation of the current linkcheck result.
+     * Returns an XML representation of the linkcheck results for this file.
      * This is only available after {@link #check(LinkValidatorManager)} has been called.
      *
      * @return the XML linkcheck result as a string.

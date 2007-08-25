@@ -98,17 +98,17 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
     /**
      * Constructor: initialize settings.
      *
-     * @param meth The http method to use. Should be one of "head" or "get".
+     * @param method The http method to use. Should be one of "head" or "get".
      */
-    public OnlineHTTPLinkValidator( String meth )
+    public OnlineHTTPLinkValidator( String method )
     {
-        this( meth, null, null, null, null, null, null );
+        this( method, null, null, null, null, null, null );
     }
 
     /**
      * Constructor: initialize settings.
      *
-     * @param meth The http method to use. Should be one of "head" or "get".
+     * @param method The http method to use. Should be one of "head" or "get".
      * @param pHost The proxy host.
      * @param pPort The proxy port.
      * @param pUser The proxy user.
@@ -116,15 +116,15 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
      * @param pNtlmHost The proxy NtlmHost.
      * @param pNtlmDomain The proxy NtlmDomain.
      */
-    public OnlineHTTPLinkValidator( String meth, String pHost, String pPort, String pUser,
+    public OnlineHTTPLinkValidator( String method, String pHost, String pPort, String pUser,
                                     String pPass, String pNtlmHost, String pNtlmDomain )
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Will use method : [" + meth + "]" );
+            LOG.debug( "Will use method : [" + method + "]" );
         }
 
-        this.method = meth;
+        this.method = method;
 
         if ( pHost == null || pHost.trim().equals( "" ) )
         {

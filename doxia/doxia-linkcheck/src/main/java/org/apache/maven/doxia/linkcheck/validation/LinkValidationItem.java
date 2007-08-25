@@ -28,7 +28,7 @@ import java.io.File;
  */
 public class LinkValidationItem
 {
-    /** The source. */
+    /** The source file. */
     private final File source;
 
     /** The link. */
@@ -37,7 +37,7 @@ public class LinkValidationItem
     /**
      * Constructor: initializes the source and link.
      *
-     * @param src The source, cannot be null.
+     * @param src The source file, cannot be null.
      * @param lnk The link, cannot be null.
      */
     public LinkValidationItem( File src, String lnk )
@@ -67,7 +67,7 @@ public class LinkValidationItem
     }
 
     /**
-     * Returns the source.
+     * Returns the source file.
      *
      * @return File
      */

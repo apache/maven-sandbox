@@ -111,7 +111,7 @@ public final class LinkCheck
 
 
     /**
-     * Get the base directory for the change log generator.
+     * Get the base directory for the files to be linkchecked.
      *
      * @return the base directory
      */
@@ -121,7 +121,7 @@ public final class LinkCheck
     }
 
     /**
-     * Set the base directory for the change log generator.
+     * Set the base directory for the files to be linkchecked.
      *
      * @param base the base directory
      */
@@ -131,7 +131,7 @@ public final class LinkCheck
     }
 
     /**
-     * Returns the cacheFile.
+     * Returns the name of the cacheFile.
      *
      * @return String
      */
@@ -141,7 +141,7 @@ public final class LinkCheck
     }
 
     /**
-     * Sets the cacheFile.
+     * Sets the name of the cacheFile.
      *
      * @param cacheFile The cacheFile to set
      */
@@ -257,7 +257,7 @@ public final class LinkCheck
     }
 
     /**
-     * Set the output file for the log.
+     * Set the output file for the results.
      *
      * @param file the output file.
      */
@@ -342,10 +342,7 @@ public final class LinkCheck
             throw new NullPointerException( "output must be set" );
         }
 
-        if ( LOG.isDebugEnabled() )
-        {
-            displayMemoryConsumption();
-        }
+        displayMemoryConsumption();
 
         LinkValidatorManager validator = getLinkValidatorManager();
 
@@ -369,24 +366,24 @@ public final class LinkCheck
 
         Iterator fileIter = files.iterator();
 
-        FileToCheck flc;
+        FileToCheck ftc;
 
         while ( fileIter.hasNext() )
         {
-            flc = (FileToCheck) fileIter.next();
+            ftc = (FileToCheck) fileIter.next();
 
             try
             {
-                this.filesToCheck.add( flc );
-                flc.check( validator );
+                this.filesToCheck.add( ftc );
+                ftc.check( validator );
             }
             catch ( Exception e )
             {
-                LOG.error( "Error while checking : " + flc.getName(), e );
+                LOG.error( "Error while checking : " + ftc.getName(), e );
             }
         }
 
-        flc = null;
+        ftc = null;
 
         LOG.info( "Links checked." );
 
