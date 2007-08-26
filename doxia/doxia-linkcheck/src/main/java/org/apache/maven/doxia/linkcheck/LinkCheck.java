@@ -440,11 +440,8 @@ public final class LinkCheck
      *
      * @throws FileNotFoundException
      *             when the output file previously provided does not exist.
-     * @throws UnsupportedEncodingException
-     *             when the platform doesn't support the current encoding.
      */
-    private void createDocument() throws FileNotFoundException, UnsupportedEncodingException
-
+    private void createDocument() throws FileNotFoundException
     {
         File dir = this.output.getParentFile();
 
@@ -460,12 +457,30 @@ public final class LinkCheck
         if ( encoding == null )
         {
             OutputStreamWriter osw = new OutputStreamWriter( new FileOutputStream( this.output ) );
+
             out = new PrintWriter( osw );
+
             encoding = osw.getEncoding();
         }
         else
         {
-            out = new PrintWriter( new OutputStreamWriter( new FileOutputStream( this.output ), encoding ) );
+            try
+            {
+                out = new PrintWriter( new OutputStreamWriter( new FileOutputStream( this.output ), encoding ) );
+            }
+            catch ( UnsupportedEncodingException e )
+            {
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( "Unsupported encoding specified: " + encoding + ", using default." );
+                }
+
+                OutputStreamWriter osw = new OutputStreamWriter( new FileOutputStream( this.output ) );
+
+                out = new PrintWriter( osw );
+
+                encoding = osw.getEncoding();
+            }
         }
 
         StringBuffer buffer = new StringBuffer();
