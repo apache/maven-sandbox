@@ -108,13 +108,11 @@ public class LinkValidatorManager implements Serializable
      */
     public LinkValidationResult validateLink( LinkValidationItem lvi ) throws Exception
     {
-        {
-            LinkValidationResult cachedResult = getCachedResult( lvi );
+        LinkValidationResult cachedResult = getCachedResult( lvi );
 
-            if ( cachedResult != null )
-            {
-                return cachedResult;
-            }
+        if ( cachedResult != null )
+        {
+            return cachedResult;
         }
 
         for ( int i = 0; i < this.excludes.length; i++ )
@@ -179,9 +177,16 @@ public class LinkValidatorManager implements Serializable
      * Loads a cache file.
      *
      * @param cacheFilename The name of the cache file.
+     * May be null, in which case the request is ignored.
      */
     public void loadCache( String cacheFilename )
     {
+        if ( cacheFilename == null )
+        {
+            LOG.debug( "No cache file specified! Ignoring request to load." );
+            return;
+        }
+
         try
         {
             File f = new File( cacheFilename );
@@ -193,6 +198,11 @@ public class LinkValidatorManager implements Serializable
                 this.cache = (Map) is.readObject();
 
                 is.close();
+
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( "Cache file loaded: " + cacheFilename );
+                }
             }
         }
         catch ( InvalidClassException e )
@@ -209,9 +219,16 @@ public class LinkValidatorManager implements Serializable
      * Saves a cache file.
      *
      * @param cacheFilename The name of the cache file.
+     * May be null, in which case the request is ignored.
      */
     public void saveCache( String cacheFilename )
     {
+        if ( cacheFilename == null )
+        {
+            LOG.warn( "No cache file specified! Ignoring request to store results." );
+            return;
+        }
+
         try
         {
             // Remove non-persistent items from cache
