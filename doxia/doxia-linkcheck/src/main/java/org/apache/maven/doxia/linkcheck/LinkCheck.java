@@ -295,6 +295,24 @@ public final class LinkCheck
      */
     public void findFiles( List allFiles, File base )
     {
+        LOG.debug( "Locating all files to be checked..." );
+
+        findAllFiles( allFiles, base );
+
+        LOG.debug( "Located all files to be checked." );
+
+        LOG.info( "Found " + allFiles.size() + " files to check." );
+    }
+
+    /**
+     * Recurses through the given base directory and adds
+     * files to the given list that pass through the current filter.
+     *
+     * @param allFiles the list to fill
+     * @param base the base directory to traverse.
+     */
+    private void findAllFiles( List allFiles, File base )
+    {
         File[] f = base.listFiles( CUSTOM_FF );
 
         if ( f != null )
@@ -306,7 +324,7 @@ public final class LinkCheck
 
                 if ( file.isDirectory() )
                 {
-                    findFiles( allFiles, file );
+                    findAllFiles( allFiles, file );
                 }
                 else
                 {
@@ -330,12 +348,11 @@ public final class LinkCheck
         f = null;
     }
 
+
     /**
      * Execute task.
-     *
-     * @throws IOException if there are problems
      */
-    public void doExecute() throws IOException
+    public void doExecute()
     {
         if ( this.output == null )
         {
@@ -352,13 +369,7 @@ public final class LinkCheck
 
         List files = new LinkedList();
 
-        LOG.debug( "Locating all files to be checked..." );
-
         findFiles( files, this.basedir );
-
-        LOG.debug( "Located all files to be checked." );
-
-        LOG.info( "Found " + files.size() + " files to check." );
 
         displayMemoryConsumption();
 
@@ -389,7 +400,14 @@ public final class LinkCheck
 
         displayMemoryConsumption();
 
-        createDocument();
+        try
+        {
+            createDocument();
+        }
+        catch ( FileNotFoundException e )
+        {
+            LOG.error( "Could not write to output file, results will be lost!", e );
+        }
 
         validator.saveCache( this.cache );
 
