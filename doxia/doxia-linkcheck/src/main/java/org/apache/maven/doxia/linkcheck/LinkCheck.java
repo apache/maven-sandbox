@@ -143,7 +143,7 @@ public final class LinkCheck
     /**
      * Sets the name of the cacheFile.
      *
-     * @param cacheFile The cacheFile to set
+     * @param cacheFile The cacheFile to set. Set this to null to ignore storing the cache.
      */
     public void setCache( String cacheFile )
     {
@@ -212,7 +212,6 @@ public final class LinkCheck
         this.lvm = validator;
     }
 
-
     /**
      * Returns the LinkValidatorManager.
      * If this hasn't been set before with {@link #setLinkValidatorManager(LinkValidatorManager)}
@@ -258,12 +257,23 @@ public final class LinkCheck
 
     /**
      * Set the output file for the results.
+     * If this is null, no output will be written.
      *
      * @param file the output file.
      */
     public void setOutput( File file )
     {
         this.output = file;
+    }
+
+    /**
+     * Returns the output file.
+     *
+     * @return File
+     */
+    public File getOutput()
+    {
+        return this.output;
     }
 
     /**
@@ -356,7 +366,7 @@ public final class LinkCheck
     {
         if ( this.output == null )
         {
-            throw new NullPointerException( "output must be set" );
+            LOG.warn( "No output file specified! Results will not be written!" );
         }
 
         displayMemoryConsumption();
@@ -461,6 +471,11 @@ public final class LinkCheck
      */
     private void createDocument() throws FileNotFoundException
     {
+        if ( this.output == null )
+        {
+            return;
+        }
+
         File dir = this.output.getParentFile();
 
         if ( dir != null )
