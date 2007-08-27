@@ -28,10 +28,14 @@ under the License.
   </parent>
   <artifactId>doxia-sandbox</artifactId>
   <name>Doxia Sandbox</name>
+  <description>Doxia Sandbox components</description>
   <packaging>pom</packaging>
   <modules>
     <module>doxia-book</module>
     <module>doxia-editor</module>
+    <module>doxia-linkcheck</module>
     <module>doxia-maven-plugin</module>
+    <module>doxia-module-fo</module>
+    <module>doxia-module-mediawiki</module>
   </modules>
 </project>

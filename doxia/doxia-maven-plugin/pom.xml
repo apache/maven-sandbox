@@ -19,17 +19,17 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.maven.doxia</groupId>
-    <artifactId>doxia</artifactId>
+    <artifactId>doxia-sandbox</artifactId>
   <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-maven-plugin</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
-  <name>Doxia Maven Plugin</name>
+  <name>Doxia :: Maven Plugin</name>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
