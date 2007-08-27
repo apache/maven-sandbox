@@ -364,6 +364,13 @@ public final class LinkCheck
      */
     public void doExecute()
     {
+        if ( this.basedir == null )
+        {
+            LOG.error( "No base directory specified!" );
+
+            throw new NullPointerException( "basedir can't be null!" );
+        }
+
         if ( this.output == null )
         {
             LOG.warn( "No output file specified! Results will not be written!" );
