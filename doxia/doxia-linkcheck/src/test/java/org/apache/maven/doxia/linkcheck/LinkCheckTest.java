@@ -45,7 +45,7 @@ public class LinkCheckTest extends TestCase
 
         lc.setOutputEncoding( "UTF-8" );
 
-        lc.setCache( "target/linkcheck/linkcheck.cache" ); // TODO
+        lc.setCache( new File( "target/linkcheck/linkcheck.cache" ) ); // TODO
 
         String[] excludes = new String[]
             {

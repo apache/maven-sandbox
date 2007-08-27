@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -66,7 +65,7 @@ public final class LinkCheck
     private File basedir;
 
     /** cache. */
-    private String cache;
+    private File cache;
 
     /** excludes. */
     private String[] excludes = null;
@@ -131,21 +130,21 @@ public final class LinkCheck
     }
 
     /**
-     * Returns the name of the cacheFile.
+     * Returns the cache File.
      *
-     * @return String
+     * @return File
      */
-    public String getCache()
+    public File getCache()
     {
         return this.cache;
     }
 
     /**
-     * Sets the name of the cacheFile.
+     * Sets the cache File.
      *
      * @param cacheFile The cacheFile to set. Set this to null to ignore storing the cache.
      */
-    public void setCache( String cacheFile )
+    public void setCache( File cacheFile )
     {
         this.cache = cacheFile;
     }
@@ -400,15 +399,9 @@ public final class LinkCheck
         {
             ftc = (FileToCheck) fileIter.next();
 
-            try
-            {
-                this.filesToCheck.add( ftc );
-                ftc.check( validator );
-            }
-            catch ( Exception e )
-            {
-                LOG.error( "Error while checking : " + ftc.getName(), e );
-            }
+            this.filesToCheck.add( ftc );
+
+            ftc.check( validator );
         }
 
         ftc = null;

@@ -55,8 +55,6 @@ class LinkMatcher
      *
      * TODO: Check for encoding issues
      *
-     * TODO: Better exception handling?
-     *
      * @param file the file we are reading
      * @return a StringBuffer with file's contents.
      * @throws IOException if something goes wrong.

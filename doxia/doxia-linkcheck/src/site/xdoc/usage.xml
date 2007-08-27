@@ -41,7 +41,7 @@ under the License.
 
         lc.setOutput( new File( "target/linkcheck/linkcheck.xml" ) );
 
-        lc.setCache( "target/linkcheck/linkcheck.cache" );
+        lc.setCache( new File( "target/linkcheck/linkcheck.cache" ) );
 
         String[] excludes = new String[]
             {

@@ -32,7 +32,7 @@ public final class MailtoLinkValidator implements LinkValidator
     private static final LinkValidationResult LVR = new LinkValidationResult( LinkValidationResult.VALID, false, "" );
 
     /** {@inheritDoc} */
-    public LinkValidationResult validateLink( LinkValidationItem lvi ) throws Exception
+    public LinkValidationResult validateLink( LinkValidationItem lvi )
     {
         return LVR;
     }

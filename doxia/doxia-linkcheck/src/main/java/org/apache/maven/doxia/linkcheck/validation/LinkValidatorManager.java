@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -104,9 +105,8 @@ public class LinkValidatorManager implements Serializable
      *
      * @param lvi The LinkValidationItem to validate.
      * @return A LinkValidationResult.
-     * @throws Exception if something goes wrong.
      */
-    public LinkValidationResult validateLink( LinkValidationItem lvi ) throws Exception
+    public LinkValidationResult validateLink( LinkValidationItem lvi )
     {
         LinkValidationResult cachedResult = getCachedResult( lvi );
 
@@ -176,99 +176,121 @@ public class LinkValidatorManager implements Serializable
     /**
      * Loads a cache file.
      *
-     * @param cacheFilename The name of the cache file.
+     * @param cacheFile The cache file.
      * May be null, in which case the request is ignored.
      */
-    public void loadCache( String cacheFilename )
+    public void loadCache( File cacheFile )
     {
-        if ( cacheFilename == null )
+        if ( cacheFile == null )
         {
             LOG.debug( "No cache file specified! Ignoring request to load." );
             return;
         }
 
+        if ( !cacheFile.exists() )
+        {
+            LOG.debug( "Specified cache file does not exist! Ignoring request to load." );
+            return;
+        }
+
+        ObjectInputStream is = null;
+
         try
         {
-            File f = new File( cacheFilename );
+            is = new ObjectInputStream( new FileInputStream( cacheFile ) );
 
-            if ( f.exists() )
+            this.cache = (Map) is.readObject();
+
+            if ( LOG.isDebugEnabled() )
             {
-                ObjectInputStream is = new ObjectInputStream( new FileInputStream( cacheFilename ) );
-
-                this.cache = (Map) is.readObject();
-
-                is.close();
-
-                if ( LOG.isDebugEnabled() )
-                {
-                    LOG.debug( "Cache file loaded: " + cacheFilename );
-                }
+                LOG.debug( "Cache file loaded: " + cacheFile.getAbsolutePath() );
             }
         }
         catch ( InvalidClassException e )
         {
-            LOG.warn( "Your cache is incompatible with this new release of linkcheck. It will be recreated." );
+            LOG.warn( "Your cache is incompatible with this version of linkcheck. It will be recreated." );
         }
-        catch ( Throwable t )
+        catch ( ClassNotFoundException e )
         {
-            LOG.error( "Unable to load the cache: " + cacheFilename, t );
+            LOG.error( "Unable to load the cache: " + cacheFile.getAbsolutePath(), e );
+        }
+        catch ( IOException t )
+        {
+            LOG.error( "Unable to load the cache: " + cacheFile.getAbsolutePath(), t );
+        }
+        finally
+        {
+            try
+            {
+                is.close();
+            }
+            catch ( IOException e )
+            {
+                LOG.debug( "Unable to close stream!", e );
+
+                is = null;
+            }
         }
     }
 
     /**
      * Saves a cache file.
      *
-     * @param cacheFilename The name of the cache file.
+     * @param cacheFile The name of the cache file.
      * May be null, in which case the request is ignored.
      */
-    public void saveCache( String cacheFilename )
+    public void saveCache( File cacheFile )
     {
-        if ( cacheFilename == null )
+        if ( cacheFile == null )
         {
             LOG.warn( "No cache file specified! Ignoring request to store results." );
             return;
         }
 
-        try
+        // Remove non-persistent items from cache
+        Map persistentCache = new HashMap();
+
+        Iterator iter = this.cache.keySet().iterator();
+
+        Object resourceKey;
+
+        while ( iter.hasNext() )
         {
-            // Remove non-persistent items from cache
-            Map persistentCache = new HashMap();
+            resourceKey = iter.next();
 
-            Iterator iter = this.cache.keySet().iterator();
-
-            Object resourceKey;
-
-            while ( iter.hasNext() )
+            if ( ( (LinkValidationResult) this.cache.get( resourceKey ) ).isPersistent() )
             {
-                resourceKey = iter.next();
+                persistentCache.put( resourceKey, this.cache.get( resourceKey ) );
 
-                if ( ( (LinkValidationResult) this.cache.get( resourceKey ) ).isPersistent() )
+                if ( LOG.isDebugEnabled() )
                 {
-                    persistentCache.put( resourceKey, this.cache.get( resourceKey ) );
-
-                    if ( LOG.isDebugEnabled() )
-                    {
-                        LOG.debug( "[" + resourceKey + "] with result [" + this.cache.get( resourceKey )
-                                        + "] is stored in the cache." );
-                    }
+                    LOG.debug( "[" + resourceKey + "] with result [" + this.cache.get( resourceKey )
+                                    + "] is stored in the cache." );
                 }
             }
+        }
 
-            File cacheFile = new File( cacheFilename );
+        File dir = cacheFile.getParentFile();
 
-            File dir = cacheFile.getParentFile();
+        if ( dir != null )
+        {
+            dir.mkdirs();
+        }
 
-            if ( dir != null )
-            {
-                dir.mkdirs();
-            }
+        ObjectOutputStream os = null;
 
-            ObjectOutputStream os = new ObjectOutputStream( new FileOutputStream( cacheFilename ) );
+        try
+        {
+            os = new ObjectOutputStream( new FileOutputStream( cacheFile ) );
 
             os.writeObject( persistentCache );
-
-            os.close();
-
+        }
+        catch ( IOException e )
+        {
+            LOG.error( "Unable to save the cache: " + cacheFile.getAbsolutePath(), e );
+        }
+        finally
+        {
             persistentCache = null;
 
             iter = null;
@@ -279,11 +301,16 @@ public class LinkValidatorManager implements Serializable
 
             dir = null;
 
-            os = null;
-        }
-        catch ( Throwable t )
-        {
-            LOG.error( "Unable to save the cache: " + cacheFilename, t );
+            try
+            {
+                os.close();
+            }
+            catch ( IOException e )
+            {
+                LOG.debug( "Unable to close stream!", e );
+
+                os = null;
+            }
         }
     }
 

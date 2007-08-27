@@ -44,42 +44,20 @@ public final class FileToCheck
     /** Log for debug output. */
     private static final Log LOG = LogFactory.getLog( FileToCheck.class );
 
-    /** Unknown validation status. Initialized as null. */
-    public static final String STATUS_UNKNOWN = null;
-
-    /** Validation status ok. */
-    public static final String STATUS_OK = "OK";
-
     /** The base of this FileToCheck. */
     private String base;
 
     /** The File object of this FileToCheck. */
     private File fileToCheck;
 
-    /** A list of links found in this FileToCheck. */
+    /** The list of LinkCheckResults of the links found in this FileToCheck. */
     private List links = new LinkedList();
 
-    /** A message. */
-    private String message = "";
-
-    /** The status. */
-    private String status = STATUS_OK;
-
-    /** successful. */
+    /** The number of successfully validated links. */
     private int successful;
 
-    /** unsuccessful. */
+    /** The number of unsuccessfully validated links. */
     private int unsuccessful;
-
-    /**
-     * Returns the message.
-     *
-     * @return String
-     */
-    public String getMessage()
-    {
-        return this.message;
-    }
 
     /**
      * Returns the fileName.
@@ -99,24 +77,13 @@ public final class FileToCheck
     }
 
     /**
-     * Returns the list of results.
+     * Returns the list of {@link LinkCheckResult LinkCheckResults}.
      *
      * @return List
      */
     public List getResults()
     {
         return this.links;
-    }
-
-    /**
-     * Returns the status.
-     *
-     * @return int
-     */
-    // TODO: replace by LinkValidationResult status.
-    public String getStatus()
-    {
-        return this.status;
     }
 
     /**
@@ -155,132 +122,117 @@ public final class FileToCheck
      * Validates this fileToCheck.
      *
      * @param lvm The LinkValidatorManager to use.
-     * @throws Exception if something goes wrong.
      */
-    public void check( LinkValidatorManager lvm ) throws Exception
+    public void check( LinkValidatorManager lvm )
     {
         this.successful = 0;
 
         this.unsuccessful = 0;
-
-        this.status = STATUS_OK;
-
-        this.message = "";
 
         if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Validating " + getName() );
         }
 
+        final Set hrefs;
+
         try
         {
-            final Set hrefs;
-
-            try
-            {
-                hrefs = LinkMatcher.match( this.fileToCheck );
-            }
-            catch ( Throwable t )
-            {
-                // We catch Throwable, because there is a chance that the domReader will throw
-                // a stack overflow exception for some files
-
-                if ( LOG.isDebugEnabled() )
-                {
-                    LOG.error( "Received: [" + t + "] in page [" + getName() + "]", t );
-                }
-                else
-                {
-                    LOG.error( "Received: [" + t + "] in page [" + getName() + "]" );
-                }
-
-                LinkCheckResult lcr = new LinkCheckResult();
-
-                lcr.setStatus( "PARSE FAILURE" );
-
-                lcr.setTarget( "N/A" );
-
-                addResult( lcr );
-
-                return;
-            }
-
-            String href;
-
-            LinkCheckResult lcr;
-
-            LinkValidationItem lvi;
-
-            LinkValidationResult result;
-
-            for ( Iterator iter = hrefs.iterator(); iter.hasNext(); )
-            {
-                href = (String) iter.next();
-
-                lcr = new LinkCheckResult();
-
-                lvi = new LinkValidationItem( this.fileToCheck, href );
-
-                result = lvm.validateLink( lvi );
-
-                lcr.setTarget( href );
-
-                lcr.setErrorMessage( result.getErrorMessage() );
-
-                switch ( result.getStatus() )
-                {
-                    case LinkValidationResult.VALID:
-                        this.successful++;
-
-                        lcr.setStatus( "valid" );
-
-                        addResult( lcr ); // At some point we won't want to store valid links. The tests require that
-                        // we do at present
-
-                        break;
-                    case LinkValidationResult.ERROR:
-                        this.unsuccessful++;
-
-                        lcr.setStatus( "error" );
-
-                        addResult( lcr );
-
-                        break;
-                    case LinkValidationResult.WARNING:
-                        this.unsuccessful++;
-
-                        lcr.setStatus( "warning" );
-
-                        addResult( lcr );
-
-                        break;
-                    case LinkValidationResult.UNKNOWN:
-                    default:
-                        this.unsuccessful++;
-
-                        lcr.setStatus( "unknown" );
-
-                        addResult( lcr );
-
-                        break;
-                }
-            }
-
-            href = null;
-
-            lcr = null;
-
-            lvi = null;
-
-            result = null;
-
+            hrefs = LinkMatcher.match( this.fileToCheck );
         }
-        catch ( Exception e )
+        catch ( Throwable t )
         {
-            LOG.error( this.message );
+            // We catch Throwable, because there is a chance that the domReader will throw
+            // a stack overflow exception for some files
 
-            throw e;
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.error( "Received: [" + t + "] in page [" + getName() + "]", t );
+            }
+            else
+            {
+                LOG.error( "Received: [" + t + "] in page [" + getName() + "]" );
+            }
+
+            LinkCheckResult lcr = new LinkCheckResult();
+
+            lcr.setStatus( "PARSE FAILURE" );
+
+            lcr.setTarget( "N/A" );
+
+            addResult( lcr );
+
+            return;
         }
+
+        String href;
+
+        LinkCheckResult lcr;
+
+        LinkValidationItem lvi;
+
+        LinkValidationResult result;
+
+        for ( Iterator iter = hrefs.iterator(); iter.hasNext(); )
+        {
+            href = (String) iter.next();
+
+            lcr = new LinkCheckResult();
+
+            lvi = new LinkValidationItem( this.fileToCheck, href );
+
+            result = lvm.validateLink( lvi );
+
+            lcr.setTarget( href );
+
+            lcr.setErrorMessage( result.getErrorMessage() );
+
+            switch ( result.getStatus() )
+            {
+                case LinkValidationResult.VALID:
+                    this.successful++;
+
+                    lcr.setStatus( "valid" );
+
+                    // At some point we won't want to store valid links. The tests require that we do at present.
+                    addResult( lcr );
+
+                    break;
+                case LinkValidationResult.ERROR:
+                    this.unsuccessful++;
+
+                    lcr.setStatus( "error" );
+
+                    addResult( lcr );
+
+                    break;
+                case LinkValidationResult.WARNING:
+                    this.unsuccessful++;
+
+                    lcr.setStatus( "warning" );
+
+                    addResult( lcr );
+
+                    break;
+                case LinkValidationResult.UNKNOWN:
+                default:
+                    this.unsuccessful++;
+
+                    lcr.setStatus( "unknown" );
+
+                    addResult( lcr );
+
+                    break;
+            }
+        }
+
+        href = null;
+
+        lcr = null;
+
+        lvi = null;
+
+        result = null;
     }
 
     /**

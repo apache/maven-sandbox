@@ -31,9 +31,8 @@ public interface LinkValidator
      *
      * @param lvi The LinkValidationItem to validate.
      * @return The LinkValidationResult.
-     * @throws Exception if something goes wrong.
      */
-    LinkValidationResult validateLink( LinkValidationItem lvi ) throws Exception;
+    LinkValidationResult validateLink( LinkValidationItem lvi );
 
     /**
      * The resource key is used by the cache to determine if it really needs to validate the link. No actual validation
