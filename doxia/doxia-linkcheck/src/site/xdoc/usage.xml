@@ -37,11 +37,11 @@ under the License.
 
         lc.setOnline( true );
 
-        lc.setBasedir( new File( "/target/site/" ) );
+        lc.setBasedir( new File( "target/site/" ) );
 
-        lc.setOutput( new File( "/target/linkcheck/linkcheck.xml" ) );
+        lc.setOutput( new File( "target/linkcheck/linkcheck.xml" ) );
 
-        lc.setCache( "/target/linkcheck/linkcheck.cache" );
+        lc.setCache( "target/linkcheck/linkcheck.cache" );
 
         String[] excludes = new String[]
             {

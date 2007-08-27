@@ -33,28 +33,19 @@ import junit.framework.TestCase;
  */
 public class LinkCheckTest extends TestCase
 {
-    String baseDir;
-
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-
-        this.baseDir = System.getProperty( "basedir" ); // TODO
-    }
-
     public void testScan() throws Exception
     {
         LinkCheck lc = new LinkCheck();
 
         lc.setOnline( true ); // TODO: check if online
 
-        lc.setBasedir( new File( this.baseDir + "/src/test/resources" ) ); // TODO
+        lc.setBasedir( new File( "src/test/resources" ) ); // TODO
 
-        lc.setOutput( new File( this.baseDir + "/target/linkcheck/linkcheck.xml" ) );
+        lc.setOutput( new File( "target/linkcheck/linkcheck.xml" ) );
 
         lc.setOutputEncoding( "UTF-8" );
 
-        lc.setCache( this.baseDir + "/target/linkcheck/linkcheck.cache" ); // TODO
+        lc.setCache( "target/linkcheck/linkcheck.cache" ); // TODO
 
         String[] excludes = new String[]
             {
@@ -102,7 +93,7 @@ public class LinkCheckTest extends TestCase
     {
         FileToCheck ftc = (FileToCheck) map.get( name );
 
-        assertNotNull( name, ftc );
+        assertNotNull( name + " = null!", ftc );
 
         assertEquals( name + ".getResults().size()", linkCount, ftc.getResults().size() );
     }
