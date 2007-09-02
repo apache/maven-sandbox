@@ -389,7 +389,10 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
 
                     HttpMethod oldHm = hm;
 
-                    LOG.info( "[" + link + "] is redirected to [" + newLink + "]" );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( "[" + link + "] is redirected to [" + newLink + "]" );
+                    }
 
                     oldHm.releaseConnection();
 

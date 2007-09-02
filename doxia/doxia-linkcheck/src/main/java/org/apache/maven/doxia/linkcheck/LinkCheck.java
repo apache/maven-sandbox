@@ -88,6 +88,29 @@ public final class LinkCheck
     /** Output encoding for the xml document. */
     private String outputEncoding;
 
+    /** The level to report, used in toXML(). */
+    private int reportLevel = LinkCheckResult.WARNING;
+
+    /**
+     * The current report level. Defaults to LinkCheckResult.WARNING.
+     *
+     * @return int
+     */
+    public int getReportLevel()
+    {
+        return this.reportLevel;
+    }
+
+    /**
+     * Set the report level.
+     *
+     * @param level the level to set.
+     */
+    public void setReportLevel( int level )
+    {
+        this.reportLevel = level;
+    }
+
     /**
      * Whether links are checked in online mode.
      *
@@ -440,7 +463,7 @@ public final class LinkCheck
         for ( Iterator iter = getFiles().iterator(); iter.hasNext(); )
         {
             ftc = (FileToCheck) iter.next();
-            buf.append( ftc.toXML() );
+            buf.append( ftc.toXML( getReportLevel() ) );
         }
 
         ftc = null;

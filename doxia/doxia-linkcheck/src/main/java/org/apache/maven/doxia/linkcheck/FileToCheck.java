@@ -243,6 +243,19 @@ public final class FileToCheck
      */
     public String toXML()
     {
+        return toXML( LinkCheckResult.UNKNOWN );
+    }
+
+
+    /**
+     * Returns an XML representation of the linkcheck results for this file.
+     * This is only available after {@link #check(LinkValidatorManager)} has been called.
+     *
+     * @param level The minimum status level to report. Should be one of the constants defined in LinkCheckResult.
+     * @return the XML linkcheck result as a string.
+     */
+    public String toXML( int level)
+    {
         StringBuffer buf = new StringBuffer();
 
         buf.append( "  <file>" + LinkCheck.EOL );
@@ -261,7 +274,10 @@ public final class FileToCheck
         {
             result = (LinkCheckResult) iter.next();
 
-            buf.append( result.toXML() );
+            if ( level >= result.getStatusLevel() )
+            {
+                buf.append( result.toXML() );
+            }
         }
 
         buf.append( "  </file>" + LinkCheck.EOL );

@@ -30,6 +30,21 @@ import org.apache.commons.lang.StringEscapeUtils;
  */
 public final class LinkCheckResult
 {
+
+    /** Validation result: error. */
+    public static final int ERROR = 1;
+
+    /** Validation result: warning. */
+    public static final int WARNING = 2;
+
+    /** Validation result: valid. */
+    public static final int VALID = 3;
+
+    /** Validation result: unknown. */
+    public static final int UNKNOWN = 4;
+
+
+
     /** status. */
     private String status;
 
@@ -38,6 +53,32 @@ public final class LinkCheckResult
 
     /** errorMessage. */
     private String errorMessage;
+
+
+    /**
+     * Returns the status as an integer.
+     *
+     * @return One of ERROR, WARNING, VALID or UNKNOWN.
+     */
+    public int getStatusLevel()
+    {
+        int level = UNKNOWN;
+
+        if ( "valid".equals( getStatus() ) )
+        {
+            level = VALID;
+        }
+        else if ( "warning".equals( getStatus() ) )
+        {
+            level = WARNING;
+        }
+        else if ( "error".equals( getStatus() ) )
+        {
+            level = ERROR ;
+        }
+
+        return level;
+    }
 
     /**
      * Returns the status.
