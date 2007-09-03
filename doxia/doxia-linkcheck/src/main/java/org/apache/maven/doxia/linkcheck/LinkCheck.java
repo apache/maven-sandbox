@@ -88,6 +88,9 @@ public final class LinkCheck
     /** Output encoding for the xml document. */
     private String outputEncoding;
 
+    /** The base URL for links that start with '/'. */
+    private String baseURL;
+
     /** The level to report, used in toXML(). */
     private int reportLevel = LinkCheckResult.WARNING;
 
@@ -267,7 +270,14 @@ public final class LinkCheck
 
         if ( isOnline() )
         {
-            this.lvm.addLinkValidator( new OnlineHTTPLinkValidator() );
+            OnlineHTTPLinkValidator olv = new OnlineHTTPLinkValidator();
+
+            if ( this.baseURL != null )
+            {
+                olv.setBaseURL( baseURL );
+            }
+
+            this.lvm.addLinkValidator( olv );
         }
         else
         {
@@ -316,6 +326,26 @@ public final class LinkCheck
     public void setOutputEncoding( String encoding )
     {
         this.outputEncoding = encoding;
+    }
+
+    /**
+     * The base URL.
+     *
+     * @return the base URL.
+     */
+    public String getBaseURL()
+    {
+        return this.baseURL;
+    }
+
+    /**
+     * Sets the base URL. This is pre-pended to links that start with '/'.
+     *
+     * @param url the base URL.
+     */
+    public void setBaseURL( String url )
+    {
+        this.baseURL = url;
     }
 
     /**

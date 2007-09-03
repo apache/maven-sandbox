@@ -84,6 +84,9 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
     /** The http method to use. */
     private String method = HEAD_METHOD;
 
+    /** The base URL for links that start with '/'. */
+    private String baseURL;
+
     /** The HttpClient. */
     private transient HttpClient cl;
 
@@ -163,6 +166,27 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
         initHttpClient();
     }
 
+    /**
+     * The base URL.
+     *
+     * @return the base URL.
+     */
+    public String getBaseURL()
+    {
+        return this.baseURL;
+    }
+
+    /**
+     * Sets the base URL. This is pre-pended to links that start with '/'.
+     *
+     * @param url the base URL.
+     */
+    public void setBaseURL( String url )
+    {
+        this.baseURL = url;
+    }
+
+
     /** {@inheritDoc} */
     public LinkValidationResult validateLink( LinkValidationItem lvi )
     {
@@ -171,9 +195,24 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
             initHttpClient();
         }
 
+        String link = lvi.getLink();
+
         try
         {
-            String link = lvi.getLink();
+            if ( link.startsWith( "/" ) )
+            {
+                if ( getBaseURL() == null )
+                {
+                    LOG.warn( "Cannot check link [" + link + "] in page [" + lvi.getSource()
+                            + "], as no base URL has been set!" );
+                    return new LinkValidationResult( LinkValidationResult.WARNING, false,
+                            "No base URL specified" );
+                }
+                else
+                {
+                    link = getBaseURL() + link;
+                }
+            }
 
             HttpMethod hm = null;
 
@@ -185,11 +224,11 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
             {
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.error( "Received: [" + t + "] for [" + lvi.getLink() + "] in page [" + lvi.getSource() + "]", t );
+                    LOG.error( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]", t );
                 }
                 else
                 {
-                    LOG.error( "Received: [" + t + "] for [" + lvi.getLink() + "] in page [" + lvi.getSource() + "]" );
+                    LOG.error( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]" );
                 }
 
                 return new LinkValidationResult( LinkValidationResult.ERROR, false, t.getClass().getName() + " : "
@@ -213,7 +252,7 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
                                 || hm.getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY
                                 || hm.getStatusCode() == HttpStatus.SC_TEMPORARY_REDIRECT )
                 {
-                    LOG.warn( "Received: [" + hm.getStatusCode() + "] for [" + lvi.getLink() + "] in page ["
+                    LOG.warn( "Received: [" + hm.getStatusCode() + "] for [" + link + "] in page ["
                                     + lvi.getSource() + "]" );
 
                     return new LinkValidationResult( LinkValidationResult.WARNING, true, hm.getStatusCode() + " "
@@ -221,7 +260,7 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
                 }
                 else
                 {
-                    LOG.error( "Received: [" + hm.getStatusCode() + "] for [" + lvi.getLink() + "] in page ["
+                    LOG.error( "Received: [" + hm.getStatusCode() + "] for [" + link + "] in page ["
                                     + lvi.getSource() + "]" );
 
                     return new LinkValidationResult( LinkValidationResult.ERROR, false, hm.getStatusCode() + " "
@@ -234,11 +273,11 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.error( "Received: [" + t + "] for [" + lvi.getLink() + "] in page [" + lvi.getSource() + "]", t );
+                LOG.error( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]", t );
             }
             else
             {
-                LOG.error( "Received: [" + t + "] for [" + lvi.getLink() + "] in page [" + lvi.getSource() + "]" );
+                LOG.error( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]" );
             }
 
             return new LinkValidationResult( LinkValidationResult.ERROR, false, t.getMessage() );

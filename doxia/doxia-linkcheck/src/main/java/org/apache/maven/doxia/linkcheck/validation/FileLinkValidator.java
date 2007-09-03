@@ -51,7 +51,9 @@ public final class FileLinkValidator implements LinkValidator
         String link = lvi.getLink();
 
         // If we find an http(s) link or a mail link, it's not good
-        if ( link.startsWith( "http://" ) || link.startsWith( "https://" ) || link.indexOf( '@' ) != -1 )
+        // links starting with "/" should have a base URL pre-pended and be handled by OnlineHTTPLinkValidator.
+        if ( link.startsWith( "http://" ) || link.startsWith( "https://" )
+            || link.indexOf( '@' ) != -1 || link.startsWith( "/" ) )
         {
             return null;
         }
