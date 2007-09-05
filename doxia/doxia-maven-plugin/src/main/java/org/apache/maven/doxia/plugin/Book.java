@@ -22,41 +22,73 @@ package org.apache.maven.doxia.plugin;
 import java.util.List;
 
 /**
+ * A model for a Book.
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class Book
 {
+    /** Path to the book descriptor file. */
     private String descriptor;
 
+    /** The list of formats to produce. */
     private List formats;
 
+    /** The base directory of source files. */
     private String directory;
 
+    /** Files to include. */
     private List includes;
 
+    /** Files to exclude. */
     private List excludes;
 
+    /**
+     * Returns the path to the book descriptor file.
+     *
+     * @return the book descriptor file.
+     */
     public String getDescriptor()
     {
         return descriptor;
     }
 
+    /**
+     * Returns the list of {@link Format}s to produce.
+     *
+     * @return the list of formats.
+     */
     public List getFormats()
     {
         return formats;
     }
 
+    /**
+     * Returns the base directory of source files.
+     *
+     * @return the base directory.
+     */
     public String getDirectory()
     {
         return directory;
     }
 
+    /**
+     * Returns the list of files to include.
+     *
+     * @return the list of files to include.
+     */
     public List getIncludes()
     {
         return includes;
     }
 
+    /**
+     * Returns the list of files to exclude.
+     *
+     * @return the list of files to exclude.
+     */
     public List getExcludes()
     {
         return excludes;

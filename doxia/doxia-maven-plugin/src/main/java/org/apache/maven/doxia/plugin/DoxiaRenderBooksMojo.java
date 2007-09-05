@@ -36,6 +36,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * A Mojo to create books in different output formats.
+ *
  * @goal render-books
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -76,12 +78,19 @@ public class DoxiaRenderBooksMojo
      */
     private BookDoxia bookDoxia;
 
+    /** System EOL. */
     private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * Executes the Mojo.
+     *
+     * @throws MojoExecutionException if an exception occurs during the execution of the plugin.
+     * @throws MojoFailureException if there are configuration errors.
+     */
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -214,6 +223,12 @@ public class DoxiaRenderBooksMojo
         }
     }
 
+    /**
+     * Returns a formatted message of a ValidationResult.
+     *
+     * @param result the ValidationResult to format.
+     * @return the formatted result.
+     */
     private String formatResult( ValidationResult result )
     {
         StringBuffer buffer = new StringBuffer();

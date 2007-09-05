@@ -20,13 +20,21 @@ package org.apache.maven.doxia.plugin;
  */
 
 /**
+ * A model for a supported output format.
+ *
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class Format
 {
+    /** A unique identifier for the format. */
     private String id;
 
+    /**
+     * Returns the (unique) identifier of this format.
+     *
+     * @return the identifier.
+     */
     public String getId()
     {
         return id;
