@@ -44,8 +44,11 @@ public class BookRendererTest
 
         BookModel book = doxia.loadBook( book1 );
 
-//        doxia.renderBook( "itext", files, getTestFile( "target/book-1-itext" ) );
-//        doxia.renderBook( "xhtml", files, getTestFile( "target/book-1-xhtml" ) );
-        doxia.renderBook( book, "xdoc", files, getTestFile( "target/book-1-xdoc" ) );
+        doxia.renderBook( book, "pdf", files, getTestFile( "target/test-output/itext" ) );
+        doxia.renderBook( book, "xhtml", files, getTestFile( "target/test-output/xhtml" ) );
+        doxia.renderBook( book, "xdoc", files, getTestFile( "target/test-output/xdoc" ) );
+        doxia.renderBook( book, "latex", files, getTestFile( "target/test-output/latex" ) );
+        doxia.renderBook( book, "doc-book", files, getTestFile( "target/test-output/doc-book" ) );
+        doxia.renderBook( book, "rtf", files, getTestFile( "target/test-output/rtf" ) );
     }
 }
