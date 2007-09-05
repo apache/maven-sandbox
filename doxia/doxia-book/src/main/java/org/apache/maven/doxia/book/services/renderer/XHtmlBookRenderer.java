@@ -52,6 +52,7 @@ public class XHtmlBookRenderer
     // BookRenderer Implementation
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void renderBook( BookContext context )
         throws BookDoxiaException
     {
@@ -61,7 +62,8 @@ public class XHtmlBookRenderer
         {
             if ( !context.getOutputDirectory().mkdirs() )
             {
-                throw new BookDoxiaException( "Could not make directory: " + context.getOutputDirectory().getAbsolutePath() + "." );
+                throw new BookDoxiaException( "Could not make directory: "
+                            + context.getOutputDirectory().getAbsolutePath() + "." );
             }
         }
 
@@ -79,9 +81,10 @@ public class XHtmlBookRenderer
         }
 
         PrettyPrintXMLWriter writer = new PrettyPrintXMLWriter( fileWriter );
-        writer.writeText( "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"DTD/xhtml1-transitional.dtd\">" );
+        writer.writeText(
+            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"DTD/xhtml1-transitional.dtd\">" );
         writer.startElement( "html" );
-        writer.addAttribute( "xmlns", "http://www.w3.org/1999/xhtml");
+        writer.addAttribute( "xmlns", "http://www.w3.org/1999/xhtml" );
         writer.startElement( "body" );
 
         for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
@@ -108,6 +111,14 @@ public class XHtmlBookRenderer
     // Private
     // ----------------------------------------------------------------------
 
+    /**
+     * Write a chapter.
+     *
+     * @param writer the writer.
+     * @param chapter the Chapter.
+     * @param context the BookContext.
+     * @throws BookDoxiaException if the chapter cannot be written.
+     */
     private void renderChapter( PrettyPrintXMLWriter writer, Chapter chapter, BookContext context )
         throws BookDoxiaException
     {
@@ -123,6 +134,14 @@ public class XHtmlBookRenderer
         writer.endElement();
     }
 
+    /**
+     * Write a section.
+     *
+     * @param writer the writer.
+     * @param section the Section.
+     * @param context the BookContext.
+     * @throws BookDoxiaException if the section cannot be written.
+     */
     private void renderSection( PrettyPrintXMLWriter writer, Section section, BookContext context )
         throws BookDoxiaException
     {
@@ -143,7 +162,8 @@ public class XHtmlBookRenderer
         //
         // ----------------------------------------------------------------------
 
-//        Sink sink = new XhtmlSink( writer, new RenderingContext( context.getOutputDirectory(), bookFile.getFile().getAbsolutePath() ) );
+//        Sink sink = new XhtmlSink( writer,
+//              new RenderingContext( context.getOutputDirectory(), bookFile.getFile().getAbsolutePath() ) );
 
 //        try
 //        {
@@ -151,15 +171,18 @@ public class XHtmlBookRenderer
 //        }
 //        catch ( ParserNotFoundException e )
 //        {
-//            throw new BookDoxiaException( "Parser not found: " + bookFile.getParserId() + ".", e );
+//            throw new BookDoxiaException( "Parser not found: "
+//                      + bookFile.getParserId() + ".", e );
 //        }
 //        catch ( ParseException e )
 //        {
-//            throw new BookDoxiaException( "Error while parsing document: " + bookFile.getFile().getAbsolutePath() + ".", e );
+//            throw new BookDoxiaException( "Error while parsing document: "
+//                      + bookFile.getFile().getAbsolutePath() + ".", e );
 //        }
 //        catch ( FileNotFoundException e )
 //        {
-//            throw new BookDoxiaException( "Could not find document: " + bookFile.getFile().getAbsolutePath() + ".", e );
+//            throw new BookDoxiaException( "Could not find document: "
+//                      + bookFile.getFile().getAbsolutePath() + ".", e );
 //        }
 
         writer.endElement();

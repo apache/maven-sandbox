@@ -22,12 +22,21 @@ package org.apache.maven.doxia.book.services.validation;
 import org.apache.maven.doxia.book.model.BookModel;
 
 /**
+ * Ensure a BookModel is valid.
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public interface BookValidator
 {
+    /** The plexus lookup role. */
     String ROLE = BookValidator.class.getName();
 
+    /**
+     * Validate a BookModel.
+     *
+     * @param book the BookModel to validate.
+     * @return ValidationResult
+     */
     ValidationResult validateBook( BookModel book );
 }

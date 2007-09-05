@@ -27,6 +27,8 @@ import org.apache.maven.doxia.book.model.Chapter;
 import java.util.Iterator;
 
 /**
+ * Default implementation of BookValidator.
+ *
  * @plexus.component
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -40,6 +42,7 @@ public class DefaultBookValidator
     // BookValidator Implementation
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public ValidationResult validateBook( BookModel book )
     {
         ValidationResult result = new ValidationResult();
@@ -77,6 +80,12 @@ public class DefaultBookValidator
     // Private
     // ----------------------------------------------------------------------
 
+    /**
+     * Validate a Chapter.
+     *
+     * @param result the ValidationResult to receive the results.
+     * @param chapter the chapter to validate.
+     */
     private void validateChapter( ValidationResult result, Chapter chapter )
     {
         if ( StringUtils.isEmpty( chapter.getId() ) )

@@ -24,13 +24,23 @@ import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.book.BookDoxiaException;
 
 /**
+ * Index a book.
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public interface BookIndexer
 {
+    /** The plexus lookup role. */
     String ROLE = BookIndexer.class.getName();
 
+    /**
+     * Index a book.
+     *
+     * @param book the book to index.
+     * @param bookContext the BookContext.
+     * @throws BookDoxiaException if the book cannot be indexed.
+     */
     void indexBook( BookModel book, BookContext bookContext )
         throws BookDoxiaException;
 }

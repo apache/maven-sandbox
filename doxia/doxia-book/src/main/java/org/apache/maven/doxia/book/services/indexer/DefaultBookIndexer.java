@@ -37,6 +37,8 @@ import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
+ * Default implementation of BookIndexer.
+ *
  * @plexus.component
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -55,6 +57,7 @@ public class DefaultBookIndexer
     // BookIndexer Implementation
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void indexBook( BookModel book, BookContext bookContext )
         throws BookDoxiaException
     {
@@ -74,6 +77,14 @@ public class DefaultBookIndexer
     // Private
     // ----------------------------------------------------------------------
 
+    /**
+     * Index a chapter.
+     *
+     * @param context the BookContext.
+     * @param bookEntry the IndexEntry.
+     * @param chapter the Chapter to index.
+     * @throws BookDoxiaException if the chapter cannot be indexed.
+     */
     private void indexChapter( BookContext context, IndexEntry bookEntry, Chapter chapter )
         throws BookDoxiaException
     {
@@ -89,6 +100,14 @@ public class DefaultBookIndexer
         }
     }
 
+    /**
+     * Index a section.
+     *
+     * @param bookContext the BookContext.
+     * @param chapterEntry the IndexEntry.
+     * @param section the Section to index.
+     * @throws BookDoxiaException if the section cannot be indexed.
+     */
     private void indexSection( BookContext bookContext, IndexEntry chapterEntry, Section section )
         throws BookDoxiaException
     {
@@ -96,7 +115,8 @@ public class DefaultBookIndexer
 
         if ( bookFile == null )
         {
-            throw new BookDoxiaException( "No document that matches section with id=" + section.getId() + "." );
+            throw new BookDoxiaException( "No document that matches section with id="
+                        + section.getId() + "." );
         }
 
         // ----------------------------------------------------------------------
@@ -113,15 +133,18 @@ public class DefaultBookIndexer
         }
         catch ( ParserNotFoundException e )
         {
-            throw new BookDoxiaException( "Parser not found: " + bookFile.getParserId() + ".", e );
+            throw new BookDoxiaException( "Parser not found: "
+                        + bookFile.getParserId() + ".", e );
         }
         catch ( ParseException e )
         {
-            throw new BookDoxiaException( "Error while parsing document: " + bookFile.getFile().getAbsolutePath() + ".", e );
+            throw new BookDoxiaException( "Error while parsing document: "
+                        + bookFile.getFile().getAbsolutePath() + ".", e );
         }
         catch ( FileNotFoundException e )
         {
-            throw new BookDoxiaException( "Could not find document: " + bookFile.getFile().getAbsolutePath() + ".", e );
+            throw new BookDoxiaException( "Could not find document: "
+                        + bookFile.getFile().getAbsolutePath() + ".", e );
         }
 
         sectionEntry.setTitle( sink.getTitle() );

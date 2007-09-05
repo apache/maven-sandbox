@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Default implementation of BookDoxia.
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  * @plexus.component
@@ -65,12 +67,14 @@ public class DefaultBookDoxia
     // BookDoxia Implementation
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public BookModel loadBook( File bookDescriptor )
         throws BookDoxiaException
     {
         return bookIo.readBook( bookDescriptor );
     }
 
+    /** {@inheritDoc} */
     public void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory )
         throws BookDoxiaException
     {

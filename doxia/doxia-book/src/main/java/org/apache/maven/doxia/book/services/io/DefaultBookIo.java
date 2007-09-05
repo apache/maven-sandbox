@@ -56,6 +56,7 @@ public class DefaultBookIo
     // DefaultBookIo Implementation
     // -----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public BookModel readBook( File bookDescriptor )
         throws BookDoxiaException
     {
@@ -73,6 +74,7 @@ public class DefaultBookIo
         }
     }
 
+    /** {@inheritDoc} */
     public void loadFiles( BookContext context, List files )
     {
         // ----------------------------------------------------------------------

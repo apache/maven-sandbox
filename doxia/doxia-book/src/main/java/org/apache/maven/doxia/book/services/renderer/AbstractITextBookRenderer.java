@@ -65,6 +65,7 @@ public abstract class AbstractITextBookRenderer
     // BookRenderer Implementation
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void renderBook( BookContext context )
         throws BookDoxiaException
     {
@@ -167,18 +168,18 @@ public abstract class AbstractITextBookRenderer
     }
 
     /**
-     * Get the output extension supported
+     * Get the output extension supported.
      *
-     * @return the ouput extension supported
+     * @return the ouput extension supported.
      */
     public abstract String getOutputExtension();
 
     /**
-     * Generate an ouput file with the iText framework
+     * Generate an ouput file with the iText framework.
      *
-     * @param iTextFile
-     * @param iTextOutput
-     * @throws IOException if any
+     * @param iTextFile the input file.
+     * @param iTextOutput the output file.
+     * @throws IOException if any.
      */
     public abstract void renderXML( File iTextFile, File iTextOutput )
         throws IOException;
@@ -187,6 +188,14 @@ public abstract class AbstractITextBookRenderer
     // Private
     // ----------------------------------------------------------------------
 
+    /**
+     * Write a chapter.
+     *
+     * @param writer the writer.
+     * @param chapter the Chapter.
+     * @param context the BookContext.
+     * @throws BookDoxiaException if the chapter cannot be written.
+     */
     private void renderChapter( PrettyPrintXMLWriter writer, Chapter chapter, BookContext context )
         throws BookDoxiaException
     {
@@ -211,6 +220,14 @@ public abstract class AbstractITextBookRenderer
         writer.endElement(); // chapter
     }
 
+    /**
+     * Write a section.
+     *
+     * @param writer the writer.
+     * @param section the Section.
+     * @param context the BookContext.
+     * @throws BookDoxiaException if the section cannot be written.
+     */
     private void renderSection( PrettyPrintXMLWriter writer, Section section, BookContext context )
         throws BookDoxiaException
     {
@@ -260,6 +277,18 @@ public abstract class AbstractITextBookRenderer
         //        writer.endElement(); // section
     }
 
+    /**
+     * Start a title.
+     *
+     * @param writer the writer.
+     * @param leading leading.
+     * @param font the font.
+     * @param size the size.
+     * @param fontstyle the fontstyle.
+     * @param red red.
+     * @param green green.
+     * @param blue blue.
+     */
     private void startTitle( PrettyPrintXMLWriter writer, String leading, String font, String size, String fontstyle,
                              String red, String green, String blue )
     {
@@ -273,6 +302,18 @@ public abstract class AbstractITextBookRenderer
         writer.addAttribute( "blue", blue );
     }
 
+    /**
+     * Write a chunk.
+     *
+     * @param writer the writer.
+     * @param title the title.
+     * @param font the font.
+     * @param size the size.
+     * @param fontstyle the fontstyle.
+     * @param red red.
+     * @param green green.
+     * @param blue blue.
+     */
     private void chunk( PrettyPrintXMLWriter writer, String title, String font, String size, String fontstyle,
                         String red, String green, String blue )
     {

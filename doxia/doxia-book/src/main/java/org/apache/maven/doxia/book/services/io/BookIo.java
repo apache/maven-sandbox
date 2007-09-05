@@ -27,15 +27,31 @@ import java.io.File;
 import java.util.List;
 
 /**
+ * Common book-related IO methods.
+ *
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public interface BookIo
 {
+    /** The plexus lookup role. */
     String ROLE = BookIo.class.getName();
 
+    /**
+     * Read a BookModel from a descriptor file.
+     *
+     * @param bookDescriptor the book descriptor file.
+     * @return BookModel
+     * @throws BookDoxiaException if the model cannot be read.
+     */
     BookModel readBook( File bookDescriptor )
         throws BookDoxiaException;
 
+    /**
+     * Loads files in a given context.
+     *
+     * @param context the BookContext.
+     * @param files a list of files.
+     */
     void loadFiles( BookContext context, List files );
 }

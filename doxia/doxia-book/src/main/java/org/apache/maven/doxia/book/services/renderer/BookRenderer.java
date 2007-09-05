@@ -23,13 +23,22 @@ import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.book.BookDoxiaException;
 
 /**
+ * Render a book.
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public interface BookRenderer
 {
+    /** The plexus lookup role. */
     String ROLE = BookRenderer.class.getName();
 
+    /**
+     * Render a book.
+     *
+     * @param context the BookContext.
+     * @throws BookDoxiaException if the book cannot be rendered.
+     */
     void renderBook( BookContext context )
         throws BookDoxiaException;
 }

@@ -33,14 +33,15 @@ import org.codehaus.plexus.i18n.I18N;
 public class SectionXdocBookSink
     extends AbstractXdocBookSink
 {
+    /** indexEntry. */
     private IndexEntry indexEntry;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
-     * @param out
-     * @param indexEntry
-     * @param i18n
+     * @param out the Writer to use.
+     * @param indexEntry the IndexEntry.
+     * @param i18n the I18N.
      */
     public SectionXdocBookSink( Writer out, IndexEntry indexEntry, I18N i18n )
     {
@@ -100,10 +101,10 @@ public class SectionXdocBookSink
     }
 
     /**
-     * Add previous link
+     * Add previous link.
      *
-     * @param parent
-     * @param prevEntry
+     * @param parent the parent IndexEntry.
+     * @param prevEntry the previous IndexEntry.
      */
     protected void previous( IndexEntry parent, IndexEntry prevEntry )
     {
@@ -122,6 +123,9 @@ public class SectionXdocBookSink
     }
 
     /**
+     * Add parent/up link.
+     *
+     * @param parent the parent IndexEntry.
      * @see org.apache.maven.doxia.book.services.renderer.xdoc.ChapterXdocBookSink#up(org.apache.maven.doxia.book.context.IndexEntry)
      */
     protected void up( IndexEntry parent )
@@ -130,10 +134,10 @@ public class SectionXdocBookSink
     }
 
     /**
-     * Add next link
+     * Add next link.
      *
-     * @param parent
-     * @param nextEntry
+     * @param parent the parent IndexEntry.
+     * @param nextEntry the next IndexEntry.
      */
     protected void next( IndexEntry parent, IndexEntry nextEntry )
     {

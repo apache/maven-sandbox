@@ -34,14 +34,15 @@ import org.codehaus.plexus.i18n.I18N;
 public class IndexXdocBookSink
     extends AbstractXdocBookSink
 {
+    /** the first IndexEntry. */
     private IndexEntry firstEntry;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
-     * @param out
-     * @param firstEntry
-     * @param i18n
+     * @param out the Writer.
+     * @param firstEntry the first IndexEntry.
+     * @param i18n I18N.
      */
     public IndexXdocBookSink( Writer out, IndexEntry firstEntry, I18N i18n )
     {

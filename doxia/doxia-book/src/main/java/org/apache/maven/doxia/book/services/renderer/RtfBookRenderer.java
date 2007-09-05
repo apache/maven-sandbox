@@ -37,17 +37,13 @@ import org.apache.maven.doxia.module.itext.ITextUtil;
 public class RtfBookRenderer
     extends AbstractITextBookRenderer
 {
-    /**
-     * @see org.apache.maven.doxia.book.services.renderer.AbstractITextBookRenderer#getOutputExtension()
-     */
+    /** {@inheritDoc} */
     public String getOutputExtension()
     {
         return "rtf";
     }
 
-    /**
-     * @see org.apache.maven.doxia.book.services.renderer.AbstractITextBookRenderer#renderXML(java.io.File, java.io.File)
-     */
+    /** {@inheritDoc} */
     public void renderXML( File iTextFile, File iTextOutput )
         throws IOException
     {

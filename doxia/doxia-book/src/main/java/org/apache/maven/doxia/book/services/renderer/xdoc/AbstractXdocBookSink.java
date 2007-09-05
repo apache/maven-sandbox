@@ -36,13 +36,14 @@ import org.codehaus.plexus.util.StringUtils;
 public abstract class AbstractXdocBookSink
     extends XdocSink
 {
+    /** I18N for localized messages. */
     private I18N i18n;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
-     * @param out
-     * @param i18n
+     * @param out a Writer.
+     * @param i18n I18N.
      */
     public AbstractXdocBookSink( Writer out, I18N i18n )
     {
@@ -153,7 +154,6 @@ public abstract class AbstractXdocBookSink
      *
      * @param key the key for the desired string
      * @return the string for the given key
-     * @throws IllegalArgumentException if the parameter is empty.
      */
     protected String getString( String key )
     {

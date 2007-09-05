@@ -20,17 +20,31 @@ package org.apache.maven.doxia.book;
  */
 
 /**
+ * Wraps an exception when rendering books.
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class BookDoxiaException
     extends Exception
 {
+    /**
+     * Construct a new BookDoxiaException with the specified detail message.
+     *
+     * @param message The detailed message. This can later be retrieved by the Throwable.getMessage() method.
+     */
     public BookDoxiaException( String message )
     {
         super( message );
     }
 
+    /**
+     * Construct a new BookDoxiaException with the specified detail message and cause.
+     *
+     * @param message The detailed message. This can later be retrieved by the Throwable.getMessage() method.
+     * @param cause the cause. This can be retrieved later by the Throwable.getCause() method
+     * (a null value is permitted, and indicates that the cause is nonexistent or unknown).
+     */
     public BookDoxiaException( String message, Throwable cause )
     {
         super( message, cause );

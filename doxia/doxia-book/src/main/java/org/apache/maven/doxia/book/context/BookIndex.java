@@ -1,4 +1,5 @@
 package org.apache.maven.doxia.book.context;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -27,6 +28,7 @@ import org.apache.maven.doxia.index.IndexEntry;
 public class BookIndex
     extends IndexEntry
 {
+    /** Constructs a new BookIndex. */
     public BookIndex()
     {
         super( "book" );

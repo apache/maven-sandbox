@@ -31,22 +31,32 @@ import java.io.File;
 import java.util.List;
 
 /**
+ * Invoke BookDoxia from the command line.
+ *
  * @author Jason van Zyl
  */
 public class BookDoxiaCli
     extends AbstractCli
 {
+    /**
+     * Execute the BookDoxia command line interface.
+     *
+     * @param args command line options.
+     * @throws Exception if something goes wrong.
+     */
     public static void main( String[] args )
         throws Exception
     {
         new BookDoxiaCli().execute( args );
     }
 
+    /** {@inheritDoc} */
     public String getPomPropertiesPath()
     {
         return "META-INF/maven/org.apache.maven.doxia/doxia-book/pom.properties";
     }
 
+    /** {@inheritDoc} */
     public Options buildCliOptions( Options options )
     {
         options.addOption( OptionBuilder.withLongOpt( "book-xml" ).hasArg().withDescription(
@@ -64,6 +74,7 @@ public class BookDoxiaCli
         return options;
     }
 
+    /** {@inheritDoc} */
     public void invokePlexusComponent( CommandLine cli,
                                        PlexusContainer plexus )
         throws Exception

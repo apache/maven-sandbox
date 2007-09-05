@@ -75,6 +75,7 @@ public class XdocBookRenderer
     // BookRenderer Implementation
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void renderBook( BookContext context )
         throws BookDoxiaException
     {
@@ -101,7 +102,6 @@ public class XdocBookRenderer
      *
      * @param key the key for the desired string
      * @return the string for the given key
-     * @throws IllegalArgumentException if the parameter is empty.
      */
     protected String getString( String key )
     {
@@ -121,8 +121,8 @@ public class XdocBookRenderer
     /**
      * Render the book, ie the book index and all chapter index and pages
      *
-     * @param book
-     * @param context
+     * @param book the BookModel.
+     * @param context the BookContext.
      * @throws BookDoxiaException if any
      */
     private void renderBook( BookModel book, BookContext context )
@@ -140,7 +140,8 @@ public class XdocBookRenderer
         }
         catch ( IOException e )
         {
-            throw new BookDoxiaException( "Error while rendering index page to: '" + index.getAbsolutePath() + "'.", e );
+            throw new BookDoxiaException( "Error while rendering index page to: '"
+                        + index.getAbsolutePath() + "'.", e );
         }
 
         // -----------------------------------------------------------------------
@@ -158,11 +159,11 @@ public class XdocBookRenderer
     }
 
     /**
-     * Write the book index, ie a TOC
+     * Write the book index, ie a TOC.
      *
-     * @param index
-     * @param book
-     * @param context
+     * @param index the File.
+     * @param book the BookModel.
+     * @param context the BookContext.
      * @throws IOException if any
      */
     private void writeBookIndex( File index, BookModel book, BookContext context )
@@ -208,10 +209,10 @@ public class XdocBookRenderer
     }
 
     /**
-     * Write the chapter index for the book index
+     * Write the chapter index for the book index.
      *
-     * @param sink
-     * @param chapterEntry
+     * @param sink the XdocSink.
+     * @param chapterEntry the chapter IndexEntry.
      */
     private void writeChapterIndexForBookIndex( XdocSink sink, IndexEntry chapterEntry )
     {
@@ -232,10 +233,10 @@ public class XdocBookRenderer
     }
 
     /**
-     * Write the section index for the book index
+     * Write the section index for the book index.
      *
-     * @param sink
-     * @param sectionIndex
+     * @param sink the XdocSink.
+     * @param sectionIndex the section IndexEntry.
      */
     private void writeSectionIndexForBookIndex( XdocSink sink, IndexEntry sectionIndex )
     {
@@ -256,11 +257,11 @@ public class XdocBookRenderer
     }
 
     /**
-     * Write subsection index for the book index
+     * Write subsection index for the book index.
      *
-     * @param sink
-     * @param sectionIndex
-     * @param subsectionIndex
+     * @param sink the XdocSink.
+     * @param sectionIndex the section IndexEntry.
+     * @param subsectionIndex the subsection IndexEntry.
      */
     private void writeSubsectionIndexForBookIndex( XdocSink sink, IndexEntry sectionIndex, IndexEntry subsectionIndex )
     {
@@ -276,11 +277,11 @@ public class XdocBookRenderer
     // -----------------------------------------------------------------------
 
     /**
-     * Render the chapter index and all section pages
+     * Render the chapter index and all section pages.
      *
-     * @param chapter
-     * @param context
-     * @param chapterIndex
+     * @param chapter the Chapter.
+     * @param context the BookContext.
+     * @param chapterIndex the IndexEntry.
      * @throws BookDoxiaException if any
      */
     private void renderChapter( Chapter chapter, BookContext context, IndexEntry chapterIndex )
@@ -298,7 +299,8 @@ public class XdocBookRenderer
         }
         catch ( IOException e )
         {
-            throw new BookDoxiaException( "Error while rendering index page to: '" + index.getAbsolutePath() + "'.", e );
+            throw new BookDoxiaException( "Error while rendering index page to: '"
+                        + index.getAbsolutePath() + "'.", e );
         }
 
         // -----------------------------------------------------------------------
@@ -318,10 +320,10 @@ public class XdocBookRenderer
     /**
      * Write a chapter index
      *
-     * @param index
-     * @param chapter
-     * @param chapterIndex
-     * @throws IOException
+     * @param index the File.
+     * @param chapter the Chapter.
+     * @param chapterIndex the IndexEntry.
+     * @throws IOException if any.
      */
     private void writeChapterIndex( File index, Chapter chapter, IndexEntry chapterIndex )
         throws IOException
@@ -367,12 +369,12 @@ public class XdocBookRenderer
     }
 
     /**
-     * Render all section pages
+     * Render all section pages.
      *
-     * @param context
-     * @param section
-     * @param sectionIndex
-     * @throws BookDoxiaException if any
+     * @param context the BookContext.
+     * @param section the Section.
+     * @param sectionIndex the IndexEntry.
+     * @throws BookDoxiaException if any.
      */
     private void renderSection( BookContext context, Section section, IndexEntry sectionIndex )
         throws BookDoxiaException

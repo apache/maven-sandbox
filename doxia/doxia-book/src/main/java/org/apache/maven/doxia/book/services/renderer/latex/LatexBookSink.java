@@ -22,7 +22,6 @@ package org.apache.maven.doxia.book.services.renderer.latex;
 import org.apache.maven.doxia.module.latex.LatexSink;
 
 import java.io.Writer;
-import java.io.IOException;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -31,14 +30,22 @@ import java.io.IOException;
 public class LatexBookSink
     extends LatexSink
 {
+    /** text. */
     private String text;
 
+    /** title. */
     private String title;
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * Construct a new LatexBookSink which is a LatexSink with the given writer,
+     * null sinkCommands, null preamble and fragmentDocument = true.
+     *
+     * @param out the writer for the sink.
+     */
     public LatexBookSink( Writer out )
     {
         super( out, null, null, true );
@@ -48,12 +55,14 @@ public class LatexBookSink
     //
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     protected String getDocumentStart()
     {
         return "";
 //        return "\\documentclass{book}";
     }
 
+    /** {@inheritDoc} */
     protected String getDocumentBegin()
     {
         return null;
@@ -63,13 +72,15 @@ public class LatexBookSink
     //
     // ----------------------------------------------------------------------
 
-    public void text( String text )
+    /** {@inheritDoc} */
+    public void text( String newText )
     {
-        this.text = text;
+        this.text = newText;
 
         super.text( text );
     }
 
+    /** {@inheritDoc} */
     public void title_()
     {
         super.title_();
@@ -81,6 +92,11 @@ public class LatexBookSink
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * Return the title.
+     *
+     * @return String.
+     */
     public String getTitle()
     {
         return title;

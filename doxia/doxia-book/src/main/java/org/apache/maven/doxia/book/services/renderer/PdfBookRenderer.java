@@ -37,17 +37,13 @@ import org.apache.maven.doxia.module.itext.ITextUtil;
 public class PdfBookRenderer
     extends AbstractITextBookRenderer
 {
-    /**
-     * @see org.apache.maven.doxia.book.services.renderer.AbstractITextBookRenderer#getOutputExtension()
-     */
+    /** {@inheritDoc} */
     public String getOutputExtension()
     {
         return "pdf";
     }
 
-    /**
-     * @see org.apache.maven.doxia.book.services.renderer.AbstractITextBookRenderer#renderXML(java.io.File, java.io.File)
-     */
+    /** {@inheritDoc} */
     public void renderXML( File iTextFile, File iTextOutput )
         throws IOException
     {

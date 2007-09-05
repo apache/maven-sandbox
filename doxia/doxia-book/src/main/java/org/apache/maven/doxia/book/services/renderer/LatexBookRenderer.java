@@ -60,6 +60,7 @@ public class LatexBookRenderer
     // BookRenderer Implementatino
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void renderBook( BookContext context )
         throws BookDoxiaException
     {
@@ -100,13 +101,25 @@ public class LatexBookRenderer
     // Private
     // ----------------------------------------------------------------------
 
+    /** SectionInfo: id and title. */
     private static class SectionInfo
     {
+        /** id. */
         private String id;
 
+        /** title. */
         private String title;
     }
 
+    /**
+     * Write a book.
+     *
+     * @param book the BookModel to write.
+     * @param context the BookContext.
+     * @param writer the writer to use.
+     * @throws IOException if any.
+     * @throws BookDoxiaException if the section cannot be written.
+     */
     private void writeBook( BookModel book, BookContext context, PrintWriter writer )
         throws IOException, BookDoxiaException
     {
@@ -135,7 +148,7 @@ public class LatexBookRenderer
         // ----------------------------------------------------------------------
 
         writer.println( "\\documentclass{book}" );
-        writer.println( "\\title{" + book.getTitle() + "}");
+        writer.println( "\\title{" + book.getTitle() + "}" );
 
         if ( StringUtils.isNotEmpty( book.getAuthor() ) )
         {
@@ -149,10 +162,10 @@ public class LatexBookRenderer
 
         writer.print( IOUtil.toString( LatexSink.getDefaultSinkCommands() ) );
         writer.print( IOUtil.toString( LatexSink.getDefaultPreamble() ) );
-        writer.println( "\\begin{document}");
-        writer.println( "\\maketitle");
-        writer.println( "\\tableofcontents");
-//        writer.println( "\\listoffigures");
+        writer.println( "\\begin{document}" );
+        writer.println( "\\maketitle" );
+        writer.println( "\\tableofcontents" );
+//        writer.println( "\\listoffigures" );
 
         for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
         {
@@ -166,17 +179,26 @@ public class LatexBookRenderer
 
                 SectionInfo info = (SectionInfo) sectionInfos.get( section.getId() );
 
-                writer.println( "\\input{" + info.id + "}");
+                writer.println( "\\input{" + info.id + "}" );
             }
         }
 
-        writer.println( "\\end{document}");
+        writer.println( "\\end{document}" );
     }
 
+    /**
+     * Write a section.
+     *
+     * @param section the Section to write.
+     * @param context the BookContext.
+     * @return SectionInfo
+     * @throws IOException if any.
+     * @throws BookDoxiaException if the section cannot be written.
+     */
     private SectionInfo writeSection( Section section, BookContext context )
         throws IOException, BookDoxiaException
     {
-        File file = new File( context.getOutputDirectory(), (section.getId() + ".tex") );
+        File file = new File( context.getOutputDirectory(), ( section.getId() + ".tex" ) );
 
         FileWriter writer = new FileWriter( file );
 
@@ -186,7 +208,8 @@ public class LatexBookRenderer
 
         if ( bookFile == null )
         {
-            throw new BookDoxiaException( "No document that matches section with id=" + section.getId() + "." );
+            throw new BookDoxiaException( "No document that matches section with id="
+                        + section.getId() + "." );
         }
 
         try
@@ -195,15 +218,18 @@ public class LatexBookRenderer
         }
         catch ( ParserNotFoundException e )
         {
-            throw new BookDoxiaException( "Parser not found: " + bookFile.getParserId() + ".", e );
+            throw new BookDoxiaException( "Parser not found: "
+                        + bookFile.getParserId() + ".", e );
         }
         catch ( ParseException e )
         {
-            throw new BookDoxiaException( "Error while parsing document: " + bookFile.getFile().getAbsolutePath() + ".", e );
+            throw new BookDoxiaException( "Error while parsing document: "
+                        + bookFile.getFile().getAbsolutePath() + ".", e );
         }
         catch ( FileNotFoundException e )
         {
-            throw new BookDoxiaException( "Could not find document: " + bookFile.getFile().getAbsolutePath() + ".", e );
+            throw new BookDoxiaException( "Could not find document: "
+                        + bookFile.getFile().getAbsolutePath() + ".", e );
         }
 
         SectionInfo info = new SectionInfo();

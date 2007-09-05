@@ -22,14 +22,22 @@ package org.apache.maven.doxia.book;
 import org.apache.maven.doxia.book.services.validation.ValidationResult;
 
 /**
+ * Indicates that the book descriptor file could not be parsed correctly.
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class InvalidBookDescriptorException
     extends BookDoxiaException
 {
+    /** ValidationResult. */
     private ValidationResult validationResult;
 
+    /**
+     * Construct a new InvalidBookDescriptorException and stores the given ValidationResult.
+     *
+     * @param validationResult The ValidationResult to store.
+     */
     public InvalidBookDescriptorException( ValidationResult validationResult )
     {
         super( "Invalid book descriptor." );
@@ -37,6 +45,11 @@ public class InvalidBookDescriptorException
         this.validationResult = validationResult;
     }
 
+    /**
+     * Return the ValidationResult.
+     *
+     * @return the ValidationResult associated with this Exception.
+     */
     public ValidationResult getValidationResult()
     {
         return validationResult;

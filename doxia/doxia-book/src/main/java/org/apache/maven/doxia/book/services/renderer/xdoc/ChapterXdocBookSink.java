@@ -25,7 +25,7 @@ import org.apache.maven.doxia.index.IndexEntry;
 import org.codehaus.plexus.i18n.I18N;
 
 /**
- * A <code>XdocSink</code> implementation for chapter in a book
+ * A <code>XdocSink</code> implementation for chapter in a book.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
@@ -33,14 +33,15 @@ import org.codehaus.plexus.i18n.I18N;
 public class ChapterXdocBookSink
     extends AbstractXdocBookSink
 {
+   /** the chapter IndexEntry. */
     private IndexEntry chapterIndex;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
-     * @param out
-     * @param chapterIndex
-     * @param i18n
+     * @param out the Writer.
+     * @param chapterIndex the chapter IndexEntry.
+     * @param i18n I18N.
      */
     public ChapterXdocBookSink( Writer out, IndexEntry chapterIndex, I18N i18n )
     {
@@ -96,9 +97,9 @@ public class ChapterXdocBookSink
     }
 
     /**
-     * Add previous link
+     * Add previous link.
      *
-     * @param prevChapter
+     * @param prevChapter the previous IndexEntry.
      */
     protected void previous( IndexEntry prevChapter )
     {
@@ -123,9 +124,7 @@ public class ChapterXdocBookSink
     }
 
     /**
-     * Add parent/up link
-     *
-     * @param parent
+     * Add parent/up link.
      */
     protected void up()
     {
@@ -134,8 +133,6 @@ public class ChapterXdocBookSink
 
     /**
      * Add next link
-     *
-     * @param nextChapter
      */
     protected void next()
     {
