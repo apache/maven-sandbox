@@ -254,7 +254,7 @@ public final class FileToCheck
      * @param level The minimum status level to report. Should be one of the constants defined in LinkCheckResult.
      * @return the XML linkcheck result as a string.
      */
-    public String toXML( int level)
+    public String toXML( int level )
     {
         StringBuffer buf = new StringBuffer();
 
