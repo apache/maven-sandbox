@@ -31,6 +31,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Default implementation of BookDoxia.
@@ -115,8 +116,6 @@ public class DefaultBookDoxia
         // Render the book
         // ----------------------------------------------------------------------
 
-        System.out.println( "Book-renderers available: " + bookRenderers.keySet() );
-        
         BookRenderer bookRenderer = (BookRenderer) bookRenderers.get( bookRendererId );
 
         if ( bookRenderer == null )
@@ -126,4 +125,15 @@ public class DefaultBookDoxia
 
         bookRenderer.renderBook( context );
     }
+
+    /**
+     * Returns a Set of ids of the BookRenderers that are available in this BookDoxia.
+     *
+     * @return Set
+     */
+    public Set getAvailableBookRenderers()
+    {
+        return bookRenderers.keySet();
+    }
+
 }
