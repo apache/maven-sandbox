@@ -26,7 +26,6 @@ under the License.
 
           <executedProject implementation="org.apache.maven.plugin.xcode.stubs.SimpleMavenProjectStub"/>
           <localRepo>${localRepository}</localRepo>
-          <ideaVersion>4</ideaVersion>
           <overwrite>false</overwrite>
 
           <reactorProjects>

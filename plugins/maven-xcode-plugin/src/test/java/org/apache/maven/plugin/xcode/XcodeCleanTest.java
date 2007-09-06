@@ -26,9 +26,6 @@ import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 
-/**
- * @author Edwin Punzalan
- */
 public class XcodeCleanTest
     extends AbstractMojoTestCase
 {
@@ -46,24 +43,24 @@ public class XcodeCleanTest
 
         String artifactId = "plugin-test-" + ( TestCounter.currentCount() + 1 );
 
-        File iprFile = new File( basedir, artifactId + ".ipr" );
-        assertTrue( "Test creation of project files", iprFile.createNewFile() );
+        File projectDir = new File( basedir, artifactId + ".xcodeproj" );
+        assertTrue( "Test creation of xcodeproj dir", projectDir.mkdirs() );
 
-        File imlFile = new File( basedir, artifactId + ".iml" );
-        assertTrue( "Test creation of project files", imlFile.createNewFile() );
+        File projectFile = new File( projectDir, "project.pbxproj" );
+        assertTrue( "Test creation of project file", projectFile.createNewFile() );
 
-        File iwsFile = new File( basedir, artifactId + ".iws" );
-        assertTrue( "Test creation of project files", iwsFile.createNewFile() );
+        File defaultUserFile = new File( projectDir, "default.pbxuser" );
+        assertTrue( "Test creation of user file", defaultUserFile.createNewFile() );
 
         Mojo mojo = lookupMojo( "clean", pluginXmlFile );
 
         mojo.execute();
 
-        assertFalse( "Test idea project file was deleted", iprFile.exists() );
+        assertFalse( "Test default user file was deleted", defaultUserFile.exists() );
 
-        assertFalse( "Test idea module file was deleted", imlFile.exists() );
+        assertFalse( "Test project file was deleted", projectFile.exists() );
 
-        assertFalse( "Test idea workspace file was deleted", iwsFile.exists() );
+        assertFalse( "Test xcodeproj dir was deleted", projectDir.exists() );
 
         assertTrue( "Test project dir was not deleted", basedir.exists() );
     }

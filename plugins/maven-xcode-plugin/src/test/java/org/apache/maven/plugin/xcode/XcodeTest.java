@@ -28,13 +28,10 @@ import org.dom4j.Element;
 
 import java.io.File;
 
-/**
- * @author Edwin Punzalan
- */
 public class XcodeTest
     extends AbstractMojoTestCase
 {
-    public void testIdea()
+    public void testXcode()
         throws Exception
     {
         File pluginXmlFile = new File( getBasedir(), "src/test/xcode-plugin-configs/min-plugin-config.xml" );
@@ -47,17 +44,14 @@ public class XcodeTest
 
         String artifactId = "plugin-test-" + TestCounter.currentCount();
 
-        File iprFile = new File( basedir, artifactId + ".ipr" );
-        assertTrue( "Test creation of project files", iprFile.exists() );
+        File projectDir = new File( basedir, artifactId + ".xcodeproj" );
+        assertTrue( "Test creation of xcodeproj dir", projectDir.exists() );
 
-        File imlFile = new File( basedir, artifactId + ".iml" );
-        assertTrue( "Test creation of project files", imlFile.exists() );
-
-        File iwsFile = new File( basedir, artifactId + ".iws" );
-        assertTrue( "Test creation of project files", iwsFile.exists() );
+        File projectFile = new File( projectDir, "project.pbxproj" );
+        assertTrue( "Test creation of project.pbxproj", projectFile.exists() );
     }
 
-    public void testIdeaWithMacro()
+    public void testXcodeWithMacro()
         throws Exception
     {
         File pluginXmlFile = new File( getBasedir(), "src/test/xcode-plugin-configs/macro-plugin-config.xml" );
@@ -72,27 +66,10 @@ public class XcodeTest
 
         String artifactId = "plugin-test-" + testCounter;
 
-        File iprFile = new File( basedir, artifactId + ".ipr" );
-        assertTrue( "Test creation of project files", iprFile.exists() );
+        File projectDir = new File( basedir, artifactId + ".xcodeproj" );
+        assertTrue( "Test creation of xcodeproj dir", projectDir.exists() );
 
-        File imlFile = new File( basedir, artifactId + ".iml" );
-        assertTrue( "Test creation of project files", imlFile.exists() );
-
-        File iwsFile = new File( basedir, artifactId + ".iws" );
-        assertTrue( "Test creation of project files", iwsFile.exists() );
-
-        File outputFile = new File( getBasedir(), "target/test-harness/" + testCounter + "/plugin-test-" + testCounter + ".ipr" );
-
-        SAXReader reader = new SAXReader();
-
-        Document iprDocument = reader.read( outputFile );
-
-        Element macros = iprDocument.getRootElement().element( "UsedPathMacros" );
-
-        assertEquals( "Test creation of macros", 1, macros.elements( "macro" ).size() );
-
-        Element macro = macros.element( "macro" );
-
-        assertEquals( "Test macro name", "USER_HOME", macro.attributeValue( "name" ) );
+        File projectFile = new File( projectDir, "project.pbxproj" );
+        assertTrue( "Test creation of project.pbxproj", projectFile.exists() );
     }
 }

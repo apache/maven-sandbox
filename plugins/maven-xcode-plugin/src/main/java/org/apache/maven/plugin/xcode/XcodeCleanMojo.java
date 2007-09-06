@@ -28,10 +28,9 @@ import org.codehaus.plexus.util.FileUtils;
 import java.io.File;
 
 /**
- * Removes all existing IDEA files for the project.
+ * Removes all existing XCode files for the project.
  *
  * @goal clean
- * @author Edwin Punzalan
  */
 public class XcodeCleanMojo
     extends AbstractMojo
@@ -46,28 +45,16 @@ public class XcodeCleanMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        File iprFile = getIdeaFile( ".ipr" );
-        deleteFile( iprFile );
-
-        File imlFile = getIdeaFile( ".iml" );
-        deleteFile( imlFile );
-
-        File iwsFile = getIdeaFile( ".iws" );
-        deleteFile( iwsFile );
-    }
-
-    private File getIdeaFile( String extension )
-    {
-        return new File( project.getBasedir(), project.getArtifactId() + extension );
-    }
-
-    private void deleteFile( File file )
-    {
-        if ( file.exists() )
-        {
-            if ( !file.isDirectory() )
-            {
-                FileUtils.fileDelete( file.getAbsolutePath() );
+        File projectDir = new File(project.getBasedir(),
+                project.getArtifactId() + ".xcodeproj");
+        if (projectDir.isDirectory()) {
+            File[] files = projectDir.listFiles();
+            boolean allDeleted = true;
+            for (int i = 0; i < files.length; i++) {
+                allDeleted &= files[i].delete();
+            }
+            if (allDeleted) {
+                projectDir.delete();
             }
         }
     }
