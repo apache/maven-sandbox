@@ -14,7 +14,7 @@ $ mvn xcode:xcode
 
 The xcode:xcode mojo will create (if necessary) your-project.xcodeproj
 and your-project.xcodeproj/project.pbxproj.  The mojo will write
-the .pbxproj file in the XML Serialization of PropertyList, XCode 2.4.1
+the .pbxproj file in the XML Property List Serialization, XCode 2.4.1
 will immediately rewrite the file in the old-style serialization.
 
 The following issues are known to exist:
@@ -37,7 +37,7 @@ Resources trees are not incorporated into the generated jars.
 Manifests are not incorporated into the generated jars.
 
 Really kludgy code is used to determine the absolute path
-for the dependencies.  I don't know Maven internals enough
+for the dependencies.  I don't know Maven internals
 to do any better.
 
 XCode apparently has JUnit integration, but I've never seen
@@ -47,10 +47,12 @@ would launch the tests into the JUnit integration.
 Multiple source code or resource trees are not supported, or at
 least not tested.
 
-Remove lots of stray IntelliJ code is still present.
-
 Test with XCode 3.0.  I can't do that until Leopard is released,
 but maybe others have access.
+
+Source Code Repository integration.
+
+Web, EAR, EJB modules.
 
 
 Curt Arnold

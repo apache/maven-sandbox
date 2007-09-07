@@ -546,6 +546,16 @@ public class XcodeMojo
     }
 
 
+    /**
+     * Create PBXTool target (aka product jar or test classes).
+     * @param buildConfigurationList configurations.
+     * @param buildPhases build phases.
+     * @param dependencies dependencies.
+     * @param name name.
+     * @param productInstallPath product install path.
+     * @param productName product name.
+     * @return tool target.
+     */
     private static PBXObjectRef createPBXToolTarget(
             final PBXObjectRef buildConfigurationList,
             final List buildPhases,
@@ -569,6 +579,15 @@ public class XcodeMojo
         return new PBXObjectRef(map);
     }
 
+    /**
+     * Create PBXContainerItemProxy.  Appears to let
+     * the test target refer to the output of the main target.
+     * @param project project.
+     * @param proxyType proxy type.
+     * @param target target.
+     * @param targetName target name.
+     * @return proxy.
+     */
     private static PBXObjectRef createPBXContainerItemProxy(
             final PBXObjectRef project,
             final String proxyType,
@@ -584,6 +603,12 @@ public class XcodeMojo
         return new PBXObjectRef(map);
     }
 
+    /**
+     * Creates a PBXTargetDependency.
+     * @param target target.
+     * @param targetProxy proxy for target.
+     * @return target dependency.
+     */
     private static PBXObjectRef createPBXTargetDependency(
             final PBXObjectRef target,
             final PBXObjectRef targetProxy) {
@@ -709,56 +734,6 @@ public class XcodeMojo
     }
 
 
-    public PBXObjectRef addProjectConfigurationList(final Map objects,
-                                                    final Map debugSettings,
-                                                    final Map releaseSettings) {
-        //
-        //   Create a configuration list with
-        //     two stock configurations: Debug and Release
-        //
-        List configurations = new ArrayList();
-        PBXObjectRef debugConfig = createXCBuildConfiguration("Debug", debugSettings);
-        objects.put(debugConfig.getID(), debugConfig.getProperties());
-        configurations.add(debugConfig);
-
-        PBXObjectRef releaseConfig =
-                createXCBuildConfiguration("Release", releaseSettings);
-        objects.put(releaseConfig.getID(), releaseConfig.getProperties());
-        configurations.add(releaseConfig);
-        PBXObjectRef configurationList = createXCConfigurationList(configurations);
-        Map projectConfigurationListProperties = configurationList.getProperties();
-        projectConfigurationListProperties.put("defaultConfigurationIsVisible", "0");
-        projectConfigurationListProperties.put("defaultConfigurationName", "Debug");
-        objects.put(configurationList.getID(), configurationList.getProperties());
-
-        return configurationList;
-
-    }
-
-    /**
-     * @param propertyList
-     * @TODO
-     */
-    private static final void addWebModule(final Map propertyList) {
-
-    }
-
-    /**
-     * @param propertyList
-     * @TODO
-     */
-    private static final void addEarModule(final Map propertyList) {
-
-    }
-
-    /**
-     * @param propertyList
-     * @TODO
-     */
-    private static final void addEjbModule(final Map propertyList) {
-
-    }
-
     /**
      * Create PBXProject.
      *
@@ -797,27 +772,6 @@ public class XcodeMojo
         return new PBXObjectRef(map);
     }
 
-
-    private PBXObjectRef addPBXGroup(final Map objects,
-                                     final PBXObjectRef rootGroup,
-                                     final Map groups,
-                                     final String sourceTree,
-                                     final File directory) {
-        PBXObjectRef group = (PBXObjectRef) groups.get(directory.getPath());
-        if (group == null) {
-            File parentDir = directory.getParentFile();
-            PBXObjectRef parentGroup = rootGroup;
-            if (parentDir != null) {
-                parentGroup = addPBXGroup(objects, rootGroup, groups, sourceTree, parentDir);
-            }
-            group = createPBXGroup(directory.getName(), sourceTree, new ArrayList());
-            List children = (List) parentGroup.getProperties().get("children");
-            children.add(group.getID());
-            groups.put(directory.getPath(), group);
-            objects.put(group.getID(), group.getProperties());
-        }
-        return group;
-    }
 
     /**
      * Create PBXFileReference.

@@ -125,82 +125,6 @@ public abstract class AbstractXcodeMojo
         this.overwrite = overwrite;
     }
 
-    protected Document readXmlDocument( File file, String altFilename )
-        throws DocumentException
-    {
-        SAXReader reader = new SAXReader();
-        if ( file.exists() && !overwrite )
-        {
-            return reader.read( file );
-        }
-        else
-        {
-            File altFile = new File( executedProject.getBasedir(), "src/main/idea/" + altFilename );
-            if ( altFile.exists() )
-            {
-                return reader.read( altFile );
-            }
-            else
-            {
-                return reader.read( getClass().getResourceAsStream( "/templates/default/" + altFilename ) );
-            }
-        }
-    }
-
-    protected void writeXmlDocument( File file, Document document )
-        throws IOException
-    {
-        XMLWriter writer = new XcodeXmlWriter( file );
-        writer.write( document );
-        writer.close();
-    }
-
-    /**
-     * Finds element from the module element.
-     *
-     * @param module Xpp3Dom element
-     * @param name   Name attribute to find
-     * @return component  Returns the Xpp3Dom element found.
-     */
-    protected Element findComponent( Element module, String name )
-    {
-        return findElement( module, "component", name );
-    }
-
-    protected Element findElement( Element element, String elementName, String attributeName )
-    {
-        for ( Iterator children = element.elementIterator( elementName ); children.hasNext(); )
-        {
-            Element child = (Element) children.next();
-            if ( attributeName.equals( child.attributeValue( "name" ) ) )
-            {
-                return child;
-            }
-        }
-        return createElement( element, elementName ).addAttribute( "name", attributeName );
-    }
-
-    protected Element findElement( Element component, String name )
-    {
-        Element element = component.element( name );
-        if ( element == null )
-        {
-            element = createElement( component, name );
-        }
-        return element;
-    }
-
-    /**
-     * Creates an Xpp3Dom element.
-     *
-     * @param module Xpp3Dom element
-     * @param name   Name of the element
-     * @return component Xpp3Dom element
-     */
-    protected Element createElement( Element module, String name )
-    {
-        return module.addElement( name );
-    }
 
     /**
      * Translate the absolutePath into its relative path.
@@ -257,23 +181,6 @@ public abstract class AbstractXcodeMojo
         return absolutePath;
     }
 
-    /**
-     * Remove elements from content (Xpp3Dom).
-     *
-     * @param content Xpp3Dom element
-     * @param name    Name of the element to be removed
-     */
-    protected void removeOldElements( Element content, String name )
-    {
-        for ( Iterator children = content.elementIterator(); children.hasNext(); )
-        {
-            Element child = (Element) children.next();
-            if ( name.equals( child.getName() ) )
-            {
-                content.remove( child );
-            }
-        }
-    }
 
     protected void doDependencyResolution( MavenProject project, ArtifactRepository localRepo )
         throws InvalidDependencyVersionException, ProjectBuildingException, InvalidVersionSpecificationException
@@ -321,25 +228,6 @@ public abstract class AbstractXcodeMojo
         }
     }
 
-    /*
-    * @todo we need a more permanent feature that does this properly
-    */
-    protected String getPluginSetting( String artifactId, String optionName, String defaultValue )
-    {
-        for ( Iterator it = executedProject.getBuildPlugins().iterator(); it.hasNext(); )
-        {
-            Plugin plugin = (Plugin) it.next();
-            if ( plugin.getArtifactId().equals( artifactId ) )
-            {
-                Xpp3Dom o = (Xpp3Dom) plugin.getConfiguration();
-                if ( o != null && o.getChild( optionName ) != null )
-                {
-                    return o.getChild( optionName ).getValue();
-                }
-            }
-        }
-        return defaultValue;
-    }
 
     private Set getProjectArtifacts()
         throws InvalidVersionSpecificationException
