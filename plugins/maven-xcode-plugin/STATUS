@@ -1,0 +1,58 @@
+This plugin is still experimental and only partially functional.
+The mojo has only been tested with trivial projects created by archetype:create
+and with XCode 2.4.1.
+
+To use:
+
+$ mvn install
+
+and then
+
+$ cd your-project
+$ mvn xcode:xcode
+
+
+The xcode:xcode mojo will create (if necessary) your-project.xcodeproj
+and your-project.xcodeproj/project.pbxproj.  The mojo will write
+the .pbxproj file in the XML Serialization of PropertyList, XCode 2.4.1
+will immediately rewrite the file in the old-style serialization.
+
+The following issues are known to exist:
+
+Bugs:
+
+The test target overwrites the main target, that is building the tests will
+overwrite the product jar.
+
+your-app.jar appears twice in the Projects group.
+
+Groups are displayed in red (assume that is an indication that something
+is wrong).
+
+
+Todos:
+
+Resources trees are not incorporated into the generated jars.
+
+Manifests are not incorporated into the generated jars.
+
+Really kludgy code is used to determine the absolute path
+for the dependencies.  I don't know Maven internals enough
+to do any better.
+
+XCode apparently has JUnit integration, but I've never seen
+how to set it up.  Ideally, build and run for the test target
+would launch the tests into the JUnit integration.
+
+Multiple source code or resource trees are not supported, or at
+least not tested.
+
+Remove lots of stray IntelliJ code is still present.
+
+Test with XCode 3.0.  I can't do that until Leopard is released,
+but maybe others have access.
+
+
+Curt Arnold
+carnold@apache.org
+2007-09-07

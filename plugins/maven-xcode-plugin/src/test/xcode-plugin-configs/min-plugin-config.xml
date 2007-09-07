@@ -27,7 +27,7 @@ under the License.
           <executedProject implementation="org.apache.maven.plugin.xcode.stubs.SimpleMavenProjectStub"/>
           <localRepo>${localRepository}</localRepo>
           <overwrite>false</overwrite>
-
+           <!--
           <reactorProjects>
             <reactorProject implementation="org.apache.maven.plugin.xcode.stubs.ReactorMavenProjectStub"/>
             <reactorProject implementation="org.apache.maven.plugin.xcode.stubs.ReactorMavenProjectStub"/>
@@ -40,9 +40,17 @@ under the License.
           <downloadJavadocs>false</downloadJavadocs>
           <javadocClassifier>javadoc</javadocClassifier>
           <dependenciesAsLibraries>false</dependenciesAsLibraries>
-
+           -->
         </configuration>
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>3.8.1</version>
+        <scope>test</scope>
+      </dependency>
+  </dependencies>
 </project>

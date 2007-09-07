@@ -27,6 +27,7 @@ under the License.
           <executedProject implementation="org.apache.maven.plugin.xcode.stubs.SimpleMavenProjectStub"/>
           <localRepo>${localRepository}</localRepo>
           <overwrite>false</overwrite>
+            <!--
 
           <reactorProjects>
             <reactorProject implementation="org.apache.maven.plugin.xcode.stubs.ReactorMavenProjectStub"/>
@@ -47,7 +48,7 @@ under the License.
               <classes>file://$USER_HOME$/defined/classes</classes>
             </library>
           </libraries>
-
+            -->
         </configuration>
       </plugin>
     </plugins>
