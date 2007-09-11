@@ -4,21 +4,28 @@
   <groupId>org.apache.maven.plugins</groupId>
   <artifactId>maven-plugins-sandbox</artifactId>
   <packaging>pom</packaging>
+  <name>Maven Plugins Sandbox</name>
   <version>1.0-SNAPSHOT</version>
 
   <modules>
     <module>maven-assembly-report-plugin</module>
+    <module>maven-committers-plugin</module>
+    <module>maven-component-it-plugin</module>
     <module>maven-ejb3-plugin</module>
     <module>maven-it-plugin</module>
-    <!--module>maven-jdeveloper-plugin</module-->
+    <module>maven-jdee-plugin</module>
+    <module>maven-jdeveloper-plugin</module>
     <module>maven-license-plugin</module>
+    <!-- requires Maven 2.1-SNAPSHOT -->
+    <!--<module>maven-lifecycle-plugin</module>-->
     <module>maven-maven1-plugin</module>
     <module>maven-par-plugin</module>
     <module>maven-plugin-management-plugin</module>
-    <module>maven-plug-it-plugin</module>
-    <module>maven-swizzle-plugin</module>
+    <module>maven-pom-plugin</module>
+    <module>maven-property-setting-plugin</module>
     <module>maven-shade-plugin</module>
-    <module>maven-committers-plugin</module>
+    <module>maven-swizzle-plugin</module>
+    <module>maven-xcode-plugin</module>
   </modules>
 
 </project>
