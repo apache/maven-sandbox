@@ -73,18 +73,26 @@ public class NumberedListItem
     /** The numbering format. */
     private final int format;
 
-    /** Constructor. Initializes count and format.
+    /**
+     * Constructor. Initializes count and format.
+     *
      * @param itemFormat The numbering format of this List.
-     * Should be one of the formats defined in {@link Sink}.
+     * Should be one of the formats defined in {@link org.apache.maven.doxia.sink.Sink}.
      */
-    public NumberedListItem ( int itemFormat )
+    public NumberedListItem( int itemFormat )
     {
+        if ( !isValidItemFormat( itemFormat ) )
+        {
+            throw new IllegalArgumentException( "Unknown item format!" );
+        }
+
         this.format = itemFormat;
         this.count = 0;
     }
 
     /**
      * Returns the current count, ie the position in the list.
+     *
      * @return The current count.
      */
     public int count()
@@ -94,6 +102,7 @@ public class NumberedListItem
 
     /**
      * Returns the numbering format.
+     *
      * @return The numbering format.
      */
     public int format()
@@ -107,8 +116,9 @@ public class NumberedListItem
         count++;
     }
 
-     /**
+    /**
      * Returns the symbol for the current list item.
+     *
      * @return The symbol for the current list item.
      */
     public String getListItemSymbol()
@@ -145,5 +155,19 @@ public class NumberedListItem
         return symbol;
     }
 
+    /**
+     * Determines if the given format is one of the formats defined in
+     * {@link org.apache.maven.doxia.sink.Sink}.
+     *
+     * @return True if the format is a valid item format according to the Sink API.
+     */
+    private boolean isValidItemFormat( int itemFormat )
+    {
+        return ( ( itemFormat == Sink.NUMBERING_UPPER_ALPHA )
+            || ( itemFormat == Sink.NUMBERING_LOWER_ALPHA )
+            || ( itemFormat == Sink.NUMBERING_UPPER_ROMAN )
+            || ( itemFormat == Sink.NUMBERING_LOWER_ROMAN )
+            || ( itemFormat == Sink.NUMBERING_DECIMAL ) );
+    }
 
 }
