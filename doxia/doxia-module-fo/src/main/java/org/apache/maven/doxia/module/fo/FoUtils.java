@@ -44,9 +44,9 @@ import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
 
 /**
- * <code>FO Sink</code> Test utilities.
+ * <code>FO Sink</code> utilities.
  */
-public class FoTestUtils
+public class FoUtils
 {
 
     /**
@@ -55,37 +55,64 @@ public class FoTestUtils
      * @param pdf the target PDF file.
      * @param resourceDir The base directory for relative path resolution.
      * If null, defaults to the parent directory of fo.
-     * @throws IOException In case of an I/O problem.
-     * @throws FOPException In case of a FOP problem.
-     * @throws TransformerException In case of a transformer problem.
-     * @throws TransformerConfigurationException As above.
+     * @throws TransformerException In case of a conversion problem.
      */
     public static void convertFO2PDF( File fo, File pdf, String resourceDir )
-        throws IOException, FOPException, TransformerConfigurationException, TransformerException
+        throws TransformerException
     {
 
         FopFactory fopFactory = FopFactory.newInstance();
+
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+
         foUserAgent.setBaseURL( getBaseURL( fo, resourceDir ) );
+
         OutputStream out = null;
 
         try
         {
-            out = new BufferedOutputStream( new FileOutputStream( pdf ) );
+            try
+            {
+                out = new BufferedOutputStream( new FileOutputStream( pdf ) );
+            }
+            catch ( IOException e )
+            {
+                throw new TransformerException( e );
+            }
+
             Fop fop = fopFactory.newFop( MimeConstants.MIME_PDF, foUserAgent, out );
 
-            Source src = new StreamSource( fo);
+            Source src = new StreamSource( fo );
+
             Result res = new SAXResult( fop.getDefaultHandler() );
 
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer(); // identity transformer
-            transformer.transform(src, res);
+            Transformer transformer = null;
+
+            try
+            {
+                // identity transformer
+                transformer = TransformerFactory.newInstance().newTransformer();
+            }
+            catch ( TransformerConfigurationException e )
+            {
+                throw new TransformerException( e );
+            }
+
+                transformer.transform( src, res );
+        }
+        catch ( FOPException e )
+        {
+            throw new TransformerException( e );
         }
         finally
         {
-            if ( out != null )
+            try
             {
                 out.close();
+            }
+            catch ( IOException e )
+            {
+                // TODO: log
             }
         }
     }
@@ -93,6 +120,7 @@ public class FoTestUtils
     private static String getBaseURL( File fo, String resourceDir )
     {
         String url = null;
+
         if ( resourceDir == null )
         {
             url = "file:///" + fo.getParent() + "/";
@@ -101,6 +129,7 @@ public class FoTestUtils
         {
             url = "file:///" + resourceDir + "/";
         }
+
         return url;
     }
 

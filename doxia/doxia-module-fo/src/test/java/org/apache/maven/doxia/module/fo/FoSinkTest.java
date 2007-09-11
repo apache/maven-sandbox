@@ -338,7 +338,7 @@ public class FoSinkTest extends AbstractSinkTest
         File resourceDirectory = new File( getBasedirFile(), "target/test-classes" );
         File foFile = new File( outputDirectory, baseName + "." + outputExtension() );
         File pdfFile = new File( outputDirectory, baseName + ".pdf" );
-        FoTestUtils.convertFO2PDF( foFile, pdfFile, resourceDirectory.getCanonicalPath() );
+        FoUtils.convertFO2PDF( foFile, pdfFile, resourceDirectory.getCanonicalPath() );
     }
 
     private FoConfiguration getConfig()
