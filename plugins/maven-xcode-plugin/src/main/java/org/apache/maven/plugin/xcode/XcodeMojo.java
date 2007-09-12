@@ -434,7 +434,7 @@ public class XcodeMojo
         testDebugSettings.put("GCC_ENABLE_FIX_AND_CONTINUE", "YES");
         testDebugSettings.put("GCC_GENERATE_DEBUGGING_SYMBOLS", "YES");
         testDebugSettings.put("GCC_OPTIMIZATION_LEVEL", "0");
-        testDebugSettings.put("JAVA_ARCHIVE_CLASSES", "YES");
+        testDebugSettings.put("JAVA_ARCHIVE_CLASSES", "NO");
         testDebugSettings.put("JAVA_ARCHIVE_COMPRESSION", "NO");
         testDebugSettings.put("JAVA_ARCHIVE_TYPE", "JAR");
         testDebugSettings.put("JAVA_COMPILER", "/usr/bin/javac");
@@ -456,7 +456,7 @@ public class XcodeMojo
         //
         testReleaseSettings.put("COPY_PHASE_STRIP", "YES");
         testReleaseSettings.put("GCC_ENABLE_FIX_AND_CONTINUE", "NO");
-        testReleaseSettings.put("JAVA_ARCHIVE_CLASSES", "YES");
+        testReleaseSettings.put("JAVA_ARCHIVE_CLASSES", "NO");
         testReleaseSettings.put("JAVA_ARCHIVE_COMPRESSION", "NO");
         testReleaseSettings.put("JAVA_ARCHIVE_TYPE", "JAR");
         testReleaseSettings.put("JAVA_COMPILER", "/usr/bin/javac");
@@ -486,9 +486,9 @@ public class XcodeMojo
         //    create file reference for test jar
         //
         PBXObjectRef testJarFileRef = createPBXFileReference(
-                "BUILT_PRODUCTS_DIR", new File(executedProject.getArtifactId() + "-test.jar"));
+                "BUILT_PRODUCTS_DIR", new File(executedProject.getArtifactId() + "-test"));
         objects.put(testJarFileRef.getID(), testJarFileRef.getProperties());
-        testJarFileRef.getProperties().put("explicitFileType", "archive.jar");
+        testJarFileRef.getProperties().put("explicitFileType", "folder");
         testJarFileRef.getProperties().put("includeInIndex", "0");
         testToolTarget.getProperties().put("productReference", testJarFileRef.getID());
 
