@@ -71,7 +71,7 @@ public class XcodeMojo
 
         Map propertyList = new HashMap();
         propertyList.put("archiveVersion", "1");
-        propertyList.put("classes", Collections.EMPTY_LIST);
+        propertyList.put("classes", Collections.EMPTY_MAP);
         propertyList.put("objectVersion", "42");
 
         Map objects = new HashMap();
@@ -390,7 +390,7 @@ public class XcodeMojo
         List testBuildPhases = new ArrayList();
 
         //
-        //     create test jar build phase
+        //     create test java compile phase
         //
         PBXObjectRef testSourcesBuildPhase = createPBXSourcesBuildPhase(
                 buildActionMask, testSourcesBuildPhaseFiles, false);
@@ -420,30 +420,7 @@ public class XcodeMojo
         testBuildPhases.add(testFrameworksBuildPhase);
 
         //
-        //     Create test tool target
-        //
-        List testDependencies = new ArrayList();
-        PBXObjectRef testToolTarget = createPBXToolTarget(
-                configurationList, testBuildPhases,
-                testDependencies,
-                executedProject.getArtifactId() + "-test",
-                "/usr/local/bin",
-                executedProject.getArtifactId() + "-test");
-        objects.put(testToolTarget.getID(), testToolTarget.getProperties());
-        targets.add(testToolTarget);
-
-        //
-        //    create file reference for test-classes directory
-        //
-        PBXObjectRef testClassesDir = createPBXFileReference(
-                "BUILT_PRODUCTS_DIR", new File(executedProject.getArtifactId() + "-test"));
-        objects.put(testClassesDir.getID(), testClassesDir.getProperties());
-        testClassesDir.getProperties().put("explicitFileType", "folder");
-        testClassesDir.getProperties().put("includeInIndex", "0");
-        testToolTarget.getProperties().put("productReference", testClassesDir.getID());
-
-        //
-        //      create main XCConfigurationList
+        //      create test XCConfigurationList
         //
         List testConfigurations = new ArrayList();
         PBXObjectRef testConfigurationList = createXCConfigurationList(testConfigurations);
@@ -464,7 +441,7 @@ public class XcodeMojo
         testDebugSettings.put("JAVA_COMPILER_SOURCE_VERSION", "1.3");
         testDebugSettings.put("JAVA_COMPILER_TARGET_VM_VERSION", "1.3");
         //testDebugSettings.put("JAVA_MANIFEST_FILE", "Manifest");
-        testDebugSettings.put("PRODUCT_NAME", executedProject.getArtifactId());
+        testDebugSettings.put("PRODUCT_NAME", executedProject.getArtifactId() + "-test");
         testDebugSettings.put("PURE_JAVA", "YES");
         testDebugSettings.put("REZ_EXECUTABLE", "YES");
         testDebugSettings.put("ZERO_LINK", "YES");
@@ -484,7 +461,7 @@ public class XcodeMojo
         testReleaseSettings.put("JAVA_ARCHIVE_TYPE", "JAR");
         testReleaseSettings.put("JAVA_COMPILER", "/usr/bin/javac");
         //testReleaseSettings.put("JAVA_MANIFEST_FILE", "Manifest");
-        testReleaseSettings.put("PRODUCT_NAME", executedProject.getArtifactId());
+        testReleaseSettings.put("PRODUCT_NAME", executedProject.getArtifactId() + "-test");
         testReleaseSettings.put("PURE_JAVA", "YES");
         testReleaseSettings.put("REZ_EXECUTABLE", "YES");
         testReleaseSettings.put("ZERO_LINK", "NO");
@@ -492,6 +469,36 @@ public class XcodeMojo
         PBXObjectRef testReleaseConfig = createXCBuildConfiguration("Release", testReleaseSettings);
         objects.put(testReleaseConfig.getID(), testReleaseConfig.getProperties());
         testConfigurations.add(testReleaseConfig.getID());
+        //
+        //     Create test tool target
+        //
+        List testDependencies = new ArrayList();
+        PBXObjectRef testToolTarget = createPBXToolTarget(
+                testConfigurationList, testBuildPhases,
+                testDependencies,
+                executedProject.getArtifactId() + "-test",
+                "/usr/local/bin",
+                executedProject.getArtifactId() + "-test");
+        objects.put(testToolTarget.getID(), testToolTarget.getProperties());
+        targets.add(testToolTarget);
+
+        //
+        //    create file reference for test jar
+        //
+        PBXObjectRef testJarFileRef = createPBXFileReference(
+                "BUILT_PRODUCTS_DIR", new File(executedProject.getArtifactId() + "-test.jar"));
+        objects.put(testJarFileRef.getID(), testJarFileRef.getProperties());
+        testJarFileRef.getProperties().put("explicitFileType", "archive.jar");
+        testJarFileRef.getProperties().put("includeInIndex", "0");
+        testToolTarget.getProperties().put("productReference", testJarFileRef.getID());
+
+        //
+        //    create build file for test jar file
+        //
+        PBXObjectRef testJarBuildFile = createPBXBuildFile(testJarFileRef, null);
+        objects.put(testJarBuildFile.getID(), testJarBuildFile.getProperties());
+        testFrameworksFiles.add(testJarBuildFile);
+        
 
         //
         //    Create proxy for main jar for test phase
@@ -518,7 +525,7 @@ public class XcodeMojo
         objects.put(jarFileRef.getID(), jarFileRef.getProperties());
 
         productGroupChildren.add(jarFileRef);
-        productGroupChildren.add(testClassesDir);
+        productGroupChildren.add(testJarFileRef);
         toolTarget.getProperties().put("productReference", jarFileRef);
         //
         //    create build file for main jar file
@@ -599,7 +606,7 @@ public class XcodeMojo
         map.put("isa", "PBXContainerItemProxy");
         map.put("proxyType", proxyType);
         map.put("remoteGlobalIDString", target.getID());
-        map.put("remote_info", targetName);
+        map.put("remoteInfo", targetName);
         return new PBXObjectRef(map);
     }
 
@@ -926,6 +933,7 @@ public class XcodeMojo
         groupChildren.add(fileRef);
 
         PBXObjectRef buildFile = createPBXBuildFile(fileRef, null);
+        buildFile.getProperties().put("settings", Collections.EMPTY_MAP);
         objects.put(buildFile.getID(), buildFile.getProperties());
         buildFiles.add(buildFile);
     }

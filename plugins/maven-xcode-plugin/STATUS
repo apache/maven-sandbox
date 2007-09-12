@@ -21,11 +21,6 @@ The following issues are known to exist:
 
 Bugs:
 
-The test target overwrites the main target, that is building the tests will
-overwrite the product jar.
-
-your-app.jar appears twice in the Projects group.
-
 Groups are displayed in red (assume that is an indication that something
 is wrong).
 
