@@ -25,6 +25,7 @@ import java.util.Stack;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.util.HtmlTools;
 
 /**
  * A Doxia Sink that produces a FO model.
@@ -798,10 +799,13 @@ public class FoSink implements Sink
     public void anchor( String name )
     {
         String anchor = name;
+
         if ( fragmentDocument )
         {
-            anchor = anchor + String.valueOf( chapter );
+            anchor = anchor + String.valueOf( chapter ) + "." + String.valueOf( section )
+                + "." + String.valueOf( subsection ) + "." + String.valueOf( subsubsection );
         }
+
         writeStartTag( "inline", "id", anchor );
     }
 
@@ -818,18 +822,19 @@ public class FoSink implements Sink
 
         if ( fragmentDocument )
         {
-            anchor = anchor + String.valueOf( chapter );
+            anchor = anchor + String.valueOf( chapter ) + "." + String.valueOf( section )
+                + "." + String.valueOf( subsection ) + "." + String.valueOf( subsubsection );
         }
 
         if ( name.startsWith( "http", 0 ) || name.startsWith( "mailto", 0 )
             || name.startsWith( "ftp", 0 ) )
         {
-            writeStartTag( "basic-link", "external-destination", name );
+            writeStartTag( "basic-link", "external-destination", HtmlTools.escapeHTML( name ) );
             writeStartTag( "inline", "href.external" );
         }
         else if ( name.startsWith( "#", 0 ) )
         {
-            writeStartTag( "basic-link", "internal-destination", name );
+            writeStartTag( "basic-link", "internal-destination", HtmlTools.escapeHTML( name ) );
             writeStartTag( "inline", "href.internal" );
         }
         else
@@ -886,8 +891,11 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void lineBreak()
     {
-        newline();
-        writeEmptyTag( "block", null );
+        if ( !ignoreText )
+        {
+            newline();
+            writeEmptyTag( "block", null );
+        }
     }
 
     /** {@inheritDoc} */
