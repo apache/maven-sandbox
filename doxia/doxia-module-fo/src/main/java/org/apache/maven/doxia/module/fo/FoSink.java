@@ -855,37 +855,55 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void italic()
     {
-        writeStartTag( "inline", "italic" );
+        if ( !ignoreText )
+        {
+            writeStartTag( "inline", "italic" );
+        }
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        writeEndTag( "inline" );
+        if ( !ignoreText )
+        {
+            writeEndTag( "inline" );
+        }
     }
 
     /** {@inheritDoc} */
     public void bold()
     {
-        writeStartTag( "inline", "bold" );
+        if ( !ignoreText )
+        {
+            writeStartTag( "inline", "bold" );
+        }
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        writeEndTag( "inline" );
+        if ( !ignoreText )
+        {
+            writeEndTag( "inline" );
+        }
     }
 
     /** {@inheritDoc} */
     public void monospaced()
     {
-        writeStartTag( "inline", "monospace" );
+        if ( !ignoreText )
+        {
+            writeStartTag( "inline", "monospace" );
+        }
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        writeEndTag( "inline" );
+        if ( !ignoreText )
+        {
+            writeEndTag( "inline" );
+        }
     }
 
     /** {@inheritDoc} */
