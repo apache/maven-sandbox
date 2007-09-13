@@ -323,25 +323,62 @@ public class XcodeMojo
             addSourceFolder(objects, testJavaGroup,
                     testSourcesBuildPhaseFiles, new File(directory));
         }
-        List copyFilesBuildPhaseFiles = new ArrayList();
+
         for (Iterator i = executedProject.getBuild().getResources().iterator(); i.hasNext();) {
             Resource resource = (Resource) i.next();
             String directory = resource.getDirectory();
             if (resource.getTargetPath() == null && !resource.isFiltering()) {
+                List localBuildFiles = new ArrayList();
+                File directoryFile = new File(directory);
                 addSourceFolder(objects, mainResourcesGroup,
-                        copyFilesBuildPhaseFiles, new File(directory));
+                        localBuildFiles, directoryFile);
+                //
+                //   Add appropriate JAVA_ARCHIVE_SUBDIR setting
+                //
+                for(Iterator iter = localBuildFiles.iterator(); iter.hasNext(); ) {
+                    PBXObjectRef buildFile = (PBXObjectRef) iter.next();
+                    String fileRefId = buildFile.getProperties().get("fileRef").toString();
+                    Map fileRef = (Map) objects.get(fileRefId);
+                    String buildPath = fileRef.get("path").toString();
+                    String relPath = toRelative(directoryFile,
+                            new File(baseDir, buildPath).getAbsolutePath());
+                    Map settings = new HashMap();
+                    settings.put("JAVA_ARCHIVE_SUBDIR", new File(relPath).getParent());
+                    buildFile.getProperties().put("settings", settings);
+                    javaArchiveBuildPhaseFiles.add(buildFile);
+                }
             } else {
                 getLog().info(
                         "Not adding resource directory as it has an incompatible target path or filtering: "
                                 + directory);
             }
         }
+
+
+        List testJavaArchiveBuildPhaseFiles = new ArrayList();
         for (Iterator i = executedProject.getBuild().getTestResources().iterator(); i.hasNext();) {
             Resource resource = (Resource) i.next();
             String directory = resource.getDirectory();
             if (resource.getTargetPath() == null && !resource.isFiltering()) {
-                addSourceFolder(objects, testResourcesGroup, 
-                        testCopyBuildPhaseFiles, new File(directory));
+                List localBuildFiles = new ArrayList();
+                File directoryFile = new File(directory);
+                addSourceFolder(objects, testResourcesGroup,
+                        localBuildFiles, directoryFile);
+                //
+                //   Add appropriate JAVA_ARCHIVE_SUBDIR setting
+                //
+                for(Iterator iter = localBuildFiles.iterator(); iter.hasNext(); ) {
+                    PBXObjectRef buildFile = (PBXObjectRef) iter.next();
+                    String fileRefId = buildFile.getProperties().get("fileRef").toString();
+                    Map fileRef = (Map) objects.get(fileRefId);
+                    String buildPath = fileRef.get("path").toString();
+                    String relPath = toRelative(directoryFile,
+                            new File(baseDir, buildPath).getAbsolutePath());
+                    Map settings = new HashMap();
+                    settings.put("JAVA_ARCHIVE_SUBDIR", new File(relPath).getParent());
+                    buildFile.getProperties().put("settings", settings);
+                    testJavaArchiveBuildPhaseFiles.add(buildFile);
+                }
             } else {
                 getLog().info(
                         "Not adding test resource directory as it has an incompatible target path or filtering: "
@@ -380,7 +417,7 @@ public class XcodeMojo
         //     create test jar build phase
         //
         PBXObjectRef testJavaArchiveBuildPhase = createPBXJavaArchiveBuildPhase(
-                buildActionMask, Collections.EMPTY_LIST, false);
+                buildActionMask, testJavaArchiveBuildPhaseFiles, false);
         objects.put(testJavaArchiveBuildPhase.getID(),
                 testJavaArchiveBuildPhase.getProperties());
         testBuildPhases.add(testJavaArchiveBuildPhase);

@@ -27,8 +27,6 @@ is wrong).
 
 Todos:
 
-Resources trees are not incorporated into the generated jars.
-
 Manifests are not incorporated into the generated jars.
 
 Really kludgy code is used to determine the absolute path
@@ -54,4 +52,4 @@ Web, EAR, EJB modules.
 
 Curt Arnold
 carnold@apache.org
-2007-09-07
+2007-09-13
