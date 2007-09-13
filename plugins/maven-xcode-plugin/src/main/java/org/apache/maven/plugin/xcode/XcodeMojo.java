@@ -232,28 +232,6 @@ public class XcodeMojo
                 frameworksBuildPhase.getProperties());
         buildPhases.add(frameworksBuildPhase);
 
-/*
-        if ( "war".equals( executedProject.getPackaging() ) )
-        {
-            toolTarget = addWebModule( objects );
-        }
-        else if ( "ejb".equals( executedProject.getPackaging() ) )
-        {
-            toolTarget = addEjbModule( objects );
-        }
-        else if ( "ear".equals( executedProject.getPackaging() ) )
-        {
-            toolTarget = addEarModule( objects );
-        } else {
-        }
-*/
-
-        String outputDir = executedProject.getBuild().getOutputDirectory();
-
-        String outputTestDir = executedProject.getBuild().getTestOutputDirectory();
-
-        Map groups = new HashMap();
-
         //
         //   Create "Main" Group
         //
@@ -323,9 +301,9 @@ public class XcodeMojo
         for (Iterator i = executedProject.getCompileSourceRoots().iterator(); i.hasNext();) {
             String directory = (String) i.next();
             String relDir = toRelative(baseDir, directory);
-            toolDebugSettings.put("JAVA_SOURCE_SUBDIR", "."); //relDir);
-            toolReleaseSettings.put("JAVA_SOURCE_SUBDIR", ".");//relDir);
-            addSourceFolder(objects, mainJavaGroup, "SOURCE_ROOT",
+            toolDebugSettings.put("JAVA_SOURCE_SUBDIR", ".");
+            toolReleaseSettings.put("JAVA_SOURCE_SUBDIR", ".");
+            addSourceFolder(objects, mainJavaGroup,
                     sourcesBuildPhaseFiles, new File(directory));
         }
 
@@ -340,10 +318,9 @@ public class XcodeMojo
 
         for (Iterator i = executedProject.getTestCompileSourceRoots().iterator(); i.hasNext();) {
             String directory = (String) i.next();
-            String relDir = toRelative(baseDir, directory);
-            testDebugSettings.put("JAVA_SOURCE_SUBDIR", ".");//relDir);
-            testReleaseSettings.put("JAVA_SOURCE_SUBDIR", ".");//relDir);
-            addSourceFolder(objects, testJavaGroup, "SOURCE_ROOT",
+            testDebugSettings.put("JAVA_SOURCE_SUBDIR", ".");
+            testReleaseSettings.put("JAVA_SOURCE_SUBDIR", ".");
+            addSourceFolder(objects, testJavaGroup,
                     testSourcesBuildPhaseFiles, new File(directory));
         }
         List copyFilesBuildPhaseFiles = new ArrayList();
@@ -351,7 +328,7 @@ public class XcodeMojo
             Resource resource = (Resource) i.next();
             String directory = resource.getDirectory();
             if (resource.getTargetPath() == null && !resource.isFiltering()) {
-                addSourceFolder(objects, mainResourcesGroup, "SOURCE_ROOT",
+                addSourceFolder(objects, mainResourcesGroup,
                         copyFilesBuildPhaseFiles, new File(directory));
             } else {
                 getLog().info(
@@ -363,7 +340,7 @@ public class XcodeMojo
             Resource resource = (Resource) i.next();
             String directory = resource.getDirectory();
             if (resource.getTargetPath() == null && !resource.isFiltering()) {
-                addSourceFolder(objects, testResourcesGroup, "SOURCE_ROOT",
+                addSourceFolder(objects, testResourcesGroup, 
                         testCopyBuildPhaseFiles, new File(directory));
             } else {
                 getLog().info(
@@ -917,7 +894,6 @@ public class XcodeMojo
      */
     private void addSourceFolder(final Map objects,
                                  final PBXObjectRef parentGroup,
-                                 final String sourceTree,
                                  final List buildFiles,
                                  final File sourceDir) {
         if (sourceDir.isDirectory()) {
@@ -944,17 +920,19 @@ public class XcodeMojo
                 }
                 PBXObjectRef group = createPBXGroup(
                         groupName,
-                        sourceTree, new ArrayList());
+                        "SOURCE_ROOT",
+                        new ArrayList());
+                group.getProperties().put("path", toRelative(baseDir, groupDir.getPath()));
                 children.add(group.getID());
                 objects.put(group.getID(), group.getProperties());
                 addSourceFolder(objects, group,
-                        sourceTree, buildFiles,
+                        buildFiles,
                         groupDir);
             }
             for (int i = 0; i < files.length; i++) {
                 String fileName = files[i].getName();
                 PBXObjectRef fileRef =
-                        createPBXFileReference(sourceTree,
+                        createPBXFileReference("SOURCE_ROOT",
                                 new File(relDir, fileName));
                 if (fileName.length() > 5 &&
                         fileName.lastIndexOf(".java") == fileName.length() - 5) {
