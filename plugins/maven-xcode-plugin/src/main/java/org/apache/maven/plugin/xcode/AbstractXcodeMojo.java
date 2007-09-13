@@ -34,22 +34,14 @@ import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Exclusion;
-import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.ProjectBuildingException;
 import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -168,15 +160,13 @@ public abstract class AbstractXcodeMojo
      */
     private String convertDriveLetter( String absolutePath )
     {
-        if ( absolutePath != null && absolutePath.length() >= 3 && !absolutePath.startsWith( "/" ) )
-        {
-            // See if the path starts with "?:\", where ? must be a letter
-            if ( Character.isLetter( absolutePath.substring( 0, 1 ).charAt( 0 ) )
-                && absolutePath.substring( 1, 3 ).equals( ":\\" ) )
-            {
+        // See if the path starts with "?:\", where ? must be a letter
+        if ( absolutePath != null && absolutePath.length() >= 3
+                && !absolutePath.startsWith( "/" )
+                && Character.isLetter( absolutePath.substring( 0, 1 ).charAt( 0 ) )
+                && absolutePath.substring( 1, 3 ).equals( ":\\" ) ) {
                 // In that case we convert the first character to upper case
                 return absolutePath.substring( 0, 1 ).toUpperCase() + absolutePath.substring( 1 );
-            }
         }
         return absolutePath;
     }

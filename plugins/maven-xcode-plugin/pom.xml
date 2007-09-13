@@ -35,6 +35,22 @@
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/MIDEA</url>
   </issueManagement>
+<licenses>
+	<license>
+		<name>Apache License, Version 2.0</name>
+		<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		<distribution>repo</distribution>
+	</license>
+</licenses>
+<scm>
+	<connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/trunk/plugins/maven-xcode-plugin</connection>
+	<developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/plugins/maven-xcode-plugin</developerConnection>
+	<url>http://svn.apache.org/viewcvs.cgi/maven/sandbox/trunk/plugins/maven-xcode-plugin</url>
+</scm>
+<organization>
+    <name>Apache Software Foundation</name>
+    <url>http://www.apache.org</url>
+</organization>  
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -89,4 +105,32 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+  	<plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>rat-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+          	<string>maven-xcode-plugin.xcodeproj/**/*</string>
+          	<string>build/**/*</string>
+          </excludes>
+        </configuration>
+      </plugin>
+     </plugins>
+  </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-pmd-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+           
 </project>

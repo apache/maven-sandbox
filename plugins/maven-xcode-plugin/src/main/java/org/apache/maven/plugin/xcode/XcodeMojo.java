@@ -19,8 +19,8 @@ package org.apache.maven.plugin.xcode;
  * under the License.
  */
 
-import org.apache.maven.model.Resource;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
@@ -322,67 +322,19 @@ public class XcodeMojo
                     testSourcesBuildPhaseFiles, new File(directory));
         }
 
-        for (Iterator i = executedProject.getBuild().getResources().iterator(); i.hasNext();) {
-            Resource resource = (Resource) i.next();
-            String directory = resource.getDirectory();
-            if (resource.getTargetPath() == null && !resource.isFiltering()) {
-                List localBuildFiles = new ArrayList();
-                File directoryFile = new File(directory);
-                addSourceFolder(objects, mainResourcesGroup,
-                        localBuildFiles, directoryFile);
-                //
-                //   Add appropriate JAVA_ARCHIVE_SUBDIR setting
-                //
-                for(Iterator iter = localBuildFiles.iterator(); iter.hasNext(); ) {
-                    PBXObjectRef buildFile = (PBXObjectRef) iter.next();
-                    String fileRefId = buildFile.getProperties().get("fileRef").toString();
-                    Map fileRef = (Map) objects.get(fileRefId);
-                    String buildPath = fileRef.get("path").toString();
-                    String relPath = toRelative(directoryFile,
-                            new File(baseDir, buildPath).getAbsolutePath());
-                    Map settings = new HashMap();
-                    settings.put("JAVA_ARCHIVE_SUBDIR", new File(relPath).getParent());
-                    buildFile.getProperties().put("settings", settings);
-                    javaArchiveBuildPhaseFiles.add(buildFile);
-                }
-            } else {
-                getLog().info(
-                        "Not adding resource directory as it has an incompatible target path or filtering: "
-                                + directory);
-            }
-        }
+        //
+        //    add resources from main target
+        //
+        addResources(objects, executedProject.getBuild().getResources(),
+                mainResourcesGroup, baseDir, javaArchiveBuildPhaseFiles);
 
-
+        //
+        //    add resources from test target
+        //
         List testJavaArchiveBuildPhaseFiles = new ArrayList();
-        for (Iterator i = executedProject.getBuild().getTestResources().iterator(); i.hasNext();) {
-            Resource resource = (Resource) i.next();
-            String directory = resource.getDirectory();
-            if (resource.getTargetPath() == null && !resource.isFiltering()) {
-                List localBuildFiles = new ArrayList();
-                File directoryFile = new File(directory);
-                addSourceFolder(objects, testResourcesGroup,
-                        localBuildFiles, directoryFile);
-                //
-                //   Add appropriate JAVA_ARCHIVE_SUBDIR setting
-                //
-                for(Iterator iter = localBuildFiles.iterator(); iter.hasNext(); ) {
-                    PBXObjectRef buildFile = (PBXObjectRef) iter.next();
-                    String fileRefId = buildFile.getProperties().get("fileRef").toString();
-                    Map fileRef = (Map) objects.get(fileRefId);
-                    String buildPath = fileRef.get("path").toString();
-                    String relPath = toRelative(directoryFile,
-                            new File(baseDir, buildPath).getAbsolutePath());
-                    Map settings = new HashMap();
-                    settings.put("JAVA_ARCHIVE_SUBDIR", new File(relPath).getParent());
-                    buildFile.getProperties().put("settings", settings);
-                    testJavaArchiveBuildPhaseFiles.add(buildFile);
-                }
-            } else {
-                getLog().info(
-                        "Not adding test resource directory as it has an incompatible target path or filtering: "
-                                + directory);
-            }
-        }
+        addResources(objects, executedProject.getBuild().getTestResources(),
+                testResourcesGroup, baseDir, testJavaArchiveBuildPhaseFiles);
+
 
         //
         //   iterate over dependencies
@@ -640,6 +592,43 @@ public class XcodeMojo
         }
     }
 
+
+    private void addResources(final Map objects,
+                              final List projectResources,
+                              final PBXObjectRef resourcesGroup,
+                              final File baseDir,
+                              final List javaArchiveBuildPhaseFiles) {
+        for (Iterator i = projectResources.iterator(); i.hasNext();) {
+            Resource resource = (Resource) i.next();
+            String directory = resource.getDirectory();
+            if (resource.getTargetPath() == null && !resource.isFiltering()) {
+                List localBuildFiles = new ArrayList();
+                File directoryFile = new File(directory);
+                addSourceFolder(objects, resourcesGroup,
+                        localBuildFiles, directoryFile);
+                //
+                //   Add appropriate JAVA_ARCHIVE_SUBDIR setting
+                //
+                for(Iterator iter = localBuildFiles.iterator(); iter.hasNext(); ) {
+                    PBXObjectRef buildFile = (PBXObjectRef) iter.next();
+                    String fileRefId = buildFile.getProperties().get("fileRef").toString();
+                    Map fileRef = (Map) objects.get(fileRefId);
+                    String buildPath = fileRef.get("path").toString();
+                    String relPath = toRelative(directoryFile,
+                            new File(baseDir, buildPath).getAbsolutePath());
+                    Map settings = new HashMap();
+                    settings.put("JAVA_ARCHIVE_SUBDIR", new File(relPath).getParent());
+                    buildFile.getProperties().put("settings", settings);
+                    javaArchiveBuildPhaseFiles.add(buildFile);
+                }
+            } else {
+                getLog().info(
+                        "Not adding resource directory as it has an incompatible target path or filtering: "
+                                + directory);
+            }
+        }
+
+    }
 
     /**
      * Create PBXTool target (aka product jar or test classes).
