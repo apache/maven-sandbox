@@ -601,8 +601,7 @@ public class XcodeMojo
             classPath.append(dependency.getProperties().get("path"));
         }
         argumentStrings.add(classPath.toString());
-        argumentStrings.add("junit.textui.TestRunner");
-        argumentStrings.add("com.mycompany.app.AppTest");
+        argumentStrings.add("junit.swingui.TestRunner");
 
         List executables = new ArrayList();
         PBXObjectRef executable = createPBXExecutable(argumentStrings,
@@ -953,7 +952,7 @@ public class XcodeMojo
                     File[] groupDirs = groupDir.listFiles(SourceDirectoryFilter.INSTANCE);
                     if (groupDirs.length != 1) break;
                     groupDir = groupDirs[0];
-                    groupName = groupName + "/" + groupDir.getName();
+                    groupName = groupName + "." + groupDir.getName();
                 }
                 PBXObjectRef group = createPBXGroup(
                         groupName,
