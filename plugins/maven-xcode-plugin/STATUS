@@ -12,9 +12,9 @@ $ cd your-project
 $ mvn xcode:xcode
 
 
-The xcode:xcode mojo will create (if necessary) your-project.xcodeproj
-and your-project.xcodeproj/project.pbxproj.  The mojo will write
-the .pbxproj file in the XML Property List Serialization, XCode 2.4.1
+The xcode:xcode mojo will create (if necessary) a your-project.xcodeproj
+directory containing project.pbxproj and default.pbxuser.  The mojo will write
+the files in the XML Property List Serialization, XCode 2.4.1
 will immediately rewrite the file in the old-style serialization.
 
 The following issues are known to exist:
@@ -35,14 +35,16 @@ Really kludgy code is used to determine the absolute path
 for the dependencies.  I don't know Maven internals
 to do any better.
 
-XCode apparently has JUnit integration, but I've never seen
-how to set it up.  Ideally, build and run for the test target
-would launch the tests into the JUnit integration.
+xcode:xcode hard codes executable to launch as junit.textui.TestRunner
+with test class com.mycompany.app.AppTest.  XCode apparently has
+JUnit integration, but I've never seen how to set it up.
 
 Multiple source code or resource trees are not supported, or at
 least not tested.
 
-Test with XCode 3.0.  I can't do that until Leopard is released,
+Paths containing whitespaces have not been tested.
+
+XCode 3.0 has not been tested.  I can't do that until Leopard is released,
 but maybe others have access.
 
 Source Code Repository integration.

@@ -381,7 +381,7 @@ public class XcodeMojo
                     addDependency(objects, testDependenciesGroup,
                         testFrameworksFiles, dependency);
                 } else {
-                    addDependency(objects, testDependenciesGroup,
+                    addDependency(objects, mainDependenciesGroup,
                         mainFrameworksBuildFiles, dependency);
                 }
             }
@@ -549,7 +549,80 @@ public class XcodeMojo
                     projectFile.getPath(), ex);
         }
 
+        //
+        //   create Map for Default User Properties
+        //
+        //
+        Map defaultUserProperties = new HashMap();
 
+        //
+        //   create executable reference for /usr/bin/java
+        //
+        PBXObjectRef javaRef = createPBXExecutableFileReference(
+                new File("/usr/bin/java"), "0");
+        defaultUserProperties.put(javaRef.getID(), javaRef.getProperties());
+
+        //
+        //    create executable and arguments
+        //
+        List argumentStrings = new ArrayList();
+        argumentStrings.add("-cp");
+        //
+        //   add all entries in compile and test dependencies
+        //      to classpath
+        StringBuffer classPath = new StringBuffer(executedProject.getArtifactId());
+        classPath.append("-test:");
+        classPath.append(executedProject.getArtifactId());
+        classPath.append(".jar");
+        for(Iterator iter = mainDependenciesGroupChildren.iterator();
+            iter.hasNext();) {
+            PBXObjectRef dependency = (PBXObjectRef) iter.next();
+            classPath.append(':');
+            classPath.append(dependency.getProperties().get("path"));
+        }
+        for(Iterator iter = testDependenciesGroupChildren.iterator();
+            iter.hasNext();) {
+            PBXObjectRef dependency = (PBXObjectRef) iter.next();
+            classPath.append(':');
+            classPath.append(dependency.getProperties().get("path"));
+        }
+        argumentStrings.add(classPath.toString());
+        argumentStrings.add("junit.textui.TestRunner");
+        argumentStrings.add("com.mycompany.app.AppTest");
+
+        List executables = new ArrayList();
+        PBXObjectRef executable = createPBXExecutable(argumentStrings,
+                javaRef, Collections.EMPTY_LIST);
+        executables.add(executable);
+        defaultUserProperties.put(executable.getID(), executable.getProperties());
+
+        //
+        //   this properties are default user additions to
+        //      the PBXProject
+        //
+        Map projectUserProps = new HashMap();
+        projectUserProps.put("activeExecutable", executable);
+        projectUserProps.put("activeTarget", testToolTarget.getID());
+        projectUserProps.put("addToTargets", Collections.EMPTY_LIST);
+        projectUserProps.put("executables", executables);
+        defaultUserProperties.put(project.getID(), projectUserProps);
+
+        //
+        //    and additions to the ToolTargets
+        //
+        Map toolUserProps = new HashMap();
+        toolUserProps.put("activeExec", "0");
+        defaultUserProperties.put(toolTarget.getID(), toolUserProps);
+        defaultUserProperties.put(testToolTarget.getID(), toolUserProps);
+        
+
+        File defaultUserFile = new File(projectDir, "default.pbxuser");
+        try {
+            PropertyListSerialization.serialize(defaultUserProperties, defaultUserFile);
+        } catch (Exception ex) {
+            throw new MojoExecutionException("Unable to create " +
+                    defaultUserFile.getPath(), ex);
+        }
     }
 
 
@@ -958,6 +1031,51 @@ public class XcodeMojo
     }
 
 
+    /**
+     * Create new PBXExecutable.
+     * @param argumentStrings argument strings
+     * @param launchableReference launchable reference
+     * @param sourceDirectories source directories.
+     * @return PBXExecutable.
+     */
+    private static PBXObjectRef createPBXExecutable(final List argumentStrings,
+                                                    final PBXObjectRef launchableReference,
+                                                    final List sourceDirectories) {
+        Map map = new HashMap();
+        map.put("activeArgIndex", "0");
+        List indices = new ArrayList();
+        for(int i = 0; i < argumentStrings.size(); i++) {
+            indices.add("YES");
+        }
+        map.put("activeArgIndices", indices);
+        map.put("argumentStrings", argumentStrings);
+        map.put("debuggerPlugin", "JavaDebugging");
+        map.put("enableDebugStr", "1");
+        map.put("environmentalEntries", Collections.EMPTY_LIST);
+        map.put("isa", "PBXExecutable");
+        map.put("launchableReference", launchableReference);
+        map.put("sourceDirectories", sourceDirectories);
+        return new PBXObjectRef(map);
+    }
+
+
+    /**
+     * Create new PBXExecutableFileReference.
+     * @param executable executable, may not be null.
+     * @param refType ref type, likely "0".
+     * @return PBXExecutableFileReference.
+     */
+    private static PBXObjectRef createPBXExecutableFileReference(
+            final File executable,
+            final String refType) {
+        Map map = new HashMap();
+        map.put("isa", "PBXExecutableFileReference");
+        map.put("name", executable.getName());
+        map.put("path", executable.getPath());
+        map.put("refType", refType);
+        return new PBXObjectRef(map);
+
+    }
 
     /**
      * Represents a property map with an 96 bit identity.
