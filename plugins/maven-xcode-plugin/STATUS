@@ -33,9 +33,9 @@ Really kludgy code is used to determine the absolute path
 for the dependencies.  I don't know Maven internals
 to do any better.
 
-xcode:xcode hard codes executable to launch as junit.textui.TestRunner
-with test class com.mycompany.app.AppTest.  XCode apparently has
-JUnit integration, but I've never seen how to set it up.
+xcode:xcode hard codes executable to launch as junit.swingui.TestRunner.
+XCode apparently has JUnit integration, but I've never seen how to set it up.
+Any working directory set in surefire is not propagated to XCode project.
 
 Multiple source code or resource trees are not supported, or at
 least not tested.

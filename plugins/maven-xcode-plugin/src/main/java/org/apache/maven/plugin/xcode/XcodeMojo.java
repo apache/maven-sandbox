@@ -300,7 +300,6 @@ public class XcodeMojo
         File baseDir = executedProject.getBasedir();
         for (Iterator i = executedProject.getCompileSourceRoots().iterator(); i.hasNext();) {
             String directory = (String) i.next();
-            String relDir = toRelative(baseDir, directory);
             toolDebugSettings.put("JAVA_SOURCE_SUBDIR", ".");
             toolReleaseSettings.put("JAVA_SOURCE_SUBDIR", ".");
             addSourceFolder(objects, mainJavaGroup,
@@ -314,7 +313,6 @@ public class XcodeMojo
         Map testDebugSettings = new HashMap();
         Map testReleaseSettings = new HashMap();
         List testSourcesBuildPhaseFiles = new ArrayList();
-        List testCopyBuildPhaseFiles = new ArrayList();
 
         for (Iterator i = executedProject.getTestCompileSourceRoots().iterator(); i.hasNext();) {
             String directory = (String) i.next();
@@ -386,18 +384,22 @@ public class XcodeMojo
             }
         }
 
+        //
+        //   iterate over dependencies
+        //      add all dependencies to test target,
+        //      add all but test scope dependencies to main target
+        //
         List testFrameworksFiles = new ArrayList();
         List completeDependencies = executedProject.getDependencies();
         if (completeDependencies != null) {
             for (Iterator i = completeDependencies.iterator(); i.hasNext();) {
                 Dependency dependency = (Dependency) i.next();
-                if("test".equals(dependency.getScope())) {
-                    addDependency(objects, testDependenciesGroup,
-                        testFrameworksFiles, dependency);
-                } else {
+                if(!("test".equals(dependency.getScope()))) {
                     addDependency(objects, mainDependenciesGroup,
                         mainFrameworksBuildFiles, dependency);
                 }
+                addDependency(objects, testDependenciesGroup,
+                    testFrameworksFiles, dependency);
             }
         }
 
