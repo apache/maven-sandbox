@@ -1,6 +1,5 @@
-This plugin is still experimental and only partially functional.
-The mojo has only been tested with trivial projects created by archetype:create
-and with XCode 2.4.1.
+This plugin is experimental.  The mojo has only been tested
+a small number of projects.
 
 To use:
 
