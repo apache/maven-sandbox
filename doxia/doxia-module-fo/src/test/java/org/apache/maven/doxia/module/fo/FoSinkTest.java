@@ -22,6 +22,8 @@ package org.apache.maven.doxia.module.fo;
 import java.io.File;
 import java.io.Writer;
 
+import org.apache.maven.doxia.docrenderer.document.DocumentMeta;
+
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.SinkTestDocument;
@@ -63,6 +65,8 @@ public class FoSinkTest extends AbstractSinkTest
 
         fosink.beginDocument();
 
+        fosink.coverPage( getMeta() );
+
         fosink.setDocumentName( "doc1" );
         SinkTestDocument.generate( fosink );
 
@@ -74,6 +78,14 @@ public class FoSinkTest extends AbstractSinkTest
 
         // then generate PDF
         fo2pdf( "aggregate" );
+    }
+
+    private DocumentMeta getMeta()
+    {
+        DocumentMeta meta = new DocumentMeta();
+        meta.setAuthor( "The Apache Maven Project" );
+        meta.setTitle( "Doxia FO Sink" );
+        return meta;
     }
 
     // ----------------------------------------------------------------------

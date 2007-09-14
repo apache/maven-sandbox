@@ -927,6 +927,36 @@ public class FoSink implements Sink
     }
 
     /**
+     * Writes a start tag, prepending EOL.
+     *
+     * @param tag The tag name.
+     * @param id An id to add.
+     * @param name The name (value) of the id.
+     * @param attributeId An id identifying the attribute set.
+     */
+    protected void writeStartTag( String tag, String id, String name, String attributeId )
+    {
+        String attribs = config.getAttributeSet( attributeId );
+        newline();
+        write( "<fo:" + tag + " " + id + "=\"" + name + "\"" + attribs + ">" );
+    }
+
+
+    /**
+     * Writes an empty tag, prepending EOL.
+     *
+     * @param tag The tag name.
+     * @param id An id to add.
+     * @param name The name (value) of the id.
+     */
+    protected void writeEmptyTag( String tag, String id, String name )
+    {
+        newline();
+        write( "<fo:" + tag + " " + id + "=\"" + name + "\"/>" );
+    }
+
+
+    /**
      * Writes an end tag, appending EOL.
      *
      * @param tag The tag name.

@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.fo;
 
 import java.io.Writer;
 
+import org.apache.maven.doxia.docrenderer.document.DocumentMeta;
 import org.apache.maven.doxia.util.HtmlTools;
 
 /**
@@ -352,5 +353,124 @@ public class FoAggregateSink extends FoSink
         }
     }
 
+    public void coverPage( DocumentMeta meta )
+    {
+        String title = meta.getTitle();
+        String author = meta.getAuthor();
+
+        // TODO: remove hard-coded settings
+
+        writeStartTag( "page-sequence", "master-reference", "cover-page" );
+        writeStartTag( "flow", "flow-name", "xsl-region-body" );
+        writeStartTag( "block", "text-align", "center" );
+        //writeStartTag( "table", "table-layout", "fixed" );
+        writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
+        writeEmptyTag( "table-column", "column-width", "3.125in" );
+        writeEmptyTag( "table-column", "column-width", "3.125in" );
+        writeStartTag( "table-body", null );
+
+        writeStartTag( "table-row", "height", "1.5in" );
+        writeStartTag( "table-cell", null );
+        // TODO: companyLogo
+        writeEmptyTag( "block", null );
+        writeEndTag( "table-cell" );
+        writeStartTag( "table-cell", null );
+        // TODO: projectLogo
+        writeEmptyTag( "block", null );
+        writeEndTag( "table-cell" );
+        writeEndTag( "table-row" );
+
+        writeln( "<fo:table-row keep-with-previous=\"always\" height=\"0.014in\">" );
+        writeStartTag( "table-cell", "number-columns-spanned", "2" );
+        writeStartTag( "block", "line-height", "0.014in" );
+        writeEmptyTag( "leader", "chapter.rule" );
+        writeEndTag( "block" );
+        writeEndTag( "table-cell" );
+        writeEndTag( "table-row" );
+
+        writeStartTag( "table-row", "height", "7.447in" );
+        writeStartTag( "table-cell", "number-columns-spanned", "2" );
+        //writeStartTag( "table", "table-layout", "fixed" );
+        writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
+        writeEmptyTag( "table-column", "column-width", "2.083in" );
+        writeEmptyTag( "table-column", "column-width", "2.083in" );
+        writeEmptyTag( "table-column", "column-width", "2.083in" );
+
+        writeStartTag( "table-body", null );
+
+        writeStartTag( "table-row", null );
+        writeStartTag( "table-cell", "number-columns-spanned", "3" );
+        writeEmptyTag( "block", null );
+        writeEmptyTag( "block", "space-before", "3.2235in" );
+        writeEndTag( "table-cell" );
+        writeEndTag( "table-row" );
+
+        writeStartTag( "table-row", null );
+        writeStartTag( "table-cell", null );
+        writeEmptyTag( "block", "space-after", "0.5in" );
+        writeEndTag( "table-cell" );
+
+        writeStartTag( "table-cell", "number-columns-spanned", "2", "cover.border.left" );
+        writeStartTag( "block", "cover.title" );
+        write( title );
+        // TODO: version
+        writeEndTag( "block" );
+        writeEndTag( "table-cell" );
+        writeEndTag( "table-row" );
+
+        writeStartTag( "table-row", null );
+        writeStartTag( "table-cell", null );
+        writeEmptyTag( "block", null );
+        writeEndTag( "table-cell" );
+
+
+        writeStartTag( "table-cell", "number-columns-spanned", "2", "cover.border.left.bottom" );
+        writeStartTag( "block", "cover.subtitle" );
+        // TODO: sub title (cover type)
+        writeEndTag( "block" );
+        writeEndTag( "table-cell" );
+        writeEndTag( "table-row" );
+
+        writeEndTag( "table-body" );
+        writeEndTag( "table" );
+
+        writeEndTag( "table-cell" );
+        writeEndTag( "table-row" );
+
+        writeStartTag( "table-row", "height", "0.014in" );
+        writeStartTag( "table-cell", "number-columns-spanned", "2" );
+        writeln( "<fo:block space-after=\"0.2in\" line-height=\"0.014in\">" );
+        writeEmptyTag( "leader", "chapter.rule" );
+        writeEndTag( "block" );
+        writeEndTag( "table-cell" );
+        writeEndTag( "table-row" );
+
+        writeStartTag( "table-row", null );
+        writeStartTag( "table-cell", "number-columns-spanned", "2" );
+        writeEmptyTag( "block", null );
+        writeEmptyTag( "block", "space-before", "0.2in" );
+        writeEndTag( "table-cell" );
+        writeEndTag( "table-row" );
+
+        writeStartTag( "table-row", "height", "0.3in" );
+        writeStartTag( "table-cell", null );
+        writeStartTag( "block", "height", "0.3in", "cover.subtitle" );
+        write( author );
+        writeEndTag( "block" );
+        writeEndTag( "table-cell" );
+
+        writeStartTag( "table-cell", null );
+        writeStartTag( "block", "height", "0.3in", "cover.subtitle" );
+        // TODO: date
+        writeEndTag( "block" );
+        writeEndTag( "table-cell" );
+
+        writeEndTag( "table-row" );
+        writeEndTag( "table-body" );
+        writeEndTag( "table" );
+        writeEndTag( "block" );
+        writeEndTag( "flow" );
+        writeEndTag( "page-sequence" );
+    }
 
 }

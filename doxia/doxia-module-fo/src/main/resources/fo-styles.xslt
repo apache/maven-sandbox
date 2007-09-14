@@ -271,6 +271,9 @@
         <xsl:attribute name="keep-with-next">always</xsl:attribute>
         <xsl:attribute name="font-size">16pt</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="text-align">left</xsl:attribute>
+        <xsl:attribute name="display-align">center</xsl:attribute>
+        <xsl:attribute name="space-after">0.5in</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="cover.subtitle">
         <xsl:attribute name="font-family">Helvetica,sans-serif</xsl:attribute>
@@ -278,6 +281,8 @@
         <xsl:attribute name="keep-with-next">always</xsl:attribute>
         <xsl:attribute name="font-size">12pt</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="text-align">left</xsl:attribute>
+        <xsl:attribute name="display-align">center</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="cover.border.left" use-attribute-sets="base.pre.style">
         <xsl:attribute name="padding-start">0.2in</xsl:attribute>
