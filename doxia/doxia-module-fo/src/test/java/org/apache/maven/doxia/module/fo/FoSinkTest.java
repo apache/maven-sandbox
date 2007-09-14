@@ -59,11 +59,17 @@ public class FoSinkTest extends AbstractSinkTest
      */
     public void testAggregateMode() throws Exception
     {
-        FoSink fosink = new FoSink( getTestWriter( "aggregate" ), true );
+        FoAggregateSink fosink = new FoAggregateSink( getTestWriter( "aggregate" ) );
+
         fosink.beginDocument();
+
+        fosink.setDocumentName( "doc1" );
         SinkTestDocument.generate( fosink );
+
         // re-use the same source
+        fosink.setDocumentName( "doc2" );
         SinkTestDocument.generate( fosink );
+
         fosink.endDocument();
 
         // then generate PDF

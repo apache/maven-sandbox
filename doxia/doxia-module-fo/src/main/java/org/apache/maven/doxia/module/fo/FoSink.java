@@ -45,9 +45,6 @@ public class FoSink implements Sink
     /** Used to get attributes for a given FO element. */
     private final FoConfiguration config;
 
-    /** Counts the current chapter level. */
-    private int chapter = 0;
-
     /** Counts the current section level. */
     private int section = 0;
 
@@ -69,12 +66,6 @@ public class FoSink implements Sink
     /** Verbatim flag. */
     private boolean verbatim;
 
-    /** Flag that indicates if the document to be written is only a fragment. */
-    private boolean fragmentDocument;
-
-    /** In fragment mode, some text has to be ignored (title...). */
-    private boolean ignoreText;
-
     /**
      * Constructor.
      *
@@ -82,20 +73,8 @@ public class FoSink implements Sink
      */
     public FoSink( Writer writer )
     {
-        this( writer, false );
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param writer The writer for writing the result.
-     * @param fragment Indicates if the document is only a fragment.
-     */
-    public FoSink( Writer writer, boolean fragment )
-    {
         this.out = writer;
         this.config = new FoConfiguration();
-        this.fragmentDocument = fragment;
     }
 
     /**
@@ -114,13 +93,8 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void head()
     {
-        if ( fragmentDocument )
-        {
-            return;
-        }
-
         beginDocument();
-        startPageSequence();
+        startPageSequence( "0" );
     }
 
     /** {@inheritDoc} */
@@ -132,93 +106,52 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void title()
     {
-        if ( fragmentDocument )
-        {
-            ignoreText = true;
-        }
-        else
-        {
-            writeStartTag( "block", "doc.header.title" );
-        }
+        writeStartTag( "block", "doc.header.title" );
     }
 
     /** {@inheritDoc} */
     public void title_()
     {
-        ignoreText = false;
-        if ( !fragmentDocument )
-        {
-            writeEndTag( "block" );
-        }
+        writeEndTag( "block" );
     }
 
     /** {@inheritDoc} */
     public void author()
     {
-        if ( fragmentDocument )
-        {
-            ignoreText = true;
-        }
-        else
-        {
-            writeStartTag( "block", "doc.header.author" );
-        }
+        writeStartTag( "block", "doc.header.author" );
     }
 
     /** {@inheritDoc} */
     public void author_()
     {
-        ignoreText = false;
-        if ( !fragmentDocument )
-        {
-            writeEndTag( "block" );
-        }
+        writeEndTag( "block" );
     }
 
     /** {@inheritDoc} */
     public void date()
     {
-        if ( fragmentDocument )
-        {
-            ignoreText = true;
-        }
-        else
-        {
-            writeStartTag( "block", "doc.header.date" );
-        }
+        writeStartTag( "block", "doc.header.date" );
     }
 
     /** {@inheritDoc} */
     public void date_()
     {
-        ignoreText = false;
-        if ( !fragmentDocument )
-        {
-            writeEndTag( "block" );
-        }
+        writeEndTag( "block" );
     }
 
     /** {@inheritDoc} */
     public void body()
     {
-        if ( fragmentDocument )
-        {
-            startPageSequence();
-        }
-
-        chapter++;
+        // noop
     }
 
     /** {@inheritDoc} */
     public void body_()
     {
-         newline();
-         writeEndTag( "flow" );
-         writeEndTag( "page-sequence" );
-         if ( !fragmentDocument )
-         {
-            endDocument();
-         }
+        newline();
+        writeEndTag( "flow" );
+        writeEndTag( "page-sequence" );
+        endDocument();
     }
 
     // -----------------------------------------------------------------------
@@ -798,15 +731,7 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void anchor( String name )
     {
-        String anchor = name;
-
-        if ( fragmentDocument )
-        {
-            anchor = anchor + String.valueOf( chapter ) + "." + String.valueOf( section )
-                + "." + String.valueOf( subsection ) + "." + String.valueOf( subsubsection );
-        }
-
-        writeStartTag( "inline", "id", anchor );
+        writeStartTag( "inline", "id", name );
     }
 
     /** {@inheritDoc} */
@@ -818,14 +743,6 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void link( String name )
     {
-        String anchor = name;
-
-        if ( fragmentDocument )
-        {
-            anchor = anchor + String.valueOf( chapter ) + "." + String.valueOf( section )
-                + "." + String.valueOf( subsection ) + "." + String.valueOf( subsubsection );
-        }
-
         if ( name.startsWith( "http", 0 ) || name.startsWith( "mailto", 0 )
             || name.startsWith( "ftp", 0 ) )
         {
@@ -840,7 +757,7 @@ public class FoSink implements Sink
         else
         {
             // TODO: aggregate mode: link to another document, construct relative path
-            writeStartTag( "basic-link", "internal-destination", anchor );
+            writeStartTag( "basic-link", "internal-destination", name );
             writeStartTag( "inline", "href.internal" );
         }
     }
@@ -855,65 +772,44 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void italic()
     {
-        if ( !ignoreText )
-        {
-            writeStartTag( "inline", "italic" );
-        }
+        writeStartTag( "inline", "italic" );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        if ( !ignoreText )
-        {
-            writeEndTag( "inline" );
-        }
+        writeEndTag( "inline" );
     }
 
     /** {@inheritDoc} */
     public void bold()
     {
-        if ( !ignoreText )
-        {
-            writeStartTag( "inline", "bold" );
-        }
+        writeStartTag( "inline", "bold" );
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        if ( !ignoreText )
-        {
-            writeEndTag( "inline" );
-        }
+        writeEndTag( "inline" );
     }
 
     /** {@inheritDoc} */
     public void monospaced()
     {
-        if ( !ignoreText )
-        {
-            writeStartTag( "inline", "monospace" );
-        }
+        writeStartTag( "inline", "monospace" );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        if ( !ignoreText )
-        {
-            writeEndTag( "inline" );
-        }
+        writeEndTag( "inline" );
     }
 
     /** {@inheritDoc} */
     public void lineBreak()
     {
-        if ( !ignoreText )
-        {
-            newline();
+        newline();
             writeEmptyTag( "block", null );
-        }
     }
 
     /** {@inheritDoc} */
@@ -925,19 +821,13 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void text( String text )
     {
-        if ( !ignoreText )
-        {
-            content( text );
-        }
+        content( text );
     }
 
     /** {@inheritDoc} */
     public void rawText( String text )
     {
-        if ( !ignoreText )
-        {
-            write( text );
-        }
+        write( text );
     }
 
     /** {@inheritDoc} */
@@ -1016,7 +906,7 @@ public class FoSink implements Sink
      * @param tag The tag name.
      * @param attributeId An id identifying the attribute set.
      */
-    private void writeStartTag( String tag, String attributeId )
+    protected void writeStartTag( String tag, String attributeId )
     {
         String attribs = config.getAttributeSet( attributeId );
         newline();
@@ -1030,7 +920,7 @@ public class FoSink implements Sink
      * @param id An id to add.
      * @param name The name (value) of the id.
      */
-    private void writeStartTag( String tag, String id, String name )
+    protected void writeStartTag( String tag, String id, String name )
     {
         newline();
         write( "<fo:" + tag + " " + id + "=\"" + name + "\">" );
@@ -1041,7 +931,7 @@ public class FoSink implements Sink
      *
      * @param tag The tag name.
      */
-    private void writeEndTag( String tag )
+    protected void writeEndTag( String tag )
     {
         writeln( "</fo:" + tag + ">" );
     }
@@ -1052,7 +942,7 @@ public class FoSink implements Sink
      * @param tag The tag name.
      * @param attributeId An id identifying the attribute set.
      */
-    private void writeEmptyTag( String tag, String attributeId )
+    protected void writeEmptyTag( String tag, String attributeId )
     {
         String attribs = config.getAttributeSet( attributeId );
         writeln( "<fo:" + tag + attribs + "/>" );
@@ -1063,7 +953,7 @@ public class FoSink implements Sink
      *
      * @param text The text to write.
      */
-    private void write( String text )
+    protected void write( String text )
     {
         try
         {
@@ -1080,7 +970,7 @@ public class FoSink implements Sink
      *
      * @param text The text to write.
      */
-    private void writeln( String text )
+    protected void writeln( String text )
     {
         write( text );
         newline();
@@ -1091,13 +981,13 @@ public class FoSink implements Sink
      *
      * @param text The text to write.
      */
-    private void content( String text )
+    protected void content( String text )
     {
         write( escaped( text, verbatim ) );
     }
 
     /** Writes EOL. */
-    private void newline()
+    protected void newline()
     {
         write( EOL );
     }
@@ -1157,19 +1047,10 @@ public class FoSink implements Sink
     }
 
     /** Starts a page sequence. */
-    private void startPageSequence()
+    protected void startPageSequence( String initPageNumber )
     {
-        if ( chapter == 0 )
-        {
-            writeln( "<fo:page-sequence initial-page-number=\"1\" master-reference=\"body\">" );
-        }
-        else
-        {
-            writeln( "<fo:page-sequence initial-page-number=\"auto\" master-reference=\"body\">" );
-        }
-
+        writeln( "<fo:page-sequence initial-page-number=\"" + initPageNumber + "\" master-reference=\"body\">" );
         writeln( "<fo:flow flow-name=\"xsl-region-body\">" );
     }
-
 
 }
