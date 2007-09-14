@@ -25,18 +25,6 @@ under the License.
       <item name="Introduction" href="index.html"/>
       <item name="Goals" href="plugin-info.html"/>
       <item name="Usage" href="usage.html"/>
-      <item name="FAQ" href="faq.html"/>
-    </menu>
-    <menu name="Configuration">
-      <item name="Defining Libraries" href="library.html"/>
-    </menu>
-
-    <menu name="Examples">
-      <item name="Attach Library Sources And/Or Javadocs" href="examples/attach-library-src-doc.html"/>
-      <item name="Customize Your Libraries" href="examples/customize-libraries.html"/>
-      <item name="Enable JVM 5 Features" href="examples/enable-jvm-5-features.html"/>
-      <item name="Disable Links Between Modules" href="examples/prevent-module-references.html"/>
-      <item name="Provide Deployment Descriptor File" href="examples/provide-deployment-descriptor-file.html"/>
     </menu>
   </body>
 </project>

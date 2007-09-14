@@ -31,17 +31,7 @@ Maven Xcode Plugin
 
   The Xcode Plugin has five goals.
 
-  * {{{xcode-mojo.html}xcode:xcode}} is used to execute the other three goals of
-  this plugin: <<<project>>>, <<<module>>>, and <<<workspace>>>.
-
-  * {{{project-mojo.html}xcode:project}} is used to generate the project files
-  (*.ipr) needed for an Xcode Project.
-
-  * {{{module-mojo.html}xcode:module}} is used to generate the module files
-  (*.iml) needed for an Xcode Module.
-
-  * {{{workspace-mojo.html}xcode:workspace}} is used to generate the workspace
-  files (*.iws) needed for an Xcode Project.
+  * {{{xcode-mojo.html}xcode:xcode}} is used to generate the project directory.
 
   * {{{clean-mojo.html}xcode:clean}} is used to delete the files relevant to
   Xcode.
@@ -50,18 +40,3 @@ Maven Xcode Plugin
 
   Instructions on how to use the Maven Xcode Plugin can be found
   {{{usage.html}here}}.
-
-* Examples
-
-  To provide you with better understanding on some usages of the Maven Xcode
-  Plugin, you can take a look into the following examples:
-
-  * {{{examples/attach-library-src-doc.html}Attach Library Sources And/Or Javadocs}}
-
-  * {{{examples/customize-libraries.html}Customize Your Libraries}}
-
-  * {{{examples/enable-jvm-5-features.html}Enable JVM 5 Features}}
-
-  * {{{examples/prevent-module-references.html}Disable Links Between Modules}}
-
-  * {{{examples/provide-deployment-descriptor-file.html}Provide Deployment Descriptor File}}
