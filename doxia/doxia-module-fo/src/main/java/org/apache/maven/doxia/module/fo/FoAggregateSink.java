@@ -353,6 +353,42 @@ public class FoAggregateSink extends FoSink
         }
     }
 
+    protected void regionBefore()
+    {
+        writeStartTag( "static-content", "flow-name", "xsl-region-before" );
+        writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
+        writeEmptyTag( "table-column", "column-width", "5.625in" );
+        writeEmptyTag( "table-column", "column-width", "0.625in" );
+        writeStartTag( "table-body", null );
+        writeStartTag( "table-row", null );
+        writeStartTag( "table-cell", null );
+        writeStartTag( "block", "header.style" );
+        // TODO
+        write( "Header text" );
+        writeEndTag( "block" );
+        writeEndTag( "table-cell" );
+        writeStartTag( "table-cell", null );
+        writeStartTag( "block", "page.number" );
+        writeEmptyTag( "page-number", null );
+        writeEndTag( "block" );
+        writeEndTag( "table-cell" );
+        writeEndTag( "table-row" );
+        writeEndTag( "table-body" );
+        writeEndTag( "table" );
+        writeEndTag( "static-content" );
+    }
+
+    protected void regionAfter()
+    {
+        writeStartTag( "static-content", "flow-name", "xsl-region-after" );
+        writeStartTag( "block", "footer.style" );
+        // TODO
+        write( "Footer text" );
+        writeEndTag( "block" );
+        writeEndTag( "static-content" );
+    }
+
+
     public void coverPage( DocumentMeta meta )
     {
         String title = meta.getTitle();

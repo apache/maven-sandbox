@@ -1080,7 +1080,19 @@ public class FoSink implements Sink
     protected void startPageSequence( String initPageNumber )
     {
         writeln( "<fo:page-sequence initial-page-number=\"" + initPageNumber + "\" master-reference=\"body\">" );
+        regionBefore();
+        regionAfter();
         writeln( "<fo:flow flow-name=\"xsl-region-body\">" );
+    }
+
+    protected void regionBefore()
+    {
+        // do nothing, overridden by AggregateSink
+    }
+
+    protected void regionAfter()
+    {
+        // do nothing, overridden by AggregateSink
     }
 
 }
