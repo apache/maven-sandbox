@@ -169,7 +169,7 @@
     </xsl:attribute-set>
 
     <!-- Chapter heading styles -->
-    <xsl:attribute-set name="chapter.title" use-attribute-sets="base.heading.style body.title">
+    <xsl:attribute-set name="chapter.title" use-attribute-sets="body.title">
         <xsl:attribute name="line-height">10pt</xsl:attribute>
         <xsl:attribute name="space-after">6pt</xsl:attribute>
     </xsl:attribute-set>
@@ -183,7 +183,7 @@
     <!-- Outdented numbers -->
     <xsl:attribute-set name="outdented.number.style" use-attribute-sets="base.heading.style">
         <xsl:attribute name="font-size">9.5pt</xsl:attribute>
-        <xsl:attribute name="color">#454545</xsl:attribute>
+        <!--<xsl:attribute name="color">#454545</xsl:attribute>-->
         <xsl:attribute name="line-height">10pt</xsl:attribute>
         <xsl:attribute name="text-align">right</xsl:attribute>
     </xsl:attribute-set>
@@ -460,7 +460,8 @@
     <xsl:attribute-set name="toc.base.style">
         <xsl:attribute name="font-family">Helvetica,sans-serif</xsl:attribute>
         <xsl:attribute name="line-height">16pt</xsl:attribute>
-        <xsl:attribute name="text-align-last">start</xsl:attribute>
+        <!-- <xsl:attribute name="text-align-last">start</xsl:attribute>-->
+        <xsl:attribute name="text-align-last">justify</xsl:attribute>
         <xsl:attribute name="wrap-option">no-wrap</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="toc.leader.style">

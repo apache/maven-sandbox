@@ -21,7 +21,11 @@ package org.apache.maven.doxia.module.fo;
 
 import java.io.Writer;
 
+import java.util.Iterator;
+
 import org.apache.maven.doxia.docrenderer.document.DocumentMeta;
+import org.apache.maven.doxia.docrenderer.document.DocumentTOC;
+import org.apache.maven.doxia.docrenderer.document.DocumentTOCItem;
 import org.apache.maven.doxia.util.HtmlTools;
 
 /**
@@ -33,8 +37,11 @@ public class FoAggregateSink extends FoSink
     /** Counts the current chapter level. */
     private int chapter = 0;
 
-    /** A name for the current document. */
+    /** Name of the source file of the current document. */
     private String docName;
+
+    /** Title of the chapter. */
+    private String docTitle = "";
 
     /** In fragment mode, some text has to be ignored (title...). */
     private boolean ignoreText;
@@ -104,9 +111,11 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void body()
     {
-        startPageSequence();
-
         chapter++;
+
+        resetSectionCounter();
+
+        startPageSequence();
 
         if ( docName == null )
         {
@@ -131,24 +140,47 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
+     * Sets the title of the current document. This is used as a chapter title.
+     *
+     * @param name the title of the current document.
+     */
+    public void setDocumentTitle( String title )
+    {
+        this.docTitle = title;
+
+        if ( title == null )
+        {
+            this.docTitle = "";
+        }
+    }
+
+
+    /**
      * Sets the name for the current document. This should allow anchors to be resolved uniquely.
      *
      * @param name the name for the current document.
      */
     public void setDocumentName( String name )
     {
-        this.docName = name;
+        this.docName = getIdName( name );
+    }
+
+    private String getIdName( String name )
+    {
+        String idName = name;
 
         // prepend "./" and strip extension
-        if ( !docName.startsWith( "./" ) )
+        if ( !idName.startsWith( "./" ) )
         {
-            this.docName = "./" + docName;
+            idName = "./" + idName;
         }
 
-        if ( docName.indexOf( ".", 2 ) != -1)
+        if ( idName.indexOf( ".", 2 ) != -1)
         {
-            this.docName = docName.substring( 0, docName.indexOf( ".", 2 ) );
+            idName = idName.substring( 0, idName.indexOf( ".", 2 ) );
         }
+
+        return idName;
     }
 
     // -----------------------------------------------------------------------
@@ -343,7 +375,7 @@ public class FoAggregateSink extends FoSink
     /** Starts a page sequence. */
     protected void startPageSequence()
     {
-        if ( chapter == 0 )
+        if ( chapter == 1 )
         {
             super.startPageSequence( "0" );
         }
@@ -353,7 +385,12 @@ public class FoAggregateSink extends FoSink
         }
     }
 
-    protected void regionBefore()
+    protected String getChapterString()
+    {
+        return Integer.toString( chapter ) + ".";
+    }
+
+    protected void regionBefore( String headerText )
     {
         writeStartTag( "static-content", "flow-name", "xsl-region-before" );
         writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
@@ -363,8 +400,7 @@ public class FoAggregateSink extends FoSink
         writeStartTag( "table-row", null );
         writeStartTag( "table-cell", null );
         writeStartTag( "block", "header.style" );
-        // TODO
-        write( "Header text" );
+        write( headerText );
         writeEndTag( "block" );
         writeEndTag( "table-cell" );
         writeStartTag( "table-cell", null );
@@ -378,14 +414,103 @@ public class FoAggregateSink extends FoSink
         writeEndTag( "static-content" );
     }
 
-    protected void regionAfter()
+    protected void regionAfter( String footerText )
     {
         writeStartTag( "static-content", "flow-name", "xsl-region-after" );
         writeStartTag( "block", "footer.style" );
-        // TODO
-        write( "Footer text" );
+        write( footerText );
         writeEndTag( "block" );
         writeEndTag( "static-content" );
+    }
+
+    protected void chapterHeading( String headerText, boolean chapterNumber )
+    {
+        writeStartTag( "block", null );
+        writeStartTag( "list-block", null );
+        writeStartTag( "list-item", null );
+        writeln( "<fo:list-item-label end-indent=\"6.375in\" start-indent=\"-1in\">" );
+        writeStartTag( "block", "outdented.number.style" );
+
+        if ( chapterNumber )
+        {
+            write( Integer.toString( chapter ) );
+        }
+
+        writeEndTag( "block" );
+        writeEndTag( "list-item-label" );
+        writeln( "<fo:list-item-body end-indent=\"1in\" start-indent=\"0in\">" );
+        writeStartTag( "block", "chapter.title" );
+
+        if ( headerText == null )
+        {
+            write( docTitle );
+        }
+        else
+        {
+            write( headerText );
+        }
+
+        writeEndTag( "block" );
+        writeEndTag( "list-item-body" );
+        writeEndTag( "list-item" );
+        writeEndTag( "list-block" );
+        writeEndTag( "block" );
+        writeStartTag( "block", "space-after.optimum", "0em" );
+        writeEmptyTag( "leader", "chapter.rule" );
+        writeEndTag( "block" );
+    }
+
+    public void toc( DocumentTOC toc )
+    {
+        writeln( "<fo:page-sequence master-reference=\"toc\" initial-page-number=\"1\" format=\"i\">" );
+        regionBefore( toc.getName() );
+        // TODO
+        regionAfter( "FooterText" );
+        writeStartTag( "flow", "flow-name", "xsl-region-body" );
+        chapterHeading( "Table of Contents", false );
+        writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
+        writeEmptyTag( "table-column", "column-width", "0.45in" );
+        writeEmptyTag( "table-column", "column-width", "0.4in" );
+        writeEmptyTag( "table-column", "column-width", "0.4in" );
+        writeEmptyTag( "table-column", "column-width", "5in" ); // TODO
+        writeStartTag( "table-body", null );
+
+        int count = 0;
+
+        for ( Iterator k = toc.getItems().iterator(); k.hasNext(); )
+        {
+            DocumentTOCItem tocItem = (DocumentTOCItem) k.next();
+            count++;
+
+            String ref = getIdName( tocItem.getRef() );
+
+            writeStartTag( "table-row", "keep-with-next", "always" );
+            writeStartTag( "table-cell", "toc.cell" );
+            writeStartTag( "block", "toc.number.style" );
+            write( Integer.toString( count ) );
+            writeEndTag( "block" );
+            writeEndTag( "table-cell" );
+            writeStartTag( "table-cell", "number-columns-spanned", "3", "toc.cell" );
+            // TODO: writeStartTag( "block", "text-align-last", "justify", "toc.h1.style" );
+            writeStartTag( "block", "toc.h1.style" );
+            writeStartTag( "basic-link", "internal-destination", ref );
+            write( tocItem.getName() );
+            writeEndTag( "basic-link" );
+            writeEmptyTag( "leader", "toc.leader.style" );
+            writeStartTag( "inline", "page.number" );
+            writeEmptyTag( "page-number-citation", "ref-id", ref );
+            writeEndTag( "inline" );
+            writeEndTag( "block" );
+            writeEndTag( "table-cell" );
+            writeEndTag( "table-row" );
+        }
+
+        writeEndTag( "table-body" );
+        writeEndTag( "table" );
+        writeEndTag( "flow" );
+        writeEndTag( "page-sequence" );
+
+
     }
 
 

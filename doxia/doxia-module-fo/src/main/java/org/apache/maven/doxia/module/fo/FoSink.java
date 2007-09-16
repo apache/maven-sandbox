@@ -312,6 +312,8 @@ public class FoSink implements Sink
     {
         StringBuffer title = new StringBuffer( 16 );
 
+        title.append( getChapterString() );
+
         newline();
         if ( depth == Sink.SECTION_LEVEL_1 )
         {
@@ -353,6 +355,16 @@ public class FoSink implements Sink
     private void onSection_()
     {
         writeEndTag( "block" );
+    }
+
+    protected void resetSectionCounter()
+    {
+        this.section = 0;
+    }
+
+    protected String getChapterString()
+    {
+        return "";
     }
 
     // -----------------------------------------------------------------------
@@ -936,6 +948,7 @@ public class FoSink implements Sink
      */
     protected void writeStartTag( String tag, String id, String name, String attributeId )
     {
+        // TODO: check if id is already in attributeId, if yes, override
         String attribs = config.getAttributeSet( attributeId );
         newline();
         write( "<fo:" + tag + " " + id + "=\"" + name + "\"" + attribs + ">" );
@@ -1080,17 +1093,24 @@ public class FoSink implements Sink
     protected void startPageSequence( String initPageNumber )
     {
         writeln( "<fo:page-sequence initial-page-number=\"" + initPageNumber + "\" master-reference=\"body\">" );
-        regionBefore();
-        regionAfter();
+        // TODO
+        regionBefore( "Header text" );
+        regionAfter( "Footer text" );
         writeln( "<fo:flow flow-name=\"xsl-region-body\">" );
+        chapterHeading( null, true );
     }
 
-    protected void regionBefore()
+    protected void regionBefore( String headerText )
     {
         // do nothing, overridden by AggregateSink
     }
 
-    protected void regionAfter()
+    protected void regionAfter( String footerText )
+    {
+        // do nothing, overridden by AggregateSink
+    }
+
+    protected void chapterHeading( String headerText, boolean chapterNumber )
     {
         // do nothing, overridden by AggregateSink
     }
