@@ -991,12 +991,15 @@ public class XcodeMojo
                                final Dependency dependency) {
         String systemPath = dependency.getSystemPath();
         if (systemPath == null) {
+
             //
             //  TODO: find right way to do this
             //
+            String groupId = dependency.getGroupId();
+            groupId = groupId.replace('.','/');
             systemPath = System.getProperty("user.home") +
                     "/.m2/repository/" +
-                    dependency.getGroupId() + "/" +
+                    groupId + "/" +
                     dependency.getArtifactId() + "/" +
                     dependency.getVersion() + "/" +
                     dependency.getArtifactId() +
