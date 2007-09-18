@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.Writer;
 
 import org.apache.maven.doxia.docrenderer.document.DocumentMeta;
+import org.apache.maven.doxia.docrenderer.document.DocumentTOC;
+import org.apache.maven.doxia.docrenderer.document.DocumentTOCItem;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
@@ -67,11 +69,15 @@ public class FoSinkTest extends AbstractSinkTest
 
         fosink.coverPage( getMeta() );
 
+        fosink.toc( getToc() );
+
         fosink.setDocumentName( "doc1" );
+        fosink.setDocumentTitle( "Document 1" );
         SinkTestDocument.generate( fosink );
 
         // re-use the same source
         fosink.setDocumentName( "doc2" );
+        fosink.setDocumentTitle( "Document 2" );
         SinkTestDocument.generate( fosink );
 
         fosink.endDocument();
@@ -86,6 +92,24 @@ public class FoSinkTest extends AbstractSinkTest
         meta.setAuthor( "The Apache Maven Project" );
         meta.setTitle( "Doxia FO Sink" );
         return meta;
+    }
+
+    private DocumentTOC getToc()
+    {
+        DocumentTOCItem item1 = new DocumentTOCItem();
+        item1.setName( "First document" );
+        item1.setRef( "doc1.apt" );
+
+        DocumentTOCItem item2 = new DocumentTOCItem();
+        item2.setName( "Second document" );
+        item2.setRef( "doc2.xml" );
+
+        DocumentTOC toc = new DocumentTOC();
+        toc.setName( "What's in here" );
+        toc.addItem( item1 );
+        toc.addItem( item2 );
+
+        return toc;
     }
 
     // ----------------------------------------------------------------------
@@ -288,14 +312,16 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        return "<fo:inline id=\"" + anchor + "\">" + anchor + "</fo:inline>";
+        // assume that anchor doesn't start with #
+        return "<fo:inline id=\"#" + anchor + "\">" + anchor + "</fo:inline>";
     }
 
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
         String attribs = getConfig().getAttributeSet( "href.internal" );
-        return "<fo:basic-link internal-destination=\"" + link + "\"><fo:inline"
+        // assume that link doesn't start with #
+        return "<fo:basic-link internal-destination=\"#" + link + "\"><fo:inline"
             + attribs + ">" + text + "</fo:inline></fo:basic-link>";
     }
 

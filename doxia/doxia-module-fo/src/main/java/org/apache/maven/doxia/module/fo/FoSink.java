@@ -742,7 +742,14 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void anchor( String name )
     {
-        writeStartTag( "inline", "id", name );
+        String anchor = name;
+
+        if ( !anchor.startsWith( "#" ) )
+        {
+            anchor = "#" + anchor;
+        }
+
+        writeStartTag( "inline", "id", anchor );
     }
 
     /** {@inheritDoc} */
@@ -754,21 +761,24 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void link( String name )
     {
-        if ( name.startsWith( "http", 0 ) || name.startsWith( "mailto", 0 )
-            || name.startsWith( "ftp", 0 ) )
+        if ( name.startsWith( "http" ) || name.startsWith( "mailto" )
+            || name.startsWith( "ftp" ) )
         {
             writeStartTag( "basic-link", "external-destination", HtmlTools.escapeHTML( name ) );
             writeStartTag( "inline", "href.external" );
         }
-        else if ( name.startsWith( "#", 0 ) )
-        {
-            writeStartTag( "basic-link", "internal-destination", HtmlTools.escapeHTML( name ) );
-            writeStartTag( "inline", "href.internal" );
-        }
         else
         {
-            // TODO: aggregate mode: link to another document, construct relative path
-            writeStartTag( "basic-link", "internal-destination", name );
+            // treat everything else as internal, local (ie anchor is in the same source document)
+
+            String anchor = name;
+
+            if ( !anchor.startsWith( "#" ) )
+            {
+                anchor = "#" + anchor;
+            }
+
+            writeStartTag( "basic-link", "internal-destination", HtmlTools.escapeHTML( anchor ) );
             writeStartTag( "inline", "href.internal" );
         }
     }
@@ -868,7 +878,7 @@ public class FoSink implements Sink
     }
 
     /**
-     * Writes the beginning of a FO document in aggregate mode.
+     * Writes the beginning of a FO document.
      */
     public void beginDocument()
     {
@@ -898,7 +908,7 @@ public class FoSink implements Sink
     }
 
     /**
-     * Writes the end of a FO document in aggregate mode, flushes and closes the stream.
+     * Writes the end of a FO document, flushes and closes the stream.
      */
     public void endDocument()
     {
