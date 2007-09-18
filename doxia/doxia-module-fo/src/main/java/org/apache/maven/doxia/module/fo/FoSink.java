@@ -87,7 +87,6 @@ public class FoSink implements Sink
         return config;
     }
 
-    // TODO page headers, page numbering
     // TODO add FOP compliance mode?
 
     /** {@inheritDoc} */

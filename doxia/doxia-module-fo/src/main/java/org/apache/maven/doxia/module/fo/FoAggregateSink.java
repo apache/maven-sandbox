@@ -37,13 +37,13 @@ public class FoAggregateSink extends FoSink
     /** Counts the current chapter level. */
     private int chapter = 0;
 
-    /** Name of the source file of the current document. */
+    /** Name of the source file of the current document, relative to the source root. */
     private String docName;
 
-    /** Title of the chapter. */
+    /** Title of the chapter, used in the page header. */
     private String docTitle = "";
 
-    /** In fragment mode, some text has to be ignored (title...). */
+    /** Content in head is ignored in aggregated documents. */
     private boolean ignoreText;
 
     /**
@@ -55,9 +55,6 @@ public class FoAggregateSink extends FoSink
     {
         super( writer );
     }
-
-    // TODO page headers, page numbering
-    // TODO add FOP compliance mode?
 
     /** {@inheritDoc} */
     public void head()
@@ -119,7 +116,7 @@ public class FoAggregateSink extends FoSink
 
         if ( docName == null )
         {
-            // TODO: log.warn( "No document root specified, local links might not be resolved correctly!" )
+            // TODO: log.warn( "No document root specified, local links will not be resolved correctly!" )
         }
         else {
             writeStartTag( "block", "id", docName );
@@ -140,7 +137,7 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Sets the title of the current document. This is used as a chapter title.
+     * Sets the title of the current document. This is used as a chapter title in the page header.
      *
      * @param name the title of the current document.
      */
@@ -156,7 +153,8 @@ public class FoAggregateSink extends FoSink
 
 
     /**
-     * Sets the name for the current document. This should allow anchors to be resolved uniquely.
+     * Sets the name of the current source document, relative to the source root.
+     * Used to resolve links to other source documents.
      *
      * @param name the name for the current document.
      */
@@ -164,7 +162,13 @@ public class FoAggregateSink extends FoSink
     {
         this.docName = getIdName( name );
     }
-
+    /**
+     * Translates the given name to a usable id.
+     * Prepends "./" and strips any extension.
+     *
+     * @param name the name for the current document.
+     * @return String
+     */
     private String getIdName( String name )
     {
         String idName = name;
@@ -192,7 +196,12 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void anchor( String name )
     {
-        String anchor = "#" + name;
+        String anchor = name;
+
+        if ( !anchor.startsWith( "#" ) )
+        {
+            anchor = "#" + anchor;
+        }
 
         if ( docName != null )
         {
@@ -206,17 +215,17 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void link( String name )
     {
-        if ( name.startsWith( "http", 0 ) || name.startsWith( "mailto", 0 )
-            || name.startsWith( "ftp", 0 ) )
+        if ( name.startsWith( "http" ) || name.startsWith( "mailto" )
+            || name.startsWith( "ftp" ) )
         {
             // external links
             writeStartTag( "basic-link", "external-destination", HtmlTools.escapeHTML( name ) );
             writeStartTag( "inline", "href.external" );
         }
-        else if ( name.startsWith( "./", 0 ) || name.startsWith( "../", 0 ) )
+        else if ( name.startsWith( "./" ) )
         {
-            // internal non-local (ie anchor is not in the same source document) links
-            // TODO:  link to another document, construct relative path
+            // internal, non-local link (ie anchor is not in the same source document)
+            // and link destination source document is in the same directory
 
             String anchor = name;
 
@@ -248,10 +257,44 @@ public class FoAggregateSink extends FoSink
             writeStartTag( "basic-link", "internal-destination", HtmlTools.escapeHTML( anchor ) );
             writeStartTag( "inline", "href.internal" );
         }
+        else if ( name.startsWith( "../" ) )
+        {
+            // internal, non-local link (ie anchor is not in the same source document)
+            // and link destination source document is in a different directory
+
+            String anchor = name;
+
+            if ( docName == null )
+            {
+                // can't resolve link without base, fop will issue a warning
+                writeStartTag( "basic-link", "internal-destination", HtmlTools.escapeHTML( anchor ) );
+                writeStartTag( "inline", "href.internal" );
+
+                return;
+            }
+
+            String base = docName.substring( 0, docName.lastIndexOf( "/" ) );
+
+            while ( anchor.startsWith( "../" ) )
+            {
+                base = base.substring( 0, base.lastIndexOf( "/" ) );
+
+                anchor = anchor.substring( 3 );
+            }
+
+            // call again with resolved link
+            link( base + "/" + anchor );
+        }
         else
         {
-            // internal local (ie anchor is in the same source document) links
-            String anchor = "#" + name;
+            // internal, local link (ie anchor is in the same source document)
+
+            String anchor = name;
+
+            if ( !anchor.startsWith( "#" ) )
+            {
+                anchor = "#" + anchor;
+            }
 
             if ( docName != null )
             {
@@ -467,7 +510,7 @@ public class FoAggregateSink extends FoSink
         // TODO
         regionAfter( "FooterText" );
         writeStartTag( "flow", "flow-name", "xsl-region-body" );
-        chapterHeading( "Table of Contents", false );
+        chapterHeading( toc.getName(), false );
         writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
         writeEmptyTag( "table-column", "column-width", "0.45in" );
         writeEmptyTag( "table-column", "column-width", "0.4in" );
