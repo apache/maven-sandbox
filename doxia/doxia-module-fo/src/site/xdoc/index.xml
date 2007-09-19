@@ -43,7 +43,6 @@ under the License.
       <subsection name="Current limitations">
         <ul>
           <li>Not configurable</li>
-          <li>No page headers, page numbering</li>
           <li>Table captions not implemented</li>
           <li>Table header cells not implemented</li>
           <li>Table width is fixed</li>

@@ -28,8 +28,10 @@ under the License.
   <body>
     <section name="Usage">
 
+    <subsection name="Converting single documents">
+
       <p>
-        Here's an example that converts an apt input file into a fo document.
+        Here's an example that converts a single apt input file into a fo document.
         To produce a pdf from the result using Apache FOP, see eg
         <a href="http://xmlgraphics.apache.org/fop/0.93/embedding.html#ExampleFO2PDF">ExampleFO2PDF</a>.
       </p>
@@ -53,10 +55,12 @@ public class Apt2FO
         try
         {
             // Open input apt document:
-            FileReader source = new FileReader( new File( "resources", "test.apt" ) );
+            FileReader source = new FileReader(
+                new File( "resources", "test.apt" ) );
 
             // Create FO sink:
-            FoSink fosink = new FoSink( new FileWriter( new File( "output", "test.fo" ) ) );
+            FoSink fosink = new FoSink( new FileWriter(
+                new File( "output", "test.fo" ) ) );
 
             AptParser parser = new AptParser();
             parser.parse( source, fosink );
@@ -80,6 +84,51 @@ public class Apt2FO
     }
 }
       </source>
+
+    </subsection>
+
+    <subsection name="Converting multiple documents">
+
+      <p>
+        If you want to parse several source documents into a single fo file,
+        so you can generate a single pdf from multiple source files, you should
+        use the FoAggregateSink. A simple example is outlined below,
+        refer to the API docs for more information.
+      </p>
+
+      <source>
+    AptParser parser = new AptParser();
+
+    FoAggregateSink fosink = new FoAggregateSink(
+        new FileWriter( new File( "out", "aggregate.fo" ) ) );
+
+    fosink.beginDocument();
+
+    // getMeta() should return a DocumentMeta object
+    fosink.coverPage( getMeta() );
+
+    // getToc() should return a DocumentTOC object
+    fosink.toc( getToc() );
+
+    // first document
+    FileReader source1 =
+        new FileReader( new File( "resources", "test1.apt" ) );
+    fosink.setDocumentName( "doc1" );
+    fosink.setDocumentTitle( "Document 1" );
+    parser.parse( source1, fosink );
+
+    // second document
+    FileReader source2 =
+        new FileReader( new File( "resources", "test2.apt" ) );
+    fosink.setDocumentName( "doc2" );
+    fosink.setDocumentTitle( "Document 2" );
+    parser.parse( source2, fosink );
+
+    fosink.endDocument();
+      </source>
+
+    </subsection>
+
 
     </section>
 
