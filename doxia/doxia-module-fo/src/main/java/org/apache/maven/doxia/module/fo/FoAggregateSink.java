@@ -198,9 +198,13 @@ public class FoAggregateSink extends FoSink
     {
         String anchor = name;
 
-        if ( !anchor.startsWith( "#" ) )
+        if ( anchor.startsWith( "#" ) )
         {
-            anchor = "#" + anchor;
+            anchor = "#" + HtmlTools.encodeId( anchor.substring( 1 ) );
+        }
+        else
+        {
+            anchor = "#" + HtmlTools.encodeId( anchor );
         }
 
         if ( docName != null )
@@ -241,11 +245,13 @@ public class FoAggregateSink extends FoSink
 
                     if ( dot2 != -1)
                     {
-                        anchor = anchor.substring( 0, dot ) + anchor.substring( hash, dot2 );
+                        anchor = anchor.substring( 0, dot ) + "#"
+                            + HtmlTools.encodeId( anchor.substring( hash + 1, dot2 ) );
                     }
                     else
                     {
-                        anchor = anchor.substring( 0, dot ) + anchor.substring( hash, anchor.length() );
+                        anchor = anchor.substring( 0, dot ) + "#"
+                            + HtmlTools.encodeId( anchor.substring( hash + 1, anchor.length() ) );
                     }
                 }
                 else
@@ -291,9 +297,13 @@ public class FoAggregateSink extends FoSink
 
             String anchor = name;
 
-            if ( !anchor.startsWith( "#" ) )
+            if ( anchor.startsWith( "#" ) )
             {
-                anchor = "#" + anchor;
+                anchor = "#" + HtmlTools.encodeId( anchor.substring( 1 ) );
+            }
+            else
+            {
+                anchor = "#" + HtmlTools.encodeId( anchor );
             }
 
             if ( docName != null )

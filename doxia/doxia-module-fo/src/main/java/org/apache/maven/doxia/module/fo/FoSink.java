@@ -744,9 +744,13 @@ public class FoSink implements Sink
     {
         String anchor = name;
 
-        if ( !anchor.startsWith( "#" ) )
+        if ( anchor.startsWith( "#" ) )
         {
-            anchor = "#" + anchor;
+            anchor = "#" + HtmlTools.encodeId( anchor.substring( 1 ) );
+        }
+        else
+        {
+            anchor = "#" + HtmlTools.encodeId( anchor );
         }
 
         writeStartTag( "inline", "id", anchor );
@@ -773,9 +777,13 @@ public class FoSink implements Sink
 
             String anchor = name;
 
-            if ( !anchor.startsWith( "#" ) )
+            if ( anchor.startsWith( "#" ) )
             {
-                anchor = "#" + anchor;
+                anchor = "#" + HtmlTools.encodeId( anchor.substring( 1 ) );
+            }
+            else
+            {
+                anchor = "#" + HtmlTools.encodeId( anchor );
             }
 
             writeStartTag( "basic-link", "internal-destination", HtmlTools.escapeHTML( anchor ) );
