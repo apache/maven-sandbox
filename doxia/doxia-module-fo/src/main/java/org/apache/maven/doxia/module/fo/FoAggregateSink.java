@@ -112,13 +112,14 @@ public class FoAggregateSink extends FoSink
 
         resetSectionCounter();
 
-        startPageSequence();
+        startPageSequence( getHeaderText(), getFooterText() );
 
         if ( docName == null )
         {
             // TODO: log.warn( "No document root specified, local links will not be resolved correctly!" )
         }
-        else {
+        else
+        {
             writeStartTag( "block", "id", docName );
         }
 
@@ -139,7 +140,7 @@ public class FoAggregateSink extends FoSink
     /**
      * Sets the title of the current document. This is used as a chapter title in the page header.
      *
-     * @param name the title of the current document.
+     * @param title the title of the current document.
      */
     public void setDocumentTitle( String title )
     {
@@ -162,6 +163,7 @@ public class FoAggregateSink extends FoSink
     {
         this.docName = getIdName( name );
     }
+
     /**
      * Translates the given name to a usable id.
      * Prepends "./" and strips any extension.
@@ -179,7 +181,7 @@ public class FoAggregateSink extends FoSink
             idName = "./" + idName;
         }
 
-        if ( idName.indexOf( ".", 2 ) != -1)
+        if ( idName.indexOf( ".", 2 ) != -1 )
         {
             idName = idName.substring( 0, idName.indexOf( ".", 2 ) );
         }
@@ -235,7 +237,7 @@ public class FoAggregateSink extends FoSink
 
             int dot = anchor.indexOf( ".", 2 );
 
-            if ( dot != -1)
+            if ( dot != -1 )
             {
                 int hash = anchor.indexOf( "#", dot );
 
@@ -243,7 +245,7 @@ public class FoAggregateSink extends FoSink
                 {
                     int dot2 = anchor.indexOf( ".", hash );
 
-                    if ( dot2 != -1)
+                    if ( dot2 != -1 )
                     {
                         anchor = anchor.substring( 0, dot ) + "#"
                             + HtmlTools.encodeId( anchor.substring( hash + 1, dot2 ) );
@@ -425,24 +427,60 @@ public class FoAggregateSink extends FoSink
         }
     }
 
-    /** Starts a page sequence. */
-    protected void startPageSequence()
+    /**
+     * Starts a page sequence, depending on the current chapter.
+     *
+     * @param headerText The text to write in the header, if null, nothing is written.
+     * @param footerText The text to write in the footer, if null, nothing is written.
+     */
+    protected void startPageSequence( String headerText, String footerText )
     {
         if ( chapter == 1 )
         {
-            super.startPageSequence( "0" );
+            startPageSequence( "0", headerText, footerText );
         }
         else
         {
-            super.startPageSequence( "auto" );
+            startPageSequence( "auto", headerText, footerText );
         }
     }
 
+    /**
+     * Returns the text to write in the header of each page.
+     *
+     * @return String
+     */
+    protected String getHeaderText()
+    {
+        return Integer.toString( chapter ) + "   " + docTitle;
+    }
+
+    /**
+     * Returns the text to write in the footer of each page.
+     *
+     * @return String
+     */
+    protected String getFooterText()
+    {
+        // TODO: year and company have to come from DocumentMeta
+        return "&#169;2007 The Apache Software Foundation &#8226; ALL RIGHTS RESERVED";
+    }
+
+    /**
+     * Returns the current chapter number as a string.
+     *
+     * @return String
+     */
     protected String getChapterString()
     {
         return Integer.toString( chapter ) + ".";
     }
 
+    /**
+     * Writes a 'xsl-region-before' block.
+     *
+     * @param headerText The text to write in the header, if null, nothing is written.
+     */
     protected void regionBefore( String headerText )
     {
         writeStartTag( "static-content", "flow-name", "xsl-region-before" );
@@ -453,7 +491,12 @@ public class FoAggregateSink extends FoSink
         writeStartTag( "table-row", null );
         writeStartTag( "table-cell", null );
         writeStartTag( "block", "header.style" );
-        write( headerText );
+
+        if ( headerText != null )
+        {
+            write( headerText );
+        }
+
         writeEndTag( "block" );
         writeEndTag( "table-cell" );
         writeStartTag( "table-cell", null );
@@ -467,15 +510,31 @@ public class FoAggregateSink extends FoSink
         writeEndTag( "static-content" );
     }
 
+    /**
+     * Writes a 'xsl-region-after' block.
+     *
+     * @param footerText The text to write in the footer, if null, nothing is written.
+     */
     protected void regionAfter( String footerText )
     {
         writeStartTag( "static-content", "flow-name", "xsl-region-after" );
         writeStartTag( "block", "footer.style" );
-        write( footerText );
+
+        if ( footerText != null )
+        {
+            write( footerText );
+        }
+
         writeEndTag( "block" );
         writeEndTag( "static-content" );
     }
 
+    /**
+     * Writes a chapter heading.
+     *
+     * @param headerText The text to write in the header, if null, the current document title is written.
+     * @param chapterNumber True if the chapter number should be written in front of the text.
+     */
     protected void chapterHeading( String headerText, boolean chapterNumber )
     {
         writeStartTag( "block", null );
@@ -513,12 +572,16 @@ public class FoAggregateSink extends FoSink
         writeEndTag( "block" );
     }
 
+    /**
+     * Writes a table of contents.
+     *
+     * @param toc The DocumentTOC object that contains all information for the table of contents.
+     */
     public void toc( DocumentTOC toc )
     {
         writeln( "<fo:page-sequence master-reference=\"toc\" initial-page-number=\"1\" format=\"i\">" );
         regionBefore( toc.getName() );
-        // TODO
-        regionAfter( "FooterText" );
+        regionAfter( getFooterText() );
         writeStartTag( "flow", "flow-name", "xsl-region-body" );
         chapterHeading( toc.getName(), false );
         writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
@@ -566,7 +629,11 @@ public class FoAggregateSink extends FoSink
 
     }
 
-
+    /**
+     * Writes a cover page.
+     *
+     * @param meta The DocumentMeta object that contains all information for the cover page.
+     */
     public void coverPage( DocumentMeta meta )
     {
         String title = meta.getTitle();

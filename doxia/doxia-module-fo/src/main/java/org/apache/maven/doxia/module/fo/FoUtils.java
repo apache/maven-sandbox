@@ -25,9 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import java.util.Iterator;
-import java.util.List;
-
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -51,6 +48,7 @@ public class FoUtils
 
     /**
      * Converts an FO file to a PDF file using FOP.
+     *
      * @param fo the FO file.
      * @param pdf the target PDF file.
      * @param resourceDir The base directory for relative path resolution.
@@ -117,6 +115,13 @@ public class FoUtils
         }
     }
 
+    /**
+     * Returns a base URL to be used by the FOUserAgent.
+     *
+     * @param fo the FO file.
+     * @param resourceDir the resource directory.
+     * @return String.
+     */
     private static String getBaseURL( File fo, String resourceDir )
     {
         String url = null;

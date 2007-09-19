@@ -93,7 +93,7 @@ public class FoSink implements Sink
     public void head()
     {
         beginDocument();
-        startPageSequence( "0" );
+        startPageSequence( "0", null, null );
     }
 
     /** {@inheritDoc} */
@@ -356,11 +356,21 @@ public class FoSink implements Sink
         writeEndTag( "block" );
     }
 
+    /**
+     * Resets the section counter to 0.
+     * Only useful for overriding classes, like AggregateSink, the FoSink puts everything into one chapter.
+     */
     protected void resetSectionCounter()
     {
         this.section = 0;
     }
 
+    /**
+     * Returns the current chapter number as a string.
+     * By default does nothing, gets overridden by AggregateSink.
+     *
+     * @return an empty String.
+     */
     protected String getChapterString()
     {
         return "";
@@ -1106,27 +1116,48 @@ public class FoSink implements Sink
         return buffer.toString();
     }
 
-    /** Starts a page sequence. */
-    protected void startPageSequence( String initPageNumber )
+    /**
+     * Starts a page sequence.
+     *
+     * @param initPageNumber The initial page number. Should be either "0" (for the first page) or "auto".
+     * @param headerText The text to write in the header, if null, nothing is written.
+     * @param footerText The text to write in the footer, if null, nothing is written.
+     */
+    protected void startPageSequence( String initPageNumber, String headerText, String footerText )
     {
         writeln( "<fo:page-sequence initial-page-number=\"" + initPageNumber + "\" master-reference=\"body\">" );
-        // TODO
-        regionBefore( "Header text" );
-        regionAfter( "Footer text" );
+        regionBefore( headerText );
+        regionAfter( footerText );
         writeln( "<fo:flow flow-name=\"xsl-region-body\">" );
         chapterHeading( null, true );
     }
 
+    /**
+     * Writes a 'xsl-region-before' block.
+     *
+     * @param headerText The text to write in the header, if null, nothing is written.
+     */
     protected void regionBefore( String headerText )
     {
         // do nothing, overridden by AggregateSink
     }
 
+    /**
+     * Writes a 'xsl-region-after' block. By default does nothing, gets overridden by AggregateSink.
+     *
+     * @param footerText The text to write in the footer, if null, nothing is written.
+     */
     protected void regionAfter( String footerText )
     {
         // do nothing, overridden by AggregateSink
     }
 
+    /**
+     * Writes a chapter heading. By default does nothing, gets overridden by AggregateSink.
+     *
+     * @param headerText The text to write in the header, if null, the current document title is written.
+     * @param chapterNumber True if the chapter number should be written in front of the text.
+     */
     protected void chapterHeading( String headerText, boolean chapterNumber )
     {
         // do nothing, overridden by AggregateSink

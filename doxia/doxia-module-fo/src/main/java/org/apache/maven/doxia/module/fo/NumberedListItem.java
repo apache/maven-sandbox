@@ -159,6 +159,7 @@ public class NumberedListItem
      * Determines if the given format is one of the formats defined in
      * {@link org.apache.maven.doxia.sink.Sink}.
      *
+     * @param itemFormat the format to check.
      * @return True if the format is a valid item format according to the Sink API.
      */
     private boolean isValidItemFormat( int itemFormat )
