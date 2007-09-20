@@ -23,6 +23,11 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Stack;
 
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.html.HTML.Tag;
+
+import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -30,12 +35,10 @@ import org.apache.maven.doxia.util.HtmlTools;
 /**
  * A Doxia Sink that produces a FO model.
  */
-public class FoSink implements Sink
+public class FoSink
+    extends AbstractXmlSink
+    implements FoMarkup
 {
-
-    /** System-dependent end-of-line string. */
-    private static final String EOL = System.getProperty( "line.separator" );
-
     /** For writing the result. */
     private final Writer out;
 
@@ -75,6 +78,8 @@ public class FoSink implements Sink
     {
         this.out = writer;
         this.config = new FoConfiguration();
+
+        setNameSpace( "fo" );
     }
 
     /**
@@ -105,37 +110,37 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void title()
     {
-        writeStartTag( "block", "doc.header.title" );
+        writeStartTag( BLOCK_TAG, "doc.header.title" );
     }
 
     /** {@inheritDoc} */
     public void title_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
     public void author()
     {
-        writeStartTag( "block", "doc.header.author" );
+        writeStartTag( BLOCK_TAG, "doc.header.author" );
     }
 
     /** {@inheritDoc} */
     public void author_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
     public void date()
     {
-        writeStartTag( "block", "doc.header.date" );
+        writeStartTag( BLOCK_TAG, "doc.header.date" );
     }
 
     /** {@inheritDoc} */
     public void date_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
@@ -148,8 +153,8 @@ public class FoSink implements Sink
     public void body_()
     {
         newline();
-        writeEndTag( "flow" );
-        writeEndTag( "page-sequence" );
+        writeEndTag( FLOW_TAG );
+        writeEndTag( PAGE_SEQUENCE_TAG );
         endDocument();
     }
 
@@ -299,7 +304,7 @@ public class FoSink implements Sink
     private void onSection()
     {
         newline();
-        writeStartTag( "block", "body.text" );
+        writeStartTag( BLOCK_TAG, "body.text" );
     }
 
     /**
@@ -316,29 +321,29 @@ public class FoSink implements Sink
         newline();
         if ( depth == Sink.SECTION_LEVEL_1 )
         {
-            writeStartTag( "block", "body.h1" );
+            writeStartTag( BLOCK_TAG, "body.h1" );
             title.append( section ).append( "   " );
         }
         else if ( depth == Sink.SECTION_LEVEL_2 )
         {
-            writeStartTag( "block", "body.h2" );
+            writeStartTag( BLOCK_TAG, "body.h2" );
             title.append( section ).append( "." );
             title.append( subsection ).append( "   " );
         }
         else if ( depth == Sink.SECTION_LEVEL_3 )
         {
-            writeStartTag( "block", "body.h3" );
+            writeStartTag( BLOCK_TAG, "body.h3" );
             title.append( section ).append( "." );
             title.append( subsection ).append( "." );
             title.append( subsubsection ).append( "   " );
         }
         else if ( depth == Sink.SECTION_LEVEL_4 )
         {
-            writeStartTag( "block", "body.h4" );
+            writeStartTag( BLOCK_TAG, "body.h4" );
         }
         else
         {
-            writeStartTag( "block", "body.h5" );
+            writeStartTag( BLOCK_TAG, "body.h5" );
         }
 
         write( title.toString() );
@@ -347,13 +352,13 @@ public class FoSink implements Sink
     /** Ends a section title. */
     private void onSectionTitle_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** Ends a section/subsection. */
     private void onSection_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /**
@@ -384,31 +389,31 @@ public class FoSink implements Sink
     public void list()
     {
         newline();
-        writeStartTag( "list-block", "list" );
+        writeStartTag( LIST_BLOCK_TAG, "list" );
     }
 
     /** {@inheritDoc} */
     public void list_()
     {
-        writeEndTag( "list-block" );
+        writeEndTag( LIST_BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
     public void listItem()
     {
-        writeStartTag( "list-item", "list.item" );
+        writeStartTag( LIST_ITEM_TAG, "list.item" );
         // TODO customize?
         writeln( "<fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label>" );
-        writeStartTag( "list-item-body", "list.item" );
-        writeStartTag( "block", null );
+        writeStartTag( LIST_ITEM_BODY_TAG, "list.item" );
+        writeStartTag( BLOCK_TAG, "" );
     }
 
     /** {@inheritDoc} */
     public void listItem_()
     {
-        writeEndTag( "block" );
-        writeEndTag( "list-item-body" );
-        writeEndTag( "list-item" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( LIST_ITEM_BODY_TAG );
+        writeEndTag( LIST_ITEM_TAG );
     }
 
     /** {@inheritDoc} */
@@ -416,14 +421,14 @@ public class FoSink implements Sink
     {
         listStack.push( new NumberedListItem( numbering ) );
         newline();
-        writeStartTag( "list-block", "list" );
+        writeStartTag( LIST_BLOCK_TAG, "list" );
     }
 
     /** {@inheritDoc} */
     public void numberedList_()
     {
         listStack.pop();
-        writeEndTag( "list-block" );
+        writeEndTag( LIST_BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
@@ -432,37 +437,37 @@ public class FoSink implements Sink
         NumberedListItem current = (NumberedListItem) listStack.peek();
         current.next();
 
-        writeStartTag( "list-item", "list.item" );
+        writeStartTag( LIST_ITEM_TAG, "list.item" );
 
-        writeStartTag( "list-item-label", null );
-        writeStartTag( "block", null );
+        writeStartTag( LIST_ITEM_LABEL_TAG, "" );
+        writeStartTag( BLOCK_TAG, "" );
         write( current.getListItemSymbol() );
-        writeEndTag( "block" );
-        writeEndTag( "list-item-label" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( LIST_ITEM_LABEL_TAG );
 
-        writeStartTag( "list-item-body", "list.item" );
-        writeStartTag( "block", null );
+        writeStartTag( LIST_ITEM_BODY_TAG, "list.item" );
+        writeStartTag( BLOCK_TAG, "" );
     }
 
     /** {@inheritDoc} */
     public void numberedListItem_()
     {
-        writeEndTag( "block" );
-        writeEndTag( "list-item-body" );
-        writeEndTag( "list-item" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( LIST_ITEM_BODY_TAG );
+        writeEndTag( LIST_ITEM_TAG );
     }
 
     /** {@inheritDoc} */
     public void definitionList()
     {
         newline();
-        writeStartTag( "block", "dl" );
+        writeStartTag( BLOCK_TAG, "dl" );
     }
 
     /** {@inheritDoc} */
     public void definitionList_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
@@ -480,41 +485,41 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void definedTerm()
     {
-        writeStartTag( "block", "dt" );
+        writeStartTag( BLOCK_TAG, "dt" );
     }
 
     /** {@inheritDoc} */
     public void definedTerm_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
     public void definition()
     {
         newline();
-        writeStartTag( "block", "dd" );
+        writeStartTag( BLOCK_TAG, "dd" );
     }
 
     /** {@inheritDoc} */
     public void definition_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
     public void figure()
     {
         newline();
-        writeStartTag( "block", "figure.display" );
+        writeStartTag( BLOCK_TAG, "figure.display" );
         write( "<fo:external-graphic"
-            + config.getAttributeSet( "figure.graphics" ) );
+            + config.getAttributeString( "figure.graphics" ) );
     }
 
     /** {@inheritDoc} */
     public void figure_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
@@ -527,25 +532,25 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void figureCaption()
     {
-        writeStartTag( "block", "figure.caption" );
+        writeStartTag( BLOCK_TAG, "figure.caption" );
     }
 
     /** {@inheritDoc} */
     public void figureCaption_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
     public void paragraph()
     {
-        writeStartTag( "block", "normal.paragraph" );
+        writeStartTag( BLOCK_TAG, "normal.paragraph" );
     }
 
     /** {@inheritDoc} */
     public void paragraph_()
     {
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
@@ -554,11 +559,11 @@ public class FoSink implements Sink
         this.verbatim = true;
         if ( boxed )
         {
-            writeStartTag( "block", "body.source" );
+            writeStartTag( BLOCK_TAG, "body.source" );
         }
         else
         {
-            writeStartTag( "block", "body.pre" );
+            writeStartTag( BLOCK_TAG, "body.pre" );
         }
     }
 
@@ -566,45 +571,47 @@ public class FoSink implements Sink
     public void verbatim_()
     {
         this.verbatim = false;
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
     public void horizontalRule()
     {
         newline();
-        writeStartTag( "block", null );
-        writeEmptyTag( "leader", "body.rule" );
-        writeEndTag( "block" );
+        writeStartTag( BLOCK_TAG, "" );
+        writeEmptyTag( LEADER_TAG, "body.rule" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
     public void pageBreak()
     {
-        writeln( "<fo:block break-before=\"page\"/>" );
+        //writeln( "<fo:block break-before=\"page\"/>" );
+        writeEmptyTag( BLOCK_TAG, "break-before", "page" );
+        newline();
     }
 
     /** {@inheritDoc} */
     public void table()
     {
         newline();
-        writeStartTag( "block", "table.padding" );
+        writeStartTag( BLOCK_TAG, "table.padding" );
 
         // <fo:table-and-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
-        //writeStartTag( "table-and-caption", null );
+        //writeStartTag( TABLE_AND_CAPTION_TAG, "" );
 
-        writeStartTag( "table", "table.layout" );
+        writeStartTag( TABLE_TAG, "table.layout" );
     }
 
     /** {@inheritDoc} */
     public void table_()
     {
-        writeEndTag( "table" );
+        writeEndTag( TABLE_TAG );
 
         // <fo:table-and-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
-        //writeEndTag( "table-and-caption" );
+        //writeEndTag( TABLE_AND_CAPTION_TAG );
 
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
@@ -624,28 +631,28 @@ public class FoSink implements Sink
         }
 
         writeln( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
-        writeStartTag( "table-body", null );
+        writeStartTag( TABLE_BODY_TAG, "" );
     }
 
     /** {@inheritDoc} */
     public void tableRows_()
     {
         this.cellJustif = null;
-        writeEndTag( "table-body" );
+        writeEndTag( TABLE_BODY_TAG );
     }
 
     /** {@inheritDoc} */
     public void tableRow()
     {
         // TODO spacer rows
-        writeStartTag( "table-row", "table.body.row" );
+        writeStartTag( TABLE_ROW_TAG, "table.body.row" );
         this.cellCount = 0;
     }
 
     /** {@inheritDoc} */
     public void tableRow_()
     {
-        writeEndTag( "table-row" );
+        writeEndTag( TABLE_ROW_TAG );
     }
 
     /** {@inheritDoc} */
@@ -709,11 +716,11 @@ public class FoSink implements Sink
             {
                 write( " border-style=\"solid\" border-width=\"0.2mm\"" );
             }
-            writeln( config.getAttributeSet( "table.body.cell" ) + ">" );
+            writeln( config.getAttributeString( "table.body.cell" ) + ">" );
          }
          else
          {
-             writeStartTag( "table-cell", "table.body.cell" );
+             writeStartTag( TABLE_CELL_TAG, "table.body.cell" );
          }
         writeln( "<fo:block text-align=\"" + justif + "\">" );
     }
@@ -721,8 +728,8 @@ public class FoSink implements Sink
     /** {@inheritDoc} */
     public void tableCell_()
     {
-        writeEndTag( "block" );
-        writeEndTag( "table-cell" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
         ++cellCount;
     }
 
@@ -736,7 +743,7 @@ public class FoSink implements Sink
     public void tableCaption()
     {
         // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
-        //writeStartTag( "table-caption", null );
+        //writeStartTag( TABLE_CAPTION_TAG, "" );
 
         // TODO: how to implement this otherwise?
         // table-footer doesn't work because it has to be declared before table-body.
@@ -746,7 +753,7 @@ public class FoSink implements Sink
     public void tableCaption_()
     {
         // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
-        //writeEndTag( "table-caption" );
+        //writeEndTag( TABLE_CAPTION_TAG );
     }
 
     /** {@inheritDoc} */
@@ -763,13 +770,13 @@ public class FoSink implements Sink
             anchor = "#" + HtmlTools.encodeId( anchor );
         }
 
-        writeStartTag( "inline", "id", anchor );
+        writeStartTag( INLINE_TAG, "id", anchor );
     }
 
     /** {@inheritDoc} */
     public void anchor_()
     {
-        writeEndTag( "inline" );
+        writeEndTag( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
@@ -778,8 +785,8 @@ public class FoSink implements Sink
         if ( name.startsWith( "http" ) || name.startsWith( "mailto" )
             || name.startsWith( "ftp" ) )
         {
-            writeStartTag( "basic-link", "external-destination", HtmlTools.escapeHTML( name ) );
-            writeStartTag( "inline", "href.external" );
+            writeStartTag( BASIC_LINK_TAG, "external-destination", HtmlTools.escapeHTML( name ) );
+            writeStartTag( INLINE_TAG, "href.external" );
         }
         else
         {
@@ -796,59 +803,59 @@ public class FoSink implements Sink
                 anchor = "#" + HtmlTools.encodeId( anchor );
             }
 
-            writeStartTag( "basic-link", "internal-destination", HtmlTools.escapeHTML( anchor ) );
-            writeStartTag( "inline", "href.internal" );
+            writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
+            writeStartTag( INLINE_TAG, "href.internal" );
         }
     }
 
     /** {@inheritDoc} */
     public void link_()
     {
-        writeEndTag( "inline" );
-        writeEndTag( "basic-link" );
+        writeEndTag( INLINE_TAG );
+        writeEndTag( BASIC_LINK_TAG );
     }
 
     /** {@inheritDoc} */
     public void italic()
     {
-        writeStartTag( "inline", "italic" );
+        writeStartTag( INLINE_TAG, "italic" );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        writeEndTag( "inline" );
+        writeEndTag( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
     public void bold()
     {
-        writeStartTag( "inline", "bold" );
+        writeStartTag( INLINE_TAG, "bold" );
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        writeEndTag( "inline" );
+        writeEndTag( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
     public void monospaced()
     {
-        writeStartTag( "inline", "monospace" );
+        writeStartTag( INLINE_TAG, "monospace" );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        writeEndTag( "inline" );
+        writeEndTag( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
     public void lineBreak()
     {
         newline();
-            writeEmptyTag( "block", null );
+        writeEmptyTag( BLOCK_TAG, "" );
     }
 
     /** {@inheritDoc} */
@@ -902,27 +909,27 @@ public class FoSink implements Sink
     {
         writeln( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
 
-        writeln( "<fo:root xmlns:fo=\"http://www.w3.org/1999/XSL/Format\">" );
+        writeStartTag( ROOT_TAG, "xmlns:" + getNameSpace(), "http://www.w3.org/1999/XSL/Format" );
 
-        writeStartTag( "layout-master-set", null );
+        writeStartTag( LAYOUT_MASTER_SET_TAG, "" );
 
-        writeStartTag( "simple-page-master", "layout.master.set.cover-page" );
-        writeEmptyTag( "region-body", "layout.master.set.cover-page.region-body" );
-        writeEndTag( "simple-page-master" );
+        writeStartTag( SIMPLE_PAGE_MASTER_TAG, "layout.master.set.cover-page" );
+        writeEmptyTag( REGION_BODY_TAG, "layout.master.set.cover-page.region-body" );
+        writeEndTag( SIMPLE_PAGE_MASTER_TAG );
 
-        writeStartTag( "simple-page-master", "layout.master.set.toc" );
-        writeEmptyTag( "region-body", "layout.master.set.toc.region-body" );
-        writeEmptyTag( "region-before", "layout.master.set.toc.region-before" );
-        writeEmptyTag( "region-after", "layout.master.set.toc.region-after" );
-        writeEndTag( "simple-page-master" );
+        writeStartTag( SIMPLE_PAGE_MASTER_TAG, "layout.master.set.toc" );
+        writeEmptyTag( REGION_BODY_TAG, "layout.master.set.toc.region-body" );
+        writeEmptyTag( REGION_BEFORE_TAG, "layout.master.set.toc.region-before" );
+        writeEmptyTag( REGION_AFTER_TAG, "layout.master.set.toc.region-after" );
+        writeEndTag( SIMPLE_PAGE_MASTER_TAG );
 
-        writeStartTag( "simple-page-master", "layout.master.set.body" );
-        writeEmptyTag( "region-body", "layout.master.set.body.region-body" );
-        writeEmptyTag( "region-before", "layout.master.set.body.region-before" );
-        writeEmptyTag( "region-after", "layout.master.set.body.region-after" );
-        writeEndTag( "simple-page-master" );
+        writeStartTag( SIMPLE_PAGE_MASTER_TAG, "layout.master.set.body" );
+        writeEmptyTag( REGION_BODY_TAG, "layout.master.set.body.region-body" );
+        writeEmptyTag( REGION_BEFORE_TAG, "layout.master.set.body.region-before" );
+        writeEmptyTag( REGION_AFTER_TAG, "layout.master.set.body.region-after" );
+        writeEndTag( SIMPLE_PAGE_MASTER_TAG );
 
-        writeEndTag( "layout-master-set" );
+        writeEndTag( LAYOUT_MASTER_SET_TAG );
     }
 
     /**
@@ -930,7 +937,7 @@ public class FoSink implements Sink
      */
     public void endDocument()
     {
-        writeEndTag( "root" );
+        writeEndTag( ROOT_TAG );
         flush();
         close();
     }
@@ -942,68 +949,69 @@ public class FoSink implements Sink
     /**
      * Writes a start tag, prepending EOL.
      *
-     * @param tag The tag name.
+     * @param tag The tag.
      * @param attributeId An id identifying the attribute set.
      */
-    protected void writeStartTag( String tag, String attributeId )
+    protected void writeStartTag( Tag tag, String attributeId )
     {
-        String attribs = config.getAttributeSet( attributeId );
         newline();
-        write( "<fo:" + tag + attribs + ">" );
+        writeStartTag( tag, config.getAttributeSet( attributeId ) );
     }
 
     /**
      * Writes a start tag, prepending EOL.
      *
-     * @param tag The tag name.
+     * @param tag The tag.
      * @param id An id to add.
      * @param name The name (value) of the id.
      */
-    protected void writeStartTag( String tag, String id, String name )
+    protected void writeStartTag( Tag tag, String id, String name )
     {
         newline();
-        write( "<fo:" + tag + " " + id + "=\"" + name + "\">" );
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( id, name );
+
+        writeStartTag( tag, att );
     }
 
     /**
      * Writes a start tag, prepending EOL.
      *
-     * @param tag The tag name.
+     * @param tag The tag.
      * @param id An id to add.
      * @param name The name (value) of the id.
      * @param attributeId An id identifying the attribute set.
      */
-    protected void writeStartTag( String tag, String id, String name, String attributeId )
+    protected void writeStartTag( Tag tag, String id, String name, String attributeId )
     {
-        // TODO: check if id is already in attributeId, if yes, override
-        String attribs = config.getAttributeSet( attributeId );
-        newline();
-        write( "<fo:" + tag + " " + id + "=\"" + name + "\"" + attribs + ">" );
-    }
+        MutableAttributeSet att = config.getAttributeSet( attributeId );
 
+        // make sure we don't add it twice
+        if ( att.isDefined( id ) )
+        {
+            att.removeAttribute( id );
+        }
+
+        att.addAttribute( id, name );
+
+        newline();
+        writeStartTag( tag, att );
+    }
 
     /**
      * Writes an empty tag, prepending EOL.
      *
-     * @param tag The tag name.
+     * @param tag The tag.
      * @param id An id to add.
      * @param name The name (value) of the id.
      */
-    protected void writeEmptyTag( String tag, String id, String name )
+    protected void writeEmptyTag( Tag tag, String id, String name )
     {
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( id, name );
+
         newline();
-        write( "<fo:" + tag + " " + id + "=\"" + name + "\"/>" );
-    }
-
-
-    /**
-     * Writes an end tag, appending EOL.
-     *
-     * @param tag The tag name.
-     */
-    protected void writeEndTag( String tag )
-    {
-        writeln( "</fo:" + tag + ">" );
+        writeSimpleTag( tag, att );
     }
 
     /**
@@ -1012,10 +1020,10 @@ public class FoSink implements Sink
      * @param tag The tag name.
      * @param attributeId An id identifying the attribute set.
      */
-    protected void writeEmptyTag( String tag, String attributeId )
+    protected void writeEmptyTag( Tag tag, String attributeId )
     {
-        String attribs = config.getAttributeSet( attributeId );
-        writeln( "<fo:" + tag + attribs + "/>" );
+        newline();
+        writeSimpleTag( tag, config.getAttributeSet( attributeId ) );
     }
 
     /**

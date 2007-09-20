@@ -131,21 +131,21 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getTitleBlock( String title )
     {
-        String attribs = getConfig().getAttributeSet( "doc.header.title" );
+        String attribs = getConfig().getAttributeString( "doc.header.title" );
         return "<fo:block" + attribs + ">" + title + "</fo:block>";
     }
 
     /** {@inheritDoc} */
     protected String getAuthorBlock( String author )
     {
-        String attribs = getConfig().getAttributeSet( "doc.header.author" );
+        String attribs = getConfig().getAttributeString( "doc.header.author" );
         return "<fo:block" + attribs + ">" + author + "</fo:block>";
     }
 
     /** {@inheritDoc} */
     protected String getDateBlock( String date )
     {
-        String attribs = getConfig().getAttributeSet( "doc.header.date" );
+        String attribs = getConfig().getAttributeString( "doc.header.date" );
         return "<fo:block" + attribs + ">" + date + "</fo:block>";
     }
 
@@ -177,8 +177,8 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        String attribs = getConfig().getAttributeSet( "body.text" );
-        String attrib2 = getConfig().getAttributeSet( "body.h1" );
+        String attribs = getConfig().getAttributeString( "body.text" );
+        String attrib2 = getConfig().getAttributeString( "body.h1" );
         return "<fo:block" + attribs + "><fo:block" + attrib2 + ">1   "
             + title + "</fo:block></fo:block>";
     }
@@ -186,8 +186,8 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        String attribs = getConfig().getAttributeSet( "body.text" );
-        String attrib2 = getConfig().getAttributeSet( "body.h2" );
+        String attribs = getConfig().getAttributeString( "body.text" );
+        String attrib2 = getConfig().getAttributeString( "body.h2" );
         return "<fo:block" + attribs + "><fo:block" + attrib2 + ">0.1   "
             + title + "</fo:block></fo:block>";
     }
@@ -195,8 +195,8 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        String attribs = getConfig().getAttributeSet( "body.text" );
-        String attrib2 = getConfig().getAttributeSet( "body.h3" );
+        String attribs = getConfig().getAttributeString( "body.text" );
+        String attrib2 = getConfig().getAttributeString( "body.h3" );
         return "<fo:block" + attribs + "><fo:block" + attrib2 + ">0.0.1   "
             + title + "</fo:block></fo:block>";
     }
@@ -204,8 +204,8 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        String attribs = getConfig().getAttributeSet( "body.text" );
-        String attrib2 = getConfig().getAttributeSet( "body.h4" );
+        String attribs = getConfig().getAttributeString( "body.text" );
+        String attrib2 = getConfig().getAttributeString( "body.h4" );
         return "<fo:block" + attribs + "><fo:block" + attrib2 + ">"
             + title + "</fo:block></fo:block>";
     }
@@ -213,8 +213,8 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        String attribs = getConfig().getAttributeSet( "body.text" );
-        String attrib2 = getConfig().getAttributeSet( "body.h5" );
+        String attribs = getConfig().getAttributeString( "body.text" );
+        String attrib2 = getConfig().getAttributeString( "body.h5" );
         return "<fo:block" + attribs + "><fo:block" + attrib2 + ">"
             + title + "</fo:block></fo:block>";
     }
@@ -222,8 +222,8 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        String attribs = getConfig().getAttributeSet( "list" );
-        String itemAttribs = getConfig().getAttributeSet( "list.item" );
+        String attribs = getConfig().getAttributeString( "list" );
+        String itemAttribs = getConfig().getAttributeString( "list.item" );
         return "<fo:list-block" + attribs + "><fo:list-item" + itemAttribs
             + "><fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label><fo:list-item-body"
             + itemAttribs + "><fo:block>" + item
@@ -233,8 +233,8 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        String attribs = getConfig().getAttributeSet( "list" );
-        String itemAttribs = getConfig().getAttributeSet( "list.item" );
+        String attribs = getConfig().getAttributeString( "list" );
+        String itemAttribs = getConfig().getAttributeString( "list.item" );
         return "<fo:list-block" + attribs + "><fo:list-item" + itemAttribs
             + "><fo:list-item-label><fo:block>i</fo:block></fo:list-item-label>"
             + "<fo:list-item-body" + itemAttribs
@@ -245,9 +245,9 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        String dlAtts = getConfig().getAttributeSet( "dl" );
-        String dtAtts = getConfig().getAttributeSet( "dt" );
-        String ddAtts = getConfig().getAttributeSet( "dd" );
+        String dlAtts = getConfig().getAttributeString( "dl" );
+        String dtAtts = getConfig().getAttributeString( "dt" );
+        String ddAtts = getConfig().getAttributeString( "dd" );
         return "<fo:block" + dlAtts + "><fo:block" + dtAtts + ">" + definum
         + "</fo:block><fo:block" + ddAtts + ">" + definition
         + "</fo:block></fo:block>";
@@ -256,9 +256,9 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        String dlAtts = getConfig().getAttributeSet( "figure.display" );
-        String dtAtts = getConfig().getAttributeSet( "figure.graphics" );
-        String ddAtts = getConfig().getAttributeSet( "figure.caption" );
+        String dlAtts = getConfig().getAttributeString( "figure.display" );
+        String dtAtts = getConfig().getAttributeString( "figure.graphics" );
+        String ddAtts = getConfig().getAttributeString( "figure.caption" );
         return "<fo:block" + dlAtts + "><fo:external-graphic" + dtAtts
             + " src=\"" + source + ".png" + "\"/><fo:block" + ddAtts
             + ">" + caption + "</fo:block></fo:block>";
@@ -267,10 +267,10 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        String dlAtts = getConfig().getAttributeSet( "table.padding" );
-        String dtAtts = getConfig().getAttributeSet( "table.layout" );
-        String ddAtts = getConfig().getAttributeSet( "table.body.row" );
-        String deAtts = getConfig().getAttributeSet( "table.body.cell" );
+        String dlAtts = getConfig().getAttributeString( "table.padding" );
+        String dtAtts = getConfig().getAttributeString( "table.layout" );
+        String ddAtts = getConfig().getAttributeString( "table.body.row" );
+        String deAtts = getConfig().getAttributeString( "table.body.cell" );
         return "<fo:block" + dlAtts + "><fo:table" + dtAtts + ">"
             + "<fo:table-column column-width=\"proportional-column-width(1)\"/>"
             + "<fo:table-column column-width=\"1in\"/>"
@@ -285,28 +285,28 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getParagraphBlock( String text )
     {
-        String attribs = getConfig().getAttributeSet( "normal.paragraph" );
+        String attribs = getConfig().getAttributeString( "normal.paragraph" );
         return "<fo:block" + attribs + ">" + text + "</fo:block>";
     }
 
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        String attribs = getConfig().getAttributeSet( "body.source" );
+        String attribs = getConfig().getAttributeString( "body.source" );
         return "<fo:block" + attribs + ">" + text + "</fo:block>";
     }
 
     /** {@inheritDoc} */
     protected String getHorizontalRuleBlock()
     {
-        String attribs = getConfig().getAttributeSet( "body.rule" );
-        return "<fo:block><fo:leader" + attribs + "/></fo:block>";
+        String attribs = getConfig().getAttributeString( "body.rule" );
+        return "<fo:block><fo:leader" + attribs + " /></fo:block>";
     }
 
     /** {@inheritDoc} */
     protected String getPageBreakBlock()
     {
-        return "<fo:block break-before=\"page\"/>";
+        return "<fo:block break-before=\"page\" />";
     }
 
     /** {@inheritDoc} */
@@ -319,7 +319,7 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
-        String attribs = getConfig().getAttributeSet( "href.internal" );
+        String attribs = getConfig().getAttributeString( "href.internal" );
         // assume that link doesn't start with #
         return "<fo:basic-link internal-destination=\"#" + link + "\"><fo:inline"
             + attribs + ">" + text + "</fo:inline></fo:basic-link>";
@@ -328,28 +328,28 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getItalicBlock( String text )
     {
-        String attribs = getConfig().getAttributeSet( "italic" );
+        String attribs = getConfig().getAttributeString( "italic" );
         return "<fo:inline" + attribs + ">" + text + "</fo:inline>";
     }
 
     /** {@inheritDoc} */
     protected String getBoldBlock( String text )
     {
-        String attribs = getConfig().getAttributeSet( "bold" );
+        String attribs = getConfig().getAttributeString( "bold" );
         return "<fo:inline" + attribs + ">" + text + "</fo:inline>";
     }
 
     /** {@inheritDoc} */
     protected String getMonospacedBlock( String text )
     {
-        String attribs = getConfig().getAttributeSet( "monospace" );
+        String attribs = getConfig().getAttributeString( "monospace" );
         return "<fo:inline" + attribs + ">" + text + "</fo:inline>";
     }
 
     /** {@inheritDoc} */
     protected String getLineBreakBlock()
     {
-        return "<fo:block/>";
+        return "<fo:block />";
     }
 
     /** {@inheritDoc} */

@@ -21,18 +21,21 @@ package org.apache.maven.doxia.module.fo;
 
 import java.util.List;
 
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 
+import org.apache.maven.doxia.sink.AbstractXmlSink;
 
 /**
  * A utility class to construct FO configuration parameters.
  */
 public class FoConfiguration
 {
-
     /** Holds the single attributes. */
-    private StringBuffer buffer;
+    private MutableAttributeSet attributeSet;
 
     /** The configuration instance. */
     private final XMLConfiguration config;
@@ -76,7 +79,7 @@ public class FoConfiguration
      * empty string if attributeId is null or if attributeId
      * is not a valid identifier.
      */
-    public String getAttributeSet( String attributeId )
+    public String getAttributeString( String attributeId )
     {
         if ( attributeId == null )
         {
@@ -85,7 +88,36 @@ public class FoConfiguration
 
         reset();
         addAttributes( attributeId );
-        return buffer.toString();
+
+        return AbstractXmlSink.getAttributeString( attributeSet );
+    }
+
+    /**
+     * Builds a set of attributes.
+     *
+     * @param attributeId A unique id to identify the set of attributes.
+     * This should correspond to the name of an attribute-set
+     * defined in the configuration file.
+     * @return A MutableAttributeSet that contains the attributes with
+     * the values configured for the current builder. Returns null
+     * if attributeId is null or empty, or if attributeId is not a valid identifier.
+     */
+    public MutableAttributeSet getAttributeSet( String attributeId )
+    {
+        if ( attributeId == null || attributeId.length() == 0 )
+        {
+            return null;
+        }
+
+        reset();
+        addAttributes( attributeId );
+
+        if ( attributeSet.getAttributeCount() == 0 )
+        {
+            return null;
+        }
+
+        return attributeSet;
     }
 
     /**
@@ -107,14 +139,14 @@ public class FoConfiguration
             List keys = config.getList( keybase + ".xsl:attribute[@name]" );
             for ( int i = 0; i < values.size(); i++ )
             {
-                buffer.append( " " + keys.get( i ) + "=\"" + values.get( i ) + "\"" );
+                attributeSet.addAttribute( keys.get( i ), values.get( i ) );
             }
         }
         else if ( prop instanceof String )
         {
             String value = config.getString( keybase + ".xsl:attribute" );
             String key = config.getString( keybase + ".xsl:attribute[@name]" );
-            buffer.append( " " + key + "=\"" + value + "\"" );
+            attributeSet.addAttribute( key, value );
         }
 
         String extend = config.getString( keybase + "[@use-attribute-sets]" );
@@ -125,11 +157,11 @@ public class FoConfiguration
     }
 
     /**
-     * Re-initialize the StringBuffer.
+     * (Re-)initialize the AttributeSet.
      */
     private void reset()
     {
-        this.buffer = new StringBuffer( 512 );
+        this.attributeSet = new SimpleAttributeSet();
     }
 
 }

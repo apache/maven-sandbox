@@ -23,6 +23,8 @@ import java.io.Writer;
 
 import java.util.Iterator;
 
+import javax.swing.text.html.HTML.Tag;
+
 import org.apache.maven.doxia.docrenderer.document.DocumentMeta;
 import org.apache.maven.doxia.docrenderer.document.DocumentTOC;
 import org.apache.maven.doxia.docrenderer.document.DocumentTOCItem;
@@ -120,7 +122,7 @@ public class FoAggregateSink extends FoSink
         }
         else
         {
-            writeStartTag( "block", "id", docName );
+            writeStartTag( BLOCK_TAG, "id", docName );
         }
 
     }
@@ -129,9 +131,9 @@ public class FoAggregateSink extends FoSink
     public void body_()
     {
         newline();
-        writeEndTag( "block" );
-        writeEndTag( "flow" );
-        writeEndTag( "page-sequence" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( FLOW_TAG );
+        writeEndTag( PAGE_SEQUENCE_TAG );
 
         // reset document name
         docName = null;
@@ -214,7 +216,7 @@ public class FoAggregateSink extends FoSink
             anchor = docName + anchor;
         }
 
-        writeStartTag( "inline", "id", anchor );
+        writeStartTag( INLINE_TAG, "id", anchor );
     }
 
 
@@ -225,8 +227,8 @@ public class FoAggregateSink extends FoSink
             || name.startsWith( "ftp" ) )
         {
             // external links
-            writeStartTag( "basic-link", "external-destination", HtmlTools.escapeHTML( name ) );
-            writeStartTag( "inline", "href.external" );
+            writeStartTag( BASIC_LINK_TAG, "external-destination", HtmlTools.escapeHTML( name ) );
+            writeStartTag( INLINE_TAG, "href.external" );
         }
         else if ( name.startsWith( "./" ) )
         {
@@ -262,8 +264,8 @@ public class FoAggregateSink extends FoSink
                 }
             }
 
-            writeStartTag( "basic-link", "internal-destination", HtmlTools.escapeHTML( anchor ) );
-            writeStartTag( "inline", "href.internal" );
+            writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
+            writeStartTag( INLINE_TAG, "href.internal" );
         }
         else if ( name.startsWith( "../" ) )
         {
@@ -275,8 +277,8 @@ public class FoAggregateSink extends FoSink
             if ( docName == null )
             {
                 // can't resolve link without base, fop will issue a warning
-                writeStartTag( "basic-link", "internal-destination", HtmlTools.escapeHTML( anchor ) );
-                writeStartTag( "inline", "href.internal" );
+                writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
+                writeStartTag( INLINE_TAG, "href.internal" );
 
                 return;
             }
@@ -313,8 +315,8 @@ public class FoAggregateSink extends FoSink
                 anchor = docName + anchor;
             }
 
-            writeStartTag( "basic-link", "internal-destination", HtmlTools.escapeHTML( anchor ) );
-            writeStartTag( "inline", "href.internal" );
+            writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
+            writeStartTag( INLINE_TAG, "href.internal" );
         }
     }
 
@@ -326,10 +328,10 @@ public class FoAggregateSink extends FoSink
     /**
      * Writes a start tag, prepending EOL.
      *
-     * @param tag The tag name.
+     * @param tag The tag.
      * @param attributeId An id identifying the attribute set.
      */
-    protected void writeStartTag( String tag, String attributeId )
+    protected void writeStartTag( Tag tag, String attributeId )
     {
         if ( !ignoreText )
         {
@@ -340,11 +342,11 @@ public class FoAggregateSink extends FoSink
     /**
      * Writes a start tag, prepending EOL.
      *
-     * @param tag The tag name.
+     * @param tag The tag.
      * @param id An id to add.
      * @param name The name (value) of the id.
      */
-    protected void writeStartTag( String tag, String id, String name )
+    protected void writeStartTag( Tag tag, String id, String name )
     {
         if ( !ignoreText )
         {
@@ -355,9 +357,9 @@ public class FoAggregateSink extends FoSink
     /**
      * Writes an end tag, appending EOL.
      *
-     * @param tag The tag name.
+     * @param tag The tag.
      */
-    protected void writeEndTag( String tag )
+    protected void writeEndTag( Tag tag )
     {
         if ( !ignoreText )
         {
@@ -368,10 +370,10 @@ public class FoAggregateSink extends FoSink
     /**
      * Writes a simple tag, appending EOL.
      *
-     * @param tag The tag name.
+     * @param tag The tag.
      * @param attributeId An id identifying the attribute set.
      */
-    protected void writeEmptyTag( String tag, String attributeId )
+    protected void writeEmptyTag( Tag tag, String attributeId )
     {
         if ( !ignoreText )
         {
@@ -483,31 +485,31 @@ public class FoAggregateSink extends FoSink
      */
     protected void regionBefore( String headerText )
     {
-        writeStartTag( "static-content", "flow-name", "xsl-region-before" );
+        writeStartTag( STATIC_CONTENT_TAG, "flow-name", "xsl-region-before" );
         writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
-        writeEmptyTag( "table-column", "column-width", "5.625in" );
-        writeEmptyTag( "table-column", "column-width", "0.625in" );
-        writeStartTag( "table-body", null );
-        writeStartTag( "table-row", null );
-        writeStartTag( "table-cell", null );
-        writeStartTag( "block", "header.style" );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "5.625in" );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.625in" );
+        writeStartTag( TABLE_BODY_TAG, "" );
+        writeStartTag( TABLE_ROW_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( BLOCK_TAG, "header.style" );
 
         if ( headerText != null )
         {
             write( headerText );
         }
 
-        writeEndTag( "block" );
-        writeEndTag( "table-cell" );
-        writeStartTag( "table-cell", null );
-        writeStartTag( "block", "page.number" );
-        writeEmptyTag( "page-number", null );
-        writeEndTag( "block" );
-        writeEndTag( "table-cell" );
-        writeEndTag( "table-row" );
-        writeEndTag( "table-body" );
-        writeEndTag( "table" );
-        writeEndTag( "static-content" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
+        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( BLOCK_TAG, "page.number" );
+        writeEmptyTag( PAGE_NUMBER_TAG, "" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
+        writeEndTag( TABLE_BODY_TAG );
+        writeEndTag( TABLE_TAG );
+        writeEndTag( STATIC_CONTENT_TAG );
     }
 
     /**
@@ -517,16 +519,16 @@ public class FoAggregateSink extends FoSink
      */
     protected void regionAfter( String footerText )
     {
-        writeStartTag( "static-content", "flow-name", "xsl-region-after" );
-        writeStartTag( "block", "footer.style" );
+        writeStartTag( STATIC_CONTENT_TAG, "flow-name", "xsl-region-after" );
+        writeStartTag( BLOCK_TAG, "footer.style" );
 
         if ( footerText != null )
         {
             write( footerText );
         }
 
-        writeEndTag( "block" );
-        writeEndTag( "static-content" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( STATIC_CONTENT_TAG );
     }
 
     /**
@@ -537,21 +539,21 @@ public class FoAggregateSink extends FoSink
      */
     protected void chapterHeading( String headerText, boolean chapterNumber )
     {
-        writeStartTag( "block", null );
-        writeStartTag( "list-block", null );
-        writeStartTag( "list-item", null );
+        writeStartTag( BLOCK_TAG, "" );
+        writeStartTag( LIST_BLOCK_TAG, "" );
+        writeStartTag( LIST_ITEM_TAG, "" );
         writeln( "<fo:list-item-label end-indent=\"6.375in\" start-indent=\"-1in\">" );
-        writeStartTag( "block", "outdented.number.style" );
+        writeStartTag( BLOCK_TAG, "outdented.number.style" );
 
         if ( chapterNumber )
         {
             write( Integer.toString( chapter ) );
         }
 
-        writeEndTag( "block" );
-        writeEndTag( "list-item-label" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( LIST_ITEM_LABEL_TAG );
         writeln( "<fo:list-item-body end-indent=\"1in\" start-indent=\"0in\">" );
-        writeStartTag( "block", "chapter.title" );
+        writeStartTag( BLOCK_TAG, "chapter.title" );
 
         if ( headerText == null )
         {
@@ -562,14 +564,14 @@ public class FoAggregateSink extends FoSink
             write( headerText );
         }
 
-        writeEndTag( "block" );
-        writeEndTag( "list-item-body" );
-        writeEndTag( "list-item" );
-        writeEndTag( "list-block" );
-        writeEndTag( "block" );
-        writeStartTag( "block", "space-after.optimum", "0em" );
-        writeEmptyTag( "leader", "chapter.rule" );
-        writeEndTag( "block" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( LIST_ITEM_BODY_TAG );
+        writeEndTag( LIST_ITEM_TAG );
+        writeEndTag( LIST_BLOCK_TAG );
+        writeEndTag( BLOCK_TAG );
+        writeStartTag( BLOCK_TAG, "space-after.optimum", "0em" );
+        writeEmptyTag( LEADER_TAG, "chapter.rule" );
+        writeEndTag( BLOCK_TAG );
     }
 
     /**
@@ -582,14 +584,14 @@ public class FoAggregateSink extends FoSink
         writeln( "<fo:page-sequence master-reference=\"toc\" initial-page-number=\"1\" format=\"i\">" );
         regionBefore( toc.getName() );
         regionAfter( getFooterText() );
-        writeStartTag( "flow", "flow-name", "xsl-region-body" );
+        writeStartTag( FLOW_TAG, "flow-name", "xsl-region-body" );
         chapterHeading( toc.getName(), false );
         writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
-        writeEmptyTag( "table-column", "column-width", "0.45in" );
-        writeEmptyTag( "table-column", "column-width", "0.4in" );
-        writeEmptyTag( "table-column", "column-width", "0.4in" );
-        writeEmptyTag( "table-column", "column-width", "5in" ); // TODO
-        writeStartTag( "table-body", null );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.45in" );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.4in" );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.4in" );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "5in" ); // TODO
+        writeStartTag( TABLE_BODY_TAG, "" );
 
         int count = 0;
 
@@ -600,31 +602,31 @@ public class FoAggregateSink extends FoSink
 
             String ref = getIdName( tocItem.getRef() );
 
-            writeStartTag( "table-row", "keep-with-next", "always" );
-            writeStartTag( "table-cell", "toc.cell" );
-            writeStartTag( "block", "toc.number.style" );
+            writeStartTag( TABLE_ROW_TAG, "keep-with-next", "always" );
+            writeStartTag( TABLE_CELL_TAG, "toc.cell" );
+            writeStartTag( BLOCK_TAG, "toc.number.style" );
             write( Integer.toString( count ) );
-            writeEndTag( "block" );
-            writeEndTag( "table-cell" );
-            writeStartTag( "table-cell", "number-columns-spanned", "3", "toc.cell" );
-            // TODO: writeStartTag( "block", "text-align-last", "justify", "toc.h1.style" );
-            writeStartTag( "block", "toc.h1.style" );
-            writeStartTag( "basic-link", "internal-destination", ref );
+            writeEndTag( BLOCK_TAG );
+            writeEndTag( TABLE_CELL_TAG );
+            writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "3", "toc.cell" );
+            // TODO: writeStartTag( BLOCK_TAG, "text-align-last", "justify", "toc.h1.style" );
+            writeStartTag( BLOCK_TAG, "toc.h1.style" );
+            writeStartTag( BASIC_LINK_TAG, "internal-destination", ref );
             write( tocItem.getName() );
-            writeEndTag( "basic-link" );
-            writeEmptyTag( "leader", "toc.leader.style" );
-            writeStartTag( "inline", "page.number" );
-            writeEmptyTag( "page-number-citation", "ref-id", ref );
-            writeEndTag( "inline" );
-            writeEndTag( "block" );
-            writeEndTag( "table-cell" );
-            writeEndTag( "table-row" );
+            writeEndTag( BASIC_LINK_TAG );
+            writeEmptyTag( LEADER_TAG, "toc.leader.style" );
+            writeStartTag( INLINE_TAG, "page.number" );
+            writeEmptyTag( PAGE_NUMBER_CITATION_TAG, "ref-id", ref );
+            writeEndTag( INLINE_TAG );
+            writeEndTag( BLOCK_TAG );
+            writeEndTag( TABLE_CELL_TAG );
+            writeEndTag( TABLE_ROW_TAG );
         }
 
-        writeEndTag( "table-body" );
-        writeEndTag( "table" );
-        writeEndTag( "flow" );
-        writeEndTag( "page-sequence" );
+        writeEndTag( TABLE_BODY_TAG );
+        writeEndTag( TABLE_TAG );
+        writeEndTag( FLOW_TAG );
+        writeEndTag( PAGE_SEQUENCE_TAG );
 
 
     }
@@ -641,117 +643,117 @@ public class FoAggregateSink extends FoSink
 
         // TODO: remove hard-coded settings
 
-        writeStartTag( "page-sequence", "master-reference", "cover-page" );
-        writeStartTag( "flow", "flow-name", "xsl-region-body" );
-        writeStartTag( "block", "text-align", "center" );
-        //writeStartTag( "table", "table-layout", "fixed" );
+        writeStartTag( PAGE_SEQUENCE_TAG, "master-reference", "cover-page" );
+        writeStartTag( FLOW_TAG, "flow-name", "xsl-region-body" );
+        writeStartTag( BLOCK_TAG, "text-align", "center" );
+        //writeStartTag( TABLE_TAG, "table-layout", "fixed" );
         writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
-        writeEmptyTag( "table-column", "column-width", "3.125in" );
-        writeEmptyTag( "table-column", "column-width", "3.125in" );
-        writeStartTag( "table-body", null );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "3.125in" );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "3.125in" );
+        writeStartTag( TABLE_BODY_TAG, "" );
 
-        writeStartTag( "table-row", "height", "1.5in" );
-        writeStartTag( "table-cell", null );
+        writeStartTag( TABLE_ROW_TAG, "height", "1.5in" );
+        writeStartTag( TABLE_CELL_TAG, "" );
         // TODO: companyLogo
-        writeEmptyTag( "block", null );
-        writeEndTag( "table-cell" );
-        writeStartTag( "table-cell", null );
+        writeEmptyTag( BLOCK_TAG, "" );
+        writeEndTag( TABLE_CELL_TAG );
+        writeStartTag( TABLE_CELL_TAG, "" );
         // TODO: projectLogo
-        writeEmptyTag( "block", null );
-        writeEndTag( "table-cell" );
-        writeEndTag( "table-row" );
+        writeEmptyTag( BLOCK_TAG, "" );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
 
         writeln( "<fo:table-row keep-with-previous=\"always\" height=\"0.014in\">" );
-        writeStartTag( "table-cell", "number-columns-spanned", "2" );
-        writeStartTag( "block", "line-height", "0.014in" );
-        writeEmptyTag( "leader", "chapter.rule" );
-        writeEndTag( "block" );
-        writeEndTag( "table-cell" );
-        writeEndTag( "table-row" );
+        writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2" );
+        writeStartTag( BLOCK_TAG, "line-height", "0.014in" );
+        writeEmptyTag( LEADER_TAG, "chapter.rule" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( "table-row", "height", "7.447in" );
-        writeStartTag( "table-cell", "number-columns-spanned", "2" );
-        //writeStartTag( "table", "table-layout", "fixed" );
+        writeStartTag( TABLE_ROW_TAG, "height", "7.447in" );
+        writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2" );
+        //writeStartTag( TABLE_TAG, "table-layout", "fixed" );
         writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
-        writeEmptyTag( "table-column", "column-width", "2.083in" );
-        writeEmptyTag( "table-column", "column-width", "2.083in" );
-        writeEmptyTag( "table-column", "column-width", "2.083in" );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "2.083in" );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "2.083in" );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "2.083in" );
 
-        writeStartTag( "table-body", null );
+        writeStartTag( TABLE_BODY_TAG, "" );
 
-        writeStartTag( "table-row", null );
-        writeStartTag( "table-cell", "number-columns-spanned", "3" );
-        writeEmptyTag( "block", null );
-        writeEmptyTag( "block", "space-before", "3.2235in" );
-        writeEndTag( "table-cell" );
-        writeEndTag( "table-row" );
+        writeStartTag( TABLE_ROW_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "3" );
+        writeEmptyTag( BLOCK_TAG, "" );
+        writeEmptyTag( BLOCK_TAG, "space-before", "3.2235in" );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( "table-row", null );
-        writeStartTag( "table-cell", null );
-        writeEmptyTag( "block", "space-after", "0.5in" );
-        writeEndTag( "table-cell" );
+        writeStartTag( TABLE_ROW_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG, "" );
+        writeEmptyTag( BLOCK_TAG, "space-after", "0.5in" );
+        writeEndTag( TABLE_CELL_TAG );
 
-        writeStartTag( "table-cell", "number-columns-spanned", "2", "cover.border.left" );
-        writeStartTag( "block", "cover.title" );
+        writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2", "cover.border.left" );
+        writeStartTag( BLOCK_TAG, "cover.title" );
         write( title );
         // TODO: version
-        writeEndTag( "block" );
-        writeEndTag( "table-cell" );
-        writeEndTag( "table-row" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( "table-row", null );
-        writeStartTag( "table-cell", null );
-        writeEmptyTag( "block", null );
-        writeEndTag( "table-cell" );
+        writeStartTag( TABLE_ROW_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG, "" );
+        writeEmptyTag( BLOCK_TAG, "" );
+        writeEndTag( TABLE_CELL_TAG );
 
 
-        writeStartTag( "table-cell", "number-columns-spanned", "2", "cover.border.left.bottom" );
-        writeStartTag( "block", "cover.subtitle" );
+        writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2", "cover.border.left.bottom" );
+        writeStartTag( BLOCK_TAG, "cover.subtitle" );
         // TODO: sub title (cover type)
-        writeEndTag( "block" );
-        writeEndTag( "table-cell" );
-        writeEndTag( "table-row" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
 
-        writeEndTag( "table-body" );
-        writeEndTag( "table" );
+        writeEndTag( TABLE_BODY_TAG );
+        writeEndTag( TABLE_TAG );
 
-        writeEndTag( "table-cell" );
-        writeEndTag( "table-row" );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( "table-row", "height", "0.014in" );
-        writeStartTag( "table-cell", "number-columns-spanned", "2" );
+        writeStartTag( TABLE_ROW_TAG, "height", "0.014in" );
+        writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2" );
         writeln( "<fo:block space-after=\"0.2in\" line-height=\"0.014in\">" );
-        writeEmptyTag( "leader", "chapter.rule" );
-        writeEndTag( "block" );
-        writeEndTag( "table-cell" );
-        writeEndTag( "table-row" );
+        writeEmptyTag( LEADER_TAG, "chapter.rule" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( "table-row", null );
-        writeStartTag( "table-cell", "number-columns-spanned", "2" );
-        writeEmptyTag( "block", null );
-        writeEmptyTag( "block", "space-before", "0.2in" );
-        writeEndTag( "table-cell" );
-        writeEndTag( "table-row" );
+        writeStartTag( TABLE_ROW_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2" );
+        writeEmptyTag( BLOCK_TAG, "" );
+        writeEmptyTag( BLOCK_TAG, "space-before", "0.2in" );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( "table-row", "height", "0.3in" );
-        writeStartTag( "table-cell", null );
-        writeStartTag( "block", "height", "0.3in", "cover.subtitle" );
+        writeStartTag( TABLE_ROW_TAG, "height", "0.3in" );
+        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( BLOCK_TAG, "height", "0.3in", "cover.subtitle" );
         write( author );
-        writeEndTag( "block" );
-        writeEndTag( "table-cell" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
 
-        writeStartTag( "table-cell", null );
-        writeStartTag( "block", "height", "0.3in", "cover.subtitle" );
+        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( BLOCK_TAG, "height", "0.3in", "cover.subtitle" );
         // TODO: date
-        writeEndTag( "block" );
-        writeEndTag( "table-cell" );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
 
-        writeEndTag( "table-row" );
-        writeEndTag( "table-body" );
-        writeEndTag( "table" );
-        writeEndTag( "block" );
-        writeEndTag( "flow" );
-        writeEndTag( "page-sequence" );
+        writeEndTag( TABLE_ROW_TAG );
+        writeEndTag( TABLE_BODY_TAG );
+        writeEndTag( TABLE_TAG );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( FLOW_TAG );
+        writeEndTag( PAGE_SEQUENCE_TAG );
     }
 
 }

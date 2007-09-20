@@ -19,29 +19,61 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+
 import junit.framework.TestCase;
 
 /** FoConfiguration tests. */
 public class FoConfigurationTest extends TestCase
 {
 
-    /** Tests the getAttributes( String ) method. */
-    public void testGetAttributes()
+    /** Tests the getAttributeString( String ) method. */
+    public void testGetAttributeString()
     {
-        FoConfiguration attributes = new FoConfiguration();
+        FoConfiguration config = new FoConfiguration();
 
         assertEquals(
             "Null attribute ID should return empty string!",
-            "", attributes.getAttributeSet( null ) );
+            "", config.getAttributeString( null ) );
 
         assertEquals(
             "Non existent attribute ID should return empty string!",
-            "", attributes.getAttributeSet( "a.dummy.attribute" ) );
+            "", config.getAttributeString( "a.dummy.attribute" ) );
 
         assertEquals(
             "Wrong attributes returned for body.pre!",
-            " font-size=\"10pt\" font-family=\"monospace\"",
-            attributes.getAttributeSet( "body.pre" ) );
+            " font-family=\"monospace\" font-size=\"10pt\"",
+            config.getAttributeString( "body.pre" ) );
     }
+
+    /** Tests the getAttributeSet( String ) method. */
+    public void testGetAttributeSet()
+    {
+        FoConfiguration config = new FoConfiguration();
+
+        assertNull(
+            "Null attribute ID should return null AttributeSet!",
+            config.getAttributeSet( null ));
+
+        assertNull(
+            "Empty attribute ID should return null AttributeSet!",
+            config.getAttributeSet( "" ));
+
+        assertNull(
+            "Non existent attribute ID should return null AttributeSet!",
+            config.getAttributeSet( "a.dummy.attribute" ) );
+
+
+        MutableAttributeSet expected = new SimpleAttributeSet();
+        expected.addAttribute( "font-size", "10pt" );
+        expected.addAttribute( "font-family", "monospace" );
+        MutableAttributeSet actual = config.getAttributeSet( "body.pre" );
+
+        assertTrue(
+            "Wrong AttributeSet returned for body.pre!",
+            expected.isEqual( actual ) );
+    }
+
 
 }
