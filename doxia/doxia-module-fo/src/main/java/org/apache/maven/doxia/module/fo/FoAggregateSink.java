@@ -32,6 +32,10 @@ import org.apache.maven.doxia.util.HtmlTools;
 
 /**
  * A Doxia Sink that produces an aggregated FO model.
+ *
+ * @author ltheussl
+ * @version $Id$
+ * @since 1.0
  */
 public class FoAggregateSink extends FoSink
 {

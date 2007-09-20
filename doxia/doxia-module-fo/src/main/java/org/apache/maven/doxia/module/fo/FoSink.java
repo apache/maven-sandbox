@@ -34,6 +34,10 @@ import org.apache.maven.doxia.util.HtmlTools;
 
 /**
  * A Doxia Sink that produces a FO model.
+ *
+ * @author ltheussl
+ * @version $Id$
+ * @since 1.0
  */
 public class FoSink
     extends AbstractXmlSink

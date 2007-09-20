@@ -31,6 +31,10 @@ import org.apache.maven.doxia.sink.AbstractXmlSink;
 
 /**
  * A utility class to construct FO configuration parameters.
+ *
+ * @author ltheussl
+ * @version $Id$
+ * @since 1.0
  */
 public class FoConfiguration
 {

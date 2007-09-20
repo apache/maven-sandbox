@@ -23,6 +23,10 @@ import org.apache.maven.doxia.sink.Sink;
 
 /**
  * Used to count the position in a numbered list.
+ *
+ * @author ltheussl
+ * @version $Id$
+ * @since 1.0
  */
 public class NumberedListItem
 {

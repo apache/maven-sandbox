@@ -42,6 +42,10 @@ import org.apache.fop.apps.MimeConstants;
 
 /**
  * <code>FO Sink</code> utilities.
+ *
+ * @author ltheussl
+ * @version $Id$
+ * @since 1.0
  */
 public class FoUtils
 {
