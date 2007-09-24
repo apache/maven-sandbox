@@ -21,6 +21,7 @@ package org.apache.maven.doxia.linkcheck.validation;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -124,7 +125,7 @@ public class LinkValidatorManager implements Serializable
                     LOG.debug( "Excluded " + lvi.getLink() );
                 }
 
-                return new LinkValidationResult( LinkValidationResult.VALID, false, "" );
+                return new LinkValidationResult( LinkcheckFileResult.VALID_LEVEL, false, "" );
             }
         }
 
@@ -170,7 +171,7 @@ public class LinkValidatorManager implements Serializable
 
         LOG.error( "Unable to validate link : " + lvi.getLink() );
 
-        return new LinkValidationResult( LinkValidationResult.UNKNOWN, false, "No validator found for this link" );
+        return new LinkValidationResult( LinkcheckFileResult.UNKNOWN_LEVEL, false, "No validator found for this link" );
     }
 
     /**

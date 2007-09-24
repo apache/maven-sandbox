@@ -26,8 +26,11 @@ under the License.
     <groupId>org.apache.maven.doxia</groupId>
     <version>1.0-beta-1-SNAPSHOT</version>
   </parent>
+
   <artifactId>doxia-linkcheck</artifactId>
   <name>Doxia :: Linkcheck</name>
+  <description>Doxia linkcheck is a tool to check the validity of links</description>
+
   <dependencies>
     <!-- compile dependencies -->
     <dependency>
@@ -65,4 +68,28 @@ under the License.
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.modello</groupId>
+        <artifactId>modello-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>linkcheck</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>java</goal>
+              <goal>xpp3-reader</goal>
+              <goal>xpp3-writer</goal>
+            </goals>
+            <configuration>
+              <model>src/main/mdo/linkcheck.mdo</model>
+              <version>1.0.0</version>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

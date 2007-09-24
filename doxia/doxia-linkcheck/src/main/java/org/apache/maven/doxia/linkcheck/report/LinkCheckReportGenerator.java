@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.maven.doxia.linkcheck.LinkCheckResult;
+import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
 import org.apache.maven.doxia.module.xhtml.XhtmlSink;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.ParseException;
@@ -237,7 +237,7 @@ public class LinkCheckReportGenerator
 
             for ( Iterator unsuccessful = unsuccessfuls.iterator(); unsuccessful.hasNext(); )
             {
-                LinkCheckResult lcr = (LinkCheckResult) unsuccessful.next();
+                LinkcheckFileResult lcr = (LinkcheckFileResult) unsuccessful.next();
 
                 sink.tableRow();
 
@@ -359,7 +359,7 @@ public class LinkCheckReportGenerator
 
         String fileName = "";
 
-        LinkCheckResult lcr = new LinkCheckResult();
+        LinkcheckFileResult lcr = new LinkcheckFileResult();
 
         int eventType = parser.getEventType();
 
@@ -373,7 +373,7 @@ public class LinkCheckReportGenerator
                 }
                 else if ( "result".equals( parser.getName() ) )
                 {
-                    lcr = new LinkCheckResult();
+                    lcr = new LinkcheckFileResult();
                 }
             }
             else if ( eventType == XmlPullParser.END_TAG )

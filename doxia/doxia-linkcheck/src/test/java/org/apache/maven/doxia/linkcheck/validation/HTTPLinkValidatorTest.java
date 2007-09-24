@@ -21,6 +21,8 @@ package org.apache.maven.doxia.linkcheck.validation;
 
 import java.io.File;
 
+import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
+
 import junit.framework.TestCase;
 
 /**
@@ -52,15 +54,15 @@ public class HTTPLinkValidatorTest extends TestCase
 
             this.hlv = new OnlineHTTPLinkValidator();
 
-            assertEquals( LinkValidationResult.VALID, checkLink( "http://www.apache.org" ).getStatus() );
-            assertEquals( LinkValidationResult.ERROR, checkLink( "http://www.example.com>);" ).getStatus() );
+            assertEquals( LinkcheckFileResult.VALID_LEVEL, checkLink( "http://www.apache.org" ).getStatus() );
+            assertEquals( LinkcheckFileResult.ERROR_LEVEL, checkLink( "http://www.example.com>);" ).getStatus() );
         }
         else
         {
             this.hlv = new OfflineHTTPLinkValidator();
 
-            assertEquals( LinkValidationResult.WARNING, checkLink( "http://www.apache.org" ).getStatus() );
-            assertEquals( LinkValidationResult.WARNING, checkLink( "http://www.example.com>);" ).getStatus() );
+            assertEquals( LinkcheckFileResult.WARNING_LEVEL, checkLink( "http://www.apache.org" ).getStatus() );
+            assertEquals( LinkcheckFileResult.WARNING_LEVEL, checkLink( "http://www.example.com>);" ).getStatus() );
 
         }
     }

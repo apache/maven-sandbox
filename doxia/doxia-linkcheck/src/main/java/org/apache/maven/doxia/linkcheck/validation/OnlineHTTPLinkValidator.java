@@ -40,6 +40,7 @@ import org.apache.commons.httpclient.methods.HeadMethod;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
 
 
 /**
@@ -205,13 +206,11 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
                 {
                     LOG.warn( "Cannot check link [" + link + "] in page [" + lvi.getSource()
                             + "], as no base URL has been set!" );
-                    return new LinkValidationResult( LinkValidationResult.WARNING, false,
+                    return new LinkValidationResult( LinkcheckFileResult.WARNING_LEVEL, false,
                             "No base URL specified" );
                 }
-                else
-                {
-                    link = getBaseURL() + link;
-                }
+
+                link = getBaseURL() + link;
             }
 
             HttpMethod hm = null;
@@ -231,42 +230,38 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
                     LOG.error( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]" );
                 }
 
-                return new LinkValidationResult( LinkValidationResult.ERROR, false, t.getClass().getName() + " : "
+                return new LinkValidationResult( LinkcheckFileResult.ERROR_LEVEL, false, t.getClass().getName() + " : "
                                 + t.getMessage() );
             }
 
             if ( hm == null )
             {
-                return new LinkValidationResult( LinkValidationResult.ERROR, false, "Cannot retreive HTTP Status" );
+                return new LinkValidationResult( LinkcheckFileResult.ERROR_LEVEL, false, "Cannot retreive HTTP Status" );
             }
 
             if ( hm.getStatusCode() == HttpStatus.SC_OK )
             {
-                return new LinkValidationResult( LinkValidationResult.VALID, true, hm.getStatusCode() + " "
+                return new LinkValidationResult( LinkcheckFileResult.VALID_LEVEL, true, hm.getStatusCode() + " "
                                 + hm.getStatusText() );
             }
-            else
+
+            // If there's a redirection ... add a warning
+            if ( hm.getStatusCode() == HttpStatus.SC_MOVED_PERMANENTLY
+                            || hm.getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY
+                            || hm.getStatusCode() == HttpStatus.SC_TEMPORARY_REDIRECT )
             {
-                // If there's a redirection ... add a warning
-                if ( hm.getStatusCode() == HttpStatus.SC_MOVED_PERMANENTLY
-                                || hm.getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY
-                                || hm.getStatusCode() == HttpStatus.SC_TEMPORARY_REDIRECT )
-                {
-                    LOG.warn( "Received: [" + hm.getStatusCode() + "] for [" + link + "] in page ["
-                                    + lvi.getSource() + "]" );
+                LOG.warn( "Received: [" + hm.getStatusCode() + "] for [" + link + "] in page ["
+                                + lvi.getSource() + "]" );
 
-                    return new LinkValidationResult( LinkValidationResult.WARNING, true, hm.getStatusCode() + " "
-                                    + hm.getStatusText() );
-                }
-                else
-                {
-                    LOG.error( "Received: [" + hm.getStatusCode() + "] for [" + link + "] in page ["
-                                    + lvi.getSource() + "]" );
-
-                    return new LinkValidationResult( LinkValidationResult.ERROR, false, hm.getStatusCode() + " "
-                                    + hm.getStatusText() );
-                }
+                return new LinkValidationResult( LinkcheckFileResult.WARNING_LEVEL, true, hm.getStatusCode() + " "
+                                + hm.getStatusText() );
             }
+
+            LOG.error( "Received: [" + hm.getStatusCode() + "] for [" + link + "] in page ["
+                            + lvi.getSource() + "]" );
+
+            return new LinkValidationResult( LinkcheckFileResult.ERROR_LEVEL, false, hm.getStatusCode() + " "
+                            + hm.getStatusText() );
 
         }
         catch ( Throwable t )
@@ -280,7 +275,7 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
                 LOG.error( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]" );
             }
 
-            return new LinkValidationResult( LinkValidationResult.ERROR, false, t.getMessage() );
+            return new LinkValidationResult( LinkcheckFileResult.ERROR_LEVEL, false, t.getMessage() );
         }
     }
 
@@ -361,11 +356,11 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
 
         HttpMethod hm;
 
-        if ( HEAD_METHOD.equals( this.method ) )
+        if ( HEAD_METHOD.equals( this.method.toLowerCase() ) )
         {
             hm = new HeadMethod( link );
         }
-        else if ( GET_METHOD.equals( this.method ) )
+        else if ( GET_METHOD.equals( this.method.toLowerCase() ) )
         {
             hm = new GetMethod( link );
         }
@@ -405,44 +400,42 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
                     LOG.error( "Site sent redirect, but did not set Location header" );
                     return hm;
                 }
-                else
+
+                String newLink = locationHeader.getValue();
+
+                // Be careful to absolute/relative links
+                if ( !newLink.startsWith( "http://" ) && !newLink.startsWith( "https://" ) )
                 {
-                    String newLink = locationHeader.getValue();
-
-                    // Be careful to absolute/relative links
-                    if ( !newLink.startsWith( "http://" ) && !newLink.startsWith( "https://" ) )
+                    if ( newLink.startsWith( "/" ) )
                     {
-                        if ( newLink.startsWith( "/" ) )
-                        {
-                            URL oldUrl = new URL( link );
+                        URL oldUrl = new URL( link );
 
-                            newLink =
-                                oldUrl.getProtocol() + "://" + oldUrl.getHost()
-                                                + ( oldUrl.getPort() > 0 ? ":" + oldUrl.getPort() : "" ) + newLink;
-                        }
-                        else
-                        {
-                            newLink = link + newLink;
-                        }
+                        newLink =
+                            oldUrl.getProtocol() + "://" + oldUrl.getHost()
+                                            + ( oldUrl.getPort() > 0 ? ":" + oldUrl.getPort() : "" ) + newLink;
                     }
-
-                    HttpMethod oldHm = hm;
-
-                    if ( LOG.isDebugEnabled() )
+                    else
                     {
-                        LOG.debug( "[" + link + "] is redirected to [" + newLink + "]" );
+                        newLink = link + newLink;
                     }
+                }
 
-                    oldHm.releaseConnection();
+                HttpMethod oldHm = hm;
 
-                    hm = checkLink( newLink, nbRedirect + 1 );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( "[" + link + "] is redirected to [" + newLink + "]" );
+                }
 
-                    // Restore the hm to "Moved permanently" | "Moved temporarily" | "Temporary redirect"
-                    // if the new location is found to allow us to report it
-                    if ( hm.getStatusCode() == HttpStatus.SC_OK && nbRedirect == 0 )
-                    {
-                        return oldHm;
-                    }
+                oldHm.releaseConnection();
+
+                hm = checkLink( newLink, nbRedirect + 1 );
+
+                // Restore the hm to "Moved permanently" | "Moved temporarily" | "Temporary redirect"
+                // if the new location is found to allow us to report it
+                if ( hm.getStatusCode() == HttpStatus.SC_OK && nbRedirect == 0 )
+                {
+                    return oldHm;
                 }
             }
 

@@ -26,7 +26,7 @@ import java.io.Serializable;
  * This class is used to return status responses from the validation handlers. A persistent result means that it can be
  * stored in the persistent cache and used across runs.
  * </p>
- * 
+ *
  * @author <a href="mailto:bwalding@apache.org">Ben Walding</a>
  * @author <a href="mailto:aheritier@apache.org">Arnaud Heritier</a>
  * @version $Id$
@@ -36,20 +36,8 @@ public class LinkValidationResult implements Serializable
     /** serialVersionUID. */
     private static final long serialVersionUID = -8346824125135406813L;
 
-    /** Validation result: not mine. */
+    /** Validation result level: not mine. */
     public static final int NOTMINE = 0;
-
-    /** Validation result: error. */
-    public static final int ERROR = 1;
-
-    /** Validation result: valid. */
-    public static final int VALID = 2;
-
-    /** Validation result: unknown. */
-    public static final int UNKNOWN = 3;
-
-    /** Validation result: warning. */
-    public static final int WARNING = 4;
 
     /** The persistent property. */
     private final boolean persistent;

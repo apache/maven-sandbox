@@ -19,6 +19,8 @@ package org.apache.maven.doxia.linkcheck.validation;
  * under the License.
  */
 
+import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
+
 /**
  * Validates mailto links.
  *
@@ -29,7 +31,7 @@ package org.apache.maven.doxia.linkcheck.validation;
 public final class MailtoLinkValidator implements LinkValidator
 {
     /** The (unique) LinkValidationResult to be returned by this LinkValidator. */
-    private static final LinkValidationResult LVR = new LinkValidationResult( LinkValidationResult.VALID, false, "" );
+    private static final LinkValidationResult LVR = new LinkValidationResult( LinkcheckFileResult.VALID_LEVEL, false, "" );
 
     /** {@inheritDoc} */
     public LinkValidationResult validateLink( LinkValidationItem lvi )
@@ -44,10 +46,7 @@ public final class MailtoLinkValidator implements LinkValidator
         {
             return lvi.getLink();
         }
-        else
-        {
-            return null;
-        }
-    }
 
+        return null;
+    }
 }

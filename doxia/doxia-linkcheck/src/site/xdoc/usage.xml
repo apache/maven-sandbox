@@ -27,7 +27,6 @@ under the License.
 
   <body>
     <section name="Usage">
-
       <p>
         Here's an example:
       </p>
@@ -39,9 +38,9 @@ under the License.
 
         lc.setBasedir( new File( "target/site/" ) );
 
-        lc.setOutput( new File( "target/linkcheck/linkcheck.xml" ) );
+        lc.setReportOutput( new File( "target/linkcheck/linkcheck.xml" ) );
 
-        lc.setCache( new File( "target/linkcheck/linkcheck.cache" ) );
+        lc.setLinkCheckCache( new File( "target/linkcheck/linkcheck.cache" ) );
 
         String[] excludes = new String[]
             {
@@ -49,7 +48,7 @@ under the License.
                 "http://cvs.apache.org/viewcvs.cgi/mavenzz/"
             };
 
-        lc.setExcludes( excludes );
+        lc.setExcludedLinks( excludes );
 
         lc.doExecute();
       </source>
@@ -60,7 +59,6 @@ under the License.
       </p>
 
       <subsection name="Format of linkcheck.xml">
-
         <p>
           The created <code>linkcheck.xml</code> file has the following format:
         </p>
@@ -69,37 +67,38 @@ under the License.
 <?xml version="1.0" encoding="UTF-8" ?>
 <linkcheck>
   <file>
-    <name>nolink.html</name>
+    <absolutePath>C:\apache.org\maven\src\target\site\nolink.html</absolutePath>
+    <relativePath>nolink.html</relativePath>
     <successful>0</successful>
     <unsuccessful>0</unsuccessful>
   </file>
   <file>
-    <name>testA.html</name>
+    <absolutePath>C:\apache.org\maven\src\target\site\nolink.html</absolutePath>
+    <relativePath>testA.html</relativePath>
     <successful>1</successful>
     <unsuccessful>2</unsuccessful>
-    <result>
-      <target>#bumpkin</target>
-      <status>valid</status>
-      <errorMessage></errorMessage>
-    </result>
-    <result>
-      <target>style.css</target>
-      <status>error</status>
-      <errorMessage>doesn&apos;t exist.</errorMessage>
-    </result>
-    <result>
-      <target>testnothere.html</target>
-      <status>error</status>
-      <errorMessage>doesn&apos;t exist.</errorMessage>
-    </result>
+    <results>
+      <result>
+        <target>#bumpkin</target>
+        <status>valid</status>
+        <errorMessage></errorMessage>
+      </result>
+      <result>
+        <target>style.css</target>
+        <status>error</status>
+        <errorMessage>doesn&apos;t exist.</errorMessage>
+      </result>
+      <result>
+        <target>testnothere.html</target>
+        <status>error</status>
+        <errorMessage>doesn&apos;t exist.</errorMessage>
+      </result>
+    </results>
   </file>
 </linkcheck>
 ]]>
         </source>
-
       </subsection>
-
     </section>
-
   </body>
 </document>

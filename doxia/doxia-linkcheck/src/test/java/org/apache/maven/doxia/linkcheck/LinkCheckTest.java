@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.maven.doxia.linkcheck.model.LinkcheckFile;
+
 import junit.framework.TestCase;
 
 /**
@@ -41,11 +43,11 @@ public class LinkCheckTest extends TestCase
 
         lc.setBasedir( new File( "src/test/resources" ) ); // TODO
 
-        lc.setOutput( new File( "target/linkcheck/linkcheck.xml" ) );
+        lc.setReportOutput( new File( "target/linkcheck/linkcheck.xml" ) );
 
-        lc.setOutputEncoding( "UTF-8" );
+        lc.setReportOutputEncoding( "UTF-8" );
 
-        lc.setCache( new File( "target/linkcheck/linkcheck.cache" ) ); // TODO
+        lc.setLinkCheckCache( new File( "target/linkcheck/linkcheck.cache" ) ); // TODO
 
         String[] excludes = new String[]
             {
@@ -53,21 +55,21 @@ public class LinkCheckTest extends TestCase
                 "http://cvs.apache.org/viewcvs.cgi/mavenzz/"
             };
 
-        lc.setExcludes( excludes );
+        lc.setExcludedLinks( excludes );
 
         lc.doExecute();
 
-        Iterator iter = lc.getFiles().iterator();
+        Iterator iter = lc.getModel().getFiles().iterator();
 
         Map map = new HashMap();
 
         while ( iter.hasNext() )
         {
-            FileToCheck ftc = (FileToCheck) iter.next();
-            map.put( ftc.getName(), ftc );
+            LinkcheckFile ftc = (LinkcheckFile) iter.next();
+            map.put( ftc.getRelativePath(), ftc );
         }
 
-        assertEquals( "files.size()", 8, lc.getFiles().size() );
+        assertEquals( "files.size()", 8, lc.getModel().getFiles().size() );
 
         check( map, "nolink.html", 0 );
         check( map, "test-resources/nolink.html", 0 );
@@ -80,7 +82,7 @@ public class LinkCheckTest extends TestCase
         String fileName = "testExcludes.html";
         check( map, fileName, 2 );
 
-        FileToCheck ftc = (FileToCheck) map.get( fileName );
+        LinkcheckFile ftc = (LinkcheckFile) map.get( fileName );
         assertEquals( "Excluded links", 2, ftc.getSuccessful() );
 
         // index-all.html should get parsed, but is currently having problems.
@@ -91,7 +93,7 @@ public class LinkCheckTest extends TestCase
 
     private void check( Map map, String name, int linkCount )
     {
-        FileToCheck ftc = (FileToCheck) map.get( name );
+        LinkcheckFile ftc = (LinkcheckFile) map.get( name );
 
         assertNotNull( name + " = null!", ftc );
 

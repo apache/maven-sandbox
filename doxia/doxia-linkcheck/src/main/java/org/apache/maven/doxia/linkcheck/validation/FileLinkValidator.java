@@ -21,6 +21,8 @@ package org.apache.maven.doxia.linkcheck.validation;
 
 import java.io.File;
 
+import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
+
 /**
  * A link validator solely for files on the local filesystem.
  *
@@ -37,12 +39,10 @@ public final class FileLinkValidator implements LinkValidator
 
         if ( f.exists() )
         {
-            return new LinkValidationResult( LinkValidationResult.VALID, false, "" );
+            return new LinkValidationResult( LinkcheckFileResult.VALID_LEVEL, false, "" );
         }
-        else
-        {
-            return new LinkValidationResult( LinkValidationResult.ERROR, false, "doesn't exist." );
-        }
+
+        return new LinkValidationResult( LinkcheckFileResult.ERROR_LEVEL, false, "doesn't exist." );
     }
 
     /** {@inheritDoc} */

@@ -19,32 +19,36 @@ package org.apache.maven.doxia.linkcheck;
  * under the License.
  */
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.maven.doxia.linkcheck.model.LinkcheckFile;
+import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
+import org.apache.maven.doxia.linkcheck.model.LinkcheckModel;
+import org.apache.maven.doxia.linkcheck.model.io.xpp3.LinkcheckModelXpp3Writer;
 import org.apache.maven.doxia.linkcheck.validation.FileLinkValidator;
+import org.apache.maven.doxia.linkcheck.validation.LinkValidationItem;
+import org.apache.maven.doxia.linkcheck.validation.LinkValidationResult;
 import org.apache.maven.doxia.linkcheck.validation.LinkValidatorManager;
 import org.apache.maven.doxia.linkcheck.validation.MailtoLinkValidator;
 import org.apache.maven.doxia.linkcheck.validation.OfflineHTTPLinkValidator;
 import org.apache.maven.doxia.linkcheck.validation.OnlineHTTPLinkValidator;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * The main bean to be called whenever a set of documents should have their links checked.
- * 
+ *
  * @author <a href="mailto:bwalding@apache.org">Ben Walding</a>
  * @author <a href="mailto:carlos@apache.org">Carlos Sanchez</a>
  * @author <a href="mailto:aheritier@apache.org">Arnaud Heritier</a>
+ * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
 public final class LinkCheck
@@ -52,47 +56,44 @@ public final class LinkCheck
     /** Log. */
     private static final Log LOG = LogFactory.getLog( LinkCheck.class );
 
-    /** The vm line separator. */
-    public static final String EOL = System.getProperty( "line.separator" );
-
     /** FilenameFilter. */
     private static final FilenameFilter CUSTOM_FF = new LinkCheck.CustomFilenameFilter();
 
     /** One MegaByte. */
     private static final long MEG = 1024 * 1024;
 
-    /** basedir. */
+    /** The basedir to check. */
     private File basedir;
 
-    /** cache. */
-    private File cache;
+    /** Linkcheck Cache. */
+    private File linkCheckCache;
 
-    /** excludes. */
-    private String[] excludes = null;
+    /** excluded links. */
+    private String[] excludedLinks = null;
 
-    /** method. */
-    private String method;
+    /** HTTP method to use. Currently supported are "get" and "head". */
+    private String httpMethod;
 
-    /** filesToCheck. */
-    private List filesToCheck = null;
-
-    /** LinkValidatorManager. */
+    /** Internal LinkValidatorManager. */
     private LinkValidatorManager lvm = null;
 
-    /** online mode. */
+    /** Online mode. */
     private boolean online;
 
-    /** Output file for xml document. */
-    private File output;
+    /** Report output file for xml document. */
+    private File reportOutput;
 
-    /** Output encoding for the xml document. */
-    private String outputEncoding;
+    /** Report output encoding for the xml document, UTF-8 by default. */
+    private String reportOutputEncoding = "UTF-8";
 
     /** The base URL for links that start with '/'. */
     private String baseURL;
 
     /** The level to report, used in toXML(). */
-    private int reportLevel = LinkCheckResult.WARNING;
+    private int reportLevel = LinkcheckFileResult.WARNING_LEVEL;
+
+    /** The linkcheck model */
+    private LinkcheckModel model = new LinkcheckModel();
 
     /**
      * The current report level. Defaults to LinkCheckResult.WARNING.
@@ -134,7 +135,6 @@ public final class LinkCheck
         this.online = onLine;
     }
 
-
     /**
      * Get the base directory for the files to be linkchecked.
      *
@@ -160,9 +160,9 @@ public final class LinkCheck
      *
      * @return File
      */
-    public File getCache()
+    public File getLinkCheckCache()
     {
-        return this.cache;
+        return this.linkCheckCache;
     }
 
     /**
@@ -170,61 +170,89 @@ public final class LinkCheck
      *
      * @param cacheFile The cacheFile to set. Set this to null to ignore storing the cache.
      */
-    public void setCache( File cacheFile )
+    public void setLinkCheckCache( File cacheFile )
     {
-        this.cache = cacheFile;
+        this.linkCheckCache = cacheFile;
     }
 
     /**
-     * Returns the excludes.
+     * Returns the excluded links.
      *
      * @return String[]
      */
-    public String[] getExcludes()
+    public String[] getExcludedLinks()
     {
-        return this.excludes;
+        return this.excludedLinks;
     }
 
     /**
-     * Sets the excludes, a String[] with exclude locations.
+     * Sets the excluded links, a String[] with excluded locations.
      *
      * @param excl The excludes to set
      */
-    public void setExcludes( String[] excl )
+    public void setExcludedLinks( String[] excl )
     {
-        this.excludes = excl;
+        this.excludedLinks = excl;
     }
 
     /**
-     * The http method to use.
+     * The HTTP method to use. Currently supported are "GET" and "HEAD".
+     * <dl>
+     * <dt>HTTP GET</dt>
+     * <dd>
+     * The HTTP GET method is defined in section 9.3 of
+     * <a HREF="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+     * <blockquote>
+     * The GET method means retrieve whatever information (in the form of an
+     * entity) is identified by the Request-URI.
+     * </blockquote>
+     * </dd>
+     * <dt>HTTP HEAD</dt>
+     * <dd>
+     * The HTTP HEAD method is defined in section 9.4 of
+     * <a HREF="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+     * <blockquote>
+     * The HEAD method is identical to GET except that the server MUST NOT
+     * return a message-body in the response.
+     * </blockquote>
+     * </dd>
+     * </dl>
      *
      * @return the method
      */
-    public String getMethod()
+    public String getHttpMethod()
     {
-        return this.method;
+        return this.httpMethod;
     }
 
     /**
-     * The http method to use. Currently supported are "get" and "head".
-     * 
+     * The HTTP method to use. Currently supported are "GET" and "HEAD".
+     * <dl>
+     * <dt>HTTP GET</dt>
+     * <dd>
+     * The HTTP GET method is defined in section 9.3 of
+     * <a HREF="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+     * <blockquote>
+     * The GET method means retrieve whatever information (in the form of an
+     * entity) is identified by the Request-URI.
+     * </blockquote>
+     * </dd>
+     * <dt>HTTP HEAD</dt>
+     * <dd>
+     * The HTTP HEAD method is defined in section 9.4 of
+     * <a HREF="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+     * <blockquote>
+     * The HEAD method is identical to GET except that the server MUST NOT
+     * return a message-body in the response.
+     * </blockquote>
+     * </dd>
+     * </dl>
+     *
      * @param meth the method to set.
      */
-    public void setMethod( String meth )
+    public void setHttpMethod( String meth )
     {
-        this.method = meth;
-    }
-
-
-    /**
-     * Returns a list of {@link org.apache.maven.doxia.linkcheck.FileToCheck files} that have been checked.
-     * This is only available after {@link #doExecute()} has been called.
-     *
-     * @return the list of files.
-     */
-    public List getFiles()
-    {
-        return this.filesToCheck;
+        this.httpMethod = meth;
     }
 
     /**
@@ -261,9 +289,9 @@ public final class LinkCheck
     {
         this.lvm = new LinkValidatorManager();
 
-        if ( this.excludes != null )
+        if ( this.excludedLinks != null )
         {
-            this.lvm.setExcludes( excludes );
+            this.lvm.setExcludes( excludedLinks );
         }
 
         this.lvm.addLinkValidator( new FileLinkValidator() );
@@ -293,9 +321,9 @@ public final class LinkCheck
      *
      * @param file the output file.
      */
-    public void setOutput( File file )
+    public void setReportOutput( File file )
     {
-        this.output = file;
+        this.reportOutput = file;
     }
 
     /**
@@ -303,9 +331,9 @@ public final class LinkCheck
      *
      * @return File
      */
-    public File getOutput()
+    public File getReportOutput()
     {
-        return this.output;
+        return this.reportOutput;
     }
 
     /**
@@ -313,9 +341,9 @@ public final class LinkCheck
      *
      * @return String
      */
-    public String getOutputEncoding()
+    public String getReportOutputEncoding()
     {
-        return this.outputEncoding;
+        return this.reportOutputEncoding;
     }
 
     /**
@@ -323,9 +351,9 @@ public final class LinkCheck
      *
      * @param encoding The outputEncoding to set.
      */
-    public void setOutputEncoding( String encoding )
+    public void setReportOutputEncoding( String encoding )
     {
-        this.outputEncoding = encoding;
+        this.reportOutputEncoding = encoding;
     }
 
     /**
@@ -349,31 +377,22 @@ public final class LinkCheck
     }
 
     /**
-     * Recurses through the given base directory and adds
-     * files to the given list that pass through the current filter.
+     * The model.
      *
-     * @param allFiles the list to fill
-     * @param base the base directory to traverse.
+     * @return the model.
      */
-    public void findFiles( List allFiles, File base )
+    public LinkcheckModel getModel()
     {
-        LOG.debug( "Locating all files to be checked..." );
-
-        findAllFiles( allFiles, base );
-
-        LOG.debug( "Located all files to be checked." );
-
-        LOG.info( "Found " + allFiles.size() + " files to check." );
+        return model;
     }
 
     /**
-     * Recurses through the given base directory and adds
-     * files to the given list that pass through the current filter.
+     * Recurses through the given base directory and adds/checks
+     * files to the model that pass through the current filter.
      *
-     * @param allFiles the list to fill
      * @param base the base directory to traverse.
      */
-    private void findAllFiles( List allFiles, File base )
+    private void findAndCheckFiles( File base )
     {
         File[] f = base.listFiles( CUSTOM_FF );
 
@@ -386,7 +405,7 @@ public final class LinkCheck
 
                 if ( file.isDirectory() )
                 {
-                    findAllFiles( allFiles, file );
+                    findAndCheckFiles( file );
                 }
                 else
                 {
@@ -395,11 +414,24 @@ public final class LinkCheck
                         LOG.debug( " File - " + file );
                     }
 
-                    allFiles.add( new FileToCheck( this.basedir, file ) );
-
-                    if ( allFiles.size() % 100 == 0 )
+                    String fileRelativePath = file.getAbsolutePath();
+                    if ( fileRelativePath.startsWith( this.basedir.getAbsolutePath() ) )
                     {
-                        LOG.info( "Found " + allFiles.size() + " files so far." );
+                        fileRelativePath = fileRelativePath.substring( this.basedir.getAbsolutePath().length() + 1 );
+                    }
+                    fileRelativePath = fileRelativePath.replace( '\\', '/' );
+
+                    LinkcheckFile linkcheckFile = new LinkcheckFile();
+                    linkcheckFile.setAbsolutePath( file.getAbsolutePath() );
+                    linkcheckFile.setRelativePath( fileRelativePath );
+
+                    check( linkcheckFile );
+
+                    model.addFile( linkcheckFile );
+
+                    if ( model.getFiles().size() % 100 == 0 )
+                    {
+                        LOG.info( "Found " + model.getFiles().size() + " files so far." );
                     }
                 }
             }
@@ -410,6 +442,112 @@ public final class LinkCheck
         f = null;
     }
 
+    /**
+     * Validates a linkcheck file.
+     *
+     * @param linkcheckFile the linkcheckFile object to validate
+     */
+    private void check( LinkcheckFile linkcheckFile )
+    {
+        linkcheckFile.setSuccessful( 0 );
+
+        linkcheckFile.setUnsuccessful( 0 );
+
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Validating " + linkcheckFile.getRelativePath() );
+        }
+
+        final Set hrefs;
+
+        try
+        {
+            hrefs = LinkMatcher.match( new File( linkcheckFile.getAbsolutePath() ) );
+        }
+        catch ( Throwable t )
+        {
+            // We catch Throwable, because there is a chance that the domReader will throw
+            // a stack overflow exception for some files
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.error( "Received: [" + t + "] in page [" + linkcheckFile.getRelativePath() + "]", t );
+            }
+            else
+            {
+                LOG.error( "Received: [" + t + "] in page [" + linkcheckFile.getRelativePath() + "]" );
+            }
+
+            LinkcheckFileResult lcr = new LinkcheckFileResult();
+
+            lcr.setStatus( "PARSE FAILURE" );
+
+            lcr.setTarget( "N/A" );
+
+            linkcheckFile.addResult( lcr );
+
+            return;
+        }
+
+        String href;
+        LinkcheckFileResult lcr;
+        LinkValidationItem lvi;
+        LinkValidationResult result;
+
+        for ( Iterator iter = hrefs.iterator(); iter.hasNext(); )
+        {
+            href = (String) iter.next();
+
+            lcr = new LinkcheckFileResult();
+            lvi = new LinkValidationItem( new File( linkcheckFile.getAbsolutePath() ), href );
+            result = lvm.validateLink( lvi );
+            lcr.setTarget( href );
+            lcr.setErrorMessage( result.getErrorMessage() );
+
+            switch ( result.getStatus() )
+            {
+                case LinkcheckFileResult.VALID_LEVEL:
+                    linkcheckFile.setSuccessful( linkcheckFile.getSuccessful() + 1 );
+
+                    lcr.setStatus( LinkcheckFileResult.VALID );
+
+                    // At some point we won't want to store valid links. The tests require that we do at present.
+                    linkcheckFile.addResult( lcr );
+
+                    break;
+                case LinkcheckFileResult.ERROR_LEVEL:
+                    linkcheckFile.setUnsuccessful( linkcheckFile.getUnsuccessful() + 1 );
+
+                    lcr.setStatus( LinkcheckFileResult.ERROR );
+
+                    linkcheckFile.addResult( lcr );
+
+                    break;
+                case LinkcheckFileResult.WARNING_LEVEL:
+                    linkcheckFile.setUnsuccessful( linkcheckFile.getUnsuccessful() + 1 );
+
+                    lcr.setStatus( LinkcheckFileResult.WARNING );
+
+                    linkcheckFile.addResult( lcr );
+
+                    break;
+                case LinkcheckFileResult.UNKNOWN_LEVEL:
+                default:
+                    linkcheckFile.setUnsuccessful( linkcheckFile.getUnsuccessful() + 1 );
+
+                    lcr.setStatus( LinkcheckFileResult.UNKNOWN );
+
+                    linkcheckFile.addResult( lcr );
+
+                    break;
+            }
+        }
+
+        href = null;
+        lcr = null;
+        lvi = null;
+        result = null;
+    }
 
     /**
      * Execute task.
@@ -420,44 +558,28 @@ public final class LinkCheck
         {
             LOG.error( "No base directory specified!" );
 
-            throw new NullPointerException( "basedir can't be null!" );
+            throw new NullPointerException( "The basedir can't be null!" );
         }
 
-        if ( this.output == null )
+        if ( this.reportOutput == null )
         {
             LOG.warn( "No output file specified! Results will not be written!" );
         }
 
+        model = new LinkcheckModel();
+        model.setModelEncoding( reportOutputEncoding );
+        model.setFiles( new LinkedList() );
+
         displayMemoryConsumption();
 
         LinkValidatorManager validator = getLinkValidatorManager();
-
-        this.filesToCheck = new LinkedList();
-
-        validator.loadCache( this.cache );
-
-        List files = new LinkedList();
-
-        findFiles( files, this.basedir );
+        validator.loadCache( this.linkCheckCache );
 
         displayMemoryConsumption();
 
         LOG.info( "Begin to check links in files..." );
 
-        Iterator fileIter = files.iterator();
-
-        FileToCheck ftc;
-
-        while ( fileIter.hasNext() )
-        {
-            ftc = (FileToCheck) fileIter.next();
-
-            this.filesToCheck.add( ftc );
-
-            ftc.check( validator );
-        }
-
-        ftc = null;
+        findAndCheckFiles( this.basedir );
 
         LOG.info( "Links checked." );
 
@@ -467,40 +589,14 @@ public final class LinkCheck
         {
             createDocument();
         }
-        catch ( FileNotFoundException e )
+        catch ( IOException e )
         {
             LOG.error( "Could not write to output file, results will be lost!", e );
         }
 
-        validator.saveCache( this.cache );
+        validator.saveCache( this.linkCheckCache );
 
         displayMemoryConsumption();
-    }
-
-    /**
-     * Returns an XML representation of the current linkcheck result.
-     *
-     * @return the XML linkcheck result as a string.
-     */
-    public String toXML()
-    {
-        StringBuffer buf = new StringBuffer();
-
-        buf.append( "<linkcheck>" + EOL );
-
-        FileToCheck ftc;
-
-        for ( Iterator iter = getFiles().iterator(); iter.hasNext(); )
-        {
-            ftc = (FileToCheck) iter.next();
-            buf.append( ftc.toXML( getReportLevel() ) );
-        }
-
-        ftc = null;
-
-        buf.append( "</linkcheck>" + EOL );
-
-        return buf.toString();
     }
 
     /**
@@ -511,83 +607,47 @@ public final class LinkCheck
         if ( LOG.isDebugEnabled() )
         {
             Runtime r = Runtime.getRuntime();
-            LOG.debug( "Memory: " + ( r.totalMemory() - r.freeMemory() ) / MEG + "M/" + r.totalMemory() / MEG
-                            + "M" );
+            LOG.debug( "Memory: " + ( r.totalMemory() - r.freeMemory() ) / MEG + "M/" + r.totalMemory() / MEG + "M" );
         }
     }
 
     /**
      * Create the XML document from the currently available details.
      *
-     * @throws FileNotFoundException
-     *             when the output file previously provided does not exist.
+     * @throws IOException if any
      */
-    private void createDocument() throws FileNotFoundException
+    private void createDocument()
+        throws IOException
     {
-        if ( this.output == null )
+        if ( this.reportOutput == null )
         {
             return;
         }
 
-        File dir = this.output.getParentFile();
-
+        File dir = this.reportOutput.getParentFile();
         if ( dir != null )
         {
             dir.mkdirs();
         }
 
-        PrintWriter out;
-
-        String encoding = getOutputEncoding();
-
-        if ( encoding == null )
+        FileWriter writer = null;
+        LinkcheckModelXpp3Writer xpp3Writer = new LinkcheckModelXpp3Writer();
+        try
         {
-            OutputStreamWriter osw = new OutputStreamWriter( new FileOutputStream( this.output ) );
-
-            out = new PrintWriter( osw );
-
-            encoding = osw.getEncoding();
+            writer = new FileWriter( this.reportOutput );
+            xpp3Writer.write( writer, getModel() );
         }
-        else
+        finally
         {
-            try
-            {
-                out = new PrintWriter( new OutputStreamWriter( new FileOutputStream( this.output ), encoding ) );
-            }
-            catch ( UnsupportedEncodingException e )
-            {
-                if ( LOG.isDebugEnabled() )
-                {
-                    LOG.debug( "Unsupported encoding specified: " + encoding + ", using default." );
-                }
-
-                OutputStreamWriter osw = new OutputStreamWriter( new FileOutputStream( this.output ) );
-
-                out = new PrintWriter( osw );
-
-                encoding = osw.getEncoding();
-            }
+            IOUtil.close( writer );
         }
-
-        StringBuffer buffer = new StringBuffer();
-
-        buffer.append( "<?xml version=\"1.0\" encoding=\"" ).append( encoding ).append( "\" ?>" + EOL );
-
-        out.write( buffer.toString() );
-
-        out.write( toXML() );
-
-        out.close();
-
-        out = null;
-
-        buffer = null;
 
         dir = null;
     }
 
     /** Custom FilenameFilter used to search html files */
-    static class CustomFilenameFilter implements FilenameFilter
+    static class CustomFilenameFilter
+        implements FilenameFilter
     {
         /** {@inheritDoc} */
         public boolean accept( File dir, String name )
@@ -599,7 +659,7 @@ public final class LinkCheck
                 return true;
             }
 
-            if ( name.endsWith( ".html" ) || name.endsWith( ".htm" ) )
+            if ( name.toLowerCase().endsWith( ".html" ) || name.toLowerCase().endsWith( ".htm" ) )
             {
                 return true;
             }
@@ -607,5 +667,4 @@ public final class LinkCheck
             return false;
         }
     }
-
 }

@@ -19,6 +19,8 @@ package org.apache.maven.doxia.linkcheck.validation;
  * under the License.
  */
 
+import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
+
 /**
  * Fake links check when maven is offline
  *
@@ -31,7 +33,7 @@ public final class OfflineHTTPLinkValidator extends HTTPLinkValidator
     /** {@inheritDoc} */
     public LinkValidationResult validateLink( LinkValidationItem lvi )
     {
-        return new LinkValidationResult( LinkValidationResult.WARNING, false, "Maven is offline. Link not checked." );
+        return new LinkValidationResult( LinkcheckFileResult.WARNING_LEVEL, false, "Maven is offline. Link not checked." );
     }
 
 }
