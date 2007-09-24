@@ -33,7 +33,6 @@ under the License.
   <modules>
     <module>doxia-editor</module>
     <module>doxia-linkcheck</module>
-    <module>doxia-module-fo</module>
     <module>doxia-module-mediawiki</module>
   </modules>
 </project>
