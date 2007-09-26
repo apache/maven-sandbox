@@ -33,7 +33,7 @@ under the License.
     <class>
       <name>HttpBean</name>
       <description><![CDATA[
-         Http bean to defined the http protocol.
+         Http bean to encapsulate the supported HTTP parameters.
 
          @see org.apache.commons.httpclient.HttpMethod
       ]]></description>
