@@ -71,14 +71,14 @@ public final class LinkCheck
     /** excluded links. */
     private String[] excludedLinks = null;
 
-    /** HTTP method to use. Currently supported are "get" and "head". */
-    private String httpMethod;
+    /** Online mode. */
+    private boolean online;
+
+    /** Bean enncapsuling some https parameters */
+    private HttpBean http;
 
     /** Internal LinkValidatorManager. */
     private LinkValidatorManager lvm = null;
-
-    /** Online mode. */
-    private boolean online;
 
     /** Report output file for xml document. */
     private File reportOutput;
@@ -196,66 +196,6 @@ public final class LinkCheck
     }
 
     /**
-     * The HTTP method to use. Currently supported are "GET" and "HEAD".
-     * <dl>
-     * <dt>HTTP GET</dt>
-     * <dd>
-     * The HTTP GET method is defined in section 9.3 of
-     * <a HREF="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
-     * <blockquote>
-     * The GET method means retrieve whatever information (in the form of an
-     * entity) is identified by the Request-URI.
-     * </blockquote>
-     * </dd>
-     * <dt>HTTP HEAD</dt>
-     * <dd>
-     * The HTTP HEAD method is defined in section 9.4 of
-     * <a HREF="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
-     * <blockquote>
-     * The HEAD method is identical to GET except that the server MUST NOT
-     * return a message-body in the response.
-     * </blockquote>
-     * </dd>
-     * </dl>
-     *
-     * @return the method
-     */
-    public String getHttpMethod()
-    {
-        return this.httpMethod;
-    }
-
-    /**
-     * The HTTP method to use. Currently supported are "GET" and "HEAD".
-     * <dl>
-     * <dt>HTTP GET</dt>
-     * <dd>
-     * The HTTP GET method is defined in section 9.3 of
-     * <a HREF="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
-     * <blockquote>
-     * The GET method means retrieve whatever information (in the form of an
-     * entity) is identified by the Request-URI.
-     * </blockquote>
-     * </dd>
-     * <dt>HTTP HEAD</dt>
-     * <dd>
-     * The HTTP HEAD method is defined in section 9.4 of
-     * <a HREF="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
-     * <blockquote>
-     * The HEAD method is identical to GET except that the server MUST NOT
-     * return a message-body in the response.
-     * </blockquote>
-     * </dd>
-     * </dl>
-     *
-     * @param meth the method to set.
-     */
-    public void setHttpMethod( String meth )
-    {
-        this.httpMethod = meth;
-    }
-
-    /**
      * Sets the LinkValidatorManager.
      *
      * @param validator the LinkValidatorManager to set
@@ -298,7 +238,7 @@ public final class LinkCheck
 
         if ( isOnline() )
         {
-            OnlineHTTPLinkValidator olv = new OnlineHTTPLinkValidator();
+            OnlineHTTPLinkValidator olv = new OnlineHTTPLinkValidator( http );
 
             if ( this.baseURL != null )
             {
@@ -384,6 +324,26 @@ public final class LinkCheck
     public LinkcheckModel getModel()
     {
         return model;
+    }
+
+    /**
+     * The http parameters bean.
+     *
+     * @return the http parameters bean.
+     */
+    public HttpBean getHttp()
+    {
+        return http;
+    }
+
+    /**
+     * Sets the http parameters bean.
+     *
+     * @param http parameters bean.
+     */
+    public void setHttp( HttpBean http )
+    {
+        this.http = http;
     }
 
     /**

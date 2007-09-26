@@ -88,6 +88,17 @@ under the License.
               <version>1.0.0</version>
             </configuration>
           </execution>
+          <execution>
+            <id>httpbean</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <model>src/main/mdo/httpbean.mdo</model>
+              <version>1.0.0</version>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>

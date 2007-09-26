@@ -40,7 +40,9 @@ import org.apache.commons.httpclient.methods.HeadMethod;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.maven.doxia.linkcheck.HttpBean;
 import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
+import org.codehaus.plexus.util.StringUtils;
 
 
 /**
@@ -48,6 +50,7 @@ import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
  *
  * @author <a href="mailto:bwalding@apache.org">Ben Walding</a>
  * @author <a href="mailto:aheritier@apache.org">Arnaud Heritier</a>
+ * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
 public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
@@ -64,26 +67,8 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
     /** Use the head method to test pages. */
     private static final String HEAD_METHOD = "head";
 
-    /** The proxy host. */
-    private String proxyHost;
-
-    /** The proxy port. */
-    private int proxyPort;
-
-    /** The proxy user. */
-    private String proxyUser;
-
-    /** The proxy pass. */
-    private String proxyPass;
-
-    /** The proxy NtlmHost. */
-    private String proxyNtlmHost;
-
-    /** The proxy NtlmDomain. */
-    private String proxyNtlmDomain;
-
-    /** The http method to use. */
-    private String method = HEAD_METHOD;
+    /** The http bean encapsuling all http parameters supported. */
+    private HttpBean http;
 
     /** The base URL for links that start with '/'. */
     private String baseURL;
@@ -96,73 +81,27 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
      */
     public OnlineHTTPLinkValidator()
     {
-        this( HEAD_METHOD );
+        this( new HttpBean() );
     }
 
     /**
      * Constructor: initialize settings.
      *
-     * @param method The http method to use. Should be one of "head" or "get".
+     * @param bean The http bean encapsuling all HTTP parameters supported.
      */
-    public OnlineHTTPLinkValidator( String method )
+    public OnlineHTTPLinkValidator( HttpBean bean )
     {
-        this( method, null, null, null, null, null, null );
-    }
+        if ( bean == null )
+        {
+            bean = new HttpBean();
+        }
 
-    /**
-     * Constructor: initialize settings.
-     *
-     * @param method The http method to use. Should be one of "head" or "get".
-     * @param pHost The proxy host.
-     * @param pPort The proxy port.
-     * @param pUser The proxy user.
-     * @param pPass The proxy pass.
-     * @param pNtlmHost The proxy NtlmHost.
-     * @param pNtlmDomain The proxy NtlmDomain.
-     */
-    public OnlineHTTPLinkValidator( String method, String pHost, String pPort, String pUser,
-                                    String pPass, String pNtlmHost, String pNtlmDomain )
-    {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Will use method : [" + method + "]" );
+            LOG.debug( "Will use method : [" + bean.getMethod() + "]" );
         }
 
-        this.method = method;
-
-        if ( pHost == null || pHost.trim().equals( "" ) )
-        {
-            this.proxyHost = null;
-        }
-        else
-        {
-            this.proxyHost = pHost;
-
-            if ( pPort != null )
-            {
-                try
-                {
-                    this.proxyPort = Integer.parseInt( pPort );
-                }
-                catch ( NumberFormatException e )
-                {
-                    LOG.warn( "Invalid number for Proxy Port:" + pPort );
-                    LOG.warn( "Proxy Port won't be used." );
-                    this.proxyPort = -1;
-                }
-            }
-
-            this.proxyUser = pUser;
-
-            this.proxyPass = pPass;
-
-            if ( pNtlmHost != null && !pNtlmHost.trim().equals( "" ) )
-            {
-                this.proxyNtlmHost = pNtlmHost;
-                this.proxyNtlmDomain = pNtlmDomain;
-            }
-
-        }
+        this.http = bean;
 
         initHttpClient();
     }
@@ -186,7 +125,6 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
     {
         this.baseURL = url;
     }
-
 
     /** {@inheritDoc} */
     public LinkValidationResult validateLink( LinkValidationItem lvi )
@@ -293,33 +231,34 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
 
         HttpState state = new HttpState();
 
-        if ( this.proxyHost != null )
+        if ( StringUtils.isNotEmpty( this.http.getProxyHost() ) )
         {
-            hc.setProxy( this.proxyHost, this.proxyPort );
+            hc.setProxy( this.http.getProxyHost(), this.http.getProxyPort() );
 
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Proxy Host:" + this.proxyHost );
-                LOG.debug( "Proxy Port:" + this.proxyPort );
+                LOG.debug( "Proxy Host:" + this.http.getProxyHost() );
+                LOG.debug( "Proxy Port:" + this.http.getProxyPort() );
             }
 
-            if ( this.proxyUser != null && this.proxyPass != null )
+            if ( StringUtils.isNotEmpty( this.http.getProxyUser() ) && this.http.getProxyPassword() != null )
             {
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "Proxy User:" + this.proxyUser );
+                    LOG.debug( "Proxy User:" + this.http.getProxyUser() );
                 }
 
                 Credentials credentials;
 
-                if ( this.proxyNtlmHost != null )
+                if ( StringUtils.isNotEmpty( this.http.getProxyNtlmHost() ) )
                 {
-                    credentials =
-                        new NTCredentials( this.proxyUser, this.proxyPass, this.proxyNtlmHost, this.proxyNtlmDomain );
+                    credentials = new NTCredentials( this.http.getProxyUser(), this.http.getProxyPassword(), this.http
+                        .getProxyNtlmHost(), this.http.getProxyNtlmDomain() );
                 }
                 else
                 {
-                    credentials = new UsernamePasswordCredentials( this.proxyUser, this.proxyPass );
+                    credentials = new UsernamePasswordCredentials( this.http.getProxyUser(), this.http
+                        .getProxyPassword() );
                 }
 
                 state.setProxyCredentials( null, null, credentials );
@@ -356,24 +295,23 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
 
         HttpMethod hm;
 
-        if ( HEAD_METHOD.equals( this.method.toLowerCase() ) )
+        if ( HEAD_METHOD.equals( this.http.getMethod().toLowerCase() ) )
         {
             hm = new HeadMethod( link );
         }
-        else if ( GET_METHOD.equals( this.method.toLowerCase() ) )
+        else if ( GET_METHOD.equals( this.http.getMethod().toLowerCase() ) )
         {
             hm = new GetMethod( link );
         }
         else
         {
-            LOG.error( "Unsupported method: " + method + ", using 'get'." );
+            LOG.error( "Unsupported method: " + this.http.getMethod() + ", using 'get'." );
             hm = new GetMethod( link );
         }
 
         try
         {
-            // We want to do it manually
-            hm.setFollowRedirects( false );
+            hm.setFollowRedirects( this.http.isFollowRedirects() );
 
             URL url = new URL( link );
 
@@ -447,5 +385,4 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
 
         return hm;
     }
-
 }
