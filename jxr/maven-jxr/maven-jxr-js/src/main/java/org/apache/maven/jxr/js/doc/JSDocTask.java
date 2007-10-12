@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.js.doc;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,8 +17,6 @@
  * limitations under the License.
  */
 
-package org.apache.maven.jxr.js.doc;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
@@ -25,17 +25,23 @@ import org.apache.tools.ant.Task;
  *
  * @version $Id: $
  */
-public class JSDocTask extends Task {
+public class JSDocTask
+    extends Task
+{
 
     private String jSDir;
+
     private String destDir;
+
     private GenerateHTMLIndex index;
 
     /**
      * @see Task#execute()
      */
-    public void execute() throws BuildException {
-        index = new GenerateHTMLIndex(jSDir, destDir);
+    public void execute()
+        throws BuildException
+    {
+        index = new GenerateHTMLIndex( jSDir, destDir );
     }
 
     /**
@@ -43,7 +49,8 @@ public class JSDocTask extends Task {
      *
      * @param destDir The destDir to set
      */
-    public void setDestDir(String destDir) {
+    public void setDestDir( String destDir )
+    {
         this.destDir = destDir;
     }
 
@@ -52,7 +59,8 @@ public class JSDocTask extends Task {
      *
      * @param jSDir The jSDir to set
      */
-    public void setJSDir(String jSDir) {
+    public void setJSDir( String jSDir )
+    {
         this.jSDir = jSDir;
     }
 }
