@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 
@@ -32,8 +33,10 @@ import java.util.Enumeration;
  *
  * @version $Id: $
  */
-public class VariableDef extends Definition
-        implements TypedDef, Externalizable {
+public class VariableDef
+    extends Definition
+    implements TypedDef, Externalizable
+{
 
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( VariableDef.class );
@@ -52,7 +55,8 @@ public class VariableDef extends Definition
     /**
      * Default constructor needs to be public for deserialization.
      */
-    public VariableDef() {
+    public VariableDef()
+    {
     }
 
     /**
@@ -63,12 +67,13 @@ public class VariableDef extends Definition
      * @param type
      * @param parentScope
      */
-    VariableDef(String name, // the variable's name
-                Occurrence occ, // where it was defined
-                ClassDef type, // the type of the variable
-                ScopedDef parentScope) {    // which scope owns it
+    VariableDef( String name, // the variable's name
+                 Occurrence occ, // where it was defined
+                 ClassDef type, // the type of the variable
+                 ScopedDef parentScope )
+    { // which scope owns it
 
-        super(name, occ, parentScope);
+        super( name, occ, parentScope );
 
         this.type = type;
     }
@@ -76,50 +81,51 @@ public class VariableDef extends Definition
     /**
      * @see org.apache.maven.jxr.java.src.symtab.TypedDef#getType()
      */
-    public Definition getType() {
+    public Definition getType()
+    {
         return type;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateReferences(java.io.FileWriter)
      */
-    public void generateReferences(FileWriter output) {
+    public void generateReferences( FileWriter output )
+    {
 
         String linkString;
         String linkFileName;
 
-        try {
-            output.write("<p class=\"variableReflist\">");
+        try
+        {
+            output.write( "<p class=\"variableReflist\">" );
 
-            String nameString =
-                    "<p class=\"variableReflistHeader\">Variable: <a name="
-                    + getName() + " href=" + getSourceName() + "#"
-                    + getClassScopeName() + ">" + getName() + "</a></p>";
+            String nameString = "<p class=\"variableReflistHeader\">Variable: <a name=" + getName() + " href="
+                + getSourceName() + "#" + getClassScopeName() + ">" + getName() + "</a></p>";
 
-            output.write(nameString);
+            output.write( nameString );
 
             JavaVector v = getReferences();
             Enumeration e = v.elements();
 
-            while (e.hasMoreElements()) {
+            while ( e.hasMoreElements() )
+            {
                 Occurrence o = (Occurrence) e.nextElement();
 
-                if (o != null) {
-                    linkFileName = getOccurrencePath(o) + o.getLinkReference();
-                    linkString = "<p class=\"variableRefItem\"><a href="
-                            + linkFileName + ">" + getName() + " in "
-                            + o.getPackageName() + "."
-                            + o.getClassName() + "." + o.getMethodName()
-                            + " (" + o.getFile().getName() + ":"
-                            + Integer.toString(o.getLine())
-                            + ")</a></p>\n";
+                if ( o != null )
+                {
+                    linkFileName = getOccurrencePath( o ) + o.getLinkReference();
+                    linkString = "<p class=\"variableRefItem\"><a href=" + linkFileName + ">" + getName() + " in "
+                        + o.getPackageName() + "." + o.getClassName() + "." + o.getMethodName() + " ("
+                        + o.getFile().getName() + ":" + Integer.toString( o.getLine() ) + ")</a></p>\n";
 
-                    output.write(linkString);
+                    output.write( linkString );
                 }
             }
 
-            output.write("</p>");
-        } catch (IOException e) {
+            output.write( "</p>" );
+        }
+        catch ( IOException e )
+        {
             log.error( "IOException: " + e.getMessage(), e );
         }
     }
@@ -127,41 +133,42 @@ public class VariableDef extends Definition
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public void generateTags(HTMLTagContainer tagList) {
+    public void generateTags( HTMLTagContainer tagList )
+    {
 
-        String nameString = "<a class=\"varDef\" name=" + getClassScopeName()
-                + " href=" + getRefName() + "#"
-                + getClassScopeName() + ">" + getName() + "</a>";
+        String nameString = "<a class=\"varDef\" name=" + getClassScopeName() + " href=" + getRefName() + "#"
+            + getClassScopeName() + ">" + getName() + "</a>";
 
         // generate tag for this method
-        if (getOccurrence() == null) {
+        if ( getOccurrence() == null )
+        {
             return;
         }
 
-        HTMLTag t = new HTMLTag(getOccurrence(), getName(), nameString);
+        HTMLTag t = new HTMLTag( getOccurrence(), getName(), nameString );
 
-        tagList.addElement(t);
+        tagList.addElement( t );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getOccurrenceTag(org.apache.maven.jxr.java.src.symtab.Occurrence)
      */
-    public HTMLTag getOccurrenceTag(Occurrence occ) {
+    public HTMLTag getOccurrenceTag( Occurrence occ )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("getOccurrenceTag(Occurrence) - Occurrence occ=" + occ);
+            log.debug( "getOccurrenceTag(Occurrence) - Occurrence occ=" + occ );
         }
 
         String linkString;
         String linkFileName;
 
-        linkFileName = getRelativePath(occ) + getSourceName();
-        linkString = "<a class=\"varRef\" title=\"" + getType().getName()
-                + "\" " + "href=" + linkFileName + "#"
-                + getClassScopeName() + ">" + getName() + "</a>";
+        linkFileName = getRelativePath( occ ) + getSourceName();
+        linkString = "<a class=\"varRef\" title=\"" + getType().getName() + "\" " + "href=" + linkFileName + "#"
+            + getClassScopeName() + ">" + getName() + "</a>";
 
-        HTMLTag t = new HTMLTag(occ, getName(), linkString);
+        HTMLTag t = new HTMLTag( occ, getName(), linkString );
 
         return t;
     }
@@ -169,53 +176,60 @@ public class VariableDef extends Definition
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#resolveTypes(org.apache.maven.jxr.java.src.symtab.SymbolTable)
      */
-    void resolveTypes(SymbolTable symbolTable) {
+    void resolveTypes( SymbolTable symbolTable )
+    {
 
-        if ((type != null) && (type instanceof DummyClass)) {
+        if ( ( type != null ) && ( type instanceof DummyClass ) )
+        {
 
             // resolve the type of the variable
-            ClassDef newType = symbolTable.lookupDummy(type);
+            ClassDef newType = symbolTable.lookupDummy( type );
 
-            if (newType != null) {
-                newType.addReference(type.getOccurrence());
+            if ( newType != null )
+            {
+                newType.addReference( type.getOccurrence() );
 
                 type = newType;
             }
         }
 
-        super.resolveTypes(symbolTable);
+        super.resolveTypes( symbolTable );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getClassScopeName()
      */
-    String getClassScopeName() {
+    String getClassScopeName()
+    {
 
         String result;
         Definition parentScope = getParentScope();
         Definition grandParentScope = parentScope.getParentScope();
 
-        if (parentScope instanceof MethodDef)                 // method variable
+        if ( parentScope instanceof MethodDef ) // method variable
         {
-            Definition greatGrandParentScope =
-                    grandParentScope.getParentScope();
+            Definition greatGrandParentScope = grandParentScope.getParentScope();
 
-            if (greatGrandParentScope instanceof ClassDef)    // inner class
+            if ( greatGrandParentScope instanceof ClassDef ) // inner class
             {
-                result = greatGrandParentScope.getName() + "."
-                        + grandParentScope.getName();
-            } else {
+                result = greatGrandParentScope.getName() + "." + grandParentScope.getName();
+            }
+            else
+            {
                 result = grandParentScope.getName();
             }
 
             result += "." + parentScope.getName();
-        } else                                                // class variable
+        }
+        else
+        // class variable
         {
-            if (grandParentScope instanceof ClassDef)         // inner class
+            if ( grandParentScope instanceof ClassDef ) // inner class
             {
-                result = grandParentScope.getName() + "."
-                        + parentScope.getName();
-            } else {
+                result = grandParentScope.getName() + "." + parentScope.getName();
+            }
+            else
+            {
                 result = parentScope.getName();
             }
         }
@@ -228,56 +242,64 @@ public class VariableDef extends Definition
     /**
      * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
      */
-    public void writeExternal(ObjectOutput out) throws java.io.IOException {
+    public void writeExternal( ObjectOutput out )
+        throws java.io.IOException
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("writeExternal(ObjectOutput) - persisting VariableDef "+getQualifiedName());
+            log.debug( "writeExternal(ObjectOutput) - persisting VariableDef " + getQualifiedName() );
         }
 
-        out.writeObject(getName());
+        out.writeObject( getName() );
 
         Definition parentScopeOut = getParentScope();
 
-        if (!(parentScopeOut instanceof MethodDef)) {
-            parentScopeOut = new ClassDefProxy((ClassDef) parentScopeOut);
+        if ( !( parentScopeOut instanceof MethodDef ) )
+        {
+            parentScopeOut = new ClassDefProxy( (ClassDef) parentScopeOut );
         }
 
-        out.writeObject(parentScopeOut);
-        out.writeObject(getOccurrence());
+        out.writeObject( parentScopeOut );
+        out.writeObject( getOccurrence() );
 
         ClassDef typeOut;
 
-        if (type instanceof DummyClass) {
+        if ( type instanceof DummyClass )
+        {
             typeOut = type;
-        } else {
-            typeOut = new ClassDefProxy(type);
+        }
+        else
+        {
+            typeOut = new ClassDefProxy( type );
         }
 
-        out.writeObject(typeOut);
+        out.writeObject( typeOut );
     }
 
     /**
      * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
      */
-    public void readExternal(ObjectInput in)
-            throws java.io.IOException, ClassNotFoundException {
+    public void readExternal( ObjectInput in )
+        throws java.io.IOException, ClassNotFoundException
+    {
 
-        setName((String) in.readObject());
-        SymbolTable.startReadExternal("VariableDef " + getName());
-        setParentScope((ScopedDef) in.readObject());
-        setOccurrence((Occurrence) in.readObject());
+        setName( (String) in.readObject() );
+        SymbolTable.startReadExternal( "VariableDef " + getName() );
+        setParentScope( (ScopedDef) in.readObject() );
+        setOccurrence( (Occurrence) in.readObject() );
 
         type = (ClassDef) in.readObject();
 
-        setupFileNames();    // TBD: still need this?
+        setupFileNames(); // TBD: still need this?
         SymbolTable.endReadExternal();
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#accept(org.apache.maven.jxr.java.src.symtab.Visitor)
      */
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+    public void accept( Visitor visitor )
+    {
+        visitor.visit( this );
     }
 }

@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.util;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,21 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.util;
 
 /**
  * Class SortableString
  *
  * @version $Id: $
  */
-public class SortableString implements JSComparable {
+public class SortableString
+    implements JSComparable
+{
 
     /**
      * Method getString
      *
      * @return
      */
-    public String getString() {
+    public String getString()
+    {
         return _s;
     }
 
@@ -37,15 +41,17 @@ public class SortableString implements JSComparable {
      *
      * @param s
      */
-    public SortableString(String s) {
+    public SortableString( String s )
+    {
         _s = s;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.util.JSComparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o) {
-        return _s.compareTo(((SortableString) o).getString());
+    public int compareTo( Object o )
+    {
+        return _s.compareTo( ( (SortableString) o ).getString() );
     }
 
     /** Field _s */

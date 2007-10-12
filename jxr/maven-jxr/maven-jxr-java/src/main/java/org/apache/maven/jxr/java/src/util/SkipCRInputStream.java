@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.util;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.util;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -25,15 +26,18 @@ import java.io.InputStream;
  *
  * @version $Id: $
  */
-public class SkipCRInputStream extends BufferedInputStream {
+public class SkipCRInputStream
+    extends BufferedInputStream
+{
 
     /**
      * Constructor SkipCRInputStream
      *
      * @param s
      */
-    public SkipCRInputStream(InputStream s) {
-        super(s);
+    public SkipCRInputStream( InputStream s )
+    {
+        super( s );
     }
 
     /**
@@ -42,18 +46,22 @@ public class SkipCRInputStream extends BufferedInputStream {
      * @param s
      * @param size
      */
-    public SkipCRInputStream(InputStream s, int size) {
-        super(s, size);
+    public SkipCRInputStream( InputStream s, int size )
+    {
+        super( s, size );
     }
 
     /**
      * @see java.io.BufferedInputStream#read()
      */
-    public int read() throws IOException {
+    public int read()
+        throws IOException
+    {
 
         int c = super.read();
 
-        if (c == 13) {
+        if ( c == 13 )
+        {
             return super.read();
         }
 

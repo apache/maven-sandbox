@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.maven.jxr.java.src.util.JSComparable;
 
@@ -23,7 +24,9 @@ import org.apache.maven.jxr.java.src.util.JSComparable;
  *
  * @version $Id: $
  */
-public class ClassTag implements JSComparable {
+public class ClassTag
+    implements JSComparable
+{
 
     // ==========================================================================
     // ==  Class Variables
@@ -44,7 +47,8 @@ public class ClassTag implements JSComparable {
      *
      * @return
      */
-    public String getKey() {
+    public String getKey()
+    {
         return _key;
     }
 
@@ -53,7 +57,8 @@ public class ClassTag implements JSComparable {
      *
      * @return
      */
-    public String getTag() {
+    public String getTag()
+    {
         return _tag;
     }
 
@@ -63,7 +68,8 @@ public class ClassTag implements JSComparable {
      * @param key
      * @param tag
      */
-    ClassTag(String key, String tag) {
+    ClassTag( String key, String tag )
+    {
 
         _key = key;
         _tag = tag;
@@ -72,17 +78,19 @@ public class ClassTag implements JSComparable {
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    public String toString()
+    {
         return _tag;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.util.JSComparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o) {
+    public int compareTo( Object o )
+    {
 
         ClassTag t = (ClassTag) o;
 
-        return _key.compareTo(t.getKey());
+        return _key.compareTo( t.getKey() );
     }
 }

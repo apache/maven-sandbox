@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,40 +16,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 /**
  * All visitors implement this public.
  *
  * @version $Id: $
  */
-public interface Visitor {
+public interface Visitor
+{
 
     /**
      * Method visit
      *
      * @param def
      */
-    public void visit(PackageDef def);
+    public void visit( PackageDef def );
 
     /**
      * Method visit
      *
      * @param def
      */
-    public void visit(ClassDef def);
+    public void visit( ClassDef def );
 
     /**
      * Method visit
      *
      * @param def
      */
-    public void visit(MethodDef def);
+    public void visit( MethodDef def );
 
     /**
      * Method visit
      *
      * @param def
      */
-    public void visit(VariableDef def);
+    public void visit( VariableDef def );
 }

@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.jxr.java.src.symtab.ReferenceTypes;
@@ -52,7 +53,8 @@ import java.util.Vector;
  *
  * @version $Id: $
  */
-public class Pass2 {
+public class Pass2
+{
 
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( Pass2.class );
@@ -61,16 +63,16 @@ public class Pass2 {
     public static final String DEFAULT_DIR = ".";
 
     /** Field USAGE */
-    public static final String USAGE = "Usage: java " + "-Doutdir=<doc dir>"
-            + "[-Dtitle=<title>]"
-            + "[-Dverbose=true]" + "javasrc.Pass2 ";
+    public static final String USAGE = "Usage: java " + "-Doutdir=<doc dir>" + "[-Dtitle=<title>]" + "[-Dverbose=true]"
+        + "javasrc.Pass2 ";
 
     /**
      * Method getOutDir
      *
      * @return
      */
-    public String getOutDir() {
+    public String getOutDir()
+    {
         return _outDir;
     }
 
@@ -79,7 +81,8 @@ public class Pass2 {
      *
      * @param d
      */
-    public void setOutDir(String d) {
+    public void setOutDir( String d )
+    {
         _outDir = d;
     }
 
@@ -88,7 +91,8 @@ public class Pass2 {
      *
      * @return
      */
-    public String getTitle() {
+    public String getTitle()
+    {
         return _title;
     }
 
@@ -97,7 +101,8 @@ public class Pass2 {
      *
      * @param t
      */
-    public void setTitle(String t) {
+    public void setTitle( String t )
+    {
         _title = t;
     }
 
@@ -106,7 +111,8 @@ public class Pass2 {
      *
      * @return
      */
-    public boolean getVerbose() {
+    public boolean getVerbose()
+    {
         return _verbose;
     }
 
@@ -115,14 +121,16 @@ public class Pass2 {
      *
      * @param val
      */
-    public void setVerbose(boolean val) {
+    public void setVerbose( boolean val )
+    {
         _verbose = val;
     }
 
     /**
      * Constructor Pass2
      */
-    public Pass2() {
+    public Pass2()
+    {
         packageNames = new ArrayList();
         packageClasses = new Hashtable();
     }
@@ -133,23 +141,25 @@ public class Pass2 {
      * @param args
      * @throws IOException
      */
-    public void run(String[] args) throws IOException {
+    public void run( String[] args )
+        throws IOException
+    {
 
-        File outDir = new File(getOutDir());
+        File outDir = new File( getOutDir() );
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("run(String[]) - File outDir=" + outDir);
+            log.debug( "run(String[]) - File outDir=" + outDir );
         }
 
-        walkDirectories(null, outDir);
-        Collections.sort(packageNames, stringComparator());
+        walkDirectories( null, outDir );
+        Collections.sort( packageNames, stringComparator() );
 
         // Create package files
         // I.e. generate HTML list of classes in each package
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("run(String[]) - Writing package files");
+            log.debug( "run(String[]) - Writing package files" );
         }
         createPackageFiles();
         createPackageSummaryFiles();
@@ -170,34 +180,37 @@ public class Pass2 {
      * @param outDir
      * @throws IOException
      */
-    private void walkDirectories(String packageName, File outDir)
-            throws IOException {
+    private void walkDirectories( String packageName, File outDir )
+        throws IOException
+    {
 
-        File refFile = new File(outDir, "references.txt");
+        File refFile = new File( outDir, "references.txt" );
 
-        if (refFile.exists()) {
+        if ( refFile.exists() )
+        {
 
             // packageNames.add(packageName);
             // processRefFile(packageName, refFile);
-            processRefFile(packageName, refFile);
+            processRefFile( packageName, refFile );
 
-            HashMap classes = (HashMap) packageClasses.get(packageName);
+            HashMap classes = (HashMap) packageClasses.get( packageName );
 
-            if (classes.size() > 0) {
-                packageNames.add(packageName);
+            if ( classes.size() > 0 )
+            {
+                packageNames.add( packageName );
             }
         }
 
         File[] entries = outDir.listFiles();
 
-        for (int i = 0; i < entries.length; i++) {
-            if (entries[i].isDirectory()) {
-                String newPackageName = (packageName == null)
-                        ? entries[i].getName()
-                        : packageName + "."
-                        + entries[i].getName();
+        for ( int i = 0; i < entries.length; i++ )
+        {
+            if ( entries[i].isDirectory() )
+            {
+                String newPackageName = ( packageName == null ) ? entries[i].getName() : packageName + "."
+                    + entries[i].getName();
 
-                walkDirectories(newPackageName, entries[i]);
+                walkDirectories( newPackageName, entries[i] );
             }
         }
     }
@@ -209,28 +222,31 @@ public class Pass2 {
      * @param refFile
      * @throws IOException
      */
-    private void processRefFile(String packageName, File refFile)
-            throws IOException {
-        if (log.isDebugEnabled())
+    private void processRefFile( String packageName, File refFile )
+        throws IOException
+    {
+        if ( log.isDebugEnabled() )
         {
-            log.debug("processRefFile(String, File) - File refFile=" + refFile);
+            log.debug( "processRefFile(String, File) - File refFile=" + refFile );
         }
 
-        HashMap classes = (HashMap) packageClasses.get(packageName);
+        HashMap classes = (HashMap) packageClasses.get( packageName );
 
-        if (classes == null) {
+        if ( classes == null )
+        {
             classes = new HashMap();
         }
 
         // load the entire file
         String line;
-        FileInputStream fis = new FileInputStream(refFile);
-        InputStreamReader isr = new InputStreamReader(fis);
-        BufferedReader br = new BufferedReader(isr);
+        FileInputStream fis = new FileInputStream( refFile );
+        InputStreamReader isr = new InputStreamReader( fis );
+        BufferedReader br = new BufferedReader( isr );
         Vector v = new Vector();
 
-        while ((line = br.readLine()) != null) {
-            v.addElement(line);
+        while ( ( line = br.readLine() ) != null )
+        {
+            v.addElement( line );
         }
 
         br.close();
@@ -239,77 +255,87 @@ public class Pass2 {
 
         String[] lines = new String[v.size()];
 
-        v.copyInto(lines);
+        v.copyInto( lines );
 
         // sort the lines
-        Arrays.sort(lines, stringComparator());
+        Arrays.sort( lines, stringComparator() );
 
         // process one referentFileClass (=one source file) at a time
         BufferedWriter bw = null;
         String prevReferentFileClass = null;
         String prevReferentTag = null;
 
-        for (int i = 0; i < lines.length; i++) {
+        for ( int i = 0; i < lines.length; i++ )
+        {
             line = lines[i];
 
-            if (line.charAt(0) == '#') {
+            if ( line.charAt( 0 ) == '#' )
+            {
                 continue;
             }
 
-            Reference ref = new Reference(line);
+            Reference ref = new Reference( line );
 
-            if (!ref.referentFileClass.equals(prevReferentFileClass)) {
+            if ( !ref.referentFileClass.equals( prevReferentFileClass ) )
+            {
 
                 // close current section, if any
-                if (prevReferentTag != null) {
-                    closeSection(bw, prevReferentTag);
+                if ( prevReferentTag != null )
+                {
+                    closeSection( bw, prevReferentTag );
                 }
 
                 // close current output file, if any
-                if (bw != null) {
-                    closeOutputFile(bw, prevReferentFileClass);
+                if ( bw != null )
+                {
+                    closeOutputFile( bw, prevReferentFileClass );
                 }
 
                 // open new output file
-                bw = openOutputFile(packageName, ref);
+                bw = openOutputFile( packageName, ref );
                 prevReferentFileClass = ref.referentFileClass;
                 prevReferentTag = null;
             }
 
-            if (!classes.containsKey(ref.referentClass)) {
-                classes.put(ref.referentClass, ref.referentFileClass);
+            if ( !classes.containsKey( ref.referentClass ) )
+            {
+                classes.put( ref.referentClass, ref.referentFileClass );
             }
 
-            if (!ref.referentTag.equals(prevReferentTag)) {
+            if ( !ref.referentTag.equals( prevReferentTag ) )
+            {
 
                 // write close-section stuff, if any
-                if (prevReferentTag != null) {
-                    closeSection(bw, prevReferentTag);
+                if ( prevReferentTag != null )
+                {
+                    closeSection( bw, prevReferentTag );
                 }
 
                 // write new heading based on new referent type
                 prevReferentTag = ref.referentTag;
 
-                openSection(bw, packageName, ref);
+                openSection( bw, packageName, ref );
             }
 
             // write link for this reference
-            if (!ref.referringMethod.equals("?")) {
-                writeLink(bw, packageName, ref);
+            if ( !ref.referringMethod.equals( "?" ) )
+            {
+                writeLink( bw, packageName, ref );
             }
         }
 
         // close the last output file
-        if (bw != null) {
-            closeOutputFile(bw, prevReferentFileClass);
-        }
-
-        if (log.isDebugEnabled())
+        if ( bw != null )
         {
-            log.debug("processRefFile(String, File) - class list for "+packageName+" is "+classes);
+            closeOutputFile( bw, prevReferentFileClass );
         }
 
-        packageClasses.put(packageName, classes);
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "processRefFile(String, File) - class list for " + packageName + " is " + classes );
+        }
+
+        packageClasses.put( packageName, classes );
     }
 
     /**
@@ -319,16 +345,17 @@ public class Pass2 {
      * @param referentFileClass
      * @throws IOException
      */
-    private void closeOutputFile(BufferedWriter bw, String referentFileClass)
-            throws IOException {
+    private void closeOutputFile( BufferedWriter bw, String referentFileClass )
+        throws IOException
+    {
 
-        bw.write("</body></html>");
+        bw.write( "</body></html>" );
         bw.flush();
         bw.close();
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("closeOutputFile(BufferedWriter, String) - close output file");
+            log.debug( "closeOutputFile(BufferedWriter, String) - close output file" );
         }
     }
 
@@ -340,30 +367,28 @@ public class Pass2 {
      * @return
      * @throws IOException
      */
-    private BufferedWriter openOutputFile(String packageName, Reference ref)
-            throws IOException {
-        if (log.isDebugEnabled())
+    private BufferedWriter openOutputFile( String packageName, Reference ref )
+        throws IOException
+    {
+        if ( log.isDebugEnabled() )
         {
-            log.debug("openOutputFile(String, Reference) - Reference ref=" + ref.referentFileClass);
+            log.debug( "openOutputFile(String, Reference) - Reference ref=" + ref.referentFileClass );
         }
 
-        File rootDir = new File(getOutDir());
-        String relPath = (packageName == null)
-                ? ref.referentFileClass
-                : packageName.replace('.', File.separatorChar)
-                + File.separatorChar + ref.referentFileClass;
+        File rootDir = new File( getOutDir() );
+        String relPath = ( packageName == null ) ? ref.referentFileClass : packageName
+            .replace( '.', File.separatorChar )
+            + File.separatorChar + ref.referentFileClass;
 
         relPath += "_java_ref.html";
 
-        File outFile = new File(rootDir, relPath);
-        FileOutputStream fos = new FileOutputStream(outFile);
-        OutputStreamWriter fw = new OutputStreamWriter(fos, "UTF-8");
-        BufferedWriter result = new BufferedWriter(fw);
+        File outFile = new File( rootDir, relPath );
+        FileOutputStream fos = new FileOutputStream( outFile );
+        OutputStreamWriter fw = new OutputStreamWriter( fos, "UTF-8" );
+        BufferedWriter result = new BufferedWriter( fw );
 
-        result.write("<html><head><link rel=\"stylesheet\" "
-                + "type=\"text/css\" " + "href=\""
-                + getBackupPath(packageName)
-                + "styles.css\"></head><body>");
+        result.write( "<html><head><link rel=\"stylesheet\" " + "type=\"text/css\" " + "href=\""
+            + getBackupPath( packageName ) + "styles.css\"></head><body>" );
 
         return result;
     }
@@ -375,14 +400,15 @@ public class Pass2 {
      * @param referentTag
      * @throws IOException
      */
-    private void closeSection(BufferedWriter bw, String referentTag)
-            throws IOException {
+    private void closeSection( BufferedWriter bw, String referentTag )
+        throws IOException
+    {
 
-        bw.write("</p>");
+        bw.write( "</p>" );
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("closeSection(BufferedWriter, String) - close section for referent " + referentTag);
+            log.debug( "closeSection(BufferedWriter, String) - close section for referent " + referentTag );
         }
     }
 
@@ -394,48 +420,46 @@ public class Pass2 {
      * @param ref
      * @throws IOException
      */
-    private void openSection(
-            BufferedWriter bw, String referentPackage, Reference ref)
-            throws IOException {
+    private void openSection( BufferedWriter bw, String referentPackage, Reference ref )
+        throws IOException
+    {
 
-        if (ref.referentType.equals(ReferenceTypes.CLASS_REF)) {
-            bw.write("<p class=\"classReflist\">");
+        if ( ref.referentType.equals( ReferenceTypes.CLASS_REF ) )
+        {
+            bw.write( "<p class=\"classReflist\">" );
 
-            String nameString =
-                    "<p class=\"classReflistHeader\">Class: <a name="
-                    + ref.referentTag + " href=" + ref.referentFileClass
-                    + "_java.html#" + ref.referentTag + ">" + ref.referentClass
-                    + "</a></p>";
+            String nameString = "<p class=\"classReflistHeader\">Class: <a name=" + ref.referentTag + " href="
+                + ref.referentFileClass + "_java.html#" + ref.referentTag + ">" + ref.referentClass + "</a></p>";
 
-            bw.write(nameString);
-        } else if (ref.referentType.equals(ReferenceTypes.METHOD_REF)) {
-            bw.write("<p class=\"methodReflist\">");
-            bw.write("<!-- hello -->");
+            bw.write( nameString );
+        }
+        else if ( ref.referentType.equals( ReferenceTypes.METHOD_REF ) )
+        {
+            bw.write( "<p class=\"methodReflist\">" );
+            bw.write( "<!-- hello -->" );
 
-            String nameString =
-                    "<p class=\"methodReflistHeader\">Method: <a name="
-                    + ref.referentTag + " href=" + ref.referentFileClass
-                    + "_java.html#" + ref.referentTag + ">" + ref.referentTag
-                    + "</a></p>";
+            String nameString = "<p class=\"methodReflistHeader\">Method: <a name=" + ref.referentTag + " href="
+                + ref.referentFileClass + "_java.html#" + ref.referentTag + ">" + ref.referentTag + "</a></p>";
 
-            bw.write(nameString);
-        } else if (ref.referentType.equals(ReferenceTypes.VARIABLE_REF)) {
-            bw.write("<p class=\"variableReflist\">");
+            bw.write( nameString );
+        }
+        else if ( ref.referentType.equals( ReferenceTypes.VARIABLE_REF ) )
+        {
+            bw.write( "<p class=\"variableReflist\">" );
 
-            String nameString =
-                    "<p class=\"variableReflistHeader\">Variable: <a name="
-                    + ref.referentTag + " href=" + ref.referentFileClass
-                    + "_java.html#" + ref.referentTag + ">" + ref.referentTag
-                    + "</a></p>";
+            String nameString = "<p class=\"variableReflistHeader\">Variable: <a name=" + ref.referentTag + " href="
+                + ref.referentFileClass + "_java.html#" + ref.referentTag + ">" + ref.referentTag + "</a></p>";
 
-            bw.write(nameString);
-        } else {
-            bw.write("<p>open section " + ref.referentType + "</p>");
+            bw.write( nameString );
+        }
+        else
+        {
+            bw.write( "<p>open section " + ref.referentType + "</p>" );
         }
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("openSection(BufferedWriter, String, Reference) - open section for referent=" + ref.referentTag);
+            log.debug( "openSection(BufferedWriter, String, Reference) - open section for referent=" + ref.referentTag );
         }
     }
 
@@ -447,44 +471,39 @@ public class Pass2 {
      * @param ref
      * @throws IOException
      */
-    private void writeLink(
-            BufferedWriter bw, String referentPackage, Reference ref)
-            throws IOException {
+    private void writeLink( BufferedWriter bw, String referentPackage, Reference ref )
+        throws IOException
+    {
 
-        String linkFilename = sourceName(referentPackage, ref);
+        String linkFilename = sourceName( referentPackage, ref );
 
-        if (ref.referentType.equals(ReferenceTypes.CLASS_REF)) {
-            String linkString = "<p class=\"classRefItem\"><a href="
-                    + linkFilename + "#" + ref.referringLineNumber
-                    + ">" + ref.referringPackage + "."
-                    + ref.referringClass + "."
-                    + ref.referringMethod + " ("
-                    + ref.referringFile + ":"
-                    + ref.referringLineNumber + ")</a></p>\n";
+        if ( ref.referentType.equals( ReferenceTypes.CLASS_REF ) )
+        {
+            String linkString = "<p class=\"classRefItem\"><a href=" + linkFilename + "#" + ref.referringLineNumber
+                + ">" + ref.referringPackage + "." + ref.referringClass + "." + ref.referringMethod + " ("
+                + ref.referringFile + ":" + ref.referringLineNumber + ")</a></p>\n";
 
-            bw.write(linkString);
-        } else if (ref.referentType.equals(ReferenceTypes.METHOD_REF)) {
-            String linkString = "<p class=\"methodRefItem\"><a href="
-                    + linkFilename + "#" + ref.referringLineNumber
-                    + ">" + ref.referringPackage + "."
-                    + ref.referringClass + "."
-                    + ref.referringMethod + " ("
-                    + ref.referringFile + ":"
-                    + ref.referringLineNumber + ")</a></p>\n";
+            bw.write( linkString );
+        }
+        else if ( ref.referentType.equals( ReferenceTypes.METHOD_REF ) )
+        {
+            String linkString = "<p class=\"methodRefItem\"><a href=" + linkFilename + "#" + ref.referringLineNumber
+                + ">" + ref.referringPackage + "." + ref.referringClass + "." + ref.referringMethod + " ("
+                + ref.referringFile + ":" + ref.referringLineNumber + ")</a></p>\n";
 
-            bw.write(linkString);
-        } else if (ref.referentType.equals(ReferenceTypes.VARIABLE_REF)) {
-            String linkString = "<p class=\"variableRefItem\"><a href="
-                    + linkFilename + "#" + ref.referringLineNumber
-                    + ">" + ref.referringPackage + "."
-                    + ref.referringClass + "."
-                    + ref.referringMethod + " ("
-                    + ref.referringFile + ":"
-                    + ref.referringLineNumber + ")</a></p>\n";
+            bw.write( linkString );
+        }
+        else if ( ref.referentType.equals( ReferenceTypes.VARIABLE_REF ) )
+        {
+            String linkString = "<p class=\"variableRefItem\"><a href=" + linkFilename + "#" + ref.referringLineNumber
+                + ">" + ref.referringPackage + "." + ref.referringClass + "." + ref.referringMethod + " ("
+                + ref.referringFile + ":" + ref.referringLineNumber + ")</a></p>\n";
 
-            bw.write(linkString);
-        } else {
-            bw.write("<p>link for a " + ref.referentType + "</p>");
+            bw.write( linkString );
+        }
+        else
+        {
+            bw.write( "<p>link for a " + ref.referentType + "</p>" );
         }
     }
 
@@ -495,11 +514,11 @@ public class Pass2 {
      * @param ref
      * @return
      */
-    private String sourceName(String referentPackage, Reference ref) {
+    private String sourceName( String referentPackage, Reference ref )
+    {
 
-        String result = getBackupPath(referentPackage)
-                + ref.referringPackage.replace('.', '/') + '/'
-                + ref.referringClass + "_java.html";
+        String result = getBackupPath( referentPackage ) + ref.referringPackage.replace( '.', '/' ) + '/'
+            + ref.referringClass + "_java.html";
 
         return result;
     }
@@ -512,37 +531,40 @@ public class Pass2 {
      * @param packageName
      * @return
      */
-    private String getBackupPath(String packageName) {
+    private String getBackupPath( String packageName )
+    {
 
-        StringTokenizer st = new StringTokenizer(packageName, ".");
+        StringTokenizer st = new StringTokenizer( packageName, "." );
         String backup = "";
         int dirs = 0;
         String newPath;
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("getBackupPath(String) - String packageName=" + packageName);
+            log.debug( "getBackupPath(String) - String packageName=" + packageName );
         }
         dirs = st.countTokens();
 
-        for (int j = 0; j < dirs; j++) {
-            backup = backup + "../";    // _separatorChar;
+        for ( int j = 0; j < dirs; j++ )
+        {
+            backup = backup + "../"; // _separatorChar;
         }
 
         newPath = backup;
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("getBackupPath(String) - String newPath=" + newPath);
+            log.debug( "getBackupPath(String) - String newPath=" + newPath );
         }
 
-        return (newPath);
+        return ( newPath );
     }
 
     /**
      * Method createPackageFiles
      */
-    private void createPackageFiles() {
+    private void createPackageFiles()
+    {
 
         String packageName;
         String fileName;
@@ -553,44 +575,42 @@ public class Pass2 {
         int totalClassCount = 0;
         Iterator packageIter = packageNames.iterator();
 
-        while (packageIter.hasNext()) {
+        while ( packageIter.hasNext() )
+        {
             packageName = (String) packageIter.next();
 
-            List classes = orderedPackageClasses(packageName);
+            List classes = orderedPackageClasses( packageName );
 
-            if (log.isDebugEnabled())
+            if ( log.isDebugEnabled() )
             {
-                log.debug("createPackageFiles() - " + packageName+" has "+classes.size()+" classes");
+                log.debug( "createPackageFiles() - " + packageName + " has " + classes.size() + " classes" );
             }
 
             totalClassCount += classes.size();
-            fileName = getOutDir() + File.separatorChar
-                    + packageName.replace('.', File.separatorChar)
-                    + File.separatorChar + "classList.html";
-            file = new File(fileName);
+            fileName = getOutDir() + File.separatorChar + packageName.replace( '.', File.separatorChar )
+                + File.separatorChar + "classList.html";
+            file = new File( fileName );
 
-            createDirs(file);
+            createDirs( file );
 
-            try {
-                pw = new PrintWriter(
-                        new BufferedOutputStream(new FileOutputStream(file)));
+            try
+            {
+                pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
 
-                String header =
-                        "<head>\n"
-                        + "<LINK rel=\"stylesheet\" type=\"text/css\" name=\"style1\" "
-                        + "href=\"" + getBackupPath(packageName)
-                        + "styles.css\">\n" + "</head><body>\n";
+                String header = "<head>\n" + "<LINK rel=\"stylesheet\" type=\"text/css\" name=\"style1\" " + "href=\""
+                    + getBackupPath( packageName ) + "styles.css\">\n" + "</head><body>\n";
 
-                pw.println(header);
-                pw.println("<h3>");
-                pw.println("<a href=\"package-summary.html\" target=\"classFrame\">"+packageName+"</a>");
-                pw.println("</h3>");
-                pw.println("<p class=packagename>" + packageName + "</p>");
+                pw.println( header );
+                pw.println( "<h3>" );
+                pw.println( "<a href=\"package-summary.html\" target=\"classFrame\">" + packageName + "</a>" );
+                pw.println( "</h3>" );
+                pw.println( "<p class=packagename>" + packageName + "</p>" );
 
-                pw.println("<h3>Classes</h3>");
+                pw.println( "<h3>Classes</h3>" );
                 Iterator iter = classes.iterator();
 
-                while (iter.hasNext()) {
+                while ( iter.hasNext() )
+                {
                     ClassFile cf = (ClassFile) iter.next();
                     String className = cf.className;
                     String fileClassName = cf.fileName;
@@ -606,22 +626,22 @@ public class Pass2 {
                     // {
                     // anchor = className.substring(j+1);
                     // }
-                    String tag = "<p class=\"classListItem\"><a href=\""
-                            + fileClassName + "_java.html#" + anchor
-                            + "\" TARGET=\"classFrame\">" + className
-                            + "</a></p>";
+                    String tag = "<p class=\"classListItem\"><a href=\"" + fileClassName + "_java.html#" + anchor
+                        + "\" TARGET=\"classFrame\">" + className + "</a></p>";
 
-                    pw.println(tag);
+                    pw.println( tag );
                 }
 
-                pw.println("</body></html>");
+                pw.println( "</body></html>" );
                 pw.close();
-            } catch (Exception ex) {
+            }
+            catch ( Exception ex )
+            {
                 log.error( "Error writing file:" + fileName, ex );
             }
         }
 
-        println(totalClassCount + " classes total");
+        println( totalClassCount + " classes total" );
     }
 
     /**
@@ -630,24 +650,25 @@ public class Pass2 {
      * @param packageName
      * @return
      */
-    private List orderedPackageClasses(String packageName) {
+    private List orderedPackageClasses( String packageName )
+    {
 
-        HashMap hm = (HashMap) packageClasses.get(packageName);
+        HashMap hm = (HashMap) packageClasses.get( packageName );
 
         // Hmmm, is this supposed to be easier than using Hashtable.keys()?
         Set es = hm.entrySet();
         Iterator iter = es.iterator();
         List result = new ArrayList();
 
-        while (iter.hasNext()) {
+        while ( iter.hasNext() )
+        {
             Map.Entry me = (Map.Entry) iter.next();
-            ClassFile cf = new ClassFile((String) me.getKey(),
-                    (String) me.getValue());
+            ClassFile cf = new ClassFile( (String) me.getKey(), (String) me.getValue() );
 
-            result.add(cf);
+            result.add( cf );
         }
 
-        Collections.sort(result, classFileComparator());
+        Collections.sort( result, classFileComparator() );
 
         return result;
     }
@@ -657,18 +678,21 @@ public class Pass2 {
      *
      * @return
      */
-    private List orderedAllClasses() {
+    private List orderedAllClasses()
+    {
 
         List result = new ArrayList();
         Iterator packageIter = packageNames.iterator();
 
-        while (packageIter.hasNext()) {
+        while ( packageIter.hasNext() )
+        {
             String packageName = (String) packageIter.next();
-            HashMap hm = (HashMap) packageClasses.get(packageName);
+            HashMap hm = (HashMap) packageClasses.get( packageName );
             String packageFileName = "";
 
-            if (packageName.indexOf('.') != -1) {
-                packageFileName = packageName.replace('.', '/');
+            if ( packageName.indexOf( '.' ) != -1 )
+            {
+                packageFileName = packageName.replace( '.', '/' );
                 packageFileName += '/';
             }
 
@@ -676,17 +700,16 @@ public class Pass2 {
             Set es = hm.entrySet();
             Iterator iter = es.iterator();
 
-            while (iter.hasNext()) {
+            while ( iter.hasNext() )
+            {
                 Map.Entry me = (Map.Entry) iter.next();
-                ClassFile cf = new ClassFile((String) me.getKey(),
-                        packageFileName
-                        + (String) me.getValue());
+                ClassFile cf = new ClassFile( (String) me.getKey(), packageFileName + (String) me.getValue() );
 
-                result.add(cf);
+                result.add( cf );
             }
         }
 
-        Collections.sort(result, classFileComparator());
+        Collections.sort( result, classFileComparator() );
 
         return result;
     }
@@ -696,15 +719,19 @@ public class Pass2 {
      *
      * @return
      */
-    private Comparator stringComparator() {
+    private Comparator stringComparator()
+    {
 
-        return new Comparator() {
+        return new Comparator()
+        {
 
-            public int compare(Object o1, Object o2) {
-                return ((String) o1).compareTo((String)o2);
+            public int compare( Object o1, Object o2 )
+            {
+                return ( (String) o1 ).compareTo( (String) o2 );
             }
 
-            public boolean equals(Object o) {
+            public boolean equals( Object o )
+            {
                 return false;
             }
         };
@@ -715,19 +742,23 @@ public class Pass2 {
      *
      * @return
      */
-    private Comparator classFileComparator() {
+    private Comparator classFileComparator()
+    {
 
-        return new Comparator() {
+        return new Comparator()
+        {
 
-            public int compare(Object o1, Object o2) {
+            public int compare( Object o1, Object o2 )
+            {
 
                 ClassFile cf1 = (ClassFile) o1;
                 ClassFile cf2 = (ClassFile) o2;
 
-                return cf1.className.compareTo(cf2.className);
+                return cf1.className.compareTo( cf2.className );
             }
 
-            public boolean equals(Object o) {
+            public boolean equals( Object o )
+            {
                 return false;
             }
         };
@@ -736,33 +767,33 @@ public class Pass2 {
     /**
      * Method createIndex
      */
-    private void createIndex() {
+    private void createIndex()
+    {
 
         String fileName = getOutDir() + File.separatorChar + "index.html";
-        File file = new File(fileName);
+        File file = new File( fileName );
 
-        createDirs(file);
+        createDirs( file );
 
-        try {
-            PrintWriter pw = new PrintWriter(
-                    new BufferedOutputStream(new FileOutputStream(file)));
+        try
+        {
+            PrintWriter pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
 
-            pw.println("<TITLE>" + getTitle() + "</TITLE>");
-            pw.println("<FRAMESET cols=\"20%,80%\">");
-            pw.println("  <FRAMESET rows=\"30%,70%\">");
-            pw.println(
-                    "    <FRAME src=\"overview-frame.html\" name=\"packageListFrame\">");
-            pw.println(
-                    "    <FRAME src=\"allclasses-frame.html\" name=\"packageFrame\">");
-            pw.println("  </FRAMESET>");
-            pw.println("  ");
-            pw.println("  <FRAMESET rows=\"*\">");
-            pw.println(
-                    "    <FRAME src=\"overview-summary.html\" name=\"classFrame\">");
-            pw.println("  </FRAMESET>");
-            pw.println("</FRAMESET>");
+            pw.println( "<TITLE>" + getTitle() + "</TITLE>" );
+            pw.println( "<FRAMESET cols=\"20%,80%\">" );
+            pw.println( "  <FRAMESET rows=\"30%,70%\">" );
+            pw.println( "    <FRAME src=\"overview-frame.html\" name=\"packageListFrame\">" );
+            pw.println( "    <FRAME src=\"allclasses-frame.html\" name=\"packageFrame\">" );
+            pw.println( "  </FRAMESET>" );
+            pw.println( "  " );
+            pw.println( "  <FRAMESET rows=\"*\">" );
+            pw.println( "    <FRAME src=\"overview-summary.html\" name=\"classFrame\">" );
+            pw.println( "  </FRAMESET>" );
+            pw.println( "</FRAMESET>" );
             pw.close();
-        } catch (Exception e) {
+        }
+        catch ( Exception e )
+        {
             log.error( "Exception: " + e.getMessage(), e );
         }
     }
@@ -770,39 +801,39 @@ public class Pass2 {
     /**
      * Create the HTML for the list of all packages.
      */
-    private void createOverviewFrame() {
+    private void createOverviewFrame()
+    {
 
         String packageName;
         String packageFileName;
-        String fileName = getOutDir() + File.separatorChar
-                + "overview-frame.html";
-        File file = new File(fileName);
+        String fileName = getOutDir() + File.separatorChar + "overview-frame.html";
+        File file = new File( fileName );
 
-        createDirs(file);
+        createDirs( file );
 
-        try {
-            PrintWriter pw = new PrintWriter(
-                    new BufferedOutputStream(new FileOutputStream(file)));
+        try
+        {
+            PrintWriter pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
             Iterator iter = packageNames.iterator();
 
-            pw.println("<html><head><link rel=\"stylesheet\" type=\"text/css\""
-                    + "href=\"styles.css\"></head><body>");
+            pw.println( "<html><head><link rel=\"stylesheet\" type=\"text/css\"" + "href=\"styles.css\"></head><body>" );
 
-            pw.println("<h3><a href=\"allclasses-frame.html\" target=\"packageFrame\">All Classes</a></h3>");
-            pw.println("<h3>Packages</h3>");
-            while (iter.hasNext()) {
+            pw.println( "<h3><a href=\"allclasses-frame.html\" target=\"packageFrame\">All Classes</a></h3>" );
+            pw.println( "<h3>Packages</h3>" );
+            while ( iter.hasNext() )
+            {
                 packageName = (String) iter.next();
-                packageFileName = packageName.replace('.', '/') + '/'
-                        + "classList.html";
+                packageFileName = packageName.replace( '.', '/' ) + '/' + "classList.html";
 
-                pw.println("<p class=\"packageListItem\"><A HREF=\""
-                        + packageFileName + "\" TARGET=\"packageFrame\">"
-                        + packageName + "</A></p>");
+                pw.println( "<p class=\"packageListItem\"><A HREF=\"" + packageFileName + "\" TARGET=\"packageFrame\">"
+                    + packageName + "</A></p>" );
             }
 
-            pw.println("</body></html>");
+            pw.println( "</body></html>" );
             pw.close();
-        } catch (Exception e) {
+        }
+        catch ( Exception e )
+        {
             log.error( "Exception: " + e.getMessage(), e );
         }
     }
@@ -810,39 +841,40 @@ public class Pass2 {
     /**
      * Method createAllClassesFrame
      */
-    private void createAllClassesFrame() {
+    private void createAllClassesFrame()
+    {
 
-        String fileName = getOutDir() + File.separatorChar
-                + "allclasses-frame.html";
-        File file = new File(fileName);
+        String fileName = getOutDir() + File.separatorChar + "allclasses-frame.html";
+        File file = new File( fileName );
 
-        createDirs(file);
+        createDirs( file );
 
-        try {
-            PrintWriter pw = new PrintWriter(new FileOutputStream(file));
+        try
+        {
+            PrintWriter pw = new PrintWriter( new FileOutputStream( file ) );
 
-            pw.println("<html><head><link rel=\"stylesheet\" type=\"text/css\""
-                    + "href=\"styles.css\"></head><body>");
+            pw.println( "<html><head><link rel=\"stylesheet\" type=\"text/css\"" + "href=\"styles.css\"></head><body>" );
 
-            pw.println("<h3>All Classes</h3>");
+            pw.println( "<h3>All Classes</h3>" );
             Iterator iter = orderedAllClasses().iterator();
 
-            while (iter.hasNext()) {
+            while ( iter.hasNext() )
+            {
                 ClassFile cf = (ClassFile) iter.next();
                 String className = cf.className;
                 String fileClassName = cf.fileName;
                 String anchor = className;
-                String tag =
-                        "<p class=\"classListItem\"><a href=\"" + fileClassName
-                        + "_java.html#" + anchor + "\" TARGET=\"classFrame\">"
-                        + className + "</a></p>";
+                String tag = "<p class=\"classListItem\"><a href=\"" + fileClassName + "_java.html#" + anchor
+                    + "\" TARGET=\"classFrame\">" + className + "</a></p>";
 
-                pw.println(tag);
+                pw.println( tag );
             }
 
-            pw.println("</body></html>");
+            pw.println( "</body></html>" );
             pw.close();
-        } catch (Exception e) {
+        }
+        catch ( Exception e )
+        {
             log.error( "Exception: " + e.getMessage(), e );
         }
     }
@@ -850,7 +882,8 @@ public class Pass2 {
     /**
      * Method createPackageFiles
      */
-    private void createPackageSummaryFiles() {
+    private void createPackageSummaryFiles()
+    {
 
         String packageName;
         String fileName;
@@ -861,208 +894,212 @@ public class Pass2 {
         int totalClassCount = 0;
         Iterator packageIter = packageNames.iterator();
 
-        while (packageIter.hasNext()) {
+        while ( packageIter.hasNext() )
+        {
             packageName = (String) packageIter.next();
 
-            List classes = orderedPackageClasses(packageName);
+            List classes = orderedPackageClasses( packageName );
 
-            if (log.isDebugEnabled())
+            if ( log.isDebugEnabled() )
             {
-                log.debug("createPackageSummaryFiles() - " + packageName+" has "+classes.size()+" classes" );
+                log.debug( "createPackageSummaryFiles() - " + packageName + " has " + classes.size() + " classes" );
             }
 
             totalClassCount += classes.size();
-            fileName = getOutDir() + File.separatorChar
-                    + packageName.replace('.', File.separatorChar)
-                    + File.separatorChar + "package-summary.html";
-            file = new File(fileName);
+            fileName = getOutDir() + File.separatorChar + packageName.replace( '.', File.separatorChar )
+                + File.separatorChar + "package-summary.html";
+            file = new File( fileName );
 
-            createDirs(file);
+            createDirs( file );
 
-            try {
-                pw = new PrintWriter(
-                        new BufferedOutputStream(new FileOutputStream(file)));
+            try
+            {
+                pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
 
-                String header =
-                        "<head>\n"
-                        + "<LINK rel=\"stylesheet\" type=\"text/css\" name=\"style1\" "
-                        + "href=\"" + getBackupPath(packageName)
-                        + "styles.css\">\n" + "</head><body>\n";
+                String header = "<head>\n" + "<LINK rel=\"stylesheet\" type=\"text/css\" name=\"style1\" " + "href=\""
+                    + getBackupPath( packageName ) + "styles.css\">\n" + "</head><body>\n";
 
-                pw.println(header);
-                createPackageSummaryFilesExtras(pw, getBackupPath(packageName), "package-summary.html");
+                pw.println( header );
+                createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html" );
 
-                pw.println("<h2>" + packageName + "</h2>");
+                pw.println( "<h2>" + packageName + "</h2>" );
 
-                pw.println("<table class=\"summary\">");
-                pw.println("<thead>");
-                pw.println("<tr>");
-                pw.println("<th>Class Summary</th>");
-                pw.println("</tr>");
-                pw.println("</thead>");
-                pw.println("<tbody>");
+                pw.println( "<table class=\"summary\">" );
+                pw.println( "<thead>" );
+                pw.println( "<tr>" );
+                pw.println( "<th>Class Summary</th>" );
+                pw.println( "</tr>" );
+                pw.println( "</thead>" );
+                pw.println( "<tbody>" );
 
                 Iterator iter = classes.iterator();
 
-                while (iter.hasNext()) {
+                while ( iter.hasNext() )
+                {
                     ClassFile cf = (ClassFile) iter.next();
                     String className = cf.className;
                     String fileClassName = cf.fileName;
                     String anchor;
 
                     anchor = className;
-                    pw.println("<tr>");
-                    pw.println("<td>");
-                    pw.println("<a href=\""
-                            + fileClassName + "_java.html#" + anchor
-                            + "\" TARGET=\"classFrame\">" + className
-                            + "</a>");
-                    pw.println("</td>");
-                    pw.println("</tr>");
+                    pw.println( "<tr>" );
+                    pw.println( "<td>" );
+                    pw.println( "<a href=\"" + fileClassName + "_java.html#" + anchor + "\" TARGET=\"classFrame\">"
+                        + className + "</a>" );
+                    pw.println( "</td>" );
+                    pw.println( "</tr>" );
                 }
-                pw.println("</tbody>");
-                pw.println("</table>");
+                pw.println( "</tbody>" );
+                pw.println( "</table>" );
 
-                createPackageSummaryFilesExtras(pw, getBackupPath(packageName), "package-summary.html");
-                pw.println("          <hr></hr>\n" +
-                        "          Copyright &copy; 2001-2003 Apache Software Foundation. All Rights Reserved.");
-                pw.println("</body></html>");
+                createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html" );
+                pw.println( "          <hr></hr>\n"
+                    + "          Copyright &copy; 2001-2003 Apache Software Foundation. All Rights Reserved." );
+                pw.println( "</body></html>" );
                 pw.close();
-            } catch (Exception ex) {
-                log.error( "Error writing file:" + fileName, ex);
+            }
+            catch ( Exception ex )
+            {
+                log.error( "Error writing file:" + fileName, ex );
             }
         }
     }
 
-    private void createPackageSummaryFilesExtras(PrintWriter pw, String root, String current) {
-        pw.println("<div class=\"overview\">");
-        pw.println("<ul>");
-        pw.println("<li><a href=\"" + root + "overview-summary.html\">Overview</a></li>");
-        pw.println("<li class=\"selected\">Package</li>");
-        pw.println("</ul>");
-        pw.println("</div>");
-        pw.println("<div class=\"framenoframe\">");
-        pw.println("<ul>");
-        pw.println("<li>");
-        pw.println("<a href=\"" + root + "index.html\" target=\"_top\">FRAMES</a>");
-        pw.println("</li>");
-        pw.println("<li>");
-        pw.println("<a href=\""+ current +"\" target=\"_top\">NO FRAMES</a>");
-        pw.println("</li>");
-        pw.println("</ul>");
-        pw.println("</div>");
+    private void createPackageSummaryFilesExtras( PrintWriter pw, String root, String current )
+    {
+        pw.println( "<div class=\"overview\">" );
+        pw.println( "<ul>" );
+        pw.println( "<li><a href=\"" + root + "overview-summary.html\">Overview</a></li>" );
+        pw.println( "<li class=\"selected\">Package</li>" );
+        pw.println( "</ul>" );
+        pw.println( "</div>" );
+        pw.println( "<div class=\"framenoframe\">" );
+        pw.println( "<ul>" );
+        pw.println( "<li>" );
+        pw.println( "<a href=\"" + root + "index.html\" target=\"_top\">FRAMES</a>" );
+        pw.println( "</li>" );
+        pw.println( "<li>" );
+        pw.println( "<a href=\"" + current + "\" target=\"_top\">NO FRAMES</a>" );
+        pw.println( "</li>" );
+        pw.println( "</ul>" );
+        pw.println( "</div>" );
     }
-
 
     /**
      * Method createOverviewSummaryFrame
      */
-    private void createOverviewSummaryFrame() {
+    private void createOverviewSummaryFrame()
+    {
 
-        String fileName = getOutDir() + File.separatorChar
-                + "overview-summary.html";
-        File file = new File(fileName);
+        String fileName = getOutDir() + File.separatorChar + "overview-summary.html";
+        File file = new File( fileName );
 
-        createDirs(file);
+        createDirs( file );
 
-        try {
-            PrintWriter pw = new PrintWriter(new FileOutputStream(file));
-            pw.println("<html><head><link rel=\"stylesheet\" type=\"text/css\""
-                    + "href=\"styles.css\"></head><body>");
+        try
+        {
+            PrintWriter pw = new PrintWriter( new FileOutputStream( file ) );
+            pw.println( "<html><head><link rel=\"stylesheet\" type=\"text/css\"" + "href=\"styles.css\"></head><body>" );
 
-            createOverviewSummaryFrameExtras(pw);
+            createOverviewSummaryFrameExtras( pw );
 
-            pw.println("<h2>" + getTitle() + "</h2>");
+            pw.println( "<h2>" + getTitle() + "</h2>" );
 
-            pw.println("<table class=\"summary\">");
-            pw.println("<thead>");
-            pw.println("<tr>");
-            pw.println("<th>Packages</th>");
-            pw.println("</tr>");
-            pw.println("</thead>");
-            pw.println("<tbody>");
+            pw.println( "<table class=\"summary\">" );
+            pw.println( "<thead>" );
+            pw.println( "<tr>" );
+            pw.println( "<th>Packages</th>" );
+            pw.println( "</tr>" );
+            pw.println( "</thead>" );
+            pw.println( "<tbody>" );
 
             Iterator iter = packageNames.iterator();
-            while (iter.hasNext()) {
+            while ( iter.hasNext() )
+            {
                 String packageName = (String) iter.next();
-                String packageFileName = packageName.replace('.', '/') + '/'
-                        + "package-summary.html";
+                String packageFileName = packageName.replace( '.', '/' ) + '/' + "package-summary.html";
 
-                pw.println("<tr>");
-                pw.println("<td>");
-                pw.println("<a href=\"" + packageFileName + "\">" + packageName + "</a>");
-                pw.println("</td>");
-                pw.println("</tr>");
+                pw.println( "<tr>" );
+                pw.println( "<td>" );
+                pw.println( "<a href=\"" + packageFileName + "\">" + packageName + "</a>" );
+                pw.println( "</td>" );
+                pw.println( "</tr>" );
             }
 
-            pw.println("</tbody>");
-            pw.println("</table>");
+            pw.println( "</tbody>" );
+            pw.println( "</table>" );
 
-            createOverviewSummaryFrameExtras(pw);
-            pw.println("          <hr></hr>\n" +
-                    "          Copyright &copy; 2001-2003 Apache Software Foundation. All Rights Reserved.");
-            pw.println("</body></html>");
+            createOverviewSummaryFrameExtras( pw );
+            pw.println( "          <hr></hr>\n"
+                + "          Copyright &copy; 2001-2003 Apache Software Foundation. All Rights Reserved." );
+            pw.println( "</body></html>" );
             pw.close();
-        } catch (Exception e) {
-            log.error( "Error writing file:" + fileName, e);
+        }
+        catch ( Exception e )
+        {
+            log.error( "Error writing file:" + fileName, e );
         }
     }
 
-    private void createOverviewSummaryFrameExtras(PrintWriter pw) {
-        pw.println("<div class=\"overview\">");
-        pw.println("<ul>");
-        pw.println("<li class=\"selected\">Overview</li>");
-        pw.println("<li>Package</li>");
-        pw.println("</ul>");
-        pw.println("</div>");
-        pw.println("<div class=\"framenoframe\">");
-        pw.println("<ul>");
-        pw.println("<li>");
-        pw.println("<a href=\"index.html\" target=\"_top\">FRAMES</a>");
-        pw.println("</li>");
-        pw.println("<li>");
-        pw.println("<a href=\"overview-summary.html\" target=\"_top\">NO FRAMES</a>");
-        pw.println("</li>");
-        pw.println("</ul>");
-        pw.println("</div>");
+    private void createOverviewSummaryFrameExtras( PrintWriter pw )
+    {
+        pw.println( "<div class=\"overview\">" );
+        pw.println( "<ul>" );
+        pw.println( "<li class=\"selected\">Overview</li>" );
+        pw.println( "<li>Package</li>" );
+        pw.println( "</ul>" );
+        pw.println( "</div>" );
+        pw.println( "<div class=\"framenoframe\">" );
+        pw.println( "<ul>" );
+        pw.println( "<li>" );
+        pw.println( "<a href=\"index.html\" target=\"_top\">FRAMES</a>" );
+        pw.println( "</li>" );
+        pw.println( "<li>" );
+        pw.println( "<a href=\"overview-summary.html\" target=\"_top\">NO FRAMES</a>" );
+        pw.println( "</li>" );
+        pw.println( "</ul>" );
+        pw.println( "</div>" );
     }
 
     /**
      * Method initializeDefaults
      */
-    public void initializeDefaults() {
+    public void initializeDefaults()
+    {
 
-        String outdir = System.getProperty("outdir");
+        String outdir = System.getProperty( "outdir" );
 
-        if (outdir == null) {
+        if ( outdir == null )
+        {
             outdir = DEFAULT_DIR;
         }
 
-        setOutDir(outdir);
+        setOutDir( outdir );
 
-        String title = System.getProperty("title");
+        String title = System.getProperty( "title" );
 
-        if (title == null) {
+        if ( title == null )
+        {
             title = "Pass2: " + outdir;
         }
 
-        setTitle(title);
+        setTitle( title );
 
         boolean verbose = false;
-        String verboseStr = System.getProperty("verbose");
+        String verboseStr = System.getProperty( "verbose" );
 
-        if (verboseStr != null) {
+        if ( verboseStr != null )
+        {
             verboseStr = verboseStr.trim();
 
-            if (verboseStr.equalsIgnoreCase("on")
-                    || verboseStr.equalsIgnoreCase("true")
-                    || verboseStr.equalsIgnoreCase("yes")
-                    || verboseStr.equalsIgnoreCase("1")) {
+            if ( verboseStr.equalsIgnoreCase( "on" ) || verboseStr.equalsIgnoreCase( "true" )
+                || verboseStr.equalsIgnoreCase( "yes" ) || verboseStr.equalsIgnoreCase( "1" ) )
+            {
                 verbose = true;
             }
         }
 
-        setVerbose(verbose);
+        setVerbose( verbose );
     }
 
     /**
@@ -1070,19 +1107,22 @@ public class Pass2 {
      *
      * @param f
      */
-    private void createDirs(File f) {
+    private void createDirs( File f )
+    {
 
         String parentDir = f.getParent();
-        File directory = new File(parentDir);
+        File directory = new File( parentDir );
 
-        if (!directory.exists()) {
+        if ( !directory.exists() )
+        {
             directory.mkdirs();
         }
     }
 
-    private void println(String description) {
-        System.out.print("\n");
-        System.out.println(description);
+    private void println( String description )
+    {
+        System.out.print( "\n" );
+        System.out.println( description );
     }
 
     /**
@@ -1091,12 +1131,14 @@ public class Pass2 {
      * @param args
      * @throws Exception
      */
-    public void main(String args[]) throws Exception {
+    public void main( String args[] )
+        throws Exception
+    {
 
         Pass2 p2 = new Pass2();
 
         p2.initializeDefaults();
-        p2.run(args);
+        p2.run( args );
     }
 
     /** Field packageNames */
@@ -1118,16 +1160,18 @@ public class Pass2 {
 /**
  * An entry in the references.txt file
  */
-class Reference {
+class Reference
+{
 
     /**
      * Constructor Reference
      *
      * @param line
      */
-    Reference(String line) {
+    Reference( String line )
+    {
 
-        StringTokenizer st = new StringTokenizer(line, "|");
+        StringTokenizer st = new StringTokenizer( line, "|" );
 
         referentFileClass = st.nextToken();
         referentClass = st.nextToken();
@@ -1171,7 +1215,8 @@ class Reference {
 /**
  * Class ClassFile
  */
-class ClassFile {
+class ClassFile
+{
 
     /** Field className */
     public String className;
@@ -1185,7 +1230,8 @@ class ClassFile {
      * @param className
      * @param fileName
      */
-    public ClassFile(String className, String fileName) {
+    public ClassFile( String className, String fileName )
+    {
         this.className = className;
         this.fileName = fileName;
     }

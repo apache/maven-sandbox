@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.xref;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.xref;
 
 import java.io.File;
 
@@ -26,7 +27,9 @@ import java.io.File;
  *
  * @version $Id: $
  */
-public class JavaToken extends antlr.CommonToken {
+public class JavaToken
+    extends antlr.CommonToken
+{
 
     // ==========================================================================
     // ==  Class Variables
@@ -59,14 +62,16 @@ public class JavaToken extends antlr.CommonToken {
     /**
      * @see antlr.CommonToken#getColumn()
      */
-    public int getColumn() {
+    public int getColumn()
+    {
         return column;
     }
 
     /**
      * @see antlr.CommonToken#setColumn(int)
      */
-    public void setColumn(int c) {
+    public void setColumn( int c )
+    {
         column = c;
     }
 
@@ -75,7 +80,8 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @return
      */
-    public String getPackageName() {
+    public String getPackageName()
+    {
         return packageName;
     }
 
@@ -84,11 +90,15 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @param name
      */
-    public void setPackageName(String name) {
+    public void setPackageName( String name )
+    {
 
-        if (name != null) {
+        if ( name != null )
+        {
             packageName = name.intern();
-        } else {
+        }
+        else
+        {
             packageName = null;
         }
     }
@@ -98,7 +108,8 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @return
      */
-    public String getClassName() {
+    public String getClassName()
+    {
         return className;
     }
 
@@ -107,11 +118,15 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @param name
      */
-    public void setClassName(String name) {
+    public void setClassName( String name )
+    {
 
-        if (name != null) {
+        if ( name != null )
+        {
             className = name.intern();
-        } else {
+        }
+        else
+        {
             className = null;
         }
     }
@@ -121,7 +136,8 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @return
      */
-    public String getMethodName() {
+    public String getMethodName()
+    {
         return methodName;
     }
 
@@ -130,11 +146,15 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @param name
      */
-    public void setMethodName(String name) {
+    public void setMethodName( String name )
+    {
 
-        if (name != null) {
+        if ( name != null )
+        {
             methodName = name.intern();
-        } else {
+        }
+        else
+        {
             methodName = null;
         }
     }
@@ -146,7 +166,8 @@ public class JavaToken extends antlr.CommonToken {
     /**
      * Constructor JavaToken
      */
-    public JavaToken() {
+    public JavaToken()
+    {
     }
 
     /**
@@ -154,22 +175,26 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @param t
      */
-    public JavaToken(JavaToken t) {
+    public JavaToken( JavaToken t )
+    {
 
         column = t.getColumn();
         file = t.getFile();
         packageName = t.getPackageName();
         paramCount = t.getParamCount();
 
-        this.setLine(t.getLine());
+        this.setLine( t.getLine() );
 
-        if (t.getText() != null) {
-            this.setText(t.getText().intern());
-        } else {
-            this.setText(null);
+        if ( t.getText() != null )
+        {
+            this.setText( t.getText().intern() );
+        }
+        else
+        {
+            this.setText( null );
         }
 
-        this.setType(t.getType());
+        this.setType( t.getType() );
     }
 
     /**
@@ -177,7 +202,8 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @return
      */
-    public File getFile() {
+    public File getFile()
+    {
         return file;
     }
 
@@ -187,7 +213,8 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @return
      */
-    public int getParamCount() {
+    public int getParamCount()
+    {
         return paramCount;
     }
 
@@ -196,7 +223,8 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @param file
      */
-    public void setFile(File file) {
+    public void setFile( File file )
+    {
         this.file = file;
     }
 
@@ -205,17 +233,18 @@ public class JavaToken extends antlr.CommonToken {
      *
      * @param count
      */
-    public void setParamCount(int count) {
+    public void setParamCount( int count )
+    {
         paramCount = count;
     }
 
     /**
      * @see antlr.CommonToken#toString()
      */
-    public String toString() {
+    public String toString()
+    {
 
-        return "[\"" + getText() + "\",type:<" + getType() + ">,line:"
-                + getLine() + ",col:" + getColumn() + ",file:"
-                + getFile().getName() + "]";
+        return "[\"" + getText() + "\",type:<" + getType() + ">,line:" + getLine() + ",col:" + getColumn() + ",file:"
+            + getFile().getName() + "]";
     }
 }

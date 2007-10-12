@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,11 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.jxr.java.src.xref.JavaToken;
-
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,8 +33,10 @@ import java.util.Vector;
  *
  * @version $Id: $
  */
-public class JavaVector extends java.util.Vector
-        implements java.io.Externalizable {
+public class JavaVector
+    extends java.util.Vector
+    implements java.io.Externalizable
+{
 
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( JavaVector.class );
@@ -56,7 +58,8 @@ public class JavaVector extends java.util.Vector
     /**
      * Constructor to create a new Java vector
      */
-    public JavaVector() {
+    public JavaVector()
+    {
         super();
     }
 
@@ -65,12 +68,14 @@ public class JavaVector extends java.util.Vector
      *
      * @param o
      */
-    public void addElement(Definition o) {
+    public void addElement( Definition o )
+    {
 
-        super.addElement(o);
+        super.addElement( o );
 
-        if (o == null) {
-            throw new IllegalArgumentException("null element added to vector");
+        if ( o == null )
+        {
+            throw new IllegalArgumentException( "null element added to vector" );
         }
     }
 
@@ -80,14 +85,17 @@ public class JavaVector extends java.util.Vector
      * @param name
      * @return
      */
-    public Definition getElement(String name) {
+    public Definition getElement( String name )
+    {
 
         Enumeration e = elements();
 
-        while (e.hasMoreElements()) {
+        while ( e.hasMoreElements() )
+        {
             Definition d = (Definition) e.nextElement();
 
-            if (d.getName().equals(name)) {
+            if ( d.getName().equals( name ) )
+            {
                 return d;
             }
         }
@@ -100,12 +108,14 @@ public class JavaVector extends java.util.Vector
      *
      * @param tagList
      */
-    void generateTags(HTMLTagContainer tagList) {
+    void generateTags( HTMLTagContainer tagList )
+    {
 
         Enumeration e = elements();
 
-        while (e.hasMoreElements()) {
-            ((Taggable) e.nextElement()).generateTags(tagList);
+        while ( e.hasMoreElements() )
+        {
+            ( (Taggable) e.nextElement() ).generateTags( tagList );
         }
     }
 
@@ -114,17 +124,20 @@ public class JavaVector extends java.util.Vector
      *
      * @param output
      */
-    void generateReferences(FileWriter output) {
+    void generateReferences( FileWriter output )
+    {
 
         Enumeration e = elements();
 
-        while (e.hasMoreElements()) {
+        while ( e.hasMoreElements() )
+        {
             Object element = e.nextElement();
 
-            if (element instanceof Definition) {
+            if ( element instanceof Definition )
+            {
                 Definition d = (Definition) element;
 
-                d.generateReferences(output);
+                d.generateReferences( output );
             }
         }
     }
@@ -134,52 +147,54 @@ public class JavaVector extends java.util.Vector
      *
      * @param symbolTable
      */
-    public void resolveRefs(SymbolTable symbolTable) {
+    public void resolveRefs( SymbolTable symbolTable )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("resolveRefs(SymbolTable) - SymbolTable symbolTable=" + symbolTable);
+            log.debug( "resolveRefs(SymbolTable) - SymbolTable symbolTable=" + symbolTable );
         }
 
-        if (!resolvingRefs) {
+        if ( !resolvingRefs )
+        {
             resolvingRefs = true;
 
             // resolve each element in the list
             Enumeration e = elements();
 
-            while (e.hasMoreElements()) {
+            while ( e.hasMoreElements() )
+            {
                 JavaToken t = (JavaToken) e.nextElement();
 
-                if (log.isDebugEnabled())
+                if ( log.isDebugEnabled() )
                 {
-                    log.debug("resolveRefs(SymbolTable) - resolve "+t.getText()+" file="+t.getFile().getAbsolutePath()+":"+t.getLine());
+                    log.debug( "resolveRefs(SymbolTable) - resolve " + t.getText() + " file="
+                        + t.getFile().getAbsolutePath() + ":" + t.getLine() );
                 }
 
-                Definition d = symbolTable.lookup(t.getText(),
-                        t.getParamCount(), null);
+                Definition d = symbolTable.lookup( t.getText(), t.getParamCount(), null );
 
-                if (d == null) {
-                    d = symbolTable.findPackage(t.getText());
+                if ( d == null )
+                {
+                    d = symbolTable.findPackage( t.getText() );
                 }
 
-                if (d != null) {
+                if ( d != null )
+                {
 
-                    if (log.isDebugEnabled())
+                    if ( log.isDebugEnabled() )
                     {
-                        log.debug("resolveRefs(SymbolTable) - Found reference:"+d.getQualifiedName());
+                        log.debug( "resolveRefs(SymbolTable) - Found reference:" + d.getQualifiedName() );
                     }
-                    d.addReference(new Occurrence(t.getFile(), t.getLine(),
-                            t.getColumn(),
-                            t.getPackageName(),
-                            t.getClassName(),
-                            t.getMethodName()));
-                    d.resolveRefs(symbolTable);
+                    d.addReference( new Occurrence( t.getFile(), t.getLine(), t.getColumn(), t.getPackageName(), t
+                        .getClassName(), t.getMethodName() ) );
+                    d.resolveRefs( symbolTable );
                 }
                 else
                 {
-                    if (log.isDebugEnabled())
+                    if ( log.isDebugEnabled() )
                     {
-                        log.debug("resolveRefs(SymbolTable) - Could not resolve "+t.getText());
+                        log.debug( "resolveRefs(SymbolTable) - Could not resolve " + t.getText() );
                     }
                 }
             }
@@ -191,37 +206,44 @@ public class JavaVector extends java.util.Vector
      *
      * @param symbolTable
      */
-    public void resolveTypes(SymbolTable symbolTable) {
+    public void resolveTypes( SymbolTable symbolTable )
+    {
 
-        if (!resolvingTypes) {
+        if ( !resolvingTypes )
+        {
             resolvingTypes = true;
 
             Enumeration e = elements();
 
-            while (e.hasMoreElements()) {
+            while ( e.hasMoreElements() )
+            {
                 Definition d = (Definition) e.nextElement();
 
-                if (d instanceof DummyClass) {
-                    String pkg = ((DummyClass) d).getPackage();
+                if ( d instanceof DummyClass )
+                {
+                    String pkg = ( (DummyClass) d ).getPackage();
 
-                    if (log.isDebugEnabled())
+                    if ( log.isDebugEnabled() )
                     {
-                        log.debug("resolveTypes(SymbolTable) - resolving pkg="+pkg+" name="+d.getName());
+                        log.debug( "resolveTypes(SymbolTable) - resolving pkg=" + pkg + " name=" + d.getName() );
                     }
-                    Definition newD = symbolTable.lookupDummy(d);
+                    Definition newD = symbolTable.lookupDummy( d );
 
-                    if (newD != null) {
+                    if ( newD != null )
+                    {
 
-                        if (log.isDebugEnabled())
+                        if ( log.isDebugEnabled() )
                         {
-                            log.debug("resolveTypes(SymbolTable) - resolved pkg="+pkg+" name="+d.getName());
+                            log.debug( "resolveTypes(SymbolTable) - resolved pkg=" + pkg + " name=" + d.getName() );
                         }
-                        newD.addReference(d.getOccurrence());
-                        removeElement(d);
-                        addElement(newD);
+                        newD.addReference( d.getOccurrence() );
+                        removeElement( d );
+                        addElement( newD );
                     }
-                } else {
-                    d.resolveTypes(symbolTable);
+                }
+                else
+                {
+                    d.resolveTypes( symbolTable );
                 }
             }
         }
@@ -230,36 +252,39 @@ public class JavaVector extends java.util.Vector
     /**
      * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
      */
-    public void writeExternal(ObjectOutput out) throws IOException {
+    public void writeExternal( ObjectOutput out )
+        throws IOException
+    {
 
         Vector vOut = new Vector();
         Enumeration e = elements();
 
-        while (e.hasMoreElements()) {
+        while ( e.hasMoreElements() )
+        {
             Definition d = (Definition) e.nextElement();
 
-            if ((d instanceof ClassDef)
-                    && !((d instanceof ClassDefProxy)
-                    || (d instanceof PrimitiveDef)
-                    || (d instanceof DummyClass))) {
-                d = new ClassDefProxy((ClassDef) d);
+            if ( ( d instanceof ClassDef )
+                && !( ( d instanceof ClassDefProxy ) || ( d instanceof PrimitiveDef ) || ( d instanceof DummyClass ) ) )
+            {
+                d = new ClassDefProxy( (ClassDef) d );
             }
 
-            vOut.addElement(d);
+            vOut.addElement( d );
         }
 
-        out.writeObject(vOut);
+        out.writeObject( vOut );
     }
 
     /**
      * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
      */
-    public void readExternal(ObjectInput in)
-            throws IOException, ClassNotFoundException {
+    public void readExternal( ObjectInput in )
+        throws IOException, ClassNotFoundException
+    {
 
         Vector v = (Vector) in.readObject();
 
-        addAll(v);
+        addAll( v );
     }
 
     /**
@@ -268,14 +293,16 @@ public class JavaVector extends java.util.Vector
      *
      * @param visitor
      */
-    public void accept(Visitor visitor) {
+    public void accept( Visitor visitor )
+    {
 
         Enumeration enumList = elements();
 
-        while (enumList.hasMoreElements()) {
+        while ( enumList.hasMoreElements() )
+        {
             Definition def = (Definition) enumList.nextElement();
 
-            def.accept(visitor);
+            def.accept( visitor );
         }
     }
 }

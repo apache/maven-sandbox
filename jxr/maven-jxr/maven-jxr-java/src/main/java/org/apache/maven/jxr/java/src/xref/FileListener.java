@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.xref;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.xref;
 
 /**
  * Somebody that wants to know about each file that the
@@ -22,12 +23,13 @@ package org.apache.maven.jxr.java.src.xref;
  *
  * @version $Id: $
  */
-public interface FileListener {
+public interface FileListener
+{
 
     /**
      * Called each time a new file is processed.
      *
      * @param path The absolute path of the file that's currently  being processed.
      */
-    public void notify(String path);
+    public void notify( String path );
 }

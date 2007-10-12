@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 
@@ -32,7 +33,9 @@ import java.util.Enumeration;
  *
  * @version $Id: $
  */
-public class ReferencePersistor implements Visitor, ReferenceTypes {
+public class ReferencePersistor
+    implements Visitor, ReferenceTypes
+{
 
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( ReferencePersistor.class );
@@ -40,16 +43,19 @@ public class ReferencePersistor implements Visitor, ReferenceTypes {
     /**
      * @param outDirPath the root of the output directory tree
      */
-    public ReferencePersistor(String outDirPath) {
+    public ReferencePersistor( String outDirPath )
+    {
         this.outDirPath = outDirPath;
     }
 
     /**
      * Call this after traversal completes.
      */
-    public void done() {
+    public void done()
+    {
 
-        if (pw != null) {
+        if ( pw != null )
+        {
             closeWriters();
         }
 
@@ -61,38 +67,42 @@ public class ReferencePersistor implements Visitor, ReferenceTypes {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Visitor#visit(org.apache.maven.jxr.java.src.symtab.PackageDef)
      */
-    public void visit(PackageDef def) {
+    public void visit( PackageDef def )
+    {
 
-        if (pw != null) {
+        if ( pw != null )
+        {
             closeWriters();
         }
 
-        String finalDirPath = outDirPath + File.separatorChar
-                + def.getName().replace('.', File.separatorChar);
+        String finalDirPath = outDirPath + File.separatorChar + def.getName().replace( '.', File.separatorChar );
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("visit(PackageDef) - String finalDirPath=" + finalDirPath);
+            log.debug( "visit(PackageDef) - String finalDirPath=" + finalDirPath );
         }
 
-        File dir = new File(finalDirPath);
+        File dir = new File( finalDirPath );
 
         dir.mkdirs();
 
         filePath = finalDirPath + File.separatorChar + "references.txt";
 
-        try {
+        try
+        {
             boolean append = true;
 
-            fw = new FileWriter(filePath, append);
-        } catch (IOException ex) {
+            fw = new FileWriter( filePath, append );
+        }
+        catch ( IOException ex )
+        {
             log.error( "IOException: " + ex.getMessage(), ex );
 
-            fw = null;    // TBD: fix this hack
+            fw = null; // TBD: fix this hack
         }
 
-        bw = new BufferedWriter(fw);
-        pw = new PrintWriter(bw);
+        bw = new BufferedWriter( fw );
+        pw = new PrintWriter( bw );
 
         // ReferentFileClass - name of class whose .java file this referent lives in.
         // ReferentType -- Class Method, or Variable
@@ -103,8 +113,8 @@ public class ReferencePersistor implements Visitor, ReferenceTypes {
         // Referent's URL in referent list is {ReferentFileClass}_java_ref.html#{ReferentTag}
         // Referent class's name in package list is {ReferentClass}
         //
-        pw.println(
-                "# ReferentFileClass | ReferentClass | ReferentType | ReferentTag | ReferringPackage | ReferringClass | ReferringMethod | ReferringFile | ReferringLineNumber");
+        pw
+            .println( "# ReferentFileClass | ReferentClass | ReferentType | ReferentTag | ReferringPackage | ReferringClass | ReferringMethod | ReferringFile | ReferringLineNumber" );
     }
 
     /**
@@ -113,107 +123,118 @@ public class ReferencePersistor implements Visitor, ReferenceTypes {
      * @param def
      * @return
      */
-    private String getReferentFileClass(Definition def) {
+    private String getReferentFileClass( Definition def )
+    {
 
-        String temp = def.getOccurrence().getFile().getName();    // HACK!
+        String temp = def.getOccurrence().getFile().getName(); // HACK!
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("getReferentFileClass(Definition) - name="+def.getClassScopeName()+" temp="+temp);
+            log.debug( "getReferentFileClass(Definition) - name=" + def.getClassScopeName() + " temp=" + temp );
         }
 
-        return temp.substring(0, temp.length() - ".java".length());
+        return temp.substring( 0, temp.length() - ".java".length() );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Visitor#visit(org.apache.maven.jxr.java.src.symtab.ClassDef)
      */
-    public void visit(ClassDef def) {
+    public void visit( ClassDef def )
+    {
 
-        if (def instanceof PrimitiveDef) {
+        if ( def instanceof PrimitiveDef )
+        {
             return;
         }
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("visit(ClassDef) - " + def.getName()+" is defined in "+def.getOccurrence().getFile().getName());
-            log.debug("visit(ClassDef) - persist "+def.getName());
+            log.debug( "visit(ClassDef) - " + def.getName() + " is defined in "
+                + def.getOccurrence().getFile().getName() );
+            log.debug( "visit(ClassDef) - persist " + def.getName() );
         }
 
-        String referentFileClass = getReferentFileClass(def);
+        String referentFileClass = getReferentFileClass( def );
         String referentTag = def.getClassScopeName();
         String referentClass;
 
-        if (def.getParentScope() instanceof ClassDef)    // inner class
+        if ( def.getParentScope() instanceof ClassDef ) // inner class
         {
             String parentScopeName = def.getParentScope().getName();
 
             referentClass = parentScopeName + "." + def.getName();
-        } else {
+        }
+        else
+        {
             referentClass = def.getName();
         }
 
-        persist(referentFileClass, CLASS_REF, referentTag, referentClass, def);
+        persist( referentFileClass, CLASS_REF, referentTag, referentClass, def );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Visitor#visit(org.apache.maven.jxr.java.src.symtab.MethodDef)
      */
-    public void visit(MethodDef def) {
+    public void visit( MethodDef def )
+    {
 
         String referentClass;
-        String referentFileClass = getReferentFileClass(def);
+        String referentFileClass = getReferentFileClass( def );
         String referentTag = def.getClassScopeName();
         Definition parentScope = def.getParentScope();
         Definition grandParentScope = parentScope.getParentScope();
 
-        if (grandParentScope instanceof ClassDef)    // inner class
+        if ( grandParentScope instanceof ClassDef ) // inner class
         {
-            referentClass = grandParentScope.getName() + "."
-                    + parentScope.getName();
-        } else {
+            referentClass = grandParentScope.getName() + "." + parentScope.getName();
+        }
+        else
+        {
             referentClass = parentScope.getName();
         }
 
-        persist(referentFileClass, METHOD_REF, referentTag, referentClass, def);
+        persist( referentFileClass, METHOD_REF, referentTag, referentClass, def );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Visitor#visit(org.apache.maven.jxr.java.src.symtab.VariableDef)
      */
-    public void visit(VariableDef def) {
+    public void visit( VariableDef def )
+    {
 
         String referentClass;
-        String referentFileClass = getReferentFileClass(def);
+        String referentFileClass = getReferentFileClass( def );
         String referentTag = def.getClassScopeName();
         Definition parentScope = def.getParentScope();
         Definition grandParentScope = parentScope.getParentScope();
 
-        if (parentScope instanceof MethodDef)                 // method variable
+        if ( parentScope instanceof MethodDef ) // method variable
         {
-            Definition greatGrandParentScope =
-                    grandParentScope.getParentScope();
+            Definition greatGrandParentScope = grandParentScope.getParentScope();
 
-            if (greatGrandParentScope instanceof ClassDef)    // inner class
+            if ( greatGrandParentScope instanceof ClassDef ) // inner class
             {
-                referentClass = greatGrandParentScope.getName() + "."
-                        + grandParentScope.getName();
-            } else {
+                referentClass = greatGrandParentScope.getName() + "." + grandParentScope.getName();
+            }
+            else
+            {
                 referentClass = grandParentScope.getName();
             }
-        } else                                                // class variable
+        }
+        else
+        // class variable
         {
-            if (grandParentScope instanceof ClassDef)         // inner class
+            if ( grandParentScope instanceof ClassDef ) // inner class
             {
-                referentClass = grandParentScope.getName() + "."
-                        + parentScope.getName();
-            } else {
+                referentClass = grandParentScope.getName() + "." + parentScope.getName();
+            }
+            else
+            {
                 referentClass = parentScope.getName();
             }
         }
 
-        persist(referentFileClass, VARIABLE_REF, referentTag, referentClass,
-                def);
+        persist( referentFileClass, VARIABLE_REF, referentTag, referentClass, def );
     }
 
     /**
@@ -225,31 +246,32 @@ public class ReferencePersistor implements Visitor, ReferenceTypes {
      * @param referentClass
      * @param def
      */
-    private void persist(String referentFileClass, String referentType,
-                         String referentTag, String referentClass,
-                         Definition def) {
+    private void persist( String referentFileClass, String referentType, String referentTag, String referentClass,
+                          Definition def )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("persist(String, String, String, String, Definition) - String referentFileClass=" + referentFileClass);
-            log.debug("persist(String, String, String, String, Definition) - String referentType=" + referentType);
+            log.debug( "persist(String, String, String, String, Definition) - String referentFileClass="
+                + referentFileClass );
+            log.debug( "persist(String, String, String, String, Definition) - String referentType=" + referentType );
         }
 
         JavaVector refs = def.getReferences();
 
-        if (refs != null) {
+        if ( refs != null )
+        {
             Enumeration enumList = refs.elements();
 
-            while (enumList.hasMoreElements()) {
+            while ( enumList.hasMoreElements() )
+            {
                 Occurrence occ = (Occurrence) enumList.nextElement();
 
-                persist(referentFileClass, referentType, referentTag,
-                        referentClass, occ);
+                persist( referentFileClass, referentType, referentTag, referentClass, occ );
             }
         }
 
-        persist(referentFileClass, referentType, referentTag, referentClass,
-                def.getOccurrence());
+        persist( referentFileClass, referentType, referentTag, referentClass, def.getOccurrence() );
     }
 
     /**
@@ -261,40 +283,44 @@ public class ReferencePersistor implements Visitor, ReferenceTypes {
      * @param referentClass
      * @param occ
      */
-    private void persist(String referentFileClass, String referentType,
-                         String referentTag, String referentClass,
-                         Occurrence occ) {
+    private void persist( String referentFileClass, String referentType, String referentTag, String referentClass,
+                          Occurrence occ )
+    {
 
-        pw.print(referentFileClass);
-        pw.print("|");
-        pw.print(referentClass);
-        pw.print("|");
-        pw.print(referentTag);
-        pw.print("|");
-        pw.print(referentType);
-        pw.print("|");
-        pw.print(occ.getPackageName());
-        pw.print("|");
-        pw.print(occ.getClassName());
-        pw.print("|");
-        pw.print(occ.getMethodName());
-        pw.print("|");
-        pw.print(occ.getFile().getName());
-        pw.print("|");
-        pw.println(occ.getLine());
+        pw.print( referentFileClass );
+        pw.print( "|" );
+        pw.print( referentClass );
+        pw.print( "|" );
+        pw.print( referentTag );
+        pw.print( "|" );
+        pw.print( referentType );
+        pw.print( "|" );
+        pw.print( occ.getPackageName() );
+        pw.print( "|" );
+        pw.print( occ.getClassName() );
+        pw.print( "|" );
+        pw.print( occ.getMethodName() );
+        pw.print( "|" );
+        pw.print( occ.getFile().getName() );
+        pw.print( "|" );
+        pw.println( occ.getLine() );
     }
 
     /**
      * Method closeWriters
      */
-    private void closeWriters() {
+    private void closeWriters()
+    {
 
-        try {
+        try
+        {
             pw.close();
             bw.close();
             fw.close();
-        } catch (IOException ex) {
-            log.error( "Hell has frozen over.", ex);
+        }
+        catch ( IOException ex )
+        {
+            log.error( "Hell has frozen over.", ex );
         }
     }
 

@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import java.util.Hashtable;
 
@@ -25,7 +26,8 @@ import java.util.Hashtable;
  *
  * @version $Id: $
  */
-class StringTable {
+class StringTable
+{
 
     // ==========================================================================
     // ==  Class Variables
@@ -48,19 +50,22 @@ class StringTable {
      * @param name
      * @return
      */
-    String getName(String name) {
+    String getName( String name )
+    {
 
-        if (name == null) {
+        if ( name == null )
+        {
             return null;
         }
 
-        String uniqueName = (String) names.get(name);
+        String uniqueName = (String) names.get( name );
 
-        if (uniqueName != null) {
+        if ( uniqueName != null )
+        {
             return uniqueName;
         }
 
-        names.put(name, name);
+        names.put( name, name );
 
         return name;
     }
@@ -68,7 +73,8 @@ class StringTable {
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    public String toString()
+    {
         return "StringTable";
     }
 }

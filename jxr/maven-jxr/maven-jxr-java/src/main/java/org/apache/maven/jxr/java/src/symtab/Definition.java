@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 
@@ -28,7 +29,9 @@ import java.util.StringTokenizer;
  *
  * @version $Id: $
  */
-public abstract class Definition implements Taggable, java.io.Serializable {
+public abstract class Definition
+    implements Taggable, java.io.Serializable
+{
 
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( Definition.class );
@@ -60,7 +63,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    public String getSourceName() {
+    public String getSourceName()
+    {
         return _sourceName;
     }
 
@@ -69,7 +73,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    public String getRefName() {
+    public String getRefName()
+    {
         return _refName;
     }
 
@@ -80,7 +85,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
     /**
      * Default constructor is public for deserialization.
      */
-    public Definition() {
+    public Definition()
+    {
 
         // create a new vector to keep track of references to this symbol
         this.references = new JavaVector();
@@ -93,29 +99,34 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      * @param occ
      * @param parentScope
      */
-    Definition(String name, // the symbol name
-               Occurrence occ, // the location of its definition
-               ScopedDef parentScope) {    // scope containing the def
+    Definition( String name, // the symbol name
+                Occurrence occ, // the location of its definition
+                ScopedDef parentScope )
+    { // scope containing the def
 
         this();
 
         this.definition = occ;
         this.parentScope = parentScope;
 
-        if (name != null) {
+        if ( name != null )
+        {
             this.name = name.intern();
-        } else {
+        }
+        else
+        {
             this.name = name;
         }
 
-        setupFileNames(occ);
+        setupFileNames( occ );
     }
 
     /**
      * Method setupFileNames
      */
-    protected void setupFileNames() {
-        setupFileNames(definition);
+    protected void setupFileNames()
+    {
+        setupFileNames( definition );
     }
 
     /**
@@ -123,15 +134,15 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @param occ
      */
-    private void setupFileNames(Occurrence occ) {
+    private void setupFileNames( Occurrence occ )
+    {
 
-        if ((occ != null) && (occ.getFile() != null)) {
+        if ( ( occ != null ) && ( occ.getFile() != null ) )
+        {
             String fileName = occ.getFile().toString();
-            String baseName =
-                    fileName.substring(fileName.lastIndexOf(File.separatorChar)
-                    + 1, fileName.length());
+            String baseName = fileName.substring( fileName.lastIndexOf( File.separatorChar ) + 1, fileName.length() );
 
-            baseName = baseName.replace('.', '_');
+            baseName = baseName.replace( '.', '_' );
             _refName = baseName + "_ref.html";
             _sourceName = baseName + ".html";
 
@@ -146,17 +157,19 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @param occ
      */
-    void addReference(Occurrence occ) {
+    void addReference( Occurrence occ )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("addReference(Occurrence) - Adding reference in:"+occ.getFile()+" to "+getQualifiedName());
+            log.debug( "addReference(Occurrence) - Adding reference in:" + occ.getFile() + " to " + getQualifiedName() );
         }
 
-        if (occ != null) {
-            occ.setDefinition(this);
-            references.addElement(occ);
-            SymbolTable.addFileReference(occ);
+        if ( occ != null )
+        {
+            occ.setDefinition( this );
+            references.addElement( occ );
+            SymbolTable.addFileReference( occ );
         }
     }
 
@@ -166,7 +179,7 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      * @param occ
      * @return
      */
-    public abstract HTMLTag getOccurrenceTag(Occurrence occ);
+    public abstract HTMLTag getOccurrenceTag( Occurrence occ );
 
     /**
      * Get a String representation of the location where this symbol
@@ -174,9 +187,11 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    String getDef() {
+    String getDef()
+    {
 
-        if (definition != null) {
+        if ( definition != null )
+        {
             return definition.getLocation();
         }
 
@@ -188,7 +203,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @param name
      */
-    protected void setName(String name) {
+    protected void setName( String name )
+    {
         this.name = name;
     }
 
@@ -197,9 +213,11 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    public String getName() {
+    public String getName()
+    {
 
-        if (name == null) {
+        if ( name == null )
+        {
             return "~NO NAME~";
         }
 
@@ -211,10 +229,12 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    public Occurrence getOccurrence() {
+    public Occurrence getOccurrence()
+    {
 
-        if ((definition != null) && (definition.getPackageName() == null)) {
-            definition.setPackageName(getPackageName());
+        if ( ( definition != null ) && ( definition.getPackageName() == null ) )
+        {
+            definition.setPackageName( getPackageName() );
         }
 
         return definition;
@@ -225,7 +245,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @param definition
      */
-    protected void setOccurrence(Occurrence definition) {
+    protected void setOccurrence( Occurrence definition )
+    {
         this.definition = definition;
     }
 
@@ -234,7 +255,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    public ScopedDef getParentScope() {
+    public ScopedDef getParentScope()
+    {
         return parentScope;
     }
 
@@ -245,16 +267,18 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    public String getQualifiedName() {
+    public String getQualifiedName()
+    {
 
         String nameToUse = name;
 
-        if (name == null) {
+        if ( name == null )
+        {
             nameToUse = "~NO NAME~";
         }
 
-        if ((getParentScope() != null)
-                && !getParentScope().isDefaultOrBaseScope()) {
+        if ( ( getParentScope() != null ) && !getParentScope().isDefaultOrBaseScope() )
+        {
             return getParentScope().getQualifiedName() + "." + nameToUse;
         }
 
@@ -266,19 +290,22 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    String getPackageName() {
+    String getPackageName()
+    {
 
         ScopedDef d = getParentScope();
 
-        if (d == null) {
+        if ( d == null )
+        {
             return null;
         }
 
-        while (!(d instanceof PackageDef) && (d.getParentScope() != null)) {
+        while ( !( d instanceof PackageDef ) && ( d.getParentScope() != null ) )
+        {
             d = d.getParentScope();
         }
 
-        return (d.getName());
+        return ( d.getName() );
     }
 
     /**
@@ -286,18 +313,20 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    String getScopedClassName() {
+    String getScopedClassName()
+    {
 
         String name;
         ScopedDef d = getParentScope();
 
-        if (!(d instanceof ClassDef)) {
+        if ( !( d instanceof ClassDef ) )
+        {
             return getName();
         }
 
         name = d.getScopedClassName() + "." + getName();
 
-        return (name);
+        return ( name );
     }
 
     /**
@@ -305,12 +334,14 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    public String getPackagePath() {
+    public String getPackagePath()
+    {
 
         String packageName = getPackageName();
 
-        if (packageName != null) {
-            packageName = packageName.replace('.', File.separatorChar);
+        if ( packageName != null )
+        {
+            packageName = packageName.replace( '.', File.separatorChar );
         }
 
         return packageName;
@@ -322,45 +353,51 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      * @param o
      * @return
      */
-    String getRelativePath(Occurrence o) {
+    String getRelativePath( Occurrence o )
+    {
 
         String newPath = "";
         String packageName = null;
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("getRelativePath(Occurrence) - Package Name for "+getName()+"="+getPackageName());
-            log.debug("getRelativePath(Occurrence) - Package Name for occurrence in "+o.getFile()+"="+o.getPackageName());
+            log.debug( "getRelativePath(Occurrence) - Package Name for " + getName() + "=" + getPackageName() );
+            log.debug( "getRelativePath(Occurrence) - Package Name for occurrence in " + o.getFile() + "="
+                + o.getPackageName() );
         }
 
-        if (o != null) {
+        if ( o != null )
+        {
             packageName = o.getPackageName();
         }
 
-        if ((getPackageName() != null) && (packageName != null)
-                && !getPackageName().equals(packageName)) {
+        if ( ( getPackageName() != null ) && ( packageName != null ) && !getPackageName().equals( packageName ) )
+        {
             String pathName = getPackagePath();
-            StringTokenizer st = new StringTokenizer(packageName, ".");
+            StringTokenizer st = new StringTokenizer( packageName, "." );
             String backup = "";
             int dirs = 0;
 
             dirs = st.countTokens();
 
-            for (int j = 0; j < dirs; j++) {
-                backup = backup + "../" ;
+            for ( int j = 0; j < dirs; j++ )
+            {
+                backup = backup + "../";
             }
 
             newPath = backup + pathName + '/';
 
-            if (log.isDebugEnabled())
+            if ( log.isDebugEnabled() )
             {
-                log.debug("getRelativePath(Occurrence) - Packagename for ["+getName()+"]=["+getPackageName()+"]");
-                log.debug("getRelativePath(Occurrence) - Occurrence   in ["+o.getClassName()+"."+o.getMethodName()+"] in File ["+o.getFile()+"]=["+o.getPackageName()+"]");
-                log.debug("getRelativePath(Occurrence) - NewPath         ["+newPath+"]");
+                log.debug( "getRelativePath(Occurrence) - Packagename for [" + getName() + "]=[" + getPackageName()
+                    + "]" );
+                log.debug( "getRelativePath(Occurrence) - Occurrence   in [" + o.getClassName() + "."
+                    + o.getMethodName() + "] in File [" + o.getFile() + "]=[" + o.getPackageName() + "]" );
+                log.debug( "getRelativePath(Occurrence) - NewPath         [" + newPath + "]" );
             }
         }
 
-        return (newPath);
+        return ( newPath );
     }
 
     /**
@@ -369,46 +406,49 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      * @param o
      * @return
      */
-    String getOccurrencePath(Occurrence o) {
+    String getOccurrencePath( Occurrence o )
+    {
 
         String occurrencePackageName = o.getPackageName();
         String newPath = "";
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("getOccurrencePath(Occurrence) - Package Name for "+getName()+"="+getPackageName());
-            log.debug("getOccurrencePath(Occurrence) - Package Name for occurrence in "+o.getFile()+"="+o.getPackageName());
+            log.debug( "getOccurrencePath(Occurrence) - Package Name for " + getName() + "=" + getPackageName() );
+            log.debug( "getOccurrencePath(Occurrence) - Package Name for occurrence in " + o.getFile() + "="
+                + o.getPackageName() );
         }
 
-        if ((getPackageName() != null) && (occurrencePackageName != null)
-                && !getPackageName().equals(occurrencePackageName)) {
+        if ( ( getPackageName() != null ) && ( occurrencePackageName != null )
+            && !getPackageName().equals( occurrencePackageName ) )
+        {
 
             // String occurrancePathName = o.getPackageName().replace('.',_separatorChar);
             // StringTokenizer st = new StringTokenizer(occurrencePackageName,".");
-            String occurrancePathName = o.getPackageName().replace('.',
-                    File.separatorChar);
+            String occurrancePathName = o.getPackageName().replace( '.', File.separatorChar );
             String mePackageName = getPackageName();
-            StringTokenizer st =
-                    new StringTokenizer(mePackageName, ".");
+            StringTokenizer st = new StringTokenizer( mePackageName, "." );
             String backup = "";
             int dirs = 0;
 
             dirs = st.countTokens();
 
-            for (int j = 0; j < dirs; j++) {
+            for ( int j = 0; j < dirs; j++ )
+            {
                 backup = backup + ".." + File.separatorChar;
             }
 
             newPath = backup + occurrancePathName + File.separatorChar;
 
-            if (log.isDebugEnabled())
+            if ( log.isDebugEnabled() )
             {
-                log.debug("getOccurrencePath(Occurrence) - Occurrence["+occurrencePackageName+"] me["+getPackageName()+"]");
-                log.debug("getOccurrencePath(Occurrence) - newPath "+newPath);
+                log.debug( "getOccurrencePath(Occurrence) - Occurrence[" + occurrencePackageName + "] me["
+                    + getPackageName() + "]" );
+                log.debug( "getOccurrencePath(Occurrence) - newPath " + newPath );
             }
         }
 
-        return (newPath);
+        return ( newPath );
     }
 
     /**
@@ -420,7 +460,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      * @param def
      * @return
      */
-    boolean isSuperClassOf(Definition def) {
+    boolean isSuperClassOf( Definition def )
+    {
         return false;
     }
 
@@ -429,7 +470,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    public JavaVector getReferences() {
+    public JavaVector getReferences()
+    {
         return references;
     }
 
@@ -443,8 +485,9 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      * @param type
      * @return
      */
-    Definition lookup(String name, Class type) {
-        return lookup(name, -1, type);
+    Definition lookup( String name, Class type )
+    {
+        return lookup( name, -1, type );
     }
 
     /**
@@ -457,21 +500,23 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      * @param type
      * @return
      */
-    Definition lookup(String name, int numParams, Class type) {
-        throw new IllegalArgumentException("Can't lookup in a " + getClass());
+    Definition lookup( String name, int numParams, Class type )
+    {
+        throw new IllegalArgumentException( "Can't lookup in a " + getClass() );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Taggable#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public abstract void generateTags(HTMLTagContainer tagList);
+    public abstract void generateTags( HTMLTagContainer tagList );
 
     /**
      * Default implementation of accept method (Visitor design pattern).
      *
      * @param visitor
      */
-    public void accept(Visitor visitor) {
+    public void accept( Visitor visitor )
+    {
     }
 
     /**
@@ -479,7 +524,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @param output
      */
-    public void generateReferences(FileWriter output) {
+    public void generateReferences( FileWriter output )
+    {
 
         // Subclasses should override
     }
@@ -490,7 +536,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @param symbolTable
      */
-    void resolveTypes(SymbolTable symbolTable) {
+    void resolveTypes( SymbolTable symbolTable )
+    {
     }
 
     /**
@@ -499,7 +546,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @param symbolTable
      */
-    void resolveRefs(SymbolTable symbolTable) {
+    void resolveRefs( SymbolTable symbolTable )
+    {
     }
 
     /**
@@ -508,7 +556,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @param parentScope
      */
-    void setParentScope(ScopedDef parentScope) {
+    void setParentScope( ScopedDef parentScope )
+    {
         this.parentScope = parentScope;
     }
 
@@ -517,7 +566,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      *
      * @return
      */
-    String getClassScopeName() {
+    String getClassScopeName()
+    {
         return getName();
     }
 
@@ -528,9 +578,11 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      * @param c a Class object or null.  If null, always returns true.
      * @return
      */
-    protected boolean isA(Class c) {
+    protected boolean isA( Class c )
+    {
 
-        if (c == null) {
+        if ( c == null )
+        {
             return true;
         }
 
@@ -543,8 +595,9 @@ public abstract class Definition implements Taggable, java.io.Serializable {
      * @param out
      * @throws java.io.IOException
      */
-    private void writeObject(java.io.ObjectOutputStream out)
-            throws java.io.IOException {
+    private void writeObject( java.io.ObjectOutputStream out )
+        throws java.io.IOException
+    {
 
         JavaVector saveRefs = references;
 
@@ -558,7 +611,8 @@ public abstract class Definition implements Taggable, java.io.Serializable {
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    public String toString()
+    {
         return getClass().getName() + " [" + getQualifiedName() + "]";
     }
 }

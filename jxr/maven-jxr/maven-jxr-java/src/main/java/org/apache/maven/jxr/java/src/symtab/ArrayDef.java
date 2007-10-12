@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 /**
  * Definition of an array type.  Note that this is not currently used in the
@@ -23,7 +24,10 @@ package org.apache.maven.jxr.java.src.symtab;
  *
  * @version $Id: $
  */
-class ArrayDef extends Definition implements TypedDef {
+class ArrayDef
+    extends Definition
+    implements TypedDef
+{
 
     private static final long serialVersionUID = -6748362770029804744L;
 
@@ -45,24 +49,27 @@ class ArrayDef extends Definition implements TypedDef {
      * @param occ
      * @param parentScope
      */
-    ArrayDef(String name, // the name of the symbol
-             Occurrence occ, // the location of its def
-             ScopedDef parentScope) {    // scope containing the def
+    ArrayDef( String name, // the name of the symbol
+              Occurrence occ, // the location of its def
+              ScopedDef parentScope )
+    { // scope containing the def
 
-        super(name, occ, parentScope);
+        super( name, occ, parentScope );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.TypedDef#getType()
      */
-    public Definition getType() {
+    public Definition getType()
+    {
         return type;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public void generateTags(HTMLTagContainer tagList) {
+    public void generateTags( HTMLTagContainer tagList )
+    {
 
         /*
          * out.println(getQualifiedName() + "[]  (Array) " + getDef());
@@ -73,7 +80,8 @@ class ArrayDef extends Definition implements TypedDef {
     /**
      * Resolves references to other symbols used by this symbol
      */
-    void resolveTypes() {
+    void resolveTypes()
+    {
 
         // would need to lookup the base type in the symbol table
     }
@@ -81,14 +89,16 @@ class ArrayDef extends Definition implements TypedDef {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#toString()
      */
-    public String toString() {
+    public String toString()
+    {
         return "ArrayDef [" + type.getQualifiedName() + "]";
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getOccurrenceTag(org.apache.maven.jxr.java.src.symtab.Occurrence)
      */
-    public HTMLTag getOccurrenceTag(Occurrence occ) {
+    public HTMLTag getOccurrenceTag( Occurrence occ )
+    {
         return null;
     }
 }

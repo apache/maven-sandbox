@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 
@@ -26,7 +27,9 @@ import java.util.Enumeration;
  *
  * @version $Id: $
  */
-class JavaHashtable extends java.util.Hashtable {
+class JavaHashtable
+    extends java.util.Hashtable
+{
 
     private static final long serialVersionUID = 3317424596680650586L;
 
@@ -50,7 +53,8 @@ class JavaHashtable extends java.util.Hashtable {
     /**
      * Constructor to create a new java hash table
      */
-    JavaHashtable() {
+    JavaHashtable()
+    {
         super();
     }
 
@@ -59,12 +63,14 @@ class JavaHashtable extends java.util.Hashtable {
      *
      * @param tagList
      */
-    void tagElements(HTMLTagContainer tagList) {
+    void tagElements( HTMLTagContainer tagList )
+    {
 
         Enumeration e = elements();
 
-        while (e.hasMoreElements()) {
-            ((Taggable) e.nextElement()).generateTags(tagList);
+        while ( e.hasMoreElements() )
+        {
+            ( (Taggable) e.nextElement() ).generateTags( tagList );
         }
     }
 
@@ -73,67 +79,73 @@ class JavaHashtable extends java.util.Hashtable {
      *
      * @param symbolTable
      */
-    void resolveTypes(SymbolTable symbolTable) {
+    void resolveTypes( SymbolTable symbolTable )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("resolveTypes(SymbolTable) - SymbolTable symbolTable=" + symbolTable);
+            log.debug( "resolveTypes(SymbolTable) - SymbolTable symbolTable=" + symbolTable );
         }
 
-        if (!resolving) {
+        if ( !resolving )
+        {
             resolving = true;
 
             // walk through each element in the hash table
             Enumeration e = elements();
 
-            while (e.hasMoreElements()) {
+            while ( e.hasMoreElements() )
+            {
                 Definition d = (Definition) e.nextElement();
 
-                if (log.isDebugEnabled())
+                if ( log.isDebugEnabled() )
                 {
-                    log.debug("resolveTypes(SymbolTable) - resolving "+d.getName());
-                    log.debug("resolveTypes(SymbolTable) - className="+d.getClass().getName());
+                    log.debug( "resolveTypes(SymbolTable) - resolving " + d.getName() );
+                    log.debug( "resolveTypes(SymbolTable) - className=" + d.getClass().getName() );
                 }
 
                 // if the element is a Dummy class or dummy interface, we
                 // will replace it with the real definition
-                if (d instanceof DummyClass) {
+                if ( d instanceof DummyClass )
+                {
 
                     if ( log.isInfoEnabled() )
                     {
-                        log.info( "Resolving DummyClass:" + d.getName());
+                        log.info( "Resolving DummyClass:" + d.getName() );
                     }
 
                     Definition newD;
 
                     // get its package name and look up the class/interace
-                    String pkg = ((DummyClass) d).getPackage();
+                    String pkg = ( (DummyClass) d ).getPackage();
 
                     if ( log.isInfoEnabled() )
                     {
-                        log.info( "pkg " + pkg);
+                        log.info( "pkg " + pkg );
                     }
 
-                    newD = symbolTable.lookupDummy(d);
+                    newD = symbolTable.lookupDummy( d );
 
                     if ( log.isInfoEnabled() )
                     {
-                        log.info( "newD = " + newD);
+                        log.info( "newD = " + newD );
                     }
 
                     // if we found the class/interface,
                     // add a reference to it, and replace the current def
                     // with the one we found
-                    if (newD != null) {
-                        newD.addReference(d.getOccurrence());
-                        remove(d.getName());
-                        put(d.getName(), newD);
+                    if ( newD != null )
+                    {
+                        newD.addReference( d.getOccurrence() );
+                        remove( d.getName() );
+                        put( d.getName(), newD );
                     }
                 }
 
                 // otherwise, ask it if it needs resolution
-                else {
-                    d.resolveTypes(symbolTable);
+                else
+                {
+                    d.resolveTypes( symbolTable );
                 }
             }
         }
@@ -144,23 +156,26 @@ class JavaHashtable extends java.util.Hashtable {
      *
      * @param symbolTable
      */
-    void resolveRefs(SymbolTable symbolTable) {
+    void resolveRefs( SymbolTable symbolTable )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("resolveRefs(SymbolTable) - SymbolTable symbolTable=" + symbolTable);
+            log.debug( "resolveRefs(SymbolTable) - SymbolTable symbolTable=" + symbolTable );
         }
 
-        if (!resolvingRefs) {
+        if ( !resolvingRefs )
+        {
             resolvingRefs = true;
 
             // walk through each element in the hash table
             Enumeration e = elements();
 
-            while (e.hasMoreElements()) {
+            while ( e.hasMoreElements() )
+            {
                 Definition d = (Definition) e.nextElement();
 
-                d.resolveRefs(symbolTable);
+                d.resolveRefs( symbolTable );
             }
         }
     }
@@ -171,14 +186,16 @@ class JavaHashtable extends java.util.Hashtable {
      *
      * @param visitor
      */
-    public void accept(Visitor visitor) {
+    public void accept( Visitor visitor )
+    {
 
         Enumeration e = elements();
 
-        while (e.hasMoreElements()) {
+        while ( e.hasMoreElements() )
+        {
             Definition d = (Definition) e.nextElement();
 
-            d.accept(visitor);
+            d.accept( visitor );
         }
     }
 }

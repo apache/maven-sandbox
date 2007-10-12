@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,14 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 /**
  * A label that appears in the source file.
  *
  * @version $Id: $
  */
-class LabelDef extends Definition {
+class LabelDef
+    extends Definition
+{
 
     private static final long serialVersionUID = -2054703202457275137L;
 
@@ -36,16 +39,18 @@ class LabelDef extends Definition {
      * @param occ
      * @param parentScope
      */
-    LabelDef(String name, // name of the label
-             Occurrence occ, // where it was defined
-             ScopedDef parentScope) {    // scope containing the def
-        super(name, occ, parentScope);
+    LabelDef( String name, // name of the label
+              Occurrence occ, // where it was defined
+              ScopedDef parentScope )
+    { // scope containing the def
+        super( name, occ, parentScope );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public void generateTags(HTMLTagContainer tagList) {
+    public void generateTags( HTMLTagContainer tagList )
+    {
 
         // state that this is a label
         // System.out.println(getQualifiedName() + " (Label) " + getDef());
@@ -56,7 +61,8 @@ class LabelDef extends Definition {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getOccurrenceTag(org.apache.maven.jxr.java.src.symtab.Occurrence)
      */
-    public HTMLTag getOccurrenceTag(Occurrence occ) {
+    public HTMLTag getOccurrenceTag( Occurrence occ )
+    {
         return null;
     }
 }

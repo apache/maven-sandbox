@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,15 +26,18 @@ import java.io.OutputStreamWriter;
  *
  * @version $Id: $
  */
-public class HTMLOutputWriter extends OutputStreamWriter {
+public class HTMLOutputWriter
+    extends OutputStreamWriter
+{
 
     /**
      * Constructor HTMLOutputWriter
      *
      * @param output
      */
-    public HTMLOutputWriter(OutputStream output) {
-        super(output);
+    public HTMLOutputWriter( OutputStream output )
+    {
+        super( output );
     }
 
     /**
@@ -42,20 +46,23 @@ public class HTMLOutputWriter extends OutputStreamWriter {
      * @param c
      * @throws IOException
      */
-    public void writeHTML(int c) throws IOException {
+    public void writeHTML( int c )
+        throws IOException
+    {
 
-        switch (c) {
+        switch ( c )
+        {
 
             case '<':
-                this.write("&lt;");
+                this.write( "&lt;" );
                 break;
 
             case '>':
-                this.write("&gt;");
+                this.write( "&gt;" );
                 break;
 
-            default :
-                super.write(c);
+            default:
+                super.write( c );
                 break;
         }
     }
@@ -66,10 +73,13 @@ public class HTMLOutputWriter extends OutputStreamWriter {
      * @param s
      * @throws IOException
      */
-    public void writeHTML(String s) throws IOException {
+    public void writeHTML( String s )
+        throws IOException
+    {
 
-        for (int i = 0; i < s.length(); i++) {
-            this.writeHTML(s.charAt(i));
+        for ( int i = 0; i < s.length(); i++ )
+        {
+            this.writeHTML( s.charAt( i ) );
         }
     }
 }

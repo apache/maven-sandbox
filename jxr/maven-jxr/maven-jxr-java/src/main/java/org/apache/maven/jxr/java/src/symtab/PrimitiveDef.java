@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 /**
  * Definition of a primitive type. We subclass ClassDef here as a shortcut
@@ -26,7 +27,9 @@ package org.apache.maven.jxr.java.src.symtab;
  *
  * @version $Id: $
  */
-class PrimitiveDef extends ClassDef {
+class PrimitiveDef
+    extends ClassDef
+{
 
     // ==========================================================================
     // ==  Methods
@@ -39,16 +42,18 @@ class PrimitiveDef extends ClassDef {
      * @param superClass
      * @param parentScope
      */
-    PrimitiveDef(String name, // the name of the primitive
-                 ClassDef superClass, // the superclass (if applicable)
-                 ScopedDef parentScope) {    // which scope owns it
-        super(name, null, superClass, null, parentScope);
+    PrimitiveDef( String name, // the name of the primitive
+                  ClassDef superClass, // the superclass (if applicable)
+                  ScopedDef parentScope )
+    { // which scope owns it
+        super( name, null, superClass, null, parentScope );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public void generateTags(HTMLTagContainer tagList) {
+    public void generateTags( HTMLTagContainer tagList )
+    {
 
         /*
          *   out.println(getName() + " (Primitive type)");

@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,14 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 /**
  * Definition of a curly-brace-delimited block in a file.
  *
  * @version $Id: $
  */
-public class BlockDef extends ScopedDef {
+public class BlockDef
+    extends ScopedDef
+{
 
     private static final long serialVersionUID = -3751610407040600613L;
 
@@ -36,24 +39,27 @@ public class BlockDef extends ScopedDef {
      * @param occ
      * @param parentScope
      */
-    BlockDef(String name, // name of the block (dummy)
-             Occurrence occ, // where it's defined
-             ScopedDef parentScope) {    // which scope owns it
+    BlockDef( String name, // name of the block (dummy)
+              Occurrence occ, // where it's defined
+              ScopedDef parentScope )
+    { // which scope owns it
 
-        super(name, occ, parentScope);
+        super( name, occ, parentScope );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public void generateTags(HTMLTagContainer tagList) {
-        tagElements(tagList);
+    public void generateTags( HTMLTagContainer tagList )
+    {
+        tagElements( tagList );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#getOccurrenceTag(org.apache.maven.jxr.java.src.symtab.Occurrence)
      */
-    public HTMLTag getOccurrenceTag(Occurrence occ) {
+    public HTMLTag getOccurrenceTag( Occurrence occ )
+    {
         return null;
     }
 }

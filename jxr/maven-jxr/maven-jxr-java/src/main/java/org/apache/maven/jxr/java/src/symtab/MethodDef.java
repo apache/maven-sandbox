@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 
@@ -31,7 +32,10 @@ import java.util.Vector;
  *
  * @version $Id: $
  */
-public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
+public class MethodDef
+    extends ScopedDef
+    implements TypedDef, Externalizable
+{
 
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( MethodDef.class );
@@ -62,7 +66,8 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
     /**
      * Default constructor needs to be public for deserialization.
      */
-    public MethodDef() {
+    public MethodDef()
+    {
     }
 
     /**
@@ -73,13 +78,13 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      * @param type
      * @param parentScope
      */
-    MethodDef(String name, // the name of the method
-              Occurrence occ, // where it was defined
-              ClassDef type, // the return type of the method
-              ScopedDef parentScope)    // which scope owns it
+    MethodDef( String name, // the name of the method
+               Occurrence occ, // where it was defined
+               ClassDef type, // the return type of the method
+               ScopedDef parentScope ) // which scope owns it
     {
 
-        super(name, occ, parentScope);
+        super( name, occ, parentScope );
 
         this.type = type;
     }
@@ -93,17 +98,21 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      * @param type
      * @param parentScope
      */
-    MethodDef(String name, // the name of the method
-              String className, // className (for constructor methods)
-              Occurrence occ, // where it was defined
-              ClassDef type, // the return type of the method
-              ScopedDef parentScope) {    // which scope owns it
+    MethodDef( String name, // the name of the method
+               String className, // className (for constructor methods)
+               Occurrence occ, // where it was defined
+               ClassDef type, // the return type of the method
+               ScopedDef parentScope )
+    { // which scope owns it
 
-        this(name, occ, type, parentScope);
+        this( name, occ, type, parentScope );
 
-        if (className != null) {
+        if ( className != null )
+        {
             this.className = className.intern();
-        } else {
+        }
+        else
+        {
             this.className = className;
         }
     }
@@ -113,7 +122,8 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      *
      * @return
      */
-    public Vector getParameters() {
+    public Vector getParameters()
+    {
         return parameters;
     }
 
@@ -122,7 +132,8 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      *
      * @return
      */
-    public Vector getExceptions() {
+    public Vector getExceptions()
+    {
         return exceptions;
     }
 
@@ -131,7 +142,8 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      *
      * @return
      */
-    public String getClassName() {
+    public String getClassName()
+    {
         return className;
     }
 
@@ -140,13 +152,15 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      *
      * @param excep
      */
-    void add(ClassDef excep) {
+    void add( ClassDef excep )
+    {
 
-        if (exceptions == null) {    // lazy instantiation
+        if ( exceptions == null )
+        { // lazy instantiation
             exceptions = new JavaVector();
         }
 
-        exceptions.addElement(excep);
+        exceptions.addElement( excep );
     }
 
     /**
@@ -154,13 +168,15 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      *
      * @param param
      */
-    void add(VariableDef param) {
+    void add( VariableDef param )
+    {
 
-        if (parameters == null) {    // lazy instantiation
+        if ( parameters == null )
+        { // lazy instantiation
             parameters = new JavaVector();
         }
 
-        parameters.addElement(param);
+        parameters.addElement( param );
     }
 
     /**
@@ -168,23 +184,28 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      *
      * @return
      */
-    String getFullName() {
+    String getFullName()
+    {
 
-        if (_uniqueMethodString != null) {
-            return (_uniqueMethodString);
+        if ( _uniqueMethodString != null )
+        {
+            return ( _uniqueMethodString );
         }
 
         _uniqueMethodString = getName() + "(";
 
-        if (parameters != null) {
+        if ( parameters != null )
+        {
             Enumeration e = parameters.elements();
 
-            while (e.hasMoreElements()) {
+            while ( e.hasMoreElements() )
+            {
                 VariableDef d = (VariableDef) e.nextElement();
 
                 _uniqueMethodString += d.getType().getName();
 
-                if (e.hasMoreElements()) {
+                if ( e.hasMoreElements() )
+                {
                     _uniqueMethodString += ",";
                 }
             }
@@ -192,7 +213,7 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
 
         _uniqueMethodString += ")";
 
-        return (_uniqueMethodString);
+        return ( _uniqueMethodString );
     }
 
     /**
@@ -200,9 +221,11 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      *
      * @return
      */
-    int getParamCount() {
+    int getParamCount()
+    {
 
-        if (parameters == null) {
+        if ( parameters == null )
+        {
             return 0;
         }
 
@@ -212,7 +235,8 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.TypedDef#getType()
      */
-    public Definition getType() {
+    public Definition getType()
+    {
         return type;
     }
 
@@ -224,31 +248,37 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      * @param type
      * @return
      */
-    Definition lookup(String name, int numParams, Class type) {
+    Definition lookup( String name, int numParams, Class type )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("lookup(String, int, Class) - String name=" + name);
-            log.debug("lookup(String, int, Class) - String numParams=" + numParams);
+            log.debug( "lookup(String, int, Class) - String name=" + name );
+            log.debug( "lookup(String, int, Class) - String numParams=" + numParams );
         }
 
-        if (numParams == -1) {
+        if ( numParams == -1 )
+        {
 
             // look for it in the method's scope
-            Definition d = super.lookup(name, numParams, type);
+            Definition d = super.lookup( name, numParams, type );
 
-            if (d != null) {
+            if ( d != null )
+            {
                 return d;
             }
 
             // otherwise, look in the parameters for the method
-            if (parameters != null) {
+            if ( parameters != null )
+            {
                 Enumeration e = parameters.elements();
 
-                while (e.hasMoreElements()) {
+                while ( e.hasMoreElements() )
+                {
                     d = (Definition) e.nextElement();
 
-                    if (d.getName().equals(name) && d.isA(type)) {
+                    if ( d.getName().equals( name ) && d.isA( type ) )
+                    {
                         return d;
                     }
                 }
@@ -261,49 +291,49 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateReferences(java.io.FileWriter)
      */
-    public void generateReferences(FileWriter output) {
+    public void generateReferences( FileWriter output )
+    {
 
         String linkString;
         String linkFileName;
         String methodName = getName();
 
-        if ((methodName != null)
-                && (methodName.indexOf("~constructor~") >= 0)) {
+        if ( ( methodName != null ) && ( methodName.indexOf( "~constructor~" ) >= 0 ) )
+        {
             methodName = this.className;
         }
 
-        try {
-            output.write("<p class=\"methodReflist\">");
+        try
+        {
+            output.write( "<p class=\"methodReflist\">" );
 
-            String nameString =
-                    "<p class=\"methodReflistHeader\">Method: <a name="
-                    + getFullName() + " href=" + getSourceName() + "#"
-                    + getClassScopeName() + ">" + getFullName() + "</a></p>";
+            String nameString = "<p class=\"methodReflistHeader\">Method: <a name=" + getFullName() + " href="
+                + getSourceName() + "#" + getClassScopeName() + ">" + getFullName() + "</a></p>";
 
-            output.write(nameString);
+            output.write( nameString );
 
             JavaVector v = getReferences();
             Enumeration e = v.elements();
 
-            while (e.hasMoreElements()) {
+            while ( e.hasMoreElements() )
+            {
                 Occurrence o = (Occurrence) e.nextElement();
 
-                if (o != null) {
-                    linkFileName = getOccurrencePath(o) + o.getLinkReference();
-                    linkString = "<p class=\"methodRefItem\"><a href="
-                            + linkFileName + ">" + getName() + " in "
-                            + o.getPackageName() + "."
-                            + o.getClassName() + "." + o.getMethodName()
-                            + " (" + o.getFile().getName() + ":"
-                            + Integer.toString(o.getLine())
-                            + ")</a></p>\n";
+                if ( o != null )
+                {
+                    linkFileName = getOccurrencePath( o ) + o.getLinkReference();
+                    linkString = "<p class=\"methodRefItem\"><a href=" + linkFileName + ">" + getName() + " in "
+                        + o.getPackageName() + "." + o.getClassName() + "." + o.getMethodName() + " ("
+                        + o.getFile().getName() + ":" + Integer.toString( o.getLine() ) + ")</a></p>\n";
 
-                    output.write(linkString);
+                    output.write( linkString );
                 }
             }
 
-            output.write("</p>");
-        } catch (IOException e) {
+            output.write( "</p>" );
+        }
+        catch ( IOException e )
+        {
             log.error( "IOException: " + e.getMessage(), e );
         }
     }
@@ -311,68 +341,72 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public void generateTags(HTMLTagContainer tagList) {
+    public void generateTags( HTMLTagContainer tagList )
+    {
 
         String methodName = getName();
 
-        if ((methodName != null)
-                && (methodName.indexOf("~constructor~") >= 0)) {
+        if ( ( methodName != null ) && ( methodName.indexOf( "~constructor~" ) >= 0 ) )
+        {
             methodName = this.className;
         }
 
-        if ((methodName != null) && (methodName.indexOf("~class-init~") >= 0)) {
+        if ( ( methodName != null ) && ( methodName.indexOf( "~class-init~" ) >= 0 ) )
+        {
             methodName = "";
         }
 
-        String nameString = "<a class=\"methodDef\" name="
-                + getClassScopeName() + " href=" + getRefName()
-                + "#" + getClassScopeName() + ">" + methodName
-                + "</a>";
+        String nameString = "<a class=\"methodDef\" name=" + getClassScopeName() + " href=" + getRefName() + "#"
+            + getClassScopeName() + ">" + methodName + "</a>";
 
         // generate tag for this method
-        if (getOccurrence() == null) {
+        if ( getOccurrence() == null )
+        {
             return;
         }
 
-        HTMLTag t = new HTMLTag(getOccurrence(), methodName, nameString);
+        HTMLTag t = new HTMLTag( getOccurrence(), methodName, nameString );
 
-        tagList.addElement(t);
+        tagList.addElement( t );
 
-        if(parameters != null) {
-            parameters.generateTags(tagList);
+        if ( parameters != null )
+        {
+            parameters.generateTags( tagList );
         }
 
-        if(elements != null){
-            elements.tagElements(tagList);
+        if ( elements != null )
+        {
+            elements.tagElements( tagList );
         }
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#getOccurrenceTag(org.apache.maven.jxr.java.src.symtab.Occurrence)
      */
-    public HTMLTag getOccurrenceTag(Occurrence occ) {
+    public HTMLTag getOccurrenceTag( Occurrence occ )
+    {
 
         String methodName = getName();
         String linkString;
         String linkFileName;
 
-        if ((methodName != null)
-                && (methodName.indexOf("~constructor~") >= 0)) {
+        if ( ( methodName != null ) && ( methodName.indexOf( "~constructor~" ) >= 0 ) )
+        {
             methodName = this.className;
         }
 
-        if ((methodName != null) && (methodName.indexOf("~class-init~") >= 0)) {
+        if ( ( methodName != null ) && ( methodName.indexOf( "~class-init~" ) >= 0 ) )
+        {
             methodName = "";
         }
 
         String definerName = getOccurrence().getClassName();
 
-        linkFileName = getRelativePath(occ) + getSourceName();
-        linkString = "<a class=\"methodRef\" title=\"" + definerName + "\" "
-                + "href=" + linkFileName + "#" + getClassScopeName()
-                + ">" + methodName + "</a>";
+        linkFileName = getRelativePath( occ ) + getSourceName();
+        linkString = "<a class=\"methodRef\" title=\"" + definerName + "\" " + "href=" + linkFileName + "#"
+            + getClassScopeName() + ">" + methodName + "</a>";
 
-        HTMLTag t = new HTMLTag(occ, methodName, linkString);
+        HTMLTag t = new HTMLTag( occ, methodName, linkString );
 
         return t;
     }
@@ -380,35 +414,40 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#resolveTypes(org.apache.maven.jxr.java.src.symtab.SymbolTable)
      */
-    void resolveTypes(SymbolTable symbolTable) {
+    void resolveTypes( SymbolTable symbolTable )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("resolveTypes(SymbolTable) - SymbolTable symbolTable=" + symbolTable);
+            log.debug( "resolveTypes(SymbolTable) - SymbolTable symbolTable=" + symbolTable );
         }
 
         // if we have parameters and/or exceptions, resolve them
-        if (parameters != null) {
-            parameters.resolveTypes(symbolTable);
+        if ( parameters != null )
+        {
+            parameters.resolveTypes( symbolTable );
         }
 
-        if (exceptions != null) {
-            exceptions.resolveTypes(symbolTable);
+        if ( exceptions != null )
+        {
+            exceptions.resolveTypes( symbolTable );
         }
 
         // if we have a return type, resolve it
-        if ((type != null) && (type instanceof DummyClass)) {
-            ClassDef newType = symbolTable.lookupDummy(type);
+        if ( ( type != null ) && ( type instanceof DummyClass ) )
+        {
+            ClassDef newType = symbolTable.lookupDummy( type );
 
-            if (newType != null) {
-                newType.addReference(type.getOccurrence());
+            if ( newType != null )
+            {
+                newType.addReference( type.getOccurrence() );
 
                 type = newType;
             }
         }
 
         // perform resolution for our superclass
-        super.resolveTypes(symbolTable);
+        super.resolveTypes( symbolTable );
     }
 
     /**
@@ -416,23 +455,27 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
      *
      * @param exceptions
      */
-    void setExceptions(JavaVector exceptions) {
+    void setExceptions( JavaVector exceptions )
+    {
         this.exceptions = exceptions;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getClassScopeName()
      */
-    String getClassScopeName() {
+    String getClassScopeName()
+    {
 
         String result;
         Definition parentScope = getParentScope();
         Definition grandParentScope = parentScope.getParentScope();
 
-        if (grandParentScope instanceof ClassDef)    // inner class
+        if ( grandParentScope instanceof ClassDef ) // inner class
         {
             result = grandParentScope.getName() + "." + parentScope.getName();
-        } else {
+        }
+        else
+        {
             result = parentScope.getName();
         }
 
@@ -444,33 +487,37 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
     /**
      * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
      */
-    public void writeExternal(ObjectOutput out) throws java.io.IOException {
+    public void writeExternal( ObjectOutput out )
+        throws java.io.IOException
+    {
 
-        out.writeObject(getName());
-        out.writeObject(getParentScope());
-        out.writeObject(getOccurrence());
+        out.writeObject( getName() );
+        out.writeObject( getParentScope() );
+        out.writeObject( getOccurrence() );
 
         ClassDef typeOut = type;
 
-        if ((type != null) && !(type instanceof DummyClass)) {
-            typeOut = new ClassDefProxy(type);
+        if ( ( type != null ) && !( type instanceof DummyClass ) )
+        {
+            typeOut = new ClassDefProxy( type );
         }
 
-        out.writeObject(typeOut);
-        out.writeObject(exceptions);
-        out.writeObject(parameters);
+        out.writeObject( typeOut );
+        out.writeObject( exceptions );
+        out.writeObject( parameters );
     }
 
     /**
      * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
      */
-    public void readExternal(ObjectInput in)
-            throws ClassNotFoundException, IOException {
+    public void readExternal( ObjectInput in )
+        throws ClassNotFoundException, IOException
+    {
 
-        setName((String) in.readObject());
-        SymbolTable.startReadExternal("MethodDef " + getName());
-        setParentScope((ScopedDef) in.readObject());
-        setOccurrence((Occurrence) in.readObject());
+        setName( (String) in.readObject() );
+        SymbolTable.startReadExternal( "MethodDef " + getName() );
+        setParentScope( (ScopedDef) in.readObject() );
+        setOccurrence( (Occurrence) in.readObject() );
 
         type = (ClassDef) in.readObject();
         exceptions = (JavaVector) in.readObject();
@@ -483,22 +530,24 @@ public class MethodDef extends ScopedDef implements TypedDef, Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#accept(org.apache.maven.jxr.java.src.symtab.Visitor)
      */
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-        elements.accept(visitor);
+    public void accept( Visitor visitor )
+    {
+        visitor.visit( this );
+        elements.accept( visitor );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#toString()
      */
-    public String toString() {
+    public String toString()
+    {
 
-        String str = getClass().getName() + " [" + getQualifiedName()
-                + "]";
+        String str = getClass().getName() + " [" + getQualifiedName() + "]";
         JavaHashtable ht = getElements();
         Enumeration e = ht.elements();
 
-        while (e.hasMoreElements()) {
+        while ( e.hasMoreElements() )
+        {
             Definition d = (Definition) e.nextElement();
 
             str += "\n        " + d;

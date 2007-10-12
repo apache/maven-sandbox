@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 
@@ -30,7 +31,10 @@ import java.util.Hashtable;
  *
  * @version $Id: $
  */
-public class ClassDefProxy extends ClassDef implements Externalizable {
+public class ClassDefProxy
+    extends ClassDef
+    implements Externalizable
+{
 
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( ClassDefProxy.class );
@@ -38,7 +42,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * Default constructor is public for deserialization.
      */
-    public ClassDefProxy() {
+    public ClassDefProxy()
+    {
     }
 
     /**
@@ -46,17 +51,19 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
      *
      * @param ref
      */
-    public ClassDefProxy(ClassDef ref) {
+    public ClassDefProxy( ClassDef ref )
+    {
 
-        if (ref.getName().equals("RuntimeException")) {
+        if ( ref.getName().equals( "RuntimeException" ) )
+        {
             log.error( "ClassDefProxy(ClassDef) - what's up with this: " + ref );
         }
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("ClassDefProxy(ClassDef) - ClassDef ref=" + ref);
+            log.debug( "ClassDefProxy(ClassDef) - ClassDef ref=" + ref );
         }
-        setName(ref.getName());
+        setName( ref.getName() );
 
         this.packageName = ref.getPackageName();
     }
@@ -64,7 +71,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#getSuperClass()
      */
-    public ClassDef getSuperClass() {
+    public ClassDef getSuperClass()
+    {
 
         load();
 
@@ -74,7 +82,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#isClass()
      */
-    public boolean isClass() {
+    public boolean isClass()
+    {
 
         load();
 
@@ -84,7 +93,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#isInterface()
      */
-    public boolean isInterface() {
+    public boolean isInterface()
+    {
 
         load();
 
@@ -97,17 +107,19 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
      * @param occ
      * @return
      */
-    public HTMLTag getOccurenceTag(Occurrence occ) {
+    public HTMLTag getOccurenceTag( Occurrence occ )
+    {
 
         load();
 
-        return ref.getOccurrenceTag(occ);
+        return ref.getOccurrenceTag( occ );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getSourceName()
      */
-    public String getSourceName() {
+    public String getSourceName()
+    {
 
         load();
 
@@ -117,7 +129,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getRefName()
      */
-    public String getRefName() {
+    public String getRefName()
+    {
 
         load();
 
@@ -127,17 +140,19 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getRelativePath(org.apache.maven.jxr.java.src.symtab.Occurrence)
      */
-    String getRelativePath(Occurrence occ) {
+    String getRelativePath( Occurrence occ )
+    {
 
         load();
 
-        return ref.getRelativePath(occ);
+        return ref.getRelativePath( occ );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getOccurrence()
      */
-    public Occurrence getOccurrence() {
+    public Occurrence getOccurrence()
+    {
 
         load();
 
@@ -147,7 +162,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getParentScope()
      */
-    public ScopedDef getParentScope() {
+    public ScopedDef getParentScope()
+    {
 
         load();
 
@@ -157,7 +173,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getPackagePath()
      */
-    public String getPackagePath() {
+    public String getPackagePath()
+    {
 
         load();
 
@@ -167,7 +184,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getReferences()
      */
-    public JavaVector getReferences() {
+    public JavaVector getReferences()
+    {
 
         load();
 
@@ -177,29 +195,33 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#lookup(java.lang.String, int, java.lang.Class)
      */
-    Definition lookup(String name, int numParams, Class type) {
+    Definition lookup( String name, int numParams, Class type )
+    {
 
         load();
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("lookup(String, int, Class) - " + getName()+" lookup name="+name+" numParams="+numParams+" type="+type);
+            log.debug( "lookup(String, int, Class) - " + getName() + " lookup name=" + name + " numParams=" + numParams
+                + " type=" + type );
         }
 
-        return ref.lookup(name, numParams, type);
+        return ref.lookup( name, numParams, type );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#getSymbols()
      */
-    public Hashtable getSymbols() {
+    public Hashtable getSymbols()
+    {
         return null;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#getElements()
      */
-    public JavaHashtable getElements() {
+    public JavaHashtable getElements()
+    {
 
         load();
 
@@ -209,7 +231,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#hasElements()
      */
-    boolean hasElements() {
+    boolean hasElements()
+    {
 
         load();
 
@@ -219,7 +242,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#isDefaultOrBaseScope()
      */
-    public boolean isDefaultOrBaseScope() {
+    public boolean isDefaultOrBaseScope()
+    {
 
         load();
 
@@ -229,44 +253,50 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * Method resolveTypes
      */
-    void resolveTypes() {
+    void resolveTypes()
+    {
     }
 
     /**
      * Method resolveRefs
      */
-    void resolveRefs() {
+    void resolveRefs()
+    {
     }
 
     /**
      * Method closeImports
      */
-    void closeImports() {
-        if (log.isDebugEnabled())
+    void closeImports()
+    {
+        if ( log.isDebugEnabled() )
         {
-            log.debug("closeImports() - closed");
+            log.debug( "closeImports() - closed" );
         }
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.HasImports#isTopLevel()
      */
-    boolean isTopLevel() {
+    boolean isTopLevel()
+    {
         return packageName != null;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.HasImports#setImports(org.apache.maven.jxr.java.src.symtab.JavaHashtable)
      */
-    void setImports(JavaHashtable imports) {
+    void setImports( JavaHashtable imports )
+    {
         load();
-        ref.setImports(imports);
+        ref.setImports( imports );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#addImplementer(org.apache.maven.jxr.java.src.symtab.ClassDef)
      */
-    void addImplementer(ClassDef def) {
+    void addImplementer( ClassDef def )
+    {
 
         // load();
         // ref.addImplementer(def);
@@ -275,7 +305,8 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#addSubclass(org.apache.maven.jxr.java.src.symtab.ClassDef)
      */
-    void addSubclass(ClassDef subclass) {
+    void addSubclass( ClassDef subclass )
+    {
 
         // load();
         // ref.addSubclass(subclass);
@@ -284,103 +315,117 @@ public class ClassDefProxy extends ClassDef implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#getImplementers()
      */
-    public JavaVector getImplementers() {
+    public JavaVector getImplementers()
+    {
         return null;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#getSubClasses()
      */
-    JavaVector getSubClasses() {
+    JavaVector getSubClasses()
+    {
         return null;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#generateReferences(java.io.FileWriter)
      */
-    public void generateReferences(FileWriter output) {
+    public void generateReferences( FileWriter output )
+    {
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public void generateTags(HTMLTagContainer tagList) {
+    public void generateTags( HTMLTagContainer tagList )
+    {
         load();
-        ref.generateTags(tagList);
+        ref.generateTags( tagList );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#addReference(org.apache.maven.jxr.java.src.symtab.Occurrence)
      */
-    public void addReference(Occurrence occ) {
+    public void addReference( Occurrence occ )
+    {
         load();
-        ref.addReference(occ);
+        ref.addReference( occ );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#accept(org.apache.maven.jxr.java.src.symtab.Visitor)
      */
-    public void accept(Visitor visitor) {
+    public void accept( Visitor visitor )
+    {
         load();
-        ref.accept(visitor);
+        ref.accept( visitor );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#writeExternal(java.io.ObjectOutput)
      */
-    public void writeExternal(ObjectOutput out) throws IOException {
+    public void writeExternal( ObjectOutput out )
+        throws IOException
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("writeExternal(ObjectOutput) - getName()=" + getName());
+            log.debug( "writeExternal(ObjectOutput) - getName()=" + getName() );
         }
 
-        out.writeObject(getName());
-        out.writeObject(packageName);
+        out.writeObject( getName() );
+        out.writeObject( packageName );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#readExternal(java.io.ObjectInput)
      */
-    public void readExternal(ObjectInput in)
-            throws IOException, ClassNotFoundException {
+    public void readExternal( ObjectInput in )
+        throws IOException, ClassNotFoundException
+    {
 
-        setName((String) in.readObject());
+        setName( (String) in.readObject() );
 
         packageName = (String) in.readObject();
 
-        if (packageName == null) {
-            throw new IOException("null packagename: " + getName());
+        if ( packageName == null )
+        {
+            throw new IOException( "null packagename: " + getName() );
         }
     }
 
     /**
      * load the class definition
      */
-    private void load() {
+    private void load()
+    {
 
-        if (packageName == null) {
-            log.error( "null packageName, name=" + getName());
+        if ( packageName == null )
+        {
+            log.error( "null packageName, name=" + getName() );
         }
 
-        if (ref == null) {
-            ref = ClassDef.findLoadedClass(packageName, getName());
+        if ( ref == null )
+        {
+            ref = ClassDef.findLoadedClass( packageName, getName() );
 
-            if (ref == null) {
+            if ( ref == null )
+            {
 
-                if (log.isDebugEnabled())
+                if ( log.isDebugEnabled() )
                 {
-                    log.debug("load() - apparently not yet loaded: "+packageName+"."+getName());
+                    log.debug( "load() - apparently not yet loaded: " + packageName + "." + getName() );
                 }
-                PackageDef packageDef =
-                        SymbolTable.getSymbolTable().lookupPackage(packageName);
+                PackageDef packageDef = SymbolTable.getSymbolTable().lookupPackage( packageName );
 
-                ref = packageDef.loadClassDef(getName());
+                ref = packageDef.loadClassDef( getName() );
             }
         }
 
-        if (ref == null) {
-            log.error("cannot load ClassDef for " + getName());
+        if ( ref == null )
+        {
+            log.error( "cannot load ClassDef for " + getName() );
         }
     }
 

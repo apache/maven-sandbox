@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import java.io.File;
 import java.util.Enumeration;
@@ -26,13 +27,15 @@ import java.util.Vector;
  *
  * @version $Id: $
  */
-public class HTMLTagContainer {
+public class HTMLTagContainer
+{
 
     /**
      * Constructor HTMLTagContainer
      */
-    public HTMLTagContainer() {
-        _fileTable = new Hashtable(10);
+    public HTMLTagContainer()
+    {
+        _fileTable = new Hashtable( 10 );
     }
 
     /**
@@ -40,7 +43,8 @@ public class HTMLTagContainer {
      *
      * @return
      */
-    public Hashtable getFileTable() {
+    public Hashtable getFileTable()
+    {
         return _fileTable;
     }
 
@@ -49,8 +53,9 @@ public class HTMLTagContainer {
      *
      * @return
      */
-    public Enumeration elements() {
-        return (_fileTable.elements());
+    public Enumeration elements()
+    {
+        return ( _fileTable.elements() );
     }
 
     /**
@@ -58,18 +63,20 @@ public class HTMLTagContainer {
      *
      * @param t
      */
-    public void addElement(HTMLTag t) {
+    public void addElement( HTMLTag t )
+    {
 
         File f = t.getFile();
-        Vector tagList = (Vector) _fileTable.get(f);
+        Vector tagList = (Vector) _fileTable.get( f );
 
-        if (tagList == null) {
-            tagList = new Vector(20);
+        if ( tagList == null )
+        {
+            tagList = new Vector( 20 );
 
-            _fileTable.put(f, tagList);
+            _fileTable.put( f, tagList );
         }
 
-        tagList.addElement(t);
+        tagList.addElement( t );
     }
 
     /** Field _fileTable */

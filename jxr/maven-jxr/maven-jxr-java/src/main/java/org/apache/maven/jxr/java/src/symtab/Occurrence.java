@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,9 @@ import java.io.ObjectOutput;
  *
  * @version $Id: $
  */
-public class Occurrence implements java.io.Externalizable {
+public class Occurrence
+    implements java.io.Externalizable
+{
 
     // ==========================================================================
     // ==  Class Variables
@@ -62,7 +65,8 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @return
      */
-    public int getLine() {
+    public int getLine()
+    {
         return line;
     }
 
@@ -71,7 +75,8 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @return
      */
-    public int getColumn() {
+    public int getColumn()
+    {
         return column;
     }
 
@@ -80,7 +85,8 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @return
      */
-    public File getFile() {
+    public File getFile()
+    {
         return file;
     }
 
@@ -89,7 +95,8 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @return
      */
-    public String getPackageName() {
+    public String getPackageName()
+    {
         return _packageName;
     }
 
@@ -98,7 +105,8 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @return
      */
-    public String getClassName() {
+    public String getClassName()
+    {
         return _className;
     }
 
@@ -107,7 +115,8 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @return
      */
-    public String getMethodName() {
+    public String getMethodName()
+    {
         return _methodName;
     }
 
@@ -116,7 +125,8 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @return
      */
-    public Definition getDefinition() {
+    public Definition getDefinition()
+    {
         return _myDefinition;
     }
 
@@ -125,11 +135,15 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @param packageName
      */
-    public void setPackageName(String packageName) {
+    public void setPackageName( String packageName )
+    {
 
-        if (packageName != null) {
+        if ( packageName != null )
+        {
             _packageName = packageName.intern();
-        } else {
+        }
+        else
+        {
             _packageName = packageName;
         }
     }
@@ -139,11 +153,15 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @param className
      */
-    public void setClassName(String className) {
+    public void setClassName( String className )
+    {
 
-        if (className != null) {
+        if ( className != null )
+        {
             _className = className.intern();
-        } else {
+        }
+        else
+        {
             _className = className;
         }
     }
@@ -153,11 +171,15 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @param methodName
      */
-    public void setMethodName(String methodName) {
+    public void setMethodName( String methodName )
+    {
 
-        if (methodName != null) {
+        if ( methodName != null )
+        {
             _methodName = methodName.intern();
-        } else {
+        }
+        else
+        {
             _methodName = methodName;
         }
     }
@@ -167,7 +189,8 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @param def
      */
-    public void setDefinition(Definition def) {
+    public void setDefinition( Definition def )
+    {
         _myDefinition = def;
     }
 
@@ -176,17 +199,19 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @return
      */
-    public HTMLTag getOccurrenceTag() {
+    public HTMLTag getOccurrenceTag()
+    {
 
         Definition def = getDefinition();
 
-        return def.getOccurrenceTag(this);
+        return def.getOccurrenceTag( this );
     }
 
     /**
      * Default constructor is public for serialization
      */
-    public Occurrence() {
+    public Occurrence()
+    {
     }
 
     /**
@@ -195,7 +220,8 @@ public class Occurrence implements java.io.Externalizable {
      * @param file
      * @param line
      */
-    Occurrence(File file, int line) {
+    Occurrence( File file, int line )
+    {
         this.file = file;
         this.line = line;
     }
@@ -207,9 +233,10 @@ public class Occurrence implements java.io.Externalizable {
      * @param line
      * @param column
      */
-    Occurrence(File file, int line, int column) {
+    Occurrence( File file, int line, int column )
+    {
 
-        this(file, line);
+        this( file, line );
 
         this.column = column;
     }
@@ -222,13 +249,17 @@ public class Occurrence implements java.io.Externalizable {
      * @param column
      * @param packageName
      */
-    Occurrence(File file, int line, int column, String packageName) {
+    Occurrence( File file, int line, int column, String packageName )
+    {
 
-        this(file, line, column);
+        this( file, line, column );
 
-        if (packageName != null) {
+        if ( packageName != null )
+        {
             _packageName = packageName.intern();
-        } else {
+        }
+        else
+        {
             _packageName = packageName;
         }
     }
@@ -243,20 +274,26 @@ public class Occurrence implements java.io.Externalizable {
      * @param className
      * @param methodName
      */
-    Occurrence(File file, int line, int column, String packageName,
-               String className, String methodName) {
+    Occurrence( File file, int line, int column, String packageName, String className, String methodName )
+    {
 
-        this(file, line, column, packageName);
+        this( file, line, column, packageName );
 
-        if (className != null) {
+        if ( className != null )
+        {
             _className = className.intern();
-        } else {
+        }
+        else
+        {
             _className = className;
         }
 
-        if (methodName != null) {
+        if ( methodName != null )
+        {
             _methodName = methodName.intern();
-        } else {
+        }
+        else
+        {
             _methodName = methodName;
         }
     }
@@ -266,15 +303,16 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @return
      */
-    public String getLinkReference() {
+    public String getLinkReference()
+    {
 
         String name = getFile().getName();
 
-        name = name.replace('.', '_');
+        name = name.replace( '.', '_' );
         name = name + ".html";
-        name = name + "#" + Integer.toString(line);
+        name = name + "#" + Integer.toString( line );
 
-        return (name);
+        return ( name );
     }
 
     /**
@@ -282,40 +320,45 @@ public class Occurrence implements java.io.Externalizable {
      *
      * @return
      */
-    public String getLocation() {
+    public String getLocation()
+    {
         return "[" + file + ":" + line + ":" + column + "]";
     }
 
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    public String toString()
+    {
         return "Occurrence [" + file + "," + line + "," + column + "]";
     }
 
     /**
      * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
      */
-    public void writeExternal(ObjectOutput out) throws IOException {
+    public void writeExternal( ObjectOutput out )
+        throws IOException
+    {
 
-        out.writeObject(file.getAbsolutePath());
-        out.writeInt(line);
-        out.writeInt(column);
-        out.writeObject(_packageName);
-        out.writeObject(_className);
-        out.writeObject(_methodName);
-        out.writeObject(_myDefinition);
+        out.writeObject( file.getAbsolutePath() );
+        out.writeInt( line );
+        out.writeInt( column );
+        out.writeObject( _packageName );
+        out.writeObject( _className );
+        out.writeObject( _methodName );
+        out.writeObject( _myDefinition );
     }
 
     /**
      * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
      */
-    public void readExternal(ObjectInput in)
-            throws IOException, ClassNotFoundException {
+    public void readExternal( ObjectInput in )
+        throws IOException, ClassNotFoundException
+    {
 
         String filepath = (String) in.readObject();
 
-        file = new File(filepath);
+        file = new File( filepath );
         line = in.readInt();
         column = in.readInt();
         _packageName = (String) in.readObject();

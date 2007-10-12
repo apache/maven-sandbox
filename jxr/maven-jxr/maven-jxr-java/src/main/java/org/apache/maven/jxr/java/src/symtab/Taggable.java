@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,19 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 /**
  * This interface is used as a handle to all classes that can be tagged
  *
  * @version $Id: $
  */
-interface Taggable {
+interface Taggable
+{
 
     /**
      * Create tag information about an object
      *
      * @param tagList
      */
-    void generateTags(HTMLTagContainer tagList);
+    void generateTags( HTMLTagContainer tagList );
 }

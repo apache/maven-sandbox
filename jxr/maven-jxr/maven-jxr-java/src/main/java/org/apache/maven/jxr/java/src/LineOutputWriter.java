@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,7 +25,9 @@ import java.io.OutputStream;
  *
  * @version $Id: $
  */
-public class LineOutputWriter extends HTMLOutputWriter {
+public class LineOutputWriter
+    extends HTMLOutputWriter
+{
 
     /** Field MAXCOLS */
     public static int MAXCOLS = 5;
@@ -42,9 +45,10 @@ public class LineOutputWriter extends HTMLOutputWriter {
      *
      * @param output
      */
-    public LineOutputWriter(OutputStream output) {
+    public LineOutputWriter( OutputStream output )
+    {
 
-        super(output);
+        super( output );
 
         _lineNumber = 1;
         _firstLine = true;
@@ -53,17 +57,21 @@ public class LineOutputWriter extends HTMLOutputWriter {
     /**
      * @see java.io.OutputStreamWriter#write(int)
      */
-    public void write(int c) throws IOException {
+    public void write( int c )
+        throws IOException
+    {
 
-        if (_firstLine) {
+        if ( _firstLine )
+        {
             _firstLine = false;
 
             writeLineNumber();
         }
 
-        super.write(c);
+        super.write( c );
 
-        if (c == '\n') {
+        if ( c == '\n' )
+        {
             writeLineNumber();
         }
     }
@@ -71,17 +79,21 @@ public class LineOutputWriter extends HTMLOutputWriter {
     /**
      * @see org.apache.maven.jxr.java.src.HTMLOutputWriter#writeHTML(int)
      */
-    public void writeHTML(int c) throws IOException {
+    public void writeHTML( int c )
+        throws IOException
+    {
 
-        if (_firstLine) {
+        if ( _firstLine )
+        {
             _firstLine = false;
 
             writeLineNumber();
         }
 
-        super.writeHTML(c);
+        super.writeHTML( c );
 
-        if (c == '\n') {
+        if ( c == '\n' )
+        {
             writeLineNumber();
         }
     }
@@ -89,24 +101,30 @@ public class LineOutputWriter extends HTMLOutputWriter {
     /**
      * @see java.io.Writer#write(java.lang.String)
      */
-    public void write(String s) throws IOException {
+    public void write( String s )
+        throws IOException
+    {
 
         int length = s.length();
 
-        for (int i = 0; i < length; i++) {
-            this.write(s.charAt(i));
+        for ( int i = 0; i < length; i++ )
+        {
+            this.write( s.charAt( i ) );
         }
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.HTMLOutputWriter#writeHTML(java.lang.String)
      */
-    public void writeHTML(String s) throws IOException {
+    public void writeHTML( String s )
+        throws IOException
+    {
 
         int length = s.length();
 
-        for (int i = 0; i < length; i++) {
-            this.writeHTML(s.charAt(i));
+        for ( int i = 0; i < length; i++ )
+        {
+            this.writeHTML( s.charAt( i ) );
         }
     }
 
@@ -115,22 +133,24 @@ public class LineOutputWriter extends HTMLOutputWriter {
      *
      * @throws IOException
      */
-    public void writeLineNumber() throws IOException {
+    public void writeLineNumber()
+        throws IOException
+    {
 
-        String lineString = Integer.toString(_lineNumber);
+        String lineString = Integer.toString( _lineNumber );
         String spacing = "";
 
-        for (int i = 0; i < MAX_LINE_NUMBER_DIGITS - lineString.length(); i++) {
+        for ( int i = 0; i < MAX_LINE_NUMBER_DIGITS - lineString.length(); i++ )
+        {
             spacing += " ";
         }
 
         // add linenum tag
-        lineString = "<a href=\"#" + _lineNumber + "\" name=" + lineString + " class=\"linenum\">"
-                + lineString;
+        lineString = "<a href=\"#" + _lineNumber + "\" name=" + lineString + " class=\"linenum\">" + lineString;
         lineString += "</a>";
         lineString += spacing;
 
-        this.write(lineString);
+        this.write( lineString );
 
         _lineNumber++;
     }

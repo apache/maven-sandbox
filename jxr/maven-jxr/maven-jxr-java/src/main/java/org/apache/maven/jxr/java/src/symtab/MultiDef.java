@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import java.io.FileWriter;
 import java.util.Enumeration;
@@ -27,7 +28,9 @@ import java.util.Vector;
  *
  * @version $Id: $
  */
-public class MultiDef extends Definition {
+public class MultiDef
+    extends Definition
+{
 
     private static final long serialVersionUID = -4453495874767512434L;
 
@@ -52,9 +55,10 @@ public class MultiDef extends Definition {
      * @param name
      * @param oldDef
      */
-    MultiDef(String name, // the name of the definition
-             Definition oldDef) {    // a standing def with its name
-        this(name, oldDef.getOccurrence(), oldDef.getParentScope());
+    MultiDef( String name, // the name of the definition
+              Definition oldDef )
+    { // a standing def with its name
+        this( name, oldDef.getOccurrence(), oldDef.getParentScope() );
     }
 
     /**
@@ -64,11 +68,12 @@ public class MultiDef extends Definition {
      * @param occ
      * @param parentScope
      */
-    MultiDef(String name, // the name of the definition
-             Occurrence occ, // where it was defined
-             ScopedDef parentScope) {    // the overall symbol table
+    MultiDef( String name, // the name of the definition
+              Occurrence occ, // where it was defined
+              ScopedDef parentScope )
+    { // the overall symbol table
 
-        super(name, occ, parentScope);
+        super( name, occ, parentScope );
 
         // Create the list to store the definitions
         defs = new JavaVector();
@@ -79,36 +84,42 @@ public class MultiDef extends Definition {
      *
      * @param def
      */
-    void addDef(Definition def) {
-        defs.addElement(def);
+    void addDef( Definition def )
+    {
+        defs.addElement( def );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#lookup(java.lang.String, int, java.lang.Class)
      */
-    Definition lookup(String name, // the name to locate
-                      int numParams, // number of params
-                      Class type) {
+    Definition lookup( String name, // the name to locate
+                       int numParams, // number of params
+                       Class type )
+    {
 
         // note that the name isn't used...  all definitions contained
         // by the MultiDef have the same name
         // walk through the list of symbols
         Enumeration e = defs.elements();
 
-        while (e.hasMoreElements()) {
+        while ( e.hasMoreElements() )
+        {
             Definition d = (Definition) e.nextElement();
 
             // If the symbol is a method and it has the same number of
             // parameters as what we are calling, assume it's the match
-            if ((d instanceof MethodDef) && d.isA(type)) {
-                if (((MethodDef) d).getParamCount() == numParams) {
+            if ( ( d instanceof MethodDef ) && d.isA( type ) )
+            {
+                if ( ( (MethodDef) d ).getParamCount() == numParams )
+                {
                     return d;
                 }
             }
 
             // otherwise, if it's not a method, AND we're not looking for
             // a method, return the definition found.
-            else if ((numParams == -1) && d.isA(type)) {
+            else if ( ( numParams == -1 ) && d.isA( type ) )
+            {
                 return d;
             }
         }
@@ -120,15 +131,17 @@ public class MultiDef extends Definition {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public void generateTags(HTMLTagContainer tagList) {
-        defs.generateTags(tagList);
+    public void generateTags( HTMLTagContainer tagList )
+    {
+        defs.generateTags( tagList );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateReferences(java.io.FileWriter)
      */
-    public void generateReferences(FileWriter output) {
-        defs.generateReferences(output);
+    public void generateReferences( FileWriter output )
+    {
+        defs.generateReferences( output );
     }
 
     /**
@@ -136,16 +149,18 @@ public class MultiDef extends Definition {
      *
      * @return
      */
-    public Vector getDefs() {
+    public Vector getDefs()
+    {
         return defs;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#resolveTypes(org.apache.maven.jxr.java.src.symtab.SymbolTable)
      */
-    void resolveTypes(SymbolTable symbolTable) {
+    void resolveTypes( SymbolTable symbolTable )
+    {
 
-        defs.resolveTypes(symbolTable);    // resolve all the definitions
+        defs.resolveTypes( symbolTable ); // resolve all the definitions
 
         // DO NOT resolve anything else! (ie don't call super.resolveTypes() )
         // this is just a placeholder for a group of symbols with the same name
@@ -154,21 +169,24 @@ public class MultiDef extends Definition {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#resolveRefs(org.apache.maven.jxr.java.src.symtab.SymbolTable)
      */
-    void resolveRefs(SymbolTable symbolTable) {
+    void resolveRefs( SymbolTable symbolTable )
+    {
 
         Enumeration e = defs.elements();
 
-        while (e.hasMoreElements()) {
+        while ( e.hasMoreElements() )
+        {
             Definition d = (Definition) e.nextElement();
 
-            d.resolveRefs(symbolTable);
+            d.resolveRefs( symbolTable );
         }
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getOccurrenceTag(org.apache.maven.jxr.java.src.symtab.Occurrence)
      */
-    public HTMLTag getOccurrenceTag(Occurrence occ) {
+    public HTMLTag getOccurrenceTag( Occurrence occ )
+    {
         return null;
     }
 }

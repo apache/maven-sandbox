@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 
@@ -29,7 +30,10 @@ import java.io.ObjectOutput;
  *
  * @version $Id: $
  */
-public class DummyClass extends ClassDef implements Externalizable {
+public class DummyClass
+    extends ClassDef
+    implements Externalizable
+{
 
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( DummyClass.class );
@@ -46,7 +50,8 @@ public class DummyClass extends ClassDef implements Externalizable {
      * Constructor to create a placeholder class object
      * This version provides a means to set the package containing the class
      */
-    public DummyClass() {
+    public DummyClass()
+    {
 
         super();
 
@@ -59,8 +64,9 @@ public class DummyClass extends ClassDef implements Externalizable {
      * @param name
      * @param occ
      */
-    public DummyClass(String name, Occurrence occ) {
-        super(name, occ, null, null, null);
+    public DummyClass( String name, Occurrence occ )
+    {
+        super( name, occ, null, null, null );
     }
 
     /**
@@ -71,9 +77,10 @@ public class DummyClass extends ClassDef implements Externalizable {
      * @param occ
      * @param packageName
      */
-    public DummyClass(String name, Occurrence occ, String packageName) {
+    public DummyClass( String name, Occurrence occ, String packageName )
+    {
 
-        super(name, occ, null, null, null);
+        super( name, occ, null, null, null );
 
         this.packageName = packageName;
     }
@@ -83,42 +90,47 @@ public class DummyClass extends ClassDef implements Externalizable {
      *
      * @return
      */
-    public String getPackage() {
+    public String getPackage()
+    {
         return packageName;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public void generateTags(HTMLTagContainer tagList) {
+    public void generateTags( HTMLTagContainer tagList )
+    {
         if ( log.isInfoEnabled() )
         {
-            log.info( getQualifiedName() + " (Undefined Class/Interface)");
-            log.info( getReferences());
+            log.info( getQualifiedName() + " (Undefined Class/Interface)" );
+            log.info( getReferences() );
         }
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#writeExternal(java.io.ObjectOutput)
      */
-    public void writeExternal(ObjectOutput out) throws IOException {
+    public void writeExternal( ObjectOutput out )
+        throws IOException
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("writeExternal(ObjectOutput) - getName()" + getName());
+            log.debug( "writeExternal(ObjectOutput) - getName()" + getName() );
         }
 
-        out.writeObject(getName());
-        out.writeObject(packageName);
+        out.writeObject( getName() );
+        out.writeObject( packageName );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ClassDef#readExternal(java.io.ObjectInput)
      */
-    public void readExternal(ObjectInput in)
-            throws IOException, ClassNotFoundException {
+    public void readExternal( ObjectInput in )
+        throws IOException, ClassNotFoundException
+    {
 
-        setName((String) in.readObject());
+        setName( (String) in.readObject() );
 
         packageName = (String) in.readObject();
     }

@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 /**
  * This interface represents definitions that have a "type" associated with
@@ -23,7 +24,8 @@ package org.apache.maven.jxr.java.src.symtab;
  *
  * @version $Id: $
  */
-interface TypedDef {
+interface TypedDef
+{
 
     /**
      * returns the symbol representing the type associated with a definition

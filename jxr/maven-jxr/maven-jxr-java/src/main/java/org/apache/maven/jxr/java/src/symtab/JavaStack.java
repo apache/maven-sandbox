@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 
@@ -24,7 +25,9 @@ import org.apache.log4j.Logger;
  *
  * @version $Id: $
  */
-class JavaStack extends java.util.Stack {
+class JavaStack
+    extends java.util.Stack
+{
 
     private static final long serialVersionUID = -3104650488343130699L;
 
@@ -38,7 +41,8 @@ class JavaStack extends java.util.Stack {
     /**
      * A constructor for the Java stack
      */
-    JavaStack() {
+    JavaStack()
+    {
     }
 
     /**
@@ -46,14 +50,17 @@ class JavaStack extends java.util.Stack {
      *
      * @return
      */
-    Definition findTopmostClass() {
+    Definition findTopmostClass()
+    {
 
         // unfortunately, the enumeration of a stack returns it
         // in the reverse order in which we want to traverse it...
         // So we must walk manually...
-        for (int i = size() - 1; i > -1; i--) {
-            if ((elementAt(i)) instanceof ClassDef) {
-                return (Definition) elementAt(i);
+        for ( int i = size() - 1; i > -1; i-- )
+        {
+            if ( ( elementAt( i ) ) instanceof ClassDef )
+            {
+                return (Definition) elementAt( i );
             }
         }
 
@@ -68,8 +75,9 @@ class JavaStack extends java.util.Stack {
      * @param type
      * @return
      */
-    Definition lookup(String name, Class type) {
-        return lookup(name, -1, type);
+    Definition lookup( String name, Class type )
+    {
+        return lookup( name, -1, type );
     }
 
     /**
@@ -80,34 +88,37 @@ class JavaStack extends java.util.Stack {
      * @param type
      * @return
      */
-    Definition lookup(String name, int numParams, Class type) {
+    Definition lookup( String name, int numParams, Class type )
+    {
 
         // unfortunately, the enumeration of a stack returns it
         // in the reverse order in which we want to traverse it...
         // So we must walk manually...
-        for (int i = size() - 1; i > -1; i--) {
-            Definition ld = (Definition) elementAt(i);
+        for ( int i = size() - 1; i > -1; i-- )
+        {
+            Definition ld = (Definition) elementAt( i );
 
-            if (log.isDebugEnabled())
+            if ( log.isDebugEnabled() )
             {
-                log.debug("lookup(String, int, Class) - looking in "+ld.getName());
+                log.debug( "lookup(String, int, Class) - looking in " + ld.getName() );
             }
 
-            Definition d = ld.lookup(name, numParams, type);
+            Definition d = ld.lookup( name, numParams, type );
 
-            if (d != null) {
+            if ( d != null )
+            {
 
-                if (log.isDebugEnabled())
+                if ( log.isDebugEnabled() )
                 {
-                    log.debug("lookup(String, int, Class) - returning "+d+" type="+type);
+                    log.debug( "lookup(String, int, Class) - returning " + d + " type=" + type );
                 }
                 return d;
             }
         }
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("lookup(String, int, Class) - returning null");
+            log.debug( "lookup(String, int, Class) - returning null" );
         }
         return null;
     }

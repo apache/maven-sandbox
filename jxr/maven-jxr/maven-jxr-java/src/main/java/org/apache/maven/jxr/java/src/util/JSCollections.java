@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.util;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.util;
 
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -25,7 +26,8 @@ import java.util.Vector;
  *
  * @version $Id: $
  */
-public class JSCollections {
+public class JSCollections
+{
 
     /**
      * Method sortEnumeration
@@ -33,46 +35,52 @@ public class JSCollections {
      * @param unsortedItems
      * @return
      */
-    public static Vector sortEnumeration(Enumeration unsortedItems) {
+    public static Vector sortEnumeration( Enumeration unsortedItems )
+    {
 
         Object element;
         Vector sortedItems;
         JSComparable value;
 
-        if (unsortedItems == null) {
-            return (null);
+        if ( unsortedItems == null )
+        {
+            return ( null );
         }
 
         sortedItems = new Vector();
 
-        while (unsortedItems.hasMoreElements()) {
+        while ( unsortedItems.hasMoreElements() )
+        {
             element = unsortedItems.nextElement();
 
-            if (element instanceof JSComparable == false) {
-                return (null);
+            if ( element instanceof JSComparable == false )
+            {
+                return ( null );
             }
 
             value = (JSComparable) element;
 
-            sortedItems.addElement(value);
+            sortedItems.addElement( value );
         }
 
         Object[] a = new Object[sortedItems.size()];
 
-        for (int i = 0; i < a.length; i++) {
-            a[i] = sortedItems.elementAt(i);
+        for ( int i = 0; i < a.length; i++ )
+        {
+            a[i] = sortedItems.elementAt( i );
         }
 
         QSComparator compare = new QSComparator();
 
-        QuickSort.sort(a, compare);
+        QuickSort.sort( a, compare );
         sortedItems.removeAllElements();
 
-        for (int i = 0; i < a.length; i++) {
-            sortedItems.addElement(a[i]);
+        for ( int i = 0; i < a.length; i++ )
+        {
+            sortedItems.addElement( a[i] );
         }
 
-        return (sortedItems);
+        return ( sortedItems );
     }
 
     /**
@@ -81,23 +89,26 @@ public class JSCollections {
      * @param unsortedItems
      * @return
      */
-    public static Object[] sortVector(Vector unsortedItems) {
+    public static Object[] sortVector( Vector unsortedItems )
+    {
 
-        if (unsortedItems == null) {
-            return (null);
+        if ( unsortedItems == null )
+        {
+            return ( null );
         }
 
         Object[] a = new Object[unsortedItems.size()];
 
-        for (int i = 0; i < a.length; i++) {
-            a[i] = unsortedItems.elementAt(i);
+        for ( int i = 0; i < a.length; i++ )
+        {
+            a[i] = unsortedItems.elementAt( i );
         }
 
         QSComparator compare = new QSComparator();
 
-        QuickSort.sort(a, compare);
+        QuickSort.sort( a, compare );
 
-        return (a);
+        return ( a );
     }
 }
 
@@ -107,7 +118,9 @@ public class JSCollections {
  *
  * @version $Id: $
  */
-class QSComparator implements Comparator {
+class QSComparator
+    implements Comparator
+{
 
     /**
      * Method compare
@@ -116,8 +129,9 @@ class QSComparator implements Comparator {
      * @param b
      * @return
      */
-    public int compare(Object a, Object b) {
-        return (((JSComparable) a).compareTo((JSComparable) b));
+    public int compare( Object a, Object b )
+    {
+        return ( ( (JSComparable) a ).compareTo( (JSComparable) b ) );
     }
 
     /**
@@ -127,9 +141,11 @@ class QSComparator implements Comparator {
      * @param b
      * @return
      */
-    public boolean equals(Object a, Object b) {
+    public boolean equals( Object a, Object b )
+    {
 
-        if (((JSComparable) a).compareTo((JSComparable) b) == 0) {
+        if ( ( (JSComparable) a ).compareTo( (JSComparable) b ) == 0 )
+        {
             return true;
         }
 

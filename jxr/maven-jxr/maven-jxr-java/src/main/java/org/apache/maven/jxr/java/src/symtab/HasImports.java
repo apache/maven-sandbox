@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 
@@ -23,7 +24,9 @@ import org.apache.log4j.Logger;
  *
  * @version $Id: $
  */
-abstract class HasImports extends ScopedDef {
+abstract class HasImports
+    extends ScopedDef
+{
     /**
     * Logger for this class
     */
@@ -43,7 +46,8 @@ abstract class HasImports extends ScopedDef {
     /**
      * Default constructor is public for deserialization.
      */
-    public HasImports() {
+    public HasImports()
+    {
     }
 
     /**
@@ -53,10 +57,11 @@ abstract class HasImports extends ScopedDef {
      * @param occ
      * @param parentScope
      */
-    HasImports(String name, // name of the symbol
-               Occurrence occ, // where it's defined
-               ScopedDef parentScope) {    // which scope owns it
-        super(name, occ, parentScope);
+    HasImports( String name, // name of the symbol
+                Occurrence occ, // where it's defined
+                ScopedDef parentScope )
+    { // which scope owns it
+        super( name, occ, parentScope );
     }
 
     /**
@@ -64,11 +69,12 @@ abstract class HasImports extends ScopedDef {
      *
      * @param symbolTable
      */
-    void closeImports(SymbolTable symbolTable) {
+    void closeImports( SymbolTable symbolTable )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("closeImports(SymbolTable) - SymbolTable symbolTable=" + symbolTable);
+            log.debug( "closeImports(SymbolTable) - SymbolTable symbolTable=" + symbolTable );
         }
 
         symbolTable.closeImports();
@@ -80,8 +86,9 @@ abstract class HasImports extends ScopedDef {
      *
      * @return
      */
-    boolean isTopLevel() {
-        return (getParentScope() instanceof PackageDef);
+    boolean isTopLevel()
+    {
+        return ( getParentScope() instanceof PackageDef );
     }
 
     /**
@@ -89,34 +96,37 @@ abstract class HasImports extends ScopedDef {
      *
      * @param symbolTable
      */
-    void openImports(SymbolTable symbolTable) {
+    void openImports( SymbolTable symbolTable )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("openImports(SymbolTable) - SymbolTable symbolTable=" + symbolTable);
+            log.debug( "openImports(SymbolTable) - SymbolTable symbolTable=" + symbolTable );
         }
 
-        symbolTable.openImports(imports);
+        symbolTable.openImports( imports );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#resolveTypes(org.apache.maven.jxr.java.src.symtab.SymbolTable)
      */
-    void resolveTypes(SymbolTable symbolTable) {
+    void resolveTypes( SymbolTable symbolTable )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("resolveTypes(SymbolTable) - SymbolTable symbolTable=" + symbolTable);
+            log.debug( "resolveTypes(SymbolTable) - SymbolTable symbolTable=" + symbolTable );
         }
 
         // this was commented out.  Why?
         // if (imports != null)            // resolve imported classes/packages
         // imports.resolveTypes(symbolTable);
-        if (isTopLevel()) {
-            openImports(symbolTable);    // make them available for lookup
+        if ( isTopLevel() )
+        {
+            openImports( symbolTable ); // make them available for lookup
         }
 
-        super.resolveTypes(symbolTable);    // resolve class/interface contents
+        super.resolveTypes( symbolTable ); // resolve class/interface contents
 
         // closeImports() is done in class resolution
     }
@@ -124,21 +134,23 @@ abstract class HasImports extends ScopedDef {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#resolveRefs(org.apache.maven.jxr.java.src.symtab.SymbolTable)
      */
-    void resolveRefs(SymbolTable symbolTable) {
+    void resolveRefs( SymbolTable symbolTable )
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("resolveRefs(SymbolTable) - SymbolTable symbolTable=" + symbolTable);
+            log.debug( "resolveRefs(SymbolTable) - SymbolTable symbolTable=" + symbolTable );
         }
 
         // this was commented out.  Why?
         // if (imports != null)            // resolve imported classes/packages
         // imports.resolveRefs(symbolTable);
-        if (isTopLevel()) {
-            openImports(symbolTable);    // make them available for lookup
+        if ( isTopLevel() )
+        {
+            openImports( symbolTable ); // make them available for lookup
         }
 
-        super.resolveRefs(symbolTable);    // resolve class/interface contents
+        super.resolveRefs( symbolTable ); // resolve class/interface contents
 
         // closeImports() is done in class resolution
     }
@@ -148,7 +160,8 @@ abstract class HasImports extends ScopedDef {
      *
      * @param imports
      */
-    void setImports(JavaHashtable imports) {
+    void setImports( JavaHashtable imports )
+    {
         this.imports = imports;
     }
 }

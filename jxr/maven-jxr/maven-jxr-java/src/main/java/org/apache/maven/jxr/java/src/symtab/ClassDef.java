@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.symtab;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.symtab;
 
 import org.apache.log4j.Logger;
 
@@ -37,7 +38,10 @@ import java.util.Vector;
  *
  * @version $Id: $
  */
-public class ClassDef extends HasImports implements Externalizable {
+public class ClassDef
+    extends HasImports
+    implements Externalizable
+{
 
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( ClassDef.class );
@@ -107,27 +111,30 @@ public class ClassDef extends HasImports implements Externalizable {
      * @param name
      * @return
      */
-    protected static ClassDef findLoadedClass(String packageName, String name) {
+    protected static ClassDef findLoadedClass( String packageName, String name )
+    {
 
         String qualifiedName = packageName + "." + name;
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("findLoadedClass(String, String) - String qualifiedName=" + qualifiedName);
+            log.debug( "findLoadedClass(String, String) - String qualifiedName=" + qualifiedName );
             Enumeration keys = allClassDefs.keys();
-            StringBuffer sb = new StringBuffer("allClassDefs={");
-            while (keys.hasMoreElements()) {
-                sb.append( ((String)keys.nextElement())+", ");
+            StringBuffer sb = new StringBuffer( "allClassDefs={" );
+            while ( keys.hasMoreElements() )
+            {
+                sb.append( ( (String) keys.nextElement() ) + ", " );
             }
-            log.debug("findLoadedClass(String, String) - " + sb.toString());
+            log.debug( "findLoadedClass(String, String) - " + sb.toString() );
         }
 
-        return (ClassDef) allClassDefs.get(qualifiedName);
+        return (ClassDef) allClassDefs.get( qualifiedName );
     }
 
     /**
      * Default constructor needs to be public for deserialization.
      */
-    public ClassDef() {
+    public ClassDef()
+    {
     }
 
     /**
@@ -139,16 +146,18 @@ public class ClassDef extends HasImports implements Externalizable {
      * @param interfaces
      * @param parentScope
      */
-    ClassDef(String name, // thhe name of the class
-             Occurrence occ, // where it was defined
-             ClassDef superClass, // its superclass (if applicable)
-             JavaVector interfaces, // interfaces that it implements
-             ScopedDef parentScope) {    // which scope owns it
+    ClassDef( String name, // thhe name of the class
+              Occurrence occ, // where it was defined
+              ClassDef superClass, // its superclass (if applicable)
+              JavaVector interfaces, // interfaces that it implements
+              ScopedDef parentScope )
+    { // which scope owns it
 
-        super(name, occ, parentScope);
+        super( name, occ, parentScope );
 
         // if a superclass was specified, set it
-        if (superClass != null) {
+        if ( superClass != null )
+        {
             this.superClass = superClass;
         }
 
@@ -161,11 +170,12 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @param def
      */
-    void addImplementer(ClassDef def) {
+    void addImplementer( ClassDef def )
+    {
 
-        getImplementers().addElement(def);
-        setType(INTERFACE);
-        def.setType(CLASS);
+        getImplementers().addElement( def );
+        setType( INTERFACE );
+        def.setType( CLASS );
     }
 
     /**
@@ -174,8 +184,9 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @param subclass
      */
-    void addSubclass(ClassDef subclass) {
-        getSubClasses().addElement(subclass);
+    void addSubclass( ClassDef subclass )
+    {
+        getSubClasses().addElement( subclass );
     }
 
     /**
@@ -183,9 +194,11 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @return
      */
-    JavaVector getImplementers() {
+    JavaVector getImplementers()
+    {
 
-        if (implementers == null) {    // lazy instantiation
+        if ( implementers == null )
+        { // lazy instantiation
             implementers = new JavaVector();
         }
 
@@ -198,7 +211,8 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @return
      */
-    public JavaVector getInterfaces() {
+    public JavaVector getInterfaces()
+    {
         return interfaces;
     }
 
@@ -207,9 +221,11 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @return
      */
-    JavaVector getSubClasses() {
+    JavaVector getSubClasses()
+    {
 
-        if (subClasses == null) {
+        if ( subClasses == null )
+        {
             subClasses = new JavaVector();
         }
 
@@ -221,7 +237,8 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @return
      */
-    public ClassDef getSuperClass() {
+    public ClassDef getSuperClass()
+    {
         return superClass;
     }
 
@@ -230,7 +247,8 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @return
      */
-    public boolean isClass() {
+    public boolean isClass()
+    {
         return classOrInterface == CLASS;
     }
 
@@ -239,7 +257,8 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @return
      */
-    public boolean isInterface() {
+    public boolean isInterface()
+    {
         return classOrInterface == INTERFACE;
     }
 
@@ -251,46 +270,52 @@ public class ClassDef extends HasImports implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#lookup(java.lang.String, int, java.lang.Class)
      */
-    Definition lookup(String name, int numParams, Class type) {
+    Definition lookup( String name, int numParams, Class type )
+    {
 
-        String goal = name + "|" + getQualifiedName() + "|" + numParams + "|"
-                + type;
+        String goal = name + "|" + getQualifiedName() + "|" + numParams + "|" + type;
 
-        if (goals.contains(goal)) {
-            log.error( "detected infinite loop: " + goal, new Exception("infinite loop") );
+        if ( goals.contains( goal ) )
+        {
+            log.error( "detected infinite loop: " + goal, new Exception( "infinite loop" ) );
 
             return null;
         }
 
-        goals.add(goal);
+        goals.add( goal );
 
         // try to look it up in our scope
-        Definition d = super.lookup(name, numParams, type);
+        Definition d = super.lookup( name, numParams, type );
 
         // if not found, look it up in our superclass (if we have one)
-        if (d == null) {
-            if (getSuperClass() != null) {
-                setType(CLASS);
-                getSuperClass().setType(CLASS);
+        if ( d == null )
+        {
+            if ( getSuperClass() != null )
+            {
+                setType( CLASS );
+                getSuperClass().setType( CLASS );
 
-                if (log.isDebugEnabled())
+                if ( log.isDebugEnabled() )
                 {
-                    log.debug("lookup(String, int, Class) - " + getName()+" looking for name="+name+" numParams="+numParams+" type="+type);
+                    log.debug( "lookup(String, int, Class) - " + getName() + " looking for name=" + name
+                        + " numParams=" + numParams + " type=" + type );
                 }
-                d = getSuperClass().lookup(name, numParams, type);
+                d = getSuperClass().lookup( name, numParams, type );
             }
         }
 
         // if still not found, look for it in any of our implemented interfaces
-        if ((d == null) && (interfaces != null)) {
+        if ( ( d == null ) && ( interfaces != null ) )
+        {
             Enumeration e = interfaces.elements();
 
-            while ((d == null) && e.hasMoreElements()) {
-                d = ((ClassDef) e.nextElement()).lookup(name, numParams, type);
+            while ( ( d == null ) && e.hasMoreElements() )
+            {
+                d = ( (ClassDef) e.nextElement() ).lookup( name, numParams, type );
             }
         }
 
-        goals.remove(goal);
+        goals.remove( goal );
 
         return d;
     }
@@ -298,42 +323,40 @@ public class ClassDef extends HasImports implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateReferences(java.io.FileWriter)
      */
-    public void generateReferences(FileWriter output) {
-        if (log.isDebugEnabled())
+    public void generateReferences( FileWriter output )
+    {
+        if ( log.isDebugEnabled() )
         {
-            log.debug("generateReferences(FileWriter) - FileWriter output=" + output);
-            log.debug("generateReferences(FileWriter) - Generating references for:"+getName());
+            log.debug( "generateReferences(FileWriter) - FileWriter output=" + output );
+            log.debug( "generateReferences(FileWriter) - Generating references for:" + getName() );
         }
 
-        try {
-            output.write("<p class=\"classReflist\">");
+        try
+        {
+            output.write( "<p class=\"classReflist\">" );
 
-            String nameString =
-                    "<p class=\"classReflistHeader\">Class: <a name=" + getName()
-                    + " href=" + getSourceName() + "#" + getClassScopeName() + ">"
-                    + getScopedClassName() + "</a></p>";
+            String nameString = "<p class=\"classReflistHeader\">Class: <a name=" + getName() + " href="
+                + getSourceName() + "#" + getClassScopeName() + ">" + getScopedClassName() + "</a></p>";
             String linkFileName;
             String linkString;
 
-            output.write(nameString);
+            output.write( nameString );
 
             JavaVector v = getReferences();
             Enumeration e = v.elements();
 
-            while (e.hasMoreElements()) {
+            while ( e.hasMoreElements() )
+            {
                 Occurrence o = (Occurrence) e.nextElement();
 
-                if (o != null) {
-                    linkFileName = getOccurrencePath(o) + o.getLinkReference();
-                    linkString = "<p class=\"classRefItem\"><a href="
-                            + linkFileName + ">" + getName() + " in "
-                            + o.getPackageName() + "."
-                            + o.getClassName() + "." + o.getMethodName()
-                            + " (" + o.getFile().getName() + ":"
-                            + Integer.toString(o.getLine())
-                            + ")</a></p>\n";
+                if ( o != null )
+                {
+                    linkFileName = getOccurrencePath( o ) + o.getLinkReference();
+                    linkString = "<p class=\"classRefItem\"><a href=" + linkFileName + ">" + getName() + " in "
+                        + o.getPackageName() + "." + o.getClassName() + "." + o.getMethodName() + " ("
+                        + o.getFile().getName() + ":" + Integer.toString( o.getLine() ) + ")</a></p>\n";
 
-                    output.write(linkString);
+                    output.write( linkString );
                 }
             }
 
@@ -342,38 +365,46 @@ public class ClassDef extends HasImports implements Externalizable {
             // Variables
             Enumeration el = ht.elements();
 
-            while (el.hasMoreElements()) {
+            while ( el.hasMoreElements() )
+            {
                 Object d = el.nextElement();
 
-                if (d instanceof VariableDef) {
-                    ((Definition) d).generateReferences(output);
+                if ( d instanceof VariableDef )
+                {
+                    ( (Definition) d ).generateReferences( output );
                 }
             }
 
             // Methods
             el = ht.elements();
 
-            while (el.hasMoreElements()) {
+            while ( el.hasMoreElements() )
+            {
                 Object d = el.nextElement();
 
-                if ((d instanceof MethodDef) || (d instanceof MultiDef)) {
-                    ((Definition) d).generateReferences(output);
+                if ( ( d instanceof MethodDef ) || ( d instanceof MultiDef ) )
+                {
+                    ( (Definition) d ).generateReferences( output );
                 }
             }
 
-            output.write("</p>\n");
+            output.write( "</p>\n" );
 
             // Now inner classes
             el = ht.elements();
 
-            while (el.hasMoreElements()) {
+            while ( el.hasMoreElements() )
+            {
                 Object d = el.nextElement();
 
-                if (d instanceof ClassDef) {
-                    ((Definition) d).generateReferences(output);
+                if ( d instanceof ClassDef )
+                {
+                    ( (Definition) d ).generateReferences( output );
                 }
             }
-        } catch (Exception ex) {
+        }
+        catch ( Exception ex )
+        {
             log.error( "Exception: " + ex.getMessage(), ex );
 
             return;
@@ -383,37 +414,40 @@ public class ClassDef extends HasImports implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#generateTags(org.apache.maven.jxr.java.src.symtab.HTMLTagContainer)
      */
-    public void generateTags(HTMLTagContainer tagList) {
+    public void generateTags( HTMLTagContainer tagList )
+    {
 
-        String nameString = "<a class=\"classDef\" name=" + getClassScopeName()
-                + " href=" + getRefName() + "#"
-                + getClassScopeName() + ">" + getName() + "</a>";
+        String nameString = "<a class=\"classDef\" name=" + getClassScopeName() + " href=" + getRefName() + "#"
+            + getClassScopeName() + ">" + getName() + "</a>";
 
         // generate tag for this class
-        if (getOccurrence() != null) {
-            HTMLTag t = new HTMLTag(getOccurrence(), getName(), nameString);
+        if ( getOccurrence() != null )
+        {
+            HTMLTag t = new HTMLTag( getOccurrence(), getName(), nameString );
 
-            tagList.addElement(t);
+            tagList.addElement( t );
         }
 
-        tagElements(tagList);
+        tagElements( tagList );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.ScopedDef#getOccurrenceTag(org.apache.maven.jxr.java.src.symtab.Occurrence)
      */
-    public HTMLTag getOccurrenceTag(Occurrence occ) {
+    public HTMLTag getOccurrenceTag( Occurrence occ )
+    {
 
         String linkString;
         String linkFileName;
         HTMLTag t = null;
 
-        if(getSourceName() != null){
-            linkFileName = getRelativePath(occ) + getSourceName();
-            linkString = "<a class=\"classRef\" href=" + linkFileName + "#"
-                    + getClassScopeName() + ">" + getName() + "</a>";
+        if ( getSourceName() != null )
+        {
+            linkFileName = getRelativePath( occ ) + getSourceName();
+            linkString = "<a class=\"classRef\" href=" + linkFileName + "#" + getClassScopeName() + ">" + getName()
+                + "</a>";
 
-            t = new HTMLTag(occ, getName(), linkString);
+            t = new HTMLTag( occ, getName(), linkString );
         }
         return t;
     }
@@ -421,82 +455,91 @@ public class ClassDef extends HasImports implements Externalizable {
     /**
      * @see org.apache.maven.jxr.java.src.symtab.HasImports#resolveTypes(org.apache.maven.jxr.java.src.symtab.SymbolTable)
      */
-    void resolveTypes(SymbolTable symbolTable) {
-        if (log.isDebugEnabled())
+    void resolveTypes( SymbolTable symbolTable )
+    {
+        if ( log.isDebugEnabled() )
         {
-            log.debug("resolveTypes(SymbolTable) - SymbolTable symbolTable=" + symbolTable);
-            log.debug("resolveTypes(SymbolTable) - resolving: "+getQualifiedName());
+            log.debug( "resolveTypes(SymbolTable) - SymbolTable symbolTable=" + symbolTable );
+            log.debug( "resolveTypes(SymbolTable) - resolving: " + getQualifiedName() );
         }
 
         // resolve superclass laundry
-        super.resolveTypes(symbolTable);
+        super.resolveTypes( symbolTable );
 
         // if we have subclasses, resolve them to their symbols
-        if (subClasses != null) {
-            subClasses.resolveTypes(symbolTable);
+        if ( subClasses != null )
+        {
+            subClasses.resolveTypes( symbolTable );
 
             // Make sure we re-open imports
-            openImports(symbolTable);
+            openImports( symbolTable );
         }
 
         ClassDef newSuperClass = getSuperClass();
 
-        if ((newSuperClass != null) && (newSuperClass instanceof DummyClass)) {
+        if ( ( newSuperClass != null ) && ( newSuperClass instanceof DummyClass ) )
+        {
 
             // get its package name and look up the class/interace
-            String pkg = ((DummyClass) newSuperClass).getPackage();
+            String pkg = ( (DummyClass) newSuperClass ).getPackage();
 
-            newSuperClass = symbolTable.lookupDummy(newSuperClass);
+            newSuperClass = symbolTable.lookupDummy( newSuperClass );
 
-            if (newSuperClass == null) {
-                newSuperClass = new DummyClass(
-                        symbolTable.getUniqueName(getSuperClass().getName()), null,
-                        symbolTable.getUniqueName(pkg));
+            if ( newSuperClass == null )
+            {
+                newSuperClass = new DummyClass( symbolTable.getUniqueName( getSuperClass().getName() ), null,
+                                                symbolTable.getUniqueName( pkg ) );
             }
 
             // if we were able to resolve the superclass, add the reference
             // to its reference list and make it this class' superclass
-            if (newSuperClass != null) {
-                newSuperClass.addReference(getSuperClass().getOccurrence());
-                setSuperClass(newSuperClass);
-                newSuperClass.addSubclass(this);
-                newSuperClass.setType(ClassDef.CLASS);
+            if ( newSuperClass != null )
+            {
+                newSuperClass.addReference( getSuperClass().getOccurrence() );
+                setSuperClass( newSuperClass );
+                newSuperClass.addSubclass( this );
+                newSuperClass.setType( ClassDef.CLASS );
             }
 
-            setType(CLASS);
+            setType( CLASS );
         }
 
-        if (interfaces != null) {
-            interfaces.resolveTypes(symbolTable);
+        if ( interfaces != null )
+        {
+            interfaces.resolveTypes( symbolTable );
 
             // add this class to the list of implementers for each interface
             Enumeration e = interfaces.elements();
 
-            while (e.hasMoreElements()) {
-                ((ClassDef) e.nextElement()).addImplementer(this);
+            while ( e.hasMoreElements() )
+            {
+                ( (ClassDef) e.nextElement() ).addImplementer( this );
             }
         }
 
         // we're done, so toss the packages (only for top-level classes)
-        if (isTopLevel()) {
-            closeImports(symbolTable);
+        if ( isTopLevel() )
+        {
+            closeImports( symbolTable );
         }
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.HasImports#resolveRefs(org.apache.maven.jxr.java.src.symtab.SymbolTable)
      */
-    void resolveRefs(SymbolTable symbolTable) {
+    void resolveRefs( SymbolTable symbolTable )
+    {
 
         JavaHashtable oldImports = symbolTable.getImports();
         JavaVector oldDemand = symbolTable.getDemand();
 
-        super.resolveRefs(symbolTable);
+        super.resolveRefs( symbolTable );
 
-        if (isTopLevel()) {
-            closeImports(symbolTable);
-            symbolTable.setImports(oldImports);
-            symbolTable.setDemand(oldDemand);
+        if ( isTopLevel() )
+        {
+            closeImports( symbolTable );
+            symbolTable.setImports( oldImports );
+            symbolTable.setDemand( oldDemand );
         }
     }
 
@@ -505,7 +548,8 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @param tagList
      */
-    public void generateClassList(Vector tagList) {
+    public void generateClassList( Vector tagList )
+    {
 
         Enumeration e;
         Definition d;
@@ -514,7 +558,8 @@ public class ClassDef extends HasImports implements Externalizable {
         String tagText;
 
         // List all classes in this class
-        if (hasElements()) {
+        if ( hasElements() )
+        {
             JavaHashtable ht = getElements();
 
             e = ht.elements();
@@ -522,26 +567,28 @@ public class ClassDef extends HasImports implements Externalizable {
             String baseName;
             String link;
 
-            while (e.hasMoreElements()) {
+            while ( e.hasMoreElements() )
+            {
                 d = (Definition) e.nextElement();
 
-                if (d instanceof ClassDef) {
+                if ( d instanceof ClassDef )
+                {
                     o = d.getOccurrence();
                     baseName = o.getFile().getName();
-                    baseName = baseName.substring(0, baseName.lastIndexOf("."));
+                    baseName = baseName.substring( 0, baseName.lastIndexOf( "." ) );
                     link = baseName + "_java.html";
 
-                    if (!baseName.equals(d.getName())) {
+                    if ( !baseName.equals( d.getName() ) )
+                    {
                         link += "#" + o.getLine();
                     }
 
-                    tagText = "<p class=\"classListItem\"><a href=\"" + link
-                            + "\"" + "TARGET=\"classFrame\">"
-                            + d.getScopedClassName() + "</a></p>";
-                    tag = new ClassTag(d.getScopedClassName(), tagText);
+                    tagText = "<p class=\"classListItem\"><a href=\"" + link + "\"" + "TARGET=\"classFrame\">"
+                        + d.getScopedClassName() + "</a></p>";
+                    tag = new ClassTag( d.getScopedClassName(), tagText );
 
-                    tagList.addElement(tag);
-                    ((ClassDef) d).generateClassList(tagList);
+                    tagList.addElement( tag );
+                    ( (ClassDef) d ).generateClassList( tagList );
                 }
             }
         }
@@ -552,7 +599,8 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @param interfaces
      */
-    void setInterfaces(JavaVector interfaces) {
+    void setInterfaces( JavaVector interfaces )
+    {
         this.interfaces = interfaces;
     }
 
@@ -561,12 +609,13 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @param superClass
      */
-    void setSuperClass(ClassDef superClass) {
+    void setSuperClass( ClassDef superClass )
+    {
 
         this.superClass = superClass;
 
-        setType(CLASS);
-        superClass.setType(CLASS);
+        setType( CLASS );
+        superClass.setType( CLASS );
     }
 
     /**
@@ -574,21 +623,25 @@ public class ClassDef extends HasImports implements Externalizable {
      *
      * @param type
      */
-    void setType(int type) {
+    void setType( int type )
+    {
         classOrInterface = type;
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#getClassScopeName()
      */
-    String getClassScopeName() {
+    String getClassScopeName()
+    {
 
         String result;
 
-        if (getParentScope() instanceof ClassDef)    // inner class
+        if ( getParentScope() instanceof ClassDef ) // inner class
         {
             result = getParentScope().getName() + "." + getName();
-        } else {
+        }
+        else
+        {
             result = getName();
         }
 
@@ -598,59 +651,66 @@ public class ClassDef extends HasImports implements Externalizable {
     /**
      * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
      */
-    public void writeExternal(ObjectOutput out) throws java.io.IOException {
+    public void writeExternal( ObjectOutput out )
+        throws java.io.IOException
+    {
 
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("writeExternal(ObjectOutput) - externalizing "+getName());
+            log.debug( "writeExternal(ObjectOutput) - externalizing " + getName() );
         }
 
-        out.writeObject(getName());
-        out.writeObject(getPackageName());
-        out.writeObject(getOccurrence());
+        out.writeObject( getName() );
+        out.writeObject( getPackageName() );
+        out.writeObject( getOccurrence() );
 
         ScopedDef parentScopeOut = getParentScope();
 
-        if (parentScopeOut instanceof PackageDef) {
+        if ( parentScopeOut instanceof PackageDef )
+        {
             parentScopeOut = null;
         }
 
-        if ((parentScopeOut == null) && (getPackageName() == null)) {
-            if (log.isDebugEnabled())
+        if ( ( parentScopeOut == null ) && ( getPackageName() == null ) )
+        {
+            if ( log.isDebugEnabled() )
             {
-                log.debug("writeExternal(ObjectOutput) - parentScopeOut and getPackageName() are null");
+                log.debug( "writeExternal(ObjectOutput) - parentScopeOut and getPackageName() are null" );
             }
         }
 
-        out.writeObject(parentScopeOut);
-        out.writeObject(elements);
+        out.writeObject( parentScopeOut );
+        out.writeObject( elements );
 
         ClassDef superClassOut;
 
-        if ((superClass instanceof ClassDef)
-                && !(superClass instanceof ClassDefProxy)
-                && !(superClass instanceof DummyClass)) {
-            superClassOut = new ClassDefProxy(superClass);
-        } else {
+        if ( ( superClass instanceof ClassDef ) && !( superClass instanceof ClassDefProxy )
+            && !( superClass instanceof DummyClass ) )
+        {
+            superClassOut = new ClassDefProxy( superClass );
+        }
+        else
+        {
             superClassOut = superClass;
         }
 
-        out.writeObject(superClassOut);
-        out.writeObject(interfaces);
+        out.writeObject( superClassOut );
+        out.writeObject( interfaces );
     }
 
     /**
      * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
      */
-    public void readExternal(ObjectInput in)
-            throws IOException, ClassNotFoundException {
+    public void readExternal( ObjectInput in )
+        throws IOException, ClassNotFoundException
+    {
 
-        setName((String) in.readObject());
-        SymbolTable.startReadExternal("ClassDef " + getName());
+        setName( (String) in.readObject() );
+        SymbolTable.startReadExternal( "ClassDef " + getName() );
 
         packageName = (String) in.readObject();
 
-        setOccurrence((Occurrence) (in.readObject()));
+        setOccurrence( (Occurrence) ( in.readObject() ) );
 
         ScopedDef parentScopeIn = (ScopedDef) in.readObject();
 
@@ -658,44 +718,47 @@ public class ClassDef extends HasImports implements Externalizable {
         superClass = (ClassDef) in.readObject();
         interfaces = (JavaVector) in.readObject();
 
-        if (parentScopeIn == null) {
-            parentScopeIn =
-                    (ScopedDef) SymbolTable.getSymbolTable().findPackage(
-                            packageName);
+        if ( parentScopeIn == null )
+        {
+            parentScopeIn = (ScopedDef) SymbolTable.getSymbolTable().findPackage( packageName );
         }
 
-        setParentScope(parentScopeIn);
+        setParentScope( parentScopeIn );
         setupFileNames();
 
         String qualifiedName = packageName + "." + getName();
-        if (log.isDebugEnabled())
+        if ( log.isDebugEnabled() )
         {
-            log.debug("readExternal(ObjectInput) - String qualifiedName=" + qualifiedName);
+            log.debug( "readExternal(ObjectInput) - String qualifiedName=" + qualifiedName );
         }
 
-        allClassDefs.put(qualifiedName, this);
+        allClassDefs.put( qualifiedName, this );
         SymbolTable.endReadExternal();
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#accept(org.apache.maven.jxr.java.src.symtab.Visitor)
      */
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-        elements.accept(visitor);
+    public void accept( Visitor visitor )
+    {
+        visitor.visit( this );
+        elements.accept( visitor );
     }
 
     /**
      * @see org.apache.maven.jxr.java.src.symtab.Definition#toString()
      */
-    public String toString() {
+    public String toString()
+    {
 
         String str = "  " + super.toString() + "\n";
 
-        if (interfaces != null) {
+        if ( interfaces != null )
+        {
             Enumeration e = interfaces.elements();
 
-            while (e.hasMoreElements()) {
+            while ( e.hasMoreElements() )
+            {
                 Definition d = (Definition) e.nextElement();
 
                 str += "    " + d + "\n";
@@ -705,7 +768,8 @@ public class ClassDef extends HasImports implements Externalizable {
         JavaHashtable ht = getElements();
         Enumeration e = ht.elements();
 
-        while (e.hasMoreElements()) {
+        while ( e.hasMoreElements() )
+        {
             Definition d = (Definition) e.nextElement();
 
             str += "    " + d + "\n";

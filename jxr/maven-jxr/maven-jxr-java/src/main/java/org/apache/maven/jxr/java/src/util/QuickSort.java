@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.java.src.util;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.maven.jxr.java.src.util;
 
 import java.util.Comparator;
 
@@ -29,7 +30,8 @@ import java.util.Comparator;
  *
  * @version $Id: $
  */
-public class QuickSort {
+public class QuickSort
+{
 
     /**
      * Sort array of Objects using the QuickSort algorithm.
@@ -39,9 +41,11 @@ public class QuickSort {
      * @param hi  The current upper bound.
      * @param cmp A Comparator to compare two elements.
      */
-    public static void quickSort(Object s[], int lo, int hi, Comparator cmp) {
+    public static void quickSort( Object s[], int lo, int hi, Comparator cmp )
+    {
 
-        if (lo >= hi) {
+        if ( lo >= hi )
+        {
             return;
         }
 
@@ -49,9 +53,10 @@ public class QuickSort {
          * Use median-of-three(lo, mid, hi) to pick a partition.  Also
          * swap them into relative order while we are at it.
          */
-        int mid = (lo + hi) / 2;
+        int mid = ( lo + hi ) / 2;
 
-        if (cmp.compare(s[lo], s[mid]) > 0) {
+        if ( cmp.compare( s[lo], s[mid] ) > 0 )
+        {
 
             // Swap.
             Object tmp = s[lo];
@@ -60,7 +65,8 @@ public class QuickSort {
             s[mid] = tmp;
         }
 
-        if (cmp.compare(s[mid], s[hi]) > 0) {
+        if ( cmp.compare( s[mid], s[hi] ) > 0 )
+        {
 
             // Swap .
             Object tmp = s[mid];
@@ -68,7 +74,8 @@ public class QuickSort {
             s[mid] = s[hi];
             s[hi] = tmp;
 
-            if (cmp.compare(s[lo], s[mid]) > 0) {
+            if ( cmp.compare( s[lo], s[mid] ) > 0 )
+            {
 
                 // Swap.
                 Object tmp2 = s[lo];
@@ -85,22 +92,27 @@ public class QuickSort {
         int right = hi - 1;
 
         // If there are three or fewer elements, we are done.
-        if (left >= right) {
+        if ( left >= right )
+        {
             return;
         }
 
         Object partition = s[mid];
 
-        for (; ;) {
-            while (cmp.compare(s[right], partition) > 0) {
+        for ( ;; )
+        {
+            while ( cmp.compare( s[right], partition ) > 0 )
+            {
                 --right;
             }
 
-            while ((left < right) && (cmp.compare(s[left], partition) <= 0)) {
+            while ( ( left < right ) && ( cmp.compare( s[left], partition ) <= 0 ) )
+            {
                 ++left;
             }
 
-            if (left < right) {
+            if ( left < right )
+            {
 
                 // Swap.
                 Object tmp = s[left];
@@ -109,13 +121,15 @@ public class QuickSort {
                 s[right] = tmp;
 
                 --right;
-            } else {
+            }
+            else
+            {
                 break;
             }
         }
 
-        quickSort(s, lo, left, cmp);
-        quickSort(s, left + 1, hi, cmp);
+        quickSort( s, lo, left, cmp );
+        quickSort( s, left + 1, hi, cmp );
     }
 
     /**
@@ -124,7 +138,8 @@ public class QuickSort {
      * @param data An Object[].
      * @param cmp  A Comparator to compare two elements.
      */
-    public static void sort(Object[] data, Comparator cmp) {
-        quickSort(data, 0, data.length - 1, cmp);
+    public static void sort( Object[] data, Comparator cmp )
+    {
+        quickSort( data, 0, data.length - 1, cmp );
     }
 }
