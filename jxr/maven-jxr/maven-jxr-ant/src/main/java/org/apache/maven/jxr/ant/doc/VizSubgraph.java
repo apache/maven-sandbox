@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.ant.doc;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -5,9 +7,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,25 +17,24 @@
  * limitations under the License.
  */
 
-package org.apache.maven.jxr.ant.doc;
-
 import org.apache.tools.ant.BuildException;
 
 /**
  * &lt;subgraph&gt; nested element handler.
  */
-public class VizSubgraph {
+public class VizSubgraph
+{
     VizPrinter printer = null;
 
-    public void setPrinter(VizPrinter printer) {
+    public void setPrinter( VizPrinter printer )
+    {
         this.printer = printer;
     }
 
-    public void addConfiguredAttrstmt(VizAttrStmt attrstmt)
-            throws BuildException {
+    public void addConfiguredAttrstmt( VizAttrStmt attrstmt )
+        throws BuildException
+    {
         attrstmt.checkConfiguration();
-        printer.addSubgraphAttributeStatement(attrstmt);
+        printer.addSubgraphAttributeStatement( attrstmt );
     }
 }
-
-

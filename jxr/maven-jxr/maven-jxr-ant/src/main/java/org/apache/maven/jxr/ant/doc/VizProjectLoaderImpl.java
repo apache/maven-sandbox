@@ -1,3 +1,5 @@
+package org.apache.maven.jxr.ant.doc;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -5,17 +7,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.apache.maven.jxr.ant.doc;
 
 import org.apache.tools.ant.BuildException;
 import org.xml.sax.Attributes;
@@ -36,7 +36,9 @@ import java.util.Vector;
  * An implementation of VizProjectLoader.
  */
 
-public class VizProjectLoaderImpl implements VizProjectLoader {
+public class VizProjectLoaderImpl
+    implements VizProjectLoader
+{
 
     private InputStream stream;
 
@@ -48,7 +50,8 @@ public class VizProjectLoaderImpl implements VizProjectLoader {
 
     private boolean ignoreDepends;
 
-    public VizProjectLoaderImpl() {
+    public VizProjectLoaderImpl()
+    {
 
         uniqueref = false;
 
@@ -60,65 +63,81 @@ public class VizProjectLoaderImpl implements VizProjectLoader {
 
     }
 
-    public void uniqueRef(boolean uniqueref) {
+    public void uniqueRef( boolean uniqueref )
+    {
 
         this.uniqueref = uniqueref;
 
     }
 
-    public void ignoreAnt(boolean ignoreAnt) {
+    public void ignoreAnt( boolean ignoreAnt )
+    {
 
         this.ignoreAnt = ignoreAnt;
 
     }
 
-    public void ignoreAntcall(boolean ignoreAntcall) {
+    public void ignoreAntcall( boolean ignoreAntcall )
+    {
 
         this.ignoreAntcall = ignoreAntcall;
 
     }
 
-    public void ignoreDepends(boolean ignoreDepends) {
+    public void ignoreDepends( boolean ignoreDepends )
+    {
 
         this.ignoreDepends = ignoreDepends;
 
     }
 
-    public void setInputStream(InputStream stream) {
+    public void setInputStream( InputStream stream )
+    {
 
         this.stream = stream;
 
     }
 
-    public Vector getProjects() throws BuildException {
+    public Vector getProjects()
+        throws BuildException
+    {
 
-        try {
+        try
+        {
 
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 
             SAXHandler handler = new SAXHandler();
 
-            parser.parse(new InputSource(stream), handler);
+            parser.parse( new InputSource( stream ), handler );
 
             return handler.getProjects();
 
-        } catch (SAXException e) {
+        }
+        catch ( SAXException e )
+        {
 
-            throw new BuildException(e);
+            throw new BuildException( e );
 
-        } catch (ParserConfigurationException e) {
+        }
+        catch ( ParserConfigurationException e )
+        {
 
-            throw new BuildException(e);
+            throw new BuildException( e );
 
-        } catch (IOException e) {
+        }
+        catch ( IOException e )
+        {
 
-            throw new BuildException(e);
+            throw new BuildException( e );
 
         }
 
     }
 
-    private class SAXHandler extends DefaultHandler {
+    private class SAXHandler
+        extends DefaultHandler
+    {
 
         private String defaultName;
 
@@ -128,7 +147,8 @@ public class VizProjectLoaderImpl implements VizProjectLoader {
 
         private VizProject baseProject;
 
-        public SAXHandler() {
+        public SAXHandler()
+        {
 
             defaultName = "main";
 
@@ -136,151 +156,168 @@ public class VizProjectLoaderImpl implements VizProjectLoader {
 
         }
 
-        public Vector getProjects() {
+        public Vector getProjects()
+        {
 
             return projects;
 
         }
 
-        public void startDocument() {
+        public void startDocument()
+        {
 
             projects = new Vector();
 
-            projects.addElement(baseProject);
+            projects.addElement( baseProject );
 
         }
 
-        public void startElement(String uri,
+        public void startElement( String uri,
 
-                                 String name,
+        String name,
 
-                                 String qName,
+        String qName,
 
-                                 Attributes atts) {
+        Attributes atts )
+        {
 
-            if ("project".equals(qName)) {
+            if ( "project".equals( qName ) )
+            {
 
-                String def = atts.getValue("default");
+                String def = atts.getValue( "default" );
 
-                String dir = atts.getValue("dir");
+                String dir = atts.getValue( "dir" );
 
-                if (def != null)
+                if ( def != null )
 
                     defaultName = def;
 
-                if (dir != null)
+                if ( dir != null )
 
-                    baseProject.setDir(dir);
+                    baseProject.setDir( dir );
 
-            } else if ("target".equals(qName)) {
+            }
+            else if ( "target".equals( qName ) )
+            {
 
-                String targetName = atts.getValue("name");
+                String targetName = atts.getValue( "name" );
 
-                String depends = atts.getValue("depends");
+                String depends = atts.getValue( "depends" );
 
-                target = baseProject.getTarget(targetName);
+                target = baseProject.getTarget( targetName );
 
-                target.setDefault(targetName.equals(defaultName));
+                target.setDefault( targetName.equals( defaultName ) );
 
-                baseProject.appendTarget(target);
+                baseProject.appendTarget( target );
 
-                if (null != depends && !ignoreDepends)
+                if ( null != depends && !ignoreDepends )
 
-                    addDepends(target, depends);
+                    addDepends( target, depends );
 
-            } else if ("antcall".equals(qName)) {
+            }
+            else if ( "antcall".equals( qName ) )
+            {
 
-                if (!ignoreAntcall)
+                if ( !ignoreAntcall )
 
-                    addAntCall(target, atts.getValue("target"));
+                    addAntCall( target, atts.getValue( "target" ) );
 
-            } else if ("ant".equals(qName)) {
+            }
+            else if ( "ant".equals( qName ) )
+            {
 
-                if (!ignoreAnt)
+                if ( !ignoreAnt )
 
-                    addAnt(target,
+                    addAnt( target,
 
-                            atts.getValue("dir"),
+                    atts.getValue( "dir" ),
 
-                            atts.getValue("antfile"),
+                    atts.getValue( "antfile" ),
 
-                            atts.getValue("target"));
+                    atts.getValue( "target" ) );
 
             }
 
         }
 
-        private void addReference(VizTarget from, VizTarget to, int type) {
+        private void addReference( VizTarget from, VizTarget to, int type )
+        {
 
             VizReference reference = new VizReference();
 
-            reference.setFrom(from);
+            reference.setFrom( from );
 
-            reference.setTo(to);
+            reference.setTo( to );
 
-            reference.setType(type);
+            reference.setType( type );
 
-            from.addReferenceOut(reference, uniqueref);
+            from.addReferenceOut( reference, uniqueref );
 
-            to.addReferenceIn(reference, uniqueref);
+            to.addReferenceIn( reference, uniqueref );
 
         }
 
-        private void addDepends(VizTarget from, String toNames) {
+        private void addDepends( VizTarget from, String toNames )
+        {
 
-            StringTokenizer st = new StringTokenizer(toNames, ",");
+            StringTokenizer st = new StringTokenizer( toNames, "," );
 
-            while (st.hasMoreTokens()) {
+            while ( st.hasMoreTokens() )
+            {
 
-                VizTarget to = baseProject.getTarget(st.nextToken().trim());
+                VizTarget to = baseProject.getTarget( st.nextToken().trim() );
 
-                addReference(from, to, VizReference.DEPENDS);
+                addReference( from, to, VizReference.DEPENDS );
 
             }
 
         }
 
-        private void addAntCall(VizTarget from, String toName) {
+        private void addAntCall( VizTarget from, String toName )
+        {
 
-            VizTarget to = baseProject.getTarget(toName);
+            VizTarget to = baseProject.getTarget( toName );
 
-            addReference(from, to, VizReference.ANTCALL);
-
-        }
-
-        private void addAnt(VizTarget from,
-
-                            String toDir, String toFile, String toName) {
-
-            toDir = (toDir != null) ? toDir : "";
-
-            toFile = (toFile != null) ? toFile : "";
-
-            toName = (toName != null) ? toName : "";
-
-            VizProject toProject = getProject(toDir, toFile);
-
-            VizTarget to = toProject.getTarget(toName);
-
-            if ("".equals(toName))
-
-                to.setDefault(true);
-
-            toProject.appendTarget(to);
-
-            addReference(from, to, VizReference.ANT);
+            addReference( from, to, VizReference.ANTCALL );
 
         }
 
-        private VizProject getProject(String dir, String file) {
+        private void addAnt( VizTarget from,
+
+        String toDir, String toFile, String toName )
+        {
+
+            toDir = ( toDir != null ) ? toDir : "";
+
+            toFile = ( toFile != null ) ? toFile : "";
+
+            toName = ( toName != null ) ? toName : "";
+
+            VizProject toProject = getProject( toDir, toFile );
+
+            VizTarget to = toProject.getTarget( toName );
+
+            if ( "".equals( toName ) )
+
+                to.setDefault( true );
+
+            toProject.appendTarget( to );
+
+            addReference( from, to, VizReference.ANT );
+
+        }
+
+        private VizProject getProject( String dir, String file )
+        {
 
             Enumeration enumList = projects.elements();
 
-            while (enumList.hasMoreElements()) {
+            while ( enumList.hasMoreElements() )
+            {
 
                 VizProject project = (VizProject) enumList.nextElement();
 
-                if (dir.equals(project.getDir()) && file.equals(project.getFile()))
+                if ( dir.equals( project.getDir() ) && file.equals( project.getFile() ) )
 
                     return project;
 
@@ -288,11 +325,11 @@ public class VizProjectLoaderImpl implements VizProjectLoader {
 
             VizProject project = new VizProject();
 
-            project.setDir(dir);
+            project.setDir( dir );
 
-            project.setFile(file);
+            project.setFile( file );
 
-            projects.addElement(project);
+            projects.addElement( project );
 
             return project;
 
@@ -301,14 +338,3 @@ public class VizProjectLoaderImpl implements VizProjectLoader {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
