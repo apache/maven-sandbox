@@ -21,7 +21,7 @@ package org.apache.maven.jxr.java.src.xref;
  * Somebody that wants to know about each file that the
  * lexer processes.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public interface FileListener
 {

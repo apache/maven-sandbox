@@ -20,7 +20,7 @@ package org.apache.maven.jxr.java.src.symtab;
 /**
  * A label that appears in the source file.
  *
- * @version $Id: $
+ * @version $Id$
  */
 class LabelDef
     extends Definition

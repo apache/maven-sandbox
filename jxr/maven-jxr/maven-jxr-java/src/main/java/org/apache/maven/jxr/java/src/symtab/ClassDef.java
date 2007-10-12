@@ -36,7 +36,7 @@ import java.util.Vector;
  * know if something is an interface or class (because we are not looking
  * at the classes/interfaces that are imported.)
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class ClassDef
     extends HasImports

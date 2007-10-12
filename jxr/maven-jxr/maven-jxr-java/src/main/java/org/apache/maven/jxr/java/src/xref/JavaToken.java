@@ -25,7 +25,7 @@ import java.io.File;
  * which the token was created, and the number of parameters (telling if the
  * symbol looked like a method invocation or some other symbol reference.)
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class JavaToken
     extends antlr.CommonToken

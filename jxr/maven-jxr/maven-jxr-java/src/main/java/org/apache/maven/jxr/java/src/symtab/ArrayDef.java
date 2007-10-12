@@ -22,7 +22,7 @@ package org.apache.maven.jxr.java.src.symtab;
  * cross reference tool, but you would define something like this if you
  * wanted to make the tool complete.
  *
- * @version $Id: $
+ * @version $Id$
  */
 class ArrayDef
     extends Definition

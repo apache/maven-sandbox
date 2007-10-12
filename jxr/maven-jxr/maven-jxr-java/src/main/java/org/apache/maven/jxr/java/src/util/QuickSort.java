@@ -28,7 +28,7 @@ import java.util.Comparator;
  * the previous one that was not
  * ASL compatible.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class QuickSort
 {

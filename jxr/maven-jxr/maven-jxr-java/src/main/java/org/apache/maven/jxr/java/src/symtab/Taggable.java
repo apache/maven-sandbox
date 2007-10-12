@@ -20,7 +20,7 @@ package org.apache.maven.jxr.java.src.symtab;
 /**
  * This interface is used as a handle to all classes that can be tagged
  *
- * @version $Id: $
+ * @version $Id$
  */
 interface Taggable
 {

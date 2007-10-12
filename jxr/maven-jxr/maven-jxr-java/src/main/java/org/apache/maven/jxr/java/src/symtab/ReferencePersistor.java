@@ -31,7 +31,7 @@ import java.util.Enumeration;
  * references.  All references to anything in a package are stored
  * in that package's references.txt file.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class ReferencePersistor
     implements Visitor, ReferenceTypes

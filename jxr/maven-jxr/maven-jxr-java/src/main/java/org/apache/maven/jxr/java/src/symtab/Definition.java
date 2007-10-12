@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
  * This abstract class represents a symbol definition in a Java source file.
  * All symbols used in our Java symbol table stem from this definition.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public abstract class Definition
     implements Taggable, java.io.Serializable

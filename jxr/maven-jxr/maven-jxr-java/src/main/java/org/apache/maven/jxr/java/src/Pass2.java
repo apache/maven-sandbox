@@ -51,7 +51,7 @@ import java.util.Vector;
  * Sort references
  * Generate HTML one public class at a time.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class Pass2
 {

@@ -22,7 +22,7 @@ import org.apache.maven.jxr.java.src.util.JSComparable;
 /**
  * An occurrence of an HTML Tag in a file
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class ClassTag
     implements JSComparable

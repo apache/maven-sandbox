@@ -26,7 +26,7 @@ import java.util.Hashtable;
  * An abstract class representing a symbol that provides a scope that
  * contains other symbols.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public abstract class ScopedDef
     extends Definition

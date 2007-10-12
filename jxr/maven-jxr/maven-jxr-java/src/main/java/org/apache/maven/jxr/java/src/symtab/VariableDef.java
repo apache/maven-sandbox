@@ -31,7 +31,7 @@ import java.util.Enumeration;
  * This can be member data in class,
  * a local variable or a method parameter.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class VariableDef
     extends Definition

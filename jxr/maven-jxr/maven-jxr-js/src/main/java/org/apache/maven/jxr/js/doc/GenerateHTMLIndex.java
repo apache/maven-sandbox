@@ -34,7 +34,7 @@ import java.util.Vector;
  * Searches all javascript files and creates a index HTML
  * with links to documentation
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class GenerateHTMLIndex
 {

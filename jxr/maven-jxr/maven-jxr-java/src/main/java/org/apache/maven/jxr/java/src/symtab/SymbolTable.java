@@ -34,7 +34,7 @@ import java.util.Vector;
  * that have been parsed or imported, and a stack of symbols that represent
  * the syntactical scope of a source file as it is being parsed.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class SymbolTable
 {

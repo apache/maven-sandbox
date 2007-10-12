@@ -24,7 +24,7 @@ import java.io.InputStream;
 /**
  * Class SkipCRInputStream
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class SkipCRInputStream
     extends BufferedInputStream

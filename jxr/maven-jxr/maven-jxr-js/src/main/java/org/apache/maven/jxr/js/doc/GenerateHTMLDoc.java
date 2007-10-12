@@ -29,7 +29,7 @@ import java.io.IOException;
 /**
  * Class that mounts a Document in HTML as document
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class GenerateHTMLDoc
 {

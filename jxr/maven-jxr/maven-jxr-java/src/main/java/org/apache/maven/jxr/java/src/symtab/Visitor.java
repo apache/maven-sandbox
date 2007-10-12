@@ -20,7 +20,7 @@ package org.apache.maven.jxr.java.src.symtab;
 /**
  * All visitors implement this public.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public interface Visitor
 {

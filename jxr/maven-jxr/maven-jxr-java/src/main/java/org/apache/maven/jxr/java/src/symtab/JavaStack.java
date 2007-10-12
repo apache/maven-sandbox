@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * An extended Stack class to provide simple lookup and type
  * resolution methods
  *
- * @version $Id: $
+ * @version $Id$
  */
 class JavaStack
     extends java.util.Stack

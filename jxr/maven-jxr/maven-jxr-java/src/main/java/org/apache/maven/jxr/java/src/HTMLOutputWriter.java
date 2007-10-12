@@ -24,7 +24,7 @@ import java.io.OutputStreamWriter;
 /**
  * Class HTMLOutputWriter
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class HTMLOutputWriter
     extends OutputStreamWriter

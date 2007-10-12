@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 /**
  * An abstract class representing a symbol that can import packages.
  *
- * @version $Id: $
+ * @version $Id$
  */
 abstract class HasImports
     extends ScopedDef

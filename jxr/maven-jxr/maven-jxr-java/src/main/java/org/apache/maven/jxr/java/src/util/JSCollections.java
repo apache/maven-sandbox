@@ -24,7 +24,7 @@ import java.util.Vector;
 /**
  * Class JSCollections
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class JSCollections
 {
@@ -116,7 +116,7 @@ public class JSCollections
  * Class QSComparator
  * delegate object to hand to QuickSort for callback compare
  *
- * @version $Id: $
+ * @version $Id$
  */
 class QSComparator
     implements Comparator

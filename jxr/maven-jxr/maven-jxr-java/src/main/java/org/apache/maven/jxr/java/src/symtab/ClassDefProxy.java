@@ -29,7 +29,7 @@ import java.util.Hashtable;
 /**
  * Class ClassDefProxy
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class ClassDefProxy
     extends ClassDef

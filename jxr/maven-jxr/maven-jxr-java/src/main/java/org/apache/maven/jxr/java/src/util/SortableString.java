@@ -20,7 +20,7 @@ package org.apache.maven.jxr.java.src.util;
 /**
  * Class SortableString
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class SortableString
     implements JSComparable

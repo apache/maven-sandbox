@@ -28,7 +28,7 @@ import java.io.ObjectOutput;
  * A stub symbol that is used to temporarily hold the name of a class
  * until it can be properly resolved
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class DummyClass
     extends ClassDef

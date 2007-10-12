@@ -35,7 +35,7 @@ import java.io.PrintWriter;
  * the well known build tool "ant" (see ant.apache.org).
  *
  * @see <a href="http://ant.apache.org">http://ant.apache.org</a>
- * @version $Id: $
+ * @version $Id$
  */
 public class JavaSrcTask
     extends MatchingTask

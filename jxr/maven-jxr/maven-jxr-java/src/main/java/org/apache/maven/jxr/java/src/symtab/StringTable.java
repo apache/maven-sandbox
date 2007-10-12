@@ -24,7 +24,7 @@ import java.util.Hashtable;
  * identifiers.  This way we only ever keep a single copy of a string
  * and all symbols refer to it.
  *
- * @version $Id: $
+ * @version $Id$
  */
 class StringTable
 {

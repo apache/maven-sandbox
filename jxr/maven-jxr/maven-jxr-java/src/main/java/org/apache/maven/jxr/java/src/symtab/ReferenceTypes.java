@@ -20,7 +20,7 @@ package org.apache.maven.jxr.java.src.symtab;
 /**
  * Interface ReferenceTypes
  *
- * @version $Id: $
+ * @version $Id$
  */
 public interface ReferenceTypes
 {

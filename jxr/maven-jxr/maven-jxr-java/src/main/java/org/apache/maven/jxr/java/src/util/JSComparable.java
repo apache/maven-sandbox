@@ -20,7 +20,7 @@ package org.apache.maven.jxr.java.src.util;
 /**
  * Interface JSComparable
  *
- * @version $Id: $
+ * @version $Id$
  */
 public interface JSComparable
 {

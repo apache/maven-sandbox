@@ -25,7 +25,7 @@ package org.apache.maven.jxr.java.src.symtab;
  * would be a good example of how some constructs can be used in similar
  * ways, even though it might not appear like the proper model.
  *
- * @version $Id: $
+ * @version $Id$
  */
 class PrimitiveDef
     extends ClassDef

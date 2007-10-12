@@ -23,7 +23,7 @@ import org.apache.tools.ant.Task;
 /**
  * Ant task responsible for creating automatic documentation for .js files
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class JSDocTask
     extends Task

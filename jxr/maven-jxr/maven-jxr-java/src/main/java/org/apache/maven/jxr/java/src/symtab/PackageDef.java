@@ -32,7 +32,7 @@ import java.util.Vector;
 /**
  * Definition of a package.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class PackageDef
     extends ScopedDef

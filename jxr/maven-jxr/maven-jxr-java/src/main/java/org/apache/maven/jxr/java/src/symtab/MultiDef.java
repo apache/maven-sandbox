@@ -26,7 +26,7 @@ import java.util.Vector;
  * as a method, we provide this dummy definition to hold a list of all
  * definitions in a scope with the same name.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class MultiDef
     extends Definition

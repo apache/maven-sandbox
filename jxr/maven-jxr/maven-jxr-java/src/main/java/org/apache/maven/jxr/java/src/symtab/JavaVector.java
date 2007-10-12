@@ -31,7 +31,7 @@ import java.util.Vector;
  * An extended Vector class to provide simple lookup and type resolution
  * methods
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class JavaVector
     extends java.util.Vector

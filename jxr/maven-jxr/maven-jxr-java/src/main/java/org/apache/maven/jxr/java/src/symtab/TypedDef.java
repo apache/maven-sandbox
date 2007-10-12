@@ -22,7 +22,7 @@ package org.apache.maven.jxr.java.src.symtab;
  * them.  It provides a getType method that can be used to retrieve the
  * symbol for that type.
  *
- * @version $Id: $
+ * @version $Id$
  */
 interface TypedDef
 {

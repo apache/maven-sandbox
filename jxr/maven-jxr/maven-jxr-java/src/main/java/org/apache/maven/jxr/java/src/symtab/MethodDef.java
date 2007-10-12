@@ -30,7 +30,7 @@ import java.util.Vector;
 /**
  * A definition of a method in a class
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class MethodDef
     extends ScopedDef

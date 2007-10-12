@@ -23,7 +23,7 @@ import java.io.OutputStream;
 /**
  * Class LineOutputWriter
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class LineOutputWriter
     extends HTMLOutputWriter

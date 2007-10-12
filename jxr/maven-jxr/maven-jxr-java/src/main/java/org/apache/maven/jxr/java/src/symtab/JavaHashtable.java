@@ -25,7 +25,7 @@ import java.util.Enumeration;
  * An extension of the java.util.Hashtable that is used to
  * add some simple looup and type resolution
  *
- * @version $Id: $
+ * @version $Id$
  */
 class JavaHashtable
     extends java.util.Hashtable

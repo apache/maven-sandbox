@@ -25,7 +25,7 @@ import java.util.Vector;
 /**
  * HTMLTagContainer contains a mapping from files to lists of HTMLTags.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class HTMLTagContainer
 {

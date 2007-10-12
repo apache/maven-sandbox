@@ -20,7 +20,7 @@ package org.apache.maven.jxr.java.src.symtab;
 /**
  * Definition of a curly-brace-delimited block in a file.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class BlockDef
     extends ScopedDef

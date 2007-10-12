@@ -50,7 +50,7 @@ import com.sun.javadoc.Type;
  * Main Doclet class to generate JavaDocXML.  This doclet generates the
  * document conforming to DTD specified in javadoc-v04draft.dtd.
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class XMLDoclet
     extends Doclet

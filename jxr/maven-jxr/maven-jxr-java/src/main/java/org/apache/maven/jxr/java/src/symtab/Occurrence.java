@@ -25,7 +25,7 @@ import java.io.ObjectOutput;
 /**
  * An occurrence of an indentifier in a file
  *
- * @version $Id: $
+ * @version $Id$
  */
 public class Occurrence
     implements java.io.Externalizable
