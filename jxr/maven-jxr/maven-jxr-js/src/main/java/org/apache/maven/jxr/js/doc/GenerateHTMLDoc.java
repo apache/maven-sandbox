@@ -111,7 +111,7 @@ public class GenerateHTMLDoc
                 {
                     fos.write( ( "<TR>" + LINE_SEPARATOR ).getBytes() );
                     fos.write( ( "<TD WIDTH='30%' BGCOLOR='#f3f3f3'><font face='Verdana'><b><span id='Function"
-                        + functionCount + "'></b></font></span></TD>" + LINE_SEPARATOR ).getBytes() );
+                        + functionCount + "'></span></b></font></TD>" + LINE_SEPARATOR ).getBytes() );
                     fos.write( ( "<TD WIDTH='70%'>" + LINE_SEPARATOR ).getBytes() );
                     stringReader = br.readLine();
 
@@ -194,7 +194,7 @@ public class GenerateHTMLDoc
                         }
                     }
                     fos.write( ( "</TD>" + LINE_SEPARATOR ).getBytes() );
-                    fos.write( ( "<script>document.all.Function" + functionCount + ".innerText = '" + functionName
+                    fos.write( ( "<script>document.all.Function" + functionCount + ".innerHTML = '" + functionName
                         + "'; </script>" + LINE_SEPARATOR ).getBytes() );
                     functionCount++;
                     fos.write( ( "</TR>" + LINE_SEPARATOR ).getBytes() );
