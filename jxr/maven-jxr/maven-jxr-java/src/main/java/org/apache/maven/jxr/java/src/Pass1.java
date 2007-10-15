@@ -178,7 +178,7 @@ public class Pass1
             // if we have at least one command-line argument
             if ( args.length > 0 )
             {
-                print( "outDirPath is " + getOutDir() );
+                print( "Output dir: " + getOutDir() );
 
                 symbolTable.setOutDirPath( getOutDir() );
 
