@@ -56,6 +56,11 @@ public class Vizant
     public void setAntfile( File antfile )
         throws BuildException
     {
+        if ( antfile == null )
+        {
+            throw new BuildException( "antfile could not be null", getLocation() );
+        }
+
         this.antfile = antfile;
         try
         {
@@ -63,7 +68,7 @@ public class Vizant
         }
         catch ( FileNotFoundException e )
         {
-            throw new BuildException( e );
+            throw new BuildException( e, getLocation() );
         }
     }
 
@@ -124,6 +129,19 @@ public class Vizant
         subgraph.setPrinter( printer );
     }
 
+    /** {@inheritDoc} */
+    public String getTaskName()
+    {
+        return "vizant";
+    }
+
+    /** {@inheritDoc} */
+    public String getDescription()
+    {
+        return "Generate Graphviz DOT source code from an Ant buildfile.";
+    }
+
+    /** {@inheritDoc} */
     public void execute()
         throws BuildException
     {
@@ -147,11 +165,15 @@ public class Vizant
     {
         if ( antfile == null )
         {
-            throw new BuildException( "antfile attribute is required" );
+            throw new BuildException( "antfile attribute is required", getLocation() );
+        }
+        if ( !antfile.exists() )
+        {
+            throw new BuildException( "antfile attribute should exist.", getLocation() );
         }
         if ( outfile == null )
         {
-            throw new BuildException( "outfile attribute is required" );
+            throw new BuildException( "outfile attribute is required", getLocation() );
         }
     }
 
@@ -169,6 +191,10 @@ public class Vizant
         throws BuildException
     {
         VizFileWriter out = null;
+        if ( !outfile.getParentFile().exists() && !outfile.getParentFile().mkdirs())
+        {
+            throw new BuildException( "Cannot create outfile parent dir.", getLocation() );
+        }
         try
         {
             out = new VizFileWriter( outfile );
