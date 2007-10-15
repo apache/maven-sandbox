@@ -21,8 +21,6 @@ package org.apache.maven.jxr.js.doc;
 
 import org.apache.log4j.Logger;
 
-import org.apache.tools.ant.BuildException;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +38,6 @@ import java.util.Vector;
  */
 public class GenerateHTMLIndex
 {
-
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( GenerateHTMLIndex.class );
 
@@ -61,19 +58,38 @@ public class GenerateHTMLIndex
     private static GenerateHTMLDoc docGenerator;
 
     public GenerateHTMLIndex( String jSDir, String destDir )
+        throws IllegalArgumentException
     {
-
         if ( jSDir == null )
         {
-            throw new BuildException( "jSDir attribute can't be empty" );
+            throw new IllegalArgumentException( "jSDir attribute can't be empty" );
         }
-        if ( destDir == null )
+        File js = new File( jSDir );
+        if ( !js.exists() )
         {
-            throw new BuildException( "destDir can't be empty" );
+            throw new IllegalArgumentException( "JS directory does't exist." );
+        }
+        if ( js.exists() && !js.isDirectory() )
+        {
+            throw new IllegalArgumentException( "JS directory is a file." );
         }
         if ( !"/".equals( jSDir.substring( jSDir.length() - 1 ) ) )
         {
             jSDir = jSDir + "/";
+        }
+
+        if ( destDir == null )
+        {
+            throw new IllegalArgumentException( "destDir attribute can't be empty" );
+        }
+        File dest = new File( destDir );
+        if ( dest.exists() && !dest.isDirectory() )
+        {
+            throw new IllegalArgumentException( "Dest directory is a file." );
+        }
+        if ( !dest.exists() && !dest.mkdirs() )
+        {
+            throw new IllegalArgumentException( "Cannot create the dest directory." );
         }
         if ( !"/".equals( destDir.substring( destDir.length() - 1 ) ) )
         {
@@ -84,7 +100,7 @@ public class GenerateHTMLIndex
 
         if ( !file.isDirectory() )
         {
-            throw new BuildException( "destDir has to be a directory" );
+            throw new IllegalArgumentException( "destDir has to be a directory" );
         }
 
         collectFiles( file, v );
