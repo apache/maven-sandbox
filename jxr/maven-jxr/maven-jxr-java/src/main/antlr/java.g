@@ -131,7 +131,7 @@ tokens {
                 f.getName().substring(f.getName().length()-5).equals(".java")) {
       listener.notify(f.getAbsolutePath());
             symbolTable.setFile(f);
-            System.err.println("   "+f.getAbsolutePath());
+            // System.err.println("   "+f.getAbsolutePath());
             parseFile(new SkipCRInputStream(new FileInputStream(f)),
           symbolTable);
         }
@@ -160,7 +160,7 @@ tokens {
             parser.compilationUnit();
         }
         catch (Exception e) {
-            System.err.println("parser exception: "+e);
+            // System.err.println("parser exception: "+e);
             e.printStackTrace();   // so we can get stack trace
         }
     }
