@@ -113,13 +113,25 @@ public class JavaSrcTask
     public void execute()
         throws BuildException
     {
+        if ( getDestDir() == null )
+        {
+            throw new BuildException( "Missing mandatory attribute 'dest'.", getLocation() );
+        }
+        if ( getDestDir().exists() && !getDestDir().isDirectory() )
+        {
+            throw new BuildException( "Dest directory is a file.", getLocation() );
+        }
+        if ( !getDestDir().exists() && !getDestDir().mkdirs() )
+        {
+            throw new BuildException( "Cannot create the dest directory.", getLocation() );
+        }
 
         if ( srcDir == null )
         {
-
             // We directly change the user variable, because it
             // shouldn't lead to problems
             srcDir = this.getProject().resolveFile( "." );
+            log( "No src dir specified, using " + srcDir.getAbsolutePath() + " instead of" );
         }
 
         // find the files/directories
