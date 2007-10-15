@@ -19,10 +19,7 @@ package org.apache.maven.jxr.ant.doc;
  * under the License.
  */
 
-import junit.framework.*;
-
-import org.apache.maven.jxr.ant.doc.VizAttrStmt;
-import org.apache.maven.jxr.ant.doc.VizPrinter;
+import junit.framework.TestCase;
 
 public class VizPrinterTest
     extends TestCase
@@ -68,13 +65,12 @@ public class VizPrinterTest
         edge.addAttribute( "c", "1" );
         printer.addAttributeStatement( edge );
 
-        // TODO Removed due to a NPE
-        //        VizAttrStmt node = new VizAttrStmt();
-        //        edge.setType("node");
-        //        edge.addAttribute("c", "1");
-        //        edge.addAttribute("b", "2");
-        //        edge.addAttribute("a", "3");
-        //        printer.addAttributeStatement(node);
+        VizAttrStmt node = new VizAttrStmt();
+        node.setType("node");
+        node.addAttribute("c", "1");
+        node.addAttribute("b", "2");
+        node.addAttribute("a", "3");
+        printer.addAttributeStatement(node);
 
         printer.print();
         assertEquals(
@@ -82,6 +78,7 @@ public class VizPrinterTest
                           + "<graph name=\"build\">\n"
                           + "\n"
                           + "    <attributes type=\"graph\"><attribute name=\"rankdir\" value=\"LR\" /><attribute name=\"label\" value=\"test2\" /></attributes>\n"
+                          + "    <attributes type=\"node\"><attribute name=\"c\" value=\"1\" /><attribute name=\"b\" value=\"2\" /><attribute name=\"a\" value=\"3\" /></attributes>\n"
                           + "    <attributes type=\"edge\"><attribute name=\"a\" value=\"3\" /><attribute name=\"b\" value=\"2\" /><attribute name=\"c\" value=\"1\" /></attributes>\n"
                           + "</graph>\n", writer.getString() );
     }
