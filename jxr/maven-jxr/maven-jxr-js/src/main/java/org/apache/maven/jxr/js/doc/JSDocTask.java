@@ -31,7 +31,7 @@ public class JSDocTask
     extends Task
 {
 
-    private String jSDir;
+    private String jsDir;
 
     private String destDir;
 
@@ -43,7 +43,14 @@ public class JSDocTask
     public void execute()
         throws BuildException
     {
-        index = new GenerateHTMLIndex( jSDir, destDir );
+        try
+        {
+            index = new GenerateHTMLIndex( jsDir, destDir );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            throw new BuildException( e.getMessage(), getLocation() );
+        }
     }
 
     /**
@@ -57,12 +64,12 @@ public class JSDocTask
     }
 
     /**
-     * Sets the jSDir.
+     * Sets the jsDir.
      *
-     * @param jSDir The jSDir to set
+     * @param jsDir The jsDir to set
      */
-    public void setJSDir( String jSDir )
+    public void setJSDir( String jsDir )
     {
-        this.jSDir = jSDir;
+        this.jsDir = jsDir;
     }
 }
