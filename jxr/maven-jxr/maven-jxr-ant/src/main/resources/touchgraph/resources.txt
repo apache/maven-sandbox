@@ -1,0 +1,4 @@
+touchgraph/BrowserLauncher.jar
+touchgraph/TGLinkBrowser.jar
+touchgraph/tg.html
+touchgraph/nanoxml-2.1.1.jar

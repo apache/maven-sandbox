@@ -45,5 +45,18 @@ under the License.
       <artifactId>xml-apis</artifactId>
       <version>1.3.03</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.4.6</version>
+    </dependency>
+
+    <!-- XSLT task -->
+    <dependency>
+      <groupId>ant</groupId>
+      <artifactId>ant-trax</artifactId>
+      <version>1.6.5</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

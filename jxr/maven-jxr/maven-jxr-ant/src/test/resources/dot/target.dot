@@ -1,0 +1,75 @@
+
+      digraph "G" {
+      
+      
+      ranksep=1.0; nodesep=0.5;
+      node [color="grey90", style="filled"]
+      edge [color="grey70"]
+      
+    
+
+    graph [  
+       
+	 "rankdir"="LR",
+	
+      ];
+	
+    
+	   "compile";
+	
+    
+	   "jar";
+	
+    
+	  "jar" -> "compile";
+	
+
+    
+	   "clean";
+	
+    
+	   "all";
+	
+    
+	  "all" -> "project";
+	
+
+    
+	   "project";
+	
+    
+	  "project" -> "compile";
+	
+
+    
+	   "ws";
+	
+    
+	  "ws" -> "compile";
+	
+
+    
+  	 subgraph 
+  	   
+  	             "cluster:1"
+  	          
+  	   {
+  	      style="filled";
+  	      color="grey95";
+  	      label=". core.xml";
+         
+        
+	   "project-1";
+	
+      	     
+       }
+	
+    
+	  "project" -> "project-1";
+	
+    
+	  "ws" -> "project-1";
+	
+
+      }
+	
