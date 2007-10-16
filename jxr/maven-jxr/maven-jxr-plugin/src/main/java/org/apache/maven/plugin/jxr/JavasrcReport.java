@@ -64,7 +64,7 @@ public class JavasrcReport
     /**
      * The name of the Antlr report.
      *
-     * @parameter expression="${name}" default-value="Forrestdoc"
+     * @parameter expression="${name}" default-value="Java Source Xref"
      */
     private String name;
 
@@ -151,7 +151,7 @@ public class JavasrcReport
     {
         if ( StringUtils.isEmpty( name ) )
         {
-            return i18n.getString( "forrestdoc-report", locale, "report.name" );
+            return i18n.getString( "jxr-report", locale, "report.name" );
         }
 
         return name;
@@ -164,7 +164,7 @@ public class JavasrcReport
     {
         if ( StringUtils.isEmpty( description ) )
         {
-            return i18n.getString( "forrestdoc-report", locale, "report.description" );
+            return i18n.getString( "jxr-report", locale, "report.description" );
         }
 
         return description;

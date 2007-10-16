@@ -59,7 +59,7 @@ public abstract class AbstractJavasrcMojo
      * @parameter expression="${project.build.sourceDirectory}"
      * @required
      * @readonly
-     * @see org.apache.forrest.forrestdoc.java.src.JavaSrcTask#srcDir
+     * @see org.apache.maven.jxr.java.src.JavaSrcTask#srcDir
      */
     protected File srcDir;
 
@@ -69,7 +69,7 @@ public abstract class AbstractJavasrcMojo
      * @parameter expression="${project.build.directory}/javasrc"
      * @required
      * @readonly
-     * @see org.apache.forrest.forrestdoc.java.src.JavaSrcTask#destDir
+     * @see org.apache.maven.jxr.java.src.JavaSrcTask#destDir
      */
     protected File outputDirectory;
 
@@ -77,7 +77,7 @@ public abstract class AbstractJavasrcMojo
      * True to apply a recursive scan.
      *
      * @parameter expression="${recurse}" default-value="true"
-     * @see org.apache.forrest.forrestdoc.java.src.JavaSrcTask#recurse
+     * @see org.apache.maven.jxr.java.src.JavaSrcTask#recurse
      */
     private boolean recurse;
 
@@ -85,7 +85,7 @@ public abstract class AbstractJavasrcMojo
      * The title of the generated HTML report.
      *
      * @parameter expression="${title}" default-value="${project.name} ${project.version} Reference"
-     * @see org.apache.forrest.forrestdoc.java.src.JavaSrcTask#title
+     * @see org.apache.maven.jxr.java.src.JavaSrcTask#title
      */
     private String windowTitle;
 
@@ -93,7 +93,7 @@ public abstract class AbstractJavasrcMojo
      * True to verbose the scan.
      *
      * @parameter expression="${verbose}" default-value="false"
-     * @see org.apache.forrest.forrestdoc.java.src.JavaSrcTask#verbose
+     * @see org.apache.maven.jxr.java.src.JavaSrcTask#verbose
      */
     private boolean verbose;
 
@@ -101,14 +101,14 @@ public abstract class AbstractJavasrcMojo
      * Execute the <code>JavaSrcTask</code>
      *
      * @throws MojoExecutionException if any
-     * @see org.apache.forrest.forrestdoc.java.src.JavaSrcTask#execute()
+     * @see org.apache.maven.jxr.java.src.JavaSrcTask#execute()
      */
     public void executeJavaSrcTask()
         throws MojoExecutionException
     {
         // TODO need to add a custom footer
-        // @see org.apache.forrest.forrestdoc.java.src.Pass2#createPackageSummaryFiles()
-        // @see org.apache.forrest.forrestdoc.java.src.Pass2#createOverviewSummaryFrame()
+        // @see org.apache.maven.jxr.java.src.Pass2#createPackageSummaryFiles()
+        // @see org.apache.maven.jxr.java.src.Pass2#createOverviewSummaryFrame()
 
         JavaSrcTask task = new JavaSrcTask();
 
