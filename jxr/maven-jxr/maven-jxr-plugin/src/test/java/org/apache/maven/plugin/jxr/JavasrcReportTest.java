@@ -1,4 +1,4 @@
-package org.apache.maven.plugin.forrestdoc;
+package org.apache.maven.plugin.jxr;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,6 +21,7 @@ package org.apache.maven.plugin.forrestdoc;
 
 import java.io.File;
 
+import org.apache.maven.plugin.jxr.JavasrcReport;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 
 /**

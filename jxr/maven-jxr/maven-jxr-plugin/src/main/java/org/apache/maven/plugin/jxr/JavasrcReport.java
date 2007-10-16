@@ -1,4 +1,4 @@
-package org.apache.maven.plugin.forrestdoc;
+package org.apache.maven.plugin.jxr;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

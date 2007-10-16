@@ -39,7 +39,7 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
         <configuration>
-          <project implementation="org.apache.maven.plugin.forrestdoc.stubs.DummyMavenProjectStub"/>
+          <project implementation="org.apache.maven.plugin.jxr.stubs.DummyMavenProjectStub"/>
           <outputDirectory>${basedir}/target/test/unit/dummy-project-test/target/site/</outputDirectory>
         </configuration>
       </plugin>
