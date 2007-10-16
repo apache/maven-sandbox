@@ -32,8 +32,7 @@ import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * Creates an html-based, cross referenced version of Java source code
- * based on Forrestdoc project.
+ * Creates an html-based, cross referenced version of Java source code.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$

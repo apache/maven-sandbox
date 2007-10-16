@@ -21,7 +21,7 @@ package org.apache.maven.plugin.forrestdoc;
 
 import java.io.File;
 
-import org.apache.forrest.forrestdoc.java.src.JavaSrcTask;
+import org.apache.maven.jxr.java.src.JavaSrcTask;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;

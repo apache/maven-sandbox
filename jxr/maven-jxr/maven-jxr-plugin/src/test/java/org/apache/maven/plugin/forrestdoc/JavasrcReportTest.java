@@ -24,7 +24,7 @@ import java.io.File;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 
 /**
- * <code>Unit tests</code> of Forrestdoc plugin
+ * <code>Unit tests</code> of JXR plugin
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$

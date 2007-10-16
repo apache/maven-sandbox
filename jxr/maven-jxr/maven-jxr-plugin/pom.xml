@@ -21,17 +21,19 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-plugins</artifactId>
-    <version>8</version>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.forrest.whiteboard.forrestdoc</groupId>
-  <artifactId>maven-forrestdoc-plugin</artifactId>
+
+  <parent>
+    <groupId>org.apache.maven.jxr</groupId>
+    <artifactId>maven-jxr</artifactId>
+    <version>3.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-jxr-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>Maven Forrestdoc Plugin</name>
+  <name>Maven JXR Plugin</name>
 
   <prerequisites>
     <maven>2.0.6</maven>
@@ -69,9 +71,9 @@ under the License.
       <version>1.4.2</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.forrest.whiteboard.forrestdoc</groupId>
-      <artifactId>maven-forrestdoc</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <groupId>org.apache.maven.jxr</groupId>
+      <artifactId>maven-jxr-java</artifactId>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
