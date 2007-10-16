@@ -3,7 +3,7 @@
  ------
  Vincent Siveton
  ------
- June 2007
+ October 2007
  ------
 
 ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -28,12 +28,12 @@
 
 Usage
 
- The Forrestdoc Plugin generates an html-based, cross referenced version of Java source code based on
- the {{{http://svn.apache.org/repos/asf/forrest/trunk/whiteboard/forrestdoc/}Forrestdoc project}}. The following examples describe the basic usage of the Plugin.
+ The Maven JXR Plugin generates an html-based, cross referenced version of Java source code.
+ The following examples describe the basic usage of the Plugin.
 
 * Generate Java source code report
 
- To include Forrestdoc reports in your documentation, you must configure the following in the \<reporting\>
+ To include JXR reports in your documentation, you must configure the following in the \<reporting\>
  section of your pom:
 
 +-----+
@@ -43,9 +43,9 @@ Usage
     <plugins>
       ...
       <plugin>
-        <groupId>org.apache.forrest.whiteboard.forrestdoc</groupId>
-        <artifactId>maven-forrestdoc-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>3.0-SNAPSHOT</version>
       </plugin>
       ...
     </plugins>

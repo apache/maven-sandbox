@@ -3,7 +3,7 @@
  ------
  Vincent Siveton
  ------
- June 2007
+ October 2007
  ------
 
 ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -26,19 +26,17 @@
 ~~ NOTE: For help with the syntax of this file, see:
 ~~ http://maven.apache.org/guides/mini/guide-apt-format.html
 
-Maven Forrestdoc Plugin
+Maven JXR Plugin
 
- The Forrestdoc Plugin uses the {{{http://svn.apache.org/repos/asf/forrest/trunk/whiteboard/forrestdoc/}Forrestdoc project}}.
- You could see a generated documentation with Forrestdoc
- {{{http://people.apache.org/~nicolaken/whiteboard/forrestdoc/}here}}.
+ The JXR Plugin uses the JXR Java project to generate Java cross reference.
 
 * Goals Overview
 
-   The Forrestdoc Plugin has one goals:
+   The JXR Plugin has one goals:
 
-   * {{{javasrc-mojo.html}forrestdoc:javasrc}} Generates an html-based, cross referenced version of Java
-   source code based on the Forrestdoc project..
+   * {{{javasrc-mojo.html}jxr:javasrc}} Generates an html-based, cross referenced version of Java
+   source code based on the JXR Java project..
 
 * Usage
 
-   Instructions on how to use the Forrestdoc Plugin can be found {{{usage.html}here}}.
+   Instructions on how to use the JXR Plugin can be found {{{usage.html}here}}.

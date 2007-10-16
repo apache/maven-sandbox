@@ -21,27 +21,13 @@ under the License.
 
 <faqs id="FAQ" title="Frequently Asked Questions">
   <part id="General">
-    <faq id="Why using Apache Forrestdoc">
-      <question>Why using Apache Forrestdoc?</question>
-      <answer>
-        <p>
-          Actually, Maven JXR has some limitations descibed in
-          <a href="http://jira.codehaus.org/browse/JXR-10">JXR-10</a> and
-          <a href="http://jira.codehaus.org/browse/JXR-13">JXR-13</a>.
-        </p>
-        <p>
-          The Apache JXR and Forrestdoc are both using Apache Alexandria, an Apache defunct project.
-          The twice team will works together in the future.
-        </p>
-      </answer>
-    </faq>
     <faq id="What are the known limitations">
       <question>What are the known limitations?</question>
       <answer>
         <p>
           <ul>
-            <li>Forrestdoc doesn't handle a custom footer</li>
-            <li>Maven Forrestdoc plugin doesn't handle aggregate feature like Maven JXR does</li>
+            <li>JXR Java doesn't handle a custom footer (<a href="http://jira.codehaus.org/browse/MSANDBOX-35">MSANDBOX-35</a>)</li>
+            <li>Maven JXR plugin doesn't handle aggregate feature like Maven JXR does</li>
           </ul>
         </p>
       </answer>
