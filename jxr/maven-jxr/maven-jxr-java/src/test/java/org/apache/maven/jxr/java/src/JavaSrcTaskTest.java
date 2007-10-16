@@ -110,10 +110,6 @@ public class JavaSrcTaskTest
         generated = new File( destDir, "org/apache/maven/jxr/java/src/JavaSrcTask_java_ref.html" );
         assertTrue( generated.exists() );
         assertTrue( generated.length() > 0 );
-
-        // MSANDBOX-38: compare results before and after Antlr generation
-        assertEquals( FileUtils.getDirectoryNames( destDir, "**/*", "", false ).size(), 32 );
-        assertEquals( FileUtils.getFileNames( destDir, "**/*", "", false ).size(), 170 );
     }
 
     /**

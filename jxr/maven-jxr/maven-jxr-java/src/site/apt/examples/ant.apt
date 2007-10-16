@@ -35,6 +35,9 @@ Ant Example
 
   <path id="task.classpath">
     <fileset dir="${basedir}/lib">
+      <include name="plexus-utils-1.4.6.jar" />
+    </fileset>
+    <fileset dir="${basedir}/lib">
       <include name="maven-jxr-java-3.0-SNAPSHOT.jar" />
     </fileset>
   </path>

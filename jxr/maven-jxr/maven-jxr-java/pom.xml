@@ -55,6 +55,11 @@ under the License.
       <artifactId>log4j</artifactId>
       <version>1.2.13</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.4.6</version>
+    </dependency>
 
     <dependency>
       <groupId>com.sun</groupId>
@@ -62,13 +67,6 @@ under the License.
       <version>1.5.0_11</version>
       <scope>system</scope>
       <systemPath>${java.home}/../lib/tools.jar</systemPath>
-    </dependency>
-
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>1.4.6</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 

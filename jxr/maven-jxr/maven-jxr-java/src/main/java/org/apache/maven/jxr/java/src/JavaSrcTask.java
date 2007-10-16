@@ -19,6 +19,11 @@ package org.apache.maven.jxr.java.src;
  * under the License.
  */
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
@@ -26,11 +31,7 @@ import org.apache.tools.ant.taskdefs.MatchingTask;
 import org.apache.tools.ant.util.FileNameMapper;
 import org.apache.tools.ant.util.GlobPatternMapper;
 import org.apache.tools.ant.util.SourceFileScanner;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Runs the javasrc converter as a task inside
@@ -42,6 +43,12 @@ import java.io.PrintWriter;
 public class JavaSrcTask
     extends MatchingTask
 {
+    /**
+     * Default location for css
+     */
+    private static final String DEFAULT_CSS_NAME = "styles.css";
+
+    private static final String RESOURCE_CSS_DIR = "org/apache/maven/jxr/java/src/css";
 
     /** Field srcDir */
     private File srcDir;
@@ -178,7 +185,7 @@ public class JavaSrcTask
         try
         {
             p2.run( new String[] {} );
-            printCSSFile();
+            copyDefaultStylesheet( getDestDir() );
         }
         catch ( IOException ioe )
         {
@@ -246,78 +253,55 @@ public class JavaSrcTask
         this.verbose = verbose;
     }
 
-    String cssText = "/* Javadoc style sheet */\n"
-        + "/* Define colors, fonts and other style attributes here to override the defaults  */\n" + "body { \n"
-        + "\tbackground-color: #fff;\n" + "\tfont-family: Arial, Helvetica, sans-serif;\n" + "}\n" + "\n"
-        + "a:link {\n" + " color: #00f;\n" + "}\n" + "a:visited {\n" + " color: #00a;\n" + "}\n" + "\n"
-        + "a:active, a:hover {\n" + " color: #f30 !important;\n" + "}\n" + "\n" + "ul, li\t{\n"
-        + "\tlist-style-type:none ;\n" + "\tmargin:0;\n" + "\tpadding:0;\n" + "}\n" + "\n" + "table td{\n"
-        + "\tpadding: 3px;\n" + "\tborder: 1px solid #000;\n" + "}\n" + "table{\n" + "\twidth:100%;\n"
-        + "\tborder: 1px solid #000;\n" + "\tborder-collapse: collapse;\n" + "}\n" + "\n" + "div.overview {\n"
-        + "\tbackground-color:#ddd;\n" + "\tpadding: 4px 4px 4px 0;\n" + "}\n"
-        + "div.overview li, div.framenoframe li {\n" + "\tdisplay: inline;\n" + "}\n" + "div.framenoframe {\n"
-        + "\ttext-align: center;\n" + "\tfont-size: x-small;\n" + "}\n" + "div.framenoframe li {\n"
-        + "\tmargin: 0 3px 0 3px;\n" + "}\n" + "div.overview li {\n" + "\tmargin:3px 3px 0 3px;\n"
-        + "\tpadding: 4px;\n" + "}\n" + "li.selected {\n" + "\tbackground-color:#888;\n" + "\tcolor: #fff;\n"
-        + "\tfont-weight: bold;\n" + "}\n" + "\n" + "table.summary {\n" + "\tmargin-bottom: 20px;\n" + "}\n"
-        + "table.summary td, table.summary th {\n" + "\tfont-weight: bold;\n" + "\ttext-align: left;\n"
-        + "\tpadding: 3px;\n" + "}\n" + "table.summary th{\n" + "\tbackground-color:#036;\n" + "\tcolor: #fff;\n"
-        + "}\n" + "table.summary td{\n" + "\tbackground-color:#eee;\n" + "\tborder: 1px solid black;\n" + "}\n" + "\n"
-        + "em {\n" + "\tcolor: #A00;\n" + "}\n" + "em.comment {\n" + "\tcolor: #390;\n" + "}\n" + ".string {\n"
-        + "\tcolor: #009;\n" + "}\n" + "div#footer {\n" + "\ttext-align:center;\n" + "}\n" + "#overview {\n"
-        + "\tpadding:2px;\n" + "}\n" + "            \n" + "            \n" + "hr {\n" + "\theight: 1px;\n"
-        + "\tcolor: #000;\n" + "}";
-
     /**
-     * Method printCSSFile
+     * Method that copy the <code>DEFAULT_STYLESHEET_NAME</code> file from the current class
+     * loader to the <code>outputDirectory</code>.
      *
-     * @throws IOException
+     * @param outputDirectory the output directory
+     * @throws java.io.IOException if any
+     * @see #DEFAULT_CSS_NAME
      */
-    private void printCSSFile()
+    private void copyDefaultStylesheet( File outputDirectory )
         throws IOException
     {
+        if ( outputDirectory == null || !outputDirectory.exists() )
+        {
+            throw new IOException( "The outputDirectory " + outputDirectory + " doesn't exists." );
+        }
 
-        FileOutputStream css = new FileOutputStream( new File( destDir, "styles.css" ) );
-        PrintWriter pw = new PrintWriter( css );
+        InputStream is = getStream( RESOURCE_CSS_DIR + "/" + DEFAULT_CSS_NAME );
 
-        //pw.println(
-        //        "body { font-family: lucida, verdana, arial, sans-serif; font-size:10pt } ");
-        //pw.println("pre { font-size:10pt } ");
-        pw.println( cssText );
-        pw.println( ".comment   { color:#007d00; font-style:italic } " );
-        pw.println( ".linenum   { color:#888 font-weight:normal; } " );
-        pw.println( ".textDiv   { font-weight:bold } " );
-        pw.println( "" );
-        pw.println( ".packageListItem { margin:0; padding:0; border:0 } " );
-        pw.println( ".packageName {  font-weight:bold } " );
-        pw.println( "" );
-        pw.println( ".classDef  { color:#875b37;font-weight:bold } " );
-        pw.println( ".classRef  { color:#875b37;font-weight:normal; } " );
-        pw.println( ".classListItem  {  margin:0; padding:0; border:0 } " );
-        pw.println( ".classReflist         { border-bottom:solid } " );
-        pw.println( ".classReflistHeader   { font-weight:bold; border:0; margin:0; padding:0 } " );
-        pw.println( ".classRefItem         { margin:0; padding:0; border:0 } " );
-        pw.println( "p.classRefItem a        { color:#875b37 } " );
-        pw.println( "p.classReflistHeader a  { color:#875b37 } " );
-        pw.println( "" );
-        pw.println( "" );
-        pw.println( ".methodDef { color:#377587;font-weight:bold } " );
-        pw.println( ".methodRef { color:#377587;font-weight:normal } " );
-        pw.println( ".methodReflist         { } " );
-        pw.println( ".methodReflistHeader   { font-weight:bold; border:0; margin:0; padding:0} " );
-        pw.println( ".methodRefItem         { margin:0; padding:0; border:0; color:#009 } " );
-        pw.println( "p.methodRefItem a        { color:#377587 } " );
-        pw.println( "p.methodReflistHeader a  { color:#377587 } " );
-        pw.println( "" );
-        pw.println( "" );
-        pw.println( ".varDef    { color:#232187;font-weight:bold } " );
-        pw.println( ".varRef    { color:#232187;font-weight:normal } " );
-        pw.println( ".variableReflist         { } " );
-        pw.println( ".variableReflistHeader   { color:#000000;font-weight:bold;  border:0; margin:0; padding:0} " );
-        pw.println( ".variableRefItem         { margin:0; padding:0; border:0; color:#660 } " );
-        pw.println( "p.variableRefItem a        { color:#232187; } " );
-        pw.println( "p.variableRefListheader a  { color:#232187; } " );
-        pw.println( "" );
-        pw.close();
+        if ( is == null )
+        {
+            throw new IOException( "The resource " + DEFAULT_CSS_NAME + " doesn't exists." );
+        }
+
+        File outputFile = new File( outputDirectory, DEFAULT_CSS_NAME );
+
+        if ( !outputFile.getParentFile().exists() )
+        {
+            outputFile.getParentFile().mkdirs();
+        }
+
+        FileOutputStream w = new FileOutputStream( outputFile );
+
+        IOUtil.copy( is, w );
+
+        IOUtil.close( is );
+
+        IOUtil.close( w );
+    }
+
+    /**
+     * Returns an input stream for reading the specified resource from the
+     * current class loader.
+     *
+     * @param resource the resource
+     * @return InputStream An input stream for reading the resource, or <tt>null</tt>
+     *         if the resource could not be found
+     */
+    private InputStream getStream( String resource )
+    {
+        return getClass().getClassLoader().getResourceAsStream( resource );
     }
 }
