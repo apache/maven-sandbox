@@ -34,11 +34,10 @@ Maven JXR Ant
 
  This original code comes from the defunct {{{http://jakarta.apache.org/alexandria/}Apache Jakarta Alexandria}} project,
  and was initially based on the {{{http://vizant.sourceforge.net/}Vizant}} project, version 0.1.1.
- See the alexandria-dev mail list for cvs commits around 2003-04-11.
- See {{{http://sourceforge.net/mailarchive/forum.php?forum_name=vizant-devel&max_rows=25&style=nested&viewmonth=200304}notes}}
- at the Vizant project wherein koseki and nicolaken talked about a code grant to ASF.
-
- The code was maintained within {{{http://forrest.apache.org/}Apache Forrest}} project, as a subproject called Forrestdoc.
+ See the {{{http://mail-archives.apache.org/mod_mbox/jakarta-alexandria-dev/200304.mbox/%3c20030411121716.8560.qmail@icarus.apache.org%3e}Alexandria-dev mail list}}
+ for CVS commits and see {{{http://sourceforge.net/mailarchive/forum.php?forum_name=vizant-devel&max_rows=25&style=nested&viewmonth=200304}Vizant-dev mail list}}
+ wherein koseki and nicolaken talked about a code grant to ASF.
+ Since 2004, the code was maintained within {{{http://forrest.apache.org/}Apache Forrest}} project, as a subproject called Forrestdoc.
  During the summer 2007, the Apache Forrest Team gave to the Apache Maven Team the Forrestdoc project.
  See the {{{http://www.nabble.com/-Proposal--decide-the-future-of-forrestdoc-tf4060050.html}Forrest thread}} and the
  {{{http://www.nabble.com/Forrestdoc-and-Maven-JXR-tf3864888s177.html}Maven thread}}.

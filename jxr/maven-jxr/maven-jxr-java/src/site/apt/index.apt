@@ -33,7 +33,11 @@ Maven JXR Java
 * Brief History
 
  This original code comes from the defunct {{{http://jakarta.apache.org/alexandria/}Apache Jakarta Alexandria}} project,
- and was maintained within {{{http://forrest.apache.org/}Apache Forrest}} project, as a subproject called Forrestdoc.
+ and was initially based on the {{{http://javasrc.sourceforge.net/}Javasrc}} project.
+ See the {{{http://www.mail-archive.com/alexandria-dev@jakarta.apache.org/msg04256.html}Alexandria-dev mail list}}
+ for CVS commits and see the {{{http://sourceforge.net/forum/message.php?msg_id=1552505}Javasrc Forum}}
+ wherein nicolaken talked about a code grant to ASF.
+ Since 2004, the code was maintained within {{{http://forrest.apache.org/}Apache Forrest}} project, as a subproject called Forrestdoc.
  During the summer 2007, the Apache Forrest Team gave to the Apache Maven Team the Forrestdoc project.
  See the {{{http://www.nabble.com/-Proposal--decide-the-future-of-forrestdoc-tf4060050.html}Forrest thread}} and the
  {{{http://www.nabble.com/Forrestdoc-and-Maven-JXR-tf3864888s177.html}Maven thread}}.
