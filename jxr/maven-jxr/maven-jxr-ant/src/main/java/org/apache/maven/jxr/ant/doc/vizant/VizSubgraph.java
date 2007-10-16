@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.ant.doc;
+package org.apache.maven.jxr.ant.doc.vizant;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,34 +19,24 @@ package org.apache.maven.jxr.ant.doc;
  * under the License.
  */
 
-import org.apache.maven.jxr.ant.doc.VizWriter;
+import org.apache.tools.ant.BuildException;
 
-public class BufferedWriter
-    implements VizWriter
+/**
+ * &lt;subgraph&gt; nested element handler.
+ */
+public class VizSubgraph
 {
-    StringBuffer buffer = new StringBuffer();
+    VizPrinter printer = null;
 
-    /**
-     * @see org.apache.maven.jxr.ant.doc.VizWriter#print(java.lang.String)
-     */
-    public void print( String str )
+    public void setPrinter( VizPrinter printer )
     {
-        buffer.append( str );
+        this.printer = printer;
     }
 
-    /**
-     * @see org.apache.maven.jxr.ant.doc.VizWriter#println(java.lang.String)
-     */
-    public void println( String str )
+    public void addConfiguredAttrstmt( VizAttrStmt attrstmt )
+        throws BuildException
     {
-        buffer.append( str ).append( "\n" );
-    }
-
-    /**
-     * @return
-     */
-    public String getString()
-    {
-        return buffer.toString();
+        attrstmt.checkConfiguration();
+        printer.addSubgraphAttributeStatement( attrstmt );
     }
 }

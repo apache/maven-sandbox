@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.ant.doc;
+package org.apache.maven.jxr.ant.doc.vizant;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,22 +21,24 @@ package org.apache.maven.jxr.ant.doc;
 
 import org.apache.tools.ant.BuildException;
 
+import java.io.InputStream;
+import java.util.Vector;
+
 /**
- * &lt;subgraph&gt; nested element handler.
+ * Project loader.
  */
-public class VizSubgraph
+public interface VizProjectLoader
 {
-    VizPrinter printer = null;
+    public void uniqueRef( boolean opt );
 
-    public void setPrinter( VizPrinter printer )
-    {
-        this.printer = printer;
-    }
+    public void ignoreAnt( boolean opt );
 
-    public void addConfiguredAttrstmt( VizAttrStmt attrstmt )
-        throws BuildException
-    {
-        attrstmt.checkConfiguration();
-        printer.addSubgraphAttributeStatement( attrstmt );
-    }
+    public void ignoreAntcall( boolean opt );
+
+    public void ignoreDepends( boolean opt );
+
+    public void setInputStream( InputStream stream );
+
+    public Vector getProjects()
+        throws BuildException;
 }

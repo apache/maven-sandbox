@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.ant.doc;
+package org.apache.maven.jxr.ant.doc.vizant;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -23,6 +23,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 
+import org.apache.maven.jxr.ant.doc.vizant.Vizant;
 import org.apache.tools.ant.Project;
 
 /**

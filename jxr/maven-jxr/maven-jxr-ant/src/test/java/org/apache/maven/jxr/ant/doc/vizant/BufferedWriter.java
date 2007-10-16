@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.ant.doc;
+package org.apache.maven.jxr.ant.doc.vizant;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,26 +19,34 @@ package org.apache.maven.jxr.ant.doc;
  * under the License.
  */
 
-import org.apache.tools.ant.BuildException;
+import org.apache.maven.jxr.ant.doc.vizant.VizWriter;
 
-import java.io.InputStream;
-import java.util.Vector;
-
-/**
- * Project loader.
- */
-public interface VizProjectLoader
+public class BufferedWriter
+    implements VizWriter
 {
-    public void uniqueRef( boolean opt );
+    StringBuffer buffer = new StringBuffer();
 
-    public void ignoreAnt( boolean opt );
+    /**
+     * @see org.apache.maven.jxr.ant.doc.vizant.VizWriter#print(java.lang.String)
+     */
+    public void print( String str )
+    {
+        buffer.append( str );
+    }
 
-    public void ignoreAntcall( boolean opt );
+    /**
+     * @see org.apache.maven.jxr.ant.doc.vizant.VizWriter#println(java.lang.String)
+     */
+    public void println( String str )
+    {
+        buffer.append( str ).append( "\n" );
+    }
 
-    public void ignoreDepends( boolean opt );
-
-    public void setInputStream( InputStream stream );
-
-    public Vector getProjects()
-        throws BuildException;
+    /**
+     * @return
+     */
+    public String getString()
+    {
+        return buffer.toString();
+    }
 }
