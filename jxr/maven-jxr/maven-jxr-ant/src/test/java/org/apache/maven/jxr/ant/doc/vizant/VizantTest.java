@@ -48,7 +48,7 @@ public class VizantTest
 
         File targetDir = new File( basedir, "target/unit/vizant" );
 
-        File build = new File( basedir, "src/test/resources/build.xml" );
+        File build = new File( basedir, "src/test/resources/ant/build.xml" );
         File buildGraph = new File( targetDir, "buildgraph.xml" );
 
         Vizant task = new Vizant();

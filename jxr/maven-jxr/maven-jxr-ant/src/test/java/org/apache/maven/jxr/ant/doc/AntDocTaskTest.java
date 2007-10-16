@@ -44,7 +44,7 @@ public class AntDocTaskTest
         final String basedir = new File( "" ).getAbsolutePath();
 
         File antDocDir = new File( basedir, "target/unit/antdoc-default" );
-        File build = new File( basedir, "src/test/resources/build.xml" );
+        File build = new File( basedir, "src/test/resources/ant/build.xml" );
 
         Project antProject = new Project();
         antProject.setBasedir( basedir );
@@ -108,7 +108,7 @@ public class AntDocTaskTest
         final String basedir = new File( "" ).getAbsolutePath();
 
         File antDocDir = new File( basedir, "target/unit/antdoc-null" );
-        File build = new File( basedir, "src/test/resources/build.xml" );
+        File build = new File( basedir, "src/test/resources/ant/build.xml" );
 
         Project antProject = new Project();
         antProject.setBasedir( basedir );
