@@ -330,7 +330,7 @@ public class XMLDoclet
         {
             extensibility = "final";
         }
-        atts.addAttribute( xmlns, localName, "extensiblity", "String", extensibility );
+        atts.addAttribute( xmlns, localName, "extensibility", "String", extensibility );
         String access = "package";
         if ( classDoc.isPublic() )
         {
@@ -766,7 +766,7 @@ public class XMLDoclet
         {
             extensibility = "final";
         }
-        atts.addAttribute( xmlns, localName, "extensiblity", "String", extensibility );
+        atts.addAttribute( xmlns, localName, "extensibility", "String", extensibility );
 
         atts.addAttribute( xmlns, localName, "native", "String", "" + methodDoc.isNative() );
         atts.addAttribute( xmlns, localName, "synthetic", "String", "" + methodDoc.isSynthetic() );
