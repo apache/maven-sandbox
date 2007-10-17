@@ -398,7 +398,7 @@ public class DotTask
     /**
      * Signals that the dot executable is not present in the path
      */
-    protected class DotNotPresentInPathBuildException
+    public class DotNotPresentInPathBuildException
         extends BuildException
     {
         /**
