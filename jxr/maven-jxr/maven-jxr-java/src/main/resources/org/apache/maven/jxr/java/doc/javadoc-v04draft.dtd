@@ -15,7 +15,7 @@
   limitations under the License.
 -->
 <!-- ===================================================================
-     
+
      Apache JavaDoc DTD (version 0.4-draft)
 
 PURPOSE:
@@ -24,41 +24,41 @@ PURPOSE:
   JavaDoc documentation in an XML format, it will be easier for application
   developers working with XML to treat their java source documentation in the
   same way they treat any other XML document within their publication framework.
-  
-  This DTD should reflect the information contained within the RootDoc object 
-  passed to the JavaDocXML Doclet by JavaDoc. The RootDoc object and the rest 
+
+  This DTD should reflect the information contained within the RootDoc object
+  passed to the JavaDocXML Doclet by JavaDoc. The RootDoc object and the rest
   of the javaDoc Doclet API is specified at
-  
+
   http://java.sun.com/products/jdk/1.2/docs/tooldocs/javadoc/doclet/index.html
-  
+
   The only information that appears to be difficult to derive from this DTD
-  that is easy to obtain from the RootDoc object is the information about 
-  serialization. However, this information should be derivable by manually 
+  that is easy to obtain from the RootDoc object is the information about
+  serialization. However, this information should be derivable by manually
   looking for the correct serialization methods and other related structures.
-  
+
 TYPICAL INVOCATION:
 
   <!DOCTYPE document PUBLIC
        "-//APACHE//DTD JavaDoc Vx.yz//EN"
        "javadoc-vxyz.dtd">
 
-  where 
-  
+  where
+
     x := major version
     y := minor version
     z := status identifier (optional)
-      
-NOTES:  
-  The authors would like to thank the Cocoon's mail list subscribers for 
+
+NOTES:
+  The authors would like to thank the Cocoon's mail list subscribers for
   providing such great support and feedback for this DTD.
-  
+
 FIXME:
 
 CHANGE HISTORY:
   199909?? Original idea of XML doclet. (KM)
   199910?? Initial version of this DTD. (KM)
   19991129 Cleaned up DTD. (SM)
-    
+
 ==================================================================== -->
 
 <!-- =============================================================== -->
@@ -104,8 +104,8 @@ CHANGE HISTORY:
 <!ELEMENT class (doc?,
                  extends_class?,
                  implements?,
-                 field*, 
-                 constructor*, 
+                 field*,
+                 constructor*,
                  method*,
                  innerclass*)>
 <!ATTLIST class
@@ -114,12 +114,12 @@ CHANGE HISTORY:
           %class.access;>
 
 <!ELEMENT extends_class (classref+)>
-          
+
 <!ELEMENT innerclass (doc?,
-                      extends?,
+                      extends_class?,
                       implements?,
-                      field*, 
-                      constructor*, 
+                      field*,
+                      constructor*,
                       method*)>
 <!ATTLIST innerclass
           %name;
@@ -128,11 +128,11 @@ CHANGE HISTORY:
           %anonymous;
           %final;
           %static;>
-          
+
 <!-- =============================================================== -->
 <!-- Interface -->
 <!-- =============================================================== -->
-          
+
 <!ELEMENT interface (doc?,
                      extends_interface?,
                      field*,
@@ -140,7 +140,7 @@ CHANGE HISTORY:
 <!ATTLIST interface
           %name;
           %access;>
-          
+
 <!ELEMENT extends_interface (interfaceref+)>
 
 <!-- =============================================================== -->
@@ -153,20 +153,20 @@ CHANGE HISTORY:
 
 <!ELEMENT classref EMPTY>
 <!ATTLIST classref %name;>
-          
+
 <!ELEMENT interfaceref EMPTY>
 <!ATTLIST interfaceref %name;>
-          
+
 <!ELEMENT methodref EMPTY>
 <!ATTLIST methodref %name;>
-          
+
 <!ELEMENT packageref EMPTY>
 <!ATTLIST packageref %name;>
-          
+
 <!ELEMENT primitive EMPTY>
 <!ATTLIST primitive
           type (void | boolean | int | long | byte | short | double | float | char) #REQUIRED>
-          
+
 <!ELEMENT field (doc?, (classref | interfaceref | primitive))>
 <!ATTLIST field
           %name;
@@ -177,13 +177,13 @@ CHANGE HISTORY:
           %final;
           %transient;
           %volatile;>
-          
+
 <!ELEMENT constructor (doc?, parameter*, throws*)>
 <!ATTLIST constructor
           %name;
           %access;
           %synthetic;>
-          
+
 <!ELEMENT method (doc?, returns, parameter*, throws*)>
 <!ATTLIST method
           %name;
@@ -193,19 +193,19 @@ CHANGE HISTORY:
           %synthetic;
           %static;
           %synchronized;>
-          
+
 <!ELEMENT returns (classref | interfaceref | primitive)>
 <!ATTLIST returns %dimension;>
-          
+
 <!ELEMENT parameter (classref | interfaceref | primitive)>
 <!ATTLIST parameter
           %name;
           %final;
           %dimension;>
-          
+
 <!ELEMENT dimension (#PCDATA)>
 
-<!ELEMENT doc (#PCDATA | 
+<!ELEMENT doc (#PCDATA |
                linktag |
                authortag |
                versiontag |
@@ -219,18 +219,18 @@ CHANGE HISTORY:
                serialtag |
                serialfieldtag |
                serialdatatag)*>
-               
+
 <!ELEMENT linktag (#PCDATA)>
 <!ATTLIST linktag
           src CDATA #REQUIRED>
-          
+
 <!ELEMENT authortag (#PCDATA | linktag)*>
 
 <!ELEMENT versiontag (#PCDATA | linktag)*>
 
 <!ELEMENT paramtag (#PCDATA | linktag)*>
 <!ATTLIST paramtag %name;>
-          
+
 <!ELEMENT returntag (#PCDATA | linktag)*>
 
 <!ELEMENT exceptiontag (#PCDATA | classref | linktag)*>
@@ -240,7 +240,7 @@ CHANGE HISTORY:
 <!ELEMENT seetag (#PCDATA | linktag)*>
 <!ATTLIST seetag
           src CDATA #REQUIRED>
-          
+
 <!ELEMENT sincetag (#PCDATA | linktag)*>
 
 <!ELEMENT deprecatedtag (#PCDATA | linktag)*>
@@ -251,7 +251,7 @@ CHANGE HISTORY:
 <!ATTLIST serialfieldtag
           fieldname CDATA #REQUIRED
           fieldtype CDATA #REQUIRED>
-          
+
 <!ELEMENT serialdatatag (#PCDATA | linktag)*>
 
 <!-- =============================================================== -->
