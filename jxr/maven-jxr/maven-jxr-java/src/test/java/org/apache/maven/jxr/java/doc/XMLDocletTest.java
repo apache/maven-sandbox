@@ -65,7 +65,7 @@ public class XMLDocletTest
             "test.packG.a",
             "test.packG.b" };
 
-        Main.execute( "javadoc", XMLDoclet.class.getName(), args );
+        assertEquals( Main.execute( "javadoc", XMLDoclet.class.getName(), args ), 0 );
 
         // Generated files
         assertTrue( outputXML.exists() );
