@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.ant.doc;
+package org.apache.maven.jxr.util;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

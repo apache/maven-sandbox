@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 
 import org.apache.maven.jxr.ant.doc.vizant.Vizant;
+import org.apache.maven.jxr.util.DotTask;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.XSLTProcess;
