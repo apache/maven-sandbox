@@ -66,7 +66,7 @@ public class XMLDoclet
      */
     public static final String XMLDOCLET_DTD = "javadoc-v04draft.dtd";
 
-    private String xmlns = "jvx";
+    private String xmlns = "";
 
     private String encodingFormat = "ISO-8859-1";
 
