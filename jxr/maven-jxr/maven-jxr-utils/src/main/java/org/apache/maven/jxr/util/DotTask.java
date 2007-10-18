@@ -50,7 +50,7 @@ public class DotTask
 
     private static final String GRAPHVIZ_DIR = "graphviz-2.14.1"; // inside the tar.gz
 
-    private static final String DEFAULT_OUTPUT_FORMAT = "svg";
+    private static final String DEFAULT_OUTPUT_FORMAT = "png";
 
     /** The dot executable. */
     private File dotExe;
@@ -203,7 +203,7 @@ public class DotTask
         }
         else
         {
-            output = new File( getDestDir(), getIn().getName() + "." + format );
+            output = new File( getDestDir(), getIn().getName() + "." + getFormat() );
         }
         exec.setDir( output.getParentFile() );
         exec.createArg().setLine(
@@ -254,17 +254,23 @@ public class DotTask
             }
         }
 
-        // Verify if no error in the output
-        if ( getProject().getProperty( "exec.output" ) != null )
+        // Verify error in the output
+        String execOutput = getProject().getProperty( "exec.output" );
+        if ( execOutput != null )
         {
-            if ( getProject().getProperty( "exec.output" ).indexOf( "Execute failed" ) != -1 )
+            if ( execOutput.indexOf( "Execute failed" ) != -1 )
             {
-                throw new BuildException( getProject().getProperty( "exec.output" ), getLocation() );
+                throw new BuildException( execOutput, getLocation() );
             }
 
-            if ( getProject().getProperty( "exec.output" ).indexOf( "Error:" ) != -1 )
+            if ( execOutput.indexOf( "Renderer type:" ) != -1 )
             {
-                log( getProject().getProperty( "exec.output" ), Project.MSG_ERR );
+                throw new BuildException( execOutput, getLocation() );
+            }
+
+            if ( execOutput.indexOf( "Error:" ) != -1 )
+            {
+                log( execOutput, Project.MSG_ERR );
                 throw new BuildException( "Error when calling dot.", getLocation() );
             }
         }
