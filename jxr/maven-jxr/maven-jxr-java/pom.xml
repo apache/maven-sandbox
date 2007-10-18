@@ -50,6 +50,12 @@ under the License.
       <artifactId>ant</artifactId>
       <version>1.6.5</version>
     </dependency>
+    <!-- for XSLT task -->
+    <dependency>
+      <groupId>ant</groupId>
+      <artifactId>ant-trax</artifactId>
+      <version>1.6.5</version>
+    </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -59,6 +65,11 @@ under the License.
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>1.4.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.jxr</groupId>
+      <artifactId>maven-jxr-utils</artifactId>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
