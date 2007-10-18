@@ -419,8 +419,8 @@ public class ClassDef
     public void generateTags( HTMLTagContainer tagList )
     {
 
-        String nameString = "<a class=\"classDef\" name=" + getClassScopeName() + " href=" + getRefName() + "#"
-            + getClassScopeName() + ">" + getName() + "</a>";
+        String nameString = "<a class=\"classDef\" name=\"" + getClassScopeName() + "\" href=\"" + getRefName() + "#"
+            + getClassScopeName() + "\">" + getName() + "</a>";
 
         // generate tag for this class
         if ( getOccurrence() != null )
@@ -446,7 +446,7 @@ public class ClassDef
         if ( getSourceName() != null )
         {
             linkFileName = getRelativePath( occ ) + getSourceName();
-            linkString = "<a class=\"classRef\" href=" + linkFileName + "#" + getClassScopeName() + ">" + getName()
+            linkString = "<a class=\"classRef\" href=\"" + linkFileName + "#" + getClassScopeName() + "\">" + getName()
                 + "</a>";
 
             t = new HTMLTag( occ, getName(), linkString );

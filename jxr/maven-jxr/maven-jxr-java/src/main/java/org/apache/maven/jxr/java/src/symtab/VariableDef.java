@@ -138,8 +138,8 @@ public class VariableDef
     public void generateTags( HTMLTagContainer tagList )
     {
 
-        String nameString = "<a class=\"varDef\" name=" + getClassScopeName() + " href=" + getRefName() + "#"
-            + getClassScopeName() + ">" + getName() + "</a>";
+        String nameString = "<a class=\"varDef\" name=\"" + getClassScopeName() + "\" href=\"" + getRefName() + "#"
+            + getClassScopeName() + "\">" + getName() + "</a>";
 
         // generate tag for this method
         if ( getOccurrence() == null )
@@ -167,8 +167,8 @@ public class VariableDef
         String linkFileName;
 
         linkFileName = getRelativePath( occ ) + getSourceName();
-        linkString = "<a class=\"varRef\" title=\"" + getType().getName() + "\" " + "href=" + linkFileName + "#"
-            + getClassScopeName() + ">" + getName() + "</a>";
+        linkString = "<a class=\"varRef\" title=\"" + getType().getName() + "\" " + "href=\"" + linkFileName + "#"
+            + getClassScopeName() + "\">" + getName() + "</a>";
 
         HTMLTag t = new HTMLTag( occ, getName(), linkString );
 

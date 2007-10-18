@@ -483,8 +483,14 @@ public class Pass1
 
         HTMLOutputWriter output = new LineOutputWriter( new BufferedOutputStream( new FileOutputStream( f ) ) );
         String backup = getBackupPath( tagList, element );
-        String header = "<head>\n" + "<LINK rel=\"stylesheet\" type=\"text/css\" name=\"style1\" " + "href=\"" + backup
-            + "styles.css\">\n" + "</head>\n";
+        String header = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n"
+            + "<html>\n"
+            + "<head>\n"
+            + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
+            + "<title>" + packageName + "." + SymbolTable.getClassList( t.getFile() ) + "</title>\n"
+            + "<LINK rel=\"stylesheet\" type=\"text/css\" href=\"" + backup + "styles.css\">\n"
+            + "</head>\n"
+            + "<body>\n";
 
         output.write( header, 0, header.length() );
 
@@ -516,6 +522,7 @@ public class Pass1
 
         input.close();
         output.write( "</pre>\n", 0, 7 );
+        output.write( "</body></html>" );
         output.flush();
         output.close();
     }

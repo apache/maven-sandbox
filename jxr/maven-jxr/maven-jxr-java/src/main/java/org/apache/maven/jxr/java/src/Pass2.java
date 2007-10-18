@@ -389,8 +389,16 @@ public class Pass2
         OutputStreamWriter fw = new OutputStreamWriter( fos, "UTF-8" );
         BufferedWriter result = new BufferedWriter( fw );
 
-        result.write( "<html><head><link rel=\"stylesheet\" " + "type=\"text/css\" " + "href=\""
-            + getBackupPath( packageName ) + "styles.css\"></head><body>" );
+        result.write( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+            + "\"http://www.w3.org/TR/html4/loose.dtd\">\n" );
+        result.write( "<html>" );
+        result.write( "<head>\n" );
+        result.write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" );
+        result.write( "<title>" + packageName + "." + ref.referentFileClass + " References</title>\n" );
+        result.write( "<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"" + getBackupPath( packageName )
+            + "styles.css\">\n" );
+        result.write( "</head>\n" );
+        result.write( "<body>\n" );
 
         return result;
     }
@@ -405,8 +413,7 @@ public class Pass2
     private void closeSection( BufferedWriter bw, String referentTag )
         throws IOException
     {
-
-        bw.write( "</p>" );
+        //bw.write( "</p>" );
 
         if ( log.isDebugEnabled() )
         {
@@ -430,8 +437,8 @@ public class Pass2
         {
             bw.write( "<p class=\"classReflist\">" );
 
-            String nameString = "<p class=\"classReflistHeader\">Class: <a name=" + ref.referentTag + " href="
-                + ref.referentFileClass + "_java.html#" + ref.referentTag + ">" + ref.referentClass + "</a></p>";
+            String nameString = "<p class=\"classReflistHeader\">Class: <a name=\"" + ref.referentTag + "\" href=\""
+                + ref.referentFileClass + "_java.html#" + ref.referentTag + "\">" + ref.referentClass + "</a></p>";
 
             bw.write( nameString );
         }
@@ -440,8 +447,8 @@ public class Pass2
             bw.write( "<p class=\"methodReflist\">" );
             bw.write( "<!-- hello -->" );
 
-            String nameString = "<p class=\"methodReflistHeader\">Method: <a name=" + ref.referentTag + " href="
-                + ref.referentFileClass + "_java.html#" + ref.referentTag + ">" + ref.referentTag + "</a></p>";
+            String nameString = "<p class=\"methodReflistHeader\">Method: <a name=\"" + ref.referentTag + "\" href=\""
+                + ref.referentFileClass + "_java.html#" + ref.referentTag + "\">" + ref.referentTag + "</a></p>";
 
             bw.write( nameString );
         }
@@ -449,8 +456,9 @@ public class Pass2
         {
             bw.write( "<p class=\"variableReflist\">" );
 
-            String nameString = "<p class=\"variableReflistHeader\">Variable: <a name=" + ref.referentTag + " href="
-                + ref.referentFileClass + "_java.html#" + ref.referentTag + ">" + ref.referentTag + "</a></p>";
+            String nameString = "<p class=\"variableReflistHeader\">Variable: <a name=\"" + ref.referentTag
+                + "\" href=\"" + ref.referentFileClass + "_java.html#" + ref.referentTag + "\">" + ref.referentTag
+                + "</a></p>";
 
             bw.write( nameString );
         }
@@ -481,25 +489,25 @@ public class Pass2
 
         if ( ref.referentType.equals( ReferenceTypes.CLASS_REF ) )
         {
-            String linkString = "<p class=\"classRefItem\"><a href=" + linkFilename + "#" + ref.referringLineNumber
-                + ">" + ref.referringPackage + "." + ref.referringClass + "." + ref.referringMethod + " ("
+            String linkString = "<p class=\"classRefItem\"><a href=\"" + linkFilename + "#" + ref.referringLineNumber
+                + "\">" + ref.referringPackage + "." + ref.referringClass + "." + ref.referringMethod + " ("
                 + ref.referringFile + ":" + ref.referringLineNumber + ")</a></p>\n";
 
             bw.write( linkString );
         }
         else if ( ref.referentType.equals( ReferenceTypes.METHOD_REF ) )
         {
-            String linkString = "<p class=\"methodRefItem\"><a href=" + linkFilename + "#" + ref.referringLineNumber
-                + ">" + ref.referringPackage + "." + ref.referringClass + "." + ref.referringMethod + " ("
+            String linkString = "<p class=\"methodRefItem\"><a href=\"" + linkFilename + "#" + ref.referringLineNumber
+                + "\">" + ref.referringPackage + "." + ref.referringClass + "." + ref.referringMethod + " ("
                 + ref.referringFile + ":" + ref.referringLineNumber + ")</a></p>\n";
 
             bw.write( linkString );
         }
         else if ( ref.referentType.equals( ReferenceTypes.VARIABLE_REF ) )
         {
-            String linkString = "<p class=\"variableRefItem\"><a href=" + linkFilename + "#" + ref.referringLineNumber
-                + ">" + ref.referringPackage + "." + ref.referringClass + "." + ref.referringMethod + " ("
-                + ref.referringFile + ":" + ref.referringLineNumber + ")</a></p>\n";
+            String linkString = "<p class=\"variableRefItem\"><a href=\"" + linkFilename + "#"
+                + ref.referringLineNumber + "\">" + ref.referringPackage + "." + ref.referringClass + "."
+                + ref.referringMethod + " (" + ref.referringFile + ":" + ref.referringLineNumber + ")</a></p>\n";
 
             bw.write( linkString );
         }
@@ -599,10 +607,17 @@ public class Pass2
             {
                 pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
 
-                String header = "<head>\n" + "<LINK rel=\"stylesheet\" type=\"text/css\" name=\"style1\" " + "href=\""
-                    + getBackupPath( packageName ) + "styles.css\">\n" + "</head><body>\n";
+                pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+                    + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+                pw.println( "<html>" );
+                pw.println( "<head>" );
+                pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
+                pw.println( "<title>" + packageName + "</title>" );
+                pw.println( "<LINK rel=\"stylesheet\" type=\"text/css\" " + "href=\"" + getBackupPath( packageName )
+                    + "styles.css\">" );
+                pw.println( "</head>" );
+                pw.println( "<body>" );
 
-                pw.println( header );
                 pw.println( "<h3>" );
                 pw.println( "<a href=\"package-summary.html\" target=\"classFrame\">" + packageName + "</a>" );
                 pw.println( "</h3>" );
@@ -781,6 +796,8 @@ public class Pass2
         {
             PrintWriter pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
 
+            pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" "
+                + "\"http://www.w3.org/TR/html4/frameset.dtd\">" );
             pw.println( "<TITLE>" + getTitle() + "</TITLE>" );
             pw.println( "<FRAMESET cols=\"20%,80%\">" );
             pw.println( "  <FRAMESET rows=\"30%,70%\">" );
@@ -818,7 +835,15 @@ public class Pass2
             PrintWriter pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
             Iterator iter = packageNames.iterator();
 
-            pw.println( "<html><head><link rel=\"stylesheet\" type=\"text/css\"" + "href=\"styles.css\"></head><body>" );
+            pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+                + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+            pw.println( "<html>" );
+            pw.println( "<head>" );
+            pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
+            pw.println( "<title>Overview</title>" );
+            pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
+            pw.println( "</head>" );
+            pw.println( "<body>" );
 
             pw.println( "<h3><a href=\"allclasses-frame.html\" target=\"packageFrame\">All Classes</a></h3>" );
             pw.println( "<h3>Packages</h3>" );
@@ -855,7 +880,15 @@ public class Pass2
         {
             PrintWriter pw = new PrintWriter( new FileOutputStream( file ) );
 
-            pw.println( "<html><head><link rel=\"stylesheet\" type=\"text/css\"" + "href=\"styles.css\"></head><body>" );
+            pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+                + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+            pw.println( "<html>" );
+            pw.println( "<head>" );
+            pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
+            pw.println( "<title>All classes</title>" );
+            pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
+            pw.println( "</head>" );
+            pw.println( "<body>" );
 
             pw.println( "<h3>All Classes</h3>" );
             Iterator iter = orderedAllClasses().iterator();
@@ -918,10 +951,17 @@ public class Pass2
             {
                 pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
 
-                String header = "<head>\n" + "<LINK rel=\"stylesheet\" type=\"text/css\" name=\"style1\" " + "href=\""
-                    + getBackupPath( packageName ) + "styles.css\">\n" + "</head><body>\n";
+                pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+                    + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+                pw.println( "<html>" );
+                pw.println( "<head>" );
+                pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
+                pw.println( "<title>" + packageName + " Summary</title>" );
+                pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\""
+                    + getBackupPath( packageName ) + "styles.css\">" );
+                pw.println( "</head>" );
+                pw.println( "<body>" );
 
-                pw.println( header );
                 createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html" );
 
                 pw.println( "<h2>" + packageName + "</h2>" );
@@ -955,8 +995,10 @@ public class Pass2
                 pw.println( "</table>" );
 
                 createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html" );
-                pw.println( "          <hr></hr>\n"
-                    + "          Copyright &copy; 2001-2003 Apache Software Foundation. All Rights Reserved." );
+
+                pw.println( "<hr>" );
+                pw.println( "<div class=\"bottom\">Copyright &copy; 2001-2003 Apache Software Foundation. "
+                    + "All Rights Reserved.</div>" );
                 pw.println( "</body></html>" );
                 pw.close();
             }
@@ -1001,7 +1043,16 @@ public class Pass2
         try
         {
             PrintWriter pw = new PrintWriter( new FileOutputStream( file ) );
-            pw.println( "<html><head><link rel=\"stylesheet\" type=\"text/css\"" + "href=\"styles.css\"></head><body>" );
+
+            pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+                + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+            pw.println( "<html>" );
+            pw.println( "<head>" );
+            pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
+            pw.println( "<title>Overview</title>" );
+            pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
+            pw.println( "</head>" );
+            pw.println( "<body>" );
 
             createOverviewSummaryFrameExtras( pw );
 
@@ -1032,8 +1083,9 @@ public class Pass2
             pw.println( "</table>" );
 
             createOverviewSummaryFrameExtras( pw );
-            pw.println( "          <hr></hr>\n"
-                + "          Copyright &copy; 2001-2003 Apache Software Foundation. All Rights Reserved." );
+            pw.println( "<hr>" );
+            pw.println( "<div class=\"bottom\">Copyright &copy; 2001-2003 Apache Software Foundation. "
+                + "All Rights Reserved.</div>" );
             pw.println( "</body></html>" );
             pw.close();
         }

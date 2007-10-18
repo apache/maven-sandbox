@@ -358,8 +358,8 @@ public class MethodDef
             methodName = "";
         }
 
-        String nameString = "<a class=\"methodDef\" name=" + getClassScopeName() + " href=" + getRefName() + "#"
-            + getClassScopeName() + ">" + methodName + "</a>";
+        String nameString = "<a class=\"methodDef\" name=\"" + getClassScopeName() + "\" href=\"" + getRefName() + "#"
+            + getClassScopeName() + "\">" + methodName + "</a>";
 
         // generate tag for this method
         if ( getOccurrence() == null )
@@ -405,8 +405,8 @@ public class MethodDef
         String definerName = getOccurrence().getClassName();
 
         linkFileName = getRelativePath( occ ) + getSourceName();
-        linkString = "<a class=\"methodRef\" title=\"" + definerName + "\" " + "href=" + linkFileName + "#"
-            + getClassScopeName() + ">" + methodName + "</a>";
+        linkString = "<a class=\"methodRef\" title=\"" + definerName + "\" " + "href=\"" + linkFileName + "#"
+            + getClassScopeName() + "\">" + methodName + "</a>";
 
         HTMLTag t = new HTMLTag( occ, methodName, linkString );
 
