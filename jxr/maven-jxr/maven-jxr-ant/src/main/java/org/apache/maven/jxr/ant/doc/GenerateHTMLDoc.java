@@ -28,6 +28,7 @@ import java.io.LineNumberReader;
 
 import org.apache.maven.jxr.ant.doc.vizant.Vizant;
 import org.apache.maven.jxr.util.DotTask;
+import org.apache.maven.jxr.util.DotTask.DotNotPresentInPathBuildException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.XSLTProcess;
@@ -36,6 +37,8 @@ import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Generate HTML documentation for <a href="http://ant.apache.org/">Ant</a> file.
+ * <br/>
+ * <b>Note</b>: <a href="http://www.graphviz.org/">Graphviz</a> program should be in the path.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
@@ -104,9 +107,11 @@ public class GenerateHTMLDoc
      * Generate the documentation
      *
      * @throws IOException if any
+     * @throws BuildException if any
+     * @throws DotNotPresentInPathBuildException if any
      */
     public void generateDoc()
-        throws IOException
+        throws IOException, BuildException, DotNotPresentInPathBuildException
     {
         // 1. Generate Vizant graph
         generateVizantBuildGraph();
@@ -325,9 +330,10 @@ public class GenerateHTMLDoc
      * Call graphviz dot to generate images.
      *
      * @throws BuildException if any
+     * @throws DotNotPresentInPathBuildException if any
      */
     private void generateImages()
-        throws BuildException
+        throws BuildException, DotNotPresentInPathBuildException
     {
         String[] dotFormat = { "svg", "png" };
         for ( int i = 0; i < dotFormat.length; i++ )

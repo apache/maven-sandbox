@@ -75,7 +75,7 @@ public class DotTaskTest
         }
 
         // Generated files
-        File generated = new File( out, "target.dot.svg" );
+        File generated = new File( out, "target.dot.png" );
         assertTrue( generated.exists() );
         assertTrue( generated.length() > 0 );
     }

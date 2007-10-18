@@ -22,6 +22,7 @@ package org.apache.maven.jxr.ant.doc;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.maven.jxr.util.DotTask.DotNotPresentInPathBuildException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
@@ -119,6 +120,10 @@ public class AntDocTask
             }
 
             log( "IOException: " + e.getMessage(), Project.MSG_ERR );
+        }
+        catch ( DotNotPresentInPathBuildException e )
+        {
+            log( "Dot is not present in the path: " + e.getMessage(), Project.MSG_ERR );
         }
         catch ( BuildException e )
         {
