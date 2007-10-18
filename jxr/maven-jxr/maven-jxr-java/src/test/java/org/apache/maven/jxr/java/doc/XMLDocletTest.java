@@ -20,8 +20,16 @@ package org.apache.maven.jxr.java.doc;
  */
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import junit.framework.TestCase;
+
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 import com.sun.tools.javadoc.Main;
 
@@ -32,6 +40,11 @@ import com.sun.tools.javadoc.Main;
 public class XMLDocletTest
     extends TestCase
 {
+    private static final String BASEDIR = new File( "" ).getAbsolutePath();
+
+    private static final String DEFAULT_EXCLUDES = "**/*~,**/#*#,**/.#*,**/%*%,**/._*,**/CVS,**/CVS/**,"
+        + "**/.cvsignore,**/SCCS,**/SCCS/**,**/vssver.scc,**/.svn,**/.svn/**,**/.DS_Store";
+
     /**
      * Call Javadoc tool with XML doclet.
      *
@@ -40,37 +53,47 @@ public class XMLDocletTest
     public void testDefaultExecute()
         throws Exception
     {
-        final String basedir = new File( "" ).getAbsolutePath();
+        File srcDir = new File( BASEDIR, "src/test/resources/javasrc" );
 
-        File outputXML = new File( basedir, "target/unit/xmldoclet-default/javadoc.xml" );
+        File outputXML = new File( BASEDIR, "target/unit/xmldoclet-default/javadoc.xml" );
 
         // test phase is after compile phase, so we are sure that classes dir exists
-        // TODO wrap syso and syserr
-        String[] args = {
-            "-package",
-            "-sourcepath",
-            new File( basedir, "src/test/resources/javasrc" ).getAbsolutePath(),
-            "-doclet",
-            "org.apache.maven.jxr.java.doc.XMLDoclet",
-            "-docletpath",
-            new File( basedir, "target/classes" ).getAbsolutePath(),
-            "-o",
-            outputXML.getAbsolutePath(),
-            "test.packA",
-            "test.packB",
-            "test.packC",
-            "test.packD",
-            "test.packE",
-            "test.packF",
-            "test.packG.a",
-            "test.packG.b" };
+        List args = new LinkedList();
+        args.add( "-package" );
+        args.add( "-sourcepath" );
+        args.add( srcDir.getAbsolutePath() );
+        args.add( "-o" );
+        args.add( outputXML.getAbsolutePath() );
+        List packages = FileUtils.getDirectoryNames( srcDir, null, DEFAULT_EXCLUDES, false );
+        for ( Iterator it = packages.iterator(); it.hasNext(); )
+        {
+            String p = (String) it.next();
 
-        assertEquals( Main.execute( "javadoc", XMLDoclet.class.getName(), args ), 0 );
+            if ( StringUtils.isEmpty( p ) )
+            {
+                continue;
+            }
+
+            if ( FileUtils.getFileNames( new File( srcDir, p ), "*.java", "", false ).isEmpty() )
+            {
+                continue;
+            }
+
+            args.add( StringUtils.replace( p, File.separator, "." ) );
+        }
+
+        StringWriter err = new StringWriter();
+        StringWriter warn = new StringWriter();
+        StringWriter notice = new StringWriter();
+        int exit = Main.execute( "javadoc", new PrintWriter( err ), new PrintWriter( warn ), new PrintWriter( notice ),
+                                 XMLDoclet.class.getName(), (String[]) args.toArray( new String[0] ) );
+
+        assertEquals( err.toString(), exit, 0 );
 
         // Generated files
         assertTrue( outputXML.exists() );
         assertTrue( outputXML.length() > 0 );
-        File dtd = new File( basedir, "target/unit/xmldoclet-default/" + XMLDoclet.XMLDOCLET_DTD );
+        File dtd = new File( BASEDIR, "target/unit/xmldoclet-default/" + XMLDoclet.XMLDOCLET_DTD );
         assertTrue( dtd.exists() );
         assertTrue( dtd.length() > 0 );
     }
