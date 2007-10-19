@@ -86,6 +86,7 @@
 
   <target name="umldoclet">
     <fjavadoc classpathref="task.classpath">
+      <!-- About UmlDoclet, see http://www.nabble.com/Where-was-o.a.f.f.j.d.UmlDoclet--tf4634276.html -->
       <doclet name="org.apache.forrest.forrestdoc.java.doc.UmlDoclet"
               pathref="task.classpath">
 <!--  <param name="-horizontal" value="true"/> -->
