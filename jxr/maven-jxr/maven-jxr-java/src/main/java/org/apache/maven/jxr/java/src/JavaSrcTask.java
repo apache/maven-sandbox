@@ -169,7 +169,7 @@ public class JavaSrcTask
         Pass1 p1 = new Pass1();
 
         p1.initializeDefaults();
-        p1.setOutDir( destDir.getAbsolutePath() );
+        p1.setDestDir( destDir.getAbsolutePath() );
         p1.setRecurse( recurse );
         p1.setTitle( title );
         p1.setVerbose( verbose );
@@ -178,7 +178,7 @@ public class JavaSrcTask
         Pass2 p2 = new Pass2();
 
         p2.initializeDefaults();
-        p2.setOutDir( destDir.getAbsolutePath() );
+        p2.setDestDir( destDir.getAbsolutePath() );
         p2.setTitle( title );
         p2.setVerbose( verbose );
 

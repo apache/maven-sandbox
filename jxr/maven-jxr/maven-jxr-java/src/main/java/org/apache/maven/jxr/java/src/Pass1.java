@@ -50,110 +50,115 @@ import java.util.Vector;
 public class Pass1
     implements FileListener
 {
-
-    /** Logger for this class  */
-    private static final Logger log = Logger.getLogger( Pass1.class );
-
     /** Field DEFAULT_DIR */
     public static final String DEFAULT_DIR = ".";
 
     /** Field USAGE */
-    public static final String USAGE = "Usage: java " + "[-Doutdir=<doc dir>]" + "[-Dtitle=<title>]"
-        + "[-Dverbose=true]" + "javasrc.Pass1 " + "<source dir> [<source dir> <source dir> ...]";
+    public static final String USAGE = "Usage: java [-DdestDir=<doc dir>] [-Dtitle=<title>] [-Dverbose=true] "
+        + "[-Drecurse=true] " + Pass1.class.getName() + " <source dir> [<source dir> <source dir> ...]";
 
-    /** Field inputFiles */
-    private HashSet inputFiles = new HashSet();
+    /** Logger for this class  */
+    private static final Logger log = Logger.getLogger( Pass1.class );
+
+    /** Output dir */
+    private String destDir;
+
+    /** Title to be placed in the HTML title tag */
+    private String title;
+
+    /** Specify recursive pass */
+    private boolean recurse;
+
+    /** Specify verbose information */
+    private boolean verbose;
+
+    int currentColumn;
+
+    int currentChar;
+
+    HashSet inputFiles = new HashSet();
+
+    // ----------------------------------------------------------------------
+    // Constructor
+    // ----------------------------------------------------------------------
 
     /**
      * Constructor Pass1
      */
     public Pass1()
     {
+        // nop
     }
 
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
+
     /**
-     * Method getOutDir
-     *
-     * @return
+     * @return the output dir
      */
-    public String getOutDir()
+    public String getDestDir()
     {
-        return _outDir;
+        return this.destDir;
     }
 
     /**
-     * Method setOutDir
-     *
-     * @param d
+     * @param d a new output dir
      */
-    public void setOutDir( String d )
+    public void setDestDir( String d )
     {
-        _outDir = d;
+        this.destDir = d;
     }
 
     /**
-     * Method getTitle
-     *
-     * @return
+     * @return the windows title
      */
     public String getTitle()
     {
-        return _title;
+        return this.title;
     }
 
     /**
-     * Method setTitle
-     *
-     * @param t
+     * @param t a new windows title
      */
     public void setTitle( String t )
     {
-        _title = t;
+        this.title = t;
     }
 
     /**
-     * Method getRecurse
-     *
-     * @return
+     * @return recursive pass
      */
-    public boolean getRecurse()
+    public boolean isRecurse()
     {
-        return _doRecurse;
+        return this.recurse;
     }
 
     /**
-     * Method setRecurse
-     *
-     * @param recurse
+     * @param recurse true to do a recursive pass, false otherwise
      */
     public void setRecurse( boolean recurse )
     {
-        _doRecurse = recurse;
+        this.recurse = recurse;
     }
 
     /**
-     * Method setVerbose
-     *
-     * @param verbose
+     * @return verbose information
+     */
+    public boolean isVerbose()
+    {
+        return this.verbose;
+    }
+
+    /**
+     * @param verbose true to verbose information, false otherwise
      */
     public void setVerbose( boolean verbose )
     {
-        _verbose = verbose;
+        this.verbose = verbose;
     }
 
-    /**
-     * Method getVerbose
-     *
-     * @return
-     */
-    public boolean getVerbose()
-    {
-        return _verbose;
-    }
-
-    /**
-     * @see org.apache.maven.jxr.java.src.xref.FileListener#notify(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void notify( String path )
     {
         printAdvancement( path );
@@ -161,33 +166,52 @@ public class Pass1
     }
 
     /**
-     * Method run
+     * Main method to pass Java source files.
      *
-     * @param args
+     * @param args not null
+     * @see #initializeDefaults()
+     * @see #run(String[])
+     * @throws Exception if any
+     */
+    public static void main( String args[] )
+        throws Exception
+    {
+        Pass1 p1 = new Pass1();
+
+        p1.initializeDefaults();
+        p1.run( args );
+    }
+
+    /**
+     * @param args not null
+     * @throws IllegalArgumentException if args is null
      */
     public void run( String[] args )
     {
+        if ( args == null )
+        {
+            throw new IllegalArgumentException( "args is required" );
+        }
 
         // Use a try/catch block for parser exceptions
         try
         {
-
             // create a new symbol table
             SymbolTable symbolTable = SymbolTable.getSymbolTable();
 
             // if we have at least one command-line argument
             if ( args.length > 0 )
             {
-                print( "Output dir: " + getOutDir() );
+                print( "Output dir: " + getDestDir() );
 
-                symbolTable.setOutDirPath( getOutDir() );
+                symbolTable.setOutDirPath( getDestDir() );
 
                 println( "Parsing" );
 
                 // for each directory/file specified on the command line
                 for ( int i = 0; i < args.length; i++ )
                 {
-                    JavaXref.doFile( new File( args[i] ), symbolTable, getRecurse(), this ); // parse it
+                    JavaXref.doFile( new File( args[i] ), symbolTable, isRecurse(), this ); // parse it
                 }
 
                 println( "Resolving types" );
@@ -252,12 +276,12 @@ public class Pass1
                 // (no longer -- this happens in Pass2 now)
                 // System.out.println("\nWriting definition HTML...");
                 // pDef.generateReferenceFiles(getOutDir());
-                pDef.persistDefinitions( getOutDir() );
+                pDef.persistDefinitions( getDestDir() );
             }
 
             println( "Persisting references" );
 
-            symbolTable.persistRefs( getOutDir() );
+            symbolTable.persistRefs( getDestDir() );
         }
         catch ( Exception e )
         {
@@ -267,28 +291,27 @@ public class Pass1
     }
 
     /**
-     * Method initializeDefaults
+     * Initialize defaults fields
      */
     public void initializeDefaults()
     {
-
-        String outdir = System.getProperty( "outdir" );
+        String outdir = System.getProperty( "destDir" );
 
         if ( outdir == null )
         {
             outdir = DEFAULT_DIR;
         }
 
-        setOutDir( outdir );
+        setDestDir( outdir );
 
-        String title = System.getProperty( "title" );
+        String t = System.getProperty( "title" );
 
-        if ( title == null )
+        if ( t == null )
         {
-            title = "Pass1: " + outdir;
+            t = "Pass1: " + outdir;
         }
 
-        setTitle( title );
+        setTitle( t );
 
         boolean doRecurse = true;
         String recurseStr = System.getProperty( "recurse" );
@@ -306,7 +329,7 @@ public class Pass1
 
         setRecurse( doRecurse );
 
-        boolean verbose = false;
+        boolean v = false;
         String verboseStr = System.getProperty( "verbose" );
 
         if ( verboseStr != null )
@@ -316,21 +339,24 @@ public class Pass1
             if ( verboseStr.equalsIgnoreCase( "on" ) || verboseStr.equalsIgnoreCase( "true" )
                 || verboseStr.equalsIgnoreCase( "yes" ) || verboseStr.equalsIgnoreCase( "1" ) )
             {
-                verbose = true;
+                v = true;
             }
         }
 
-        setVerbose( verbose );
+        setVerbose( v );
     }
+
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
 
     /**
      * Method createDirs
      *
      * @param f
      */
-    public void createDirs( File f )
+    private void createDirs( File f )
     {
-
         String parentDir = f.getParent();
         File directory = new File( parentDir );
 
@@ -347,9 +373,8 @@ public class Pass1
      * @param element
      * @return
      */
-    public String getBackupPath( Object[] tagList, int element )
+    private String getBackupPath( Object[] tagList, int element )
     {
-
         HTMLTag t = (HTMLTag) tagList[element];
         String packageName = t.getPackageName();
 
@@ -378,44 +403,6 @@ public class Pass1
     }
 
     /**
-     * Returns the path to the top level of the source hierarchy from the files
-     * og\f a given class.
-     *
-     * @param packageName the package to get the backup path for
-     * @return
-     * @returns the path from the package to the top level, as a string
-     */
-    public static String getBackupPath( String packageName )
-    {
-
-        StringTokenizer st = new StringTokenizer( packageName, "." );
-        String backup = "";
-        int dirs = 0;
-        String newPath = "";
-
-        if ( log.isDebugEnabled() )
-        {
-            log.debug( "getBackupPath(String) - Package Name for BackupPath=" + packageName );
-        }
-
-        dirs = st.countTokens();
-
-        for ( int j = 0; j < dirs; j++ )
-        {
-            backup = backup + "../";
-        }
-
-        newPath = backup;
-
-        if ( log.isDebugEnabled() )
-        {
-            log.debug( "getBackupPath(String) - Package Name for newPath=" + newPath );
-        }
-
-        return ( newPath );
-    }
-
-    /**
      * Method createClassFile
      *
      * @param tagList
@@ -423,10 +410,9 @@ public class Pass1
      * @return
      * @throws IOException
      */
-    public HTMLOutputWriter createClassFile( Object[] tagList, int element )
+    private HTMLOutputWriter createClassFile( Object[] tagList, int element )
         throws IOException
     {
-
         HTMLTag t = (HTMLTag) tagList[element];
         String packageName = t.getPackageName();
 
@@ -460,7 +446,7 @@ public class Pass1
 
         String packagePath = packageName.replace( '.', File.separatorChar );
         //String htmlPackagePath = packageName.replace('.', '/');
-        String pathName = getOutDir() + File.separatorChar + packagePath;
+        String pathName = getDestDir() + File.separatorChar + packagePath;
 
         int position = fileName.lastIndexOf( File.separatorChar );
 
@@ -487,8 +473,14 @@ public class Pass1
             + "<html>\n"
             + "<head>\n"
             + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
-            + "<title>" + packageName + "." + SymbolTable.getClassList( t.getFile() ) + "</title>\n"
-            + "<LINK rel=\"stylesheet\" type=\"text/css\" href=\"" + backup + "styles.css\">\n"
+            + "<title>"
+            + packageName
+            + "."
+            + SymbolTable.getClassList( t.getFile() )
+            + "</title>\n"
+            + "<LINK rel=\"stylesheet\" type=\"text/css\" href=\""
+            + backup
+            + "styles.css\">\n"
             + "</head>\n"
             + "<body>\n";
 
@@ -509,15 +501,14 @@ public class Pass1
      * @param output
      * @throws IOException
      */
-    public void finishFile( LineNumberReader input, HTMLOutputWriter output )
+    private void finishFile( LineNumberReader input, HTMLOutputWriter output )
         throws IOException
     {
-
-        while ( _currentChar != -1 )
+        while ( currentChar != -1 )
         {
-            output.writeHTML( _currentChar );
+            output.writeHTML( currentChar );
 
-            _currentChar = input.read();
+            currentChar = input.read();
         }
 
         input.close();
@@ -535,37 +526,36 @@ public class Pass1
      * @param output
      * @throws IOException
      */
-    public void writeUntilNextTag( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
+    private void writeUntilNextTag( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
         throws IOException
     {
-
         if ( log.isDebugEnabled() )
         {
             log.debug( "writeUntilNextTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - Looking for next tag line:|" );
         }
 
-        while ( ( _currentChar != -1 ) && ( input.getLineNumber() + 1 ) != t.getLine() )
+        while ( ( currentChar != -1 ) && ( input.getLineNumber() + 1 ) != t.getLine() )
         {
-            output.writeHTML( _currentChar );
+            output.writeHTML( currentChar );
 
             if ( log.isDebugEnabled() )
             {
                 log.debug( "writeUntilNextTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - _currentChar"
-                    + _currentChar );
+                    + currentChar );
             }
 
-            _currentChar = input.read();
+            currentChar = input.read();
         }
 
         // Write out last carriage return
-        output.writeHTML( _currentChar );
+        output.writeHTML( currentChar );
 
         if ( log.isDebugEnabled() )
         {
-            log.debug( "writeUntilNextTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - _currentChar" + _currentChar );
+            log.debug( "writeUntilNextTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - _currentChar" + currentChar );
         }
 
-        _currentChar = input.read();
+        currentChar = input.read();
 
         if ( log.isDebugEnabled() )
         {
@@ -581,10 +571,9 @@ public class Pass1
      * @param output
      * @throws IOException
      */
-    public void writeComment( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
+    private void writeComment( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
         throws IOException
     {
-
         int length = t.getLength();
         int i = 0;
 
@@ -592,29 +581,29 @@ public class Pass1
 
         while ( i < length )
         {
-            if ( _currentChar == '\n' )
+            if ( currentChar == '\n' )
             {
                 output.write( "</span>" );
             }
-            output.writeHTML( (char) _currentChar );
+            output.writeHTML( (char) currentChar );
 
-            if ( _currentChar == '\n' )
+            if ( currentChar == '\n' )
             {
                 output.write( "<span class=\"comment\">" );
-                _currentColumn = 0;
+                currentColumn = 0;
             }
 
-            _currentChar = input.read();
+            currentChar = input.read();
 
-            _currentColumn++;
+            currentColumn++;
             i++;
         }
 
         output.write( "</span>" );
 
-        if ( _currentChar == '\n' )
+        if ( currentChar == '\n' )
         {
-            _currentColumn = 0;
+            currentColumn = 0;
         }
     }
 
@@ -626,34 +615,33 @@ public class Pass1
      * @param output
      * @throws IOException
      */
-    public void writeHTMLTag( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
+    private void writeHTMLTag( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
         throws IOException
     {
-
         // Write out line from current column to tag start column
         if ( log.isDebugEnabled() )
         {
-            log.debug( "writeHTMLTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - Current column=" + _currentColumn );
+            log.debug( "writeHTMLTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - Current column=" + currentColumn );
             log.debug( "writeHTMLTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - Writing up to tag start:|" );
         }
 
-        while ( _currentColumn < t.getStartColumn() )
+        while ( currentColumn < t.getStartColumn() )
         {
-            output.writeHTML( _currentChar );
+            output.writeHTML( currentChar );
 
-            if ( _currentChar == '\n' )
+            if ( currentChar == '\n' )
             {
-                _currentColumn = 0;
+                currentColumn = 0;
             }
 
             if ( log.isDebugEnabled() )
             {
-                log.debug( "writeHTMLTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - _currentChar=" + _currentChar );
+                log.debug( "writeHTMLTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - _currentChar=" + currentChar );
             }
 
-            _currentChar = input.read();
+            currentChar = input.read();
 
-            _currentColumn++;
+            currentColumn++;
         }
 
         if ( log.isDebugEnabled() )
@@ -676,7 +664,6 @@ public class Pass1
         }
         else
         {
-
             // Write HTML tag
             output.write( t.getText() );
 
@@ -700,22 +687,22 @@ public class Pass1
                 if ( log.isDebugEnabled() )
                 {
                     log.debug( "writeHTMLTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - _currentChar="
-                        + _currentChar );
+                        + currentChar );
                 }
 
-                if ( _currentChar == '\n' )
+                if ( currentChar == '\n' )
                 {
-                    _currentColumn = 0;
+                    currentColumn = 0;
                 }
 
-                _currentChar = input.read();
+                currentChar = input.read();
 
-                _currentColumn++;
+                currentColumn++;
             }
 
-            if ( _currentChar == '\n' )
+            if ( currentChar == '\n' )
             {
-                _currentColumn = 0;
+                currentColumn = 0;
             }
         }
     }
@@ -723,7 +710,6 @@ public class Pass1
     private void writeLiteral( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
         throws IOException
     {
-
         int length = t.getLength();
         int i = 0;
 
@@ -731,31 +717,30 @@ public class Pass1
 
         while ( i < length )
         {
-            output.writeHTML( (char) _currentChar );
+            output.writeHTML( (char) currentChar );
 
-            if ( _currentChar == '\n' )
+            if ( currentChar == '\n' )
             {
-                _currentColumn = 0;
+                currentColumn = 0;
             }
 
-            _currentChar = input.read();
+            currentChar = input.read();
 
-            _currentColumn++;
+            currentColumn++;
             i++;
         }
 
         output.write( "</span>" );
 
-        if ( _currentChar == '\n' )
+        if ( currentChar == '\n' )
         {
-            _currentColumn = 0;
+            currentColumn = 0;
         }
     }
 
     private void writeKeyword( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
         throws IOException
     {
-
         int length = t.getLength();
         int i = 0;
 
@@ -763,24 +748,24 @@ public class Pass1
 
         while ( i < length )
         {
-            output.writeHTML( (char) _currentChar );
+            output.writeHTML( (char) currentChar );
 
-            if ( _currentChar == '\n' )
+            if ( currentChar == '\n' )
             {
-                _currentColumn = 0;
+                currentColumn = 0;
             }
 
-            _currentChar = input.read();
+            currentChar = input.read();
 
-            _currentColumn++;
+            currentColumn++;
             i++;
         }
 
         output.write( "</strong>" );
 
-        if ( _currentChar == '\n' )
+        if ( currentChar == '\n' )
         {
-            _currentColumn = 0;
+            currentColumn = 0;
         }
     }
 
@@ -789,9 +774,8 @@ public class Pass1
      *
      * @param tagList
      */
-    public void createClassFiles( Vector tagList )
+    private void createClassFiles( Vector tagList )
     {
-
         HTMLTag t;
         File javaFile;
         LineNumberReader input;
@@ -813,8 +797,8 @@ public class Pass1
             input = new LineNumberReader(
                                           new InputStreamReader(
                                                                  new SkipCRInputStream( new FileInputStream( javaFile ) ) ) );
-            _currentChar = input.read();
-            _currentColumn = 1;
+            currentChar = input.read();
+            currentColumn = 1;
         }
         catch ( Exception e )
         {
@@ -860,8 +844,8 @@ public class Pass1
                                                                                                 new FileInputStream(
                                                                                                                      javaFile ) ) ) );
                     output = createClassFile( sortedList, i );
-                    _currentColumn = 1;
-                    _currentChar = input.read();
+                    currentColumn = 1;
+                    currentChar = input.read();
                 }
                 catch ( Exception e )
                 {
@@ -874,7 +858,7 @@ public class Pass1
             // Check for new line encountered
             if ( t.getLine() != ( input.getLineNumber() + 1 ) )
             {
-                _currentColumn = 1;
+                currentColumn = 1;
 
                 // Write out characters until we reach the line
                 try
@@ -925,7 +909,7 @@ public class Pass1
 
     private void printAdvancement( String description )
     {
-        if ( getVerbose() )
+        if ( isVerbose() )
         {
             System.out.println( description );
         }
@@ -935,35 +919,44 @@ public class Pass1
         }
     }
 
+    // ----------------------------------------------------------------------
+    // Static methods
+    // ----------------------------------------------------------------------
+
     /**
-     * Method main
+     * Returns the path to the top level of the source hierarchy from the files
+     * og\f a given class.
      *
-     * @param args
+     * @param packageName the package to get the backup path for
+     * @return
+     * @returns the path from the package to the top level, as a string
      */
-    public static void main( String args[] )
+    private static String getBackupPath( String packageName )
     {
+        StringTokenizer st = new StringTokenizer( packageName, "." );
+        String backup = "";
+        int dirs = 0;
+        String newPath = "";
 
-        Pass1 p1 = new Pass1();
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "getBackupPath(String) - Package Name for BackupPath=" + packageName );
+        }
 
-        p1.initializeDefaults();
-        p1.run( args );
+        dirs = st.countTokens();
+
+        for ( int j = 0; j < dirs; j++ )
+        {
+            backup = backup + "../";
+        }
+
+        newPath = backup;
+
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( "getBackupPath(String) - Package Name for newPath=" + newPath );
+        }
+
+        return ( newPath );
     }
-
-    /** Field _currentColumn */
-    private int _currentColumn;
-
-    /** Field _currentChar */
-    private int _currentChar;
-
-    /** Field _outDir */
-    private String _outDir;
-
-    /** Field _title */
-    private String _title;
-
-    /** Field _doRecurse */
-    private boolean _doRecurse;
-
-    /** Field _verbose */
-    private boolean _verbose;
 }

@@ -48,85 +48,40 @@ import java.util.Vector;
 /**
  * Cross-reference generation pass.
  * <p/>
- * For each package (= for each output directory):
- * Load reference.txt
- * Sort references
- * Generate HTML one public class at a time.
+ * For each package (i.e for each output directory):
+ * <ul>
+ * <li>Load reference.txt</li>
+ * <li>Sort references</li>
+ * <li>Generate HTML one public class at a time</li>
+ * </ul>
  *
  * @version $Id$
  */
 public class Pass2
 {
+    /** Field USAGE */
+    public static final String USAGE = "Usage: java -DdestDir=<doc dir> [-Dtitle=<title>] [-Dverbose=true] "
+        + Pass2.class.getName();
 
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( Pass2.class );
 
-    /** Field DEFAULT_DIR */
-    public static final String DEFAULT_DIR = ".";
+    /** Output dir */
+    private String destDir;
 
-    /** Field USAGE */
-    public static final String USAGE = "Usage: java " + "-Doutdir=<doc dir>" + "[-Dtitle=<title>]" + "[-Dverbose=true]"
-        + "javasrc.Pass2 ";
+    /** Title to be placed in the HTML title tag */
+    private String title;
 
-    /**
-     * Method getOutDir
-     *
-     * @return
-     */
-    public String getOutDir()
-    {
-        return _outDir;
-    }
+    /** Specify verbose information */
+    private boolean verbose;
 
-    /**
-     * Method setOutDir
-     *
-     * @param d
-     */
-    public void setOutDir( String d )
-    {
-        _outDir = d;
-    }
+    ArrayList packageNames;
 
-    /**
-     * Method getTitle
-     *
-     * @return
-     */
-    public String getTitle()
-    {
-        return _title;
-    }
+    Hashtable packageClasses;
 
-    /**
-     * Method setTitle
-     *
-     * @param t
-     */
-    public void setTitle( String t )
-    {
-        _title = t;
-    }
-
-    /**
-     * Method getVerbose
-     *
-     * @return
-     */
-    public boolean getVerbose()
-    {
-        return _verbose;
-    }
-
-    /**
-     * Method setVerbose
-     *
-     * @param val
-     */
-    public void setVerbose( boolean val )
-    {
-        _verbose = val;
-    }
+    // ----------------------------------------------------------------------
+    // Constructor
+    // ----------------------------------------------------------------------
 
     /**
      * Constructor Pass2
@@ -137,17 +92,83 @@ public class Pass2
         packageClasses = new Hashtable();
     }
 
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
+
     /**
-     * Method run
+     * @return the output dir
+     */
+    public String getDestDir()
+    {
+        return this.destDir;
+    }
+
+    /**
+     * @param d a new output dir
+     */
+    public void setDestDir( String d )
+    {
+        this.destDir = d;
+    }
+
+    /**
+     * @return the windows title
+     */
+    public String getTitle()
+    {
+        return this.title;
+    }
+
+    /**
+     * @param t a new windows title
+     */
+    public void setTitle( String t )
+    {
+        this.title = t;
+    }
+
+    /**
+     * @return verbose information
+     */
+    public boolean isVerbose()
+    {
+        return this.verbose;
+    }
+
+    /**
+     * @param verbose true to verbose information, false otherwise
+     */
+    public void setVerbose( boolean verbose )
+    {
+        this.verbose = verbose;
+    }
+
+    /**
+     * Main method to pass Java source files.
      *
-     * @param args
-     * @throws IOException
+     * @param args not used
+     * @see #initializeDefaults()
+     * @see #run(String[])
+     * @throws Exception if any
+     */
+    public void main( String args[] )
+        throws Exception
+    {
+        Pass2 p2 = new Pass2();
+
+        p2.initializeDefaults();
+        p2.run( args );
+    }
+
+    /**
+     * @param args not used
+     * @throws IOException if any
      */
     public void run( String[] args )
         throws IOException
     {
-
-        File outDir = new File( getOutDir() );
+        File outDir = new File( getDestDir() );
 
         if ( log.isDebugEnabled() )
         {
@@ -176,6 +197,50 @@ public class Pass2
     }
 
     /**
+     * Initialize defaults fields
+     */
+    public void initializeDefaults()
+    {
+        String outdir = System.getProperty( "destDir" );
+
+        if ( outdir == null )
+        {
+            outdir = Pass1.DEFAULT_DIR;
+        }
+
+        setDestDir( outdir );
+
+        String t = System.getProperty( "title" );
+
+        if ( t == null )
+        {
+            t = "Pass2: " + outdir;
+        }
+
+        setTitle( t );
+
+        boolean v = false;
+        String verboseStr = System.getProperty( "verbose" );
+
+        if ( verboseStr != null )
+        {
+            verboseStr = verboseStr.trim();
+
+            if ( verboseStr.equalsIgnoreCase( "on" ) || verboseStr.equalsIgnoreCase( "true" )
+                || verboseStr.equalsIgnoreCase( "yes" ) || verboseStr.equalsIgnoreCase( "1" ) )
+            {
+                v = true;
+            }
+        }
+
+        setVerbose( v );
+    }
+
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
+
+    /**
      * Method walkDirectories
      *
      * @param packageName
@@ -185,7 +250,6 @@ public class Pass2
     private void walkDirectories( String packageName, File outDir )
         throws IOException
     {
-
         File refFile = new File( outDir, "references.txt" );
 
         if ( refFile.exists() )
@@ -276,9 +340,9 @@ public class Pass2
                 continue;
             }
 
-            Reference ref = new Reference( line );
+            ReferenceEntry ref = new ReferenceEntry( line );
 
-            if ( !ref.referentFileClass.equals( prevReferentFileClass ) )
+            if ( !ref.getReferentFileClass().equals( prevReferentFileClass ) )
             {
 
                 // close current section, if any
@@ -295,18 +359,17 @@ public class Pass2
 
                 // open new output file
                 bw = openOutputFile( packageName, ref );
-                prevReferentFileClass = ref.referentFileClass;
+                prevReferentFileClass = ref.getReferentFileClass();
                 prevReferentTag = null;
             }
 
-            if ( !classes.containsKey( ref.referentClass ) )
+            if ( !classes.containsKey( ref.getReferentClass() ) )
             {
-                classes.put( ref.referentClass, ref.referentFileClass );
+                classes.put( ref.getReferentClass(), ref.getReferentFileClass() );
             }
 
-            if ( !ref.referentTag.equals( prevReferentTag ) )
+            if ( !ref.getReferentTag().equals( prevReferentTag ) )
             {
-
                 // write close-section stuff, if any
                 if ( prevReferentTag != null )
                 {
@@ -314,13 +377,13 @@ public class Pass2
                 }
 
                 // write new heading based on new referent type
-                prevReferentTag = ref.referentTag;
+                prevReferentTag = ref.getReferentTag();
 
                 openSection( bw, packageName, ref );
             }
 
             // write link for this reference
-            if ( !ref.referringMethod.equals( "?" ) )
+            if ( !ref.getReferringMethod().equals( "?" ) )
             {
                 writeLink( bw, packageName, ref );
             }
@@ -350,7 +413,6 @@ public class Pass2
     private void closeOutputFile( BufferedWriter bw, String referentFileClass )
         throws IOException
     {
-
         bw.write( "</body></html>" );
         bw.flush();
         bw.close();
@@ -369,18 +431,18 @@ public class Pass2
      * @return
      * @throws IOException
      */
-    private BufferedWriter openOutputFile( String packageName, Reference ref )
+    private BufferedWriter openOutputFile( String packageName, ReferenceEntry ref )
         throws IOException
     {
         if ( log.isDebugEnabled() )
         {
-            log.debug( "openOutputFile(String, Reference) - Reference ref=" + ref.referentFileClass );
+            log.debug( "openOutputFile(String, Reference) - Reference ref=" + ref.getReferentFileClass() );
         }
 
-        File rootDir = new File( getOutDir() );
-        String relPath = ( packageName == null ) ? ref.referentFileClass : packageName
+        File rootDir = new File( getDestDir() );
+        String relPath = ( packageName == null ) ? ref.getReferentFileClass() : packageName
             .replace( '.', File.separatorChar )
-            + File.separatorChar + ref.referentFileClass;
+            + File.separatorChar + ref.getReferentFileClass();
 
         relPath += "_java_ref.html";
 
@@ -394,7 +456,7 @@ public class Pass2
         result.write( "<html>" );
         result.write( "<head>\n" );
         result.write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" );
-        result.write( "<title>" + packageName + "." + ref.referentFileClass + " References</title>\n" );
+        result.write( "<title>" + packageName + "." + ref.getReferentFileClass() + " References</title>\n" );
         result.write( "<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"" + getBackupPath( packageName )
             + "styles.css\">\n" );
         result.write( "</head>\n" );
@@ -429,47 +491,49 @@ public class Pass2
      * @param ref
      * @throws IOException
      */
-    private void openSection( BufferedWriter bw, String referentPackage, Reference ref )
+    private void openSection( BufferedWriter bw, String referentPackage, ReferenceEntry ref )
         throws IOException
     {
-
-        if ( ref.referentType.equals( ReferenceTypes.CLASS_REF ) )
+        if ( ref.getReferentType().equals( ReferenceTypes.CLASS_REF ) )
         {
             bw.write( "<p class=\"classReflist\">" );
 
-            String nameString = "<p class=\"classReflistHeader\">Class: <a name=\"" + ref.referentTag + "\" href=\""
-                + ref.referentFileClass + "_java.html#" + ref.referentTag + "\">" + ref.referentClass + "</a></p>";
+            String nameString = "<p class=\"classReflistHeader\">Class: <a name=\"" + ref.getReferentTag()
+                + "\" href=\"" + ref.getReferentFileClass() + "_java.html#" + ref.getReferentTag() + "\">"
+                + ref.getReferentClass() + "</a></p>";
 
             bw.write( nameString );
         }
-        else if ( ref.referentType.equals( ReferenceTypes.METHOD_REF ) )
+        else if ( ref.getReferentType().equals( ReferenceTypes.METHOD_REF ) )
         {
             bw.write( "<p class=\"methodReflist\">" );
             bw.write( "<!-- hello -->" );
 
-            String nameString = "<p class=\"methodReflistHeader\">Method: <a name=\"" + ref.referentTag + "\" href=\""
-                + ref.referentFileClass + "_java.html#" + ref.referentTag + "\">" + ref.referentTag + "</a></p>";
+            String nameString = "<p class=\"methodReflistHeader\">Method: <a name=\"" + ref.getReferentTag()
+                + "\" href=\"" + ref.getReferentFileClass() + "_java.html#" + ref.getReferentTag() + "\">"
+                + ref.getReferentTag() + "</a></p>";
 
             bw.write( nameString );
         }
-        else if ( ref.referentType.equals( ReferenceTypes.VARIABLE_REF ) )
+        else if ( ref.getReferentType().equals( ReferenceTypes.VARIABLE_REF ) )
         {
             bw.write( "<p class=\"variableReflist\">" );
 
-            String nameString = "<p class=\"variableReflistHeader\">Variable: <a name=\"" + ref.referentTag
-                + "\" href=\"" + ref.referentFileClass + "_java.html#" + ref.referentTag + "\">" + ref.referentTag
-                + "</a></p>";
+            String nameString = "<p class=\"variableReflistHeader\">Variable: <a name=\"" + ref.getReferentTag()
+                + "\" href=\"" + ref.getReferentFileClass() + "_java.html#" + ref.getReferentTag() + "\">"
+                + ref.getReferentTag() + "</a></p>";
 
             bw.write( nameString );
         }
         else
         {
-            bw.write( "<p>open section " + ref.referentType + "</p>" );
+            bw.write( "<p>open section " + ref.getReferentType() + "</p>" );
         }
 
         if ( log.isDebugEnabled() )
         {
-            log.debug( "openSection(BufferedWriter, String, Reference) - open section for referent=" + ref.referentTag );
+            log.debug( "openSection(BufferedWriter, String, Reference) - open section for referent="
+                + ref.getReferentTag() );
         }
     }
 
@@ -481,39 +545,41 @@ public class Pass2
      * @param ref
      * @throws IOException
      */
-    private void writeLink( BufferedWriter bw, String referentPackage, Reference ref )
+    private void writeLink( BufferedWriter bw, String referentPackage, ReferenceEntry ref )
         throws IOException
     {
-
         String linkFilename = sourceName( referentPackage, ref );
 
-        if ( ref.referentType.equals( ReferenceTypes.CLASS_REF ) )
+        if ( ref.getReferentType().equals( ReferenceTypes.CLASS_REF ) )
         {
-            String linkString = "<p class=\"classRefItem\"><a href=\"" + linkFilename + "#" + ref.referringLineNumber
-                + "\">" + ref.referringPackage + "." + ref.referringClass + "." + ref.referringMethod + " ("
-                + ref.referringFile + ":" + ref.referringLineNumber + ")</a></p>\n";
+            String linkString = "<p class=\"classRefItem\"><a href=\"" + linkFilename + "#"
+                + ref.getReferringLineNumber() + "\">" + ref.getReferringPackage() + "." + ref.getReferringClass()
+                + "." + ref.getReferringMethod() + " (" + ref.getReferringFile() + ":" + ref.getReferringLineNumber()
+                + ")</a></p>\n";
 
             bw.write( linkString );
         }
-        else if ( ref.referentType.equals( ReferenceTypes.METHOD_REF ) )
+        else if ( ref.getReferentType().equals( ReferenceTypes.METHOD_REF ) )
         {
-            String linkString = "<p class=\"methodRefItem\"><a href=\"" + linkFilename + "#" + ref.referringLineNumber
-                + "\">" + ref.referringPackage + "." + ref.referringClass + "." + ref.referringMethod + " ("
-                + ref.referringFile + ":" + ref.referringLineNumber + ")</a></p>\n";
+            String linkString = "<p class=\"methodRefItem\"><a href=\"" + linkFilename + "#"
+                + ref.getReferringLineNumber() + "\">" + ref.getReferringPackage() + "." + ref.getReferringClass()
+                + "." + ref.getReferringMethod() + " (" + ref.getReferringFile() + ":" + ref.getReferringLineNumber()
+                + ")</a></p>\n";
 
             bw.write( linkString );
         }
-        else if ( ref.referentType.equals( ReferenceTypes.VARIABLE_REF ) )
+        else if ( ref.getReferentType().equals( ReferenceTypes.VARIABLE_REF ) )
         {
             String linkString = "<p class=\"variableRefItem\"><a href=\"" + linkFilename + "#"
-                + ref.referringLineNumber + "\">" + ref.referringPackage + "." + ref.referringClass + "."
-                + ref.referringMethod + " (" + ref.referringFile + ":" + ref.referringLineNumber + ")</a></p>\n";
+                + ref.getReferringLineNumber() + "\">" + ref.getReferringPackage() + "." + ref.getReferringClass()
+                + "." + ref.getReferringMethod() + " (" + ref.getReferringFile() + ":" + ref.getReferringLineNumber()
+                + ")</a></p>\n";
 
             bw.write( linkString );
         }
         else
         {
-            bw.write( "<p>link for a " + ref.referentType + "</p>" );
+            bw.write( "<p>link for a " + ref.getReferentType() + "</p>" );
         }
     }
 
@@ -524,11 +590,10 @@ public class Pass2
      * @param ref
      * @return
      */
-    private String sourceName( String referentPackage, Reference ref )
+    private String sourceName( String referentPackage, ReferenceEntry ref )
     {
-
-        String result = getBackupPath( referentPackage ) + ref.referringPackage.replace( '.', '/' ) + '/'
-            + ref.referringClass + "_java.html";
+        String result = getBackupPath( referentPackage ) + ref.getReferringPackage().replace( '.', '/' ) + '/'
+            + ref.getReferringClass() + "_java.html";
 
         return result;
     }
@@ -543,7 +608,6 @@ public class Pass2
      */
     private String getBackupPath( String packageName )
     {
-
         StringTokenizer st = new StringTokenizer( packageName, "." );
         String backup = "";
         int dirs = 0;
@@ -575,7 +639,6 @@ public class Pass2
      */
     private void createPackageFiles()
     {
-
         String packageName;
         String fileName;
         File file;
@@ -597,7 +660,7 @@ public class Pass2
             }
 
             totalClassCount += classes.size();
-            fileName = getOutDir() + File.separatorChar + packageName.replace( '.', File.separatorChar )
+            fileName = getDestDir() + File.separatorChar + packageName.replace( '.', File.separatorChar )
                 + File.separatorChar + "classList.html";
             file = new File( fileName );
 
@@ -628,9 +691,9 @@ public class Pass2
 
                 while ( iter.hasNext() )
                 {
-                    ClassFile cf = (ClassFile) iter.next();
-                    String className = cf.className;
-                    String fileClassName = cf.fileName;
+                    ClassFileEntry cf = (ClassFileEntry) iter.next();
+                    String className = cf.getClassName();
+                    String fileClassName = cf.getFileName();
                     //int j = className.indexOf('.');
                     String anchor;
 
@@ -669,7 +732,6 @@ public class Pass2
      */
     private List orderedPackageClasses( String packageName )
     {
-
         HashMap hm = (HashMap) packageClasses.get( packageName );
 
         // Hmmm, is this supposed to be easier than using Hashtable.keys()?
@@ -680,7 +742,7 @@ public class Pass2
         while ( iter.hasNext() )
         {
             Map.Entry me = (Map.Entry) iter.next();
-            ClassFile cf = new ClassFile( (String) me.getKey(), (String) me.getValue() );
+            ClassFileEntry cf = new ClassFileEntry( (String) me.getKey(), (String) me.getValue() );
 
             result.add( cf );
         }
@@ -697,7 +759,6 @@ public class Pass2
      */
     private List orderedAllClasses()
     {
-
         List result = new ArrayList();
         Iterator packageIter = packageNames.iterator();
 
@@ -720,7 +781,7 @@ public class Pass2
             while ( iter.hasNext() )
             {
                 Map.Entry me = (Map.Entry) iter.next();
-                ClassFile cf = new ClassFile( (String) me.getKey(), packageFileName + (String) me.getValue() );
+                ClassFileEntry cf = new ClassFileEntry( (String) me.getKey(), packageFileName + (String) me.getValue() );
 
                 result.add( cf );
             }
@@ -738,7 +799,6 @@ public class Pass2
      */
     private Comparator stringComparator()
     {
-
         return new Comparator()
         {
 
@@ -761,17 +821,15 @@ public class Pass2
      */
     private Comparator classFileComparator()
     {
-
         return new Comparator()
         {
 
             public int compare( Object o1, Object o2 )
             {
+                ClassFileEntry cf1 = (ClassFileEntry) o1;
+                ClassFileEntry cf2 = (ClassFileEntry) o2;
 
-                ClassFile cf1 = (ClassFile) o1;
-                ClassFile cf2 = (ClassFile) o2;
-
-                return cf1.className.compareTo( cf2.className );
+                return cf1.getClassName().compareTo( cf2.getClassName() );
             }
 
             public boolean equals( Object o )
@@ -786,8 +844,7 @@ public class Pass2
      */
     private void createIndex()
     {
-
-        String fileName = getOutDir() + File.separatorChar + "index.html";
+        String fileName = getDestDir() + File.separatorChar + "index.html";
         File file = new File( fileName );
 
         createDirs( file );
@@ -822,10 +879,9 @@ public class Pass2
      */
     private void createOverviewFrame()
     {
-
         String packageName;
         String packageFileName;
-        String fileName = getOutDir() + File.separatorChar + "overview-frame.html";
+        String fileName = getDestDir() + File.separatorChar + "overview-frame.html";
         File file = new File( fileName );
 
         createDirs( file );
@@ -870,8 +926,7 @@ public class Pass2
      */
     private void createAllClassesFrame()
     {
-
-        String fileName = getOutDir() + File.separatorChar + "allclasses-frame.html";
+        String fileName = getDestDir() + File.separatorChar + "allclasses-frame.html";
         File file = new File( fileName );
 
         createDirs( file );
@@ -895,9 +950,9 @@ public class Pass2
 
             while ( iter.hasNext() )
             {
-                ClassFile cf = (ClassFile) iter.next();
-                String className = cf.className;
-                String fileClassName = cf.fileName;
+                ClassFileEntry cf = (ClassFileEntry) iter.next();
+                String className = cf.getClassName();
+                String fileClassName = cf.getFileName();
                 String anchor = className;
                 String tag = "<p class=\"classListItem\"><a href=\"" + fileClassName + "_java.html#" + anchor
                     + "\" TARGET=\"classFrame\">" + className + "</a></p>";
@@ -919,7 +974,6 @@ public class Pass2
      */
     private void createPackageSummaryFiles()
     {
-
         String packageName;
         String fileName;
         File file;
@@ -941,7 +995,7 @@ public class Pass2
             }
 
             totalClassCount += classes.size();
-            fileName = getOutDir() + File.separatorChar + packageName.replace( '.', File.separatorChar )
+            fileName = getDestDir() + File.separatorChar + packageName.replace( '.', File.separatorChar )
                 + File.separatorChar + "package-summary.html";
             file = new File( fileName );
 
@@ -957,8 +1011,8 @@ public class Pass2
                 pw.println( "<head>" );
                 pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
                 pw.println( "<title>" + packageName + " Summary</title>" );
-                pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\""
-                    + getBackupPath( packageName ) + "styles.css\">" );
+                pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + getBackupPath( packageName )
+                    + "styles.css\">" );
                 pw.println( "</head>" );
                 pw.println( "<body>" );
 
@@ -978,9 +1032,9 @@ public class Pass2
 
                 while ( iter.hasNext() )
                 {
-                    ClassFile cf = (ClassFile) iter.next();
-                    String className = cf.className;
-                    String fileClassName = cf.fileName;
+                    ClassFileEntry cf = (ClassFileEntry) iter.next();
+                    String className = cf.getClassName();
+                    String fileClassName = cf.getFileName();
                     String anchor;
 
                     anchor = className;
@@ -1034,8 +1088,7 @@ public class Pass2
      */
     private void createOverviewSummaryFrame()
     {
-
-        String fileName = getOutDir() + File.separatorChar + "overview-summary.html";
+        String fileName = getDestDir() + File.separatorChar + "overview-summary.html";
         File file = new File( fileName );
 
         createDirs( file );
@@ -1116,54 +1169,12 @@ public class Pass2
     }
 
     /**
-     * Method initializeDefaults
-     */
-    public void initializeDefaults()
-    {
-
-        String outdir = System.getProperty( "outdir" );
-
-        if ( outdir == null )
-        {
-            outdir = DEFAULT_DIR;
-        }
-
-        setOutDir( outdir );
-
-        String title = System.getProperty( "title" );
-
-        if ( title == null )
-        {
-            title = "Pass2: " + outdir;
-        }
-
-        setTitle( title );
-
-        boolean verbose = false;
-        String verboseStr = System.getProperty( "verbose" );
-
-        if ( verboseStr != null )
-        {
-            verboseStr = verboseStr.trim();
-
-            if ( verboseStr.equalsIgnoreCase( "on" ) || verboseStr.equalsIgnoreCase( "true" )
-                || verboseStr.equalsIgnoreCase( "yes" ) || verboseStr.equalsIgnoreCase( "1" ) )
-            {
-                verbose = true;
-            }
-        }
-
-        setVerbose( verbose );
-    }
-
-    /**
      * Method createDirs
      *
      * @param f
      */
     private void createDirs( File f )
     {
-
         String parentDir = f.getParent();
         File directory = new File( parentDir );
 
@@ -1177,116 +1188,5 @@ public class Pass2
     {
         System.out.print( "\n" );
         System.out.println( description );
-    }
-
-    /**
-     * Method main
-     *
-     * @param args
-     * @throws Exception
-     */
-    public void main( String args[] )
-        throws Exception
-    {
-
-        Pass2 p2 = new Pass2();
-
-        p2.initializeDefaults();
-        p2.run( args );
-    }
-
-    /** Field packageNames */
-    ArrayList packageNames;
-
-    /** Field packageClasses */
-    Hashtable packageClasses;
-
-    /** Field _outDir */
-    private String _outDir;
-
-    /** Field _title */
-    private String _title;
-
-    /** Field _verbose */
-    private boolean _verbose;
-}
-
-/**
- * An entry in the references.txt file
- */
-class Reference
-{
-
-    /**
-     * Constructor Reference
-     *
-     * @param line
-     */
-    Reference( String line )
-    {
-
-        StringTokenizer st = new StringTokenizer( line, "|" );
-
-        referentFileClass = st.nextToken();
-        referentClass = st.nextToken();
-        referentTag = st.nextToken();
-        referentType = st.nextToken();
-        referringPackage = st.nextToken();
-        referringClass = st.nextToken();
-        referringMethod = st.nextToken();
-        referringFile = st.nextToken();
-        referringLineNumber = st.nextToken();
-    }
-
-    /** Field referentFileClass */
-    String referentFileClass;
-
-    /** Field referentClass */
-    String referentClass;
-
-    /** Field referentType */
-    String referentType;
-
-    /** Field referentTag */
-    String referentTag;
-
-    /** Field referringPackage */
-    String referringPackage;
-
-    /** Field referringClass */
-    String referringClass;
-
-    /** Field referringMethod */
-    String referringMethod;
-
-    /** Field referringFile */
-    String referringFile;
-
-    /** Field referringLineNumber */
-    String referringLineNumber;
-}
-
-/**
- * Class ClassFile
- */
-class ClassFile
-{
-
-    /** Field className */
-    public String className;
-
-    /** Field fileName */
-    public String fileName;
-
-    /**
-     * Constructor ClassFile
-     *
-     * @param className
-     * @param fileName
-     */
-    public ClassFile( String className, String fileName )
-    {
-        this.className = className;
-        this.fileName = fileName;
     }
 }
