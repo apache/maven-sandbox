@@ -125,28 +125,28 @@ public class GenerateHTMLIndex
         }
         try
         {
+            fos.write( ( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" " +
+                "\"http://www.w3.org/TR/html4/loose.dtd\">" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<html>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<head>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<style type='text/css'>" + LINE_SEPARATOR ).getBytes() );
+            fos.write( ( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" + LINE_SEPARATOR ).getBytes() );
+            fos.write( ( "<style type=\"text/css\">" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( ".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */" + LINE_SEPARATOR )
                 .getBytes() );
             fos.write( ( ".NavBarCell1    { background-color:#EEEEFF;}/* Light mauve */" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "</style>" + LINE_SEPARATOR ).getBytes() );
-            fos
-                .write( ( "<TABLE WIDTH='100%'><TR><TD WIDTH='100%' CLASS='NavBarCell1'><H1>JavaScript Code Documentation</H1></TD></TR></TABLE>" + LINE_SEPARATOR )
-                    .getBytes() );
             fos.write( ( "<title>JavaScript Code Documentation</title>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "</head>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<body>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<H2>Index</H2>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<br>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<br>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<TABLE BORDER='1' CELLPADDING='3' CELLSPACING='0' WIDTH='100%'>" + LINE_SEPARATOR )
+            fos.write( ( "<TABLE BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">" + LINE_SEPARATOR )
                 .getBytes() );
-            fos.write( ( "<TR CLASS='TableHeadingColor'>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<TD ALIGN='left'><FONT SIZE='+2' WIDTH='30%'>" + LINE_SEPARATOR ).getBytes() );
+            fos.write( ( "<TR CLASS=\"TableHeadingColor\">" + LINE_SEPARATOR ).getBytes() );
+            fos.write( ( "<TD ALIGN=\"left\"><FONT SIZE=\"+2\">" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<B>Filename</B></FONT></TD>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<TD ALIGN='left'><FONT SIZE='+2' WIDTH='70%'>" + LINE_SEPARATOR ).getBytes() );
+            fos.write( ( "<TD ALIGN=\"left\"><FONT SIZE=\"+2\">" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<B>Summary</B></FONT></TD>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "</TR>" + LINE_SEPARATOR ).getBytes() );
 
@@ -170,10 +170,10 @@ public class GenerateHTMLIndex
                 file = (File) v.get( i );
 
                 fos.write( ( "<TR>" + LINE_SEPARATOR ).getBytes() );
-                fos.write( ( "<TD WIDTH='30%' BGCOLOR='#f3f3f3'><font face='Verdana'><b><a href='"
-                    + file.getName().substring( 0, file.getName().indexOf( "." ) ) + ".htm" + "'>" + file.getName()
+                fos.write( ( "<TD WIDTH=\"30%\" BGCOLOR=\"#f3f3f3\"><font face=\"Verdana\"><b><a href=\""
+                    + file.getName().substring( 0, file.getName().indexOf( "." ) ) + ".htm" + "\">" + file.getName()
                     + "</a></b></font></TD>" + LINE_SEPARATOR ).getBytes() );
-                fos.write( ( "<TD WIDTH='70%'>" + LINE_SEPARATOR ).getBytes() );
+                fos.write( ( "<TD WIDTH=\"70%\">" + LINE_SEPARATOR ).getBytes() );
 
                 try
                 {

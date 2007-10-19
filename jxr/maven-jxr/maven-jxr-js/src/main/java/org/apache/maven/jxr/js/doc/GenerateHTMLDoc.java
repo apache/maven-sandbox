@@ -77,24 +77,21 @@ public class GenerateHTMLDoc
         {
             fos.write( ( "<html>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<head>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<style type='text/css'>" + LINE_SEPARATOR ).getBytes() );
+            fos.write( ( "<style type=\"text/css\">" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( ".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */" + LINE_SEPARATOR )
                 .getBytes() );
             fos.write( ( ".NavBarCell1    { background-color:#EEEEFF;}/* Light mauve */" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "</style>" + LINE_SEPARATOR ).getBytes() );
-            fos
-                .write( ( "<TABLE WIDTH='100%'><TR><TD WIDTH='100%' CLASS='NavBarCell1'><H1>Javascript code documentation</H1></TD></TR></TABLE>" + LINE_SEPARATOR )
-                    .getBytes() );
             fos.write( ( "<title>Javascript code documentation</title>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "</head>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<body>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<H2>Filename: " + nomeArquivo + "</H2>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<br>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<br>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<TABLE BORDER='1' CELLPADDING='3' CELLSPACING='0' WIDTH='100%'>" + LINE_SEPARATOR )
+            fos.write( ( "<TABLE BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">" + LINE_SEPARATOR )
                 .getBytes() );
-            fos.write( ( "<TR CLASS='TableHeadingColor'>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<TD ALIGN='left' colspan='2'><FONT SIZE='+2'>" + LINE_SEPARATOR ).getBytes() );
+            fos.write( ( "<TR CLASS=\"TableHeadingColor\">" + LINE_SEPARATOR ).getBytes() );
+            fos.write( ( "<TD ALIGN=\"left\" colspan=\"2\"><FONT SIZE=\"+2\">" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "<B>Function Summary</B></FONT></TD>" + LINE_SEPARATOR ).getBytes() );
             fos.write( ( "</TR>" + LINE_SEPARATOR ).getBytes() );
             while ( br.ready() )
@@ -110,9 +107,9 @@ public class GenerateHTMLDoc
                 if ( null != stringReader && stringReader.indexOf( "/**" ) != -1 )
                 {
                     fos.write( ( "<TR>" + LINE_SEPARATOR ).getBytes() );
-                    fos.write( ( "<TD WIDTH='30%' BGCOLOR='#f3f3f3'><font face='Verdana'><b><span id='Function"
-                        + functionCount + "'></span></b></font></TD>" + LINE_SEPARATOR ).getBytes() );
-                    fos.write( ( "<TD WIDTH='70%'>" + LINE_SEPARATOR ).getBytes() );
+                    fos.write( ( "<TD WIDTH=\"30%\" BGCOLOR=\"#f3f3f3\"><font face=\"Verdana\"><b><span id=\"Function"
+                        + functionCount + "\"></span></b></font></TD>" + LINE_SEPARATOR ).getBytes() );
+                    fos.write( ( "<TD WIDTH=\"70%\">" + LINE_SEPARATOR ).getBytes() );
                     stringReader = br.readLine();
 
                     while ( null != stringReader && stringReader.indexOf( "*/" ) == -1 )
@@ -127,7 +124,7 @@ public class GenerateHTMLDoc
                                     if ( parameterList == false )
                                     {
                                         parameterList = true;
-                                        fos.write( "<font size='-1' face='Verdana'><b>Parameters: </b></font>"
+                                        fos.write( "<font size=\"-1\" face=\"Verdana\"><b>Parameters: </b></font>"
                                             .getBytes() );
                                         fos.write( "<BR>".getBytes() );
                                     }
@@ -141,7 +138,7 @@ public class GenerateHTMLDoc
                                     if ( useList == false )
                                     {
                                         useList = true;
-                                        fos.write( "<font size='-1' face='Verdana'><b>Uso: </b></font>".getBytes() );
+                                        fos.write( "<font size=\"-1\" face=\"Verdana\"><b>Uso: </b></font>".getBytes() );
                                         fos.write( "<BR>".getBytes() );
                                     }
                                     fos.write( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".getBytes() );
@@ -151,7 +148,7 @@ public class GenerateHTMLDoc
                                 }
                                 else if ( stringReader.indexOf( "return" ) != -1 )
                                 {
-                                    fos.write( "<font size='-1' face='Verdana'><b>Return type: </b></font>".getBytes() );
+                                    fos.write( "<font size=\"-1\" face=\"Verdana\"><b>Return type: </b></font>".getBytes() );
                                     fos
                                         .write( ( stringReader.substring( stringReader.indexOf( "* @return" ) + 10 ) + LINE_SEPARATOR )
                                             .getBytes() );
@@ -164,7 +161,7 @@ public class GenerateHTMLDoc
                             if ( description )
                             {
                                 description = false;
-                                fos.write( "<font size='-1' face='Verdana'><b>Description: </b></font>".getBytes() );
+                                fos.write( "<font size=\"-1\" face=\"Verdana\"><b>Description: </b></font>".getBytes() );
                             }
                             else
                                 fos.write( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".getBytes() );
@@ -194,15 +191,14 @@ public class GenerateHTMLDoc
                         }
                     }
                     fos.write( ( "</TD>" + LINE_SEPARATOR ).getBytes() );
-                    fos.write( ( "<script>document.all.Function" + functionCount + ".innerHTML = '" + functionName
-                        + "'; </script>" + LINE_SEPARATOR ).getBytes() );
+                    fos.write( ( "<script>document.all.Function" + functionCount + ".innerHTML = \"" + functionName
+                        + "\"; </script>" + LINE_SEPARATOR ).getBytes() );
                     functionCount++;
                     fos.write( ( "</TR>" + LINE_SEPARATOR ).getBytes() );
                 }
             }
             fos.write( ( "</TABLE>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( "</br>".getBytes() );
-            fos.write( ( "<a href='javascript:history.back()'><font size='+1'>Back</font></a>" + LINE_SEPARATOR )
+            fos.write( ( "<a href=\"javascript:history.back()\"><font size=\"+1\">Back</font></a>" + LINE_SEPARATOR )
                 .getBytes() );
             fos.write( "</body>".getBytes() );
             fos.write( "</html>".getBytes() );
