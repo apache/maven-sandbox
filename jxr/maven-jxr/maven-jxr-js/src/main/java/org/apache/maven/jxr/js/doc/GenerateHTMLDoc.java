@@ -36,35 +36,20 @@ import java.io.PrintWriter;
  */
 public class GenerateHTMLDoc
 {
-
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( GenerateHTMLDoc.class );
 
-    private static PrintWriter out;
-
-    private static BufferedReader br;
-
-    private static int functionCount = 0;
-
-    private static String functionName = "";
-
-    private static boolean parameterList = false;
-
-    private static boolean useList = false;
-
-    private boolean summary = true;
-
-    private boolean description = true;
-
-    public GenerateHTMLDoc( File fis, String destDir )
+    public GenerateHTMLDoc( File file, String destDir )
     {
         try
         {
-            String nomeArquivo = fis.getName();
+            String filename = file.getName();
+            PrintWriter out = null;
+            BufferedReader br = null;
             try
             {
-                out = new PrintWriter( new FileWriter( destDir + nomeArquivo.substring( 0, nomeArquivo.indexOf( "." ) ) + ".htm" ) );
-                br = new BufferedReader( new FileReader( fis ) );
+                out = new PrintWriter( new FileWriter( destDir + filename.substring( 0, filename.indexOf( "." ) ) + ".htm" ) );
+                br = new BufferedReader( new FileReader( file ) );
             }
             catch ( FileNotFoundException fnfe )
             {
@@ -80,7 +65,7 @@ public class GenerateHTMLDoc
             out.println( "<title>Javascript code documentation</title>" );
             out.println( "</head>" );
             out.println( "<body>" );
-            out.println( "<H2>Filename: " + nomeArquivo + "</H2>" );
+            out.println( "<H2>Filename: " + filename + "</H2>" );
             out.println( "<br>" );
             out.println( "<br>" );
             out.println( "<TABLE BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">" );
@@ -88,6 +73,10 @@ public class GenerateHTMLDoc
             out.println( "<TD ALIGN=\"left\" colspan=\"2\"><FONT SIZE=\"+2\">" );
             out.println( "<B>Function Summary</B></FONT></TD>" );
             out.println( "</TR>" );
+            
+            int functionCount = 0;
+            String functionName = "";
+            boolean summary = true;
             
             while ( br.ready() )
             {
@@ -106,6 +95,9 @@ public class GenerateHTMLDoc
                     out.println( "<TD WIDTH=\"70%\">" );
                     content = br.readLine();
 
+                    boolean description = true;
+                    boolean parameterList = false;
+                    boolean useList = false;
                     while ( null != content && content.indexOf( "*/" ) == -1 )
                     {
                         if ( content.indexOf( "* @" ) != -1 )
@@ -154,9 +146,6 @@ public class GenerateHTMLDoc
                         }
                         content = br.readLine();
                     }
-                    description = true;
-                    parameterList = false;
-                    useList = false;
                     while ( null != content && content.indexOf( "function" ) == -1 )
                     {
                         content = br.readLine();

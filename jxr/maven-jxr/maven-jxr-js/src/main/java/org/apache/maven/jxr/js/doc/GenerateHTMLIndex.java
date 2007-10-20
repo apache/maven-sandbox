@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -42,8 +44,6 @@ public class GenerateHTMLIndex
 {
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( GenerateHTMLIndex.class );
-
-    private static Vector v = new Vector();
 
     public GenerateHTMLIndex( String jSDir, String destDir )
         throws IllegalArgumentException
@@ -84,30 +84,22 @@ public class GenerateHTMLIndex
             destDir = destDir + "/";
         }
 
-        File file = new File( jSDir );
-
-        if ( !file.isDirectory() )
-        {
-            throw new IllegalArgumentException( "destDir has to be a directory" );
-        }
-
-        collectFiles( file, v );
+        List files = new ArrayList();
+        collectFiles( js, files );
 
         try
         {
             Writer writer = null;
             try
             {
-                writer = new FileWriter( destDir + "index.htm" ); // platform encoding
-    
+                writer = new FileWriter( new File( dest, "index.htm" ) ); // platform encoding
             }
             catch ( FileNotFoundException fnfe )
             {
                 try
                 {
-                    file = new File( destDir );
-                    file.mkdir();
-                    writer = new FileWriter( destDir + "index.htm" );
+                    dest.mkdir();
+                    writer = new FileWriter( new File( dest, "index.htm" ) );
                 }
                 catch ( FileNotFoundException e )
                 {
@@ -138,24 +130,24 @@ public class GenerateHTMLIndex
             out.println( "<TD ALIGN=\"left\"><FONT SIZE=\"+2\"><B>Summary</B></FONT></TD>" );
             out.println( "</TR>" );
 
-            for ( int i = 0; i < v.size(); i++ )
+            for ( int i = 0; i < files.size(); i++ )
             {
-                file = (File) v.get( i );
+                File file = (File) files.get( i );
                 GenerateHTMLDoc docGenerator = new GenerateHTMLDoc( file, destDir );
             }
 
             if ( log.isInfoEnabled() )
             {
-                log.info( "Number of .js files: " + v.size() );
+                log.info( "Number of .js files: " + files.size() );
             }
 
-            for ( int i = 0; i < v.size(); i++ )
+            for ( int i = 0; i < files.size(); i++ )
             {
+                File file = (File) files.get( i );
                 if ( log.isInfoEnabled() )
                 {
                     log.info( "file: " + file.getName() );
                 }
-                file = (File) v.get( i );
 
                 out.println( "<TR>" );
                 out.println( "<TD WIDTH=\"30%\" BGCOLOR=\"#f3f3f3\"><font face=\"Verdana\"><b><a href=\""
@@ -213,18 +205,18 @@ public class GenerateHTMLIndex
 
     }
 
-    private void collectFiles( File baseDir, Vector fileVector )
+    private static void collectFiles( File baseDir, List files )
     {
         File[] fileList = baseDir.listFiles();
         for ( int i = 0; i < fileList.length; i++ )
         {
             if ( fileList[i].isDirectory() )
             {
-                collectFiles( fileList[i], fileVector );
+                collectFiles( fileList[i], files );
             }
-            else if ( fileList[i].getName().indexOf( ".js" ) != -1 )
+            else if ( fileList[i].getName().endsWith( ".js" ) )
             {
-                v.addElement( fileList[i] );
+                files.add( fileList[i] );
             }
         }
     }
