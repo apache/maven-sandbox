@@ -28,6 +28,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * Class that mounts a Document in HTML as document
@@ -75,7 +76,6 @@ public class GenerateHTMLDoc
             out.println( "<td align=\"left\" colspan=\"2\"><font size=\"+2\"><b>Function Summary</b></font></td>" );
             out.println( "</tr>" );
             
-            int functionCount = 0;
             String functionName = "";
             boolean summary = true;
             
@@ -90,15 +90,14 @@ public class GenerateHTMLDoc
                 summary = false;
                 if ( null != content && content.indexOf( "/**" ) != -1 )
                 {
-                    out.println( "<tr>" );
-                    out.println( "<td width=\"30%\" bgcolor=\"#f3f3f3\"><font face=\"Verdana\"><b><span id=\"Function"
-                        + functionCount + "\"></span></b></font></td>" );
-                    out.println( "<td width=\"70%\">" );
-                    content = br.readLine();
-
                     boolean description = true;
                     boolean parameterList = false;
                     boolean useList = false;
+
+                    StringWriter docBuffer = new StringWriter();
+                    PrintWriter doc = new PrintWriter( docBuffer );
+
+                    content = br.readLine();
                     while ( null != content && content.indexOf( "*/" ) == -1 )
                     {
                         if ( content.indexOf( "* @" ) != -1 )
@@ -110,27 +109,27 @@ public class GenerateHTMLDoc
                                     if ( parameterList == false )
                                     {
                                         parameterList = true;
-                                        out.println( "<font size=\"-1\" face=\"Verdana\"><b>Parameters: </b></font><br>" );
+                                        doc.println( "<font size=\"-1\" face=\"Verdana\"><b>Parameters: </b></font><br>" );
                                     }
-                                    out.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
-                                    out.println( content.substring( content.indexOf( "* @param" ) + 9 ) );
+                                    doc.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
+                                    doc.println( content.substring( content.indexOf( "* @param" ) + 9 ) );
                                 }
                                 else if ( content.indexOf( "use" ) != -1 )
                                 {
                                     if ( useList == false )
                                     {
                                         useList = true;
-                                        out.println( "<font size=\"-1\" face=\"Verdana\"><b>Uso: </b></font><br>" );
+                                        doc.println( "<font size=\"-1\" face=\"Verdana\"><b>Uso: </b></font><br>" );
                                     }
-                                    out.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
-                                    out.println( content.substring( content.indexOf( "* @use" ) + 7 ) );
+                                    doc.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
+                                    doc.println( content.substring( content.indexOf( "* @use" ) + 7 ) );
                                 }
                                 else if ( content.indexOf( "return" ) != -1 )
                                 {
-                                    out.print( "<font size=\"-1\" face=\"Verdana\"><b>Return type: </b></font>" );
-                                    out.print( content.substring( content.indexOf( "* @return" ) + 10 ) );
+                                    doc.print( "<font size=\"-1\" face=\"Verdana\"><b>Return type: </b></font>" );
+                                    doc.print( content.substring( content.indexOf( "* @return" ) + 10 ) );
                                 }
-                                out.println( "<br>" );
+                                doc.println( "<br>" );
                             }
                         }
                         else
@@ -138,11 +137,11 @@ public class GenerateHTMLDoc
                             if ( description )
                             {
                                 description = false;
-                                out.println( "<font size=\"-1\" face=\"Verdana\"><b>Description: </b></font>" );
+                                doc.println( "<font size=\"-1\" face=\"Verdana\"><b>Description: </b></font>" );
                             }
                             else
-                                out.println( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
-                            out.println( content.substring( content.indexOf( "*" ) + 1 ) + "<br>" );
+                                doc.println( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
+                            doc.println( content.substring( content.indexOf( "*" ) + 1 ) + "<br>" );
                         }
                         content = br.readLine();
                     }
@@ -161,10 +160,13 @@ public class GenerateHTMLDoc
                             functionName = content.substring( content.indexOf( "function" ) + 9 );
                         }
                     }
+
+                    out.println( "<tr>" );
+                    out.println( "<td width=\"30%\" bgcolor=\"#f3f3f3\"><font face=\"Verdana\"><b>" + functionName + 
+                                 "</b></font></td>" );
+                    out.println( "<td width=\"70%\">" );
+                    out.println( docBuffer.getBuffer() );
                     out.println( "</td>" );
-                    out.println( "<script>document.all.Function" + functionCount + ".innerHTML = \"" + functionName
-                        + "\"; </script>" );
-                    functionCount++;
                     out.println( "</tr>" );
                 }
             }
