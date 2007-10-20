@@ -24,9 +24,10 @@ import org.apache.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Class that mounts a Document in HTML as document
@@ -39,13 +40,9 @@ public class GenerateHTMLDoc
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( GenerateHTMLDoc.class );
 
-    private static FileOutputStream fos;
+    private static PrintWriter out;
 
     private static BufferedReader br;
-
-    private static String LINE_SEPARATOR = String.valueOf( (char) 13 ) + String.valueOf( (char) 10 );
-
-    private static String stringReader;
 
     private static int functionCount = 0;
 
@@ -61,99 +58,87 @@ public class GenerateHTMLDoc
 
     public GenerateHTMLDoc( File fis, String destDir )
     {
-        String nomeArquivo = fis.getName();
         try
         {
-            fos = new FileOutputStream( destDir + nomeArquivo.substring( 0, nomeArquivo.indexOf( "." ) ) + ".htm" );
-            br = new BufferedReader( new FileReader( fis ) );
+            String nomeArquivo = fis.getName();
+            try
+            {
+                out = new PrintWriter( new FileWriter( destDir + nomeArquivo.substring( 0, nomeArquivo.indexOf( "." ) ) + ".htm" ) );
+                br = new BufferedReader( new FileReader( fis ) );
+            }
+            catch ( FileNotFoundException fnfe )
+            {
+                log.error( "FileNotFoundException: " + fnfe.getMessage(), fnfe );
+            }
 
-        }
-        catch ( FileNotFoundException fnfe )
-        {
-            log.error( "FileNotFoundException: " + fnfe.getMessage(), fnfe );
-        }
-
-        try
-        {
-            fos.write( ( "<html>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<head>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<style type=\"text/css\">" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( ".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */" + LINE_SEPARATOR )
-                .getBytes() );
-            fos.write( ( ".NavBarCell1    { background-color:#EEEEFF;}/* Light mauve */" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "</style>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<title>Javascript code documentation</title>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "</head>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<body>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<H2>Filename: " + nomeArquivo + "</H2>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<br>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<br>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<TABLE BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">" + LINE_SEPARATOR )
-                .getBytes() );
-            fos.write( ( "<TR CLASS=\"TableHeadingColor\">" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<TD ALIGN=\"left\" colspan=\"2\"><FONT SIZE=\"+2\">" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<B>Function Summary</B></FONT></TD>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "</TR>" + LINE_SEPARATOR ).getBytes() );
+            out.println( "<html>" );
+            out.println( "<head>" );
+            out.println( "<style type=\"text/css\">" );
+            out.println( ".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */" );
+            out.println( ".NavBarCell1    { background-color:#EEEEFF;}/* Light mauve */" );
+            out.println( "</style>" );
+            out.println( "<title>Javascript code documentation</title>" );
+            out.println( "</head>" );
+            out.println( "<body>" );
+            out.println( "<H2>Filename: " + nomeArquivo + "</H2>" );
+            out.println( "<br>" );
+            out.println( "<br>" );
+            out.println( "<TABLE BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">" );
+            out.println( "<TR CLASS=\"TableHeadingColor\">" );
+            out.println( "<TD ALIGN=\"left\" colspan=\"2\"><FONT SIZE=\"+2\">" );
+            out.println( "<B>Function Summary</B></FONT></TD>" );
+            out.println( "</TR>" );
+            
             while ( br.ready() )
             {
-                stringReader = br.readLine();
+                String content = br.readLine();
 
-                while ( summary && null != stringReader && stringReader.indexOf( "summary" ) == -1 )
+                while ( summary && null != content && content.indexOf( "summary" ) == -1 )
                 {
-                    stringReader = br.readLine();
-
+                    content = br.readLine();
                 }
                 summary = false;
-                if ( null != stringReader && stringReader.indexOf( "/**" ) != -1 )
+                if ( null != content && content.indexOf( "/**" ) != -1 )
                 {
-                    fos.write( ( "<TR>" + LINE_SEPARATOR ).getBytes() );
-                    fos.write( ( "<TD WIDTH=\"30%\" BGCOLOR=\"#f3f3f3\"><font face=\"Verdana\"><b><span id=\"Function"
-                        + functionCount + "\"></span></b></font></TD>" + LINE_SEPARATOR ).getBytes() );
-                    fos.write( ( "<TD WIDTH=\"70%\">" + LINE_SEPARATOR ).getBytes() );
-                    stringReader = br.readLine();
+                    out.println( "<TR>" );
+                    out.println( "<TD WIDTH=\"30%\" BGCOLOR=\"#f3f3f3\"><font face=\"Verdana\"><b><span id=\"Function"
+                        + functionCount + "\"></span></b></font></TD>" );
+                    out.println( "<TD WIDTH=\"70%\">" );
+                    content = br.readLine();
 
-                    while ( null != stringReader && stringReader.indexOf( "*/" ) == -1 )
+                    while ( null != content && content.indexOf( "*/" ) == -1 )
                     {
-
-                        if ( stringReader.indexOf( "* @" ) != -1 )
+                        if ( content.indexOf( "* @" ) != -1 )
                         {
-                            if ( ( stringReader.indexOf( "author" ) == -1 ) )
+                            if ( ( content.indexOf( "author" ) == -1 ) )
                             {
-                                if ( stringReader.indexOf( "param" ) != -1 )
+                                if ( content.indexOf( "param" ) != -1 )
                                 {
                                     if ( parameterList == false )
                                     {
                                         parameterList = true;
-                                        fos.write( "<font size=\"-1\" face=\"Verdana\"><b>Parameters: </b></font>"
-                                            .getBytes() );
-                                        fos.write( "<BR>".getBytes() );
+                                        out.println( "<font size=\"-1\" face=\"Verdana\"><b>Parameters: </b></font>" );
+                                        out.println( "<BR>" );
                                     }
-                                    fos.write( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".getBytes() );
-                                    fos
-                                        .write( ( stringReader.substring( stringReader.indexOf( "* @param" ) + 9 ) + LINE_SEPARATOR )
-                                            .getBytes() );
+                                    out.println( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
+                                    out.println( content.substring( content.indexOf( "* @param" ) + 9 ) );
                                 }
-                                else if ( stringReader.indexOf( "use" ) != -1 )
+                                else if ( content.indexOf( "use" ) != -1 )
                                 {
                                     if ( useList == false )
                                     {
                                         useList = true;
-                                        fos.write( "<font size=\"-1\" face=\"Verdana\"><b>Uso: </b></font>".getBytes() );
-                                        fos.write( "<BR>".getBytes() );
+                                        out.println( "<font size=\"-1\" face=\"Verdana\"><b>Uso: </b></font><BR>" );
                                     }
-                                    fos.write( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".getBytes() );
-                                    fos
-                                        .write( ( stringReader.substring( stringReader.indexOf( "* @use" ) + 7 ) + LINE_SEPARATOR )
-                                            .getBytes() );
+                                    out.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
+                                    out.println( content.substring( content.indexOf( "* @use" ) + 7 ) );
                                 }
-                                else if ( stringReader.indexOf( "return" ) != -1 )
+                                else if ( content.indexOf( "return" ) != -1 )
                                 {
-                                    fos.write( "<font size=\"-1\" face=\"Verdana\"><b>Return type: </b></font>".getBytes() );
-                                    fos
-                                        .write( ( stringReader.substring( stringReader.indexOf( "* @return" ) + 10 ) + LINE_SEPARATOR )
-                                            .getBytes() );
+                                    out.print( "<font size=\"-1\" face=\"Verdana\"><b>Return type: </b></font>" );
+                                    out.print( content.substring( content.indexOf( "* @return" ) + 10 ) );
                                 }
-                                fos.write( "<BR>".getBytes() );
+                                out.println( "<BR>" );
                             }
                         }
                         else
@@ -161,48 +146,45 @@ public class GenerateHTMLDoc
                             if ( description )
                             {
                                 description = false;
-                                fos.write( "<font size=\"-1\" face=\"Verdana\"><b>Description: </b></font>".getBytes() );
+                                out.println( "<font size=\"-1\" face=\"Verdana\"><b>Description: </b></font>" );
                             }
                             else
-                                fos.write( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".getBytes() );
-                            fos.write( ( stringReader.substring( stringReader.indexOf( "*" ) + 1 ) + LINE_SEPARATOR )
-                                .getBytes() );
-                            fos.write( "<BR>".getBytes() );
+                                out.println( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
+                            out.println( content.substring( content.indexOf( "*" ) + 1 ) + "<BR>" );
                         }
-                        stringReader = br.readLine();
+                        content = br.readLine();
                     }
                     description = true;
                     parameterList = false;
                     useList = false;
-                    while ( null != stringReader && stringReader.indexOf( "function" ) == -1 )
+                    while ( null != content && content.indexOf( "function" ) == -1 )
                     {
-                        stringReader = br.readLine();
+                        content = br.readLine();
                     }
-                    if ( stringReader.indexOf( "function" ) != -1 )
+                    if ( content.indexOf( "function" ) != -1 )
                     {
-                        if ( stringReader.indexOf( "{" ) != -1 )
+                        if ( content.indexOf( "{" ) != -1 )
                         {
-                            functionName = stringReader.substring( stringReader.indexOf( "function" ) + 9, stringReader
-                                .indexOf( "{" ) );
+                            functionName = content.substring( content.indexOf( "function" ) + 9, content.indexOf( "{" ) );
                         }
                         else
                         {
-                            functionName = stringReader.substring( stringReader.indexOf( "function" ) + 9 );
+                            functionName = content.substring( content.indexOf( "function" ) + 9 );
                         }
                     }
-                    fos.write( ( "</TD>" + LINE_SEPARATOR ).getBytes() );
-                    fos.write( ( "<script>document.all.Function" + functionCount + ".innerHTML = \"" + functionName
-                        + "\"; </script>" + LINE_SEPARATOR ).getBytes() );
+                    out.println( "</TD>" );
+                    out.println( "<script>document.all.Function" + functionCount + ".innerHTML = \"" + functionName
+                        + "\"; </script>" );
                     functionCount++;
-                    fos.write( ( "</TR>" + LINE_SEPARATOR ).getBytes() );
+                    out.println( "</TR>" );
                 }
             }
-            fos.write( ( "</TABLE>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<a href=\"javascript:history.back()\"><font size=\"+1\">Back</font></a>" + LINE_SEPARATOR )
-                .getBytes() );
-            fos.write( "</body>".getBytes() );
-            fos.write( "</html>".getBytes() );
+            out.println( "</TABLE>" );
+            out.println( "<a href=\"javascript:history.back()\"><font size=\"+1\">Back</font></a>" );
+            out.println( "</body>" );
+            out.println( "</html>" );
 
+            out.close();
         }
         catch ( IOException ioe )
         {

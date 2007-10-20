@@ -25,9 +25,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Vector;
 
 /**
@@ -41,21 +43,7 @@ public class GenerateHTMLIndex
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( GenerateHTMLIndex.class );
 
-    private static File file = null;
-
-    private static FileInputStream fis;
-
-    private static FileOutputStream fos;
-
-    private static BufferedReader br;
-
-    private static String stringReader;
-
-    private static String LINE_SEPARATOR = String.valueOf( (char) 13 ) + String.valueOf( (char) 10 );
-
     private static Vector v = new Vector();
-
-    private static GenerateHTMLDoc docGenerator;
 
     public GenerateHTMLIndex( String jSDir, String destDir )
         throws IllegalArgumentException
@@ -96,7 +84,7 @@ public class GenerateHTMLIndex
             destDir = destDir + "/";
         }
 
-        file = new File( jSDir );
+        File file = new File( jSDir );
 
         if ( !file.isDirectory() )
         {
@@ -107,53 +95,53 @@ public class GenerateHTMLIndex
 
         try
         {
-            fos = new FileOutputStream( destDir + "index.htm" );
-
-        }
-        catch ( FileNotFoundException fnfe )
-        {
+            Writer writer = null;
             try
             {
-                file = new File( destDir );
-                file.mkdir();
-                fos = new FileOutputStream( destDir + "index.htm" );
+                writer = new FileWriter( destDir + "index.htm" ); // platform encoding
+    
             }
-            catch ( FileNotFoundException e )
+            catch ( FileNotFoundException fnfe )
             {
-                log.error( "FileNotFoundException: " + e.getMessage(), e );
+                try
+                {
+                    file = new File( destDir );
+                    file.mkdir();
+                    writer = new FileWriter( destDir + "index.htm" );
+                }
+                catch ( FileNotFoundException e )
+                {
+                    log.error( "FileNotFoundException: " + e.getMessage(), e );
+                }
             }
-        }
-        try
-        {
-            fos.write( ( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" " +
-                "\"http://www.w3.org/TR/html4/loose.dtd\">" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<html>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<head>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<style type=\"text/css\">" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( ".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */" + LINE_SEPARATOR )
-                .getBytes() );
-            fos.write( ( ".NavBarCell1    { background-color:#EEEEFF;}/* Light mauve */" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "</style>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<title>JavaScript Code Documentation</title>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "</head>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<body>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<H2>Index</H2>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<br>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<br>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<TABLE BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">" + LINE_SEPARATOR )
-                .getBytes() );
-            fos.write( ( "<TR CLASS=\"TableHeadingColor\">" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<TD ALIGN=\"left\"><FONT SIZE=\"+2\">" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<B>Filename</B></FONT></TD>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<TD ALIGN=\"left\"><FONT SIZE=\"+2\">" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "<B>Summary</B></FONT></TD>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( ( "</TR>" + LINE_SEPARATOR ).getBytes() );
+    
+            PrintWriter out = new PrintWriter( writer );
+
+            out.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" " +
+                "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+            out.println( "<html>" );
+            out.println( "<head>" );
+            out.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
+            out.println( "<style type=\"text/css\">" );
+            out.println( ".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */" );
+            out.println( ".NavBarCell1    { background-color:#EEEEFF;}/* Light mauve */" );
+            out.println( "</style>" );
+            out.println( "<title>JavaScript Code Documentation</title>" );
+            out.println( "</head>" );
+            out.println( "<body>" );
+            out.println( "<H2>Index</H2>" );
+            out.println( "<br>" );
+            out.println( "<br>" );
+            out.println( "<TABLE BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">" );
+            out.println( "<TR CLASS=\"TableHeadingColor\">" );
+            out.println( "<TD ALIGN=\"left\"><FONT SIZE=\"+2\"><B>Filename</B></FONT></TD>" );
+            out.println( "<TD ALIGN=\"left\"><FONT SIZE=\"+2\"><B>Summary</B></FONT></TD>" );
+            out.println( "</TR>" );
 
             for ( int i = 0; i < v.size(); i++ )
             {
                 file = (File) v.get( i );
-                docGenerator = new GenerateHTMLDoc( file, destDir );
+                GenerateHTMLDoc docGenerator = new GenerateHTMLDoc( file, destDir );
             }
 
             if ( log.isInfoEnabled() )
@@ -169,38 +157,35 @@ public class GenerateHTMLIndex
                 }
                 file = (File) v.get( i );
 
-                fos.write( ( "<TR>" + LINE_SEPARATOR ).getBytes() );
-                fos.write( ( "<TD WIDTH=\"30%\" BGCOLOR=\"#f3f3f3\"><font face=\"Verdana\"><b><a href=\""
+                out.println( "<TR>" );
+                out.println( "<TD WIDTH=\"30%\" BGCOLOR=\"#f3f3f3\"><font face=\"Verdana\"><b><a href=\""
                     + file.getName().substring( 0, file.getName().indexOf( "." ) ) + ".htm" + "\">" + file.getName()
-                    + "</a></b></font></TD>" + LINE_SEPARATOR ).getBytes() );
-                fos.write( ( "<TD WIDTH=\"70%\">" + LINE_SEPARATOR ).getBytes() );
+                    + "</a></b></font></TD>" );
+                out.println( "<TD WIDTH=\"70%\">" );
 
                 try
                 {
-                    fis = new FileInputStream( file );
-                    br = new BufferedReader( new InputStreamReader( fis ) );
+                    FileInputStream fis = new FileInputStream( file );
+                    BufferedReader br = new BufferedReader( new InputStreamReader( fis ) ); // platform encoding
+                    String content;
 
                     while ( br.ready() )
                     {
-                        stringReader = br.readLine();
-                        if ( null != stringReader && stringReader.indexOf( "/**" ) != -1 )
+                        content = br.readLine();
+                        if ( null != content && content.indexOf( "/**" ) != -1 )
                         {
-                            stringReader = br.readLine();
-                            while ( null != stringReader && stringReader.indexOf( "*/" ) == -1 )
+                            content = br.readLine();
+                            while ( null != content && content.indexOf( "*/" ) == -1 )
                             {
-                                if ( stringReader.indexOf( "* @" ) != -1 )
+                                if ( content.indexOf( "* @" ) != -1 )
                                 {
-                                    if ( stringReader.indexOf( "summary" ) != -1 )
+                                    if ( content.indexOf( "summary" ) != -1 )
                                     {
-
-                                        fos
-                                            .write( ( stringReader
-                                                .substring( stringReader.indexOf( "* @summary" ) + 11 ) + LINE_SEPARATOR )
-                                                .getBytes() );
-                                        fos.write( "<BR>".getBytes() );
+                                        out.println( content.substring( content.indexOf( "* @summary" ) + 11 ) );
+                                        out.println( "<BR>" );
                                     }
                                 }
-                                stringReader = br.readLine();
+                                content = br.readLine();
                             }
                         }
                     }
@@ -211,14 +196,15 @@ public class GenerateHTMLIndex
                     log.error( "FileNotFoundException: " + fnfe.getMessage(), fnfe );
                 }
 
-                fos.write( ( "</TD>" + LINE_SEPARATOR ).getBytes() );
-                fos.write( ( "</TR>" + LINE_SEPARATOR ).getBytes() );
+                out.println( "</TD>" );
+                out.println( "</TR>" );
             }
 
-            fos.write( ( "</TABLE>" + LINE_SEPARATOR ).getBytes() );
-            fos.write( "</body>".getBytes() );
-            fos.write( "</html>".getBytes() );
+            out.println( "</TABLE>" );
+            out.println( "</body>" );
+            out.println( "</html>" );
 
+            out.close();
         }
         catch ( IOException ioe )
         {
