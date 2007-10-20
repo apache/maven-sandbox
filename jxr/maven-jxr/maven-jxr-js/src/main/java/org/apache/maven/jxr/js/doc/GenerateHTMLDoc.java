@@ -56,6 +56,8 @@ public class GenerateHTMLDoc
                 log.error( "FileNotFoundException: " + fnfe.getMessage(), fnfe );
             }
 
+            out.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" " +
+                "\"http://www.w3.org/TR/html4/loose.dtd\">" );
             out.println( "<html>" );
             out.println( "<head>" );
             out.println( "<style type=\"text/css\">" );
@@ -65,14 +67,13 @@ public class GenerateHTMLDoc
             out.println( "<title>Javascript code documentation</title>" );
             out.println( "</head>" );
             out.println( "<body>" );
-            out.println( "<H2>Filename: " + filename + "</H2>" );
+            out.println( "<h2>Filename: " + filename + "</h2>" );
             out.println( "<br>" );
             out.println( "<br>" );
-            out.println( "<TABLE BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">" );
-            out.println( "<TR CLASS=\"TableHeadingColor\">" );
-            out.println( "<TD ALIGN=\"left\" colspan=\"2\"><FONT SIZE=\"+2\">" );
-            out.println( "<B>Function Summary</B></FONT></TD>" );
-            out.println( "</TR>" );
+            out.println( "<table border=\"1\" cellpadding=\"3\" cellspacing=\"0\" width=\"100%\">" );
+            out.println( "<tr class=\"TableHeadingColor\">" );
+            out.println( "<td align=\"left\" colspan=\"2\"><font size=\"+2\"><b>Function Summary</b></font></td>" );
+            out.println( "</tr>" );
             
             int functionCount = 0;
             String functionName = "";
@@ -89,10 +90,10 @@ public class GenerateHTMLDoc
                 summary = false;
                 if ( null != content && content.indexOf( "/**" ) != -1 )
                 {
-                    out.println( "<TR>" );
-                    out.println( "<TD WIDTH=\"30%\" BGCOLOR=\"#f3f3f3\"><font face=\"Verdana\"><b><span id=\"Function"
-                        + functionCount + "\"></span></b></font></TD>" );
-                    out.println( "<TD WIDTH=\"70%\">" );
+                    out.println( "<tr>" );
+                    out.println( "<td width=\"30%\" bgcolor=\"#f3f3f3\"><font face=\"Verdana\"><b><span id=\"Function"
+                        + functionCount + "\"></span></b></font></td>" );
+                    out.println( "<td width=\"70%\">" );
                     content = br.readLine();
 
                     boolean description = true;
@@ -109,10 +110,9 @@ public class GenerateHTMLDoc
                                     if ( parameterList == false )
                                     {
                                         parameterList = true;
-                                        out.println( "<font size=\"-1\" face=\"Verdana\"><b>Parameters: </b></font>" );
-                                        out.println( "<BR>" );
+                                        out.println( "<font size=\"-1\" face=\"Verdana\"><b>Parameters: </b></font><br>" );
                                     }
-                                    out.println( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
+                                    out.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
                                     out.println( content.substring( content.indexOf( "* @param" ) + 9 ) );
                                 }
                                 else if ( content.indexOf( "use" ) != -1 )
@@ -120,7 +120,7 @@ public class GenerateHTMLDoc
                                     if ( useList == false )
                                     {
                                         useList = true;
-                                        out.println( "<font size=\"-1\" face=\"Verdana\"><b>Uso: </b></font><BR>" );
+                                        out.println( "<font size=\"-1\" face=\"Verdana\"><b>Uso: </b></font><br>" );
                                     }
                                     out.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
                                     out.println( content.substring( content.indexOf( "* @use" ) + 7 ) );
@@ -130,7 +130,7 @@ public class GenerateHTMLDoc
                                     out.print( "<font size=\"-1\" face=\"Verdana\"><b>Return type: </b></font>" );
                                     out.print( content.substring( content.indexOf( "* @return" ) + 10 ) );
                                 }
-                                out.println( "<BR>" );
+                                out.println( "<br>" );
                             }
                         }
                         else
@@ -142,7 +142,7 @@ public class GenerateHTMLDoc
                             }
                             else
                                 out.println( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
-                            out.println( content.substring( content.indexOf( "*" ) + 1 ) + "<BR>" );
+                            out.println( content.substring( content.indexOf( "*" ) + 1 ) + "<br>" );
                         }
                         content = br.readLine();
                     }
@@ -161,14 +161,14 @@ public class GenerateHTMLDoc
                             functionName = content.substring( content.indexOf( "function" ) + 9 );
                         }
                     }
-                    out.println( "</TD>" );
+                    out.println( "</td>" );
                     out.println( "<script>document.all.Function" + functionCount + ".innerHTML = \"" + functionName
                         + "\"; </script>" );
                     functionCount++;
-                    out.println( "</TR>" );
+                    out.println( "</tr>" );
                 }
             }
-            out.println( "</TABLE>" );
+            out.println( "</table>" );
             out.println( "<a href=\"javascript:history.back()\"><font size=\"+1\">Back</font></a>" );
             out.println( "</body>" );
             out.println( "</html>" );

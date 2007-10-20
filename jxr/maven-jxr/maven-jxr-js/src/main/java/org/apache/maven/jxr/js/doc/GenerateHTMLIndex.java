@@ -32,7 +32,6 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Searches all javascript files and creates a index HTML
@@ -121,14 +120,14 @@ public class GenerateHTMLIndex
             out.println( "<title>JavaScript Code Documentation</title>" );
             out.println( "</head>" );
             out.println( "<body>" );
-            out.println( "<H2>Index</H2>" );
+            out.println( "<h2>Index</h2>" );
             out.println( "<br>" );
             out.println( "<br>" );
-            out.println( "<TABLE BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">" );
-            out.println( "<TR CLASS=\"TableHeadingColor\">" );
-            out.println( "<TD ALIGN=\"left\"><FONT SIZE=\"+2\"><B>Filename</B></FONT></TD>" );
-            out.println( "<TD ALIGN=\"left\"><FONT SIZE=\"+2\"><B>Summary</B></FONT></TD>" );
-            out.println( "</TR>" );
+            out.println( "<table border=\"1\" cellpadding=\"3\" cellspacing=\"0\" width=\"100%\">" );
+            out.println( "<tr class=\"TableHeadingColor\">" );
+            out.println( "<td align=\"left\"><font size=\"+2\"><b>Filename</b></font></td>" );
+            out.println( "<td align=\"left\"><font size=\"+2\"><b>Summary</b></font></td>" );
+            out.println( "</tr>" );
 
             for ( int i = 0; i < files.size(); i++ )
             {
@@ -149,11 +148,11 @@ public class GenerateHTMLIndex
                     log.info( "file: " + file.getName() );
                 }
 
-                out.println( "<TR>" );
-                out.println( "<TD WIDTH=\"30%\" BGCOLOR=\"#f3f3f3\"><font face=\"Verdana\"><b><a href=\""
+                out.println( "<tr>" );
+                out.println( "<td width=\"30%\" bgcolor=\"#f3f3f3\"><font face=\"Verdana\"><b><a href=\""
                     + file.getName().substring( 0, file.getName().indexOf( "." ) ) + ".htm" + "\">" + file.getName()
-                    + "</a></b></font></TD>" );
-                out.println( "<TD WIDTH=\"70%\">" );
+                    + "</a></b></font></td>" );
+                out.println( "<td width=\"70%\">" );
 
                 try
                 {
@@ -169,13 +168,10 @@ public class GenerateHTMLIndex
                             content = br.readLine();
                             while ( null != content && content.indexOf( "*/" ) == -1 )
                             {
-                                if ( content.indexOf( "* @" ) != -1 )
+                                if ( content.indexOf( "* @" ) != -1 && content.indexOf( "summary" ) != -1 )
                                 {
-                                    if ( content.indexOf( "summary" ) != -1 )
-                                    {
-                                        out.println( content.substring( content.indexOf( "* @summary" ) + 11 ) );
-                                        out.println( "<BR>" );
-                                    }
+                                    out.println( content.substring( content.indexOf( "* @summary" ) + 11 ) );
+                                    out.println( "<br>" );
                                 }
                                 content = br.readLine();
                             }
@@ -188,11 +184,11 @@ public class GenerateHTMLIndex
                     log.error( "FileNotFoundException: " + fnfe.getMessage(), fnfe );
                 }
 
-                out.println( "</TD>" );
-                out.println( "</TR>" );
+                out.println( "</td>" );
+                out.println( "</tr>" );
             }
 
-            out.println( "</TABLE>" );
+            out.println( "</table>" );
             out.println( "</body>" );
             out.println( "</html>" );
 
