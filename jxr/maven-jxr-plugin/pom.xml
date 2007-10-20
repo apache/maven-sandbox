@@ -27,7 +27,7 @@ under the License.
     <groupId>org.apache.maven.jxr</groupId>
     <artifactId>maven-jxr</artifactId>
     <version>3.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <relativePath>../maven-jxr/pom.xml</relativePath>
   </parent>
 
   <groupId>org.apache.maven.plugins</groupId>

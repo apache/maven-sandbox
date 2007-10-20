@@ -42,7 +42,6 @@ under the License.
     <module>maven-jxr-ant</module>
     <module>maven-jxr-java</module>
     <module>maven-jxr-js</module>
-    <module>maven-jxr-plugin</module>
   </modules>
 
   <dependencies>
