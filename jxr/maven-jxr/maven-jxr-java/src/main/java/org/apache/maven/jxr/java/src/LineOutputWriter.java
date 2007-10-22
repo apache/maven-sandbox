@@ -148,7 +148,7 @@ public class LineOutputWriter
         }
 
         // add linenum tag
-        lineString = "<a href=\"#" + _lineNumber + "\" name=" + lineString + " class=\"linenum\">" + lineString;
+        lineString = "<a href=\"#" + _lineNumber + "\" name=\"" + lineString + "\" class=\"linenum\">" + lineString;
         lineString += "</a>";
         lineString += spacing;
 
