@@ -62,29 +62,29 @@ public class CatalogArchetypeDataSinkTest
         assertEquals( "http://magicbunny.com/maven2", a1.getRepository()  );
     }
 
-    public void testPuttingTheWikiSourceIntoACatalogSink()
-        throws Exception
-    {
-        Writer writer = new StringWriter();
-
-        ArchetypeDataSink sink = new CatalogArchetypeDataSink();
-
-        Properties p = new Properties();
-
-        p.setProperty( WikiArchetypeDataSource.URL, new File( getBasedir(), "test/sources/wiki-source.txt" ).toURI().toURL().toExternalForm() );
-
-        sink.putArchetypes( new WikiArchetypeDataSource(), null , writer );
-
-        StringReader reader = new StringReader( writer.toString() );
-
-        ArchetypeCatalogXpp3Reader catalogReader = new ArchetypeCatalogXpp3Reader();
-
-        ArchetypeCatalog catalog = catalogReader.read( reader );
-
-        Archetyper archetype = (Archetyper) lookup( Archetyper.ROLE );
-
-        int size = archetype.getAvailableArchetypes().size();
-
-        assertEquals( size, catalog.getArchetypes().size() );
-    }
+//    public void testPuttingTheWikiSourceIntoACatalogSink()
+//        throws Exception
+//    {
+//        Writer writer = new StringWriter();
+//
+//        ArchetypeDataSink sink = new CatalogArchetypeDataSink();
+//
+//        Properties p = new Properties();
+//
+//        p.setProperty( WikiArchetypeDataSource.URL, new File( getBasedir(), "test/sources/wiki-source.txt" ).toURI().toURL().toExternalForm() );
+//
+//        sink.putArchetypes( new WikiArchetypeDataSource(), null , writer );
+//
+//        StringReader reader = new StringReader( writer.toString() );
+//
+//        ArchetypeCatalogXpp3Reader catalogReader = new ArchetypeCatalogXpp3Reader();
+//
+//        ArchetypeCatalog catalog = catalogReader.read( reader );
+//
+//        Archetyper archetype = (Archetyper) lookup( Archetyper.ROLE );
+//
+//        int size = archetype.getAvailableArchetypes().size();
+//
+//        assertEquals( size, catalog.getArchetypes().size() );
+//    }
 }
