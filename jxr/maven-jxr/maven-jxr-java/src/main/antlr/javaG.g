@@ -176,8 +176,15 @@ tokens {
     // We need a symbol table to track definitions
     private SymbolTable symbolTable;
 
-    // This method decides what action to take based on the type of
-    //   file we are looking at
+    /**
+     * This method decides what action to take based on the type of file we are looking at.
+     *
+     * @param f a directory that contains java files or a java file.
+     * @param symbolTable object keeps track of all symbols encountered while parsing a file.
+     * @param doRecurse true to process sub directory
+     * @param listener listener on the current file that lexer processes.
+     * @throws Exception if any
+     */
     public static void doFile( File f, SymbolTable symbolTable, boolean doRecurse, FileListener listener )
         throws Exception
     {
@@ -206,7 +213,13 @@ tokens {
         }
     }
 
-    // Here's where we do the real work...
+    /**
+     * Here's where we do the real work...
+     *
+     * @param s an input stream
+     * @param symbolTable object keeps track of all symbols encountered while parsing a file.
+     * @throws Exception if any
+     */
     public static void parseFile( InputStream s, SymbolTable symbolTable )
         throws Exception
     {
@@ -235,7 +248,11 @@ tokens {
         }
     }
 
-    // Tell the parser which symbol table to use
+    /**
+     * Tell the parser which symbol table to use.
+     *
+     * @param symbolTable new symbolTable to use.
+     */
     public void setSymbolTable( SymbolTable symbolTable )
     {
         this.symbolTable = symbolTable;
@@ -250,76 +267,170 @@ tokens {
     //   few have special function.
     //-------------------------------------------------------------------------
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @see SymbolTable#popScope()
+     */
     public void popScope()
     {
         symbolTable.popScope();
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @see SymbolTable#popAllScopes()
+     */
     public void endFile()
     {
         symbolTable.popAllScopes();
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param tok an Antlr Java token
+     * @see SymbolTable#defineBlock(JavaToken)
+     */
     public void defineBlock( JavaToken tok )
     {
         symbolTable.defineBlock( tok );
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param t an Antlr Java token
+     * @see SymbolTable#definePackage(JavaToken)
+     */
     public void definePackage( JavaToken t )
     {
         symbolTable.definePackage( t );
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param t an Antlr Java token
+     * @see SymbolTable#defineLabel(JavaToken)
+     */
     public void defineLabel( JavaToken t )
     {
         symbolTable.defineLabel( t );
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @see SymbolTable#useDefaultPackage()
+     */
     public void useDefaultPackage()
     {
         symbolTable.useDefaultPackage();
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param t an Antlr Java token
+     * @see SymbolTable#reference(JavaToken)
+     */
     public void reference( JavaToken t )
     {
         symbolTable.reference( t );
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @see SymbolTable#setNearestClassScope()
+     */
     public void setNearestClassScope()
     {
         symbolTable.setNearestClassScope();
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param exceptions SymbolTable exceptions vector
+     * @see SymbolTable#endMethodHead(JavaVector)
+     */
     public void endMethodHead( JavaVector exceptions )
     {
         symbolTable.endMethodHead( exceptions );
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param theClass an Antlr Java token
+     * @return a Symtab DummyClass
+     * @see SymbolTable#getDummyClass(JavaToken)
+     */
     public DummyClass dummyClass( JavaToken theClass )
     {
         return symbolTable.getDummyClass( theClass );
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param theClass an Antlr Java token
+     * @param superClass an Antlr Java token
+     * @param interfaces SymbolTable interface vector
+     * @see SymbolTable#defineClass(JavaToken, JavaToken, JavaVector)
+     */
     public void defineClass( JavaToken theClass, JavaToken superClass, JavaVector interfaces )
     {
         symbolTable.defineClass( theClass, superClass, interfaces );
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param theInterface an Antlr Java token
+     * @param subInterfaces SymbolTable interface vector
+     * @see SymbolTable#defineInterface(JavaToken, JavaVector)
+     */
     public void defineInterface( JavaToken theInterface, JavaVector subInterfaces )
     {
         symbolTable.defineInterface( theInterface, subInterfaces );
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param theVariable an Antlr Java token
+     * @param type an Antlr Java token
+     * @see SymbolTable#defineVar(JavaToken, JavaToken)
+     */
     public void defineVar( JavaToken theVariable, JavaToken type )
     {
         symbolTable.defineVar( theVariable, type );
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param theMethod an Antlr Java token
+     * @param type an Antlr Java token
+     * @see SymbolTable#defineMethod(JavaToken, JavaToken)
+     */
     public void defineMethod( JavaToken theMethod, JavaToken type )
     {
         symbolTable.defineMethod( theMethod, type );
     }
 
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param id an Antlr Java token
+     * @param className the class name
+     * @param packageName the package name
+     * @see SymbolTable#addImport(JavaToken, String, String)
+     */
     public void addImport( JavaToken id, String className, String packageName )
     {
         symbolTable.addImport( id, className, packageName );
@@ -1479,40 +1590,61 @@ options {
 
 /* --- XR: Start Xref additions --- */
 {
-  protected SymbolTable symbolTable;
-  protected int ccStart;
-  protected int clStart;
+    protected SymbolTable symbolTable;
+    protected int ccStart;
+    protected int clStart;
 
-  // Tell the parser which symbol table to use
-  public void setSymbolTable( SymbolTable symbolTable )
-  {
-      this.symbolTable = symbolTable;
-  }
+    /**
+     * Tell the parser which symbol table to use.
+     *
+     * @param symbolTable new symbolTable to use.
+     */
+    public void setSymbolTable( SymbolTable symbolTable )
+    {
+        this.symbolTable = symbolTable;
+    }
 
-  public void defineComment( int line,int column, String text )
-  {
-      symbolTable.defineComment(line,column, text);
-  }
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param line
+     * @param column
+     * @param text
+     * @see SymbolTable#defineComment(int, int, String)
+     */
+    public void defineComment( int line, int column, String text )
+    {
+        symbolTable.defineComment(line, column, text);
+    }
 
-  public void defineLiteral( int line, int column, String text )
-  {
-      symbolTable.defineLiteral( line,column, text );
-  }
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param line
+     * @param column
+     * @param text
+     * @see SymbolTable#defineLiteral(int, int, String)
+     */
+    public void defineLiteral( int line, int column, String text )
+    {
+        symbolTable.defineLiteral( line, column, text );
+    }
 
-  // Test the token text against the literals table
-  // Override this method to perform a different literals test
-  public int testLiteralsTable( int ttype )
-  {
-      hashString.setBuffer( text.getBuffer(), text.length() );
-      Integer literalsIndex = (Integer) literals.get( hashString );
-      if ( literalsIndex != null )
-      {
-          symbolTable.defineKeyword( getLine(), getColumn() - text.length(), new String( text.getBuffer(), 0, text
-              .length() ) );
-          ttype = literalsIndex.intValue();
-      }
-      return ttype;
-  }
+    /** {@inheritDoc} */
+    public int testLiteralsTable( int ttype )
+    {
+        // Test the token text against the literals table
+        // Override this method to perform a different literals test
+        hashString.setBuffer( text.getBuffer(), text.length() );
+        Integer literalsIndex = (Integer) literals.get( hashString );
+        if ( literalsIndex != null )
+        {
+            symbolTable.defineKeyword( getLine(), getColumn() - text.length(), new String( text.getBuffer(), 0, text
+                .length() ) );
+            ttype = literalsIndex.intValue();
+        }
+        return ttype;
+    }
 }
 /* --- XR: End Xref additions --- */
 
