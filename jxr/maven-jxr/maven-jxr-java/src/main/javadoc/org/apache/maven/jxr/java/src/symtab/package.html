@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements.  See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership.  The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Symbol Table Classes</title>
+  </head>
+
+  <body link="#0000FF" vlink="#800080">
+    <h2>Symbol Table Classes</h2>
+
+    <p>This page describes the classes used by our symbol table
+    implementation.&nbsp; We present a table of all symbol table
+    classes and a class diagram representing the relationships
+    between these classes.</p>
+
+    <table border="1" cellspacing="1" width="623">
+      <tr>
+        <td width="21%"><a href="SymbolTable.html"><font
+        size="2" face="Courier New">SymbolTable</font></a></td>
+        <td width="79%">This is the main class in the <tt>org.apache.maven.jxr.java.src.symtab</tt>
+        package.&nbsp; It provides a list of all packages that
+        have been parsed, a stack representing the current
+        lexical scope, and a table of unique <tt>String</tt>s
+        that have been read during the parse. &nbsp; This is the
+        source of all symbol lookups; when resolving references,
+        the requester asks the <tt>SymbolTable</tt> to look for a
+        name, and it then searches the scope stack and the parsed
+        packages to find the name.&nbsp; The <tt>SymbolTable</tt>
+        also provides several methods to create instances of the
+        other classes used in the symbol table package.</td>
+      </tr>
+      <tr>
+        <td width="21%">StringTable<font
+        size="2" face="Courier New">StringTable</font></td>
+        <td width="79%">When parsing a source file, the same
+        strings usually occur again and again.&nbsp; Rather than
+        store these <tt>String</tt>s as separate <tt>String</tt>
+        instances, we store each unique <tt>String</tt> in the <tt>StringTable</tt>
+        for more efficient use of memory.</td>
+      </tr>
+      <tr>
+        <td width="21%">JavaStack<font
+        size="2" face="Courier New">Stack</font></td>
+        <td width="79%">This is a <tt>java.util.Stack</tt> that
+        keeps track of the nested scopes containing the current
+        parse position.&nbsp; As Java constructs such as classes,
+        methods and packages are recognized, the parser asks the <tt>SymbolTable</tt>
+        to push a new containing scope on the stack.&nbsp; This
+        stack provides an appropriate lookup mechanism for most
+        names. &nbsp; When a name is read, the <tt>SymbolTable</tt>'s
+        <tt>lookup</tt> method will check each scope on the stack
+        (from the most-nested scope to the outermost scope) to
+        see if the name is found inside that scope.</td>
+      </tr>
+      <tr>
+        <td width="21%"><a
+        href="Occurrence.html"><font
+        size="2" face="Courier New">Occurrence</font></a></td>
+        <td width="79%">This class identifies a line in a source
+        file.&nbsp; It is used to store the location of
+        definition for a class, interface, package, method or
+        variable, and references to those constructs.</td>
+      </tr>
+      <tr>
+        <td width="21%"><a
+        href="Definition.html"><font
+        size="2" face="Courier New">Definition</font></a></td>
+        <td width="79%">Every Java construct stored in the symbol
+        table is a <tt>Definition</tt>. &nbsp; This class
+        provides a common base for all symbol definitions, and
+        includes information such as an <tt>Occurrence</tt> to
+        track the location where the symbol was defined, a list
+        of references to the symbol and its name.</td>
+      </tr>
+      <tr>
+        <td width="21%"><a
+        href="ScopedDef.html"><font
+        size="2" face="Courier New">ScopedDef</font></a></td>
+        <td width="79%">Some symbols can actually contain
+        definitions of other symbols.&nbsp; For example, a class
+        can contain definitions for variables and even other
+        classes.&nbsp; These types of symbols are grouped into a
+        common base class called a <tt>ScopedDef</tt>.&nbsp; <tt>ScopedDef</tt>
+        keeps a list of other constructs that were defined within
+        it.&nbsp; <tt>ScopedDef</tt> objects are the objects that
+        are stored in the scope <tt>Stack</tt> for name lookup.</td>
+      </tr>
+      <tr>
+        <td width="21%">HasImports<font
+        size="2" face="Courier New">HasImports</font></td>
+        <td width="79%">A further extension of a <tt>ScopedDef</tt>
+        is one that <tt>HasImports</tt>.&nbsp; A <tt>HasImports</tt>
+        object is one that makes use of Java's import statements
+        to access names in other packages.&nbsp; <tt>HasImports</tt>
+        keeps a list of packages and classes that are names in
+        Java import statements.&nbsp; Classes and interfaces are
+        the constructs that are grouped under this base class.</td>
+      </tr>
+      <tr>
+        <td width="21%"><a
+        href="ClassDef.html"><font
+        size="2" face="Courier New">ClassDef</font></a></td>
+        <td width="79%">This is the definition of a Java
+        Class.&nbsp; Classes can have a superclass (a reference
+        to another <tt>ClassDef</tt>), a list of interfaces that
+        it implements, and a list of other classes that extend
+        it.</td>
+      </tr>
+      <tr>
+        <td width="21%"><a
+        href="ClassDef.html"><font
+        size="2" face="Courier New">InterfaceDef</font></a></td>
+        <td width="79%">This represents a Java interface.&nbsp;
+        Interfaces can have several super-interfaces, a list of
+        classes that implement it, and a list of other<tt>
+        InterfaceDef</tt>s that extend it.&nbsp; (Note that this
+        class has been merged with <tt>ClassDef</tt> for this
+        version of the cross-reference tool.)</td>
+      </tr>
+      <tr>
+        <td width="21%">PrimitiveDef<font
+        size="2" face="Courier New">PrimitiveDef</font></td>
+        <td width="79%">Java has several primitive types, such as
+        int, long and boolean. &nbsp; When variables or constants
+        of these types are passed to a method, widening
+        conversions can be performed to make the actual
+        parameters match the formal parameters of the
+        method.&nbsp; This behavior is very similar to the
+        process in which objects can be widened to their
+        superclass type to match a formal parameter type.&nbsp;
+        To take advantage of this similarity, <tt>PrimitiveDef</tt>
+        is a subclass of <tt>ClassDef</tt>, and each primitive
+        type is made a subclass of a primitive type to which it
+        can widen.<p>Note that because method invocation is
+        determined by parameter counts, these conversions are not
+        used in the cross-reference tool.&nbsp; However, this
+        inheritance relationship remains to demonstrate how you
+        can benefit from watching for similarities in how symbols
+        are handled.</p>
+        </td>
+      </tr>
+      <tr>
+        <td width="21%"><a
+        href="BlockDef.html"><font
+        size="2" face="Courier New">BlockDef</font></a></td>
+        <td width="79%">This is a wrapper for an unnamed { }
+        delimited block of statements. &nbsp; It provides a scope
+        for nested variable definitions.</td>
+      </tr>
+      <tr>
+        <td width="21%"><a
+        href="PackageDef.html"><font
+        size="2" face="Courier New">PackageDef</font></a></td>
+        <td width="79%">A package in Java is a collection of
+        classes and interfaces.&nbsp; The contents of a package
+        may be spread across several files, each with the same
+        &quot;package&quot; statement at the top.&nbsp; Our <tt>SymbolTable</tt>
+        collects <tt>PackageDef</tt> objects into a list of all
+        packages that have been parsed or referenced.&nbsp; In
+        addition, <tt>PackageDef</tt> objects can be referenced
+        from import statements (which will be searched when a
+        class is not found in any other context during symbol
+        lookup.)</td>
+      </tr>
+      <tr>
+        <td width="21%"><a
+        href="MethodDef.html"><font
+        size="2" face="Courier New">MethodDef</font></a></td>
+        <td width="79%">This represents a Java method.&nbsp; It
+        contains a list of parameters and a return type (which is
+        another <tt>Definition</tt>.)&nbsp; Methods can have the
+        same name as other methods and variables in a class or
+        interface; their parameters (or lack thereof) distinguish
+        them from one another.</td>
+      </tr>
+      <tr>
+        <td width="21%"><a
+        href="VariableDef.html"><font
+        size="2" face="Courier New">VariableDef</font></a></td>
+        <td width="79%">A variable defined in a Java source
+        file.&nbsp; This can be a class or instance variable
+        (defined within a class), a local variable (defined
+        within a method) or a method parameter.&nbsp; Variables
+        have a type associated with them.</td>
+      </tr>
+      <tr>
+        <td width="21%">ArrayDef<font
+        size="2" face="Courier New">ArrayDef</font></td>
+        <td width="79%">An array in a Java source file.&nbsp;
+        (Note that this class is not currently used, but is
+        provided as an example of a possible extension to the
+        tool.)</td>
+      </tr>
+      <tr>
+        <td width="21%">LabelDef<font
+        size="2" face="Courier New">LabelDef</font></td>
+        <td width="79%">A label that appears on a java
+        loop.&nbsp; It can be referred to in a <tt>break</tt> or <tt>continue</tt>
+        statement.</td>
+      </tr>
+      <tr>
+        <td width="21%"><a
+        href="MultiDef.html"><font
+        size="2" face="Courier New">MultiDef</font></a></td>
+        <td width="79%">Java allows methods to have the same name
+        as a variable or another method. &nbsp; The
+        distinguishing features are the parameters (or lack
+        thereof).&nbsp; When we find two symbols with the same
+        name in a scope, we create a <tt>MultiDef</tt>, which
+        contains a <tt>Vector</tt> that will keep track of all
+        components that share that name.&nbsp; <tt>MultiDef</tt>
+        provides lookup methods that distinguish which symbol is
+        the correct symbol based on the number of parameters.</td>
+      </tr>
+    </table>
+
+    <p>Note that in the final tool, the <tt>ClassDef</tt> and <tt>InterfaceDef</tt>
+    classes were combined into one.&nbsp; In an extended
+    cross-reference tool, these would remain independent classes.</p>
+
+    <p align="center">&nbsp;</p>
+
+    <p align="center"><img src="doc-files/symtab.gif" alt="symtab.gif (36420 bytes)"
+    width="531" height="768"></p>
+  </body>
+</html>
