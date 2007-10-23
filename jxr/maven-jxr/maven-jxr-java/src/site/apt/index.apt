@@ -33,7 +33,8 @@ Maven JXR Java
 * Brief History
 
  This original code comes from the defunct {{{http://jakarta.apache.org/alexandria/}Apache Jakarta Alexandria}} project,
- and was initially based on the {{{http://javasrc.sourceforge.net/}Javasrc}} project.
+ and was initially based on the {{{http://javasrc.sourceforge.net/}Javasrc}} project which itself was based on an article
+ written for the Java Developer's Connection: "Parsers, Part IV: A Java Cross-Reference Tool".
  See the {{{http://www.mail-archive.com/alexandria-dev@jakarta.apache.org/msg04256.html}Alexandria-dev mail list}}
  for CVS commits and see the {{{http://sourceforge.net/forum/message.php?msg_id=1552505}Javasrc Forum}}
  wherein nicolaken talked about a code grant to ASF.
@@ -42,6 +43,11 @@ Maven JXR Java
  See the {{{http://www.nabble.com/-Proposal--decide-the-future-of-forrestdoc-tf4060050.html}Forrest thread}} and the
  {{{http://www.nabble.com/Forrestdoc-and-Maven-JXR-tf3864888s177.html}Maven thread}}.
 
+* References
+
+   * Stanchfield, S., and Parr, T. {{{SeriesPt4.pdf}Parsers, Part IV: A Java Cross-Reference Tool}}. December 1997.
+    Original files {{{SeriesPt4-xref.zip}here}}.
+
 * Examples
 
-   * {{{examples/ant.html}Ant}}: Some Ant example.
+   * {{{examples/ant.html}Ant}}: Ant example.
