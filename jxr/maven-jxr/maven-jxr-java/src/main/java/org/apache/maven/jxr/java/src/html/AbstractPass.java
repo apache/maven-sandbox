@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.java.src;
+package org.apache.maven.jxr.java.src.html;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,13 +22,15 @@ package org.apache.maven.jxr.java.src;
 import java.io.File;
 import java.util.StringTokenizer;
 
+import org.apache.maven.jxr.java.src.JavaSrcOptions;
+
 /**
  * Abstract class for Pass.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
-public abstract class AbstractPass
+abstract class AbstractPass
 {
     protected static final String DEFAULT_EXCLUDES = "**/*~,**/#*#,**/.#*,**/%*%,**/._*,**/CVS,**/CVS/**,"
         + "**/.cvsignore,**/SCCS,**/SCCS/**,**/vssver.scc,**/.svn,**/.svn/**,**/.DS_Store";
@@ -40,7 +42,7 @@ public abstract class AbstractPass
      *
      * @param options object
      */
-    public AbstractPass( JavaSrcOptions options )
+    AbstractPass( JavaSrcOptions options )
     {
         if ( options == null )
         {
@@ -53,7 +55,7 @@ public abstract class AbstractPass
      * @return the output dir
      * @see JavaSrcOptions#getDestDir()
      */
-    protected String getDestDir()
+    String getDestDir()
     {
         return this.options.getDestDir();
     }
@@ -62,7 +64,7 @@ public abstract class AbstractPass
      * @return the source dir
      * @see JavaSrcOptions#getSrcDir()
      */
-    protected String getSrcDir()
+    String getSrcDir()
     {
         return this.options.getSrcDir();
     }
@@ -72,7 +74,7 @@ public abstract class AbstractPass
      *
      * @return the options
      */
-    protected JavaSrcOptions getOptions()
+    JavaSrcOptions getOptions()
     {
         return this.options;
     }
@@ -85,7 +87,7 @@ public abstract class AbstractPass
      * @return
      * @returns the path from the package to the top level, as a string
      */
-    protected static String getBackupPath( String packageName )
+    static String getBackupPath( String packageName )
     {
         StringTokenizer st = new StringTokenizer( packageName, "." );
         String backup = "";
@@ -100,7 +102,7 @@ public abstract class AbstractPass
         return backup;
     }
 
-    protected static void println( String description )
+    static void println( String description )
     {
         System.out.print( "\n" );
         System.out.print( description );
@@ -111,7 +113,7 @@ public abstract class AbstractPass
      *
      * @param f
      */
-    protected static void createDirs( File f )
+    static void createDirs( File f )
     {
         String parentDir = f.getParent();
         File directory = new File( parentDir );

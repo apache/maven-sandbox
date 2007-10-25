@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.java.src;
+package org.apache.maven.jxr.java.src.html;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -42,6 +42,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.apache.maven.jxr.java.src.JavaSrcOptions;
 import org.apache.maven.jxr.java.src.symtab.ReferenceTypes;
 import org.codehaus.plexus.util.StringUtils;
 

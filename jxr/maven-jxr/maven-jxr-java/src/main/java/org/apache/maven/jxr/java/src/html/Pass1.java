@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.java.src;
+package org.apache.maven.jxr.java.src.html;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.apache.maven.jxr.java.src.JavaSrcOptions;
 import org.apache.maven.jxr.java.src.symtab.HTMLTag;
 import org.apache.maven.jxr.java.src.symtab.HTMLTagContainer;
 import org.apache.maven.jxr.java.src.symtab.PackageDef;

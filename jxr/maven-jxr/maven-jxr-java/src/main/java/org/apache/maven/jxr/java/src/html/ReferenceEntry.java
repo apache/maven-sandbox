@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.java.src;
+package org.apache.maven.jxr.java.src.html;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

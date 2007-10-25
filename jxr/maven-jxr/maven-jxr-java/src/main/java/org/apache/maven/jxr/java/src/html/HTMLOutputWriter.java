@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.java.src;
+package org.apache.maven.jxr.java.src.html;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -28,16 +28,15 @@ import java.io.OutputStreamWriter;
  *
  * @version $Id$
  */
-public class HTMLOutputWriter
+class HTMLOutputWriter
     extends OutputStreamWriter
 {
-
     /**
      * Constructor HTMLOutputWriter
      *
      * @param output
      */
-    public HTMLOutputWriter( OutputStream output )
+    HTMLOutputWriter( OutputStream output )
     {
         super( output );
     }
@@ -48,7 +47,7 @@ public class HTMLOutputWriter
      * @param c
      * @throws IOException
      */
-    public void writeHTML( int c )
+    void writeHTML( int c )
         throws IOException
     {
 
@@ -75,7 +74,7 @@ public class HTMLOutputWriter
      * @param s
      * @throws IOException
      */
-    public void writeHTML( String s )
+    void writeHTML( String s )
         throws IOException
     {
 

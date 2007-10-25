@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.java.src;
+package org.apache.maven.jxr.java.src.html;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -27,42 +27,40 @@ import java.io.OutputStream;
  *
  * @version $Id$
  */
-public class LineOutputWriter
+class LineOutputWriter
     extends HTMLOutputWriter
 {
-
-    /** Field MAXCOLS */
-    public static int MAXCOLS = 5;
-
     /**
      * The max number of line number digits.
      * Sadly, the pipe pattern doesn't let us use the real value
      * discovered at runtime.
      * No class file should have more than 9999 lines anyway.
      */
-    public static final int MAX_LINE_NUMBER_DIGITS = 5;
+    private static final int MAX_LINE_NUMBER_DIGITS = 5;
+
+    /** Field _lineNumber */
+    private int _lineNumber;
+
+    /** Field _firstLine */
+    private boolean _firstLine;
 
     /**
      * Constructor LineOutputWriter
      *
      * @param output
      */
-    public LineOutputWriter( OutputStream output )
+    LineOutputWriter( OutputStream output )
     {
-
         super( output );
 
         _lineNumber = 1;
         _firstLine = true;
     }
 
-    /**
-     * @see java.io.OutputStreamWriter#write(int)
-     */
+    /** {@inheritDoc} */
     public void write( int c )
         throws IOException
     {
-
         if ( _firstLine )
         {
             _firstLine = false;
@@ -78,13 +76,10 @@ public class LineOutputWriter
         }
     }
 
-    /**
-     * @see org.apache.maven.jxr.java.src.HTMLOutputWriter#writeHTML(int)
-     */
+    /** {@inheritDoc} */
     public void writeHTML( int c )
         throws IOException
     {
-
         if ( _firstLine )
         {
             _firstLine = false;
@@ -100,13 +95,10 @@ public class LineOutputWriter
         }
     }
 
-    /**
-     * @see java.io.Writer#write(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void write( String s )
         throws IOException
     {
-
         int length = s.length();
 
         for ( int i = 0; i < length; i++ )
@@ -115,13 +107,10 @@ public class LineOutputWriter
         }
     }
 
-    /**
-     * @see org.apache.maven.jxr.java.src.HTMLOutputWriter#writeHTML(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void writeHTML( String s )
         throws IOException
     {
-
         int length = s.length();
 
         for ( int i = 0; i < length; i++ )
@@ -135,10 +124,9 @@ public class LineOutputWriter
      *
      * @throws IOException
      */
-    public void writeLineNumber()
+    void writeLineNumber()
         throws IOException
     {
-
         String lineString = Integer.toString( _lineNumber );
         String spacing = "";
 
@@ -156,10 +144,4 @@ public class LineOutputWriter
 
         _lineNumber++;
     }
-
-    /** Field _lineNumber */
-    private int _lineNumber;
-
-    /** Field _firstLine */
-    private boolean _firstLine;
 }
