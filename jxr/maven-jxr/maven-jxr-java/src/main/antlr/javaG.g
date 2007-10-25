@@ -183,10 +183,11 @@ tokens {
      * @param symbolTable object keeps track of all symbols encountered while parsing a file.
      * @param doRecurse true to process sub directory
      * @param listener listener on the current file that lexer processes.
-     * @throws Exception if any
+     * @throws ANTLRException if any
+     * @throws IOException if any
      */
     public static void doFile( File f, SymbolTable symbolTable, boolean doRecurse, FileListener listener )
-        throws Exception
+        throws ANTLRException, IOException
     {
         // If this is a directory, walk each file/dir in that directory
         if ( f.isDirectory() )
@@ -218,34 +219,27 @@ tokens {
      *
      * @param s an input stream
      * @param symbolTable object keeps track of all symbols encountered while parsing a file.
-     * @throws Exception if any
+     * @throws ANTLRException if any
      */
     public static void parseFile( InputStream s, SymbolTable symbolTable )
-        throws Exception
+        throws ANTLRException
     {
-        try
-        {
-            // Create a scanner that reads from the input stream passed to us
-            JavaLexer lexer = new JavaLexer( s );
+        // Create a scanner that reads from the input stream passed to us
+        JavaLexer lexer = new JavaLexer( s );
 
-            lexer.setSymbolTable( symbolTable );
+        lexer.setSymbolTable( symbolTable );
 
-            // Tell the scanner to create tokens of class JavaToken
-            lexer.setTokenObjectClass( "org.apache.maven.jxr.java.src.xref.JavaToken" );
+        // Tell the scanner to create tokens of class JavaToken
+        lexer.setTokenObjectClass( "org.apache.maven.jxr.java.src.xref.JavaToken" );
 
-            // Create a parser that reads from the scanner
-            JavaXref parser = new JavaXref( lexer );
+        // Create a parser that reads from the scanner
+        JavaXref parser = new JavaXref( lexer );
 
-            // Tell the parser to use the symbol table passed to us
-            parser.setSymbolTable( symbolTable );
+        // Tell the parser to use the symbol table passed to us
+        parser.setSymbolTable( symbolTable );
 
-            // start parsing at the compilationUnit rule
-            parser.compilationUnit();
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace(); // so we can get stack trace
-        }
+        // start parsing at the compilationUnit rule
+        parser.compilationUnit();
     }
 
     /**
