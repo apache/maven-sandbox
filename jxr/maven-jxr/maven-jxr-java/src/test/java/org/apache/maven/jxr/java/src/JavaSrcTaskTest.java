@@ -130,7 +130,15 @@ public class JavaSrcTaskTest
 
         task.setSrcDir( null );
         task.setDestDir( destDir );
-        task.execute();
+        try
+        {
+            task.execute();
+            assertTrue( "Doesnt handle null src dir", false );
+        }
+        catch ( BuildException e )
+        {
+            assertTrue( true );
+        }
 
         task.setSrcDir( srcDir );
         task.setDestDir( null );

@@ -19,9 +19,6 @@ package org.apache.maven.jxr.java.src;
  * under the License.
  */
 
-import org.apache.log4j.Logger;
-import org.apache.maven.jxr.java.src.symtab.ReferenceTypes;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -42,8 +39,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.Vector;
+
+import org.apache.log4j.Logger;
+import org.apache.maven.jxr.java.src.symtab.ReferenceTypes;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Cross-reference generation pass.
@@ -58,22 +58,10 @@ import java.util.Vector;
  * @version $Id$
  */
 public class Pass2
+    extends AbstractPass
 {
-    /** Field USAGE */
-    public static final String USAGE = "Usage: java -DdestDir=<doc dir> [-Dtitle=<title>] [-Dverbose=true] "
-        + Pass2.class.getName();
-
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( Pass2.class );
-
-    /** Output dir */
-    private String destDir;
-
-    /** Title to be placed in the HTML title tag */
-    private String title;
-
-    /** Specify verbose information */
-    private boolean verbose;
 
     ArrayList packageNames;
 
@@ -85,9 +73,13 @@ public class Pass2
 
     /**
      * Constructor Pass2
+     *
+     * @param conf object
      */
-    public Pass2()
+    public Pass2( JavaSrcOptions conf )
     {
+        super( conf );
+
         packageNames = new ArrayList();
         packageClasses = new Hashtable();
     }
@@ -97,75 +89,9 @@ public class Pass2
     // ----------------------------------------------------------------------
 
     /**
-     * @return the output dir
-     */
-    public String getDestDir()
-    {
-        return this.destDir;
-    }
-
-    /**
-     * @param d a new output dir
-     */
-    public void setDestDir( String d )
-    {
-        this.destDir = d;
-    }
-
-    /**
-     * @return the windows title
-     */
-    public String getTitle()
-    {
-        return this.title;
-    }
-
-    /**
-     * @param t a new windows title
-     */
-    public void setTitle( String t )
-    {
-        this.title = t;
-    }
-
-    /**
-     * @return verbose information
-     */
-    public boolean isVerbose()
-    {
-        return this.verbose;
-    }
-
-    /**
-     * @param verbose true to verbose information, false otherwise
-     */
-    public void setVerbose( boolean verbose )
-    {
-        this.verbose = verbose;
-    }
-
-    /**
-     * Main method to pass Java source files.
-     *
-     * @param args not used
-     * @see #initializeDefaults()
-     * @see #run(String[])
-     * @throws Exception if any
-     */
-    public void main( String args[] )
-        throws Exception
-    {
-        Pass2 p2 = new Pass2();
-
-        p2.initializeDefaults();
-        p2.run( args );
-    }
-
-    /**
-     * @param args not used
      * @throws IOException if any
      */
-    public void run( String[] args )
+    public void run()
         throws IOException
     {
         File outDir = new File( getDestDir() );
@@ -196,46 +122,6 @@ public class Pass2
         createOverviewSummaryFrame();
     }
 
-    /**
-     * Initialize defaults fields
-     */
-    public void initializeDefaults()
-    {
-        String outdir = System.getProperty( "destDir" );
-
-        if ( outdir == null )
-        {
-            outdir = Pass1.DEFAULT_DIR;
-        }
-
-        setDestDir( outdir );
-
-        String t = System.getProperty( "title" );
-
-        if ( t == null )
-        {
-            t = "Pass2: " + outdir;
-        }
-
-        setTitle( t );
-
-        boolean v = false;
-        String verboseStr = System.getProperty( "verbose" );
-
-        if ( verboseStr != null )
-        {
-            verboseStr = verboseStr.trim();
-
-            if ( verboseStr.equalsIgnoreCase( "on" ) || verboseStr.equalsIgnoreCase( "true" )
-                || verboseStr.equalsIgnoreCase( "yes" ) || verboseStr.equalsIgnoreCase( "1" ) )
-            {
-                v = true;
-            }
-        }
-
-        setVerbose( v );
-    }
-
     // ----------------------------------------------------------------------
     // Private methods
     // ----------------------------------------------------------------------
@@ -254,7 +140,6 @@ public class Pass2
 
         if ( refFile.exists() )
         {
-
             // packageNames.add(packageName);
             // processRefFile(packageName, refFile);
             processRefFile( packageName, refFile );
@@ -268,7 +153,6 @@ public class Pass2
         }
 
         File[] entries = outDir.listFiles();
-
         for ( int i = 0; i < entries.length; i++ )
         {
             if ( entries[i].isDirectory() )
@@ -344,7 +228,6 @@ public class Pass2
 
             if ( !ref.getReferentFileClass().equals( prevReferentFileClass ) )
             {
-
                 // close current section, if any
                 if ( prevReferentTag != null )
                 {
@@ -448,14 +331,24 @@ public class Pass2
 
         File outFile = new File( rootDir, relPath );
         FileOutputStream fos = new FileOutputStream( outFile );
-        OutputStreamWriter fw = new OutputStreamWriter( fos, "UTF-8" );
+        OutputStreamWriter fw;
+        if ( StringUtils.isNotEmpty( getOptions().getEncoding() ) )
+        {
+            fw = new OutputStreamWriter( fos, getOptions().getEncoding() );
+        }
+        else
+        {
+            fw = new OutputStreamWriter( fos );
+        }
         BufferedWriter result = new BufferedWriter( fw );
 
         result.write( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
             + "\"http://www.w3.org/TR/html4/loose.dtd\">\n" );
         result.write( "<html>" );
         result.write( "<head>\n" );
-        result.write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
+            .getDocencoding() : System.getProperty( "file.encoding" ) );
+        result.write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">\n" );
         result.write( "<title>" + packageName + "." + ref.getReferentFileClass() + " References</title>\n" );
         result.write( "<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"" + getBackupPath( packageName )
             + "styles.css\">\n" );
@@ -598,42 +491,6 @@ public class Pass2
         return result;
     }
 
-    // lifted from Pass1.java -- still need it in Pass1?  If so, share.
-
-    /**
-     * Method getBackupPath
-     *
-     * @param packageName
-     * @return
-     */
-    private String getBackupPath( String packageName )
-    {
-        StringTokenizer st = new StringTokenizer( packageName, "." );
-        String backup = "";
-        int dirs = 0;
-        String newPath;
-
-        if ( log.isDebugEnabled() )
-        {
-            log.debug( "getBackupPath(String) - String packageName=" + packageName );
-        }
-        dirs = st.countTokens();
-
-        for ( int j = 0; j < dirs; j++ )
-        {
-            backup = backup + "../"; // _separatorChar;
-        }
-
-        newPath = backup;
-
-        if ( log.isDebugEnabled() )
-        {
-            log.debug( "getBackupPath(String) - String newPath=" + newPath );
-        }
-
-        return ( newPath );
-    }
-
     /**
      * Method createPackageFiles
      */
@@ -674,7 +531,9 @@ public class Pass2
                     + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
                 pw.println( "<html>" );
                 pw.println( "<head>" );
-                pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
+                String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
+                    .getDocencoding() : System.getProperty( "file.encoding" ) );
+                pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
                 pw.println( "<title>" + packageName + "</title>" );
                 pw.println( "<LINK rel=\"stylesheet\" type=\"text/css\" " + "href=\"" + getBackupPath( packageName )
                     + "styles.css\">" );
@@ -722,6 +581,7 @@ public class Pass2
         }
 
         println( totalClassCount + " classes total" );
+        println( "" );
     }
 
     /**
@@ -801,12 +661,13 @@ public class Pass2
     {
         return new Comparator()
         {
-
+            /** {@inheritDoc} */
             public int compare( Object o1, Object o2 )
             {
                 return ( (String) o1 ).compareTo( (String) o2 );
             }
 
+            /** {@inheritDoc} */
             public boolean equals( Object o )
             {
                 return false;
@@ -823,7 +684,7 @@ public class Pass2
     {
         return new Comparator()
         {
-
+            /** {@inheritDoc} */
             public int compare( Object o1, Object o2 )
             {
                 ClassFileEntry cf1 = (ClassFileEntry) o1;
@@ -832,6 +693,7 @@ public class Pass2
                 return cf1.getClassName().compareTo( cf2.getClassName() );
             }
 
+            /** {@inheritDoc} */
             public boolean equals( Object o )
             {
                 return false;
@@ -841,43 +703,54 @@ public class Pass2
 
     /**
      * Method createIndex
+     *
+     * @throws IOException if any
      */
     private void createIndex()
+        throws IOException
     {
         String fileName = getDestDir() + File.separatorChar + "index.html";
         File file = new File( fileName );
 
         createDirs( file );
 
-        try
-        {
-            PrintWriter pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
+        PrintWriter pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
 
-            pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" "
-                + "\"http://www.w3.org/TR/html4/frameset.dtd\">" );
-            pw.println( "<TITLE>" + getTitle() + "</TITLE>" );
-            pw.println( "<FRAMESET cols=\"20%,80%\">" );
-            pw.println( "  <FRAMESET rows=\"30%,70%\">" );
-            pw.println( "    <FRAME src=\"overview-frame.html\" name=\"packageListFrame\">" );
-            pw.println( "    <FRAME src=\"allclasses-frame.html\" name=\"packageFrame\">" );
-            pw.println( "  </FRAMESET>" );
-            pw.println( "  " );
-            pw.println( "  <FRAMESET rows=\"*\">" );
-            pw.println( "    <FRAME src=\"overview-summary.html\" name=\"classFrame\">" );
-            pw.println( "  </FRAMESET>" );
-            pw.println( "</FRAMESET>" );
-            pw.close();
-        }
-        catch ( Exception e )
+        pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" "
+            + "\"http://www.w3.org/TR/html4/frameset.dtd\">" );
+        pw.println( "<head>" );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
+            .getDocencoding() : System.getProperty( "file.encoding" ) );
+        pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
+        if ( StringUtils.isNotEmpty( getOptions().getWindowtitle() ) )
         {
-            log.error( "Exception: " + e.getMessage(), e );
+            pw.println( "<title>" + getOptions().getWindowtitle() + "</title>" );
         }
+        else
+        {
+            pw.println( "<title>JavaSrc</title>" );
+        }
+        pw.println( "</head>" );
+        pw.println( "<frameset cols=\"20%,80%\">" );
+        pw.println( "  <frameset rows=\"30%,70%\">" );
+        pw.println( "    <frame src=\"overview-frame.html\" name=\"packageListFrame\">" );
+        pw.println( "    <frame src=\"allclasses-frame.html\" name=\"packageFrame\">" );
+        pw.println( "  </frameset>" );
+        pw.println( "  " );
+        pw.println( "  <frameset rows=\"*\">" );
+        pw.println( "    <frame src=\"overview-summary.html\" name=\"classFrame\">" );
+        pw.println( "  </frameset>" );
+        pw.println( "</frameset>" );
+        pw.close();
     }
 
     /**
      * Create the HTML for the list of all packages.
+     *
+     * @throws IOException if any
      */
     private void createOverviewFrame()
+        throws IOException
     {
         String packageName;
         String packageFileName;
@@ -886,93 +759,92 @@ public class Pass2
 
         createDirs( file );
 
-        try
+        PrintWriter pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
+        Iterator iter = packageNames.iterator();
+
+        pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+            + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+        pw.println( "<html>" );
+        pw.println( "<head>" );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
+            .getDocencoding() : System.getProperty( "file.encoding" ) );
+        pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
+        pw.println( "<title>Overview</title>" );
+        pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
+        pw.println( "</head>" );
+        pw.println( "<body>" );
+        if ( StringUtils.isNotEmpty( getOptions().getPackagesheader() ) )
         {
-            PrintWriter pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
-            Iterator iter = packageNames.iterator();
-
-            pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
-                + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-            pw.println( "<html>" );
-            pw.println( "<head>" );
-            pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
-            pw.println( "<title>Overview</title>" );
-            pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
-            pw.println( "</head>" );
-            pw.println( "<body>" );
-
-            pw.println( "<h3><a href=\"allclasses-frame.html\" target=\"packageFrame\">All Classes</a></h3>" );
-            pw.println( "<h3>Packages</h3>" );
-            while ( iter.hasNext() )
-            {
-                packageName = (String) iter.next();
-                packageFileName = packageName.replace( '.', '/' ) + '/' + "classList.html";
-
-                pw.println( "<p class=\"packageListItem\"><A HREF=\"" + packageFileName + "\" TARGET=\"packageFrame\">"
-                    + packageName + "</A></p>" );
-            }
-
-            pw.println( "</body></html>" );
-            pw.close();
+            pw.println( "<b>" + getOptions().getPackagesheader() + "</b>" );
         }
-        catch ( Exception e )
+        pw.println( "<h3><a href=\"allclasses-frame.html\" target=\"packageFrame\">All Classes</a></h3>" );
+        pw.println( "<h3>Packages</h3>" );
+        while ( iter.hasNext() )
         {
-            log.error( "Exception: " + e.getMessage(), e );
+            packageName = (String) iter.next();
+            packageFileName = packageName.replace( '.', '/' ) + '/' + "classList.html";
+
+            pw.println( "<p class=\"packageListItem\"><A HREF=\"" + packageFileName + "\" TARGET=\"packageFrame\">"
+                + packageName + "</A></p>" );
         }
+
+        pw.println( "</body></html>" );
+        pw.close();
     }
 
     /**
      * Method createAllClassesFrame
+     *
+     * @throws IOException if any
      */
     private void createAllClassesFrame()
+        throws IOException
     {
         String fileName = getDestDir() + File.separatorChar + "allclasses-frame.html";
         File file = new File( fileName );
 
         createDirs( file );
 
-        try
+        PrintWriter pw = new PrintWriter( new FileOutputStream( file ) );
+
+        pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+            + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+        pw.println( "<html>" );
+        pw.println( "<head>" );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
+            .getDocencoding() : System.getProperty( "file.encoding" ) );
+        pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
+        pw.println( "<title>All classes</title>" );
+        pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
+        pw.println( "</head>" );
+        pw.println( "<body>" );
+
+        pw.println( "<h3>All Classes</h3>" );
+        Iterator iter = orderedAllClasses().iterator();
+
+        while ( iter.hasNext() )
         {
-            PrintWriter pw = new PrintWriter( new FileOutputStream( file ) );
+            ClassFileEntry cf = (ClassFileEntry) iter.next();
+            String className = cf.getClassName();
+            String fileClassName = cf.getFileName();
+            String anchor = className;
+            String tag = "<p class=\"classListItem\"><a href=\"" + fileClassName + "_java.html#" + anchor
+                + "\" TARGET=\"classFrame\">" + className + "</a></p>";
 
-            pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
-                + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-            pw.println( "<html>" );
-            pw.println( "<head>" );
-            pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
-            pw.println( "<title>All classes</title>" );
-            pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
-            pw.println( "</head>" );
-            pw.println( "<body>" );
-
-            pw.println( "<h3>All Classes</h3>" );
-            Iterator iter = orderedAllClasses().iterator();
-
-            while ( iter.hasNext() )
-            {
-                ClassFileEntry cf = (ClassFileEntry) iter.next();
-                String className = cf.getClassName();
-                String fileClassName = cf.getFileName();
-                String anchor = className;
-                String tag = "<p class=\"classListItem\"><a href=\"" + fileClassName + "_java.html#" + anchor
-                    + "\" TARGET=\"classFrame\">" + className + "</a></p>";
-
-                pw.println( tag );
-            }
-
-            pw.println( "</body></html>" );
-            pw.close();
+            pw.println( tag );
         }
-        catch ( Exception e )
-        {
-            log.error( "Exception: " + e.getMessage(), e );
-        }
+
+        pw.println( "</body></html>" );
+        pw.close();
     }
 
     /**
      * Method createPackageFiles
+     *
+     * @throws IOException if any
      */
     private void createPackageSummaryFiles()
+        throws IOException
     {
         String packageName;
         String fileName;
@@ -1001,65 +873,66 @@ public class Pass2
 
             createDirs( file );
 
-            try
+            pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
+
+            pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+                + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+            pw.println( "<html>" );
+            pw.println( "<head>" );
+            String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
+                .getDocencoding() : System.getProperty( "file.encoding" ) );
+            pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
+            pw.println( "<title>" + packageName + " Summary</title>" );
+            pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + getBackupPath( packageName )
+                + "styles.css\">" );
+            pw.println( "</head>" );
+            pw.println( "<body>" );
+
+            if ( StringUtils.isNotEmpty( getOptions().getTop() ) )
             {
-                pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
-
-                pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
-                    + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-                pw.println( "<html>" );
-                pw.println( "<head>" );
-                pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
-                pw.println( "<title>" + packageName + " Summary</title>" );
-                pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + getBackupPath( packageName )
-                    + "styles.css\">" );
-                pw.println( "</head>" );
-                pw.println( "<body>" );
-
-                createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html" );
-
-                pw.println( "<h2>" + packageName + "</h2>" );
-
-                pw.println( "<table class=\"summary\">" );
-                pw.println( "<thead>" );
-                pw.println( "<tr>" );
-                pw.println( "<th>Class Summary</th>" );
-                pw.println( "</tr>" );
-                pw.println( "</thead>" );
-                pw.println( "<tbody>" );
-
-                Iterator iter = classes.iterator();
-
-                while ( iter.hasNext() )
-                {
-                    ClassFileEntry cf = (ClassFileEntry) iter.next();
-                    String className = cf.getClassName();
-                    String fileClassName = cf.getFileName();
-                    String anchor;
-
-                    anchor = className;
-                    pw.println( "<tr>" );
-                    pw.println( "<td>" );
-                    pw.println( "<a href=\"" + fileClassName + "_java.html#" + anchor + "\" TARGET=\"classFrame\">"
-                        + className + "</a>" );
-                    pw.println( "</td>" );
-                    pw.println( "</tr>" );
-                }
-                pw.println( "</tbody>" );
-                pw.println( "</table>" );
-
-                createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html" );
-
+                pw.println( getOptions().getTop() );
                 pw.println( "<hr>" );
-                pw.println( "<div class=\"bottom\">Copyright &copy; 2001-2003 Apache Software Foundation. "
-                    + "All Rights Reserved.</div>" );
-                pw.println( "</body></html>" );
-                pw.close();
             }
-            catch ( Exception ex )
+
+            createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html" );
+
+            pw.println( "<h2>" + packageName + "</h2>" );
+
+            pw.println( "<table class=\"summary\">" );
+            pw.println( "<thead>" );
+            pw.println( "<tr>" );
+            pw.println( "<th>Class Summary</th>" );
+            pw.println( "</tr>" );
+            pw.println( "</thead>" );
+            pw.println( "<tbody>" );
+
+            Iterator iter = classes.iterator();
+
+            while ( iter.hasNext() )
             {
-                log.error( "Error writing file:" + fileName, ex );
+                ClassFileEntry cf = (ClassFileEntry) iter.next();
+                String className = cf.getClassName();
+                String fileClassName = cf.getFileName();
+                String anchor;
+
+                anchor = className;
+                pw.println( "<tr>" );
+                pw.println( "<td>" );
+                pw.println( "<a href=\"" + fileClassName + "_java.html#" + anchor + "\" TARGET=\"classFrame\">"
+                    + className + "</a>" );
+                pw.println( "</td>" );
+                pw.println( "</tr>" );
             }
+            pw.println( "</tbody>" );
+            pw.println( "</table>" );
+
+            createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html" );
+
+            pw.println( "<hr>" );
+            pw.println( "<div class=\"bottom\">Copyright &copy; 2001-2003 Apache Software Foundation. "
+                + "All Rights Reserved.</div>" );
+            pw.println( "</body></html>" );
+            pw.close();
         }
     }
 
@@ -1085,67 +958,75 @@ public class Pass2
 
     /**
      * Method createOverviewSummaryFrame
+     *
+     * @throws IOException if any
      */
     private void createOverviewSummaryFrame()
+        throws IOException
     {
         String fileName = getDestDir() + File.separatorChar + "overview-summary.html";
         File file = new File( fileName );
 
         createDirs( file );
 
-        try
+        PrintWriter pw = new PrintWriter( new FileOutputStream( file ) );
+
+        pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+            + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+        pw.println( "<html>" );
+        pw.println( "<head>" );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
+            .getDocencoding() : System.getProperty( "file.encoding" ) );
+        pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
+        pw.println( "<title>Overview</title>" );
+        pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
+        pw.println( "</head>" );
+        pw.println( "<body>" );
+
+        if ( StringUtils.isNotEmpty( getOptions().getTop() ) )
         {
-            PrintWriter pw = new PrintWriter( new FileOutputStream( file ) );
-
-            pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
-                + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-            pw.println( "<html>" );
-            pw.println( "<head>" );
-            pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
-            pw.println( "<title>Overview</title>" );
-            pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
-            pw.println( "</head>" );
-            pw.println( "<body>" );
-
-            createOverviewSummaryFrameExtras( pw );
-
-            pw.println( "<h2>" + getTitle() + "</h2>" );
-
-            pw.println( "<table class=\"summary\">" );
-            pw.println( "<thead>" );
-            pw.println( "<tr>" );
-            pw.println( "<th>Packages</th>" );
-            pw.println( "</tr>" );
-            pw.println( "</thead>" );
-            pw.println( "<tbody>" );
-
-            Iterator iter = packageNames.iterator();
-            while ( iter.hasNext() )
-            {
-                String packageName = (String) iter.next();
-                String packageFileName = packageName.replace( '.', '/' ) + '/' + "package-summary.html";
-
-                pw.println( "<tr>" );
-                pw.println( "<td>" );
-                pw.println( "<a href=\"" + packageFileName + "\">" + packageName + "</a>" );
-                pw.println( "</td>" );
-                pw.println( "</tr>" );
-            }
-
-            pw.println( "</tbody>" );
-            pw.println( "</table>" );
-
-            createOverviewSummaryFrameExtras( pw );
+            pw.println( getOptions().getTop() );
             pw.println( "<hr>" );
-            pw.println( "<div class=\"bottom\">Copyright &copy; 2001-2003 Apache Software Foundation. "
-                + "All Rights Reserved.</div>" );
-            pw.println( "</body></html>" );
-            pw.close();
         }
-        catch ( Exception e )
+
+        createOverviewSummaryFrameExtras( pw );
+
+        pw.println( "<h2>" + getOptions().getDoctitle() + "</h2>" );
+
+        pw.println( "<table class=\"summary\">" );
+        pw.println( "<thead>" );
+        pw.println( "<tr>" );
+        pw.println( "<th>Packages</th>" );
+        pw.println( "</tr>" );
+        pw.println( "</thead>" );
+        pw.println( "<tbody>" );
+
+        Iterator iter = packageNames.iterator();
+        while ( iter.hasNext() )
         {
-            log.error( "Error writing file:" + fileName, e );
+            String packageName = (String) iter.next();
+            String packageFileName = packageName.replace( '.', '/' ) + '/' + "package-summary.html";
+
+            pw.println( "<tr>" );
+            pw.println( "<td>" );
+            pw.println( "<a href=\"" + packageFileName + "\">" + packageName + "</a>" );
+            pw.println( "</td>" );
+            pw.println( "</tr>" );
         }
+
+        pw.println( "</tbody>" );
+        pw.println( "</table>" );
+
+        createOverviewSummaryFrameExtras( pw );
+        pw.println( "<hr>" );
+        if ( StringUtils.isNotEmpty( getOptions().getBottom() ) )
+        {
+            pw.println( "<div class=\"bottom\">" );
+            pw.println( getOptions().getBottom() );
+            pw.println( "</div>" );
+        }
+        pw.println( "</body></html>" );
+        pw.close();
     }
 
     private void createOverviewSummaryFrameExtras( PrintWriter pw )
@@ -1166,27 +1047,5 @@ public class Pass2
         pw.println( "</li>" );
         pw.println( "</ul>" );
         pw.println( "</div>" );
-    }
-
-    /**
-     * Method createDirs
-     *
-     * @param f
-     */
-    private void createDirs( File f )
-    {
-        String parentDir = f.getParent();
-        File directory = new File( parentDir );
-
-        if ( !directory.exists() )
-        {
-            directory.mkdirs();
-        }
-    }
-
-    private void println( String description )
-    {
-        System.out.print( "\n" );
-        System.out.println( description );
     }
 }

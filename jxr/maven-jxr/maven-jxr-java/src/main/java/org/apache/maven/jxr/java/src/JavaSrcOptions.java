@@ -19,26 +19,24 @@ package org.apache.maven.jxr.java.src;
  * under the License.
  */
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.taskdefs.MatchingTask;
+import java.lang.reflect.Field;
 
 /**
- * Runs the Javasrc converter as an Ant task inside.
+ * Bean with all options supported by <code>JavaSrc</code> class.
  *
- * @see <a href="http://ant.apache.org">http://ant.apache.org</a>
+ * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
-public class JavaSrcTask
-    extends MatchingTask
+public class JavaSrcOptions
 {
+    /** Singleton pattern */
+    private static JavaSrcOptions singleton;
+
     /** Specifies the text to be placed at the bottom of each output file. */
     private String bottom;
 
     /** Output dir, required. */
-    private File destDir;
+    private String destDir;
 
     /** Specifies the encoding of the generated HTML files. */
     private String docencoding;
@@ -62,7 +60,7 @@ public class JavaSrcTask
     private boolean recurse = true;
 
     /** Source dir, required. */
-    private File srcDir;
+    private String srcDir;
 
     /** Specifies the path of an alternate HTML stylesheet file. */
     private String stylesheetfile;
@@ -76,53 +74,63 @@ public class JavaSrcTask
     /** Specifies the title to be placed in the HTML title tag. */
     private String windowtitle;
 
-    /**
-     * Constructor for JavaSrcTask.
-     */
-    public JavaSrcTask()
+    // TODO add no* options a la javadoc
+
+    private JavaSrcOptions()
     {
-        super();
+        // nop
     }
 
     /**
-     * @throws BuildException
-     * @see org.apache.tools.ant.Task#execute()
+     * @return a singleton instance of <code>Configuration</code>.
      */
-    public void execute()
-        throws BuildException
+    public static JavaSrcOptions getInstance()
     {
-        try
+        if ( singleton == null )
         {
-            JavaSrc javaSrc = new JavaSrc( getSrcDir(), getDestDir() );
+            singleton = new JavaSrcOptions();
+        }
 
-            javaSrc.getOptions().setBottom( bottom );
-            javaSrc.getOptions().setDocencoding( docencoding );
-            javaSrc.getOptions().setDoctitle( doctitle );
-            javaSrc.getOptions().setEncoding( encoding );
-            javaSrc.getOptions().setFooter( footer );
-            javaSrc.getOptions().setHeader( header );
-            javaSrc.getOptions().setPackagesheader( packagesheader );
-            javaSrc.getOptions().setRecurse( recurse );
-            javaSrc.getOptions().setStylesheetfile( stylesheetfile );
-            javaSrc.getOptions().setTop( top );
-            javaSrc.getOptions().setVerbose( verbose );
-            javaSrc.getOptions().setWindowtitle( windowtitle );
-
-            javaSrc.pass();
-        }
-        catch ( IllegalArgumentException e )
-        {
-            throw new BuildException( "IllegalArgumentException: " + e.getMessage(), e, getLocation() );
-        }
-        catch ( IOException e )
-        {
-            throw new BuildException( "IOException: " + e.getMessage(), e, getLocation() );
-        }
+        return singleton;
     }
 
-    // ----------------------------------------------------------------------
-    // Task parameters
-    // ----------------------------------------------------------------------
+    /**
+     * @return all required and optional options
+     */
+    public static String getOptions()
+    {
+        StringBuffer sb = new StringBuffer();
+
+        // Required options
+        sb.append( "-DsrcDir=... " );
+        sb.append( "-DdestDir=... " );
+        sb.append( "\n" );
+
+        // Optional options
+        Field[] fields = JavaSrcOptions.class.getDeclaredFields();
+        for ( int i = 0; i < fields.length; i++ )
+        {
+            String name = fields[i].getName();
+            if ( ( name.indexOf( "class" ) != -1 ) || ( name.indexOf( "singleton" ) != -1 )
+                || ( name.equals( "destDir" ) || name.equals( "srcDir" ) ) )
+            {
+                continue;
+            }
+
+            sb.append( "    " );
+            sb.append( "[-D" );
+            sb.append( fields[i].getName() );
+            sb.append( "=..." );
+            sb.append( "]" );
+
+            if ( ( i + 1 ) < fields.length - 1 )
+            {
+                sb.append( "\n" );
+            }
+        }
+
+        return sb.toString();
+    }
 
     /**
      * Getter for the bottom
@@ -139,7 +147,7 @@ public class JavaSrcTask
      *
      * @return the destDir
      */
-    public File getDestDir()
+    public String getDestDir()
     {
         return this.destDir;
     }
@@ -209,9 +217,9 @@ public class JavaSrcTask
      *
      * @return the srcDir
      */
-    public File getSrcDir()
+    public String getSrcDir()
     {
-        return this.srcDir;
+        return srcDir;
     }
 
     /**
@@ -279,7 +287,7 @@ public class JavaSrcTask
      *
      * @param destDir the destDir to set
      */
-    public void setDestDir( File destDir )
+    public void setDestDir( String destDir )
     {
         this.destDir = destDir;
     }
@@ -359,7 +367,7 @@ public class JavaSrcTask
      *
      * @param srcDir the srcDir to set
      */
-    public void setSrcDir( File srcDir )
+    public void setSrcDir( String srcDir )
     {
         this.srcDir = srcDir;
     }
@@ -402,5 +410,28 @@ public class JavaSrcTask
     public void setWindowtitle( String windowtitle )
     {
         this.windowtitle = windowtitle;
+    }
+
+    /** {@inheritDoc} */
+    public String toString()
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append( "Configuration[" );
+        buffer.append( " bottom = " ).append( bottom );
+        buffer.append( " destDir = " ).append( destDir );
+        buffer.append( " docencoding = " ).append( docencoding );
+        buffer.append( " doctitle = " ).append( doctitle );
+        buffer.append( " encoding = " ).append( encoding );
+        buffer.append( " footer = " ).append( footer );
+        buffer.append( " header = " ).append( header );
+        buffer.append( " packagesheader = " ).append( packagesheader );
+        buffer.append( " recurse = " ).append( recurse );
+        buffer.append( " srcDir = " ).append( srcDir );
+        buffer.append( " stylesheetfile = " ).append( stylesheetfile );
+        buffer.append( " top = " ).append( top );
+        buffer.append( " verbose = " ).append( verbose );
+        buffer.append( " windowtitle = " ).append( windowtitle );
+        buffer.append( "]" );
+        return buffer.toString();
     }
 }

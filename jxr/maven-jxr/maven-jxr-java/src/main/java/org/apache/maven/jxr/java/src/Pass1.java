@@ -19,16 +19,6 @@ package org.apache.maven.jxr.java.src;
  * under the License.
  */
 
-import org.apache.log4j.Logger;
-import org.apache.maven.jxr.java.src.symtab.HTMLTag;
-import org.apache.maven.jxr.java.src.symtab.HTMLTagContainer;
-import org.apache.maven.jxr.java.src.symtab.PackageDef;
-import org.apache.maven.jxr.java.src.symtab.SymbolTable;
-import org.apache.maven.jxr.java.src.util.JSCollections;
-import org.apache.maven.jxr.java.src.util.SkipCRInputStream;
-import org.apache.maven.jxr.java.src.xref.FileListener;
-import org.apache.maven.jxr.java.src.xref.JavaXref;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,8 +29,23 @@ import java.io.LineNumberReader;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.StringTokenizer;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
+
+import org.apache.log4j.Logger;
+import org.apache.maven.jxr.java.src.symtab.HTMLTag;
+import org.apache.maven.jxr.java.src.symtab.HTMLTagContainer;
+import org.apache.maven.jxr.java.src.symtab.PackageDef;
+import org.apache.maven.jxr.java.src.symtab.SymbolTable;
+import org.apache.maven.jxr.java.src.util.JSCollections;
+import org.apache.maven.jxr.java.src.util.SkipCRInputStream;
+import org.apache.maven.jxr.java.src.xref.FileListener;
+import org.apache.maven.jxr.java.src.xref.JavaXref;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
+
+import antlr.ANTLRException;
 
 /**
  * Class Pass1
@@ -48,29 +53,11 @@ import java.util.Vector;
  * @version $Id$
  */
 public class Pass1
+    extends AbstractPass
     implements FileListener
 {
-    /** Field DEFAULT_DIR */
-    public static final String DEFAULT_DIR = ".";
-
-    /** Field USAGE */
-    public static final String USAGE = "Usage: java [-DdestDir=<doc dir>] [-Dtitle=<title>] [-Dverbose=true] "
-        + "[-Drecurse=true] " + Pass1.class.getName() + " <source dir> [<source dir> <source dir> ...]";
-
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( Pass1.class );
-
-    /** Output dir */
-    private String destDir;
-
-    /** Title to be placed in the HTML title tag */
-    private String title;
-
-    /** Specify recursive pass */
-    private boolean recurse;
-
-    /** Specify verbose information */
-    private boolean verbose;
 
     int currentColumn;
 
@@ -84,79 +71,17 @@ public class Pass1
 
     /**
      * Constructor Pass1
+     *
+     * @param conf object
      */
-    public Pass1()
+    public Pass1( JavaSrcOptions conf )
     {
-        // nop
+        super( conf );
     }
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
-
-    /**
-     * @return the output dir
-     */
-    public String getDestDir()
-    {
-        return this.destDir;
-    }
-
-    /**
-     * @param d a new output dir
-     */
-    public void setDestDir( String d )
-    {
-        this.destDir = d;
-    }
-
-    /**
-     * @return the windows title
-     */
-    public String getTitle()
-    {
-        return this.title;
-    }
-
-    /**
-     * @param t a new windows title
-     */
-    public void setTitle( String t )
-    {
-        this.title = t;
-    }
-
-    /**
-     * @return recursive pass
-     */
-    public boolean isRecurse()
-    {
-        return this.recurse;
-    }
-
-    /**
-     * @param recurse true to do a recursive pass, false otherwise
-     */
-    public void setRecurse( boolean recurse )
-    {
-        this.recurse = recurse;
-    }
-
-    /**
-     * @return verbose information
-     */
-    public boolean isVerbose()
-    {
-        return this.verbose;
-    }
-
-    /**
-     * @param verbose true to verbose information, false otherwise
-     */
-    public void setVerbose( boolean verbose )
-    {
-        this.verbose = verbose;
-    }
 
     /** {@inheritDoc} */
     public void notify( String path )
@@ -166,241 +91,103 @@ public class Pass1
     }
 
     /**
-     * Main method to pass Java source files.
-     *
-     * @param args not null
-     * @see #initializeDefaults()
-     * @see #run(String[])
-     * @throws Exception if any
+     * @throws IOException if any
      */
-    public static void main( String args[] )
-        throws Exception
+    public void run()
+        throws IOException
     {
-        Pass1 p1 = new Pass1();
+        List javaFiles = FileUtils.getFileNames( new File( getSrcDir() ), "**/*.java", DEFAULT_EXCLUDES, true );
 
-        p1.initializeDefaults();
-        p1.run( args );
-    }
+        // create a new symbol table
+        SymbolTable symbolTable = SymbolTable.getSymbolTable();
 
-    /**
-     * @param args not null
-     * @throws IllegalArgumentException if args is null
-     */
-    public void run( String[] args )
-    {
-        if ( args == null )
+        print( "Output dir: " + getDestDir() );
+
+        symbolTable.setOutDirPath( getDestDir() );
+
+        println( "Parsing" );
+
+        // for each directory/file specified on the command line
+        for ( Iterator it = javaFiles.iterator(); it.hasNext(); )
         {
-            throw new IllegalArgumentException( "args is required" );
+            String file = (String) it.next();
+            try
+            {
+                JavaXref.doFile( new File( file ), symbolTable, getOptions().isRecurse(), this ); // parse it
+            }
+            catch ( ANTLRException e )
+            {
+                throw new IOException( "ANTLRException: " + e.getMessage() );
+            }
         }
 
-        // Use a try/catch block for parser exceptions
-        try
+        println( "Resolving types" );
+
+        // resolve the types of all symbols in the symbol table
+        symbolTable.resolveTypes();
+        symbolTable.resolveRefs();
+
+        // Iterate through each package
+        Hashtable packageTable = symbolTable.getPackages();
+        Enumeration pEnum = packageTable.elements();
+
+        println( "Persisting definitions" );
+
+        while ( pEnum.hasMoreElements() )
         {
-            // create a new symbol table
-            SymbolTable symbolTable = SymbolTable.getSymbolTable();
+            PackageDef pDef = (PackageDef) pEnum.nextElement();
 
-            // if we have at least one command-line argument
-            if ( args.length > 0 )
+            printAdvancement( "Processing package " + pDef.getName() );
+
+            // Generate tags for each package.  We cannot do one class
+            // at a time because more than one class might be in a
+            // single file, and we write out each file only one time.
+            HTMLTagContainer tagList = new HTMLTagContainer();
+
+            pDef.generateTags( tagList );
+
+            Hashtable fileTable = tagList.getFileTable();
+            Enumeration enumList = fileTable.keys();
+            Vector tempFileTags = new Vector();
+
+            while ( enumList.hasMoreElements() )
             {
-                print( "Output dir: " + getDestDir() );
+                tempFileTags.clear();
 
-                symbolTable.setOutDirPath( getDestDir() );
+                File f = (File) enumList.nextElement();
 
-                println( "Parsing" );
-
-                // for each directory/file specified on the command line
-                for ( int i = 0; i < args.length; i++ )
+                if ( inputFiles.contains( f.getAbsolutePath() ) )
                 {
-                    JavaXref.doFile( new File( args[i] ), symbolTable, isRecurse(), this ); // parse it
+                    Vector fileTags = (Vector) fileTable.get( f );
+
+                    tempFileTags.addAll( fileTags );
+
+                    // Generate the HTML tags for all references in this file
+                    // I.e. generate HTML mark-up of this .java file
+                    SymbolTable.createReferenceTags( f, tempFileTags );
+                    SymbolTable.getCommentTags( f, tempFileTags );
+                    SymbolTable.getLiteralTags( f, tempFileTags );
+                    SymbolTable.getKeywordTags( f, tempFileTags );
+                    createClassFiles( tempFileTags );
                 }
-
-                println( "Resolving types" );
-
-                // resolve the types of all symbols in the symbol table
-                symbolTable.resolveTypes();
-                symbolTable.resolveRefs();
-            }
-            else
-            {
-                println( USAGE );
-                return;
             }
 
-            // Iterate through each package
-            Hashtable packageTable = symbolTable.getPackages();
-            Enumeration pEnum = packageTable.elements();
-
-            println( "Persisting definitions" );
-
-            while ( pEnum.hasMoreElements() )
-            {
-                PackageDef pDef = (PackageDef) pEnum.nextElement();
-
-                printAdvancement( "Processing package " + pDef.getName() );
-
-                // Generate tags for each package.  We cannot do one class
-                // at a time because more than one class might be in a
-                // single file, and we write out each file only one time.
-                HTMLTagContainer tagList = new HTMLTagContainer();
-
-                pDef.generateTags( tagList );
-
-                Hashtable fileTable = tagList.getFileTable();
-                Enumeration enumList = fileTable.keys();
-                Vector tempFileTags = new Vector();
-
-                while ( enumList.hasMoreElements() )
-                {
-                    tempFileTags.clear();
-
-                    File f = (File) enumList.nextElement();
-
-                    if ( inputFiles.contains( f.getAbsolutePath() ) )
-                    {
-                        Vector fileTags = (Vector) fileTable.get( f );
-
-                        tempFileTags.addAll( fileTags );
-
-                        // Generate the HTML tags for all references in this file
-                        // I.e. generate HTML mark-up of this .java file
-                        SymbolTable.createReferenceTags( f, tempFileTags );
-                        SymbolTable.getCommentTags( f, tempFileTags );
-                        SymbolTable.getLiteralTags( f, tempFileTags );
-                        SymbolTable.getKeywordTags( f, tempFileTags );
-                        createClassFiles( tempFileTags );
-                    }
-                }
-
-                // Create reference files
-                // I.e. generate HTML mark-up of all definitions in this package's .java files
-                // (no longer -- this happens in Pass2 now)
-                // System.out.println("\nWriting definition HTML...");
-                // pDef.generateReferenceFiles(getOutDir());
-                pDef.persistDefinitions( getDestDir() );
-            }
-
-            println( "Persisting references" );
-
-            symbolTable.persistRefs( getDestDir() );
-        }
-        catch ( Exception e )
-        {
-            log.error( "Exception: " + e.getMessage(), e );
-            //System.exit(1);                                 // make this behavior an option?
-        }
-    }
-
-    /**
-     * Initialize defaults fields
-     */
-    public void initializeDefaults()
-    {
-        String outdir = System.getProperty( "destDir" );
-
-        if ( outdir == null )
-        {
-            outdir = DEFAULT_DIR;
+            // Create reference files
+            // I.e. generate HTML mark-up of all definitions in this package's .java files
+            // (no longer -- this happens in Pass2 now)
+            // System.out.println("\nWriting definition HTML...");
+            // pDef.generateReferenceFiles(getOutDir());
+            pDef.persistDefinitions( getDestDir() );
         }
 
-        setDestDir( outdir );
+        println( "Persisting references" );
 
-        String t = System.getProperty( "title" );
-
-        if ( t == null )
-        {
-            t = "Pass1: " + outdir;
-        }
-
-        setTitle( t );
-
-        boolean doRecurse = true;
-        String recurseStr = System.getProperty( "recurse" );
-
-        if ( recurseStr != null )
-        {
-            recurseStr = recurseStr.trim();
-
-            if ( recurseStr.equalsIgnoreCase( "off" ) || recurseStr.equalsIgnoreCase( "false" )
-                || recurseStr.equalsIgnoreCase( "no" ) || recurseStr.equalsIgnoreCase( "0" ) )
-            {
-                doRecurse = false;
-            }
-        }
-
-        setRecurse( doRecurse );
-
-        boolean v = false;
-        String verboseStr = System.getProperty( "verbose" );
-
-        if ( verboseStr != null )
-        {
-            verboseStr = verboseStr.trim();
-
-            if ( verboseStr.equalsIgnoreCase( "on" ) || verboseStr.equalsIgnoreCase( "true" )
-                || verboseStr.equalsIgnoreCase( "yes" ) || verboseStr.equalsIgnoreCase( "1" ) )
-            {
-                v = true;
-            }
-        }
-
-        setVerbose( v );
+        symbolTable.persistRefs( getDestDir() );
     }
 
     // ----------------------------------------------------------------------
     // Private methods
     // ----------------------------------------------------------------------
-
-    /**
-     * Method createDirs
-     *
-     * @param f
-     */
-    private void createDirs( File f )
-    {
-        String parentDir = f.getParent();
-        File directory = new File( parentDir );
-
-        if ( !directory.exists() )
-        {
-            directory.mkdirs();
-        }
-    }
-
-    /**
-     * Method getBackupPath
-     *
-     * @param tagList
-     * @param element
-     * @return
-     */
-    private String getBackupPath( Object[] tagList, int element )
-    {
-        HTMLTag t = (HTMLTag) tagList[element];
-        String packageName = t.getPackageName();
-
-        if ( packageName.equals( "" ) )
-        {
-            File tempFile = t.getFile();
-            int i = Math.min( element + 1, tagList.length );
-            HTMLTag tempTag = (HTMLTag) tagList[i];
-
-            while ( tempTag.getFile().equals( tempFile ) && ( i < tagList.length ) )
-            {
-                if ( ( tempTag.getPackageName() != null ) && ( tempTag.getPackageName().length() > 0 ) )
-                {
-                    packageName = tempTag.getPackageName();
-
-                    break;
-                }
-
-                i++;
-
-                tempTag = (HTMLTag) tagList[i];
-            }
-        }
-
-        return getBackupPath( packageName );
-    }
 
     /**
      * Method createClassFile
@@ -469,10 +256,15 @@ public class Pass1
 
         HTMLOutputWriter output = new LineOutputWriter( new BufferedOutputStream( new FileOutputStream( f ) ) );
         String backup = getBackupPath( tagList, element );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
+            .getDocencoding() : System.getProperty( "file.encoding" ) );
+
         String header = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n"
             + "<html>\n"
             + "<head>\n"
-            + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
+            + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset="
+            + encoding
+            + "\">\n"
             + "<title>"
             + packageName
             + "."
@@ -483,6 +275,11 @@ public class Pass1
             + "styles.css\">\n"
             + "</head>\n"
             + "<body>\n";
+
+        if ( StringUtils.isNotEmpty( getOptions().getTop() ) )
+        {
+            header += getOptions().getTop() + "<hr>\n";
+        }
 
         output.write( header, 0, header.length() );
 
@@ -594,7 +391,6 @@ public class Pass1
             }
 
             currentChar = input.read();
-
             currentColumn++;
             i++;
         }
@@ -640,7 +436,6 @@ public class Pass1
             }
 
             currentChar = input.read();
-
             currentColumn++;
         }
 
@@ -696,7 +491,6 @@ public class Pass1
                 }
 
                 currentChar = input.read();
-
                 currentColumn++;
             }
 
@@ -725,7 +519,6 @@ public class Pass1
             }
 
             currentChar = input.read();
-
             currentColumn++;
             i++;
         }
@@ -756,7 +549,6 @@ public class Pass1
             }
 
             currentChar = input.read();
-
             currentColumn++;
             i++;
         }
@@ -794,9 +586,16 @@ public class Pass1
         try
         {
             output = createClassFile( sortedList, 0 );
-            input = new LineNumberReader(
-                                          new InputStreamReader(
-                                                                 new SkipCRInputStream( new FileInputStream( javaFile ) ) ) );
+            SkipCRInputStream is = new SkipCRInputStream( new FileInputStream( javaFile ) );
+            if ( StringUtils.isNotEmpty( getOptions().getEncoding() ) )
+            {
+                input = new LineNumberReader( new InputStreamReader( is, getOptions().getEncoding() ) );
+            }
+            else
+            {
+
+                input = new LineNumberReader( new InputStreamReader( is ) );
+            }
             currentChar = input.read();
             currentColumn = 1;
         }
@@ -838,11 +637,16 @@ public class Pass1
 
                     // Open new file
                     javaFile = t.getFile();
-                    input = new LineNumberReader(
-                                                  new InputStreamReader(
-                                                                         new SkipCRInputStream(
-                                                                                                new FileInputStream(
-                                                                                                                     javaFile ) ) ) );
+                    SkipCRInputStream is = new SkipCRInputStream( new FileInputStream( javaFile ) );
+                    if ( StringUtils.isNotEmpty( getOptions().getEncoding() ) )
+                    {
+                        input = new LineNumberReader( new InputStreamReader( is, getOptions().getEncoding() ) );
+                    }
+                    else
+                    {
+
+                        input = new LineNumberReader( new InputStreamReader( is ) );
+                    }
                     output = createClassFile( sortedList, i );
                     currentColumn = 1;
                     currentChar = input.read();
@@ -896,20 +700,9 @@ public class Pass1
         }
     }
 
-    private void print( String description )
-    {
-        System.out.print( description );
-    }
-
-    private void println( String description )
-    {
-        System.out.print( "\n" );
-        System.out.print( description );
-    }
-
     private void printAdvancement( String description )
     {
-        if ( isVerbose() )
+        if ( getOptions().isVerbose() )
         {
             System.out.println( description );
         }
@@ -923,40 +716,44 @@ public class Pass1
     // Static methods
     // ----------------------------------------------------------------------
 
-    /**
-     * Returns the path to the top level of the source hierarchy from the files
-     * og\f a given class.
-     *
-     * @param packageName the package to get the backup path for
-     * @return
-     * @returns the path from the package to the top level, as a string
-     */
-    private static String getBackupPath( String packageName )
+    private static void print( String description )
     {
-        StringTokenizer st = new StringTokenizer( packageName, "." );
-        String backup = "";
-        int dirs = 0;
-        String newPath = "";
+        System.out.print( description );
+    }
 
-        if ( log.isDebugEnabled() )
+    /**
+     * Method getBackupPath
+     *
+     * @param tagList
+     * @param element
+     * @return
+     */
+    private static String getBackupPath( Object[] tagList, int element )
+    {
+        HTMLTag t = (HTMLTag) tagList[element];
+        String packageName = t.getPackageName();
+
+        if ( packageName.equals( "" ) )
         {
-            log.debug( "getBackupPath(String) - Package Name for BackupPath=" + packageName );
+            File tempFile = t.getFile();
+            int i = Math.min( element + 1, tagList.length );
+            HTMLTag tempTag = (HTMLTag) tagList[i];
+
+            while ( tempTag.getFile().equals( tempFile ) && ( i < tagList.length ) )
+            {
+                if ( ( tempTag.getPackageName() != null ) && ( tempTag.getPackageName().length() > 0 ) )
+                {
+                    packageName = tempTag.getPackageName();
+
+                    break;
+                }
+
+                i++;
+
+                tempTag = (HTMLTag) tagList[i];
+            }
         }
 
-        dirs = st.countTokens();
-
-        for ( int j = 0; j < dirs; j++ )
-        {
-            backup = backup + "../";
-        }
-
-        newPath = backup;
-
-        if ( log.isDebugEnabled() )
-        {
-            log.debug( "getBackupPath(String) - Package Name for newPath=" + newPath );
-        }
-
-        return ( newPath );
+        return getBackupPath( packageName );
     }
 }
