@@ -258,24 +258,26 @@ public class Pass1
         HTMLOutputWriter output = new LineOutputWriter( new BufferedOutputStream( new FileOutputStream( f ) ) );
         String backup = getBackupPath( tagList, element );
         String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
-            .getDocencoding() : System.getProperty( "file.encoding" ) );
+            .getDocencoding() : DEFAULT_DOCENCODING );
 
         String header = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n"
-            + "<html>\n"
-            + "<head>\n"
-            + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset="
+            + "<HTML>\n"
+            + "<HEAD>\n"
+            + getGeneratedBy()
+            + "\n"
+            + "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset="
             + encoding
             + "\">\n"
-            + "<title>"
+            + "<TITLE>"
             + packageName
             + "."
             + SymbolTable.getClassList( t.getFile() )
-            + "</title>\n"
-            + "<LINK rel=\"stylesheet\" type=\"text/css\" href=\""
+            + "</TITLE>\n"
+            + "<LINK REL=\"stylesheet\" TYPE=\"text/css\" HREF=\""
             + backup
-            + "styles.css\">\n"
-            + "</head>\n"
-            + "<body>\n";
+            + "styles.css\" TITLE=\"Style\">\n"
+            + "</HEAD>\n"
+            + "<BODY>\n";
 
         if ( StringUtils.isNotEmpty( getOptions().getTop() ) )
         {
@@ -287,7 +289,7 @@ public class Pass1
         // "'<A HREF=\"./"+htmlPackagePath+"/classList.html\" TARGET=\"packageFrame\">" + packageName + "</A>: " + SymbolTable.getClassList(t.getFile()) + "');\n"+
         packagePath = packageName.replace( '.', '/' );
 
-        output.write( "<pre>\n", 0, 6 );
+        output.write( "<PRE>\n", 0, 6 );
 
         return ( output );
     }
@@ -310,8 +312,8 @@ public class Pass1
         }
 
         input.close();
-        output.write( "</pre>\n", 0, 7 );
-        output.write( "</body></html>" );
+        output.write( "</PRE>\n", 0, 7 );
+        output.write( "</BODY></HTML>" );
         output.flush();
         output.close();
     }
@@ -358,49 +360,6 @@ public class Pass1
         if ( log.isDebugEnabled() )
         {
             log.debug( "writeUntilNextTag(HTMLTag, LineNumberReader, HTMLOutputWriter) - |" );
-        }
-    }
-
-    /**
-     * Method writeComment
-     *
-     * @param t
-     * @param input
-     * @param output
-     * @throws IOException
-     */
-    private void writeComment( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
-        throws IOException
-    {
-        int length = t.getLength();
-        int i = 0;
-
-        output.write( "<span class=\"comment\">" );
-
-        while ( i < length )
-        {
-            if ( currentChar == '\n' )
-            {
-                output.write( "</span>" );
-            }
-            output.writeHTML( (char) currentChar );
-
-            if ( currentChar == '\n' )
-            {
-                output.write( "<span class=\"comment\">" );
-                currentColumn = 0;
-            }
-
-            currentChar = input.read();
-            currentColumn++;
-            i++;
-        }
-
-        output.write( "</span>" );
-
-        if ( currentChar == '\n' )
-        {
-            currentColumn = 0;
         }
     }
 
@@ -502,13 +461,56 @@ public class Pass1
         }
     }
 
+    /**
+     * Method writeComment
+     *
+     * @param t
+     * @param input
+     * @param output
+     * @throws IOException
+     */
+    private void writeComment( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
+        throws IOException
+    {
+        int length = t.getLength();
+        int i = 0;
+
+        output.write( "<SPAN CLASS=\"comment\">" );
+
+        while ( i < length )
+        {
+            if ( currentChar == '\n' )
+            {
+                output.write( "</SPAN>" );
+            }
+            output.writeHTML( (char) currentChar );
+
+            if ( currentChar == '\n' )
+            {
+                output.write( "<SPAN CLASS=\"comment\">" );
+                currentColumn = 0;
+            }
+
+            currentChar = input.read();
+            currentColumn++;
+            i++;
+        }
+
+        output.write( "</SPAN>" );
+
+        if ( currentChar == '\n' )
+        {
+            currentColumn = 0;
+        }
+    }
+
     private void writeLiteral( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
         throws IOException
     {
         int length = t.getLength();
         int i = 0;
 
-        output.write( "<span class=\"string\">" );
+        output.write( "<SPAN CLASS=\"string\">" );
 
         while ( i < length )
         {
@@ -524,7 +526,7 @@ public class Pass1
             i++;
         }
 
-        output.write( "</span>" );
+        output.write( "</SPAN>" );
 
         if ( currentChar == '\n' )
         {
@@ -538,7 +540,7 @@ public class Pass1
         int length = t.getLength();
         int i = 0;
 
-        output.write( "<strong>" );
+        output.write( "<SPAN CLASS=\"keywords\"><B>" );
 
         while ( i < length )
         {
@@ -554,7 +556,7 @@ public class Pass1
             i++;
         }
 
-        output.write( "</strong>" );
+        output.write( "</B></SPAN>" );
 
         if ( currentChar == '\n' )
         {

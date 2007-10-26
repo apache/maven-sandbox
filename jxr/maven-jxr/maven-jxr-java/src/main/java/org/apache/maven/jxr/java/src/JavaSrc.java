@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 import org.apache.maven.jxr.java.src.html.Pass1;
 import org.apache.maven.jxr.java.src.html.Pass2;
@@ -37,8 +38,12 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class JavaSrc
 {
+    /** Field VERSION */
+    public static final String VERSION = getVersion();
+
     /** Field USAGE */
-    public static final String USAGE = "Usage: java " + JavaSrcOptions.getOptions() + "\n    " + JavaSrc.class.getName();
+    public static final String USAGE = "Usage: java " + JavaSrcOptions.getOptions() + "\n    "
+        + JavaSrc.class.getName();
 
     /**
      * Default location for css
@@ -365,8 +370,33 @@ public class JavaSrc
      * @return InputStream An input stream for reading the resource, or <tt>null</tt>
      *         if the resource could not be found
      */
-    private InputStream getStream( String resource )
+    private static InputStream getStream( String resource )
     {
-        return getClass().getClassLoader().getResourceAsStream( resource );
+        return JavaSrc.class.getClassLoader().getResourceAsStream( resource );
+    }
+
+    /**
+     * Get the version of JavaSrc from Maven <code>pom.properties</code>.
+     *
+     * @return the current version of JavaSrc.
+     */
+    private static String getVersion()
+    {
+        InputStream is = getStream( "META-INF/maven/org.apache.maven.jxr/maven-jxr-java/pom.properties" );
+        if ( is != null )
+        {
+            Properties p = new Properties();
+            try
+            {
+                p.load( is );
+                return p.getProperty( "version" );
+            }
+            catch ( IOException e )
+            {
+                // nop
+            }
+        }
+
+        return "";
     }
 }

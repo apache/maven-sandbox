@@ -15,124 +15,64 @@
 * limitations under the License.
 */
 /* Javadoc style sheet */
-/* Define colors, fonts and other style attributes here to override the defaults  */
-body { 
-	background-color: #fff;
-	font-family: Arial, Helvetica, sans-serif;
-}
 
-a:link { color: #00f;}
-a:visited { color: #00a;}
-a:active, a:hover { color: #f30 !important;}
+/* Define colors, fonts and other style attributes here to override the defaults */
 
-ul, li	{
-	list-style-type:none ;
-	margin:0;
-	padding:0;
-}
+/* Page background color */
+body { background-color: #FFFFFF }
 
-table td{
-	padding: 3px;
-	border: 1px solid #000;
-}
-table{
-	width:100%;
-	border: 1px solid #000;
-	border-collapse: collapse;
-}
+/* Headings */
+h1 { font-size: 145% }
 
-div.overview {
-	background-color:#ddd;
-	padding: 4px 4px 4px 0;
-}
-div.overview li, div.framenoframe li {
-	display: inline;
-}
-div.framenoframe {
-	text-align: center;
-	font-size: x-small;
-}
-div.framenoframe li {
-	margin: 0 3px 0 3px;
-}
-div.overview li {
-	margin:3px 3px 0 3px;
-	padding: 4px;
-}
-li.selected {
-	background-color:#888;
-	color: #fff;
-	font-weight: bold;
-}
+/* Table colors */
+.TableHeadingColor     { background: #CCCCFF } /* Dark mauve */
+.TableSubHeadingColor  { background: #EEEEFF } /* Light mauve */
+.TableRowColor         { background: #FFFFFF } /* White */
 
-table.summary {
-	margin-bottom: 20px;
-}
-table.summary td, table.summary th {
-	font-weight: bold;
-	text-align: left;
-	padding: 3px;
-}
-table.summary th{
-	background-color:#036;
-	color: #fff;
-}
-table.summary td{
-	background-color:#eee;
-	border: 1px solid black;
-}
+/* Font used in left-hand frame lists */
+.FrameTitleFont   { font-size: 100%; font-family: Helvetica, Arial, sans-serif }
+.FrameHeadingFont { font-size:  90%; font-family: Helvetica, Arial, sans-serif }
+.FrameItemFont    { font-size:  90%; font-family: Helvetica, Arial, sans-serif }
 
-em {
-	color: #A00;
-}
-em.comment {
-	color: #390;
-}
-.string {
-	color: #009;
-}
-div#footer {
-	text-align:center;
-}
-#overview {
-	padding:2px;
-}
-            
-            
-hr {
-	height: 1px;
-	color: #000;
-}
-.comment   { color:#007d00; font-style:italic } 
-.linenum   { color:#888 font-weight:normal; } 
-.textDiv   { font-weight:bold } 
+/* Navigation bar fonts and colors */
+.NavBarCell1    { background-color:#EEEEFF;} /* Light mauve */
+.NavBarCell1Rev { background-color:#00008B;} /* Dark Blue */
+.NavBarFont1    { font-family: Arial, Helvetica, sans-serif; color:#000000;}
+.NavBarFont1Rev { font-family: Arial, Helvetica, sans-serif; color:#FFFFFF;}
 
-.packageListItem { margin:0; padding:0; border:0 } 
-.packageName {  font-weight:bold } 
+.NavBarCell2    { font-family: Arial, Helvetica, sans-serif; background-color:#FFFFFF;}
+.NavBarCell3    { font-family: Arial, Helvetica, sans-serif; background-color:#FFFFFF;}
 
-.classDef  { color:#875b37;font-weight:bold } 
-.classRef  { color:#875b37;font-weight:normal; } 
-.classListItem  {  margin:0; padding:0; border:0 } 
-.classReflist         { border-bottom:solid } 
-.classReflistHeader   { font-weight:bold; border:0; margin:0; padding:0 } 
-.classRefItem         { margin:0; padding:0; border:0 } 
-p.classRefItem a        { color:#875b37 } 
-p.classReflistHeader a  { color:#875b37 } 
+/* JavaSrc style sheet */
+.comment   { color:#007d00; font-style:italic }
+.linenum   { color:#888 font-weight:normal; }
+.string { color: #009;}
+.keywords { color: #7f0055;}
 
+.packageListItem { margin:0; padding:0; border:0 }
+.packageName {  font-weight:bold }
 
-.methodDef { color:#377587;font-weight:bold } 
-.methodRef { color:#377587;font-weight:normal } 
-.methodReflist         { } 
-.methodReflistHeader   { font-weight:bold; border:0; margin:0; padding:0} 
-.methodRefItem         { margin:0; padding:0; border:0; color:#009 } 
-p.methodRefItem a        { color:#377587 } 
-p.methodReflistHeader a  { color:#377587 } 
+.classDef  { color:#875b37;font-weight:bold }
+.classRef  { color:#875b37;font-weight:normal; }
+.classListItem  {  margin:0; padding:0; border:0 }
+.classReflist         { border-bottom:solid }
+.classReflistHeader   { font-weight:bold; border:0; margin:0; padding:0 }
+.classRefItem         { margin:0; padding:0; border:0 }
+p.classRefItem a        { color:#875b37 }
+p.classReflistHeader a  { color:#875b37 }
 
+.methodDef { color:#377587;font-weight:bold }
+.methodRef { color:#377587;font-weight:normal }
+.methodReflist         { }
+.methodReflistHeader   { font-weight:bold; border:0; margin:0; padding:0}
+.methodRefItem         { margin:0; padding:0; border:0; color:#009 }
+p.methodRefItem a        { color:#377587 }
+p.methodReflistHeader a  { color:#377587 }
 
-.varDef    { color:#232187;font-weight:bold } 
-.varRef    { color:#232187;font-weight:normal } 
-.variableReflist         { } 
-.variableReflistHeader   { color:#000000;font-weight:bold;  border:0; margin:0; padding:0} 
-.variableRefItem         { margin:0; padding:0; border:0; color:#660 } 
-p.variableRefItem a        { color:#232187; } 
-p.variableRefListheader a  { color:#232187; } 
+.varDef    { color:#232187;font-weight:bold }
+.varRef    { color:#232187;font-weight:normal }
+.variableReflist         { }
+.variableReflistHeader   { color:#000000;font-weight:bold;  border:0; margin:0; padding:0}
+.variableRefItem         { margin:0; padding:0; border:0; color:#660 }
+p.variableRefItem a        { color:#232187; }
+p.variableRefListheader a  { color:#232187; }

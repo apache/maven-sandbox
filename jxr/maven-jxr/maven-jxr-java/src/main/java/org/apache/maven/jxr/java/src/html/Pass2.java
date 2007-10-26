@@ -345,16 +345,17 @@ public class Pass2
 
         result.write( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
             + "\"http://www.w3.org/TR/html4/loose.dtd\">\n" );
-        result.write( "<html>" );
-        result.write( "<head>\n" );
-        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
-            .getDocencoding() : System.getProperty( "file.encoding" ) );
-        result.write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">\n" );
-        result.write( "<title>" + packageName + "." + ref.getReferentFileClass() + " References</title>\n" );
-        result.write( "<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"" + getBackupPath( packageName )
-            + "styles.css\">\n" );
-        result.write( "</head>\n" );
-        result.write( "<body>\n" );
+        result.write( "<HTML>" );
+        result.write( "<HEAD>\n" );
+        result.write( getGeneratedBy() + "\n" );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions().getDocencoding()
+                                                                                   : DEFAULT_DOCENCODING );
+        result.write( "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=" + encoding + "\">\n" );
+        result.write( "<TITLE>" + packageName + "." + ref.getReferentFileClass() + " References</title>\n" );
+        result.write( "<LINK REL=\"stylesheet\" TYPE=\"text/css\" " + "HREF=\"" + getBackupPath( packageName )
+            + "styles.css\" TITLE=\"Style\">\n" );
+        result.write( "</HEAD>\n" );
+        result.write( "<BODY>\n" );
 
         return result;
     }
@@ -390,38 +391,37 @@ public class Pass2
     {
         if ( ref.getReferentType().equals( ReferenceTypes.CLASS_REF ) )
         {
-            bw.write( "<p class=\"classReflist\">" );
+            bw.write( "<P CLASS=\"classReflist\">" );
 
-            String nameString = "<p class=\"classReflistHeader\">Class: <a name=\"" + ref.getReferentTag()
-                + "\" href=\"" + ref.getReferentFileClass() + "_java.html#" + ref.getReferentTag() + "\">"
-                + ref.getReferentClass() + "</a></p>";
+            String nameString = "<P CLASS=\"classReflistHeader\">Class: <A NAME=\"" + ref.getReferentTag()
+                + "\" HREF=\"" + ref.getReferentFileClass() + "_java.html#" + ref.getReferentTag() + "\">"
+                + ref.getReferentClass() + "</A></P>";
 
             bw.write( nameString );
         }
         else if ( ref.getReferentType().equals( ReferenceTypes.METHOD_REF ) )
         {
-            bw.write( "<p class=\"methodReflist\">" );
-            bw.write( "<!-- hello -->" );
+            bw.write( "<P CLASS=\"methodReflist\">" );
 
-            String nameString = "<p class=\"methodReflistHeader\">Method: <a name=\"" + ref.getReferentTag()
-                + "\" href=\"" + ref.getReferentFileClass() + "_java.html#" + ref.getReferentTag() + "\">"
-                + ref.getReferentTag() + "</a></p>";
+            String nameString = "<p class=\"methodReflistHeader\">Method: <A NAME=\"" + ref.getReferentTag()
+                + "\" HREF=\"" + ref.getReferentFileClass() + "_java.html#" + ref.getReferentTag() + "\">"
+                + ref.getReferentTag() + "</A></P>";
 
             bw.write( nameString );
         }
         else if ( ref.getReferentType().equals( ReferenceTypes.VARIABLE_REF ) )
         {
-            bw.write( "<p class=\"variableReflist\">" );
+            bw.write( "<P CLASS=\"variableReflist\">" );
 
-            String nameString = "<p class=\"variableReflistHeader\">Variable: <a name=\"" + ref.getReferentTag()
-                + "\" href=\"" + ref.getReferentFileClass() + "_java.html#" + ref.getReferentTag() + "\">"
-                + ref.getReferentTag() + "</a></p>";
+            String nameString = "<P CLASS=\"variableReflistHeader\">Variable: <A NAME=\"" + ref.getReferentTag()
+                + "\" HREF=\"" + ref.getReferentFileClass() + "_java.html#" + ref.getReferentTag() + "\">"
+                + ref.getReferentTag() + "</A></P>";
 
             bw.write( nameString );
         }
         else
         {
-            bw.write( "<p>open section " + ref.getReferentType() + "</p>" );
+            bw.write( "<P>open section " + ref.getReferentType() + "</P>" );
         }
 
         if ( log.isDebugEnabled() )
@@ -446,34 +446,34 @@ public class Pass2
 
         if ( ref.getReferentType().equals( ReferenceTypes.CLASS_REF ) )
         {
-            String linkString = "<p class=\"classRefItem\"><a href=\"" + linkFilename + "#"
+            String linkString = "<P CLASS=\"classRefItem\"><A HREF=\"" + linkFilename + "#"
                 + ref.getReferringLineNumber() + "\">" + ref.getReferringPackage() + "." + ref.getReferringClass()
                 + "." + ref.getReferringMethod() + " (" + ref.getReferringFile() + ":" + ref.getReferringLineNumber()
-                + ")</a></p>\n";
+                + ")</A></P>\n";
 
             bw.write( linkString );
         }
         else if ( ref.getReferentType().equals( ReferenceTypes.METHOD_REF ) )
         {
-            String linkString = "<p class=\"methodRefItem\"><a href=\"" + linkFilename + "#"
+            String linkString = "<P CLASS=\"methodRefItem\"><A HREF=\"" + linkFilename + "#"
                 + ref.getReferringLineNumber() + "\">" + ref.getReferringPackage() + "." + ref.getReferringClass()
                 + "." + ref.getReferringMethod() + " (" + ref.getReferringFile() + ":" + ref.getReferringLineNumber()
-                + ")</a></p>\n";
+                + ")</A></P>\n";
 
             bw.write( linkString );
         }
         else if ( ref.getReferentType().equals( ReferenceTypes.VARIABLE_REF ) )
         {
-            String linkString = "<p class=\"variableRefItem\"><a href=\"" + linkFilename + "#"
+            String linkString = "<P CLASS=\"variableRefItem\"><A HREF=\"" + linkFilename + "#"
                 + ref.getReferringLineNumber() + "\">" + ref.getReferringPackage() + "." + ref.getReferringClass()
                 + "." + ref.getReferringMethod() + " (" + ref.getReferringFile() + ":" + ref.getReferringLineNumber()
-                + ")</a></p>\n";
+                + ")</A></P>\n";
 
             bw.write( linkString );
         }
         else
         {
-            bw.write( "<p>link for a " + ref.getReferentType() + "</p>" );
+            bw.write( "<P>link for a " + ref.getReferentType() + "</P>" );
         }
     }
 
@@ -494,8 +494,11 @@ public class Pass2
 
     /**
      * Method createPackageFiles
+     *
+     * @throws IOException if any
      */
     private void createPackageFiles()
+        throws IOException
     {
         String packageName;
         String fileName;
@@ -524,61 +527,61 @@ public class Pass2
 
             createDirs( file );
 
-            try
+            pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
+
+            pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+                + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+            pw.println( "<HTML>" );
+            pw.println( "<HEAD>" );
+            pw.println( getGeneratedBy() );
+            String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions().getDocencoding()
+                                                                                       : DEFAULT_DOCENCODING );
+            pw.println( "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=" + encoding + "\">" );
+            if ( StringUtils.isNotEmpty( getOptions().getWindowtitle() ) )
             {
-                pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
-
-                pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
-                    + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-                pw.println( "<html>" );
-                pw.println( "<head>" );
-                String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
-                    .getDocencoding() : System.getProperty( "file.encoding" ) );
-                pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
-                pw.println( "<title>" + packageName + "</title>" );
-                pw.println( "<LINK rel=\"stylesheet\" type=\"text/css\" " + "href=\"" + getBackupPath( packageName )
-                    + "styles.css\">" );
-                pw.println( "</head>" );
-                pw.println( "<body>" );
-
-                pw.println( "<h3>" );
-                pw.println( "<a href=\"package-summary.html\" target=\"classFrame\">" + packageName + "</a>" );
-                pw.println( "</h3>" );
-                pw.println( "<p class=packagename>" + packageName + "</p>" );
-
-                pw.println( "<h3>Classes</h3>" );
-                Iterator iter = classes.iterator();
-
-                while ( iter.hasNext() )
-                {
-                    ClassFileEntry cf = (ClassFileEntry) iter.next();
-                    String className = cf.getClassName();
-                    String fileClassName = cf.getFileName();
-                    //int j = className.indexOf('.');
-                    String anchor;
-
-                    // if (j == -1)
-                    // {
-                    anchor = className;
-
-                    // }
-                    // else
-                    // {
-                    // anchor = className.substring(j+1);
-                    // }
-                    String tag = "<p class=\"classListItem\"><a href=\"" + fileClassName + "_java.html#" + anchor
-                        + "\" TARGET=\"classFrame\">" + className + "</a></p>";
-
-                    pw.println( tag );
-                }
-
-                pw.println( "</body></html>" );
-                pw.close();
+                pw.println( "<TITLE>" + packageName + " (" + getOptions().getWindowtitle() + ")</TITLE>" );
+                pw.println( "<META NAME=\"keywords\" CONTENT=\"" + packageName + "\">" );
             }
-            catch ( Exception ex )
+            else
             {
-                log.error( "Error writing file:" + fileName, ex );
+                pw.println( "<TITLE>" + packageName + "</TITLE>" );
             }
+            pw.println( "<LINK REL=\"stylesheet\" TYPE=\"text/css\" " + "HREF=\"" + getBackupPath( packageName )
+                + "styles.css\" TITLE=\"Style\">" );
+            pw.println( "</HEAD>" );
+
+            pw.println( "" );
+
+            pw.println( "<BODY BGCOLOR=\"white\">" );
+            pw.println( "<FONT size=\"+1\" CLASS=\"FrameTitleFont\">" );
+            pw.println( "<A HREF=\"package-summary.html\" TARGET=\"classFrame\">" + packageName + "</A></FONT>" );
+            pw.println( "<TABLE BORDER=\"0\" WIDTH=\"100%\" SUMMARY=\"\">" );
+            pw.println( "<TR>" );
+            pw.println( "<TD NOWRAP><FONT size=\"+1\" CLASS=\"FrameHeadingFont\">" );
+            pw.println( "Classes</FONT>&nbsp;" );
+            pw.println( "<FONT CLASS=\"FrameItemFont\">" );
+            pw.println( "<BR>" );
+
+            Iterator iter = classes.iterator();
+            while ( iter.hasNext() )
+            {
+                ClassFileEntry cf = (ClassFileEntry) iter.next();
+                String className = cf.getClassName();
+                String fileClassName = cf.getFileName();
+                String anchor = className;
+
+                pw.println( "<A HREF=\"" + fileClassName + "_java.html#" + anchor + "\" TITLE=\"" + className
+                    + "\" TARGET=\"classFrame\">" + className + "</A>" );
+                pw.println( "<BR>" );
+            }
+            pw.println( "</FONT>" );
+            pw.println( "</TD>" );
+            pw.println( "</TR>" );
+            pw.println( "</TABLE>" );
+
+            pw.println( "</BODY>" );
+            pw.println( "</HTML>" );
+            pw.close();
         }
 
         println( totalClassCount + " classes total" );
@@ -719,29 +722,56 @@ public class Pass2
 
         pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" "
             + "\"http://www.w3.org/TR/html4/frameset.dtd\">" );
-        pw.println( "<head>" );
-        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
-            .getDocencoding() : System.getProperty( "file.encoding" ) );
-        pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
+        pw.println( "<HTML>" );
+        pw.println( "<HEAD>" );
+        pw.println( getGeneratedBy() );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions().getDocencoding()
+                                                                                   : DEFAULT_DOCENCODING );
+        pw.println( "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=" + encoding + "\">" );
         if ( StringUtils.isNotEmpty( getOptions().getWindowtitle() ) )
         {
-            pw.println( "<title>" + getOptions().getWindowtitle() + "</title>" );
+            pw.println( "<TITLE>" + getOptions().getWindowtitle() + "</TITLE>" );
         }
         else
         {
-            pw.println( "<title>JavaSrc</title>" );
+            pw.println( "<TITLE>JavaSrc</TITLE>" );
         }
-        pw.println( "</head>" );
-        pw.println( "<frameset cols=\"20%,80%\">" );
-        pw.println( "  <frameset rows=\"30%,70%\">" );
-        pw.println( "    <frame src=\"overview-frame.html\" name=\"packageListFrame\">" );
-        pw.println( "    <frame src=\"allclasses-frame.html\" name=\"packageFrame\">" );
-        pw.println( "  </frameset>" );
+        pw.println( "<SCRIPT TYPE=\"text/javascript\">" );
+        pw.println( "<!--" );
+        pw.println( "    targetPage = \"\" + window.location.search;" );
+        pw.println( "    if (targetPage != \"\" && targetPage != \"undefined\")" );
+        pw.println( "       targetPage = targetPage.substring(1);" );
+        pw.println( "    function loadFrames() {" );
+        pw.println( "        if (targetPage != \"\" && targetPage != \"undefined\")" );
+        pw.println( "             top.classFrame.location = top.targetPage;" );
+        pw.println( "    }" );
+        pw.println( "//-->" );
+        pw.println( "</SCRIPT>" );
+        pw.println( "</HEAD>" );
+
+        pw.println( "" );
+
+        pw.println( "<FRAMESET COLS=\"20%,80%\" TITLE=\"\" ONLOAD=\"top.loadFrames()>\">" );
+        pw.println( "  <FRAMESET ROWS=\"30%,70%\" TITLE=\"\" ONLOAD=\"top.loadFrames()>\">" );
+        pw.println( "    <FRAME SRC=\"overview-frame.html\" NAME=\"packageListFrame\" TITLE=\"All Packages\">" );
+        pw.println( "    <FRAME SRC=\"allclasses-frame.html\" NAME=\"packageFrame\" "
+            + "TITLE=\"All classes and interfaces (except non-static nested types\">" );
+        pw.println( "  </FRAMESET>" );
         pw.println( "  " );
-        pw.println( "  <frameset rows=\"*\">" );
-        pw.println( "    <frame src=\"overview-summary.html\" name=\"classFrame\">" );
-        pw.println( "  </frameset>" );
-        pw.println( "</frameset>" );
+        pw.println( "  <FRAMESET ROWS=\"*\">" );
+        pw.println( "    <FRAME SRC=\"overview-summary.html\" NAME=\"classFrame\" "
+            + "TITLE=\"Package, class and interface descriptions\" SCROLLING=\"yes\">" );
+        pw.println( "    <NOFRAMES>" );
+        pw.println( "      <H2>Frame Alert</H2>" );
+        pw.println( "      <P>" );
+        pw.println( "      This document is designed to be viewed using the frames feature. "
+            + "If you see this message, you are using a non-frame-capable web client." );
+        pw.println( "      <BR>" );
+        pw.println( "      Link to<A HREF=\"overview-summary.html\">Non-frame version.</A>" );
+        pw.println( "    </NOFRAMES>" );
+        pw.println( "  </FRAMESET>" );
+        pw.println( "</FRAMESET>" );
+        pw.println( "</HTML>" );
         pw.close();
     }
 
@@ -765,31 +795,70 @@ public class Pass2
 
         pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
             + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-        pw.println( "<html>" );
-        pw.println( "<head>" );
-        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
-            .getDocencoding() : System.getProperty( "file.encoding" ) );
-        pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
-        pw.println( "<title>Overview</title>" );
-        pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
-        pw.println( "</head>" );
-        pw.println( "<body>" );
+        pw.println( "<HTML>" );
+        pw.println( "<HEAD>" );
+        pw.println( getGeneratedBy() );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions().getDocencoding()
+                                                                                   : DEFAULT_DOCENCODING );
+        pw.println( "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=" + encoding + "\">" );
+        if ( StringUtils.isNotEmpty( getOptions().getWindowtitle() ) )
+        {
+            pw.println( "<TITLE>Overview (" + getOptions().getWindowtitle() + ")</TITLE>" );
+            pw.println( "<META NAME=\"keywords\" CONTENT=\"Overview, " + getOptions().getWindowtitle() + "\">" );
+        }
+        else
+        {
+            pw.println( "<TITLE>Overview</TITLE>" );
+        }
+        pw.println( "<LINK REL=\"stylesheet\" TYPE=\"text/css\" HREF=\"styles.css\" TITLE=\"Style\">" );
+        pw.println( "</HEAD>" );
+
+        pw.println( "" );
+
+        pw.println( "<BODY BGCOLOR=\"white\">" );
+        pw.println( "<TABLE BORDER=\"0\" WIDTH=\"100%\" SUMMARY=\"\">" );
+        pw.println( "<TR>" );
+        pw.println( "<TH ALIGN=\"left\" NOWRAP>" );
+        pw.println( "<FONT size=\"+1\" CLASS=\"FrameTitleFont\">" );
         if ( StringUtils.isNotEmpty( getOptions().getPackagesheader() ) )
         {
-            pw.println( "<b>" + getOptions().getPackagesheader() + "</b>" );
+            pw.println( "<B>" + getOptions().getPackagesheader() + "</B>" );
         }
-        pw.println( "<h3><a href=\"allclasses-frame.html\" target=\"packageFrame\">All Classes</a></h3>" );
-        pw.println( "<h3>Packages</h3>" );
+        pw.println( "</FONT></TH>" );
+        pw.println( "</TR>" );
+        pw.println( "</TABLE>" );
+
+        pw.println( "" );
+
+        pw.println( "<TABLE BORDER=\"0\" WIDTH=\"100%\" SUMMARY=\"\">" );
+        pw.println( "<TR>" );
+        pw.println( "<TD NOWRAP>" );
+        pw.println( "<FONT CLASS=\"FrameItemFont\">" );
+        pw.println( "<A HREF=\"allclasses-frame.html\" TARGET=\"packageFrame\">All Classes</A>" );
+        pw.println( "</FONT><P>" );
+        pw.println( "<FONT size=\"+1\" CLASS=\"FrameHeadingFont\">Packages</FONT>" );
+        pw.println( "<BR>" );
         while ( iter.hasNext() )
         {
             packageName = (String) iter.next();
             packageFileName = packageName.replace( '.', '/' ) + '/' + "classList.html";
 
-            pw.println( "<p class=\"packageListItem\"><A HREF=\"" + packageFileName + "\" TARGET=\"packageFrame\">"
-                + packageName + "</A></p>" );
+            pw.println( "<FONT CLASS=\"FrameItemFont\">" );
+            pw.println( "<A HREF=\"" + packageFileName + "\" TARGET=\"packageFrame\">" + packageName + "</A>" );
+            pw.println( "</FONT>" );
+            pw.println( "<BR>" );
         }
+        pw.println( "</TD>" );
+        pw.println( "</TR>" );
+        pw.println( "</TABLE>" );
 
-        pw.println( "</body></html>" );
+        pw.println( "" );
+
+        pw.println( "<P>" );
+        pw.println( "&nbsp;" );
+        pw.println( "</BODY>" );
+        pw.println( "</HTML>" );
+
         pw.close();
     }
 
@@ -810,32 +879,55 @@ public class Pass2
 
         pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
             + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-        pw.println( "<html>" );
-        pw.println( "<head>" );
-        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
-            .getDocencoding() : System.getProperty( "file.encoding" ) );
-        pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
-        pw.println( "<title>All classes</title>" );
-        pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
-        pw.println( "</head>" );
-        pw.println( "<body>" );
+        pw.println( "<HTML>" );
+        pw.println( "<HEAD>" );
+        pw.println( getGeneratedBy() );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions().getDocencoding()
+                                                                                   : DEFAULT_DOCENCODING );
+        pw.println( "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=" + encoding + "\">" );
+        if ( StringUtils.isNotEmpty( getOptions().getWindowtitle() ) )
+        {
+            pw.println( "<TITLE>All classes (" + getOptions().getWindowtitle() + ")</TITLE>" );
+        }
+        else
+        {
+            pw.println( "<TITLE>All classes</TITLE>" );
+        }
+        pw.println( "<LINK REL=\"stylesheet\" TYPE=\"text/css\" HREF=\"styles.css\" TITLE=\"Style\">" );
+        pw.println( "</HEAD>" );
 
-        pw.println( "<h3>All Classes</h3>" );
+        pw.println( "" );
+
+        pw.println( "<BODY BGCOLOR=\"white\">" );
+        pw.println( "<FONT size=\"+1\" CLASS=\"FrameHeadingFont\">" );
+        pw.println( "<B>All Classes</B></FONT>" );
+        pw.println( "<BR>" );
+        pw.println( "" );
+        pw.println( "<TABLE BORDER=\"0\" WIDTH=\"100%\" SUMMARY=\"\">" );
+        pw.println( "<TR>" );
+        pw.println( "<TD NOWRAP><FONT CLASS=\"FrameItemFont\">" );
         Iterator iter = orderedAllClasses().iterator();
-
         while ( iter.hasNext() )
         {
             ClassFileEntry cf = (ClassFileEntry) iter.next();
             String className = cf.getClassName();
             String fileClassName = cf.getFileName();
             String anchor = className;
-            String tag = "<p class=\"classListItem\"><a href=\"" + fileClassName + "_java.html#" + anchor
-                + "\" TARGET=\"classFrame\">" + className + "</a></p>";
 
-            pw.println( tag );
+            // TODO add <I> for interface
+            pw.println( "<A HREF=\"" + fileClassName + "_java.html#" + anchor + "\" TITLE=\"" + className + "\" "
+                + "TARGET=\"classFrame\">" + className + "</A>" );
+            pw.println( "<BR>" );
         }
+        pw.println( "</FONT>" );
+        pw.println( "</TD>" );
+        pw.println( "</TR>" );
+        pw.println( "</TABLE>" );
 
-        pw.println( "</body></html>" );
+        pw.println( "" );
+
+        pw.println( "</BODY>" );
+        pw.println( "</HTML>" );
         pw.close();
     }
 
@@ -878,34 +970,63 @@ public class Pass2
 
             pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
                 + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-            pw.println( "<html>" );
-            pw.println( "<head>" );
-            String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
-                .getDocencoding() : System.getProperty( "file.encoding" ) );
-            pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
-            pw.println( "<title>" + packageName + " Summary</title>" );
-            pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + getBackupPath( packageName )
-                + "styles.css\">" );
-            pw.println( "</head>" );
-            pw.println( "<body>" );
+            pw.println( "<HTML>" );
+            pw.println( "<HEAD>" );
+            pw.println( getGeneratedBy() );
+            String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions().getDocencoding()
+                                                                                       : DEFAULT_DOCENCODING );
+            pw.println( "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=" + encoding + "\">" );
+            if ( StringUtils.isNotEmpty( getOptions().getWindowtitle() ) )
+            {
+                pw.println( "<TITLE>" + packageName + " (" + getOptions().getWindowtitle() + ")</TITLE>" );
+                pw.println( "META NAME=\"keywords\" CONTENT=\"package " + packageName + "\">" );
+            }
+            else
+            {
+                pw.println( "<TITLE>" + packageName + " Summary</TITLE>" );
+            }
+            pw.println( "<LINK REL=\"stylesheet\" TYPE=\"text/css\" HREF=\"" + getBackupPath( packageName )
+                + "styles.css\" TITLE=\"Style\">" );
+            pw.println( "<SCRIPT TYPE=\"text/javascript\">" );
+            pw.println( "<!--" );
+            pw.println( "function windowTitle()" );
+            pw.println( "{" );
+            if ( StringUtils.isNotEmpty( getOptions().getWindowtitle() ) )
+            {
+                pw.println( "    parent.document.title=\"" + packageName + " (" + getOptions().getWindowtitle()
+                    + ")\";" );
+            }
+            else
+            {
+                pw.println( "    parent.document.title=\"" + packageName + " Summary\";" );
+            }
+            pw.println( "}" );
+            pw.println( "//-->" );
+            pw.println( "</SCRIPT>" );
+            pw.println( "</HEAD>" );
 
+            pw.println( "" );
+
+            pw.println( "<BODY BGCOLOR=\"white\" ONLOAD=\"windowTitle();\">" );
+
+            pw.println( "" );
+            pw.println( "<!-- ========= START OF TOP NAVBAR ======= -->" );
             if ( StringUtils.isNotEmpty( getOptions().getTop() ) )
             {
                 pw.println( getOptions().getTop() );
-                pw.println( "<hr>" );
+                pw.println( "<HR>" );
             }
+            createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html", true );
+            pw.println( "<!-- ========= END OF TOP NAVBAR ========= -->" );
 
-            createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html" );
-
-            pw.println( "<h2>" + packageName + "</h2>" );
-
-            pw.println( "<table class=\"summary\">" );
-            pw.println( "<thead>" );
-            pw.println( "<tr>" );
-            pw.println( "<th>Class Summary</th>" );
-            pw.println( "</tr>" );
-            pw.println( "</thead>" );
-            pw.println( "<tbody>" );
+            pw.println( "<HR>" );
+            pw.println( "<H2>Package " + packageName + "</H2>" );
+            pw.println( "" );
+            pw.println( "<TABLE BORDER=\"1\" WIDTH=\"100%\" CELLPADDING=\"3\" CELLSPACING=\"0\" SUMMARY=\"\">" );
+            pw.println( "<TR BGCOLOR=\"#CCCCFF\" CLASS=\"TableHeadingColor\">" );
+            pw.println( "<TH ALIGN=\"left\" COLSPAN=\"2\"><FONT SIZE=\"+2\">" );
+            pw.println( "<B>Class Summary</B></FONT></TH>" );
+            pw.println( "</TR>" );
 
             Iterator iter = classes.iterator();
 
@@ -914,47 +1035,117 @@ public class Pass2
                 ClassFileEntry cf = (ClassFileEntry) iter.next();
                 String className = cf.getClassName();
                 String fileClassName = cf.getFileName();
-                String anchor;
+                String anchor = className;
 
-                anchor = className;
-                pw.println( "<tr>" );
-                pw.println( "<td>" );
-                pw.println( "<a href=\"" + fileClassName + "_java.html#" + anchor + "\" TARGET=\"classFrame\">"
-                    + className + "</a>" );
-                pw.println( "</td>" );
-                pw.println( "</tr>" );
+                pw.println( "<TR BGCOLOR=\"white\" CLASS=\"TableRowColor\">" );
+                pw.println( "<TD WIDTH=\"15%\">" );
+                pw.println( "<B><A HREF=\"" + fileClassName + "_java.html#" + anchor + "\" TITLE=\"" + className
+                    + "\">" + className + "</A></B>" );
+                pw.println( "</TD>" );
+                pw.println( "<TD></TD>" );
+                pw.println( "</TR>" );
             }
-            pw.println( "</tbody>" );
-            pw.println( "</table>" );
+            pw.println( "</TBODY>" );
+            pw.println( "</TABLE>" );
 
-            createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html" );
+            pw.println( "" );
+            pw.println( "<P>&nbsp;</P><HR>" );
 
-            pw.println( "<hr>" );
-            pw.println( "<div class=\"bottom\">Copyright &copy; 2001-2003 Apache Software Foundation. "
-                + "All Rights Reserved.</div>" );
-            pw.println( "</body></html>" );
+            pw.println( "<!-- ======= START OF BOTTOM NAVBAR ====== -->" );
+            createPackageSummaryFilesExtras( pw, getBackupPath( packageName ), "package-summary.html", false );
+            pw.println( "<!-- ======= END OF BOTTOM NAVBAR ====== -->" );
+
+            if ( StringUtils.isNotEmpty( getOptions().getBottom() ) )
+            {
+                pw.println( "<HR>" );
+                pw.println( getOptions().getBottom() );
+            }
+            pw.println( "</BODY>" );
+            pw.println( "</HTML>" );
             pw.close();
         }
     }
 
-    private void createPackageSummaryFilesExtras( PrintWriter pw, String root, String current )
+    private void createPackageSummaryFilesExtras( PrintWriter pw, String root, String current, boolean top )
     {
-        pw.println( "<div class=\"overview\">" );
-        pw.println( "<ul>" );
-        pw.println( "<li><a href=\"" + root + "overview-summary.html\">Overview</a></li>" );
-        pw.println( "<li class=\"selected\">Package</li>" );
-        pw.println( "</ul>" );
-        pw.println( "</div>" );
-        pw.println( "<div class=\"framenoframe\">" );
-        pw.println( "<ul>" );
-        pw.println( "<li>" );
-        pw.println( "<a href=\"" + root + "index.html\" target=\"_top\">FRAMES</a>" );
-        pw.println( "</li>" );
-        pw.println( "<li>" );
-        pw.println( "<a href=\"" + current + "\" target=\"_top\">NO FRAMES</a>" );
-        pw.println( "</li>" );
-        pw.println( "</ul>" );
-        pw.println( "</div>" );
+        if ( top )
+        {
+            pw.println( "<A NAME=\"navbar_top\"><!-- --></A>" );
+            pw.println( "<A HREF=\"#skip-navbar_top\" TITLE=\"Skip navigation links\"></A>" );
+        }
+        else
+        {
+            pw.println( "<A NAME=\"navbar_bottom\"><!-- --></A>" );
+            pw.println( "<A HREF=\"#skip-navbar_bottom\" TITLE=\"Skip navigation links\"></A>" );
+        }
+        pw.println( "<TABLE BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\" SUMMARY=\"\">" );
+        pw.println( "<TR>" );
+        pw.println( "<TD COLSPAN=\"2\" BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        if ( top )
+        {
+            pw.println( "<A NAME=\"navbar_top_firstrow\"><!-- --></A>" );
+        }
+        else
+        {
+            pw.println( "<A NAME=\"navbar_bottom_firstrow\"><!-- --></A>" );
+        }
+        pw.println( "<TABLE BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\" SUMMARY=\"\">" );
+        pw.println( "  <TR ALIGN=\"center\" VALIGN=\"top\">" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "    <A HREF=\"" + root
+            + "overview-summary.html\"><FONT CLASS=\"NavBarFont1\"><B>Overview</B></FONT></A>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#FFFFFF\" CLASS=\"NavBarCell1Rev\">" );
+        pw.println( "     &nbsp;<FONT CLASS=\"NavBarFont1Rev\"><B>Package</B></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "    <FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "    <FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "    <FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "    <FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "    <FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "    <FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  </TR>" );
+        pw.println( "</TABLE>" );
+        pw.println( "</TD>" );
+        pw.println( "<TD ALIGN=\"right\" VALIGN=\"top\" ROWSPAN=\"3\"><EM>" );
+        if ( top )
+        {
+            if ( StringUtils.isNotEmpty( getOptions().getHeader() ) )
+            {
+                pw.println( getOptions().getHeader() );
+            }
+        }
+        else
+        {
+            if ( StringUtils.isNotEmpty( getOptions().getFooter() ) )
+            {
+                pw.println( getOptions().getFooter() );
+            }
+        }
+        pw.println( "</EM>" );
+        pw.println( "</TD>" );
+        pw.println( "</TR>" );
+        pw.println( "" );
+        pw.println( "<TR>" );
+        pw.println( "<TD BGCOLOR=\"white\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">&nbsp;&nbsp;&nbsp;</FONT></TD>" );
+        pw.println( "<TD BGCOLOR=\"white\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">" );
+        pw.println( "  <A HREF=\"" + root + "index.html\" TARGET=\"_top\"><B>FRAMES</B></A>  &nbsp;" );
+        pw.println( "&nbsp;<A HREF=\"" + current + "\" TARGET=\"_top\"><B>NO FRAMES</B></A>  &nbsp;" );
+        pw.println( "</FONT></TD>" );
+        pw.println( "</TR>" );
+        pw.println( "</TABLE>" );
+        if ( top )
+        {
+            pw.println( "<A NAME=\"skip-navbar_top\"></A>" );
+        }
+        else
+        {
+            pw.println( "<A NAME=\"skip-navbar_bottom\"></A>" );
+        }
     }
 
     /**
@@ -974,33 +1165,70 @@ public class Pass2
 
         pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
             + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-        pw.println( "<html>" );
-        pw.println( "<head>" );
-        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
-            .getDocencoding() : System.getProperty( "file.encoding" ) );
-        pw.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\">" );
-        pw.println( "<title>Overview</title>" );
-        pw.println( "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">" );
-        pw.println( "</head>" );
-        pw.println( "<body>" );
+        pw.println( "<HTML>" );
+        pw.println( "<HEAD>" );
+        pw.println( getGeneratedBy() );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions().getDocencoding()
+                                                                                   : DEFAULT_DOCENCODING );
+        pw.println( "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=" + encoding + "\">" );
+        if ( StringUtils.isNotEmpty( getOptions().getWindowtitle() ) )
+        {
+            pw.println( "<TITLE>Overview (" + getOptions().getWindowtitle() + ")</TITLE>" );
+            pw.println( "<META NAME=\"keywords\" CONTENT=\"Overview, " + getOptions().getWindowtitle() + "\">" );
+        }
+        else
+        {
+            pw.println( "<TITLE>Overview Summary</TITLE>" );
+        }
+        pw.println( "<LINK REL=\"stylesheet\" TYPE=\"text/css\" HREF=\"styles.css\" TITLE=\"Style\">" );
+        pw.println( "<SCRIPT TYPE=\"text/javascript\">" );
+        pw.println( "<!--" );
+        pw.println( "function windowTitle()" );
+        pw.println( "{" );
+        if ( StringUtils.isNotEmpty( getOptions().getWindowtitle() ) )
+        {
+            pw.println( "    parent.document.title=\"Overview (" + getOptions().getWindowtitle() + ")\";" );
+        }
+        else
+        {
+            pw.println( "    parent.document.title=\"Overview Summary\";" );
+        }
+        pw.println( "}" );
+        pw.println( "//-->" );
+        pw.println( "</SCRIPT>" );
+        pw.println( "</HEAD>" );
 
+        pw.println( "" );
+
+        pw.println( "<BODY BGCOLOR=\"white\" ONLOAD=\"windowTitle();\">" );
+
+        pw.println( "" );
+        pw.println( "<!-- ========= START OF TOP NAVBAR ======= -->" );
         if ( StringUtils.isNotEmpty( getOptions().getTop() ) )
         {
             pw.println( getOptions().getTop() );
-            pw.println( "<hr>" );
+            pw.println( "<HR>" );
         }
+        createOverviewSummaryFrameExtras( pw, true );
+        pw.println( "<!-- ========= END OF TOP NAVBAR ========= -->" );
 
-        createOverviewSummaryFrameExtras( pw );
-
-        pw.println( "<h2>" + getOptions().getDoctitle() + "</h2>" );
-
-        pw.println( "<table class=\"summary\">" );
-        pw.println( "<thead>" );
-        pw.println( "<tr>" );
-        pw.println( "<th>Packages</th>" );
-        pw.println( "</tr>" );
-        pw.println( "</thead>" );
-        pw.println( "<tbody>" );
+        pw.println( "<HR>" );
+        pw.println( "<CENTER>" );
+        if ( StringUtils.isNotEmpty( getOptions().getDoctitle() ) )
+        {
+            pw.println( "<H1>" + getOptions().getDoctitle() + "</H1>" );
+        }
+        else
+        {
+            pw.println( "<H1></H1>" );
+        }
+        pw.println( "</CENTER>" );
+        pw.println( "" );
+        pw.println( "<TABLE BORDER=\"1\" WIDTH=\"100%\" CELLPADDING=\"3\" CELLSPACING=\"0\" SUMMARY=\"\">" );
+        pw.println( "<TR BGCOLOR=\"#CCCCFF\" CLASS=\"TableHeadingColor\">" );
+        pw.println( "<TH ALIGN=\"left\" COLSPAN=\"2\"><FONT SIZE=\"+2\">" );
+        pw.println( "<B>Packages</B></FONT></TH>" );
+        pw.println( "</TR>" );
 
         Iterator iter = packageNames.iterator();
         while ( iter.hasNext() )
@@ -1008,45 +1236,109 @@ public class Pass2
             String packageName = (String) iter.next();
             String packageFileName = packageName.replace( '.', '/' ) + '/' + "package-summary.html";
 
-            pw.println( "<tr>" );
-            pw.println( "<td>" );
-            pw.println( "<a href=\"" + packageFileName + "\">" + packageName + "</a>" );
-            pw.println( "</td>" );
-            pw.println( "</tr>" );
+            pw.println( "<TR BGCOLOR=\"white\" CLASS=\"TableRowColor\">" );
+            pw.println( "<TD WIDTH=\"20%\"><B><A HREF=\"" + packageFileName + "\">" + packageName + "</A></B></TD>" );
+            pw.println( "<TD>&nbsp;</TD>" );
+            pw.println( "</TR>" );
         }
+        pw.println( "</TABLE>" );
 
-        pw.println( "</tbody>" );
-        pw.println( "</table>" );
+        pw.println( "" );
+        pw.println( "<P>&nbsp;</P><HR>" );
 
-        createOverviewSummaryFrameExtras( pw );
-        pw.println( "<hr>" );
+        pw.println( "<!-- ========= START OF BOTTOM NAVBAR ======= -->" );
+        createOverviewSummaryFrameExtras( pw, false );
+        pw.println( "<!-- ========= END OF BOTTOM NAVBAR ======= -->" );
+
         if ( StringUtils.isNotEmpty( getOptions().getBottom() ) )
         {
-            pw.println( "<div class=\"bottom\">" );
+            pw.println( "<HR>" );
             pw.println( getOptions().getBottom() );
-            pw.println( "</div>" );
         }
-        pw.println( "</body></html>" );
+
+        pw.println( "</BODY>" );
+        pw.println( "</HTML>" );
         pw.close();
     }
 
-    private void createOverviewSummaryFrameExtras( PrintWriter pw )
+    private void createOverviewSummaryFrameExtras( PrintWriter pw, boolean top )
     {
-        pw.println( "<div class=\"overview\">" );
-        pw.println( "<ul>" );
-        pw.println( "<li class=\"selected\">Overview</li>" );
-        pw.println( "<li>Package</li>" );
-        pw.println( "</ul>" );
-        pw.println( "</div>" );
-        pw.println( "<div class=\"framenoframe\">" );
-        pw.println( "<ul>" );
-        pw.println( "<li>" );
-        pw.println( "<a href=\"index.html\" target=\"_top\">FRAMES</a>" );
-        pw.println( "</li>" );
-        pw.println( "<li>" );
-        pw.println( "<a href=\"overview-summary.html\" target=\"_top\">NO FRAMES</a>" );
-        pw.println( "</li>" );
-        pw.println( "</ul>" );
-        pw.println( "</div>" );
+        if ( top )
+        {
+            pw.println( "<A NAME=\"navbar_top\"><!-- --></A>" );
+            pw.println( "<A HREF=\"#skip-navbar_top\" TITLE=\"Skip navigation links\"></A>" );
+        }
+        else
+        {
+            pw.println( "<A NAME=\"navbar_bottom\"><!-- --></A>" );
+            pw.println( "<A HREF=\"#skip-navbar_bottom\" TITLE=\"Skip navigation links\"></A>" );
+        }
+        pw.println( "<TABLE BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\" SUMMARY=\"\">" );
+        pw.println( "<TR>" );
+        pw.println( "<TD COLSPAN=\"2\" BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        if ( top )
+        {
+            pw.println( "<A NAME=\"navbar_top_firstrow\"><!-- --></A>" );
+        }
+        else
+        {
+            pw.println( "<A NAME=\"navbar_bottom_firstrow\"><!-- --></A>" );
+        }
+        pw.println( "<TABLE BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\" SUMMARY=\"\">" );
+        pw.println( "  <TR ALIGN=\"center\" VALIGN=\"top\">" );
+        pw.println( "  <TD BGCOLOR=\"#FFFFFF\" CLASS=\"NavBarCell1Rev\">"
+            + "<FONT CLASS=\"NavBarFont1Rev\"><B>Overview</B></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "     &nbsp;<FONT CLASS=\"NavBarFont1\">Package</FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "     &nbsp;<FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "     &nbsp;<FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "     &nbsp;<FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "     &nbsp;<FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "     &nbsp;<FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">" );
+        pw.println( "     &nbsp;<FONT CLASS=\"NavBarFont1\"></FONT>&nbsp;</TD>" );
+        pw.println( "  </TR>" );
+        pw.println( "</TABLE>" );
+        pw.println( "</TD>" );
+        pw.println( "<TD ALIGN=\"right\" VALIGN=\"top\" ROWSPAN=\"3\"><EM>" );
+        if ( top )
+        {
+            if ( StringUtils.isNotEmpty( getOptions().getHeader() ) )
+            {
+                pw.println( getOptions().getHeader() );
+            }
+        }
+        else
+        {
+            if ( StringUtils.isNotEmpty( getOptions().getFooter() ) )
+            {
+                pw.println( getOptions().getFooter() );
+            }
+        }
+        pw.println( "</EM>" );
+        pw.println( "</TD>" );
+        pw.println( "</TR>" );
+        pw.println( "" );
+        pw.println( "<TR>" );
+        pw.println( "<TD BGCOLOR=\"white\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">&nbsp;&nbsp;&nbsp;</FONT></TD>" );
+        pw.println( "<TD BGCOLOR=\"white\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">" );
+        pw.println( "  <A HREF=\"index.html\" target=\"_top\"><B>FRAMES</B></A>  &nbsp;" );
+        pw.println( "&nbsp;<A HREF=\"overview-summary.html\" TARGET=\"_top\"><B>NO FRAMES</B></A>  &nbsp;" );
+        pw.println( "</FONT></TD>" );
+        pw.println( "</TR>" );
+        pw.println( "</TABLE>" );
+        if ( top )
+        {
+            pw.println( "<A NAME=\"skip-navbar_top\"></A>" );
+        }
+        else
+        {
+            pw.println( "<A NAME=\"skip-navbar_bottom\"></A>" );
+        }
     }
 }
