@@ -166,7 +166,8 @@ public class Pass1
                     // Generate the HTML tags for all references in this file
                     // I.e. generate HTML mark-up of this .java file
                     SymbolTable.createReferenceTags( f, tempFileTags );
-                    SymbolTable.getCommentTags( f, tempFileTags );
+                    SymbolTable.getMultiLinesCommentTags( f, tempFileTags );
+                    SymbolTable.getSingleLineCommentTags( f, tempFileTags );
                     SymbolTable.getLiteralTags( f, tempFileTags );
                     SymbolTable.getKeywordTags( f, tempFileTags );
                     createClassFiles( tempFileTags );
@@ -257,8 +258,8 @@ public class Pass1
 
         HTMLOutputWriter output = new LineOutputWriter( new BufferedOutputStream( new FileOutputStream( f ) ) );
         String backup = getBackupPath( tagList, element );
-        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions()
-            .getDocencoding() : DEFAULT_DOCENCODING );
+        String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions().getDocencoding()
+                                                                                   : DEFAULT_DOCENCODING );
 
         String header = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n"
             + "<HTML>\n"
@@ -405,9 +406,13 @@ public class Pass1
         }
 
         // Check for comment
-        if ( t.isComment() )
+        if ( t.isMultiLinesComment() )
         {
-            writeComment( t, input, output );
+            writeMultiLinesComment( t, input, output );
+        }
+        if ( t.isSingleLineComment() )
+        {
+            writeSingleLineComment( t, input, output );
         }
         else if ( t.isLiteral() )
         {
@@ -420,7 +425,10 @@ public class Pass1
         else
         {
             // Write HTML tag
-            output.write( t.getText() );
+            if ( t.getText() != null )
+            {
+                output.write( t.getText() );
+            }
 
             if ( log.isDebugEnabled() )
             {
@@ -469,13 +477,13 @@ public class Pass1
      * @param output
      * @throws IOException
      */
-    private void writeComment( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
+    private void writeMultiLinesComment( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
         throws IOException
     {
         int length = t.getLength();
         int i = 0;
 
-        output.write( "<SPAN CLASS=\"comment\">" );
+        output.write( "<SPAN CLASS=\"multiLinesComment\">" );
 
         while ( i < length )
         {
@@ -487,7 +495,50 @@ public class Pass1
 
             if ( currentChar == '\n' )
             {
-                output.write( "<SPAN CLASS=\"comment\">" );
+                output.write( "<SPAN CLASS=\"multiLinesComment\">" );
+                currentColumn = 0;
+            }
+
+            currentChar = input.read();
+            currentColumn++;
+            i++;
+        }
+
+        output.write( "</SPAN>" );
+
+        if ( currentChar == '\n' )
+        {
+            currentColumn = 0;
+        }
+    }
+
+    /**
+     * Method writeSingleComment
+     *
+     * @param t
+     * @param input
+     * @param output
+     * @throws IOException
+     */
+    private void writeSingleLineComment( HTMLTag t, LineNumberReader input, HTMLOutputWriter output )
+        throws IOException
+    {
+        int length = t.getLength();
+        int i = 0;
+
+        output.write( "<SPAN CLASS=\"singleLineComment\">" );
+
+        while ( i < length )
+        {
+            if ( currentChar == '\n' )
+            {
+                output.write( "</SPAN>" );
+            }
+            output.writeHTML( (char) currentChar );
+
+            if ( currentChar == '\n' )
+            {
+                output.write( "<SPAN CLASS=\"singleLineComment\">" );
                 currentColumn = 0;
             }
 

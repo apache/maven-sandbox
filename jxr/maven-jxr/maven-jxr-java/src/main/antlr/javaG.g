@@ -1604,11 +1604,24 @@ options {
      * @param line
      * @param column
      * @param text
-     * @see SymbolTable#defineComment(int, int, String)
+     * @see SymbolTable#defineMultiLinesComment(int, int, String)
      */
-    public void defineComment( int line, int column, String text )
+    public void defineMultiLinesComment( int line, int column, String text )
     {
-        symbolTable.defineComment(line, column, text);
+        symbolTable.defineMultiLinesComment(line, column, text);
+    }
+
+    /**
+     * <code>SymbolTable</code> adapter method.
+     *
+     * @param line
+     * @param column
+     * @param text
+     * @see SymbolTable#defineSingleLineComment(int, int, String)
+     */
+    public void defineSingleLineComment( int line, int column, String text )
+    {
+        symbolTable.defineSingleLineComment(line, column, text);
     }
 
     /**
@@ -1710,7 +1723,7 @@ WS  :  (  ' '
 SL_COMMENT
   :  { clStart=getLine(); ccStart=getColumn(); } "//"
     (~('\n'|'\r'))*
-    {defineComment(clStart,ccStart, getText());}
+    {defineSingleLineComment(clStart,ccStart, getText());}
     ('\n'|'\r'('\n')?)
     {$setType(Token.SKIP); newline();}
   ;
@@ -1736,7 +1749,7 @@ ML_COMMENT
     |  ~('*'|'\n'|'\r')
     )*
     "*/"
-    {defineComment(clStart,ccStart,getText());}
+    {defineMultiLinesComment(clStart,ccStart,getText());}
     {$setType(Token.SKIP);}
   ;
 

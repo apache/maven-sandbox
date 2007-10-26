@@ -32,7 +32,6 @@ import org.apache.maven.jxr.java.src.util.JSComparable;
 public class HTMLTag
     implements JSComparable
 {
-
     // ==========================================================================
     // ==  Class Variables
     // ==========================================================================
@@ -60,11 +59,13 @@ public class HTMLTag
 
     public static int TYPE_NONE = 0;
 
-    public static int TYPE_COMMENT = 1;
+    public static int TYPE_MULTI_LINES_COMMENT = 1;
 
     public static int TYPE_LITERAL = 2;
 
     public static int TYPE_KEYWORD = 3;
+
+    public static int TYPE_SINGLE_LINE_COMMENT = 4;
 
     private int type = TYPE_NONE;
 
@@ -149,13 +150,23 @@ public class HTMLTag
     }
 
     /**
-     * Method isComment
+     * Method isMultiLinesComment
      *
      * @return
      */
-    public boolean isComment()
+    public boolean isMultiLinesComment()
     {
-        return ( type == TYPE_COMMENT );
+        return ( type == TYPE_MULTI_LINES_COMMENT );
+    }
+
+    /**
+     * Method isSingleLineComment()
+     *
+     * @return
+     */
+    public boolean isSingleLineComment()
+    {
+        return ( type == TYPE_SINGLE_LINE_COMMENT );
     }
 
     /**
@@ -207,7 +218,6 @@ public class HTMLTag
      */
     HTMLTag( Occurrence o, String origText, String replaceText )
     {
-
         this.file = o.getFile();
         this.line = o.getLine();
         this.startColumn = o.getColumn();
@@ -238,7 +248,6 @@ public class HTMLTag
      */
     HTMLTag( File f, int l, int c, String packageName, String origText, String replaceText )
     {
-
         this.file = f;
         this.line = l;
         this.startColumn = c;
@@ -266,29 +275,8 @@ public class HTMLTag
      * @param packageName
      * @param length
      */
-    HTMLTag( File f, int l, int c, String packageName, int length )
-    {
-
-        this.file = f;
-        this.line = l;
-        this.startColumn = c;
-        this.length = length;
-        this.packageName = packageName;
-        this.type = TYPE_COMMENT;
-    }
-
-    /**
-     * Constructor for comment.  Doesn't store text
-     *
-     * @param f
-     * @param l
-     * @param c
-     * @param packageName
-     * @param length
-     */
     HTMLTag( File f, int l, int c, String packageName, int length, int type )
     {
-
         this.file = f;
         this.line = l;
         this.startColumn = c;
@@ -310,7 +298,6 @@ public class HTMLTag
      */
     public int compareTo( Object o )
     {
-
         HTMLTag t = (HTMLTag) o;
 
         if ( getLine() < t.getLine() )

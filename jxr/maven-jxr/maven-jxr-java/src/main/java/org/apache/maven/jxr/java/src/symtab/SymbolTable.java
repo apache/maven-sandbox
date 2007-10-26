@@ -103,8 +103,11 @@ public class SymbolTable
     /** Hashtable holds Vectors mapping symbol references to files */
     private static Hashtable _fileReferences = new Hashtable();
 
-    /** Hashtable holds Vectors mapping comments to files */
-    private static Hashtable _fileComments = new Hashtable();
+    /** Hashtable holds Vectors mapping multi lines comments to files */
+    private static Hashtable _fileMultiLinesComments = new Hashtable();
+
+    /** Hashtable holds Vectors mapping single line comments to files */
+    private static Hashtable _fileSingleLineComments = new Hashtable();
 
     /** Hashtable holds Vectors mapping literals to files */
     private static Hashtable _fileLiterals = new Hashtable();
@@ -134,7 +137,6 @@ public class SymbolTable
      */
     public static void createReferenceTags( File f, Vector tagList )
     {
-
         Vector v = (Vector) _fileReferences.get( f );
 
         if ( v != null )
@@ -161,7 +163,6 @@ public class SymbolTable
      */
     public static void addFileReference( Occurrence occ )
     {
-
         File f = occ.getFile();
         Vector v = (Vector) _fileReferences.get( f );
 
@@ -176,15 +177,30 @@ public class SymbolTable
     }
 
     /**
-     * Method getCommentTags
+     * Method getMultiLinesCommentTags
      *
      * @param f
      * @param tagList
      */
-    public static void getCommentTags( File f, Vector tagList )
+    public static void getMultiLinesCommentTags( File f, Vector tagList )
     {
+        Vector commentList = (Vector) _fileMultiLinesComments.get( f );
 
-        Vector commentList = (Vector) _fileComments.get( f );
+        if ( commentList != null )
+        {
+            tagList.addAll( commentList );
+        }
+    }
+
+    /**
+     * Method getSingleLineCommentTags
+     *
+     * @param f
+     * @param tagList
+     */
+    public static void getSingleLineCommentTags( File f, Vector tagList )
+    {
+        Vector commentList = (Vector) _fileSingleLineComments.get( f );
 
         if ( commentList != null )
         {
@@ -200,7 +216,6 @@ public class SymbolTable
      */
     public static void getLiteralTags( File f, Vector tagList )
     {
-
         Vector literalList = (Vector) _fileLiterals.get( f );
 
         if ( literalList != null )
@@ -217,7 +232,6 @@ public class SymbolTable
      */
     public static void getKeywordTags( File f, Vector tagList )
     {
-
         Vector keywordList = (Vector) _fileKeywords.get( f );
 
         if ( keywordList != null )
@@ -273,7 +287,6 @@ public class SymbolTable
      */
     public static SymbolTable getSymbolTable()
     {
-
         if ( singleton == null )
         {
             singleton = new SymbolTable();
@@ -287,7 +300,6 @@ public class SymbolTable
      */
     private SymbolTable()
     {
-
         // allocate storage for the packages and scope lists
         packages = new JavaHashtable();
         activeScopes = new JavaStack();
@@ -374,7 +386,6 @@ public class SymbolTable
      */
     public static void createDirs( File f )
     {
-
         String parentDir = f.getParent();
         File directory = new File( parentDir );
 
@@ -392,7 +403,6 @@ public class SymbolTable
      */
     public static void addFileClassDef( File f, ClassDef classDef )
     {
-
         if ( _fileClassDefs == null )
         {
             _fileClassDefs = new Hashtable( 2 );
@@ -418,7 +428,6 @@ public class SymbolTable
      */
     public static String getClassList( File f )
     {
-
         if ( _fileClassDefs == null )
         {
             return null;
@@ -432,7 +441,6 @@ public class SymbolTable
         }
 
         String list = "";
-
         for ( int i = 0; i < v.size(); i++ )
         {
             Definition d = (Definition) v.elementAt( i );
@@ -458,7 +466,6 @@ public class SymbolTable
      */
     public void addImport( JavaToken tok, String className, String packageName )
     {
-
         if ( log.isDebugEnabled() )
         {
             log.debug( "addImport(JavaToken, String, String) - String className=" + className );
@@ -477,7 +484,6 @@ public class SymbolTable
 
             return;
         }
-
         // otherwise, chop the extra "." that the parser adds...
         else
         {
@@ -507,7 +513,6 @@ public class SymbolTable
         // otherwise, create a placeholder class for class/interface ref
         else
         {
-
             if ( log.isDebugEnabled() )
             {
                 log.debug( "addImport(JavaToken, String, String) - Created placeholder for:"
@@ -531,7 +536,6 @@ public class SymbolTable
      */
     void addToCurrentScope( Definition def )
     {
-
         // add the definition to the current scope
         getCurrentScope().add( def );
 
@@ -556,7 +560,6 @@ public class SymbolTable
      */
     public Definition defineBlock( JavaToken tok )
     {
-
         // create a new block definition and push it
         // as the current scope
         BlockDef def = new BlockDef( null, getOccurrence( tok ), getCurrentScope() );
@@ -584,7 +587,6 @@ public class SymbolTable
         ClassDef def = new ClassDef( getUniqueName( theClass ), getOccurrence( theClass ),
                                      ( superClass == null ) ? null : getDummyClass( superClass ), interfaces,
                                      getCurrentScope() );
-
         def.setType( ClassDef.CLASS );
 
         // add the imported classes/packages to the class
@@ -606,13 +608,11 @@ public class SymbolTable
      */
     public void defineInterface( JavaToken theInterface, JavaVector superInterfaces )
     {
-
         // note -- we leave superInterfaces as a vector of JavaTokens for now.
         // we'll resolve in pass 2.
         // create the new interface object
         ClassDef def = new ClassDef( getUniqueName( theInterface ), getOccurrence( theInterface ), null, // no super class...
                                      superInterfaces, getCurrentScope() );
-
         def.setType( ClassDef.INTERFACE );
 
         // add it to the current scope
@@ -630,22 +630,19 @@ public class SymbolTable
      */
     public void defineLabel( JavaToken theLabel )
     {
-
         addToCurrentScope( new LabelDef( getUniqueName( theLabel ), getOccurrence( theLabel ), getCurrentScope() ) );
     }
 
     /**
-     * Define a new comment object
+     * Define a new multi lines comment object
      *
      * @param line
      * @param column
      * @param text
      */
-    public void defineComment( int line, int column, String text )
+    public void defineMultiLinesComment( int line, int column, String text )
     {
-
         int length = text.length();
-
         /*
          * Removing since we now skip carriage returns
          *  if (text.indexOf("\r\n")>0) {
@@ -655,17 +652,39 @@ public class SymbolTable
          *  }
          */
         String packageName = getCurrentPackageName();
-        HTMLTag t = new HTMLTag( currentFile, line, column, packageName, length );
-        Vector commentList = (Vector) _fileComments.get( currentFile );
-
-        if ( commentList == null )
+        HTMLTag t = new HTMLTag( currentFile, line, column, packageName, length, HTMLTag.TYPE_MULTI_LINES_COMMENT );
+        Vector multiLinesCommentList = (Vector) _fileMultiLinesComments.get( currentFile );
+        if ( multiLinesCommentList == null )
         {
-            commentList = new Vector();
+            multiLinesCommentList = new Vector();
 
-            _fileComments.put( currentFile, commentList );
+            _fileMultiLinesComments.put( currentFile, multiLinesCommentList );
         }
 
-        commentList.addElement( t );
+        multiLinesCommentList.addElement( t );
+    }
+
+    /**
+     * Define a new single line comment object
+     *
+     * @param line
+     * @param column
+     * @param text
+     */
+    public void defineSingleLineComment( int line, int column, String text )
+    {
+        int length = text.length();
+        String packageName = getCurrentPackageName();
+        HTMLTag t = new HTMLTag( currentFile, line, column, packageName, length, HTMLTag.TYPE_SINGLE_LINE_COMMENT );
+        Vector singleLineCommentList = (Vector) _fileSingleLineComments.get( currentFile );
+        if ( singleLineCommentList == null )
+        {
+            singleLineCommentList = new Vector();
+
+            _fileSingleLineComments.put( currentFile, singleLineCommentList );
+        }
+
+        singleLineCommentList.addElement( t );
     }
 
     /**
@@ -677,12 +696,10 @@ public class SymbolTable
      */
     public void defineLiteral( int line, int column, String text )
     {
-
         int length = text.length();
         String packageName = getCurrentPackageName();
         HTMLTag t = new HTMLTag( currentFile, line, column, packageName, length, HTMLTag.TYPE_LITERAL );
         Vector literalList = (Vector) _fileLiterals.get( currentFile );
-
         if ( literalList == null )
         {
             literalList = new Vector();
@@ -702,12 +719,10 @@ public class SymbolTable
      */
     public void defineKeyword( int line, int column, String text )
     {
-
         int length = text.length();
         String packageName = getCurrentPackageName();
         HTMLTag t = new HTMLTag( currentFile, line, column, packageName, length, HTMLTag.TYPE_KEYWORD );
         Vector keywordList = (Vector) _fileKeywords.get( currentFile );
-
         if ( keywordList == null )
         {
             keywordList = new Vector();
@@ -726,7 +741,6 @@ public class SymbolTable
      */
     public void defineMethod( JavaToken theMethod, JavaToken type )
     {
-
         if ( log.isDebugEnabled() )
         {
             log.debug( "defineMethod(JavaToken, JavaToken) - JavaToken theMethod=" + theMethod.getText() );
@@ -804,7 +818,6 @@ public class SymbolTable
      */
     public void defineVar( JavaToken theVariable, JavaToken type )
     {
-
         // create the variable definition
         VariableDef v = new VariableDef( getUniqueName( theVariable ), getOccurrence( theVariable ),
                                          getDummyClass( type ), getCurrentScope() );
@@ -829,7 +842,6 @@ public class SymbolTable
      */
     public void endMethodHead( JavaVector exceptions )
     {
-
         // set its thrown exception list
         currentMethod.setExceptions( exceptions );
 
@@ -849,7 +861,6 @@ public class SymbolTable
      */
     Definition findInImports( String name, Class type )
     {
-
         if ( log.isDebugEnabled() )
         {
             log.debug( "findInImports(String, Class) - String name=" + name );
@@ -934,7 +945,6 @@ public class SymbolTable
      */
     PackageDef lookupPackage( String name )
     {
-
         PackageDef result = (PackageDef) packages.get( name );
 
         if ( result == null )
@@ -954,7 +964,6 @@ public class SymbolTable
      */
     ScopedDef getCurrentScope()
     {
-
         if ( activeScopes.empty() )
         {
             return null;
@@ -970,7 +979,6 @@ public class SymbolTable
      */
     PackageDef getDefaultPackage()
     {
-
         // if the default package has not yet been defined, create it
         // (lazy instantiation)
         if ( defaultPackage == null )
@@ -992,7 +1000,6 @@ public class SymbolTable
      */
     public DummyClass getDummyClass( JavaToken tok )
     {
-
         if ( tok == null )
         {
             return null;
@@ -1008,7 +1015,6 @@ public class SymbolTable
      */
     ClassDef getObject()
     {
-
         if ( object == null )
         { // lazy instantiation
             object = new DummyClass();
@@ -1030,7 +1036,6 @@ public class SymbolTable
      */
     Occurrence getOccurrence( JavaToken tok )
     {
-
         if ( tok == null )
         {
             return new Occurrence( null, 0 );
@@ -1096,7 +1101,6 @@ public class SymbolTable
      */
     Definition lookup( String name, int numParams, Class type )
     {
-
         if ( log.isDebugEnabled() )
         {
             log.debug( "lookup(String, int, Class) - String name=" + name );
@@ -1358,7 +1362,6 @@ public class SymbolTable
      */
     ClassDef lookupDummy( Definition d )
     {
-
         // construct a qualified class name
         String className;
         String pkg = ( (DummyClass) d ).getPackage();
@@ -1407,7 +1410,6 @@ public class SymbolTable
      */
     void openImports( JavaHashtable imports )
     {
-
         // start a new demand list
         demand = new JavaVector();
 
@@ -1419,20 +1421,17 @@ public class SymbolTable
         // if this class has something to import...
         if ( imports != null )
         {
-
             // walk through the list of imports
             Enumeration e = imports.elements();
 
             while ( e.hasMoreElements() )
             {
-
                 // add the package or class to the demand or import list
                 // based on the type of import it was
                 Definition d = (Definition) e.nextElement();
 
                 if ( d instanceof PackageDef )
                 {
-
                     if ( log.isDebugEnabled() )
                     {
                         log.debug( "openImports(JavaHashtable) - Adding package " + d.getName() + " to imports" );
@@ -1443,7 +1442,6 @@ public class SymbolTable
                 {
                     if ( d instanceof DummyClass )
                     {
-
                         if ( log.isDebugEnabled() )
                         {
                             log.debug( "openImports(JavaHashtable) - found DummyClass " + d.getName() + " package "
@@ -1474,7 +1472,6 @@ public class SymbolTable
      */
     public void popAllScopes()
     {
-
         while ( activeScopes.peek() != baseScope )
         {
             activeScopes.pop();
@@ -1499,7 +1496,6 @@ public class SymbolTable
      */
     Definition pushScope( Definition scope )
     {
-
         if ( !( scope instanceof ScopedDef ) )
         {
             throw new RuntimeException( "Not a ScopedDef" );
@@ -1517,7 +1513,6 @@ public class SymbolTable
      */
     String getCurrentPackageName()
     {
-
         String packageName = "";
 
         if ( activeScopes == null )
@@ -1549,7 +1544,6 @@ public class SymbolTable
      */
     String getCurrentClassName()
     {
-
         String className = "?";
 
         if ( activeScopes == null )
@@ -1581,7 +1575,6 @@ public class SymbolTable
      */
     String getCurrentMethodName()
     {
-
         String methodName = "?";
 
         if ( activeScopes == null )
@@ -1613,7 +1606,6 @@ public class SymbolTable
      */
     public void reference( JavaToken t )
     {
-
         t.setFile( currentFile );
         t.setPackageName( getCurrentPackageName() );
         t.setClassName( getCurrentClassName() );
@@ -1628,7 +1620,6 @@ public class SymbolTable
      */
     public Hashtable generatePackageTags()
     {
-
         Vector tagList;
         Vector sortedList;
         Hashtable tagTable = new Hashtable( 2 );
@@ -1677,7 +1668,6 @@ public class SymbolTable
      */
     public void resolveTypes()
     {
-
         // for each package, resolve its references
         if ( defaultPackage != null )
         {
@@ -1692,7 +1682,6 @@ public class SymbolTable
      */
     public void resolveRefs()
     {
-
         // for each package, resolve its references
         if ( defaultPackage != null )
         {
@@ -1709,7 +1698,6 @@ public class SymbolTable
      */
     public void persistRefs( String outDirPath )
     {
-
         ReferencePersistor rp = new ReferencePersistor( outDirPath );
 
         if ( defaultPackage != null )
@@ -1736,7 +1724,6 @@ public class SymbolTable
      */
     public void setNearestClassScope()
     {
-
         // find the nearest class scope
         setScope( activeScopes.findTopmostClass() );
     }
@@ -1750,7 +1737,6 @@ public class SymbolTable
      */
     void setScope( JavaToken t )
     {
-
         Definition def = lookup( t.getText(), null );
 
         if ( def != null )
@@ -1768,7 +1754,6 @@ public class SymbolTable
      */
     void setScope( Definition d )
     {
-
         while ( ( d != null ) && ( d instanceof TypedDef ) )
         {
             d = ( (TypedDef) d ).getType();
@@ -1789,7 +1774,6 @@ public class SymbolTable
      */
     void setScope( String name )
     {
-
         Definition def = lookup( name, null );
 
         if ( def != null )
@@ -1803,7 +1787,6 @@ public class SymbolTable
      */
     public String toString()
     {
-
         String str = "";
         Enumeration e = packages.elements();
 
@@ -1837,7 +1820,6 @@ public class SymbolTable
      */
     static public void startReadExternal( String name )
     {
-
         // for (int i=0; i<readLevel; i++)
         // System.out.print(' ');
         // System.out.println("reading "+name);
@@ -1849,7 +1831,6 @@ public class SymbolTable
      */
     static public void endReadExternal()
     {
-
         // readLevel--;
     }
 }
