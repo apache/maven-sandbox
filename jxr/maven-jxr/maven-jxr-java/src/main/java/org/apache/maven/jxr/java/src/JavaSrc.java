@@ -20,6 +20,7 @@ package org.apache.maven.jxr.java.src;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -154,7 +155,14 @@ public class JavaSrc
         Pass2 p2 = new Pass2( getOptions() );
         p2.run();
 
-        copyDefaultStylesheet( getDestDir() );
+        if ( StringUtils.isNotEmpty( getOptions().getStylesheetfile() ) )
+        {
+            copyStylesheet( getOptions().getStylesheetfile(), getDestDir() );
+        }
+        else
+        {
+            copyDefaultStylesheet( getDestDir() );
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -329,9 +337,10 @@ public class JavaSrc
      *
      * @param outputDirectory the output directory
      * @throws IOException if any
+     * @see #RESOURCE_CSS_DIR
      * @see #DEFAULT_CSS_NAME
      */
-    private void copyDefaultStylesheet( File outputDirectory )
+    private static void copyDefaultStylesheet( File outputDirectory )
         throws IOException
     {
         if ( outputDirectory == null || !outputDirectory.exists() )
@@ -340,14 +349,50 @@ public class JavaSrc
         }
 
         InputStream is = getStream( RESOURCE_CSS_DIR + "/" + DEFAULT_CSS_NAME );
+        copyStylesheetInputStream( is, outputDirectory );
+    }
 
+    /**
+     * Method that copy a given stylesheet file to the <code>outputDirectory</code>.
+     *
+     * @param outputDirectory the output directory
+     * @throws IOException if any
+     * @see #DEFAULT_CSS_NAME
+     */
+    private static void copyStylesheet( String stylesheetFile, File outputDirectory )
+        throws IOException
+    {
+        if ( outputDirectory == null || !outputDirectory.exists() )
+        {
+            throw new IOException( "The outputDirectory " + outputDirectory + " doesn't exists." );
+        }
+
+        File stylesheet = new File( stylesheetFile );
+        if ( !stylesheet.exists() || stylesheet.isDirectory() )
+        {
+            throw new IOException( "The stylesheet " + stylesheetFile + " doesn't exists or not a file." );
+        }
+
+        InputStream is = new FileInputStream( stylesheet );
+        copyStylesheetInputStream( is, outputDirectory );
+    }
+
+    /**
+     * Method that copy a stylesheet input stream to the <code>outputDirectory</code>.
+     *
+     * @param outputDirectory the output directory
+     * @throws IOException if any
+     * @see #DEFAULT_CSS_NAME
+     */
+    private static void copyStylesheetInputStream( InputStream is, File outputDirectory )
+        throws IOException
+    {
         if ( is == null )
         {
-            throw new IOException( "The resource " + DEFAULT_CSS_NAME + " doesn't exists." );
+            throw new IOException( "The inputstream could not be null." );
         }
 
         File outputFile = new File( outputDirectory, DEFAULT_CSS_NAME );
-
         if ( !outputFile.getParentFile().exists() )
         {
             outputFile.getParentFile().mkdirs();
