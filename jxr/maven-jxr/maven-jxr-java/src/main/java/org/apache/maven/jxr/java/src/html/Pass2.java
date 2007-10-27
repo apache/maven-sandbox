@@ -46,6 +46,9 @@ import org.apache.maven.jxr.java.src.JavaSrcOptions;
 import org.apache.maven.jxr.java.src.symtab.ReferenceTypes;
 import org.codehaus.plexus.util.StringUtils;
 
+import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.model.JavaClass;
+
 /**
  * Cross-reference generation pass.
  * <p/>
@@ -954,6 +957,17 @@ public class Pass2
 
             List classes = orderedPackageClasses( packageName );
 
+            JavaDocBuilder builder = new JavaDocBuilder();
+            for ( Iterator it = getSrcDirs().iterator(); it.hasNext(); )
+            {
+                String srcDir = (String) it.next();
+                File packageDir = new File( srcDir, packageName.replace( '.', File.separatorChar ) + File.separatorChar );
+                if ( packageDir.exists() )
+                {
+                    builder.addSourceTree( packageDir );
+                }
+            }
+
             if ( log.isDebugEnabled() )
             {
                 log.debug( "createPackageSummaryFiles() - " + packageName + " has " + classes.size() + " classes" );
@@ -1042,7 +1056,34 @@ public class Pass2
                 pw.println( "<B><A HREF=\"" + fileClassName + "_java.html#" + anchor + "\" TITLE=\"" + className
                     + "\">" + className + "</A></B>" );
                 pw.println( "</TD>" );
-                pw.println( "<TD></TD>" );
+
+                JavaClass clazz = null;
+                JavaClass[] clazzes = builder.getClasses();
+                for ( int i = 0; i < clazzes.length; i++ )
+                {
+                    if ( clazzes[i].getName().equals( className ) )
+                    {
+                        clazz = clazzes[i];
+                        break;
+                    }
+                }
+                if ( clazz == null )
+                {
+                    pw.println( "<TD></TD>" );
+                }
+                else
+                {
+                    String comment = clazz.getComment();
+                    if ( StringUtils.isEmpty( comment ) )
+                    {
+                        pw.println( "<TD></TD>" );
+                    }
+                    else
+                    {
+                        // TODO display only the first line
+                        pw.println( "<TD>" + comment + "</TD>" );
+                    }
+                }
                 pw.println( "</TR>" );
             }
             pw.println( "</TBODY>" );
