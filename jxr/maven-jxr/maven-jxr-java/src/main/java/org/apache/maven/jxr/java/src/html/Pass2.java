@@ -957,14 +957,18 @@ public class Pass2
 
             List classes = orderedPackageClasses( packageName );
 
-            JavaDocBuilder builder = new JavaDocBuilder();
+            JavaDocBuilder javaDocBuilder = new JavaDocBuilder();
+            if ( StringUtils.isNotEmpty( getOptions().getEncoding() ) )
+            {
+                javaDocBuilder.setEncoding( getOptions().getEncoding() );
+            }
             for ( Iterator it = getSrcDirs().iterator(); it.hasNext(); )
             {
                 String srcDir = (String) it.next();
                 File packageDir = new File( srcDir, packageName.replace( '.', File.separatorChar ) + File.separatorChar );
                 if ( packageDir.exists() )
                 {
-                    builder.addSourceTree( packageDir );
+                    javaDocBuilder.addSourceTree( packageDir );
                 }
             }
 
@@ -1058,7 +1062,7 @@ public class Pass2
                 pw.println( "</TD>" );
 
                 JavaClass clazz = null;
-                JavaClass[] clazzes = builder.getClasses();
+                JavaClass[] clazzes = javaDocBuilder.getClasses();
                 for ( int i = 0; i < clazzes.length; i++ )
                 {
                     if ( clazzes[i].getName().equals( className ) )

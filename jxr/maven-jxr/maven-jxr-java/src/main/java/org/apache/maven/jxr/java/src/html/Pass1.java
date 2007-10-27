@@ -23,7 +23,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -48,11 +47,6 @@ import org.apache.maven.jxr.java.src.xref.JavaXref;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
-import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.Annotation;
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaMethod;
-
 import antlr.ANTLRException;
 
 /**
@@ -66,6 +60,32 @@ public class Pass1
 {
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( Pass1.class );
+
+    /**
+     * Default Javadoc tags.
+     *
+     * @see <a href="http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html#javadoctags">http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html#javadoctags</a>
+     */
+    private static final String[] TAGS = {
+        "@author",
+        "{@code}",
+        "{@docRoot}",
+        "@deprecated",
+        "@exception",
+        "{@inheritDoc}",
+        "{@link}",
+        "{@linkplain}",
+        "{@literal}",
+        "@param",
+        "@return",
+        "@see",
+        "@serial",
+        "@serialData",
+        "@serialField",
+        "@since",
+        "@throws",
+        "{@value}",
+        "@version" };
 
     int currentColumn;
 
@@ -495,7 +515,7 @@ public class Pass1
         int i = 0;
 
         StringBuffer sb = new StringBuffer();
-        sb.append( "<SPAN CLASS=\"multiLinesComment\">" );
+        sb.append( "<SPAN CLASS=\"singleLineComment\">" );
 
         while ( i < length )
         {
@@ -521,7 +541,7 @@ public class Pass1
 
             if ( currentChar == '\n' )
             {
-                sb.append( "<SPAN CLASS=\"multiLinesComment\">" );
+                sb.append( "<SPAN CLASS=\"singleLineComment\">" );
                 currentColumn = 0;
             }
 
@@ -534,27 +554,17 @@ public class Pass1
 
         String comment = sb.toString();
 
-        // Highlight Javadoc reserved words
-        File javaFile = t.getFile();
-        JavaDocBuilder builder = new JavaDocBuilder();
-        builder.addSource( new FileReader( javaFile ) );
-        DocletTag[] classTags = builder.getClasses()[0].getTags();
-        for ( int j = 0; j < classTags.length; j++ )
+        // Javadoc comments
+        if ( comment.startsWith( "<SPAN CLASS=\"singleLineComment\">/**" ) )
         {
-            comment = StringUtils.replace( comment, "@" + classTags[j].getName(), "<B>@" + classTags[j].getName()
-                + "</B>" );
-        }
-        JavaMethod[] methods = builder.getClasses()[0].getMethods();
-        for ( int j = 0; j < methods.length; j++ )
-        {
-            DocletTag[] methodTags = methods[j].getTags();
-            for ( int k = 0; k < methodTags.length; k++ )
+            comment = StringUtils.replace( comment, "singleLineComment", "multiLinesComment" );
+
+            // Highlight Javadoc reserved words
+            for ( int j = 0; j < TAGS.length; j++ )
             {
-                comment = StringUtils.replace( comment, "@" + methodTags[k].getName(), "<B>@" + methodTags[k].getName()
-                    + "</B>" );
+                comment = StringUtils.replace( comment, TAGS[j], "<B>" + TAGS[j] + "</B>" );
             }
         }
-
         output.write( comment );
 
         if ( currentChar == '\n' )
