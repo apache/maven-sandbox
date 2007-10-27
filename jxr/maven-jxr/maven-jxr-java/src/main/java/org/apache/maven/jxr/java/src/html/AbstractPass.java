@@ -21,6 +21,7 @@ package org.apache.maven.jxr.java.src.html;
 
 import java.io.File;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
@@ -66,12 +67,12 @@ abstract class AbstractPass
     }
 
     /**
-     * @return the source dir
-     * @see JavaSrcOptions#getSrcDir()
+     * @return a String list of source dir.
+     * @see JavaSrcOptions#getSrcDirs()
      */
-    String getSrcDir()
+    List getSrcDirs()
     {
-        return this.options.getSrcDir();
+        return this.options.getSrcDirs();
     }
 
     /**

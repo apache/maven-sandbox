@@ -20,6 +20,8 @@ package org.apache.maven.jxr.java.src;
  */
 
 import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Bean with all options supported by <code>JavaSrc</code> class.
@@ -59,8 +61,8 @@ public class JavaSrcOptions
     /** Specify recursive pass, true by default. */
     private boolean recurse = true;
 
-    /** Source dir, required. */
-    private String srcDir;
+    /** List of source dir as String, required. */
+    private List srcDirs;
 
     /** Specifies the path of an alternate HTML stylesheet file. */
     private String stylesheetfile;
@@ -213,13 +215,13 @@ public class JavaSrcOptions
     }
 
     /**
-     * Getter for the srcDir
+     * Getter for the String list of srcDir.
      *
      * @return the srcDir
      */
-    public String getSrcDir()
+    public List getSrcDirs()
     {
-        return srcDir;
+        return srcDirs;
     }
 
     /**
@@ -363,13 +365,18 @@ public class JavaSrcOptions
     }
 
     /**
-     * Setter for the srcDir
+     * Adder for the srcDir
      *
      * @param srcDir the srcDir to set
      */
-    public void setSrcDir( String srcDir )
+    public void addSrcDir( String srcDir )
     {
-        this.srcDir = srcDir;
+        if ( this.srcDirs == null )
+        {
+            this.srcDirs = new LinkedList();
+        }
+
+        this.srcDirs.add( srcDir );
     }
 
     /**
@@ -426,7 +433,7 @@ public class JavaSrcOptions
         buffer.append( " header = " ).append( header );
         buffer.append( " packagesheader = " ).append( packagesheader );
         buffer.append( " recurse = " ).append( recurse );
-        buffer.append( " srcDir = " ).append( srcDir );
+        buffer.append( " srcDir = " ).append( srcDirs );
         buffer.append( " stylesheetfile = " ).append( stylesheetfile );
         buffer.append( " top = " ).append( top );
         buffer.append( " verbose = " ).append( verbose );

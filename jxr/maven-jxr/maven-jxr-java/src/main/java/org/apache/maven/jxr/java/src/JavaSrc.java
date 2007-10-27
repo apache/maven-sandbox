@@ -24,6 +24,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.maven.jxr.java.src.html.Pass1;
@@ -72,7 +75,7 @@ public class JavaSrc
      */
     public JavaSrc( File srcDir, File destDir )
     {
-        setSrcDir( srcDir );
+        addSrcDir( srcDir );
         setDestDir( destDir );
     }
 
@@ -86,12 +89,18 @@ public class JavaSrc
     }
 
     /**
-     * @return the source dir
-     * @see JavaSrcOptions#getSrcDir()
+     * @return a File list of the source dir.
+     * @see JavaSrcOptions#getSrcDirs()
      */
-    public File getSrcDir()
+    public List getSrcDirs()
     {
-        return new File( this.options.getSrcDir() );
+        List tmp = new LinkedList();
+        for ( Iterator it = this.options.getSrcDirs().iterator(); it.hasNext(); )
+        {
+            tmp.add( new File( (String) it.next() ) );
+        }
+
+        return tmp;
     }
 
     /**
@@ -199,7 +208,7 @@ public class JavaSrc
      * @param srcDir the srcDir to set
      * @throws IllegalArgumentException if any
      */
-    private void setSrcDir( File srcDir )
+    private void addSrcDir( File srcDir )
     {
         if ( srcDir == null )
         {
@@ -214,7 +223,7 @@ public class JavaSrc
             throw new IllegalArgumentException( "srcDir is not a directory." );
         }
 
-        getOptions().setSrcDir( srcDir.getAbsolutePath() );
+        getOptions().addSrcDir( srcDir.getAbsolutePath() );
     }
 
     /**
@@ -230,7 +239,7 @@ public class JavaSrc
         {
             throw new IllegalArgumentException( "srcDir should be not null" );
         }
-        setSrcDir( new File( srcDir ) );
+        addSrcDir( new File( srcDir ) );
 
         String destDir = System.getProperty( "destDir" );
         if ( StringUtils.isEmpty( destDir ) )

@@ -30,6 +30,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -97,7 +98,12 @@ public class Pass1
     public void run()
         throws IOException
     {
-        List javaFiles = FileUtils.getFileNames( new File( getSrcDir() ), "**/*.java", DEFAULT_EXCLUDES, true );
+        List javaFiles = new LinkedList();
+        for ( Iterator it = getSrcDirs().iterator(); it.hasNext(); )
+        {
+            String srcDir = (String) it.next();
+            javaFiles.addAll( FileUtils.getFileNames( new File( srcDir ), "**/*.java", DEFAULT_EXCLUDES, true ) );
+        }
 
         // create a new symbol table
         SymbolTable symbolTable = SymbolTable.getSymbolTable();
@@ -277,8 +283,7 @@ public class Pass1
             + "<LINK REL=\"stylesheet\" TYPE=\"text/css\" HREF=\""
             + backup
             + "styles.css\" TITLE=\"Style\">\n"
-            + "</HEAD>\n"
-            + "<BODY>\n";
+            + "</HEAD>\n" + "<BODY>\n";
 
         if ( StringUtils.isNotEmpty( getOptions().getTop() ) )
         {
