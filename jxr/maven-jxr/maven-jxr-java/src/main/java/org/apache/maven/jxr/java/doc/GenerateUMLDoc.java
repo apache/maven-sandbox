@@ -65,6 +65,9 @@ public class GenerateUMLDoc
     /** Temp generated dot file */
     private File dot;
 
+    /** Specify verbose information */
+    private boolean verbose;
+
     /**
      * Default constructor.
      *
@@ -121,17 +124,69 @@ public class GenerateUMLDoc
         generateUmlImage();
     }
 
-    // ----------------------------------------------------------------------
-    // Private
-    // ----------------------------------------------------------------------
-
     /**
-     * @return the dest dir
+     * Getter for the destDir
+     *
+     * @return the destDir
      */
-    private File getOut()
+    public File getOut()
     {
         return this.out;
     }
+
+    /**
+     * Getter for the srcDir
+     *
+     * @return the srcDir
+     */
+    public File getSrcDir()
+    {
+        return this.srcDir;
+    }
+
+    /**
+     * Getter for the verbose
+     *
+     * @return the verbose
+     */
+    public boolean isVerbose()
+    {
+        return this.verbose;
+    }
+
+    /**
+     * Setter for the destDir
+     *
+     * @param destDir the destDir to set
+     */
+    public void setOut( File destDir )
+    {
+        this.out = destDir;
+    }
+
+    /**
+     * Setter for the srcDir
+     *
+     * @param srcDir the srcDir to set
+     */
+    public void setSrcDir( File srcDir )
+    {
+        this.srcDir = srcDir;
+    }
+
+    /**
+     * Setter for the verbose
+     *
+     * @param verbose the verbose to set
+     */
+    public void setVerbose( boolean verbose )
+    {
+        this.verbose = verbose;
+    }
+
+    // ----------------------------------------------------------------------
+    // Private
+    // ----------------------------------------------------------------------
 
     /**
      * @return the javadoc output xml file
@@ -140,8 +195,11 @@ public class GenerateUMLDoc
     {
         if ( this.javadocXml == null )
         {
-            this.javadocXml = FileUtils.createTempFile( "javadoc", ".xml", null );
-            this.javadocXml.deleteOnExit();
+            this.javadocXml = new File( getOut().getParentFile(), "javadoc.xml" );
+            if ( !isVerbose() )
+            {
+                this.javadocXml.deleteOnExit();
+            }
         }
 
         return this.javadocXml;
@@ -154,8 +212,11 @@ public class GenerateUMLDoc
     {
         if ( this.dot == null )
         {
-            this.dot = FileUtils.createTempFile( "javadoc", ".dot", null );
-            this.dot.deleteOnExit();
+            this.dot = new File( getOut().getParentFile(), "javadoc.dot" );
+            if ( !isVerbose() )
+            {
+                this.dot.deleteOnExit();
+            }
         }
 
         return this.dot;
@@ -181,8 +242,11 @@ public class GenerateUMLDoc
     {
         if ( this.xml2dot == null )
         {
-            this.xml2dot = FileUtils.createTempFile( "xml2dot", ".xsl", null );
-            this.xml2dot.deleteOnExit();
+            this.xml2dot = new File( getOut().getParentFile(), "xml2dot.xsl" );
+            if ( !isVerbose() )
+            {
+                this.xml2dot.deleteOnExit();
+            }
 
             InputStream is = getClass().getClassLoader().getResourceAsStream(
                                                                               GenerateUMLDoc.class.getPackage()

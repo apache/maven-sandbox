@@ -44,6 +44,9 @@ public class UmlDocTask
     /** Output file of the diagram*/
     private File out;
 
+    /** Specify verbose information */
+    private boolean verbose;
+
     /** Terminate Ant build */
     private boolean failOnError;
 
@@ -65,6 +68,16 @@ public class UmlDocTask
     public void setOut( File f )
     {
         this.out = f;
+    }
+
+    /**
+     * Setter for the verbose
+     *
+     * @param verbose the verbose to set
+     */
+    public void setVerbose( boolean verbose )
+    {
+        this.verbose = verbose;
     }
 
     /**
@@ -103,6 +116,7 @@ public class UmlDocTask
         try
         {
             GenerateUMLDoc generator = new GenerateUMLDoc( getSrcDir(), getOut() );
+            generator.setVerbose( true );
             generator.generateUML();
         }
         catch ( IllegalArgumentException e )
