@@ -116,7 +116,7 @@ public class UmlDocTask
         try
         {
             GenerateUMLDoc generator = new GenerateUMLDoc( getSrcDir(), getOut() );
-            generator.setVerbose( true );
+            generator.setVerbose( this.verbose );
             generator.generateUML();
         }
         catch ( IllegalArgumentException e )

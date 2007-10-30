@@ -52,6 +52,7 @@ public class UmlDocTaskTest
         task.setProject( antProject );
         task.setSrcDir( srcDir );
         task.setOut( out );
+        task.setVerbose( true );
         task.execute();
 
         // Generated files
