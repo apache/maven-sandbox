@@ -50,13 +50,13 @@
         <xsl:text>        </xsl:text>
         <xsl:for-each select="implements/interfaceref">
           <xsl:call-template name="fullname">
-            <xsl:with-param name="name" select="../../../@name"/>
-            <xsl:with-param name="parentname" select="../../@name"/>
+            <xsl:with-param name="name" select="@name"/>
           </xsl:call-template>
           <xsl:text> ->
           </xsl:text>
           <xsl:call-template name="fullname">
-            <xsl:with-param name="name" select="@name"/>
+            <xsl:with-param name="name" select="../../../@name"/>
+            <xsl:with-param name="parentname" select="../../@name"/>
           </xsl:call-template>
           <xsl:text> [dir=back, arrowtail=empty, style=dashed];&#10;</xsl:text>
         </xsl:for-each>
@@ -75,12 +75,12 @@
       </xsl:if>
       <xsl:if test="implements">
         <xsl:for-each select="implements/interfaceref">
+          <xsl:value-of select="@name"/>
+          <xsl:text> ->
+          </xsl:text>
           <xsl:value-of select="../../../@name"/>
           <xsl:text>.</xsl:text>
           <xsl:value-of select="../../@name"/>
-          <xsl:text> ->
-          </xsl:text>
-          <xsl:value-of select="@name"/>
           <xsl:text> [dir=back, arrowtail=empty, style=dashed]; </xsl:text>
         </xsl:for-each>
       </xsl:if>
