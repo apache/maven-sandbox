@@ -25,15 +25,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.maven.jxr.util.DotTask;
 import org.apache.maven.jxr.util.DotTask.DotNotPresentInPathBuildException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.XSLTProcess;
+import org.apache.tools.ant.taskdefs.XSLTProcess.Param;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -325,6 +328,8 @@ public class GenerateUMLDoc
     private void generateJavadocDot()
         throws BuildException, IOException
     {
+        String now = new GregorianCalendar( TimeZone.getDefault() ).getTime().toString();
+
         XSLTProcess xsltTask = new XSLTProcess();
         xsltTask.setProject( getAntProject() );
         xsltTask.setTaskName( "xslt" );
@@ -332,6 +337,10 @@ public class GenerateUMLDoc
         xsltTask.setIn( getJavadocXml() );
         xsltTask.setOut( getDot() );
         xsltTask.setStyle( getXml2dot().getAbsolutePath() );
+        Param param = xsltTask.createParam();
+        param.setProject( getAntProject() );
+        param.setName( "now" );
+        param.setExpression( now );
         xsltTask.execute();
     }
 
