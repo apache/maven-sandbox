@@ -88,12 +88,12 @@
 
     <xsl:for-each select="package/class">
       <xsl:if test="extends_class and extends_class/classref/@name!='java.lang.Object'">
+        <xsl:text>&#10;        // extends edges&#10;</xsl:text>
         <xsl:text>        </xsl:text>
         <xsl:call-template name="fullname">
           <xsl:with-param name="name" select="extends_class/classref/@name"/>
         </xsl:call-template>
-        <xsl:text> ->
-        </xsl:text>
+        <xsl:text> -> </xsl:text>
         <xsl:call-template name="fullname">
           <xsl:with-param name="name" select="../@name"/>
           <xsl:with-param name="parentname" select="@name"/>
@@ -101,13 +101,13 @@
         <xsl:text> [dir = "back", arrowtail = "empty"];&#10;</xsl:text>
       </xsl:if>
       <xsl:if test="implements">
+        <xsl:text>&#10;        // implements edges&#10;</xsl:text>
         <xsl:text>        </xsl:text>
         <xsl:for-each select="implements/interfaceref">
           <xsl:call-template name="fullname">
             <xsl:with-param name="name" select="@name"/>
           </xsl:call-template>
-          <xsl:text> ->
-          </xsl:text>
+          <xsl:text> -> </xsl:text>
           <xsl:call-template name="fullname">
             <xsl:with-param name="name" select="../../../@name"/>
             <xsl:with-param name="parentname" select="../../@name"/>
@@ -139,8 +139,9 @@
         </xsl:for-each>
       </xsl:if>
     </xsl:for-each>
+
     <xsl:text>
-    }}</xsl:text>
+    }</xsl:text>
   </xsl:template>
 
   <xsl:template match="package">
@@ -245,7 +246,7 @@
     <xsl:if test="@extensibility='abstract'">
       <xsl:text> \{ abstract \} </xsl:text>
     </xsl:if>
-    <xsl:text>\n|</xsl:text>
+    <xsl:text>|</xsl:text>
     <!-- attributes -->
     <xsl:for-each select="field">
       <xsl:if test="$show = 'private'">
@@ -497,7 +498,7 @@
         </xsl:choose>
       </xsl:for-each>
     </xsl:if>
-    <xsl:text>}"
+    <xsl:text>\l}"
             ];</xsl:text>
   </xsl:template>
 
@@ -534,7 +535,7 @@
       <xsl:text> \{ final \} </xsl:text>
     </xsl:if>
 
-    <xsl:text>\n</xsl:text>
+    <xsl:text>\l</xsl:text>
   </xsl:template>
 
   <xsl:template name="printConstructor">
@@ -555,7 +556,7 @@
     </xsl:for-each>
     <xsl:text>)</xsl:text>
 
-    <xsl:text>\n</xsl:text>
+    <xsl:text>\l</xsl:text>
   </xsl:template>
 
   <xsl:template name="printMethod">
@@ -604,7 +605,7 @@
       <xsl:text>\} </xsl:text>
     </xsl:if>
 
-    <xsl:text>\n</xsl:text>
+    <xsl:text>\l</xsl:text>
   </xsl:template>
 
   <!-- Utilities templates -->
