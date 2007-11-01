@@ -26,6 +26,7 @@ import org.apache.maven.jxr.util.DotTask.DotNotPresentInPathBuildException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <a href="http://ant.apache.org/">Ant</a> task to generate UML diagram.
@@ -44,6 +45,36 @@ public class UmlDocTask
     /** Output file of the diagram*/
     private File out;
 
+    /** Source file encoding name. */
+    private String encoding;
+
+    /**
+     * Specifies the access level for classes and members to show in the generated class diagram.
+     * Possible values are:
+     * <ul>
+     * <li>public: shows only public classes and members</li>
+     * <li>protected: shows only public and protected classes and members</li>
+     * <li>package: shows all classes and members not marked private</li>
+     * <li>private: shows all classes and members</li>
+     * <li>"" (i.e. empty): nothing</li>
+     * </ul>
+     *
+     * Default value is protected.
+     */
+    private String show;
+
+    /** Relative path or URI to the generated Javadoc directory. */
+    private String javadocPath;
+
+    /** Relative path or URI to the generated Java Xref directory. */
+    private String javasrcPath;
+
+    /** The class diagram encoding. */
+    private String diagramEncoding;
+
+    /** The class diagram label */
+    private String diagramLabel;
+
     /** Specify verbose information */
     private boolean verbose;
 
@@ -51,13 +82,63 @@ public class UmlDocTask
     private boolean failOnError;
 
     /**
-     * Set the Java source directory.
+     * Set fail on an error.
      *
-     * @param d Path to the directory.
+     * @param b true to fail on an error.
      */
-    public void setSrcDir( File d )
+    public void setFailonerror( boolean b )
     {
-        this.srcDir = d;
+        this.failOnError = b;
+    }
+
+    /**
+     * Set the class diagram encoding.
+     *
+     * @param diagramEncoding the class diagram encoding.
+     */
+    public void setDiagramEncoding( String diagramEncoding )
+    {
+        this.diagramEncoding = diagramEncoding;
+    }
+
+    /**
+     * Set the class diagram label.
+     *
+     * @param diagramLabel the class diagram label.
+     */
+    public void setDiagramLabel( String diagramLabel )
+    {
+        this.diagramLabel = diagramLabel;
+    }
+
+    /**
+     * Set the source file encoding name.
+     *
+     * @param encoding the source file encoding name.
+     */
+    public void setEncoding( String encoding )
+    {
+        this.encoding = encoding;
+    }
+
+    /**
+     * Set the generated Javadoc directory.
+     *
+     * @param javadocPath the relative path or URI to the generated javadoc directory
+     */
+    public void setJavadocPath( String javadocPath )
+    {
+        this.javadocPath = javadocPath;
+    }
+
+    /**
+     * Set the generated JavaSrc source directory.
+     *
+     * @param javasrcPath the relative path or URI to the generated javasrc directory
+     */
+    public void setJavasrcPath( String javasrcPath )
+    {
+        this.javasrcPath = javasrcPath;
     }
 
     /**
@@ -71,6 +152,33 @@ public class UmlDocTask
     }
 
     /**
+     * Set the access level for classes and members. Possible values are:
+     * <ul>
+     * <li>public: shows only public classes and members</li>
+     * <li>protected: shows only public and protected classes and members</li>
+     * <li>package: shows all classes and members not marked private</li>
+     * <li>private: shows all classes and members</li>
+     * <li>"" (i.e. empty): nothing</li>
+     * </ul>
+     *
+     * @param show new access level.
+     */
+    public void setShow( String show )
+    {
+        this.show = show;
+    }
+
+    /**
+     * Set the Java source directory.
+     *
+     * @param d Path to the directory.
+     */
+    public void setSrcDir( File d )
+    {
+        this.srcDir = d;
+    }
+
+    /**
      * Setter for the verbose
      *
      * @param verbose the verbose to set
@@ -78,16 +186,6 @@ public class UmlDocTask
     public void setVerbose( boolean verbose )
     {
         this.verbose = verbose;
-    }
-
-    /**
-     * Set fail on an error.
-     *
-     * @param b true to fail on an error.
-     */
-    public void setFailonerror( boolean b )
-    {
-        this.failOnError = b;
     }
 
     /** {@inheritDoc} */
@@ -116,7 +214,31 @@ public class UmlDocTask
         try
         {
             GenerateUMLDoc generator = new GenerateUMLDoc( getSrcDir(), getOut() );
+            if ( StringUtils.isNotEmpty( this.encoding ) )
+            {
+                generator.setEncoding( this.encoding );
+            }
             generator.setVerbose( this.verbose );
+            if ( this.show != null )
+            {
+                generator.setShow( this.show );
+            }
+            if ( StringUtils.isNotEmpty( this.javadocPath ) )
+            {
+                generator.setJavadocPath( this.javadocPath );
+            }
+            if ( StringUtils.isNotEmpty( this.javasrcPath ) )
+            {
+                generator.setJavasrcPath( this.javasrcPath );
+            }
+            if ( StringUtils.isNotEmpty( this.diagramEncoding ) )
+            {
+                generator.setDiagramEncoding( this.diagramEncoding );
+            }
+            if ( StringUtils.isNotEmpty( this.diagramLabel ) )
+            {
+                generator.setDiagramLabel( this.diagramLabel );
+            }
             generator.generateUML();
         }
         catch ( IllegalArgumentException e )

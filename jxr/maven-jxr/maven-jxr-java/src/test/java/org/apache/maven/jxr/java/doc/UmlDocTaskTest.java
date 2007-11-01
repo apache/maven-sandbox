@@ -22,6 +22,9 @@ package org.apache.maven.jxr.java.doc;
 import java.io.File;
 
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.taskdefs.Copy;
+import org.apache.tools.ant.types.FileSet;
+import org.codehaus.plexus.util.PathTool;
 
 import junit.framework.TestCase;
 
@@ -32,6 +35,33 @@ import junit.framework.TestCase;
 public class UmlDocTaskTest
     extends TestCase
 {
+    private static final String BASEDIR = new File( "" ).getAbsolutePath();
+
+    /** {@inheritDoc} */
+    protected void setUp()
+        throws Exception
+    {
+        File srcDir = new File( BASEDIR, "target/unit/src" );
+        if ( !srcDir.exists() )
+        {
+            Project antProject = new Project();
+            antProject.setBasedir( BASEDIR );
+
+            Copy copy = new Copy();
+            copy.setProject( antProject );
+            copy.setTodir( srcDir );
+            FileSet set = new FileSet();
+            set.setDir( new File( BASEDIR, "src/main/java" ) );
+            set.setIncludes( "**/*.java" );
+            copy.addFileset( set );
+            set = new FileSet();
+            set.setDir( new File( BASEDIR, "target/generated-sources/antlr" ) );
+            set.setIncludes( "**/*.java" );
+            copy.addFileset( set );
+            copy.execute();
+        }
+    }
+
     /**
      * Call UMLdoc task
      *
@@ -40,19 +70,46 @@ public class UmlDocTaskTest
     public void testDefaultExecute()
         throws Exception
     {
-        final String basedir = new File( "" ).getAbsolutePath();
-
-        File out = new File( basedir, "target/unit/umldoc-default/uml.svg" );
-        File srcDir = new File( basedir, "src/test/resources/javasrc" );
+        File out = new File( BASEDIR, "target/unit/umldoc-default/umlDefault.svg" );
+        File srcDir = new File( BASEDIR, "src/test/resources/javasrc" );
 
         Project antProject = new Project();
-        antProject.setBasedir( basedir );
+        antProject.setBasedir( BASEDIR );
 
         UmlDocTask task = new UmlDocTask();
         task.setProject( antProject );
         task.setSrcDir( srcDir );
         task.setOut( out );
         task.setVerbose( true );
+        task.setDiagramEncoding( "UTF-8" );
+        task.execute();
+
+        // Generated files
+        assertTrue( out.exists() );
+        assertTrue( out.length() > 0 );
+    }
+
+    /**
+     * Call UMLdoc task
+     *
+     * @throws Exception if any.
+     */
+    public void testLinkExecute()
+        throws Exception
+    {
+        File out = new File( BASEDIR, "target/unit/umldoc-default/umlLink.svg" );
+        File srcDir = new File( BASEDIR, "target/unit/src" );
+
+        Project antProject = new Project();
+        antProject.setBasedir( BASEDIR );
+
+        UmlDocTask task = new UmlDocTask();
+        task.setProject( antProject );
+        task.setSrcDir( srcDir );
+        task.setOut( out );
+        task.setVerbose( true );
+        // All tests passed...
+        task.setJavasrcPath( PathTool.getRelativePath( "./target/unit/src" ) + "/target/unit/jxrdoc-default/" );
         task.execute();
 
         // Generated files
