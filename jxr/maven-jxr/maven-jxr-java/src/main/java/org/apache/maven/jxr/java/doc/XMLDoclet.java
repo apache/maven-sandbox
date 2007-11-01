@@ -61,15 +61,15 @@ import com.sun.javadoc.Type;
 public class XMLDoclet
     extends Doclet
 {
-    /**
-     * The specified DTD for the generated Javadoc XML.
-     */
+    /** The specified DTD for the generated Javadoc XML. */
     public static final String XMLDOCLET_DTD = "javadoc-v04draft.dtd";
 
-    private static final String USAGE = "Usage: javadoc <-xmlencoding ISO-8859-1> "
+    /** The Doclet usage. */
+    protected static final String USAGE = "Usage: javadoc <-xmlencoding ISO-8859-1> "
         + "-o /path/to/generatedXmlFile -doclet org.apache.maven.jxr.java.doc.XMLDoclet ...";
 
-    private static final String DEFAULT_ENCODING_FORMAT = "ISO-8859-1";
+    /** Default encoding format for the generated XML. */
+    protected static final String DEFAULT_ENCODING_FORMAT = "ISO-8859-1";
 
     private String xmlns = "";
 
