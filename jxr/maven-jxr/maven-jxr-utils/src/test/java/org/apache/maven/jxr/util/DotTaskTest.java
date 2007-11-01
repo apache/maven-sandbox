@@ -75,7 +75,7 @@ public class DotTaskTest
         }
 
         // Generated files
-        File generated = new File( out, "target.dot.png" );
+        File generated = new File( out, "target.dot." + DotTask.DEFAULT_OUTPUT_FORMAT );
         assertTrue( generated.exists() );
         assertTrue( generated.length() > 0 );
     }
@@ -122,7 +122,7 @@ public class DotTaskTest
         }
 
         // Generated files
-        File generated = new File( out, "graph.dot.svg" );
+        File generated = new File( out, "graph.dot." + DotTask.DEFAULT_OUTPUT_FORMAT  );
         assertFalse( generated.exists() );
         assertFalse( generated.length() > 0 );
     }

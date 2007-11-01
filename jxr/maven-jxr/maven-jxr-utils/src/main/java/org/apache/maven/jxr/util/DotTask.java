@@ -44,13 +44,13 @@ public class DotTask
     /** Windows Graphviz download URL **/
     public static final String GRAPHVIZ_WINDOWS_URL = "http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-win-2.14.1.bin.tar.gz";
 
+    protected static final String DEFAULT_OUTPUT_FORMAT = "svg";
+
     private static final String TARGZ = GRAPHVIZ_WINDOWS_URL.substring( GRAPHVIZ_WINDOWS_URL.lastIndexOf( '/' ) + 1 );
 
     private static final String TAR = TARGZ.substring( 0, TARGZ.lastIndexOf( '.' ) );
 
     private static final String GRAPHVIZ_DIR = "graphviz-2.14.1"; // inside the tar.gz
-
-    private static final String DEFAULT_OUTPUT_FORMAT = "png";
 
     /** The dot executable. */
     private File dotExe;
