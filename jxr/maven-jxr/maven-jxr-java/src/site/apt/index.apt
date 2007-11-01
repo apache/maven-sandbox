@@ -28,7 +28,15 @@
 
 Maven JXR Java
 
- This project is a Java code documentation system.
+ This project is a Java code documentation system. It provides:
+
+  * Java cross-reference HTML tool: converting Java source code to HTML with syntax highlighting and cross-reference information
+
+  * XML Javadoc doclet: generating an XML file of the Java source code
+
+  * UML documentation: generating an UML class diagram of the Java source code with the well known {{{http://www.graphviz.org/}Graphviz}} tool
+
+  []
 
 * Brief History
 
@@ -43,11 +51,14 @@ Maven JXR Java
  See the {{{http://www.nabble.com/-Proposal--decide-the-future-of-forrestdoc-tf4060050.html}Forrest thread}} and the
  {{{http://www.nabble.com/Forrestdoc-and-Maven-JXR-tf3864888s177.html}Maven thread}}.
 
-* References
-
-   * Stanchfield, S., and Parr, T. {{{SeriesPt4.pdf}Parsers, Part IV: A Java Cross-Reference Tool}}. December 1997.
-    Original files {{{SeriesPt4-xref.zip}here}}.
-
 * Examples
 
-   * {{{examples/ant.html}Ant}}: Ant example.
+  * {{{examples/javasrc.html}JXR}}: Java examples to generate Java cross-reference HTML files.
+
+  * {{{examples/xmldoclet.html}XmlDoclet}}: {{{http://java.sun.com/j2se/javadoc/}Javadoc}} examples to use the Xml Javadoc Doclet.
+
+  * {{{examples/umldoc.html}UMLDoc}}: Java examples to generate UML class diagram.
+
+  * {{{examples/ant.html}Ant}}: {{{http://ant.apache.org/}Ant}} tool examples to use them.
+
+  []

@@ -1,5 +1,5 @@
  ------
- Ant Example
+ Ant Examples
  ------
  Vincent Siveton
  ------
@@ -26,9 +26,9 @@
 ~~ NOTE: For help with the syntax of this file, see:
 ~~ http://maven.apache.org/guides/mini/guide-apt-format.html
 
-Ant Example
+Ant Examples
 
- Here is a simple Ant example:
+ Here are simple Ant examples:
 
 +-----+
 <project name="your-project" basedir=".">
@@ -42,13 +42,24 @@ Ant Example
     </fileset>
   </path>
 
-  <target name="antdoc">
+  <!-- Generated Java cross-reference HTML files -->
+  <target name="jxr">
     <taskdef name="javasrc"
              classname="org.apache.maven.jxr.java.src.JavaSrcTask"
              classpathref="task.classpath"/>
 
     <javasrc srcDir="${basedir}/src/main/java"
-            destDir="${basedir}/target/javasrc" />
+             destDir="${basedir}/target/javasrc" />
+  </target>
+
+  <!-- Generated class diagram -->
+  <target name="uml">
+    <taskdef name="uml"
+             classname="org.apache.maven.jxr.java.src.UmlDocTask"
+             classpathref="task.classpath"/>
+
+    <javasrc srcDir="${basedir}/src/main/java"
+             out="${basedir}/target/uml.png" />
   </target>
 </project>
 +-----+
