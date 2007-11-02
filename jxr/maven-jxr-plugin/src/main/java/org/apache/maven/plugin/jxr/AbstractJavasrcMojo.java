@@ -20,16 +20,16 @@ package org.apache.maven.plugin.jxr;
  */
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
 
-import org.apache.maven.jxr.java.src.JavaSrcTask;
+import org.apache.maven.jxr.java.src.JavaSrc;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
- * Base class which wraps all <code>JavaSrcTask</code> functionalities.
+ * Base class which wraps all <code>JavaSrc</code> functionalities.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
@@ -50,18 +50,8 @@ public abstract class AbstractJavasrcMojo
     protected MavenProject project;
 
     // ----------------------------------------------------------------------
-    // JavaSrcTask parameters
+    // JavaSrc parameters
     // ----------------------------------------------------------------------
-
-    /**
-     * The source directory to be scanned.
-     *
-     * @parameter expression="${project.build.sourceDirectory}"
-     * @required
-     * @readonly
-     * @see org.apache.maven.jxr.java.src.JavaSrcTask#srcDir
-     */
-    protected File srcDir;
 
     /**
      * The output directory.
@@ -69,66 +59,181 @@ public abstract class AbstractJavasrcMojo
      * @parameter expression="${project.build.directory}/javasrc"
      * @required
      * @readonly
-     * @see org.apache.maven.jxr.java.src.JavaSrcTask#destDir
      */
     protected File outputDirectory;
+
+    /**
+     * Specifies the text to be placed at the bottom of each output file.
+     *
+     * @parameter expression="${bottom}"
+     * default-value="Copyright &#169; {inceptionYear}-{currentYear} {organizationName}. All Rights Reserved."
+     */
+    private String bottom;
+
+    /**
+     * Specifies the encoding of the generated HTML files.
+     *
+     * @parameter expression="${docencoding}" default-value="ISO-8859-1"
+     */
+    private String docencoding;
+
+    /**
+     * Specifies the title to be placed near the top of the overview summary file.
+     *
+     * @parameter expression="${doctitle}" default-value="${project.name} ${project.version} XREF"
+     */
+    private String doctitle;
+
+    /**
+     * Specifies the encoding name of the source files.
+     *
+     * @parameter expression="${encoding}"
+     */
+    private String encoding;
+
+    /**
+     * Specifies the footer text to be placed at the bottom of each output file.
+     *
+     * @parameter expression="${footer}"
+     */
+    private String footer;
+
+    /**
+     * Specifies the header text to be placed at the top of each output file.
+     *
+     * @parameter expression="${header}"
+     */
+    private String header;
+
+    /**
+     * Specifies the text for upper left frame.
+     *
+     * @parameter expression="${packagesheader}"
+     */
+    private String packagesheader;
 
     /**
      * True to apply a recursive scan.
      *
      * @parameter expression="${recurse}" default-value="true"
-     * @see org.apache.maven.jxr.java.src.JavaSrcTask#recurse
      */
     private boolean recurse;
 
     /**
-     * The title of the generated HTML report.
+     * Specifies the path of an alternate HTML stylesheet file.
      *
-     * @parameter expression="${title}" default-value="${project.name} ${project.version} Reference"
-     * @see org.apache.maven.jxr.java.src.JavaSrcTask#title
+     * @parameter expression="${stylesheetfile}"
      */
-    private String windowTitle;
+    private String stylesheetfile;
+
+    /**
+     * Specifies the top text to be placed at the top of each output file.
+     *
+     * @parameter expression="${top}"
+     */
+    private String top;
 
     /**
      * True to verbose the scan.
      *
      * @parameter expression="${verbose}" default-value="false"
-     * @see org.apache.maven.jxr.java.src.JavaSrcTask#verbose
      */
     private boolean verbose;
 
     /**
-     * Execute the <code>JavaSrcTask</code>
+     * Specifies the title to be placed in the HTML title tag.
      *
-     * @throws MojoExecutionException if any
-     * @see org.apache.maven.jxr.java.src.JavaSrcTask#execute()
+     * @parameter expression="${title}" default-value="${project.name} ${project.version} JXR"
      */
-    public void executeJavaSrcTask()
-        throws MojoExecutionException
+    private String windowTitle;
+
+    /**
+     * Execute the <code>JavaSrc</code>.
+     *
+     * @throws IOException if any
+     */
+    public void executeJavaSrc()
+        throws IOException
     {
-        // TODO need to add a custom footer
-        // @see org.apache.maven.jxr.java.src.Pass2#createPackageSummaryFiles()
-        // @see org.apache.maven.jxr.java.src.Pass2#createOverviewSummaryFrame()
+        JavaSrc javaSrc = new JavaSrc( new File( this.project.getBuild().getSourceDirectory() ), this.outputDirectory );
 
-        JavaSrcTask task = new JavaSrcTask();
+        javaSrc.getOptions().setBottom( getBottomText() );
+        javaSrc.getOptions().setDocencoding( this.docencoding );
+        javaSrc.getOptions().setDoctitle( this.doctitle );
+        javaSrc.getOptions().setEncoding( this.encoding );
+        javaSrc.getOptions().setFooter( this.footer );
+        javaSrc.getOptions().setHeader( this.header );
+        javaSrc.getOptions().setPackagesheader( this.packagesheader );
+        javaSrc.getOptions().setRecurse( this.recurse );
+        javaSrc.getOptions().setStylesheetfile( this.stylesheetfile );
+        javaSrc.getOptions().setTop( this.top );
+        javaSrc.getOptions().setVerbose( this.verbose );
+        javaSrc.getOptions().setWindowtitle( this.windowTitle );
 
-        Project antProject = new Project();
-        antProject.setBaseDir( project.getBasedir() );
-        task.setProject( antProject );
+        javaSrc.pass();
+    }
 
-        task.setDestDir( outputDirectory );
-        task.setSrcDir( srcDir );
-        task.setTitle( windowTitle );
-        task.setVerbose( verbose );
-        task.setRecurse( recurse );
+    // ----------------------------------------------------------------------
+    // private methods
+    // ----------------------------------------------------------------------
 
-        try
+    /**
+     * Method that sets the bottom text that will be displayed on the bottom of the
+     * javadocs.
+     *
+     * @return a String that contains the text that will be displayed at the bottom of the javadoc
+     */
+    private String getBottomText()
+    {
+        int actualYear = Calendar.getInstance().get( Calendar.YEAR );
+        String year = String.valueOf( actualYear );
+
+        String inceptionYear = project.getInceptionYear();
+
+        String theBottom = StringUtils.replace( this.bottom, "{currentYear}", year );
+
+        if ( inceptionYear != null )
         {
-            task.execute();
+            if ( inceptionYear.equals( year ) )
+            {
+                theBottom = StringUtils.replace( theBottom, "{inceptionYear}-", "" );
+            }
+            else
+            {
+                theBottom = StringUtils.replace( theBottom, "{inceptionYear}", inceptionYear );
+            }
         }
-        catch ( BuildException e )
+        else
         {
-            throw new MojoExecutionException( "BuildException: " + e.getMessage() );
+            theBottom = StringUtils.replace( theBottom, "{inceptionYear}-", "" );
         }
+
+        if ( project.getOrganization() == null )
+        {
+            theBottom = StringUtils.replace( theBottom, " {organizationName}", "" );
+        }
+        else
+        {
+            if ( ( project.getOrganization() != null )
+                && ( StringUtils.isNotEmpty( project.getOrganization().getName() ) ) )
+            {
+                if ( StringUtils.isNotEmpty( project.getOrganization().getUrl() ) )
+                {
+                    theBottom = StringUtils.replace( theBottom, "{organizationName}", "<a href=\""
+                        + project.getOrganization().getUrl() + "\">" + project.getOrganization().getName() + "</a>" );
+                }
+                else
+                {
+                    theBottom = StringUtils.replace( theBottom, "{organizationName}", project.getOrganization()
+                        .getName() );
+                }
+            }
+            else
+            {
+                theBottom = StringUtils.replace( theBottom, " {organizationName}", "" );
+            }
+        }
+
+        return theBottom;
     }
 }

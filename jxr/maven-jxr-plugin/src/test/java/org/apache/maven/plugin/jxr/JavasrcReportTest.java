@@ -33,9 +33,7 @@ import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 public class JavasrcReportTest
     extends AbstractMojoTestCase
 {
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
+    /** {@inheritDoc} */
     protected void setUp()
         throws Exception
     {
@@ -43,9 +41,7 @@ public class JavasrcReportTest
         super.setUp();
     }
 
-    /**
-     * @see junit.framework.TestCase#tearDown()
-     */
+    /** {@inheritDoc} */
     protected void tearDown()
         throws Exception
     {
@@ -64,8 +60,11 @@ public class JavasrcReportTest
         JavasrcReport mojo = (JavasrcReport) lookupMojo( "javasrc", testPom );
         mojo.execute();
 
-        File outputDir = new File( getBasedir(), "target/test/unit/dummy-project-test/target/site" );
+        File outputDir = new File( getBasedir(), "target/test/unit/dummy-project-test/target/site/javasrc" );
+        assertTrue( new File( outputDir, "allclasses-frame.html" ).exists() );
         assertTrue( new File( outputDir, "index.html" ).exists() );
+        assertTrue( new File( outputDir, "overview-frame.html" ).exists() );
+        assertTrue( new File( outputDir, "overview-summary.html" ).exists() );
         assertTrue( new File( outputDir, "/maven/App_java.html" ).exists() );
     }
 }

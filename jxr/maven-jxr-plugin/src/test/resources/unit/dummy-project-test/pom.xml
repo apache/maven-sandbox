@@ -40,7 +40,12 @@ under the License.
         <artifactId>maven-jxr-plugin</artifactId>
         <configuration>
           <project implementation="org.apache.maven.plugin.jxr.stubs.DummyMavenProjectStub"/>
-          <outputDirectory>${basedir}/target/test/unit/dummy-project-test/target/site/</outputDirectory>
+          <outputDirectory>${basedir}/target/test/unit/dummy-project-test/target/site/javasrc</outputDirectory>
+          <bottom>Copyright &#169; {inceptionYear}-{currentYear} {organizationName}. All Rights Reserved.</bottom>
+          <docencoding>ISO-8859-1</docencoding>
+          <doctitle>dummy 1.0-SNAPSHOT XREF</doctitle>
+          <encoding>ISO-8859-1</encoding>
+          <windowTitle>dummy 1.0-SNAPSHOT JXR</windowTitle>
         </configuration>
       </plugin>
     </plugins>

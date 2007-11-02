@@ -20,6 +20,7 @@ package org.apache.maven.plugin.jxr;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -62,31 +63,35 @@ public class JavasrcReport
     private File reportOutputDirectory;
 
     /**
-     * The name of the Antlr report.
+     * The name of the Java Source Xref report.
      *
      * @parameter expression="${name}" default-value="Java Source Xref"
      */
     private String name;
 
     /**
-     * The description of the Antlr report.
+     * The description of the Java Source Xref report.
      *
      * @parameter expression="${description}" default-value="Source code/Documentation management system."
      */
     private String description;
 
-    /**
-     * @see org.apache.maven.plugin.AbstractMojo#execute()
-     */
+    /** {@inheritDoc} */
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        super.executeJavaSrcTask();
+        try
+        {
+            super.executeJavaSrc();
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "IOException: An error has occurred in " + getName( Locale.ENGLISH )
+                + " report generation.", e );
+        }
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#generate(org.codehaus.doxia.sink.Sink, java.util.Locale)
-     */
+    /** {@inheritDoc} */
     public void generate( Sink sink, Locale locale )
         throws MavenReportException
     {
@@ -108,14 +113,12 @@ public class JavasrcReport
         }
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#canGenerateReport()
-     */
+    /** {@inheritDoc} */
     public boolean canGenerateReport()
     {
         // TODO aggregate report
         boolean canGenerate = true;
-        for (Iterator it = project.getCompileSourceRoots().iterator(); it.hasNext();)
+        for ( Iterator it = project.getCompileSourceRoots().iterator(); it.hasNext(); )
         {
             canGenerate = canGenerate && new File( (String) it.next() ).exists();
         }
@@ -128,25 +131,19 @@ public class JavasrcReport
         return canGenerate;
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getCategoryName()
-     */
+    /** {@inheritDoc} */
     public String getCategoryName()
     {
         return CATEGORY_PROJECT_REPORTS;
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getOutputName()
-     */
+    /** {@inheritDoc} */
     public String getOutputName()
     {
         return "javasrc/index";
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getName(java.util.Locale)
-     */
+    /** {@inheritDoc} */
     public String getName( Locale locale )
     {
         if ( StringUtils.isEmpty( name ) )
@@ -157,9 +154,7 @@ public class JavasrcReport
         return name;
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getDescription(java.util.Locale)
-     */
+    /** {@inheritDoc} */
     public String getDescription( Locale locale )
     {
         if ( StringUtils.isEmpty( description ) )
@@ -170,9 +165,7 @@ public class JavasrcReport
         return description;
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getReportOutputDirectory()
-     */
+    /** {@inheritDoc} */
     public File getReportOutputDirectory()
     {
         if ( reportOutputDirectory == null )
@@ -183,9 +176,7 @@ public class JavasrcReport
         return reportOutputDirectory;
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#setReportOutputDirectory(java.io.File)
-     */
+    /** {@inheritDoc} */
     public void setReportOutputDirectory( File reportOutputDirectory )
     {
         if ( ( reportOutputDirectory != null ) && ( !reportOutputDirectory.getAbsolutePath().endsWith( "javasrc" ) ) )
@@ -198,9 +189,7 @@ public class JavasrcReport
         }
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#isExternalReport()
-     */
+    /** {@inheritDoc} */
     public boolean isExternalReport()
     {
         return true;
