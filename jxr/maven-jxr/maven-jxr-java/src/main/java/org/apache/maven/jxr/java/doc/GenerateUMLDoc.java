@@ -159,6 +159,16 @@ public class GenerateUMLDoc
 
         // 3. Generate UML image
         generateUmlImage();
+
+        if ( !isVerbose() )
+        {
+            // 4. Remove the generated DTD
+            File dtd = new File( getJavadocXml().getParentFile(), XMLDoclet.XMLDOCLET_DTD );
+            if ( !dtd.delete() )
+            {
+                throw new IOException( "IOException: can't delete the generated DTD file: " + dtd );
+            }
+        }
     }
 
     /**
