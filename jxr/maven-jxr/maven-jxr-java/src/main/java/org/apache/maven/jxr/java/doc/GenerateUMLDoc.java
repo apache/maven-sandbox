@@ -488,12 +488,23 @@ public class GenerateUMLDoc
         StringWriter err = new StringWriter();
         StringWriter warn = new StringWriter();
         StringWriter notice = new StringWriter();
-        int exit = Main.execute( "javadoc", new PrintWriter( err ), new PrintWriter( warn ), new PrintWriter( notice ),
-                                 XMLDoclet.class.getName(), (String[]) args.toArray( new String[0] ) );
 
-        if ( exit != 0 )
+        ClassLoader currentClassLoader = Thread.currentThread().getContextClassLoader();
+        try
         {
-            throw new IOException( "Error when calling Javadoc: " + err );
+            Thread.currentThread().setContextClassLoader( XMLDoclet.class.getClassLoader() );
+            int exit = Main.execute( "javadoc", new PrintWriter( err ), new PrintWriter( warn ),
+                                     new PrintWriter( notice ), XMLDoclet.class.getName(), (String[]) args
+                                         .toArray( new String[0] ) );
+
+            if ( exit != 0 )
+            {
+                throw new IOException( "Error when calling Javadoc: " + err );
+            }
+        }
+        finally
+        {
+            Thread.currentThread().setContextClassLoader( currentClassLoader );
         }
     }
 
