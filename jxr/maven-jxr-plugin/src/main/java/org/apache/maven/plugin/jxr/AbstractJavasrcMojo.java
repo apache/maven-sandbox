@@ -157,18 +157,48 @@ public abstract class AbstractJavasrcMojo
     {
         JavaSrc javaSrc = new JavaSrc( new File( this.project.getBuild().getSourceDirectory() ), this.outputDirectory );
 
-        javaSrc.getOptions().setBottom( getBottomText() );
-        javaSrc.getOptions().setDocencoding( this.docencoding );
-        javaSrc.getOptions().setDoctitle( this.doctitle );
-        javaSrc.getOptions().setEncoding( this.encoding );
-        javaSrc.getOptions().setFooter( this.footer );
-        javaSrc.getOptions().setHeader( this.header );
-        javaSrc.getOptions().setPackagesheader( this.packagesheader );
+        if ( StringUtils.isNotEmpty( getBottomText() ) )
+        {
+            javaSrc.getOptions().setBottom( getBottomText() );
+        }
+        if ( StringUtils.isNotEmpty( this.docencoding ) )
+        {
+            javaSrc.getOptions().setDocencoding( this.docencoding );
+        }
+        if ( StringUtils.isNotEmpty( this.doctitle ) )
+        {
+            javaSrc.getOptions().setDoctitle( this.doctitle );
+        }
+        if ( StringUtils.isNotEmpty( this.encoding ) )
+        {
+            javaSrc.getOptions().setEncoding( this.encoding );
+        }
+        if ( StringUtils.isNotEmpty( this.footer ) )
+        {
+            javaSrc.getOptions().setFooter( this.footer );
+        }
+        if ( StringUtils.isNotEmpty( this.footer ) )
+        {
+            javaSrc.getOptions().setHeader( this.footer );
+        }
+        if ( StringUtils.isNotEmpty( this.packagesheader ) )
+        {
+            javaSrc.getOptions().setPackagesheader( this.packagesheader );
+        }
         javaSrc.getOptions().setRecurse( this.recurse );
-        javaSrc.getOptions().setStylesheetfile( this.stylesheetfile );
-        javaSrc.getOptions().setTop( this.top );
+        if ( StringUtils.isNotEmpty( this.stylesheetfile ) )
+        {
+            javaSrc.getOptions().setStylesheetfile( this.stylesheetfile );
+        }
+        if ( StringUtils.isNotEmpty( this.top ) )
+        {
+            javaSrc.getOptions().setTop( this.top );
+        }
         javaSrc.getOptions().setVerbose( this.verbose );
-        javaSrc.getOptions().setWindowtitle( this.windowTitle );
+        if ( StringUtils.isNotEmpty( this.windowTitle ) )
+        {
+            javaSrc.getOptions().setWindowtitle( this.windowTitle );
+        }
 
         javaSrc.pass();
     }
@@ -178,10 +208,10 @@ public abstract class AbstractJavasrcMojo
     // ----------------------------------------------------------------------
 
     /**
-     * Method that sets the bottom text that will be displayed on the bottom of the
-     * javadocs.
+     * Method that sets the bottom text that will be displayed on the bottom of the generated
+     * javasrc files.
      *
-     * @return a String that contains the text that will be displayed at the bottom of the javadoc
+     * @return a String that contains the text that will be displayed at the bottom of the javasrc
      */
     private String getBottomText()
     {
@@ -214,8 +244,7 @@ public abstract class AbstractJavasrcMojo
         }
         else
         {
-            if ( ( project.getOrganization() != null )
-                && ( StringUtils.isNotEmpty( project.getOrganization().getName() ) ) )
+            if ( StringUtils.isNotEmpty( project.getOrganization().getName() ) )
             {
                 if ( StringUtils.isNotEmpty( project.getOrganization().getUrl() ) )
                 {
