@@ -33,12 +33,11 @@ under the License.
 
   <artifactId>maven-jxr-utils</artifactId>
   <name>Utilities classes for source code documentation</name>
-  
+
   <dependencies>
     <dependency>
-      <groupId>ant</groupId>
-      <artifactId>ant</artifactId>
-      <version>1.6.5</version>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
     </dependency>
   </dependencies>
 </project>
