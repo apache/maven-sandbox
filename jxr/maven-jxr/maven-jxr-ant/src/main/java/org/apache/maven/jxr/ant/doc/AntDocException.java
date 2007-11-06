@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.ant.doc.vizant;
+package org.apache.maven.jxr.ant.doc;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,38 +19,44 @@ package org.apache.maven.jxr.ant.doc.vizant;
  * under the License.
  */
 
-import java.io.File;
-
-import junit.framework.TestCase;
-
-import org.apache.maven.jxr.ant.doc.vizant.Vizant;
-
 /**
+ * Signals an error when processing AntDoc.
+ *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
-public class VizantTest
-    extends TestCase
+public class AntDocException
+    extends Exception
 {
+    static final long serialVersionUID = -968267199466038667L;
+
     /**
-     * Call Vizabt task
-     *
-     * @throws Exception if any.
+     * Constructs am exception with no descriptive information.
      */
-    public void testExecute()
-        throws Exception
+    public AntDocException()
     {
-        final String basedir = new File( "" ).getAbsolutePath();
+        super();
+    }
 
-        File targetDir = new File( basedir, "target/unit/vizant" );
+    /**
+     * Constructs an exception with the given descriptive message.
+     *
+     * @param message
+     */
+    public AntDocException( String message )
+    {
+        super( message );
+    }
 
-        File build = new File( basedir, "src/test/resources/ant/build.xml" );
-        File buildGraph = new File( targetDir, "buildgraph.xml" );
-
-        Vizant vizant = new Vizant();
-        vizant.setAntfile( build );
-        vizant.setOutfile( buildGraph );
-        vizant.setUniqueref( true );
-        vizant.execute();
+    /**
+     * Constructs an exception with the given message and exception as
+     * a root cause.
+     *
+     * @param message
+     * @param cause
+     */
+    public AntDocException( String message, Throwable cause )
+    {
+        super( message, cause );
     }
 }

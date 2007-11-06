@@ -20,9 +20,8 @@ package org.apache.maven.jxr.ant.doc;
  */
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.maven.jxr.util.DotTask.DotNotPresentInPathBuildException;
+import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
@@ -100,7 +99,7 @@ public class AntDocTask
     {
         try
         {
-            GenerateHTMLDoc generator = new GenerateHTMLDoc( getAntFile(), getDestDir() );
+            GenerateHTMLDoc generator = new GenerateHTMLDoc( this.antFile, this.destDir );
             generator.generateDoc();
         }
         catch ( IllegalArgumentException e )
@@ -112,48 +111,23 @@ public class AntDocTask
 
             log( "IllegalArgumentException: " + e.getMessage(), Project.MSG_ERR );
         }
-        catch ( IOException e )
+        catch ( DotNotPresentInPathException e )
         {
             if ( !failOnError )
             {
-                throw new BuildException( "IOException: " + e.getMessage(), e, getLocation() );
+                throw new BuildException( "DotNotPresentInPathException: " + e.getMessage(), e, getLocation() );
             }
 
-            log( "IOException: " + e.getMessage(), Project.MSG_ERR );
-        }
-        catch ( DotNotPresentInPathBuildException e )
-        {
             log( "Dot is not present in the path: " + e.getMessage(), Project.MSG_ERR );
         }
-        catch ( BuildException e )
+        catch ( AntDocException e )
         {
-            e.printStackTrace();
             if ( !failOnError )
             {
-                throw new BuildException( "RuntimeException: " + e.getMessage(), e, getLocation() );
+                throw new BuildException( "AntDocException: " + e.getMessage(), e, getLocation() );
             }
 
-            log( e.getMessage(), Project.MSG_ERR );
+            log( "AntDocException: " + e.getMessage(), Project.MSG_ERR );
         }
-    }
-
-    // ----------------------------------------------------------------------
-    // Private
-    // ----------------------------------------------------------------------
-
-    /**
-     * @return the Ant file which be parsed.
-     */
-    private File getAntFile()
-    {
-        return this.antFile;
-    }
-
-    /**
-     * @return the dest dir
-     */
-    private File getDestDir()
-    {
-        return this.destDir;
     }
 }

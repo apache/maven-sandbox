@@ -26,14 +26,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 import org.apache.maven.jxr.ant.doc.vizant.Vizant;
-import org.apache.maven.jxr.util.DotTask;
-import org.apache.maven.jxr.util.DotTask.DotNotPresentInPathBuildException;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.XSLTProcess;
+import org.apache.maven.jxr.util.DotUtil;
+import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.cli.CommandLineException;
 
 /**
  * Generate HTML documentation for <a href="http://ant.apache.org/">Ant</a> file.
@@ -104,26 +109,61 @@ public class GenerateHTMLDoc
     }
 
     /**
-     * Generate the documentation
+     * Generate the documentation.
      *
-     * @throws IOException if any
-     * @throws BuildException if any
-     * @throws DotNotPresentInPathBuildException if any
+     * @throws DotNotPresentInPathException if any
+     * @throws AntDocException if any
      */
     public void generateDoc()
-        throws IOException, BuildException, DotNotPresentInPathBuildException
+        throws DotNotPresentInPathException, AntDocException
     {
         // 1. Generate Vizant graph
-        generateVizantBuildGraph();
+        try
+        {
+            generateVizantBuildGraph();
+        }
+        catch ( IOException e )
+        {
+            throw new AntDocException( "IOException: " + e.getMessage() );
+        }
 
         // 2. Generate dot graph
-        generateDotBuildGraph();
+        try
+        {
+            generateDotBuildGraph();
+        }
+        catch ( IOException e )
+        {
+            throw new AntDocException( "IOException: " + e.getMessage() );
+        }
+        catch ( TransformerException e )
+        {
+            throw new AntDocException( "TransformerException: " + e.getMessage() );
+        }
 
         // 3. Generate images from the dot file
-        generateImages();
+        try
+        {
+            generateImages();
+        }
+        catch ( CommandLineException e )
+        {
+            throw new AntDocException( "CommandLineException: " + e.getMessage() );
+        }
 
         // 4. Generate site
-        generateSite();
+        try
+        {
+            generateSite();
+        }
+        catch ( IOException e )
+        {
+            throw new AntDocException( "IOException: " + e.getMessage() );
+        }
+        catch ( TransformerException e )
+        {
+            throw new AntDocException( "TransformerException: " + e.getMessage() );
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -155,7 +195,7 @@ public class GenerateHTMLDoc
     {
         if ( this.xml2dot == null )
         {
-            this.xml2dot = FileUtils.createTempFile( "xml2dot", ".xsl", null );
+            this.xml2dot = FileUtils.createTempFile( "xml2dot", ".xsl", getDestDir() );
             this.xml2dot.deleteOnExit();
 
             InputStream is = getClass().getClassLoader().getResourceAsStream( "vizant/xml2dot.xsl" );
@@ -185,7 +225,7 @@ public class GenerateHTMLDoc
     {
         if ( this.xml2html == null )
         {
-            this.xml2html = FileUtils.createTempFile( "xml2html", ".xsl", null );
+            this.xml2html = FileUtils.createTempFile( "xml2html", ".xsl", getDestDir() );
             this.xml2html.deleteOnExit();
 
             InputStream is = getClass().getClassLoader().getResourceAsStream( "vizant/xml2html.xsl" );
@@ -215,7 +255,7 @@ public class GenerateHTMLDoc
     {
         if ( this.xml2tg == null )
         {
-            this.xml2tg = FileUtils.createTempFile( "xml2tg", ".xsl", null );
+            this.xml2tg = FileUtils.createTempFile( "xml2tg", ".xsl", getDestDir() );
             this.xml2tg.deleteOnExit();
 
             InputStream is = getClass().getClassLoader().getResourceAsStream( "vizant/xml2tg.xsl" );
@@ -243,7 +283,7 @@ public class GenerateHTMLDoc
     {
         if ( this.buildGraph == null )
         {
-            this.buildGraph = FileUtils.createTempFile( "buildgraph", ".xml", null );
+            this.buildGraph = FileUtils.createTempFile( "buildgraph", ".xml", getDestDir() );
             this.buildGraph.deleteOnExit();
         }
 
@@ -257,7 +297,7 @@ public class GenerateHTMLDoc
     {
         if ( this.dot == null )
         {
-            this.dot = FileUtils.createTempFile( "buildgraph", ".dot", null );
+            this.dot = FileUtils.createTempFile( "buildgraph", ".dot", getDestDir() );
             this.dot.deleteOnExit();
         }
 
@@ -271,7 +311,7 @@ public class GenerateHTMLDoc
     {
         if ( this.buildtg == null )
         {
-            this.buildtg = FileUtils.createTempFile( "buildtg", ".xml", null );
+            this.buildtg = FileUtils.createTempFile( "buildtg", ".xml", getDestDir() );
             this.buildtg.deleteOnExit();
         }
 
@@ -279,106 +319,85 @@ public class GenerateHTMLDoc
     }
 
     /**
-     * @return a minimal Ant project.
-     */
-    private Project getAntProject()
-    {
-        Project antProject = new Project();
-        antProject.setBasedir( new File( "" ).getAbsolutePath() );
-
-        return antProject;
-    }
-
-    /**
      * Call Vizant task
      *
-     * @throws BuildException if any
+     * @throws IOException if any
      */
     private void generateVizantBuildGraph()
-        throws BuildException
+        throws IOException
     {
-        Vizant vizantTask = new Vizant();
-        vizantTask.setProject( getAntProject() );
-        vizantTask.setTaskName( "vizant" );
-        vizantTask.init();
-        vizantTask.setAntfile( getAntFile() );
-        vizantTask.setOutfile( getBuildGraph() );
-        vizantTask.setUniqueref( true );
-        vizantTask.execute();
+        Vizant vizant = new Vizant();
+        vizant.setAntfile( getAntFile() );
+        vizant.setOutfile( getBuildGraph() );
+        vizant.setUniqueref( true );
+        vizant.execute();
     }
 
     /**
      * Apply XSLT to generate dot file from the Vizant build graph
      *
-     * @throws BuildException if any
      * @throws IOException if any
+     * @throws TransformerException if any
      */
     private void generateDotBuildGraph()
-        throws BuildException, IOException
+        throws IOException, TransformerException
     {
-        XSLTProcess xsltTask = new XSLTProcess();
-        xsltTask.setProject( getAntProject() );
-        xsltTask.setTaskName( "xslt" );
-        xsltTask.init();
-        xsltTask.setIn( getBuildGraph() );
-        xsltTask.setOut( getDot() );
-        xsltTask.setStyle( getXml2dot().getAbsolutePath() );
-        xsltTask.execute();
+        SAXTransformerFactory transformerFactory = (SAXTransformerFactory) TransformerFactory.newInstance();
+        if ( !( transformerFactory.getFeature( javax.xml.transform.sax.SAXSource.FEATURE ) && transformerFactory
+            .getFeature( javax.xml.transform.stream.StreamResult.FEATURE ) ) )
+        {
+
+            throw new TransformerException( "The supplied TrAX transformer library is inadeguate."
+                + "Please upgrade to the latest version." );
+        }
+
+        Transformer serializer = transformerFactory.newTransformer( new StreamSource( getXml2dot() ) );
+        serializer.transform( new StreamSource( getBuildGraph() ), new StreamResult( getDot() ) );
     }
 
     /**
      * Call graphviz dot to generate images.
      *
-     * @throws BuildException if any
-     * @throws DotNotPresentInPathBuildException if any
+     * @throws CommandLineException if any
+     * @throws DotNotPresentInPathException if any
      */
     private void generateImages()
-        throws BuildException, DotNotPresentInPathBuildException
+        throws CommandLineException, DotNotPresentInPathException
     {
         String[] dotFormat = { "svg", "png" };
         for ( int i = 0; i < dotFormat.length; i++ )
         {
             String format = dotFormat[i];
 
-            DotTask dotTask = new DotTask();
-            dotTask.setProject( getAntProject() );
-            dotTask.setTaskName( "dot" );
-            dotTask.init();
-            dotTask.setIn( getDot() );
-            dotTask.setOut( new File( getDestDir(), "vizant." + format ) );
-            dotTask.setFormat( format );
-            dotTask.execute();
+            DotUtil.executeDot( getDot(), format, new File( getDestDir(), "vizant." + format ) );
         }
     }
 
     /**
      * Generate the documentation site.
      *
-     * @throws BuildException if any
      * @throws IOException if any
+     * @throws TransformerException if any
      */
     private void generateSite()
-        throws BuildException, IOException
+        throws IOException, TransformerException
     {
         File targetHtml = new File( getDestDir(), "target.html" );
-        XSLTProcess xsltTask = new XSLTProcess();
-        xsltTask.setProject( getAntProject() );
-        xsltTask.setTaskName( "xslt" );
-        xsltTask.init();
-        xsltTask.setIn( getBuildGraph() );
-        xsltTask.setOut( targetHtml );
-        xsltTask.setStyle( getXml2html().getAbsolutePath() );
-        xsltTask.execute();
 
-        xsltTask = new XSLTProcess();
-        xsltTask.setProject( getAntProject() );
-        xsltTask.setTaskName( "xslt" );
-        xsltTask.init();
-        xsltTask.setIn( getBuildGraph() );
-        xsltTask.setOut( getBuildtg() );
-        xsltTask.setStyle( getXml2tg().getAbsolutePath() );
-        xsltTask.setReloadStylesheet( true );
-        xsltTask.execute();
+        SAXTransformerFactory transformerFactory = (SAXTransformerFactory) TransformerFactory.newInstance();
+        if ( !( transformerFactory.getFeature( javax.xml.transform.sax.SAXSource.FEATURE ) && transformerFactory
+            .getFeature( javax.xml.transform.stream.StreamResult.FEATURE ) ) )
+        {
+
+            throw new TransformerException( "The supplied TrAX transformer library is inadeguate."
+                + "Please upgrade to the latest version." );
+        }
+
+        Transformer serializer = transformerFactory.newTransformer( new StreamSource( getXml2html() ) );
+        serializer.transform( new StreamSource( getBuildGraph() ), new StreamResult( targetHtml ) );
+
+        serializer = transformerFactory.newTransformer( new StreamSource( getXml2tg() ) );
+        serializer.transform( new StreamSource( getBuildGraph() ), new StreamResult( getBuildtg() ) );
 
         // copy
         FileUtils.copyFile( getBuildtg(), new File( getDestDir(), "InitialXML._xml" ) );
