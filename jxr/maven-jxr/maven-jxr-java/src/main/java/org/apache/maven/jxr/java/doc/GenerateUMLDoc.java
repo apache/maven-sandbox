@@ -562,7 +562,17 @@ public class GenerateUMLDoc
         serializer.setParameter( "now", NOW );
         serializer.setParameter( "diagramEncoding", ( getDiagramEncoding() == null ? "" : getDiagramEncoding() ) );
         serializer.setParameter( "show", ( getShow() == null ? "" : getShow() ) );
+        if ( ( StringUtils.isNotEmpty( getJavasrcPath() ) )
+            && ( !"/".equals( getJavasrcPath().substring( getJavasrcPath().length() - 1 ) ) ) )
+        {
+            setJavasrcPath( getJavasrcPath() + "/" );
+        }
         serializer.setParameter( "javasrcPath", ( getJavasrcPath() == null ? "" : getJavasrcPath() ) );
+        if ( ( StringUtils.isNotEmpty( getJavadocPath() ) )
+            && ( !"/".equals( getJavadocPath().substring( getJavadocPath().length() - 1 ) ) ) )
+        {
+            setJavadocPath( getJavadocPath() + "/" );
+        }
         serializer.setParameter( "javadocPath", ( getJavadocPath() == null ? "" : getJavadocPath() ) );
         serializer.setParameter( "diagramLabel", ( getDiagramLabel() == null ? "" : getDiagramLabel() ) );
 
