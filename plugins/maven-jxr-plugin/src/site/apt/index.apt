@@ -28,14 +28,14 @@
 
 Maven JXR Plugin
 
- The JXR Plugin uses the JXR Java project to generate Java cross reference.
+ The JXR Plugin uses the {{{https://svn.apache.org/repos/asf/maven/sandbox/trunk/jxr/maven-jxr/maven-jxr-java}JXR Java project}} to generate Java cross references.
 
 * Goals Overview
 
-   The JXR Plugin has one goals:
+   The JXR Plugin has one goal:
 
    * {{{javasrc-mojo.html}jxr:javasrc}} Generates an html-based, cross referenced version of Java
-   source code based on the JXR Java project..
+   source code based on the JXR Java project.
 
 * Usage
 
