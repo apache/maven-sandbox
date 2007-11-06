@@ -25,7 +25,9 @@ import java.util.Calendar;
 
 import org.apache.maven.jxr.java.src.JavaSrc;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.reporting.MavenReportException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -151,11 +153,20 @@ public abstract class AbstractJavasrcMojo
      * Execute the <code>JavaSrc</code>.
      *
      * @throws IOException if any
+     * @throws MojoExecutionException if any
      */
     public void executeJavaSrc()
-        throws IOException
+        throws IOException, MojoExecutionException
     {
-        JavaSrc javaSrc = new JavaSrc( new File( this.project.getBuild().getSourceDirectory() ), this.outputDirectory );
+        JavaSrc javaSrc;
+        try
+        {
+            javaSrc = new JavaSrc( new File( this.project.getBuild().getSourceDirectory() ), this.outputDirectory );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            throw new MojoExecutionException( "IllegalArgumentException: " + e.getMessage(), e );
+        }
 
         if ( StringUtils.isNotEmpty( getBottomText() ) )
         {
