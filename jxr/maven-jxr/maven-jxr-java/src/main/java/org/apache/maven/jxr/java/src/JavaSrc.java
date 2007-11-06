@@ -74,6 +74,7 @@ public class JavaSrc
      * @throws IllegalArgumentException if any
      */
     public JavaSrc( File srcDir, File destDir )
+        throws IllegalArgumentException
     {
         addSrcDir( srcDir );
         setDestDir( destDir );
@@ -185,6 +186,7 @@ public class JavaSrc
      * @throws IllegalArgumentException if any
      */
     private void setDestDir( File destDir )
+        throws IllegalArgumentException
     {
         if ( destDir == null )
         {
@@ -209,6 +211,7 @@ public class JavaSrc
      * @throws IllegalArgumentException if any
      */
     private void addSrcDir( File srcDir )
+        throws IllegalArgumentException
     {
         if ( srcDir == null )
         {
@@ -233,6 +236,7 @@ public class JavaSrc
      * @see JavaSrc#main(String[])
      */
     private void initializeRequiredOptions()
+        throws IllegalArgumentException
     {
         String srcDir = System.getProperty( "srcDir" );
         if ( StringUtils.isEmpty( srcDir ) )
