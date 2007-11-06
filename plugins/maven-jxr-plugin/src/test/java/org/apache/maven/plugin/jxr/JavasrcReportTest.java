@@ -45,7 +45,7 @@ public class JavasrcReportTest
     protected void tearDown()
         throws Exception
     {
-        // nop
+        super.tearDown();
     }
 
     /**
