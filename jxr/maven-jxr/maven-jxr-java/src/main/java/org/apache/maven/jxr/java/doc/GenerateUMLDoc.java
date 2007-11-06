@@ -51,7 +51,8 @@ import com.sun.tools.javadoc.Main;
 /**
  * Generate UML diagram from Java source directory.
  * <br/>
- * <b>Note</b>: <a href="http://www.graphviz.org/">Graphviz</a> program should be in the path.
+ * <b>Note</b>: <a href="http://www.graphviz.org/">Graphviz</a> dot program should be in the path or specified
+ * by <code>dotExecutable</code> parameter.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
@@ -68,6 +69,9 @@ public class GenerateUMLDoc
 
     /** Output file of the diagram */
     private File out;
+
+    /** Graphviz Dot executable file */
+    private File dotExecutable;
 
     /** The class diagram encoding, ISO-8859-1 is the default. */
     private String diagramEncoding = "ISO-8859-1";
@@ -219,6 +223,16 @@ public class GenerateUMLDoc
     }
 
     /**
+     * Getter for the dotExecutable
+     *
+     * @return the dotExecutable
+     */
+    public File getDotExecutable()
+    {
+        return this.dotExecutable;
+    }
+
+    /**
      * Getter for the encoding
      *
      * @return the encoding
@@ -313,6 +327,16 @@ public class GenerateUMLDoc
     public void setDiagramLabel( String diagramLabel )
     {
         this.diagramLabel = diagramLabel;
+    }
+
+    /**
+     * Setter for the dotExecutable
+     *
+     * @param dotExecutable the dotExecutable to set
+     */
+    public void setDotExecutable( File dotExecutable )
+    {
+        this.dotExecutable = dotExecutable;
     }
 
     /**
@@ -599,6 +623,13 @@ public class GenerateUMLDoc
             format = "svg";
         }
 
-        DotUtil.executeDot( getDot(), getOut() );
+        if ( getDotExecutable() == null )
+        {
+            DotUtil.executeDot( getDot(), getOut() );
+        }
+        else
+        {
+            DotUtil.executeDot( getDotExecutable(), getDot(), getOut() );
+        }
     }
 }

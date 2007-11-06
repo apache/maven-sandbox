@@ -20,7 +20,6 @@ package org.apache.maven.jxr.java.doc;
  */
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
 import org.apache.tools.ant.BuildException;
@@ -44,6 +43,9 @@ public class UmlDocTask
 
     /** Output file of the diagram*/
     private File out;
+
+    /** Graphviz Dot executable file */
+    private File dotExecutable;
 
     /** Source file encoding name. */
     private String encoding;
@@ -109,6 +111,16 @@ public class UmlDocTask
     public void setDiagramLabel( String diagramLabel )
     {
         this.diagramLabel = diagramLabel;
+    }
+
+    /**
+     * Setter for the dotExecutable
+     *
+     * @param dotExecutable the dotExecutable to set
+     */
+    public void setDotExecutable( File dotExecutable )
+    {
+        this.dotExecutable = dotExecutable;
     }
 
     /**
@@ -214,6 +226,10 @@ public class UmlDocTask
         try
         {
             GenerateUMLDoc generator = new GenerateUMLDoc( getSrcDir(), getOut() );
+            if ( this.dotExecutable != null )
+            {
+                generator.setDotExecutable( dotExecutable );
+            }
             if ( StringUtils.isNotEmpty( this.encoding ) )
             {
                 generator.setEncoding( this.encoding );
