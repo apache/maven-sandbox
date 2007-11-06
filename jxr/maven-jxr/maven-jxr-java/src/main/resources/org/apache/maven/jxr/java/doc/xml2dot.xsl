@@ -75,8 +75,8 @@
         </xsl:choose>
         <xsl:text>";
 
-        edge [fontname = "Helvetica", fontsize = "9", labelfontname = "Helvetica", labelfontsize = "9"];
-        node [fontname = "Helvetica", fontsize = "9", shape = "record"];&#10;</xsl:text>
+        edge [fontname = "Times-Roman", fontsize = "16", labelfontname = "Times-Roman", labelfontsize = "16"];
+        node [fontname = "Times-Roman", fontsize = "16", shape = "record"];&#10;</xsl:text>
 
     <xsl:text>
         // subgraphs&#10;</xsl:text>
