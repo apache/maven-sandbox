@@ -530,6 +530,10 @@
       <xsl:with-param name="input" select="classref/@name"/>
       <xsl:with-param name="marker" select="'.'"/>
     </xsl:call-template>
+    <xsl:call-template name="substring-after-last">
+      <xsl:with-param name="input" select="interfaceref/@name"/>
+      <xsl:with-param name="marker" select="'.'"/>
+    </xsl:call-template>
 
     <xsl:if test="@final='true'">
       <xsl:text> \{ final \} </xsl:text>
@@ -586,6 +590,10 @@
     </xsl:call-template>
     <xsl:call-template name="substring-after-last">
       <xsl:with-param name="input" select="returns/classref/@name"/>
+      <xsl:with-param name="marker" select="'.'"/>
+    </xsl:call-template>
+    <xsl:call-template name="substring-after-last">
+      <xsl:with-param name="input" select="returns/interfaceref/@name"/>
       <xsl:with-param name="marker" select="'.'"/>
     </xsl:call-template>
 
