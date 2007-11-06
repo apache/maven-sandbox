@@ -19,6 +19,8 @@ package org.apache.maven.jxr.js.doc;
  * under the License.
  */
 
+import java.io.IOException;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
@@ -30,12 +32,11 @@ import org.apache.tools.ant.Task;
 public class JSDocTask
     extends Task
 {
-
+    /** The JS source dir to scan */
     private String jsDir;
 
+    /** The dest dir to generate doc */
     private String destDir;
-
-    private GenerateHTMLIndex index;
 
     /**
      * @see Task#execute()
@@ -45,11 +46,16 @@ public class JSDocTask
     {
         try
         {
-            index = new GenerateHTMLIndex( jsDir, destDir );
+            GenerateHTMLIndex index = new GenerateHTMLIndex( jsDir, destDir );
+            index.generate();
         }
         catch ( IllegalArgumentException e )
         {
-            throw new BuildException( e.getMessage(), getLocation() );
+            throw new BuildException( "IllegalArgumentException: " + e.getMessage(), getLocation() );
+        }
+        catch ( IOException e )
+        {
+            throw new BuildException( "IOException: " + e.getMessage(), getLocation() );
         }
     }
 

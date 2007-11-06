@@ -44,30 +44,44 @@ public class GenerateHTMLIndex
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( GenerateHTMLIndex.class );
 
-    public GenerateHTMLIndex( String jSDir, String destDir )
+    private File jsDir;
+
+    private File destDir;
+
+    /**
+     * @param jsDirectory
+     * @param destDir
+     * @throws IllegalArgumentException if any
+     */
+    public GenerateHTMLIndex( String jsDirectory, String destDir )
         throws IllegalArgumentException
     {
-        if ( jSDir == null )
+        if ( jsDirectory == null )
         {
-            throw new IllegalArgumentException( "jSDir attribute can't be empty" );
+            throw new IllegalArgumentException( "JS directory attribute can't be empty" );
         }
-        File js = new File( jSDir );
+        if ( !"/".equals( jsDirectory.substring( jsDirectory.length() - 1 ) ) )
+        {
+            jsDirectory = jsDirectory + "/";
+        }
+        File js = new File( jsDirectory );
         if ( !js.exists() )
         {
-            throw new IllegalArgumentException( "JS directory does't exist." );
+            throw new IllegalArgumentException( "JS directory doesn't exist." );
         }
         if ( js.exists() && !js.isDirectory() )
         {
             throw new IllegalArgumentException( "JS directory is a file." );
         }
-        if ( !"/".equals( jSDir.substring( jSDir.length() - 1 ) ) )
-        {
-            jSDir = jSDir + "/";
-        }
+        this.jsDir = js;
 
         if ( destDir == null )
         {
             throw new IllegalArgumentException( "destDir attribute can't be empty" );
+        }
+        if ( !"/".equals( destDir.substring( destDir.length() - 1 ) ) )
+        {
+            destDir = destDir + "/";
         }
         File dest = new File( destDir );
         if ( dest.exists() && !dest.isDirectory() )
@@ -78,129 +92,136 @@ public class GenerateHTMLIndex
         {
             throw new IllegalArgumentException( "Cannot create the dest directory." );
         }
-        if ( !"/".equals( destDir.substring( destDir.length() - 1 ) ) )
-        {
-            destDir = destDir + "/";
-        }
+        this.destDir = dest;
+    }
 
+    /**
+     *
+     * @throws IOException if any
+     */
+    public void generate()
+        throws IOException
+    {
         List files = new ArrayList();
-        collectFiles( js, files );
+        collectFiles( jsDir, files );
 
+        Writer writer = null;
         try
         {
-            Writer writer = null;
+            writer = new FileWriter( new File( destDir, "index.htm" ) ); // platform encoding
+        }
+        catch ( FileNotFoundException fnfe )
+        {
             try
             {
-                writer = new FileWriter( new File( dest, "index.htm" ) ); // platform encoding
+                destDir.mkdir();
+                writer = new FileWriter( new File( destDir, "index.htm" ) );
+            }
+            catch ( FileNotFoundException e )
+            {
+                log.error( "FileNotFoundException: " + e.getMessage(), e );
+            }
+        }
+
+        PrintWriter out = new PrintWriter( writer );
+
+        out.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+            + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+        out.println( "<html>" );
+        out.println( "<head>" );
+        out.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
+        out.println( "<style type=\"text/css\">" );
+        out.println( ".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */" );
+        out.println( ".NavBarCell1    { background-color:#EEEEFF;}/* Light mauve */" );
+        out.println( "</style>" );
+        out.println( "<title>JavaScript Code Documentation</title>" );
+        out.println( "</head>" );
+        out.println( "<body>" );
+        out.println( "<h2>Index</h2>" );
+        out.println( "<br>" );
+        out.println( "<br>" );
+        out.println( "<table border=\"1\" cellpadding=\"3\" cellspacing=\"0\" width=\"100%\">" );
+        out.println( "<tr class=\"TableHeadingColor\">" );
+        out.println( "<td align=\"left\"><font size=\"+2\"><b>Filename</b></font></td>" );
+        out.println( "<td align=\"left\"><font size=\"+2\"><b>Summary</b></font></td>" );
+        out.println( "</tr>" );
+
+        for ( int i = 0; i < files.size(); i++ )
+        {
+            File file = (File) files.get( i );
+
+            GenerateHTMLDoc docGenerator = new GenerateHTMLDoc( file, destDir );
+            docGenerator.generate();
+        }
+
+        if ( log.isInfoEnabled() )
+        {
+            log.info( "Number of .js files: " + files.size() );
+        }
+
+        for ( int i = 0; i < files.size(); i++ )
+        {
+            File file = (File) files.get( i );
+            if ( log.isInfoEnabled() )
+            {
+                log.info( "file: " + file.getName() );
+            }
+
+            out.println( "<tr>" );
+            out.println( "<td width=\"30%\" bgcolor=\"#f3f3f3\"><font face=\"Verdana\"><b><a href=\""
+                + file.getName().substring( 0, file.getName().indexOf( "." ) ) + ".htm" + "\">" + file.getName()
+                + "</a></b></font></td>" );
+            out.println( "<td width=\"70%\">" );
+
+            try
+            {
+                FileInputStream fis = new FileInputStream( file );
+                BufferedReader br = new BufferedReader( new InputStreamReader( fis ) ); // platform encoding
+                String content;
+
+                while ( br.ready() )
+                {
+                    content = br.readLine();
+                    if ( null != content && content.indexOf( "/**" ) != -1 )
+                    {
+                        content = br.readLine();
+                        while ( null != content && content.indexOf( "*/" ) == -1 )
+                        {
+                            if ( content.indexOf( "* @" ) != -1 && content.indexOf( "summary" ) != -1 )
+                            {
+                                out.println( content.substring( content.indexOf( "* @summary" ) + 11 ) );
+                                out.println( "<br>" );
+                            }
+                            content = br.readLine();
+                        }
+                    }
+                }
+
             }
             catch ( FileNotFoundException fnfe )
             {
-                try
-                {
-                    dest.mkdir();
-                    writer = new FileWriter( new File( dest, "index.htm" ) );
-                }
-                catch ( FileNotFoundException e )
-                {
-                    log.error( "FileNotFoundException: " + e.getMessage(), e );
-                }
+                log.error( "FileNotFoundException: " + fnfe.getMessage(), fnfe );
             }
-    
-            PrintWriter out = new PrintWriter( writer );
 
-            out.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" " +
-                "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-            out.println( "<html>" );
-            out.println( "<head>" );
-            out.println( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" );
-            out.println( "<style type=\"text/css\">" );
-            out.println( ".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */" );
-            out.println( ".NavBarCell1    { background-color:#EEEEFF;}/* Light mauve */" );
-            out.println( "</style>" );
-            out.println( "<title>JavaScript Code Documentation</title>" );
-            out.println( "</head>" );
-            out.println( "<body>" );
-            out.println( "<h2>Index</h2>" );
-            out.println( "<br>" );
-            out.println( "<br>" );
-            out.println( "<table border=\"1\" cellpadding=\"3\" cellspacing=\"0\" width=\"100%\">" );
-            out.println( "<tr class=\"TableHeadingColor\">" );
-            out.println( "<td align=\"left\"><font size=\"+2\"><b>Filename</b></font></td>" );
-            out.println( "<td align=\"left\"><font size=\"+2\"><b>Summary</b></font></td>" );
+            out.println( "</td>" );
             out.println( "</tr>" );
-
-            for ( int i = 0; i < files.size(); i++ )
-            {
-                File file = (File) files.get( i );
-                GenerateHTMLDoc docGenerator = new GenerateHTMLDoc( file, destDir );
-            }
-
-            if ( log.isInfoEnabled() )
-            {
-                log.info( "Number of .js files: " + files.size() );
-            }
-
-            for ( int i = 0; i < files.size(); i++ )
-            {
-                File file = (File) files.get( i );
-                if ( log.isInfoEnabled() )
-                {
-                    log.info( "file: " + file.getName() );
-                }
-
-                out.println( "<tr>" );
-                out.println( "<td width=\"30%\" bgcolor=\"#f3f3f3\"><font face=\"Verdana\"><b><a href=\""
-                    + file.getName().substring( 0, file.getName().indexOf( "." ) ) + ".htm" + "\">" + file.getName()
-                    + "</a></b></font></td>" );
-                out.println( "<td width=\"70%\">" );
-
-                try
-                {
-                    FileInputStream fis = new FileInputStream( file );
-                    BufferedReader br = new BufferedReader( new InputStreamReader( fis ) ); // platform encoding
-                    String content;
-
-                    while ( br.ready() )
-                    {
-                        content = br.readLine();
-                        if ( null != content && content.indexOf( "/**" ) != -1 )
-                        {
-                            content = br.readLine();
-                            while ( null != content && content.indexOf( "*/" ) == -1 )
-                            {
-                                if ( content.indexOf( "* @" ) != -1 && content.indexOf( "summary" ) != -1 )
-                                {
-                                    out.println( content.substring( content.indexOf( "* @summary" ) + 11 ) );
-                                    out.println( "<br>" );
-                                }
-                                content = br.readLine();
-                            }
-                        }
-                    }
-
-                }
-                catch ( FileNotFoundException fnfe )
-                {
-                    log.error( "FileNotFoundException: " + fnfe.getMessage(), fnfe );
-                }
-
-                out.println( "</td>" );
-                out.println( "</tr>" );
-            }
-
-            out.println( "</table>" );
-            out.println( "</body>" );
-            out.println( "</html>" );
-
-            out.close();
-        }
-        catch ( IOException ioe )
-        {
-            log.error( "IOException: " + ioe.getMessage(), ioe );
         }
 
+        out.println( "</table>" );
+        out.println( "</body>" );
+        out.println( "</html>" );
+
+        out.close();
     }
 
+    // ----------------------------------------------------------------------
+    // Private
+    // ----------------------------------------------------------------------
+
+    /**
+     * @param baseDir
+     * @param files
+     */
     private static void collectFiles( File baseDir, List files )
     {
         File[] fileList = baseDir.listFiles();
@@ -210,15 +231,10 @@ public class GenerateHTMLIndex
             {
                 collectFiles( fileList[i], files );
             }
-            else if ( fileList[i].getName().endsWith( ".js" ) )
+            else if ( fileList[i].getName().toLowerCase().endsWith( ".js" ) )
             {
                 files.add( fileList[i] );
             }
         }
-    }
-
-    public static void main( String[] args )
-    {
-        GenerateHTMLIndex index = new GenerateHTMLIndex( args[0], args[1] );
     }
 }

@@ -40,158 +40,187 @@ public class GenerateHTMLDoc
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( GenerateHTMLDoc.class );
 
-    public GenerateHTMLDoc( File file, String destDir )
+    private File file;
+
+    private File destDir;
+
+    /**
+     * @param file
+     * @param destDir
+     */
+    public GenerateHTMLDoc( File file, File destDir )
     {
+        if ( file == null )
+        {
+            throw new IllegalArgumentException( "file can't be null" );
+        }
+        if ( !file.exists() )
+        {
+            throw new IllegalArgumentException( "file doesn't exist." );
+        }
+        if ( file.exists() && file.isDirectory() )
+        {
+            throw new IllegalArgumentException( "file is a directory." );
+        }
+        this.file = file;
+
+        if ( destDir == null )
+        {
+            throw new IllegalArgumentException( "destDir attribute can't be null" );
+        }
+        if ( destDir.exists() && !destDir.isDirectory() )
+        {
+            throw new IllegalArgumentException( "Dest directory is a file." );
+        }
+        if ( !destDir.exists() && !destDir.mkdirs() )
+        {
+            throw new IllegalArgumentException( "Cannot create the dest directory." );
+        }
+        this.destDir = destDir;
+    }
+
+    /**
+     * @throws IOException if any
+     */
+    public void generate()
+        throws IOException
+    {
+        String filename = file.getName();
+        PrintWriter out = null;
+        BufferedReader br = null;
         try
         {
-            String filename = file.getName();
-            PrintWriter out = null;
-            BufferedReader br = null;
-            try
-            {
-                out = new PrintWriter( new FileWriter( destDir + filename.substring( 0, filename.indexOf( "." ) ) + ".htm" ) );
-                br = new BufferedReader( new FileReader( file ) );
-            }
-            catch ( FileNotFoundException fnfe )
-            {
-                log.error( "FileNotFoundException: " + fnfe.getMessage(), fnfe );
-            }
-
-            out.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" " +
-                "\"http://www.w3.org/TR/html4/loose.dtd\">" );
-            out.println( "<html>" );
-            out.println( "<head>" );
-            out.println( "<style type=\"text/css\">" );
-            out.println( ".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */" );
-            out.println( ".NavBarCell1    { background-color:#EEEEFF;}/* Light mauve */" );
-            out.println( "</style>" );
-            out.println( "<title>Javascript code documentation</title>" );
-            out.println( "</head>" );
-            out.println( "<body>" );
-            out.println( "<h2>Filename: " + filename + "</h2>" );
-            out.println( "<br>" );
-            out.println( "<br>" );
-            out.println( "<table border=\"1\" cellpadding=\"3\" cellspacing=\"0\" width=\"100%\">" );
-            out.println( "<tr class=\"TableHeadingColor\">" );
-            out.println( "<td align=\"left\" colspan=\"2\"><font size=\"+2\"><b>Function Summary</b></font></td>" );
-            out.println( "</tr>" );
-            
-            String functionName = "";
-            boolean summary = true;
-            
-            while ( br.ready() )
-            {
-                String content = br.readLine();
-
-                while ( summary && null != content && content.indexOf( "summary" ) == -1 )
-                {
-                    content = br.readLine();
-                }
-                summary = false;
-                if ( null != content && content.indexOf( "/**" ) != -1 )
-                {
-                    boolean description = true;
-                    boolean parameterList = false;
-                    boolean useList = false;
-
-                    StringWriter docBuffer = new StringWriter();
-                    PrintWriter doc = new PrintWriter( docBuffer );
-
-                    content = br.readLine();
-                    while ( null != content && content.indexOf( "*/" ) == -1 )
-                    {
-                        if ( content.indexOf( "* @" ) != -1 )
-                        {
-                            if ( ( content.indexOf( "author" ) == -1 ) )
-                            {
-                                if ( content.indexOf( "param" ) != -1 )
-                                {
-                                    if ( parameterList == false )
-                                    {
-                                        parameterList = true;
-                                        doc.println( "<font size=\"-1\" face=\"Verdana\"><b>Parameters: </b></font><br>" );
-                                    }
-                                    doc.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
-                                    doc.println( content.substring( content.indexOf( "* @param" ) + 9 ) );
-                                }
-                                else if ( content.indexOf( "use" ) != -1 )
-                                {
-                                    if ( useList == false )
-                                    {
-                                        useList = true;
-                                        doc.println( "<font size=\"-1\" face=\"Verdana\"><b>Uso: </b></font><br>" );
-                                    }
-                                    doc.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
-                                    doc.println( content.substring( content.indexOf( "* @use" ) + 7 ) );
-                                }
-                                else if ( content.indexOf( "return" ) != -1 )
-                                {
-                                    doc.print( "<font size=\"-1\" face=\"Verdana\"><b>Return type: </b></font>" );
-                                    doc.print( content.substring( content.indexOf( "* @return" ) + 10 ) );
-                                }
-                                doc.println( "<br>" );
-                            }
-                        }
-                        else
-                        {
-                            if ( description )
-                            {
-                                description = false;
-                                doc.println( "<font size=\"-1\" face=\"Verdana\"><b>Description: </b></font>" );
-                            }
-                            else
-                                doc.println( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
-                            doc.println( content.substring( content.indexOf( "*" ) + 1 ) + "<br>" );
-                        }
-                        content = br.readLine();
-                    }
-                    while ( null != content && content.indexOf( "function" ) == -1 )
-                    {
-                        content = br.readLine();
-                    }
-                    if ( content.indexOf( "function" ) != -1 )
-                    {
-                        if ( content.indexOf( "{" ) != -1 )
-                        {
-                            functionName = content.substring( content.indexOf( "function" ) + 9, content.indexOf( "{" ) );
-                        }
-                        else
-                        {
-                            functionName = content.substring( content.indexOf( "function" ) + 9 );
-                        }
-                    }
-
-                    out.println( "<tr>" );
-                    out.println( "<td width=\"30%\" bgcolor=\"#f3f3f3\"><font face=\"Verdana\"><b>" + functionName + 
-                                 "</b></font></td>" );
-                    out.println( "<td width=\"70%\">" );
-                    out.println( docBuffer.getBuffer() );
-                    out.println( "</td>" );
-                    out.println( "</tr>" );
-                }
-            }
-            out.println( "</table>" );
-            out.println( "<a href=\"javascript:history.back()\"><font size=\"+1\">Back</font></a>" );
-            out.println( "</body>" );
-            out.println( "</html>" );
-
-            out.close();
+            out = new PrintWriter( new FileWriter( destDir.getAbsolutePath() + "/" + filename.substring( 0, filename.indexOf( "." ) ) + ".htm" ) );
+            br = new BufferedReader( new FileReader( file ) );
         }
-        catch ( IOException ioe )
+        catch ( FileNotFoundException fnfe )
         {
-            log.error( "IOException: " + ioe.getMessage(), ioe );
+            log.error( "FileNotFoundException: " + fnfe.getMessage(), fnfe );
         }
+
+        out.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
+            + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
+        out.println( "<html>" );
+        out.println( "<head>" );
+        out.println( "<style type=\"text/css\">" );
+        out.println( ".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */" );
+        out.println( ".NavBarCell1    { background-color:#EEEEFF;}/* Light mauve */" );
+        out.println( "</style>" );
+        out.println( "<title>Javascript code documentation</title>" );
+        out.println( "</head>" );
+        out.println( "<body>" );
+        out.println( "<h2>Filename: " + filename + "</h2>" );
+        out.println( "<br>" );
+        out.println( "<br>" );
+        out.println( "<table border=\"1\" cellpadding=\"3\" cellspacing=\"0\" width=\"100%\">" );
+        out.println( "<tr class=\"TableHeadingColor\">" );
+        out.println( "<td align=\"left\" colspan=\"2\"><font size=\"+2\"><b>Function Summary</b></font></td>" );
+        out.println( "</tr>" );
+
+        String functionName = "";
+        boolean summary = true;
+
+        while ( br.ready() )
+        {
+            String content = br.readLine();
+
+            while ( summary && null != content && content.indexOf( "summary" ) == -1 )
+            {
+                content = br.readLine();
+            }
+            summary = false;
+            if ( null != content && content.indexOf( "/**" ) != -1 )
+            {
+                boolean description = true;
+                boolean parameterList = false;
+                boolean useList = false;
+
+                StringWriter docBuffer = new StringWriter();
+                PrintWriter doc = new PrintWriter( docBuffer );
+
+                content = br.readLine();
+                while ( null != content && content.indexOf( "*/" ) == -1 )
+                {
+                    if ( content.indexOf( "* @" ) != -1 )
+                    {
+                        if ( ( content.indexOf( "author" ) == -1 ) )
+                        {
+                            if ( content.indexOf( "param" ) != -1 )
+                            {
+                                if ( parameterList == false )
+                                {
+                                    parameterList = true;
+                                    doc.println( "<font size=\"-1\" face=\"Verdana\"><b>Parameters: </b></font><br>" );
+                                }
+                                doc.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
+                                doc.println( content.substring( content.indexOf( "* @param" ) + 9 ) );
+                            }
+                            else if ( content.indexOf( "use" ) != -1 )
+                            {
+                                if ( useList == false )
+                                {
+                                    useList = true;
+                                    doc.println( "<font size=\"-1\" face=\"Verdana\"><b>Uso: </b></font><br>" );
+                                }
+                                doc.print( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
+                                doc.println( content.substring( content.indexOf( "* @use" ) + 7 ) );
+                            }
+                            else if ( content.indexOf( "return" ) != -1 )
+                            {
+                                doc.print( "<font size=\"-1\" face=\"Verdana\"><b>Return type: </b></font>" );
+                                doc.print( content.substring( content.indexOf( "* @return" ) + 10 ) );
+                            }
+                            doc.println( "<br>" );
+                        }
+                    }
+                    else
+                    {
+                        if ( description )
+                        {
+                            description = false;
+                            doc.println( "<font size=\"-1\" face=\"Verdana\"><b>Description: </b></font>" );
+                        }
+                        else
+                            doc.println( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" );
+                        doc.println( content.substring( content.indexOf( "*" ) + 1 ) + "<br>" );
+                    }
+                    content = br.readLine();
+                }
+                while ( null != content && content.indexOf( "function" ) == -1 )
+                {
+                    content = br.readLine();
+                }
+                if ( content.indexOf( "function" ) != -1 )
+                {
+                    if ( content.indexOf( "{" ) != -1 )
+                    {
+                        functionName = content.substring( content.indexOf( "function" ) + 9, content.indexOf( "{" ) );
+                    }
+                    else
+                    {
+                        functionName = content.substring( content.indexOf( "function" ) + 9 );
+                    }
+                }
+
+                out.println( "<tr>" );
+                out.println( "<td width=\"30%\" bgcolor=\"#f3f3f3\"><font face=\"Verdana\"><b>" + functionName
+                    + "</b></font></td>" );
+                out.println( "<td width=\"70%\">" );
+                out.println( docBuffer.getBuffer() );
+                out.println( "</td>" );
+                out.println( "</tr>" );
+            }
+        }
+        out.println( "</table>" );
+        out.println( "<a href=\"javascript:history.back()\"><font size=\"+1\">Back</font></a>" );
+        out.println( "</body>" );
+        out.println( "</html>" );
+
+        out.close();
 
         if ( log.isInfoEnabled() )
         {
             log.info( "Html generated with success!" );
         }
-    }
-
-    public static void main( String args[] )
-        throws Exception
-    {
-
-        GenerateHTMLDoc main1 = new GenerateHTMLDoc( new File( args[0] ), args[1] );
     }
 }
