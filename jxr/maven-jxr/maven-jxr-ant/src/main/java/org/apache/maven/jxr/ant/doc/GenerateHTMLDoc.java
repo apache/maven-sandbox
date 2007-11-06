@@ -43,7 +43,8 @@ import org.codehaus.plexus.util.cli.CommandLineException;
 /**
  * Generate HTML documentation for <a href="http://ant.apache.org/">Ant</a> file.
  * <br/>
- * <b>Note</b>: <a href="http://www.graphviz.org/">Graphviz</a> program should be in the path.
+ * <b>Note</b>: <a href="http://www.graphviz.org/">Graphviz</a> dot program should be in the path or specified
+ * by <code>dotExecutable</code> parameter.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
@@ -55,6 +56,9 @@ public class GenerateHTMLDoc
 
     /** Destination directory */
     private File destDir;
+
+    /** Graphviz Dot executable file */
+    private File dotExecutable;
 
     /** Temp xsl file */
     private File xml2dot;
@@ -106,6 +110,62 @@ public class GenerateHTMLDoc
 
         this.antFile = antFile;
         this.destDir = destDir;
+    }
+
+    /**
+     * @return the Ant file which be parsed.
+     */
+    public File getAntFile()
+    {
+        return this.antFile;
+    }
+
+    /**
+     * @return the dest dir
+     */
+    public File getDestDir()
+    {
+        return this.destDir;
+    }
+
+    /**
+     * Getter for the dotExecutable
+     *
+     * @return the dotExecutable
+     */
+    public File getDotExecutable()
+    {
+        return this.dotExecutable;
+    }
+
+    /**
+     * Setter for the antFile
+     *
+     * @param antFile the antFile to set
+     */
+    public void setAntFile( File antFile )
+    {
+        this.antFile = antFile;
+    }
+
+    /**
+     * Setter for the destDir
+     *
+     * @param destDir the destDir to set
+     */
+    public void setDestDir( File destDir )
+    {
+        this.destDir = destDir;
+    }
+
+    /**
+     * Setter for the dotExecutable
+     *
+     * @param dotExecutable the dotExecutable to set
+     */
+    public void setDotExecutable( File dotExecutable )
+    {
+        this.dotExecutable = dotExecutable;
     }
 
     /**
@@ -169,22 +229,6 @@ public class GenerateHTMLDoc
     // ----------------------------------------------------------------------
     // Private
     // ----------------------------------------------------------------------
-
-    /**
-     * @return the Ant file which be parsed.
-     */
-    private File getAntFile()
-    {
-        return this.antFile;
-    }
-
-    /**
-     * @return the dest dir
-     */
-    private File getDestDir()
-    {
-        return this.destDir;
-    }
 
     /**
      * @return xsl temp file.
@@ -369,7 +413,14 @@ public class GenerateHTMLDoc
         {
             String format = dotFormat[i];
 
-            DotUtil.executeDot( getDot(), format, new File( getDestDir(), "vizant." + format ) );
+            if ( getDotExecutable() != null )
+            {
+                DotUtil.executeDot( getDotExecutable(), getDot(), format, new File( getDestDir(), "vizant." + format ) );
+            }
+            else
+            {
+                DotUtil.executeDot( getDot(), format, new File( getDestDir(), "vizant." + format ) );
+            }
         }
     }
 

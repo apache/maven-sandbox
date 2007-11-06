@@ -41,6 +41,9 @@ public class AntDocTask
     /** Destination directory */
     private File destDir;
 
+    /** Graphviz Dot executable file */
+    private File dotExecutable;
+
     /** Terminate Ant build */
     private boolean failOnError;
 
@@ -62,6 +65,16 @@ public class AntDocTask
     public void setDestDir( File d )
     {
         this.destDir = d;
+    }
+
+    /**
+     * Set the the dotExecutable to set
+     *
+     * @param dotExecutable the dotExecutable to set
+     */
+    public void setDotExecutable( File dotExecutable )
+    {
+        this.dotExecutable = dotExecutable;
     }
 
     /**
@@ -100,6 +113,7 @@ public class AntDocTask
         try
         {
             GenerateHTMLDoc generator = new GenerateHTMLDoc( this.antFile, this.destDir );
+            generator.setDotExecutable( this.dotExecutable );
             generator.generateDoc();
         }
         catch ( IllegalArgumentException e )
