@@ -32,16 +32,19 @@ import java.util.List;
 import java.util.TimeZone;
 
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
-import org.apache.maven.jxr.util.DotTask;
-import org.apache.maven.jxr.util.DotTask.DotNotPresentInPathBuildException;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.XSLTProcess;
-import org.apache.tools.ant.taskdefs.XSLTProcess.Param;
+import org.apache.maven.jxr.util.DotUtil;
+import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.cli.CommandLineException;
 
 import com.sun.tools.javadoc.Main;
 
@@ -144,21 +147,45 @@ public class GenerateUMLDoc
     /**
      * Generate the documentation
      *
-     * @throws IOException if any
-     * @throws BuildException if any
-     * @throws DotNotPresentInPathBuildException if any
+     * @throws UmlDocException if any
+     * @throws DotNotPresentInPathException if any
      */
     public void generateUML()
-        throws IOException, BuildException, DotNotPresentInPathBuildException
+        throws UmlDocException, DotNotPresentInPathException
     {
         // 1. Generate Javadoc xml
-        generateJavadocXML();
+        try
+        {
+            generateJavadocXML();
+        }
+        catch ( IOException e )
+        {
+            throw new UmlDocException( "IOException: " + e.getMessage() );
+        }
 
         // 2. Generate dot image
-        generateJavadocDot();
+        try
+        {
+            generateJavadocDot();
+        }
+        catch ( IOException e )
+        {
+            throw new UmlDocException( "IOException: " + e.getMessage() );
+        }
+        catch ( TransformerException e )
+        {
+            throw new UmlDocException( "TransformerException: " + e.getMessage() );
+        }
 
         // 3. Generate UML image
-        generateUmlImage();
+        try
+        {
+            generateUmlImage();
+        }
+        catch ( CommandLineException e )
+        {
+            throw new UmlDocException( "CommandLineException: " + e.getMessage() );
+        }
 
         if ( !isVerbose() )
         {
@@ -166,7 +193,7 @@ public class GenerateUMLDoc
             File dtd = new File( getJavadocXml().getParentFile(), XMLDoclet.XMLDOCLET_DTD );
             if ( !dtd.delete() )
             {
-                throw new IOException( "IOException: can't delete the generated DTD file: " + dtd );
+                throw new UmlDocException( "IOException: can't delete the generated DTD file: " + dtd );
             }
         }
     }
@@ -406,17 +433,6 @@ public class GenerateUMLDoc
     }
 
     /**
-     * @return a minimal Ant project.
-     */
-    private Project getAntProject()
-    {
-        Project antProject = new Project();
-        antProject.setBasedir( new File( "" ).getAbsolutePath() );
-
-        return antProject;
-    }
-
-    /**
      * @return the xml2dot XSL file.
      * @throws IOException if any
      */
@@ -521,68 +537,46 @@ public class GenerateUMLDoc
     /**
      * Apply XSLT to generate dot file from the Javadoc xml
      *
-     * @throws BuildException if any
      * @throws IOException if any
+     * @throws TransformerException if any
      */
     private void generateJavadocDot()
-        throws BuildException, IOException
+        throws IOException, TransformerException
     {
-        XSLTProcess xsltTask = new XSLTProcess();
-        xsltTask.setProject( getAntProject() );
-        xsltTask.setTaskName( "xslt" );
-        xsltTask.init();
-        xsltTask.setIn( getJavadocXml() );
-        xsltTask.setOut( getDot() );
-        xsltTask.setStyle( getXml2dot().getAbsolutePath() );
+        SAXTransformerFactory transformerFactory = (SAXTransformerFactory) TransformerFactory.newInstance();
+        if ( !( transformerFactory.getFeature( javax.xml.transform.sax.SAXSource.FEATURE ) && transformerFactory
+            .getFeature( javax.xml.transform.stream.StreamResult.FEATURE ) ) )
+        {
+
+            throw new TransformerException( "The supplied TrAX transformer library is inadeguate."
+                + "Please upgrade to the latest version." );
+        }
+
+        Transformer serializer = transformerFactory.newTransformer( new StreamSource( getXml2dot() ) );
 
         if ( StringUtils.isNotEmpty( getDiagramEncoding() ) )
         {
-            XSLTProcess.OutputProperty prop = xsltTask.createOutputProperty();
-            prop.setName( OutputKeys.ENCODING );
-            prop.setValue( getDiagramEncoding() );
+            serializer.setOutputProperty( OutputKeys.ENCODING, getDiagramEncoding() );
         }
 
-        Param param = xsltTask.createParam();
-        param.setProject( getAntProject() );
-        param.setName( "now" );
-        param.setExpression( NOW );
+        serializer.setParameter( "now", NOW );
+        serializer.setParameter( "diagramEncoding", ( getDiagramEncoding() == null ? "" : getDiagramEncoding() ) );
+        serializer.setParameter( "show", ( getShow() == null ? "" : getShow() ) );
+        serializer.setParameter( "javasrcPath", ( getJavasrcPath() == null ? "" : getJavasrcPath() ) );
+        serializer.setParameter( "javadocPath", ( getJavadocPath() == null ? "" : getJavadocPath() ) );
+        serializer.setParameter( "diagramLabel", ( getDiagramLabel() == null ? "" : getDiagramLabel() ) );
 
-        param = xsltTask.createParam();
-        param.setProject( getAntProject() );
-        param.setName( "diagramEncoding" );
-        param.setExpression( ( getDiagramEncoding() == null ? "" : getDiagramEncoding() ) );
-
-        param = xsltTask.createParam();
-        param.setProject( getAntProject() );
-        param.setName( "show" );
-        param.setExpression( ( getShow() == null ? "" : getShow() ) );
-
-        param = xsltTask.createParam();
-        param.setProject( getAntProject() );
-        param.setName( "javasrcPath" );
-        param.setExpression( ( getJavasrcPath() == null ? "" : getJavasrcPath() ) );
-
-        param = xsltTask.createParam();
-        param.setProject( getAntProject() );
-        param.setName( "javadocPath" );
-        param.setExpression( ( getJavadocPath() == null ? "" : getJavadocPath() ) );
-
-        param = xsltTask.createParam();
-        param.setProject( getAntProject() );
-        param.setName( "diagramLabel" );
-        param.setExpression( ( getDiagramLabel() == null ? "" : getDiagramLabel() ) );
-
-        xsltTask.execute();
+        serializer.transform( new StreamSource( getJavadocXml() ), new StreamResult( getDot() ) );
     }
 
     /**
      * Call Graphviz dot to generate images.
      *
-     * @throws BuildException if any
-     * @throws DotNotPresentInPathBuildException if any
+     * @throws CommandLineException if any
+     * @throws DotNotPresentInPathException if any
      */
     private void generateUmlImage()
-        throws BuildException, DotNotPresentInPathBuildException
+        throws CommandLineException, DotNotPresentInPathException
     {
         String outputPath = getOut().getAbsolutePath();
         String format;
@@ -595,13 +589,6 @@ public class GenerateUMLDoc
             format = "svg";
         }
 
-        DotTask dotTask = new DotTask();
-        dotTask.setProject( getAntProject() );
-        dotTask.setTaskName( "dot" );
-        dotTask.init();
-        dotTask.setIn( getDot() );
-        dotTask.setOut( getOut() );
-        dotTask.setFormat( format );
-        dotTask.execute();
+        DotUtil.executeDot( getDot(), getOut() );
     }
 }

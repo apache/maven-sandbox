@@ -21,6 +21,8 @@ package org.apache.maven.jxr.java.doc;
 
 import java.io.File;
 
+import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
+import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FileSet;
@@ -82,7 +84,19 @@ public class UmlDocTaskTest
         task.setOut( out );
         task.setVerbose( true );
         task.setDiagramEncoding( "UTF-8" );
-        task.execute();
+        try
+        {
+            task.execute();
+            assertTrue( "DOT exists in the path", true );
+        }
+        catch ( BuildException e )
+        {
+            if ( e.getException() instanceof DotNotPresentInPathException )
+            {
+                assertTrue( "DOT doesnt exist in the path. Ignored test", true );
+                return;
+            }
+        }
 
         // Generated files
         assertTrue( out.exists() );
@@ -110,7 +124,19 @@ public class UmlDocTaskTest
         task.setVerbose( true );
         // All tests passed...
         task.setJavasrcPath( PathTool.getRelativePath( "./target/unit/src" ) + "/target/unit/jxrdoc-default/" );
-        task.execute();
+        try
+        {
+            task.execute();
+            assertTrue( "DOT exists in the path", true );
+        }
+        catch ( BuildException e )
+        {
+            if ( e.getException() instanceof DotNotPresentInPathException )
+            {
+                assertTrue( "DOT doesnt exist in the path. Ignored test", true );
+                return;
+            }
+        }
 
         // Generated files
         assertTrue( out.exists() );

@@ -22,7 +22,7 @@ package org.apache.maven.jxr.java.doc;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.maven.jxr.util.DotTask.DotNotPresentInPathBuildException;
+import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
@@ -250,28 +250,23 @@ public class UmlDocTask
 
             log( "IllegalArgumentException: " + e.getMessage(), Project.MSG_ERR );
         }
-        catch ( IOException e )
+        catch ( DotNotPresentInPathException e )
         {
             if ( !failOnError )
             {
-                throw new BuildException( "IOException: " + e.getMessage(), e, getLocation() );
+                throw new BuildException( "DotNotPresentInPathException: " + e.getMessage(), e, getLocation() );
             }
 
-            log( "IOException: " + e.getMessage(), Project.MSG_ERR );
-        }
-        catch ( DotNotPresentInPathBuildException e )
-        {
             log( "Dot is not present in the path: " + e.getMessage(), Project.MSG_ERR );
         }
-        catch ( BuildException e )
+        catch ( UmlDocException e )
         {
-            e.printStackTrace();
             if ( !failOnError )
             {
-                throw new BuildException( "RuntimeException: " + e.getMessage(), e, getLocation() );
+                throw new BuildException( "UmlDocException: " + e.getMessage(), e, getLocation() );
             }
 
-            log( e.getMessage(), Project.MSG_ERR );
+            log( "UmlDocException: " + e.getMessage(), Project.MSG_ERR );
         }
     }
 
