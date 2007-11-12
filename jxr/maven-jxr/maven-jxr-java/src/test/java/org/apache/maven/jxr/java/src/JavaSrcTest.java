@@ -21,67 +21,58 @@ package org.apache.maven.jxr.java.src;
 
 import java.io.File;
 
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.Copy;
-import org.apache.tools.ant.types.FileSet;
-
-import junit.framework.TestCase;
+import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
-public class JavaSrcTaskTest
-    extends TestCase
+public class JavaSrcTest
+    extends PlexusTestCase
 {
-    private static final String BASEDIR = new File( "" ).getAbsolutePath();
-
     /** {@inheritDoc} */
     protected void setUp()
         throws Exception
     {
-        File srcDir = new File( BASEDIR, "target/unit/src" );
+        super.setUp();
+
+        File srcDir = new File( getBasedir(), "target/unit/src" );
         if ( !srcDir.exists() )
         {
-            // MSANDBOX-38: to compare results before and after Antlr generation
-            Project antProject = new Project();
-            antProject.setBasedir( BASEDIR );
-
-            Copy copy = new Copy();
-            copy.setProject( antProject );
-            copy.setTodir( srcDir );
-            FileSet set = new FileSet();
-            set.setDir( new File( BASEDIR, "src/main/java" ) );
-            set.setIncludes( "**/*.java" );
-            copy.addFileset( set );
-            set = new FileSet();
-            set.setDir( new File( BASEDIR, "target/generated-sources/antlr" ) );
-            set.setIncludes( "**/*.java" );
-            copy.addFileset( set );
-            copy.execute();
+            FileUtils.copyDirectory( new File( getBasedir(), "src/main/java" ), srcDir, "**/*.java", null );
+            FileUtils.copyDirectory( new File( getBasedir(), "target/generated-sources/antlr" ), srcDir, "**/*.java",
+                                     null );
         }
     }
-
     /**
-     * Call JavaSrc task
+     * Call JavaSrc
      *
      * @throws Exception if any.
      */
     public void testDefaultExecute()
         throws Exception
     {
-        File srcDir = new File( BASEDIR, "target/unit/src" );
-        File destDir = new File( BASEDIR, "target/unit/jxrdoc-default-with-ant" );
+        File srcDir = new File( getBasedir(), "target/unit/src" );
+        File destDir = new File( getBasedir(), "target/unit/jxrdoc-default" );
 
-        Project antProject = new Project();
-        antProject.setBasedir( BASEDIR );
+        JavaSrc javaSrc = (JavaSrc) lookup( JavaSrc.ROLE );
+        assertNotNull( javaSrc );
 
-        JavaSrcTask task = new JavaSrcTask();
-        task.setProject( antProject );
-        task.setSrcDir( srcDir );
-        task.setDestDir( destDir );
-        task.execute();
+        JavaSrcOptions options = new JavaSrcOptions();
+        options.setBottom( "bottom" );
+        options.setDocencoding( "ISO-8859-1" );
+        options.setDoctitle( "doctitle" );
+        options.setEncoding( "ISO-8859-1" );
+        options.setFooter( "footer" );
+        options.setHeader( "header" );
+        options.setPackagesheader( "packagesheader" );
+        options.setRecurse( true );
+        options.setTop( "top" );
+        options.setVerbose( false );
+        options.setWindowtitle( "windowtitle" );
+
+        javaSrc.generate( srcDir, destDir, options );
 
         // Generated files
         File generated = new File( destDir, "index.html" );
@@ -109,47 +100,5 @@ public class JavaSrcTaskTest
         generated = new File( destDir, "org/apache/maven/jxr/java/src/JavaSrcTask_java_ref.html" );
         assertTrue( generated.exists() );
         assertTrue( generated.length() > 0 );
-    }
-
-    /**
-     * Call JavaSrc task
-     *
-     * @throws Exception if any.
-     */
-    public void testNullExecute()
-        throws Exception
-    {
-        File srcDir = new File( BASEDIR, "target/unit/src" );
-        File destDir = new File( BASEDIR, "target/unit/jxrdoc-null-with-ant" );
-
-        Project antProject = new Project();
-        antProject.setBasedir( BASEDIR );
-
-        JavaSrcTask task = new JavaSrcTask();
-        task.setProject( antProject );
-
-        task.setSrcDir( null );
-        task.setDestDir( destDir );
-        try
-        {
-            task.execute();
-            assertTrue( "Doesnt handle null src dir", false );
-        }
-        catch ( BuildException e )
-        {
-            assertTrue( true );
-        }
-
-        task.setSrcDir( srcDir );
-        task.setDestDir( null );
-        try
-        {
-            task.execute();
-            assertTrue( "Doesnt handle null dest dir", false );
-        }
-        catch ( BuildException e )
-        {
-            assertTrue( true );
-        }
     }
 }
