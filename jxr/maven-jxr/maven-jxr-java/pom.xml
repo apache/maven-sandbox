@@ -35,39 +35,57 @@ under the License.
   <name>Java source code documentation</name>
 
   <dependencies>
+    <!-- JXR Utils -->
+    <dependency>
+      <groupId>org.apache.maven.jxr</groupId>
+      <artifactId>maven-jxr-utils</artifactId>
+    </dependency>
+
+    <!-- Java grammar -->
     <dependency>
       <groupId>antlr</groupId>
       <artifactId>${antlrArtifactId}</artifactId>
       <version>${antlrVersion}</version>
     </dependency>
+
+    <!-- Ant task: todo create separate artifact for Ant task -->
     <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
     </dependency>
+
+    <!-- Logging -->
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.13</version>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-    </dependency>
+
+    <!-- Javadoc parser -->
     <dependency>
       <groupId>com.thoughtworks.qdox</groupId>
       <artifactId>qdox</artifactId>
       <version>1.6.3</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.maven.jxr</groupId>
-      <artifactId>maven-jxr-utils</artifactId>
-    </dependency>
+
+    <!-- XSLT -->
     <dependency>
       <groupId>xalan</groupId>
       <artifactId>xalan</artifactId>
       <version>2.7.0</version>
     </dependency>
 
+    <!-- Plexus -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+
+    <!-- Doclet API -->
     <dependency>
       <groupId>com.sun</groupId>
       <artifactId>tools</artifactId>
@@ -94,10 +112,6 @@ under the License.
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.3</version>
       </plugin>
     </plugins>
   </build>
