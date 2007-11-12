@@ -44,4 +44,8 @@ Maven JXR Javascript
 
 * Examples
 
-   * {{{examples/ant.html}Ant}}: Some Ant example.
+   * {{{examples/ant.html}Using Ant}}: {{{http://ant.apache.org/}Ant}} tool examples to use it.
+
+   * {{{examples/jsdoc.html}Using Java}}: Java examples to generate JS documentation.
+
+   []

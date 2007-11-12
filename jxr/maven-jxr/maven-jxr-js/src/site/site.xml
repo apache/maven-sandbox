@@ -72,10 +72,12 @@ under the License.
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
       <item name="Further Links" href="links.html"/>
+      <item name="Screenshots" href="screenshots.html"/>
     </menu>
 
     <menu name="Examples">
-      <item name="Using Maven JXR JS with Ant" href="/examples/ant.html"/>
+      <item name="With Ant" href="/examples/ant.html"/>
+      <item name="With Java" href="/examples/jsdoc.html"/>
     </menu>
 
     <menu ref="reports"/>
