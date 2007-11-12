@@ -295,6 +295,23 @@ public class SymbolTable
         return singleton;
     }
 
+    /** {@inheritDoc} */
+    public void finalize()
+    {
+        if ( singleton != null )
+        {
+            singleton = null;
+        }
+
+        _fileClassDefs = null;
+        _fileReferences = new Hashtable();
+        _fileMultiLinesComments = new Hashtable();
+        _fileSingleLineComments = new Hashtable();
+        _fileLiterals = new Hashtable();
+        _fileKeywords = new Hashtable();
+        readLevel = 0;
+    }
+
     /**
      * Constructor to create a new symbol table
      */

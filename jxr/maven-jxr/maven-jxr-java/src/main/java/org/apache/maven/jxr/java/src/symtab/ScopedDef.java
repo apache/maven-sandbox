@@ -67,9 +67,15 @@ public abstract class ScopedDef
      */
     public ScopedDef()
     {
-
         // Create a new hashtable for fast element lookup
         elements = new JavaHashtable();
+    }
+
+    /** {@inheritDoc} */
+    protected void finalize()
+        throws Throwable
+    {
+        resolveLevel = 0;
     }
 
     /**

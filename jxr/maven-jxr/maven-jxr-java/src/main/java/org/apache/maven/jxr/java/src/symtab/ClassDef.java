@@ -115,7 +115,6 @@ public class ClassDef
      */
     protected static ClassDef findLoadedClass( String packageName, String name )
     {
-
         String qualifiedName = packageName + "." + name;
         if ( log.isDebugEnabled() )
         {
@@ -137,6 +136,13 @@ public class ClassDef
      */
     public ClassDef()
     {
+    }
+
+    /** {@inheritDoc} */
+    protected void finalize()
+    {
+        allClassDefs = new Hashtable();
+        goals = new HashSet();
     }
 
     /**

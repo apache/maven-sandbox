@@ -113,6 +113,13 @@ public class PackageDef
         }
     }
 
+    /** {@inheritDoc} */
+    protected void finalize()
+        throws Throwable
+    {
+        _currentPackPath = null;
+    }
+
     /**
      * Method getDefinitions
      *
