@@ -22,6 +22,7 @@ package org.apache.maven.jxr.java.src.html;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Class HTMLOutputWriter
@@ -39,6 +40,17 @@ class HTMLOutputWriter
     HTMLOutputWriter( OutputStream output )
     {
         super( output );
+    }
+
+    /**
+     * @param output
+     * @param charsetName
+     * @throws UnsupportedEncodingException
+     */
+    HTMLOutputWriter( OutputStream output, String charsetName )
+        throws UnsupportedEncodingException
+    {
+        super( output, charsetName );
     }
 
     /**

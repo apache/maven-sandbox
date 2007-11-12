@@ -21,6 +21,7 @@ package org.apache.maven.jxr.java.src.html;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Class LineOutputWriter
@@ -52,6 +53,20 @@ class LineOutputWriter
     LineOutputWriter( OutputStream output )
     {
         super( output );
+
+        _lineNumber = 1;
+        _firstLine = true;
+    }
+
+    /**
+     * Constructor LineOutputWriter
+     *
+     * @param output
+     */
+    LineOutputWriter( OutputStream output, String charsetName )
+        throws UnsupportedEncodingException
+    {
+        super( output, charsetName );
 
         _lineNumber = 1;
         _firstLine = true;
