@@ -19,7 +19,6 @@ package org.apache.maven.jxr.java.src.html;
  * under the License.
  */
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -45,6 +44,7 @@ import org.apache.maven.jxr.java.src.util.SkipCRInputStream;
 import org.apache.maven.jxr.java.src.xref.FileListener;
 import org.apache.maven.jxr.java.src.xref.JavaXref;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 import antlr.ANTLRException;
@@ -217,6 +217,8 @@ public class Pass1
         println( "Persisting references" );
 
         symbolTable.persistRefs( getDestDir() );
+
+        symbolTable.finalize();
     }
 
     // ----------------------------------------------------------------------
@@ -288,7 +290,16 @@ public class Pass1
 
         createDirs( f );
 
-        HTMLOutputWriter output = new LineOutputWriter( new BufferedOutputStream( new FileOutputStream( f ) ) );
+        FileOutputStream fos = new FileOutputStream( f );
+        HTMLOutputWriter output;
+        if ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) )
+        {
+            output = new LineOutputWriter( fos, getOptions().getDocencoding() );
+        }
+        else
+        {
+            output = new LineOutputWriter( fos );
+        }
         String backup = getBackupPath( tagList, element );
         String encoding = ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) ? getOptions().getDocencoding()
                                                                                    : DEFAULT_DOCENCODING );
@@ -343,11 +354,10 @@ public class Pass1
             currentChar = input.read();
         }
 
-        input.close();
         output.write( "</PRE>\n", 0, 7 );
         output.write( "</BODY></HTML>" );
-        output.flush();
-        output.close();
+        IOUtil.close( output );
+        IOUtil.close( input );
     }
 
     /**
@@ -759,7 +769,6 @@ public class Pass1
                     }
                     else
                     {
-
                         input = new LineNumberReader( new InputStreamReader( is ) );
                     }
                     output = createClassFile( sortedList, i );

@@ -19,7 +19,6 @@ package org.apache.maven.jxr.java.src.html;
  * under the License.
  */
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -44,6 +43,7 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.apache.maven.jxr.java.src.JavaSrcOptions;
 import org.apache.maven.jxr.java.src.symtab.ReferenceTypes;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
@@ -194,7 +194,15 @@ public class Pass2
         // load the entire file
         String line;
         FileInputStream fis = new FileInputStream( refFile );
-        InputStreamReader isr = new InputStreamReader( fis );
+        InputStreamReader isr;
+        if ( StringUtils.isNotEmpty( getOptions().getEncoding() ) )
+        {
+            isr = new InputStreamReader( fis, getOptions().getEncoding() );
+        }
+        else
+        {
+            isr = new InputStreamReader( fis );
+        }
         BufferedReader br = new BufferedReader( isr );
         Vector v = new Vector();
 
@@ -203,12 +211,11 @@ public class Pass2
             v.addElement( line );
         }
 
-        br.close();
-        isr.close();
-        fis.close();
+        IOUtil.close( br );
+        IOUtil.close( isr );
+        IOUtil.close( fis );
 
         String[] lines = new String[v.size()];
-
         v.copyInto( lines );
 
         // sort the lines
@@ -301,8 +308,7 @@ public class Pass2
         throws IOException
     {
         bw.write( "</body></html>" );
-        bw.flush();
-        bw.close();
+        IOUtil.close( bw );
 
         if ( log.isDebugEnabled() )
         {
@@ -336,9 +342,9 @@ public class Pass2
         File outFile = new File( rootDir, relPath );
         FileOutputStream fos = new FileOutputStream( outFile );
         OutputStreamWriter fw;
-        if ( StringUtils.isNotEmpty( getOptions().getEncoding() ) )
+        if ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) )
         {
-            fw = new OutputStreamWriter( fos, getOptions().getEncoding() );
+            fw = new OutputStreamWriter( fos, getOptions().getDocencoding() );
         }
         else
         {
@@ -530,7 +536,17 @@ public class Pass2
 
             createDirs( file );
 
-            pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
+            FileOutputStream fos = new FileOutputStream( file );
+            OutputStreamWriter fw;
+            if ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) )
+            {
+                fw = new OutputStreamWriter( fos, getOptions().getDocencoding() );
+            }
+            else
+            {
+                fw = new OutputStreamWriter( fos );
+            }
+            pw = new PrintWriter( fw );
 
             pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
                 + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
@@ -584,7 +600,7 @@ public class Pass2
 
             pw.println( "</BODY>" );
             pw.println( "</HTML>" );
-            pw.close();
+            IOUtil.close( pw );
         }
 
         println( totalClassCount + " classes total" );
@@ -721,7 +737,18 @@ public class Pass2
 
         createDirs( file );
 
-        PrintWriter pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
+        FileOutputStream fos = new FileOutputStream( file );
+        OutputStreamWriter fw;
+        if ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) )
+        {
+            fw = new OutputStreamWriter( fos, getOptions().getDocencoding() );
+        }
+        else
+        {
+            fw = new OutputStreamWriter( fos );
+        }
+
+        PrintWriter pw = new PrintWriter( fw );
 
         pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" "
             + "\"http://www.w3.org/TR/html4/frameset.dtd\">" );
@@ -775,7 +802,7 @@ public class Pass2
         pw.println( "  </FRAMESET>" );
         pw.println( "</FRAMESET>" );
         pw.println( "</HTML>" );
-        pw.close();
+        IOUtil.close( pw );
     }
 
     /**
@@ -793,7 +820,18 @@ public class Pass2
 
         createDirs( file );
 
-        PrintWriter pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
+        FileOutputStream fos = new FileOutputStream( file );
+        OutputStreamWriter fw;
+        if ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) )
+        {
+            fw = new OutputStreamWriter( fos, getOptions().getDocencoding() );
+        }
+        else
+        {
+            fw = new OutputStreamWriter( fos );
+        }
+        PrintWriter pw = new PrintWriter( fw );
+
         Iterator iter = packageNames.iterator();
 
         pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
@@ -862,7 +900,7 @@ public class Pass2
         pw.println( "</BODY>" );
         pw.println( "</HTML>" );
 
-        pw.close();
+        IOUtil.close( pw );
     }
 
     /**
@@ -878,7 +916,17 @@ public class Pass2
 
         createDirs( file );
 
-        PrintWriter pw = new PrintWriter( new FileOutputStream( file ) );
+        FileOutputStream fos = new FileOutputStream( file );
+        OutputStreamWriter fw;
+        if ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) )
+        {
+            fw = new OutputStreamWriter( fos, getOptions().getDocencoding() );
+        }
+        else
+        {
+            fw = new OutputStreamWriter( fos );
+        }
+        PrintWriter pw = new PrintWriter( fw );
 
         pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
             + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
@@ -931,7 +979,7 @@ public class Pass2
 
         pw.println( "</BODY>" );
         pw.println( "</HTML>" );
-        pw.close();
+        IOUtil.close( pw );
     }
 
     /**
@@ -984,7 +1032,17 @@ public class Pass2
 
             createDirs( file );
 
-            pw = new PrintWriter( new BufferedOutputStream( new FileOutputStream( file ) ) );
+            FileOutputStream fos = new FileOutputStream( file );
+            OutputStreamWriter fw;
+            if ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) )
+            {
+                fw = new OutputStreamWriter( fos, getOptions().getDocencoding() );
+            }
+            else
+            {
+                fw = new OutputStreamWriter( fos );
+            }
+            pw = new PrintWriter( fw );
 
             pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
                 + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
@@ -1107,7 +1165,7 @@ public class Pass2
             }
             pw.println( "</BODY>" );
             pw.println( "</HTML>" );
-            pw.close();
+            IOUtil.close( pw );
         }
     }
 
@@ -1206,7 +1264,17 @@ public class Pass2
 
         createDirs( file );
 
-        PrintWriter pw = new PrintWriter( new FileOutputStream( file ) );
+        FileOutputStream fos = new FileOutputStream( file );
+        OutputStreamWriter fw;
+        if ( StringUtils.isNotEmpty( getOptions().getDocencoding() ) )
+        {
+            fw = new OutputStreamWriter( fos, getOptions().getDocencoding() );
+        }
+        else
+        {
+            fw = new OutputStreamWriter( fos );
+        }
+        PrintWriter pw = new PrintWriter( fw );
 
         pw.println( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
             + "\"http://www.w3.org/TR/html4/loose.dtd\">" );
@@ -1303,7 +1371,7 @@ public class Pass2
 
         pw.println( "</BODY>" );
         pw.println( "</HTML>" );
-        pw.close();
+        IOUtil.close( pw );
     }
 
     private void createOverviewSummaryFrameExtras( PrintWriter pw, boolean top )
