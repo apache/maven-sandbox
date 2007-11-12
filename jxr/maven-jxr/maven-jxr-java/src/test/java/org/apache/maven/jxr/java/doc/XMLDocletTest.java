@@ -28,8 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
+import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -41,10 +40,8 @@ import com.sun.tools.javadoc.Main;
  * @version $Id$
  */
 public class XMLDocletTest
-    extends TestCase
+    extends PlexusTestCase
 {
-    private static final String BASEDIR = new File( "" ).getAbsolutePath();
-
     private static final String DEFAULT_EXCLUDES = "**/*~,**/#*#,**/.#*,**/%*%,**/._*,**/CVS,**/CVS/**,"
         + "**/.cvsignore,**/SCCS,**/SCCS/**,**/vssver.scc,**/.svn,**/.svn/**,**/.DS_Store";
 
@@ -56,9 +53,9 @@ public class XMLDocletTest
     public void testDefaultExecute()
         throws Exception
     {
-        File srcDir = new File( BASEDIR, "src/test/resources/javasrc" );
+        File srcDir = new File( getBasedir(), "src/test/resources/javasrc" );
 
-        File outputXML = new File( BASEDIR, "target/unit/xmldoclet-default/javadoc.xml" );
+        File outputXML = new File( getBasedir(), "target/unit/xmldoclet-default/javadoc.xml" );
 
         // test phase is after compile phase, so we are sure that classes dir exists
         List args = new LinkedList();
@@ -85,7 +82,7 @@ public class XMLDocletTest
         assertTrue( outputXML.length() > 0 );
         String content = IOUtil.toString( new FileInputStream( outputXML ) );
         assertTrue( content.indexOf( "\"UTF-8\"" ) != -1 );
-        File dtd = new File( BASEDIR, "target/unit/xmldoclet-default/" + XMLDoclet.XMLDOCLET_DTD );
+        File dtd = new File( getBasedir(), "target/unit/xmldoclet-default/" + XMLDoclet.XMLDOCLET_DTD );
         assertTrue( dtd.exists() );
         assertTrue( dtd.length() > 0 );
     }
@@ -98,7 +95,7 @@ public class XMLDocletTest
     public void testMissingOptionsExecute()
         throws Exception
     {
-        File srcDir = new File( BASEDIR, "src/test/resources/javasrc" );
+        File srcDir = new File( getBasedir(), "src/test/resources/javasrc" );
 
         // test phase is after compile phase, so we are sure that classes dir exists
         List args = new LinkedList();
@@ -126,9 +123,9 @@ public class XMLDocletTest
     public void testNonMandatoryOptionExecute()
         throws Exception
     {
-        File srcDir = new File( BASEDIR, "src/test/resources/javasrc" );
+        File srcDir = new File( getBasedir(), "src/test/resources/javasrc" );
 
-        File outputXML = new File( BASEDIR, "target/unit/xmldoclet-default/javadoc.xml" );
+        File outputXML = new File( getBasedir(), "target/unit/xmldoclet-default/javadoc.xml" );
 
         // test phase is after compile phase, so we are sure that classes dir exists
         List args = new LinkedList();
@@ -153,7 +150,7 @@ public class XMLDocletTest
         assertTrue( outputXML.length() > 0 );
         String content = IOUtil.toString( new FileInputStream( outputXML ) );
         assertTrue( content.indexOf( "\"" + XMLDoclet.DEFAULT_ENCODING_FORMAT + "\"" ) != -1 );
-        File dtd = new File( BASEDIR, "target/unit/xmldoclet-default/" + XMLDoclet.XMLDOCLET_DTD );
+        File dtd = new File( getBasedir(), "target/unit/xmldoclet-default/" + XMLDoclet.XMLDOCLET_DTD );
         assertTrue( dtd.exists() );
         assertTrue( dtd.length() > 0 );
     }
