@@ -22,51 +22,37 @@ package org.apache.maven.jxr.ant.doc;
 import java.io.File;
 
 import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
-public class AntDocTaskTest
+public class AntDocTest
     extends PlexusTestCase
 {
     /**
-     * Call Antdoc task
+     * Call Antdoc
      *
      * @throws Exception if any.
      */
     public void testDefaultExecute()
         throws Exception
     {
-        File antDocDir = new File( getBasedir(), "target/unit/antdoc-default-with-ant" );
+        File antDocDir = new File( getBasedir(), "target/unit/antdoc-default" );
         File build = new File( getBasedir(), "src/test/resources/ant/build.xml" );
 
-        Project antProject = new Project();
-        antProject.setBasedir( getBasedir() );
-
-        AntDocTask task = new AntDocTask();
-        task.setProject( antProject );
-        task.init();
-        task.setAntFile( build );
-        task.setDestDir( antDocDir );
-        task.setVerbose( true );
+        AntDoc antdoc = (AntDoc) lookup( AntDoc.ROLE );
+        assertNotNull( antdoc );
         try
         {
-            task.execute();
+            antdoc.generate( build, antDocDir );
             assertTrue( "DOT exists in the path", true );
         }
-        catch ( BuildException e )
+        catch ( DotNotPresentInPathException e )
         {
-            if ( e.getException() instanceof DotNotPresentInPathException )
-            {
-                assertTrue( "DOT doesnt exist in the path. Ignored test", true );
-                return;
-            }
-
-            throw e;
+            assertTrue( "DOT doesnt exist in the path. Ignored test", true );
+            return;
         }
 
         // Generated files
@@ -108,55 +94,5 @@ public class AntDocTaskTest
         copied = new File( antDocDir, "main.css" );
         assertTrue( copied.exists() );
         assertTrue( generated.length() > 0 );
-    }
-
-    /**
-     * Call Antdoc task
-     *
-     * @throws Exception if any.
-     */
-    public void testNullExecute()
-        throws Exception
-    {
-        final String basedir = new File( "" ).getAbsolutePath();
-
-        File antDocDir = new File( basedir, "target/unit/antdoc-null" );
-        File build = new File( basedir, "src/test/resources/ant/build.xml" );
-
-        Project antProject = new Project();
-        antProject.setBasedir( basedir );
-
-        AntDocTask task = new AntDocTask();
-        task.setProject( antProject );
-        task.init();
-
-        task.setAntFile( null );
-        task.setDestDir( antDocDir );
-        task.setVerbose( true );
-        try
-        {
-            task.execute();
-            assertTrue( "DOT exists in the path", true );
-        }
-        catch ( BuildException e )
-        {
-            if ( e.getException() instanceof DotNotPresentInPathException )
-            {
-                assertTrue( "DOT doesnt exist in the path. Ignored test", true );
-                return;
-            }
-        }
-
-        task.setAntFile( build );
-        task.setDestDir( null );
-        try
-        {
-            task.execute();
-            assertTrue( "Doesnt handle null dest", false );
-        }
-        catch ( BuildException e )
-        {
-            assertTrue( true );
-        }
     }
 }
