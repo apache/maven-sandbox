@@ -52,7 +52,7 @@ import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
-import org.apache.maven.jxr.java.doc.GenerateUMLDoc;
+import org.apache.maven.jxr.java.doc.UmlDoc;
 import org.apache.maven.jxr.java.doc.UmlDocException;
 import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -161,6 +161,13 @@ public class UmlReport
     // ----------------------------------------------------------------------
 
     /**
+     * UmlDoc component.
+     *
+     * @component
+     */
+    protected UmlDoc umlDoc;
+
+    /**
      * The output file of the class diagram.
      * <br/>
      * <b>Note:</b> The extension of the output file will be used to auto-detect the wanted format for Graphviz.
@@ -215,13 +222,6 @@ public class UmlReport
      * @parameter expression="${javasrcPath}" default-value="../javasrc/"
      */
     private String javasrcPath;
-
-    /**
-     * True to verbose the scan.
-     *
-     * @parameter expression="${verbose}" default-value="false"
-     */
-    private boolean verbose;
 
     /**
      * Specifies the access level for classes and members to show in the generated class diagram.
@@ -396,35 +396,16 @@ public class UmlReport
     private void executeUml()
         throws MavenReportException
     {
-        GenerateUMLDoc generator;
-        try
-        {
-            generator = new GenerateUMLDoc( new File( this.project.getBuild().getSourceDirectory() ), output );
-        }
-        catch ( IllegalArgumentException e )
-        {
-            throw new MavenReportException( "IllegalArgumentException: " + e.getMessage(), e );
-        }
-
-        if ( this.dotExecutable != null )
-        {
-            generator.setDotExecutable( this.dotExecutable );
-        }
-        if ( StringUtils.isNotEmpty( this.encoding ) )
-        {
-            generator.setEncoding( this.encoding );
-        }
-        generator.setVerbose( this.verbose );
         if ( this.show != null ) // could be empty
         {
-            generator.setShow( this.show );
+            umlDoc.setShow( this.show );
         }
         if ( StringUtils.isNotEmpty( this.javadocPath ) )
         {
             File javadoc = new File( output.getParentFile(), this.javadocPath );
             if ( javadoc.exists() )
             {
-                generator.setJavadocPath( this.javadocPath );
+                umlDoc.setJavadocPath( this.javadocPath );
             }
         }
         if ( StringUtils.isNotEmpty( this.javasrcPath ) )
@@ -432,25 +413,34 @@ public class UmlReport
             File javasrc = new File( output.getParentFile(), this.javasrcPath );
             if ( javasrc.exists() )
             {
-                generator.setJavasrcPath( this.javasrcPath );
+                umlDoc.setJavasrcPath( this.javasrcPath );
             }
-        }
-        if ( StringUtils.isNotEmpty( this.diagramEncoding ) )
-        {
-            generator.setDiagramEncoding( this.diagramEncoding );
         }
         if ( StringUtils.isNotEmpty( getDiagramLabel() ) )
         {
-            generator.setDiagramLabel( getDiagramLabel() );
+            umlDoc.setDiagramLabel( getDiagramLabel() );
         }
 
         try
         {
-            generator.generateUML();
+            if ( this.dotExecutable == null )
+            {
+                umlDoc.generate( new File( this.project.getBuild().getSourceDirectory() ), this.encoding, output,
+                                 this.diagramEncoding );
+            }
+            else
+            {
+                umlDoc.generate( this.dotExecutable, new File( this.project.getBuild().getSourceDirectory() ),
+                                 this.encoding, output, this.diagramEncoding );
+            }
         }
         catch ( DotNotPresentInPathException e )
         {
             throw new MavenReportException( "DotNotPresentInPathException: " + e.getMessage(), e );
+        }
+        catch ( IOException e )
+        {
+            throw new MavenReportException( "IOException: " + e.getMessage(), e );
         }
         catch ( UmlDocException e )
         {
