@@ -57,15 +57,15 @@ public class HTMLTag
     /** Field length */
     private int length;
 
-    public static int TYPE_NONE = 0;
+    public static final int TYPE_NONE = 0;
 
-    public static int TYPE_MULTI_LINES_COMMENT = 1;
+    public static final int TYPE_MULTI_LINES_COMMENT = 1;
 
-    public static int TYPE_LITERAL = 2;
+    public static final int TYPE_LITERAL = 2;
 
-    public static int TYPE_KEYWORD = 3;
+    public static final int TYPE_KEYWORD = 3;
 
-    public static int TYPE_SINGLE_LINE_COMMENT = 4;
+    public static final int TYPE_SINGLE_LINE_COMMENT = 4;
 
     private int type = TYPE_NONE;
 
