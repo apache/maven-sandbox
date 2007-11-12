@@ -1055,7 +1055,7 @@ public class Pass2
             if ( StringUtils.isNotEmpty( getOptions().getWindowtitle() ) )
             {
                 pw.println( "<TITLE>" + packageName + " (" + getOptions().getWindowtitle() + ")</TITLE>" );
-                pw.println( "META NAME=\"keywords\" CONTENT=\"package " + packageName + "\">" );
+                pw.println( "<META NAME=\"keywords\" CONTENT=\"package " + packageName + "\">" );
             }
             else
             {
