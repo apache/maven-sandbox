@@ -20,6 +20,7 @@ package org.apache.maven.jxr.js.doc;
  */
 
 import org.apache.log4j.Logger;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,9 +38,13 @@ import java.util.List;
  * Searches all javascript files and creates a index HTML
  * with links to documentation
  *
+ * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
+ * @plexus.component role="org.apache.maven.jxr.js.doc.JSDoc" role-hint="default"
  */
 public class GenerateHTMLIndex
+    extends AbstractLogEnabled
+    implements JSDoc
 {
     /** Logger for this class  */
     private static final Logger log = Logger.getLogger( GenerateHTMLIndex.class );
@@ -48,13 +53,13 @@ public class GenerateHTMLIndex
 
     private File destDir;
 
-    /**
-     * @param jsDirectory
-     * @param destDir
-     * @throws IllegalArgumentException if any
-     */
-    public GenerateHTMLIndex( String jsDirectory, String destDir )
-        throws IllegalArgumentException
+    // ----------------------------------------------------------------------
+    // Public
+    // ----------------------------------------------------------------------
+
+    /** {@inheritDoc} */
+    public void generate( String jsDirectory, String destDirectory )
+        throws IllegalArgumentException, IOException
     {
         if ( jsDirectory == null )
         {
@@ -71,51 +76,43 @@ public class GenerateHTMLIndex
         }
         if ( js.exists() && !js.isDirectory() )
         {
-            throw new IllegalArgumentException( "JS directory is a file." );
+            throw new IOException( "JS directory is a file." );
         }
         this.jsDir = js;
 
-        if ( destDir == null )
+        if ( destDirectory == null )
         {
             throw new IllegalArgumentException( "destDir attribute can't be empty" );
         }
-        if ( !"/".equals( destDir.substring( destDir.length() - 1 ) ) )
+        if ( !"/".equals( destDirectory.substring( destDirectory.length() - 1 ) ) )
         {
-            destDir = destDir + "/";
+            destDirectory = destDirectory + "/";
         }
-        File dest = new File( destDir );
+        File dest = new File( destDirectory );
         if ( dest.exists() && !dest.isDirectory() )
         {
-            throw new IllegalArgumentException( "Dest directory is a file." );
+            throw new IOException( "Dest directory is a file." );
         }
         if ( !dest.exists() && !dest.mkdirs() )
         {
-            throw new IllegalArgumentException( "Cannot create the dest directory." );
+            throw new IOException( "Cannot create the dest directory." );
         }
         this.destDir = dest;
-    }
 
-    /**
-     *
-     * @throws IOException if any
-     */
-    public void generate()
-        throws IOException
-    {
         List files = new ArrayList();
         collectFiles( jsDir, files );
 
         Writer writer = null;
         try
         {
-            writer = new FileWriter( new File( destDir, "index.htm" ) ); // platform encoding
+            writer = new FileWriter( new File( this.destDir, "index.htm" ) ); // platform encoding
         }
         catch ( FileNotFoundException fnfe )
         {
             try
             {
-                destDir.mkdir();
-                writer = new FileWriter( new File( destDir, "index.htm" ) );
+                this.destDir.mkdir();
+                writer = new FileWriter( new File( this.destDir, "index.htm" ) );
             }
             catch ( FileNotFoundException e )
             {
@@ -150,7 +147,7 @@ public class GenerateHTMLIndex
         {
             File file = (File) files.get( i );
 
-            GenerateHTMLDoc docGenerator = new GenerateHTMLDoc( file, destDir );
+            GenerateHTMLDoc docGenerator = new GenerateHTMLDoc( file, this.destDir );
             docGenerator.generate();
         }
 

@@ -46,8 +46,8 @@ public class JSDocTask
     {
         try
         {
-            GenerateHTMLIndex index = new GenerateHTMLIndex( jsDir, destDir );
-            index.generate();
+            GenerateHTMLIndex index = new GenerateHTMLIndex();
+            index.generate( jsDir, destDir );
         }
         catch ( IllegalArgumentException e )
         {
