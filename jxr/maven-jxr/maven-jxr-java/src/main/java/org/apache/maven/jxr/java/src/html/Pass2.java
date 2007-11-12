@@ -307,7 +307,7 @@ public class Pass2
     private void closeOutputFile( BufferedWriter bw, String referentFileClass )
         throws IOException
     {
-        bw.write( "</body></html>" );
+        bw.write( "</BODY></HTML>" );
         IOUtil.close( bw );
 
         if ( log.isDebugEnabled() )
