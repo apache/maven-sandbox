@@ -48,7 +48,7 @@ public class JavasrcReport
     // ----------------------------------------------------------------------
 
     /**
-     * Internationalization.
+     * Internationalization component.
      *
      * @component
      */
