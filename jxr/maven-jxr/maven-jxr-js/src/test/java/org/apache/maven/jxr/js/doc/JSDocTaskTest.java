@@ -23,15 +23,14 @@ import java.io.File;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
-
-import junit.framework.TestCase;
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
 public class JSDocTaskTest
-    extends TestCase
+    extends PlexusTestCase
 {
     /**
      * Call JSDoc task
@@ -39,13 +38,12 @@ public class JSDocTaskTest
      * @throws Exception if any.
      */
     public void testDefaultExecute()
+        throws Exception
     {
-        final String basedir = new File( "" ).getAbsolutePath();
-
-        File jsDocDir = new File( basedir, "target/unit/jsdoc-default" );
+        File jsDocDir = new File( getBasedir(), "target/unit/jsdoc-default" );
 
         Project antProject = new Project();
-        antProject.setBasedir( basedir );
+        antProject.setBasedir( getBasedir() );
 
         JSDocTask task = new JSDocTask();
         task.setProject( antProject );
@@ -69,13 +67,12 @@ public class JSDocTaskTest
      * @throws Exception if any.
      */
     public void testNullExecute()
+        throws Exception
     {
-        final String basedir = new File( "" ).getAbsolutePath();
-
-        File jsDocDir = new File( basedir, "target/unit/jsdoc-null" );
+        File jsDocDir = new File( getBasedir(), "target/unit/jsdoc-null" );
 
         Project antProject = new Project();
-        antProject.setBasedir( basedir );
+        antProject.setBasedir( getBasedir() );
 
         JSDocTask task = new JSDocTask();
         task.setProject( antProject );
