@@ -1,5 +1,5 @@
  ------
- Java JXR Example
+ JXR Java Example
  ------
  Vincent Siveton
  ------
@@ -26,29 +26,37 @@
 ~~ NOTE: For help with the syntax of this file, see:
 ~~ http://maven.apache.org/guides/mini/guide-apt-format.html
 
-JXR Example
+JXR Java Example
 
- Here is a simple JXR example with Java:
+ Here is a simple JXR example using Java:
 
 +-----+
-    JavaSrc javaSrc = new JavaSrc( getSrcDir(), getDestDir() );
+    /** Source dir, required. */
+    File srcDir;
+
+    /** Output dir, required. */
+    File destDir;
 
     // specify some options
-    javaSrc.getOptions().setBottom( "A bottom" );
-    javaSrc.getOptions().setDocencoding( "UTF-8" );
-    javaSrc.getOptions().setDoctitle( "A doctitle" );
-    javaSrc.getOptions().setEncoding( "UTF-8" );
-    javaSrc.getOptions().setFooter( "A footer" );
-    javaSrc.getOptions().setHeader( "An header" );
-    javaSrc.getOptions().setPackagesheader( "A packagesheader" );
-    javaSrc.getOptions().setRecurse( true );
-    javaSrc.getOptions().setStylesheetfile( "path/to/stylesheetfile" );
-    javaSrc.getOptions().setTop( "A top" );
-    javaSrc.getOptions().setVerbose( true );
-    javaSrc.getOptions().setWindowtitle( "A windowtitle" );
+    JavaSrcOptions options = new JavaSrcOptions();
+    options.setBottom( "A bottom" );
+    options.setDocencoding( "UTF-8" );
+    options.setDoctitle( "A doctitle" );
+    options.setEncoding( "UTF-8" );
+    options.setFooter( "A footer" );
+    options.setHeader( "An header" );
+    options.setPackagesheader( "A packagesheader" );
+    options.setRecurse( true );
+    options.setStylesheetfile( "path/to/stylesheetfile" );
+    options.setTop( "A top" );
+    options.setVerbose( true );
+    options.setWindowtitle( "A windowtitle" );
+
+    JavaSrc javaSrc = new GenerateHTMLJavaSrc( getSrcDir(), getDestDir() );
+    /* JavaSrc javaSrc = (JavaSrc) lookup( JavaSrc.ROLE ); // Using Plexus */
 
     // generated cross-references HTML files
-    javaSrc.pass();
+    javaSrc.generate( srcDir, destDir, options );
 +-----+
 
  The following image is an sample of the generated HTML files.

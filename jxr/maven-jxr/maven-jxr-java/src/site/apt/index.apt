@@ -59,6 +59,6 @@ Maven JXR Java
 
   * {{{examples/umldoc.html}UMLDoc}}: Java examples to generate UML class diagram.
 
-  * {{{examples/ant.html}Ant}}: {{{http://ant.apache.org/}Ant}} tool examples to use them.
+  * {{{examples/ant.html}With Ant}}: {{{http://ant.apache.org/}Ant}} tool examples to use them.
 
   []

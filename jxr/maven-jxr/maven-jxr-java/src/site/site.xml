@@ -72,13 +72,14 @@ under the License.
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
       <item name="References" href="references.html"/>
+      <item name="Screenshots" href="screenshots.html"/>
     </menu>
 
     <menu name="Examples">
-      <item name="Using Maven JXR with Ant" href="/examples/ant.html"/>
-      <item name="Using Maven JXR with Java" href="/examples/javasrc.html"/>
-      <item name="Using Maven UML with Java" href="/examples/umldoc.html"/>
+      <item name="JXR With Java" href="/examples/javasrc.html"/>
+      <item name="UML with Java" href="/examples/umldoc.html"/>
       <item name="Using XML doclet" href="/examples/xmldoclet.html"/>
+      <item name="With Ant" href="/examples/ant.html"/>
     </menu>
 
     <menu ref="reports"/>
