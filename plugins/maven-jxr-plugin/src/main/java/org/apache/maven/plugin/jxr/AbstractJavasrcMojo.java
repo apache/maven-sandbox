@@ -24,10 +24,10 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import org.apache.maven.jxr.java.src.JavaSrc;
+import org.apache.maven.jxr.java.src.JavaSrcOptions;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.reporting.MavenReportException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -54,6 +54,13 @@ public abstract class AbstractJavasrcMojo
     // ----------------------------------------------------------------------
     // JavaSrc parameters
     // ----------------------------------------------------------------------
+
+    /**
+     * JavaSrc component.
+     *
+     * @component
+     */
+    protected JavaSrc javaSrc;
 
     /**
      * The output directory.
@@ -156,62 +163,54 @@ public abstract class AbstractJavasrcMojo
      * @throws MojoExecutionException if any
      */
     public void executeJavaSrc()
-        throws IOException, MojoExecutionException
+        throws IOException
     {
-        JavaSrc javaSrc;
-        try
-        {
-            javaSrc = new JavaSrc( new File( this.project.getBuild().getSourceDirectory() ), this.outputDirectory );
-        }
-        catch ( IllegalArgumentException e )
-        {
-            throw new MojoExecutionException( "IllegalArgumentException: " + e.getMessage(), e );
-        }
+        JavaSrcOptions options = new JavaSrcOptions();
 
         if ( StringUtils.isNotEmpty( getBottomText() ) )
         {
-            javaSrc.getOptions().setBottom( getBottomText() );
+            options.setBottom( getBottomText() );
         }
         if ( StringUtils.isNotEmpty( this.docencoding ) )
         {
-            javaSrc.getOptions().setDocencoding( this.docencoding );
+            options.setDocencoding( this.docencoding );
         }
         if ( StringUtils.isNotEmpty( this.doctitle ) )
         {
-            javaSrc.getOptions().setDoctitle( this.doctitle );
+            options.setDoctitle( this.doctitle );
         }
         if ( StringUtils.isNotEmpty( this.encoding ) )
         {
-            javaSrc.getOptions().setEncoding( this.encoding );
+            options.setEncoding( this.encoding );
         }
         if ( StringUtils.isNotEmpty( this.footer ) )
         {
-            javaSrc.getOptions().setFooter( this.footer );
+            options.setFooter( this.footer );
         }
         if ( StringUtils.isNotEmpty( this.footer ) )
         {
-            javaSrc.getOptions().setHeader( this.footer );
+            options.setHeader( this.footer );
         }
         if ( StringUtils.isNotEmpty( this.packagesheader ) )
         {
-            javaSrc.getOptions().setPackagesheader( this.packagesheader );
+            options.setPackagesheader( this.packagesheader );
         }
-        javaSrc.getOptions().setRecurse( this.recurse );
+        options.setRecurse( this.recurse );
         if ( StringUtils.isNotEmpty( this.stylesheetfile ) )
         {
-            javaSrc.getOptions().setStylesheetfile( this.stylesheetfile );
+            options.setStylesheetfile( this.stylesheetfile );
         }
         if ( StringUtils.isNotEmpty( this.top ) )
         {
-            javaSrc.getOptions().setTop( this.top );
+            options.setTop( this.top );
         }
-        javaSrc.getOptions().setVerbose( this.verbose );
+        options.setVerbose( this.verbose );
         if ( StringUtils.isNotEmpty( this.windowTitle ) )
         {
-            javaSrc.getOptions().setWindowtitle( this.windowTitle );
+            options.setWindowtitle( this.windowTitle );
         }
 
-        javaSrc.pass();
+        javaSrc.generate( new File( this.project.getBuild().getSourceDirectory() ), this.outputDirectory, options );
     }
 
     // ----------------------------------------------------------------------
