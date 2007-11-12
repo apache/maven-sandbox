@@ -19,12 +19,16 @@ package org.apache.maven.jxr.java.doc;
  * under the License.
  */
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -41,6 +45,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.maven.jxr.util.DotUtil;
 import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -56,8 +61,11 @@ import com.sun.tools.javadoc.Main;
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
+ * @plexus.component role="org.apache.maven.jxr.java.doc.UmlDoc" role-hint="default"
  */
 public class GenerateUMLDoc
+    extends AbstractLogEnabled
+    implements UmlDoc
 {
     private static final String NOW = new GregorianCalendar( TimeZone.getDefault() ).getTime().toString();
 
@@ -112,69 +120,76 @@ public class GenerateUMLDoc
     /** Specify verbose information */
     private boolean verbose;
 
-    /**
-     * Default constructor.
-     *
-     * @param srcDir not null
-     * @param out not null
-     * @throws IllegalArgumentException if any
-     */
-    public GenerateUMLDoc( File srcDir, File out )
-        throws IllegalArgumentException
+    // ----------------------------------------------------------------------
+    // Public
+    // ----------------------------------------------------------------------
+
+    /** {@inheritDoc} */
+    public void generate( File aSrcDir, File theOut )
+        throws IllegalArgumentException, DotNotPresentInPathException, IOException, UmlDocException
     {
-        if ( srcDir == null )
+        generate( aSrcDir, null, theOut, null );
+    }
+
+    /** {@inheritDoc} */
+    public void generate( File aSrcDir, String srcEncoding, File theOut, String outEncoding )
+        throws IllegalArgumentException, DotNotPresentInPathException, IOException, UmlDocException
+    {
+        if ( aSrcDir == null )
         {
             throw new IllegalArgumentException( "Missing mandatory attribute 'srcDir'." );
         }
-        if ( !srcDir.exists() || srcDir.isFile() )
+        if ( !aSrcDir.exists() || aSrcDir.isFile() )
         {
-            throw new IllegalArgumentException( "Input '" + srcDir + "' not found or not a directory." );
+            throw new IOException( "Input '" + aSrcDir + "' not found or not a directory." );
         }
 
-        if ( out == null )
+        if ( theOut == null )
         {
             throw new IllegalArgumentException( "Missing mandatory attribute 'out'." );
         }
-        if ( out.exists() && out.isDirectory() )
+        if ( theOut.exists() && theOut.isDirectory() )
         {
-            throw new IllegalArgumentException( out + " is a directory." );
+            throw new IOException( theOut + " is a directory." );
         }
-        if ( !out.exists() && !out.getParentFile().exists() && !out.getParentFile().mkdirs() )
+        if ( !theOut.exists() && !theOut.getParentFile().exists() && !theOut.getParentFile().mkdirs() )
         {
-            throw new IllegalArgumentException( "Cannot create the parent directory of " + out );
+            throw new IOException( "Cannot create the parent directory of " + theOut );
         }
 
-        this.srcDir = srcDir;
-        this.out = out;
-    }
+        this.srcDir = aSrcDir;
+        this.out = theOut;
 
-    /**
-     * Generate the documentation
-     *
-     * @throws UmlDocException if any
-     * @throws DotNotPresentInPathException if any
-     */
-    public void generateUML()
-        throws UmlDocException, DotNotPresentInPathException
-    {
+        if ( !StringUtils.isEmpty( srcEncoding ) )
+        {
+            if ( validateEncoding( srcEncoding ) )
+            {
+                this.encoding = srcEncoding;
+            }
+            else
+            {
+                getLogger().info( "Unsupported Character Encoding for " + srcEncoding + ". IGNORED" );
+            }
+        }
+        if ( !StringUtils.isEmpty( outEncoding ) )
+        {
+            if ( validateEncoding( outEncoding ) )
+            {
+                this.diagramEncoding = outEncoding;
+            }
+            else
+            {
+                getLogger().info( "Unsupported Character Encoding for " + outEncoding + ". IGNORED" );
+            }
+        }
+
         // 1. Generate Javadoc xml
-        try
-        {
-            generateJavadocXML();
-        }
-        catch ( IOException e )
-        {
-            throw new UmlDocException( "IOException: " + e.getMessage() );
-        }
+        generateJavadocXML();
 
         // 2. Generate dot image
         try
         {
             generateJavadocDot();
-        }
-        catch ( IOException e )
-        {
-            throw new UmlDocException( "IOException: " + e.getMessage() );
         }
         catch ( TransformerException e )
         {
@@ -197,17 +212,76 @@ public class GenerateUMLDoc
             File dtd = new File( getJavadocXml().getParentFile(), XMLDoclet.XMLDOCLET_DTD );
             if ( !dtd.delete() )
             {
-                throw new UmlDocException( "IOException: can't delete the generated DTD file: " + dtd );
+                throw new IOException( "Can't delete the generated DTD file: " + dtd );
             }
         }
     }
+
+    /** {@inheritDoc} */
+    public void generate( File graphExecutable, File aSrcDir, String srcEncoding, File theOut, String outEncoding )
+        throws IllegalArgumentException, DotNotPresentInPathException, IOException, UmlDocException
+    {
+        if ( dotExecutable == null )
+        {
+            throw new IllegalArgumentException( "Missing mandatory attribute 'dotExecutable'." );
+        }
+        if ( !dotExecutable.exists() || !dotExecutable.isFile() )
+        {
+            throw new IOException( "Input '" + dotExecutable + "' not found or not a file." );
+        }
+        this.dotExecutable = graphExecutable;
+
+        generate( aSrcDir, srcEncoding, theOut, outEncoding );
+    }
+
+    /** {@inheritDoc} */
+    public void setDiagramLabel( String diagramLabel )
+    {
+        this.diagramLabel = diagramLabel;
+    }
+
+    /** {@inheritDoc} */
+    public void setJavadocPath( String javadocPath )
+    {
+        this.javadocPath = javadocPath;
+    }
+
+    /** {@inheritDoc} */
+    public void setJavasrcPath( String javasrcPath )
+    {
+        this.javasrcPath = javasrcPath;
+    }
+
+    /** {@inheritDoc} */
+    public void setShow( String show )
+    {
+        this.show = show;
+    }
+
+    // ----------------------------------------------------------------------
+    // Protected
+    // ----------------------------------------------------------------------
+
+    /**
+     * Setter for the verbose. Used by Ant task
+     *
+     * @param verbose the verbose to set
+     */
+    protected void setVerbose( boolean verbose )
+    {
+        this.verbose = verbose;
+    }
+
+    // ----------------------------------------------------------------------
+    // Private
+    // ----------------------------------------------------------------------
 
     /**
      * Getter for the diagramEncoding
      *
      * @return the diagramEncoding
      */
-    public String getDiagramEncoding()
+    private String getDiagramEncoding()
     {
         return this.diagramEncoding;
     }
@@ -217,7 +291,7 @@ public class GenerateUMLDoc
      *
      * @return the diagramLabel
      */
-    public String getDiagramLabel()
+    private String getDiagramLabel()
     {
         return this.diagramLabel;
     }
@@ -227,7 +301,7 @@ public class GenerateUMLDoc
      *
      * @return the dotExecutable
      */
-    public File getDotExecutable()
+    private File getDotExecutable()
     {
         return this.dotExecutable;
     }
@@ -237,7 +311,7 @@ public class GenerateUMLDoc
      *
      * @return the encoding
      */
-    public String getEncoding()
+    private String getEncoding()
     {
         return this.encoding;
     }
@@ -247,7 +321,7 @@ public class GenerateUMLDoc
      *
      * @return the relative path or URI to the generated javadoc directory
      */
-    public String getJavadocPath()
+    private String getJavadocPath()
     {
         return this.javadocPath;
     }
@@ -257,7 +331,7 @@ public class GenerateUMLDoc
      *
      * @return the relative path or URI to the generated javasrc directory
      */
-    public String getJavasrcPath()
+    private String getJavasrcPath()
     {
         return this.javasrcPath;
     }
@@ -267,7 +341,7 @@ public class GenerateUMLDoc
      *
      * @return the destDir
      */
-    public File getOut()
+    private File getOut()
     {
         return this.out;
     }
@@ -284,19 +358,9 @@ public class GenerateUMLDoc
      *
      * @return the show
      */
-    public String getShow()
+    private String getShow()
     {
         return this.show;
-    }
-
-    /**
-     * Getter for the srcDir
-     *
-     * @return the srcDir
-     */
-    public File getSrcDir()
-    {
-        return this.srcDir;
     }
 
     /**
@@ -304,121 +368,15 @@ public class GenerateUMLDoc
      *
      * @return the verbose
      */
-    public boolean isVerbose()
+    private boolean isVerbose()
     {
+        if ( getLogger() != null ) // for Ant tasks
+        {
+            return !getLogger().isInfoEnabled();
+        }
+
         return this.verbose;
     }
-
-    /**
-     * Setter for the diagramEncoding
-     *
-     * @param diagramEncoding the diagramEncoding to set
-     */
-    public void setDiagramEncoding( String diagramEncoding )
-    {
-        this.diagramEncoding = diagramEncoding;
-    }
-
-    /**
-     * Setter for the diagramLabel
-     *
-     * @param diagramLabel the diagramLabel to set
-     */
-    public void setDiagramLabel( String diagramLabel )
-    {
-        this.diagramLabel = diagramLabel;
-    }
-
-    /**
-     * Setter for the dotExecutable
-     *
-     * @param dotExecutable the dotExecutable to set
-     */
-    public void setDotExecutable( File dotExecutable )
-    {
-        this.dotExecutable = dotExecutable;
-    }
-
-    /**
-     * Setter for the encoding
-     *
-     * @param encoding the encoding to set
-     */
-    public void setEncoding( String encoding )
-    {
-        this.encoding = encoding;
-    }
-
-    /**
-     * Setter for the javadocPath
-     *
-     * @param javadocPath the relative path or URI to the generated javadoc directory
-     */
-    public void setJavadocPath( String javadocPath )
-    {
-        this.javadocPath = javadocPath;
-    }
-
-    /**
-     * Setter for the javasrcPath
-     *
-     * @param javasrcPath the relative path or URI to the generated javasrc directory
-     */
-    public void setJavasrcPath( String javasrcPath )
-    {
-        this.javasrcPath = javasrcPath;
-    }
-
-    /**
-     * Setter for the destDir
-     *
-     * @param destDir the destDir to set
-     */
-    public void setOut( File destDir )
-    {
-        this.out = destDir;
-    }
-
-    /**
-     * Setter for the show.  Possible values are:
-     * <ul>
-     * <li>public: shows only public classes and members</li>
-     * <li>protected: shows only public and protected classes and members</li>
-     * <li>package: shows all classes and members not marked private</li>
-     * <li>private: shows all classes and members</li>
-     * <li>"" (i.e. empty): nothing</li>
-     * </ul>
-     *
-     * @param show the show to set
-     */
-    public void setShow( String show )
-    {
-        this.show = show;
-    }
-
-    /**
-     * Setter for the srcDir
-     *
-     * @param srcDir the srcDir to set
-     */
-    public void setSrcDir( File srcDir )
-    {
-        this.srcDir = srcDir;
-    }
-
-    /**
-     * Setter for the verbose
-     *
-     * @param verbose the verbose to set
-     */
-    public void setVerbose( boolean verbose )
-    {
-        this.verbose = verbose;
-    }
-
-    // ----------------------------------------------------------------------
-    // Private
-    // ----------------------------------------------------------------------
 
     /**
      * @return the javadoc output xml file
@@ -631,5 +589,44 @@ public class GenerateUMLDoc
         {
             DotUtil.executeDot( getDotExecutable(), getDot(), getOut() );
         }
+    }
+
+    /**
+     * Validate if a charset is supported on this platform.
+     *
+     * @param charsetName the charsetName to be check.
+     */
+    private static boolean validateEncoding( String charsetName )
+    {
+        if ( StringUtils.isEmpty( charsetName ) )
+        {
+            return false;
+        }
+
+        OutputStream ost = new ByteArrayOutputStream();
+        OutputStreamWriter osw = null;
+        try
+        {
+            osw = new OutputStreamWriter( ost, charsetName );
+        }
+        catch ( UnsupportedEncodingException exc )
+        {
+            return false;
+        }
+        finally
+        {
+            try
+            {
+                if ( osw != null )
+                {
+                    osw.close();
+                }
+            }
+            catch ( IOException exc )
+            {
+                //nop
+            }
+        }
+        return true;
     }
 }

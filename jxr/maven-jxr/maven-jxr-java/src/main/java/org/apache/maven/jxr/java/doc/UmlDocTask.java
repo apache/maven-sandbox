@@ -20,6 +20,7 @@ package org.apache.maven.jxr.java.doc;
  */
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
 import org.apache.tools.ant.BuildException;
@@ -225,15 +226,7 @@ public class UmlDocTask
     {
         try
         {
-            GenerateUMLDoc generator = new GenerateUMLDoc( getSrcDir(), getOut() );
-            if ( this.dotExecutable != null )
-            {
-                generator.setDotExecutable( dotExecutable );
-            }
-            if ( StringUtils.isNotEmpty( this.encoding ) )
-            {
-                generator.setEncoding( this.encoding );
-            }
+            GenerateUMLDoc generator = new GenerateUMLDoc();
             generator.setVerbose( this.verbose );
             if ( this.show != null )
             {
@@ -247,15 +240,18 @@ public class UmlDocTask
             {
                 generator.setJavasrcPath( this.javasrcPath );
             }
-            if ( StringUtils.isNotEmpty( this.diagramEncoding ) )
-            {
-                generator.setDiagramEncoding( this.diagramEncoding );
-            }
             if ( StringUtils.isNotEmpty( this.diagramLabel ) )
             {
                 generator.setDiagramLabel( this.diagramLabel );
             }
-            generator.generateUML();
+            if ( this.dotExecutable != null )
+            {
+                generator.generate( this.dotExecutable, getSrcDir(), this.encoding, getOut(), this.diagramEncoding );
+            }
+            else
+            {
+                generator.generate( getSrcDir(), this.encoding, getOut(), this.diagramEncoding );
+            }
         }
         catch ( IllegalArgumentException e )
         {
@@ -274,6 +270,15 @@ public class UmlDocTask
             }
 
             log( "Dot is not present in the path: " + e.getMessage(), Project.MSG_ERR );
+        }
+        catch ( IOException e )
+        {
+            if ( !failOnError )
+            {
+                throw new BuildException( "IOException: " + e.getMessage(), e, getLocation() );
+            }
+
+            log( "IOException: " + e.getMessage(), Project.MSG_ERR );
         }
         catch ( UmlDocException e )
         {
