@@ -20,6 +20,7 @@ package org.apache.maven.jxr.ant.doc;
  */
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
 import org.apache.tools.ant.BuildException;
@@ -43,6 +44,9 @@ public class AntDocTask
 
     /** Graphviz Dot executable file */
     private File dotExecutable;
+
+    /** Verbose mode */
+    private boolean verbose;
 
     /** Terminate Ant build */
     private boolean failOnError;
@@ -75,6 +79,16 @@ public class AntDocTask
     public void setDotExecutable( File dotExecutable )
     {
         this.dotExecutable = dotExecutable;
+    }
+
+    /**
+     * Set verbose mode.
+     *
+     * @param b true to verbose mode.
+     */
+    public void setVerbose( boolean b )
+    {
+        this.verbose = b;
     }
 
     /**
@@ -112,9 +126,16 @@ public class AntDocTask
     {
         try
         {
-            GenerateHTMLDoc generator = new GenerateHTMLDoc( this.antFile, this.destDir );
-            generator.setDotExecutable( this.dotExecutable );
-            generator.generateDoc();
+            GenerateHTMLDoc generator = new GenerateHTMLDoc();
+            generator.setVerbose( this.verbose );
+            if ( this.dotExecutable != null )
+            {
+                generator.generate( this.dotExecutable, this.antFile, this.destDir );
+            }
+            else
+            {
+                generator.generate( this.antFile, this.destDir );
+            }
         }
         catch ( IllegalArgumentException e )
         {
@@ -133,6 +154,15 @@ public class AntDocTask
             }
 
             log( "Dot is not present in the path: " + e.getMessage(), Project.MSG_ERR );
+        }
+        catch ( IOException e )
+        {
+            if ( !failOnError )
+            {
+                throw new BuildException( "IOException: " + e.getMessage(), e, getLocation() );
+            }
+
+            log( "IOException: " + e.getMessage(), Project.MSG_ERR );
         }
         catch ( AntDocException e )
         {

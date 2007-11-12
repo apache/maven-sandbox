@@ -36,6 +36,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.maven.jxr.ant.doc.vizant.Vizant;
 import org.apache.maven.jxr.util.DotUtil;
 import org.apache.maven.jxr.util.DotUtil.DotNotPresentInPathException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.cli.CommandLineException;
@@ -48,8 +49,11 @@ import org.codehaus.plexus.util.cli.CommandLineException;
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
+ * @plexus.component role="org.apache.maven.jxr.ant.doc.AntDoc" role-hint="default"
  */
 public class GenerateHTMLDoc
+    extends AbstractLogEnabled
+    implements AntDoc
 {
     /** An ant file */
     private File antFile;
@@ -59,6 +63,9 @@ public class GenerateHTMLDoc
 
     /** Graphviz Dot executable file */
     private File dotExecutable;
+
+    /** Verbose mode */
+    private boolean verbose;
 
     /** Temp xsl file */
     private File xml2dot;
@@ -78,13 +85,13 @@ public class GenerateHTMLDoc
     /** Temp generated touch graph */
     private File buildtg;
 
-    /**
-     * @param antFile
-     * @param destDir
-     * @throws IllegalArgumentException
-     */
-    public GenerateHTMLDoc( File antFile, File destDir )
-        throws IllegalArgumentException
+    // ----------------------------------------------------------------------
+    // Public
+    // ----------------------------------------------------------------------
+
+    /** {@inheritDoc} */
+    public void generate( File antFile, File destDir )
+        throws IllegalArgumentException, DotNotPresentInPathException, IOException, AntDocException
     {
         if ( antFile == null )
         {
@@ -92,109 +99,32 @@ public class GenerateHTMLDoc
         }
         if ( !antFile.exists() || !antFile.isFile() )
         {
-            throw new IllegalArgumentException( "Input '" + getAntFile() + "' not found or not a file." );
+            throw new IOException( "Input '" + antFile + "' not found or not a file." );
         }
 
         if ( destDir == null )
         {
-            throw new IllegalArgumentException( "Missing mandatory attribute 'dest'." );
+            throw new IllegalArgumentException( "Missing mandatory attribute 'destDir'." );
         }
         if ( destDir.exists() && !destDir.isDirectory() )
         {
-            throw new IllegalArgumentException( "Dest directory is a file." );
+            throw new IOException( "Input '" + destDir + "' is a file." );
         }
         if ( !destDir.exists() && !destDir.mkdirs() )
         {
-            throw new IllegalArgumentException( "Cannot create the dest directory." );
+            throw new IOException( "Cannot create the dest directory '" + destDir + "'." );
         }
 
         this.antFile = antFile;
         this.destDir = destDir;
-    }
 
-    /**
-     * @return the Ant file which be parsed.
-     */
-    public File getAntFile()
-    {
-        return this.antFile;
-    }
-
-    /**
-     * @return the dest dir
-     */
-    public File getDestDir()
-    {
-        return this.destDir;
-    }
-
-    /**
-     * Getter for the dotExecutable
-     *
-     * @return the dotExecutable
-     */
-    public File getDotExecutable()
-    {
-        return this.dotExecutable;
-    }
-
-    /**
-     * Setter for the antFile
-     *
-     * @param antFile the antFile to set
-     */
-    public void setAntFile( File antFile )
-    {
-        this.antFile = antFile;
-    }
-
-    /**
-     * Setter for the destDir
-     *
-     * @param destDir the destDir to set
-     */
-    public void setDestDir( File destDir )
-    {
-        this.destDir = destDir;
-    }
-
-    /**
-     * Setter for the dotExecutable
-     *
-     * @param dotExecutable the dotExecutable to set
-     */
-    public void setDotExecutable( File dotExecutable )
-    {
-        this.dotExecutable = dotExecutable;
-    }
-
-    /**
-     * Generate the documentation.
-     *
-     * @throws DotNotPresentInPathException if any
-     * @throws AntDocException if any
-     */
-    public void generateDoc()
-        throws DotNotPresentInPathException, AntDocException
-    {
         // 1. Generate Vizant graph
-        try
-        {
-            generateVizantBuildGraph();
-        }
-        catch ( IOException e )
-        {
-            throw new AntDocException( "IOException: " + e.getMessage() );
-        }
+        generateVizantBuildGraph();
 
         // 2. Generate dot graph
         try
         {
             generateDotBuildGraph();
-        }
-        catch ( IOException e )
-        {
-            throw new AntDocException( "IOException: " + e.getMessage() );
         }
         catch ( TransformerException e )
         {
@@ -216,19 +146,87 @@ public class GenerateHTMLDoc
         {
             generateSite();
         }
-        catch ( IOException e )
-        {
-            throw new AntDocException( "IOException: " + e.getMessage() );
-        }
         catch ( TransformerException e )
         {
             throw new AntDocException( "TransformerException: " + e.getMessage() );
         }
     }
 
+    /** {@inheritDoc} */
+    public void generate( File graphExecutable, File antFile, File destDir )
+        throws IllegalArgumentException, DotNotPresentInPathException, IOException, AntDocException
+    {
+        if ( dotExecutable == null )
+        {
+            throw new IllegalArgumentException( "Missing mandatory attribute 'dotExecutable'." );
+        }
+        if ( !dotExecutable.exists() || !dotExecutable.isFile() )
+        {
+            throw new IOException( "Input '" + dotExecutable + "' not found or not a file." );
+        }
+        this.dotExecutable = graphExecutable;
+
+        generate( antFile, destDir );
+    }
+
+    // ----------------------------------------------------------------------
+    // Protected
+    // ----------------------------------------------------------------------
+
+    /**
+     * Setter for the verbose. Used by Ant task
+     *
+     * @param verbose the verbose to set
+     */
+    protected void setVerbose( boolean verbose )
+    {
+        this.verbose = verbose;
+    }
+
     // ----------------------------------------------------------------------
     // Private
     // ----------------------------------------------------------------------
+
+    /**
+     * @return the Ant file which be parsed.
+     */
+    private File getAntFile()
+    {
+        return this.antFile;
+    }
+
+    /**
+     * @return the dest dir
+     */
+    private File getDestDir()
+    {
+        return this.destDir;
+    }
+
+    /**
+     * Getter for the dotExecutable
+     *
+     * @return the dotExecutable
+     */
+    private File getDotExecutable()
+    {
+        return this.dotExecutable;
+    }
+
+    /**
+     * Getter for the verbose
+     *
+     * @return the verbose
+     */
+    private boolean isVerbose()
+    {
+        if ( getLogger() != null ) // for Ant tasks
+        {
+            return !getLogger().isInfoEnabled();
+        }
+
+        return this.verbose;
+    }
 
     /**
      * @return xsl temp file.
@@ -240,7 +238,10 @@ public class GenerateHTMLDoc
         if ( this.xml2dot == null )
         {
             this.xml2dot = FileUtils.createTempFile( "xml2dot", ".xsl", getDestDir() );
-            this.xml2dot.deleteOnExit();
+            if ( !isVerbose() )
+            {
+                this.xml2dot.deleteOnExit();
+            }
 
             InputStream is = getClass().getClassLoader().getResourceAsStream( "vizant/xml2dot.xsl" );
             if ( is == null )
@@ -270,7 +271,10 @@ public class GenerateHTMLDoc
         if ( this.xml2html == null )
         {
             this.xml2html = FileUtils.createTempFile( "xml2html", ".xsl", getDestDir() );
-            this.xml2html.deleteOnExit();
+            if ( !isVerbose() )
+            {
+                this.xml2html.deleteOnExit();
+            }
 
             InputStream is = getClass().getClassLoader().getResourceAsStream( "vizant/xml2html.xsl" );
             if ( is == null )
@@ -300,7 +304,10 @@ public class GenerateHTMLDoc
         if ( this.xml2tg == null )
         {
             this.xml2tg = FileUtils.createTempFile( "xml2tg", ".xsl", getDestDir() );
-            this.xml2tg.deleteOnExit();
+            if ( !isVerbose() )
+            {
+                this.xml2tg.deleteOnExit();
+            }
 
             InputStream is = getClass().getClassLoader().getResourceAsStream( "vizant/xml2tg.xsl" );
             if ( is == null )
@@ -317,7 +324,7 @@ public class GenerateHTMLDoc
             IOUtil.close( w );
         }
 
-        return this.xml2html;
+        return this.xml2tg;
     }
 
     /**
@@ -328,7 +335,10 @@ public class GenerateHTMLDoc
         if ( this.buildGraph == null )
         {
             this.buildGraph = FileUtils.createTempFile( "buildgraph", ".xml", getDestDir() );
-            this.buildGraph.deleteOnExit();
+            if ( !isVerbose() )
+            {
+                this.buildGraph.deleteOnExit();
+            }
         }
 
         return this.buildGraph;
@@ -342,7 +352,10 @@ public class GenerateHTMLDoc
         if ( this.dot == null )
         {
             this.dot = FileUtils.createTempFile( "buildgraph", ".dot", getDestDir() );
-            this.dot.deleteOnExit();
+            if ( !isVerbose() )
+            {
+                this.dot.deleteOnExit();
+            }
         }
 
         return this.dot;
@@ -356,7 +369,10 @@ public class GenerateHTMLDoc
         if ( this.buildtg == null )
         {
             this.buildtg = FileUtils.createTempFile( "buildtg", ".xml", getDestDir() );
-            this.buildtg.deleteOnExit();
+            if ( !isVerbose() )
+            {
+                this.buildtg.deleteOnExit();
+            }
         }
 
         return this.buildtg;
