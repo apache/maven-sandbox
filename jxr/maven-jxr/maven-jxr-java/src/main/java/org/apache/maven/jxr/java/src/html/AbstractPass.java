@@ -26,7 +26,6 @@ import java.util.StringTokenizer;
 import java.util.TimeZone;
 
 import org.apache.maven.jxr.java.src.GenerateHTMLJavaSrc;
-import org.apache.maven.jxr.java.src.JavaSrc;
 import org.apache.maven.jxr.java.src.JavaSrcOptions;
 
 /**
