@@ -31,9 +31,6 @@ import java.util.List;
  */
 public class JavaSrcOptions
 {
-    /** Singleton pattern */
-    private static JavaSrcOptions singleton;
-
     /** Specifies the text to be placed at the bottom of each output file. */
     private String bottom;
 
@@ -78,22 +75,9 @@ public class JavaSrcOptions
 
     // TODO add no* options a la javadoc
 
-    private JavaSrcOptions()
+    public JavaSrcOptions()
     {
         // nop
-    }
-
-    /**
-     * @return a singleton instance of <code>Configuration</code>.
-     */
-    public static JavaSrcOptions getInstance()
-    {
-        if ( singleton == null )
-        {
-            singleton = new JavaSrcOptions();
-        }
-
-        return singleton;
     }
 
     /**

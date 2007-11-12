@@ -93,22 +93,22 @@ public class JavaSrcTask
     {
         try
         {
-            JavaSrc javaSrc = new JavaSrc( getSrcDir(), getDestDir() );
+            JavaSrcOptions options = new JavaSrcOptions();
+            options.setBottom( bottom );
+            options.setDocencoding( docencoding );
+            options.setDoctitle( doctitle );
+            options.setEncoding( encoding );
+            options.setFooter( footer );
+            options.setHeader( header );
+            options.setPackagesheader( packagesheader );
+            options.setRecurse( recurse );
+            options.setStylesheetfile( stylesheetfile );
+            options.setTop( top );
+            options.setVerbose( verbose );
+            options.setWindowtitle( windowtitle );
 
-            javaSrc.getOptions().setBottom( bottom );
-            javaSrc.getOptions().setDocencoding( docencoding );
-            javaSrc.getOptions().setDoctitle( doctitle );
-            javaSrc.getOptions().setEncoding( encoding );
-            javaSrc.getOptions().setFooter( footer );
-            javaSrc.getOptions().setHeader( header );
-            javaSrc.getOptions().setPackagesheader( packagesheader );
-            javaSrc.getOptions().setRecurse( recurse );
-            javaSrc.getOptions().setStylesheetfile( stylesheetfile );
-            javaSrc.getOptions().setTop( top );
-            javaSrc.getOptions().setVerbose( verbose );
-            javaSrc.getOptions().setWindowtitle( windowtitle );
-
-            javaSrc.pass();
+            JavaSrc javaSrc = new GenerateHTMLJavaSrc();
+            javaSrc.generate( getSrcDir(), getDestDir(), options );
         }
         catch ( IllegalArgumentException e )
         {
