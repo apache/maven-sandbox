@@ -23,7 +23,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.android.CommandExecutor;
 import org.apache.maven.android.ExecutionException;
-import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.util.List;
@@ -31,29 +30,33 @@ import java.util.ArrayList;
 
 /**
  * @author Shane Isbell
- * @goal install
- * @phase install
+ * @goal pull
+ * @requiresProject false
  * @description
  */
-public class EmulatorInstallerMojo extends AbstractMojo {
+public class DevicePullerMojo extends AbstractMojo {
 
     /**
-     * The maven project.
-     *
-     * @parameter expression="${project}"
+     * @parameter expression="${source}"
      * @required
-     * @readonly
      */
-    private MavenProject project;
+    private File sourceFileOrDirectory;
+
+    /**
+     * @parameter expression="${destination}"
+     * @required
+     */
+    private File destinationFileOrDirectory;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger(this.getLog());
-        File inputFile = new File("target/" + project.getArtifactId() + "-" + project.getVersion() + ".apk");
 
         List<String> commands = new ArrayList<String>();
-        commands.add("install");
-        commands.add(inputFile.getAbsolutePath());
+        commands.add("pull");
+        commands.add(sourceFileOrDirectory.getAbsolutePath());
+        commands.add(destinationFileOrDirectory.getAbsolutePath());
+
         getLog().info("adb " + commands.toString());
         try {
             executor.executeCommand("adb", commands);
