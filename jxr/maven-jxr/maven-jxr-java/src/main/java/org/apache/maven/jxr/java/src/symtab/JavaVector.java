@@ -22,7 +22,6 @@ package org.apache.maven.jxr.java.src.symtab;
 import org.apache.log4j.Logger;
 import org.apache.maven.jxr.java.src.xref.JavaToken;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -118,29 +117,6 @@ public class JavaVector
         while ( e.hasMoreElements() )
         {
             ( (Taggable) e.nextElement() ).generateTags( tagList );
-        }
-    }
-
-    /**
-     * Method generateReferences
-     *
-     * @param output
-     */
-    void generateReferences( FileWriter output )
-    {
-
-        Enumeration e = elements();
-
-        while ( e.hasMoreElements() )
-        {
-            Object element = e.nextElement();
-
-            if ( element instanceof Definition )
-            {
-                Definition d = (Definition) element;
-
-                d.generateReferences( output );
-            }
         }
     }
 

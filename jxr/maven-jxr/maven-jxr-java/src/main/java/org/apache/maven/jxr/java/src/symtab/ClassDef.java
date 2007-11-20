@@ -22,7 +22,6 @@ package org.apache.maven.jxr.java.src.symtab;
 import org.apache.log4j.Logger;
 
 import java.io.Externalizable;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -326,97 +325,6 @@ public class ClassDef
         goals.remove( goal );
 
         return d;
-    }
-
-    /**
-     * @see org.apache.maven.jxr.java.src.symtab.Definition#generateReferences(java.io.FileWriter)
-     */
-    public void generateReferences( FileWriter output )
-    {
-        if ( log.isDebugEnabled() )
-        {
-            log.debug( "generateReferences(FileWriter) - FileWriter output=" + output );
-            log.debug( "generateReferences(FileWriter) - Generating references for:" + getName() );
-        }
-
-        try
-        {
-            output.write( "<p class=\"classReflist\">" );
-
-            String nameString = "<p class=\"classReflistHeader\">Class: <a name=" + getName() + " href="
-                + getSourceName() + "#" + getClassScopeName() + ">" + getScopedClassName() + "</a></p>";
-            String linkFileName;
-            String linkString;
-
-            output.write( nameString );
-
-            JavaVector v = getReferences();
-            Enumeration e = v.elements();
-
-            while ( e.hasMoreElements() )
-            {
-                Occurrence o = (Occurrence) e.nextElement();
-
-                if ( o != null )
-                {
-                    linkFileName = getOccurrencePath( o ) + o.getLinkReference();
-                    linkString = "<p class=\"classRefItem\"><a href=" + linkFileName + ">" + getName() + " in "
-                        + o.getPackageName() + "." + o.getClassName() + "." + o.getMethodName() + " ("
-                        + o.getFile().getName() + ":" + Integer.toString( o.getLine() ) + ")</a></p>\n";
-
-                    output.write( linkString );
-                }
-            }
-
-            JavaHashtable ht = getElements();
-
-            // Variables
-            Enumeration el = ht.elements();
-
-            while ( el.hasMoreElements() )
-            {
-                Object d = el.nextElement();
-
-                if ( d instanceof VariableDef )
-                {
-                    ( (Definition) d ).generateReferences( output );
-                }
-            }
-
-            // Methods
-            el = ht.elements();
-
-            while ( el.hasMoreElements() )
-            {
-                Object d = el.nextElement();
-
-                if ( ( d instanceof MethodDef ) || ( d instanceof MultiDef ) )
-                {
-                    ( (Definition) d ).generateReferences( output );
-                }
-            }
-
-            output.write( "</p>\n" );
-
-            // Now inner classes
-            el = ht.elements();
-
-            while ( el.hasMoreElements() )
-            {
-                Object d = el.nextElement();
-
-                if ( d instanceof ClassDef )
-                {
-                    ( (Definition) d ).generateReferences( output );
-                }
-            }
-        }
-        catch ( Exception ex )
-        {
-            log.error( "Exception: " + ex.getMessage(), ex );
-
-            return;
-        }
     }
 
     /**

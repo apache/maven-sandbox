@@ -22,7 +22,6 @@ package org.apache.maven.jxr.java.src.symtab;
 import org.apache.log4j.Logger;
 
 import java.io.Externalizable;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -288,56 +287,6 @@ public class MethodDef
         }
 
         return null;
-    }
-
-    /**
-     * @see org.apache.maven.jxr.java.src.symtab.Definition#generateReferences(java.io.FileWriter)
-     */
-    public void generateReferences( FileWriter output )
-    {
-
-        String linkString;
-        String linkFileName;
-        String methodName = getName();
-
-        if ( ( methodName != null ) && ( methodName.indexOf( "~constructor~" ) >= 0 ) )
-        {
-            methodName = this.className;
-        }
-
-        try
-        {
-            output.write( "<p class=\"methodReflist\">" );
-
-            String nameString = "<p class=\"methodReflistHeader\">Method: <a name=" + getFullName() + " href="
-                + getSourceName() + "#" + getClassScopeName() + ">" + getFullName() + "</a></p>";
-
-            output.write( nameString );
-
-            JavaVector v = getReferences();
-            Enumeration e = v.elements();
-
-            while ( e.hasMoreElements() )
-            {
-                Occurrence o = (Occurrence) e.nextElement();
-
-                if ( o != null )
-                {
-                    linkFileName = getOccurrencePath( o ) + o.getLinkReference();
-                    linkString = "<p class=\"methodRefItem\"><a href=" + linkFileName + ">" + getName() + " in "
-                        + o.getPackageName() + "." + o.getClassName() + "." + o.getMethodName() + " ("
-                        + o.getFile().getName() + ":" + Integer.toString( o.getLine() ) + ")</a></p>\n";
-
-                    output.write( linkString );
-                }
-            }
-
-            output.write( "</p>" );
-        }
-        catch ( IOException e )
-        {
-            log.error( "IOException: " + e.getMessage(), e );
-        }
     }
 
     /**

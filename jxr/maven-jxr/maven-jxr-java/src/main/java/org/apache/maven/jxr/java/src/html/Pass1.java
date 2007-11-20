@@ -207,11 +207,6 @@ public class Pass1
                 }
             }
 
-            // Create reference files
-            // I.e. generate HTML mark-up of all definitions in this package's .java files
-            // (no longer -- this happens in Pass2 now)
-            // System.out.println("\nWriting definition HTML...");
-            // pDef.generateReferenceFiles(getOutDir());
             pDef.persistDefinitions( getDestDir() );
         }
 

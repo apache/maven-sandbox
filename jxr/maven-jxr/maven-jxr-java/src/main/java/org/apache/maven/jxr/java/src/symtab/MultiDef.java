@@ -19,7 +19,6 @@ package org.apache.maven.jxr.java.src.symtab;
  * under the License.
  */
 
-import java.io.FileWriter;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -136,14 +135,6 @@ public class MultiDef
     public void generateTags( HTMLTagContainer tagList )
     {
         defs.generateTags( tagList );
-    }
-
-    /**
-     * @see org.apache.maven.jxr.java.src.symtab.Definition#generateReferences(java.io.FileWriter)
-     */
-    public void generateReferences( FileWriter output )
-    {
-        defs.generateReferences( output );
     }
 
     /**

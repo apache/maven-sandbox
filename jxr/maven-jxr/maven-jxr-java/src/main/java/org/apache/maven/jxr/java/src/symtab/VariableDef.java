@@ -22,11 +22,8 @@ package org.apache.maven.jxr.java.src.symtab;
 import org.apache.log4j.Logger;
 
 import java.io.Externalizable;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.util.Enumeration;
 
 /**
  * Definition of a variable in a source file.
@@ -86,50 +83,6 @@ public class VariableDef
     public Definition getType()
     {
         return type;
-    }
-
-    /**
-     * @see org.apache.maven.jxr.java.src.symtab.Definition#generateReferences(java.io.FileWriter)
-     */
-    public void generateReferences( FileWriter output )
-    {
-
-        String linkString;
-        String linkFileName;
-
-        try
-        {
-            output.write( "<p class=\"variableReflist\">" );
-
-            String nameString = "<p class=\"variableReflistHeader\">Variable: <a name=" + getName() + " href="
-                + getSourceName() + "#" + getClassScopeName() + ">" + getName() + "</a></p>";
-
-            output.write( nameString );
-
-            JavaVector v = getReferences();
-            Enumeration e = v.elements();
-
-            while ( e.hasMoreElements() )
-            {
-                Occurrence o = (Occurrence) e.nextElement();
-
-                if ( o != null )
-                {
-                    linkFileName = getOccurrencePath( o ) + o.getLinkReference();
-                    linkString = "<p class=\"variableRefItem\"><a href=" + linkFileName + ">" + getName() + " in "
-                        + o.getPackageName() + "." + o.getClassName() + "." + o.getMethodName() + " ("
-                        + o.getFile().getName() + ":" + Integer.toString( o.getLine() ) + ")</a></p>\n";
-
-                    output.write( linkString );
-                }
-            }
-
-            output.write( "</p>" );
-        }
-        catch ( IOException e )
-        {
-            log.error( "IOException: " + e.getMessage(), e );
-        }
     }
 
     /**

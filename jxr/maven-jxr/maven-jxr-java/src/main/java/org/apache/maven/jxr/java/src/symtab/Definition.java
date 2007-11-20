@@ -22,7 +22,6 @@ package org.apache.maven.jxr.java.src.symtab;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.util.StringTokenizer;
 
 /**
@@ -519,17 +518,6 @@ public abstract class Definition
      */
     public void accept( Visitor visitor )
     {
-    }
-
-    /**
-     * generateReferences
-     *
-     * @param output
-     */
-    public void generateReferences( FileWriter output )
-    {
-
-        // Subclasses should override
     }
 
     /**

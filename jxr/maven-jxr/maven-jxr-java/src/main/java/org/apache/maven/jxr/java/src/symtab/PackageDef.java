@@ -225,61 +225,6 @@ public class PackageDef
         }
     }
 
-    // /**
-    // * The reference files are the HTML files that contain links to all references to
-    // * a file's definitions.  There's one reference file per source file, regardless
-    // * of how many classes a source file defines.
-    // */
-    // public void generateReferenceFiles(String path)
-    // {
-    // Enumeration e;
-    // Definition d;
-    // Occurrence o;
-    // String newPath;
-    // File currentFile=null;
-    // // Since more than one class may live in the same file,
-    // // each time we process a class we need to figure out whether
-    // // we already created a reference file for that class's source
-    // // file.  The files Vector contains a File object per reference file.
-    // Vector files=new Vector(20,20);
-    // if (hasElements()) {
-    // JavaHashtable ht = getElements();
-    // e = ht.elements();
-    // // iterate over this package's classes
-    // while (e.hasMoreElements()) {
-    // d = (Definition) e.nextElement();
-    // newPath=path+File.separatorChar+d.getPackagePath();
-    // //              System.out.println("newPath="+newPath);
-    // if (d instanceof ClassDef) {
-    // try {
-    // String refName = ((ScopedDef) d).getRefName();
-    // String fileName=newPath+File.separatorChar+refName;
-    // currentFile=new File(fileName);
-    // FileWriter output;
-    // if (files.contains(currentFile)) {
-    // output = new FileWriter(currentFile.getPath(),true);
-    // }
-    // else {
-    // SymbolTable.createDirs(currentFile);
-    // output = new FileWriter(currentFile);
-    // files.addElement(currentFile);
-    // output.write("<html><head><link rel=\"stylesheet\" " +
-    // "type=\"text/css\"" +
-    // "href=\"" +
-    // javasrc.app.JavaSrc.getBackupPath(d.getPackageName()) +
-    // "styles.css\"></head><body>");
-    // }
-    // ((ClassDef) d).generateReferences(output);
-    // output.write("</body></html>");
-    // output.flush();
-    // output.close();
-    // }
-    // catch (Exception ex) {ex.printStackTrace(); }
-    // }
-    // }
-    // }
-    // }
-
     /**
      * Method generateClassList
      *

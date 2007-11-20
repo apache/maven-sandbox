@@ -22,7 +22,6 @@ package org.apache.maven.jxr.java.src.symtab;
 import org.apache.log4j.Logger;
 
 import java.io.Externalizable;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -328,13 +327,6 @@ public class ClassDefProxy
     JavaVector getSubClasses()
     {
         return null;
-    }
-
-    /**
-     * @see org.apache.maven.jxr.java.src.symtab.ClassDef#generateReferences(java.io.FileWriter)
-     */
-    public void generateReferences( FileWriter output )
-    {
     }
 
     /**
