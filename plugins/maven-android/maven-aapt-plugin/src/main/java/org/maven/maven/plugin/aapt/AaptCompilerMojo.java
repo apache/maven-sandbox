@@ -71,7 +71,8 @@ public class AaptCompilerMojo extends AbstractMojo {
 
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger(this.getLog());
-        File resourceDirectory = new File("res");
+
+        File resourceDirectory = new File(project.getBasedir(), "res");
 
         Artifact artifact = artifactFactory.createArtifact("android", "android", androidVersion, "jar", "jar");
         ArtifactRepositoryLayout defaultLayout = new DefaultRepositoryLayout();
@@ -82,10 +83,10 @@ public class AaptCompilerMojo extends AbstractMojo {
         commands.add("compile");
         commands.add("-m");
         commands.add("-J");
-        commands.add("src");
+        commands.add(project.getBasedir().getAbsolutePath() +  File.separatorChar + "src");
 
         commands.add("-M");
-        commands.add("AndroidManifest.xml");
+        commands.add(project.getBasedir().getAbsolutePath() +  File.separatorChar + "AndroidManifest.xml");
         if (resourceDirectory.exists()) {
             commands.add("-S");
             commands.add(resourceDirectory.getAbsolutePath());
@@ -94,7 +95,7 @@ public class AaptCompilerMojo extends AbstractMojo {
         commands.add(androidJar.getAbsolutePath());
         getLog().info("aapt " + commands.toString());
         try {
-            executor.executeCommand("aapt", commands);
+            executor.executeCommand("aapt", commands, project.getBasedir(), false);
         } catch (ExecutionException e) {
             throw new MojoExecutionException("", e);
         }

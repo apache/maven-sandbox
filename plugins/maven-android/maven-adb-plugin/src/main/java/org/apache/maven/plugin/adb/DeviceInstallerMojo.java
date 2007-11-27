@@ -49,7 +49,8 @@ public class DeviceInstallerMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger(this.getLog());
-        File inputFile = new File("target/" + project.getArtifactId() + "-" + project.getVersion() + ".apk");
+        File inputFile = new File(project.getBasedir(), "target/" + project.getArtifactId() + "-"
+                + project.getVersion() + ".apk");
 
         List<String> commands = new ArrayList<String>();
         commands.add("install");

@@ -51,8 +51,9 @@ public class DxMojo extends AbstractMojo {
 
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger(this.getLog());
-        File outputFile = new File("target/classes.dex");
-        File inputFile = new File("target/" + project.getArtifactId() + "-" + project.getVersion() + ".jar");
+        File outputFile = new File(project.getBasedir(), "target" + File.separator + "classes.dex");
+        File inputFile = new File(project.getBasedir(), "target" + File.separator + project.getArtifactId() + "-"
+                + project.getVersion() + ".jar");
 
         List<String> commands = new ArrayList<String>();
         commands.add("--dex");
@@ -60,7 +61,7 @@ public class DxMojo extends AbstractMojo {
         commands.add(inputFile.getAbsolutePath());
         getLog().info("dx " + commands.toString());
         try {
-            executor.executeCommand("dx", commands);
+            executor.executeCommand("dx", commands, project.getBasedir(), false);
         } catch (ExecutionException e) {
             throw new MojoExecutionException("", e);
         }

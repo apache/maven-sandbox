@@ -88,15 +88,16 @@ public class AaptPackagerMojo extends AbstractMojo {
         File androidJar = new File(localRepository, defaultLayout.pathOf(artifact));
 
         tmpOutputFile.deleteOnExit();
-        File outputFile = new File("target/" + project.getArtifactId() + "-" + project.getVersion() + ".apk");
-        File resourceDirectory = new File("res");
+        File outputFile = new File(project.getBasedir(), "target" + File.separator + project.getArtifactId() + "-"
+                + project.getVersion() + ".apk");
+        File resourceDirectory = new File(project.getBasedir(), "res");
 
         List<String> commands = new ArrayList<String>();
         commands.add("package");
         commands.add("-f");
         commands.add("-c");
         commands.add("-M");
-        commands.add("AndroidManifest.xml");
+        commands.add(project.getBasedir().getAbsolutePath() +  File.separatorChar + "AndroidManifest.xml");
         if (resourceDirectory.exists()) {
             commands.add("-S");
             commands.add(resourceDirectory.getAbsolutePath());
@@ -106,7 +107,7 @@ public class AaptPackagerMojo extends AbstractMojo {
         commands.add(tmpOutputFile.getAbsolutePath());
         getLog().info("aapt " + commands.toString());
         try {
-            executor.executeCommand("aapt", commands);
+            executor.executeCommand("aapt", commands,  project.getBasedir(), false);
         } catch (ExecutionException e) {
             throw new MojoExecutionException("", e);
         }
@@ -128,7 +129,7 @@ public class AaptPackagerMojo extends AbstractMojo {
                 is.close();
             }
             os.putNextEntry(new ZipEntry("classes.dex"));
-            is = new FileInputStream("target/classes.dex");
+            is = new FileInputStream(project.getBasedir().getAbsolutePath() +  File.separatorChar + "target/classes.dex");
             byte[] buffer = new byte[1024];
             int i;
             while ((i = is.read(buffer)) > 0) {
