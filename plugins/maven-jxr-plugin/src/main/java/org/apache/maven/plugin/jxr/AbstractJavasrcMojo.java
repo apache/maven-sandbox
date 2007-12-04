@@ -187,9 +187,9 @@ public abstract class AbstractJavasrcMojo
         {
             options.setFooter( this.footer );
         }
-        if ( StringUtils.isNotEmpty( this.footer ) )
+        if ( StringUtils.isNotEmpty( this.header ) )
         {
-            options.setHeader( this.footer );
+            options.setHeader( this.header );
         }
         if ( StringUtils.isNotEmpty( this.packagesheader ) )
         {
