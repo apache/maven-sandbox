@@ -48,6 +48,8 @@ extends AbstractMojoTestCase
             ( 5 <= result.getArchetypes ().size () )
             && ( result.getArchetypes ().size () >= 7 )
         );
+        
+        instance.writeCatalog(result, new File(repository, "archetype-catalog.xml"));
     }
 
 //    public void testCrawl2 ()

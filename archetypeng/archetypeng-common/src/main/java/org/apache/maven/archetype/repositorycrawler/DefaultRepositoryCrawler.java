@@ -26,16 +26,16 @@ import org.apache.maven.archetype.catalog.ArchetypeCatalog;
 import org.apache.maven.archetype.common.ArchetypeArtifactManager;
 import org.apache.maven.archetype.exception.UnknownArchetype;
 import org.apache.maven.model.Model;
-import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
-import java.util.Collection;
 import java.util.Iterator;
+import org.apache.maven.archetype.catalog.io.xpp3.ArchetypeCatalogXpp3Writer;
 
 /**
  * @author            rafale
@@ -154,5 +154,21 @@ implements RepositoryCrawler
             getLogger ().warn ( "File is not a directory" );
             return null;
         } // end if-else
+    }
+
+    public boolean writeCatalog ( ArchetypeCatalog archetypeCatalog, File archetypeCatalogFile )
+    {
+        try
+        {
+            ArchetypeCatalogXpp3Writer catalogWriter = new ArchetypeCatalogXpp3Writer ();
+
+            catalogWriter.write ( new FileWriter ( archetypeCatalogFile ), archetypeCatalog );
+            return true;
+        }
+        catch ( IOException ex )
+        {
+            getLogger ().warn ( "Catalog can not be writen to " + archetypeCatalogFile, ex );
+            return false;
+        }
     }
 }
