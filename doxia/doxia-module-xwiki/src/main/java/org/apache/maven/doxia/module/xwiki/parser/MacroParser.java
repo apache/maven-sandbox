@@ -47,8 +47,8 @@ public class MacroParser
     {
         String macroName = null;
         Map parameters = new HashMap();
-        String parameterName;
-        String parameterValue;
+        String parameterName = null;
+        String content = "";
 
         int state = STATE_NAME;
         StringBuffer text = new StringBuffer();
@@ -81,15 +81,16 @@ public class MacroParser
                     break;
                     // {macroname:... /}. Contraction of {macroname:...}{/macroname}
                 case '/':
-                    if ( state != STATE_PARAM_VALUE )
-                    {
-                        throw new ParseException( "Invalid position for character '/' in Macro" );
-                    }
-                    else
+                    if ( state == STATE_PARAM_VALUE || state == STATE_NAME)
                     {
                         if ( charAt( input, i ) == '}' )
                         {
                             i++;
+                            if (state == STATE_PARAM_VALUE) {
+                                parameters.put(parameterName, text.toString());
+                            } else {
+                                macroName = text.toString();
+                            }
                             state = STATE_END;
                         }
                         else
@@ -97,6 +98,11 @@ public class MacroParser
                             // We allow the '/' character in parameter values.
                             text.append( c );
                         }
+                    }
+                    else if (state == STATE_CONTENT) {
+                        text.append(c);
+                    } else {
+                        throw new ParseException( "Invalid position for character '/' in Macro" );
                     }
                     break;
                     // {macro:...} or {macro:...}...{macro} or {macro:...}...{/macro}
@@ -106,8 +112,26 @@ public class MacroParser
                     // * {oldsinglelinemacro:...}
                     // * {oldmultilinemacro:...}...{oldmultilinemacro}
                     // * {oldmultilinemacro:...}...{/oldmultilinemacro}
-                    if ( state == STATE_PARAM_VALUE )
+                    if ( state == STATE_PARAM_VALUE)
                     {
+                        parameters.put(parameterName, text.toString());
+                        text = new StringBuffer();
+
+                        // {macro:...}
+                        if ( isInCompatibilityMode )
+                        {
+                            // TODO
+                            throw new ParseException( "Compatibility mode for macros not implemented yet" );
+                        }
+                        else
+                        {
+                            state = STATE_CONTENT;
+                        }
+                    }
+                    else if ( state == STATE_NAME) {
+                        macroName = text.toString();
+                        text = new StringBuffer();
+
                         // {macro:...}
                         if ( isInCompatibilityMode )
                         {
@@ -145,6 +169,13 @@ public class MacroParser
                         // TODO: We should probably verify here that the name of the closed macro
                         // corresponds to the current macro being parsed. For now we just assume it
                         // is.
+                        content = text.toString();
+                        i++;
+                        char cc;
+                        do {
+                            i++;
+                            cc = input.charAt( i );
+                        } while ( cc != '}' && i < input.length() );
                         state = STATE_END;
                     }
                     else
@@ -176,7 +207,7 @@ public class MacroParser
                     // supported too in param values.
                     if ( state == STATE_PARAM_VALUE )
                     {
-                        parameterValue = text.toString();
+                        parameters.put(parameterName, text.toString());
                         text = new StringBuffer();
                         state = STATE_PARAM_NAME;
                     }
@@ -192,7 +223,7 @@ public class MacroParser
                 case '=':
                     if ( state == STATE_PARAM_NAME )
                     {
-                        parameterValue = text.toString();
+                        parameterName = text.toString();
                         text = new StringBuffer();
                         state = STATE_PARAM_VALUE;
                     }
@@ -212,7 +243,7 @@ public class MacroParser
             i++;
         }
 
-        blocks.add( new MacroBlock( macroName, new HashMap(), new ArrayList() ) );
+        blocks.add( new MacroBlock( macroName, parameters, content, new ArrayList() ) );
 
         return i;
     }
