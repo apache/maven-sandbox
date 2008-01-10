@@ -49,7 +49,8 @@ extends AbstractMojoTestCase
             && ( result.getArchetypes ().size () >= 7 )
         );
         
-        instance.writeCatalog(result, new File(repository, "archetype-catalog.xml"));
+        // TODO: should write to another directory 
+//        instance.writeCatalog(result, new File(repository, "archetype-catalog.xml"));
     }
 
 //    public void testCrawl2 ()
