@@ -97,7 +97,7 @@ public class AaptPackagerMojo extends AbstractMojo {
         commands.add("-f");
         commands.add("-c");
         commands.add("-M");
-        commands.add(project.getBasedir().getAbsolutePath() +  File.separatorChar + "AndroidManifest.xml");
+        commands.add(project.getBasedir().getAbsolutePath() + File.separatorChar + "AndroidManifest.xml");
         if (resourceDirectory.exists()) {
             commands.add("-S");
             commands.add(resourceDirectory.getAbsolutePath());
@@ -107,7 +107,7 @@ public class AaptPackagerMojo extends AbstractMojo {
         commands.add(tmpOutputFile.getAbsolutePath());
         getLog().info("aapt " + commands.toString());
         try {
-            executor.executeCommand("aapt", commands,  project.getBasedir(), false);
+            executor.executeCommand("aapt", commands, project.getBasedir(), false);
         } catch (ExecutionException e) {
             throw new MojoExecutionException("", e);
         }
@@ -129,7 +129,7 @@ public class AaptPackagerMojo extends AbstractMojo {
                 is.close();
             }
             os.putNextEntry(new ZipEntry("classes.dex"));
-            is = new FileInputStream(project.getBasedir().getAbsolutePath() +  File.separatorChar + "target/classes.dex");
+            is = new FileInputStream(project.getBasedir().getAbsolutePath() + File.separatorChar + "target/classes.dex");
             byte[] buffer = new byte[1024];
             int i;
             while ((i = is.read(buffer)) > 0) {
@@ -155,5 +155,7 @@ public class AaptPackagerMojo extends AbstractMojo {
                 }
             }
         }
+
+        project.getArtifact().setFile(outputFile);
     }
 }

@@ -10,7 +10,7 @@ Steps to get working:
 5) Create an android project: http://code.google.com/android/reference/othertools.html#activitycreator
 6) Create a pom.xml file for the project
 
-The packaging type is android:dex
+The packaging type is android:apk
 
 Sample POM
 <?xml version="1.0" encoding="UTF-8"?>
@@ -20,7 +20,7 @@ Sample POM
    <groupId>org.apache.maven</groupId>
    <artifactId>maven-test</artifactId>
    <version>1.0.1-sandbox</version>
-   <packaging>android:dex</packaging>
+   <packaging>android:apk</packaging>
    <name>maven-test</name>
    <description>Maven Plugin for Android DX</description>
    <dependencies>
