@@ -113,6 +113,10 @@ public class AaptPackagerMojo extends AbstractMojo {
         } catch (ExecutionException e) {
             throw new MojoExecutionException("", e);
         }
+
+        File dexClassesFile = new File(project.getBasedir(), "target" + File.separator + project.getArtifactId() + "-"
+                + project.getVersion() + "-classes.dex");
+
         ZipOutputStream os = null;
         InputStream is = null;
 
@@ -131,7 +135,7 @@ public class AaptPackagerMojo extends AbstractMojo {
                 is.close();
             }
             os.putNextEntry(new ZipEntry("classes.dex"));
-            is = new FileInputStream(project.getBasedir().getAbsolutePath() + File.separatorChar + "target/classes.dex");
+            is = new FileInputStream(dexClassesFile);
             byte[] buffer = new byte[1024];
             int i;
             while ((i = is.read(buffer)) > 0) {

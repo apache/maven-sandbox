@@ -26,10 +26,16 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.apache.maven.android.ExecutionException;
 import org.apache.maven.android.CommandExecutor;
+import org.apache.maven.artifact.Artifact;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.io.File;
+import java.util.Enumeration;
+import java.util.jar.JarFile;
+import java.util.jar.JarEntry;
+import java.io.*;
 
 /**
  * @author Shane Isbell
@@ -57,14 +63,36 @@ public class DxMojo extends AbstractMojo {
 
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger(this.getLog());
-        File outputFile = new File(project.getBasedir(), "target" + File.separator + "classes.dex");
+
+
+        File outputFile = new File(project.getBasedir(), "target" + File.separator + project.getArtifactId() + "-"
+                + project.getVersion() + "-classes.dex");
         File inputFile = new File(project.getBasedir(), "target" + File.separator + project.getArtifactId() + "-"
                 + project.getVersion() + ".jar");
+
+        //Unpackage all dependent and main classes
+        File outputDirectory = new File(project.getBuild().getDirectory(), "android-classes");
+        for (Artifact artifact : (List<Artifact>) project.getCompileArtifacts()) {
+            if (artifact.getGroupId().equals("android")) {
+                continue;
+            }
+            try {
+                unjar(new JarFile(artifact.getFile()), outputDirectory);
+            } catch (IOException e) {
+                throw new MojoExecutionException("", e);
+            }
+        }
+
+        try {
+            unjar(new JarFile(inputFile), outputDirectory);
+        } catch (IOException e) {
+            throw new MojoExecutionException("", e);
+        }
 
         List<String> commands = new ArrayList<String>();
         commands.add("--dex");
         commands.add("--output=" + outputFile.getAbsolutePath());
-        commands.add(inputFile.getAbsolutePath());
+        commands.add(outputDirectory.getAbsolutePath());
         getLog().info("dx " + commands.toString());
         try {
             executor.executeCommand("dx", commands, project.getBasedir(), false);
@@ -73,5 +101,18 @@ public class DxMojo extends AbstractMojo {
         }
 
         mavenProjectHelper.attachArtifact(project, "jar", project.getArtifact().getClassifier(), inputFile);
+    }
+
+    private static void unjar(JarFile jarFile, File outputDirectory) throws IOException {
+        for (Enumeration en = jarFile.entries(); en.hasMoreElements();) {
+            JarEntry entry = (JarEntry) en.nextElement();
+            File entryFile = new File(outputDirectory, entry.getName());
+            if (!entryFile.getParentFile().exists() && !entry.getName().startsWith("META-INF")) {
+                entryFile.getParentFile().mkdirs();
+            }
+            if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+                IOUtil.copy(jarFile.getInputStream(entry), new FileOutputStream(entryFile));
+            }
+        }
     }
 }
