@@ -23,6 +23,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 import org.apache.maven.android.ExecutionException;
 import org.apache.maven.android.CommandExecutor;
 
@@ -47,6 +48,11 @@ public class DxMojo extends AbstractMojo {
      */
     private MavenProject project;
 
+    /**
+     * @component
+     */
+    private MavenProjectHelper mavenProjectHelper;
+
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
@@ -65,5 +71,7 @@ public class DxMojo extends AbstractMojo {
         } catch (ExecutionException e) {
             throw new MojoExecutionException("", e);
         }
+
+        mavenProjectHelper.attachArtifact(project, "jar", project.getArtifact().getClassifier(), inputFile);
     }
 }

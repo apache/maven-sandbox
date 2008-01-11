@@ -25,6 +25,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.android.CommandExecutor;
 import org.apache.maven.android.ExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
@@ -86,6 +87,7 @@ public class AaptPackagerMojo extends AbstractMojo {
         ArtifactRepositoryLayout defaultLayout = new DefaultRepositoryLayout();
 
         File androidJar = new File(localRepository, defaultLayout.pathOf(artifact));
+        artifact.setFile(androidJar);
 
         tmpOutputFile.deleteOnExit();
         File outputFile = new File(project.getBasedir(), "target" + File.separator + project.getArtifactId() + "-"
@@ -157,5 +159,6 @@ public class AaptPackagerMojo extends AbstractMojo {
         }
 
         project.getArtifact().setFile(outputFile);
+
     }
 }
