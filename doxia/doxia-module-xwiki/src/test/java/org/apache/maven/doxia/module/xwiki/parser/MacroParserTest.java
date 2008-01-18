@@ -2,9 +2,6 @@ package org.apache.maven.doxia.module.xwiki.parser;
 
 import junit.framework.TestCase;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MacroParserTest
     extends TestCase
 {
@@ -18,139 +15,137 @@ public class MacroParserTest
     public void testParseSimplestMacroWithCondensedClosingStyle()
         throws Exception
     {
-        List blocks = new ArrayList();
         String macro = "{macro/}";
-        int pos = parser.parse( macro + " ...", 1, blocks );
+        MacroParser.MacroParserResult result = parser.parse( macro + " ...", 1 );
 
-        assertEquals( macro.length(), pos );
-        assertEquals( 1, blocks.size() );
-        MacroBlock macroBlock = (MacroBlock) blocks.get( 0 );
-        assertEquals( "macro", macroBlock.getName() );
-        assertEquals( "", macroBlock.getContent() );
-        assertTrue( macroBlock.getParameters().isEmpty() );
+        assertEquals( macro.length(), result.position );
+        assertNotNull( result.block );
+        assertEquals( "macro", result.block.getName() );
+        assertEquals( "", result.block.getContent() );
+        assertTrue( result.block.getParameters().isEmpty() );
     }
 
     public void testParseSimplestMacroWithExpandedClosingStyle()
         throws Exception
     {
-        List blocks = new ArrayList();
         String macro = "{macro}{/macro}";
-        int pos = parser.parse( macro + " ...", 1, blocks );
+        MacroParser.MacroParserResult result = parser.parse( macro + " ...", 1 );
 
-        assertEquals( macro.length(), pos );
-        assertEquals( 1, blocks.size() );
-        MacroBlock macroBlock = (MacroBlock) blocks.get( 0 );
-        assertEquals( "macro", macroBlock.getName() );
-        assertEquals( "", macroBlock.getContent() );
-        assertTrue( macroBlock.getParameters().isEmpty() );
+        assertEquals( macro.length(), result.position );
+        assertNotNull( result.block );
+        assertEquals( "macro", result.block.getName() );
+        assertEquals( "", result.block.getContent() );
+        assertTrue( result.block.getParameters().isEmpty() );
     }
 
     public void testParseMacroWithOneParameter()
         throws Exception
     {
-        List blocks = new ArrayList();
         String macro = "{macro:param1=value1/}";
-        int pos = parser.parse( macro + " ...", 1, blocks );
+        MacroParser.MacroParserResult result = parser.parse( macro + " ...", 1 );
 
-        assertEquals( macro.length(), pos );
-        assertEquals( 1, blocks.size() );
-        MacroBlock macroBlock = (MacroBlock) blocks.get( 0 );
-        assertEquals( "macro", macroBlock.getName() );
-        assertEquals( "", macroBlock.getContent() );
-        assertEquals( 1, macroBlock.getParameters().size() );
-        assertEquals( "value1", macroBlock.getParameters().get( "param1" ) );
+        assertEquals( macro.length(), result.position );
+        assertNotNull( result.block );
+        assertEquals( "macro", result.block.getName() );
+        assertEquals( "", result.block.getContent() );
+        assertEquals( 1, result.block.getParameters().size() );
+        assertEquals( "value1", result.block.getParameters().get( "param1" ) );
     }
 
     public void testParseMacroWithSeveralParameters()
         throws Exception
     {
-        List blocks = new ArrayList();
         String macro = "{macro:param1=value1|param2=value2/}";
-        int pos = parser.parse( macro + " ...", 1, blocks );
+        MacroParser.MacroParserResult result = parser.parse( macro + " ...", 1 );
 
-        assertEquals( macro.length(), pos );
-        assertEquals( 1, blocks.size() );
-        MacroBlock macroBlock = (MacroBlock) blocks.get( 0 );
-        assertEquals( "macro", macroBlock.getName() );
-        assertEquals( "", macroBlock.getContent() );
-        assertEquals( 2, macroBlock.getParameters().size() );
-        assertEquals( "value1", macroBlock.getParameters().get( "param1" ) );
-        assertEquals( "value2", macroBlock.getParameters().get( "param2" ) );
+        assertEquals( macro.length(), result.position );
+        assertNotNull( result.block );
+        assertEquals( "macro", result.block.getName() );
+        assertEquals( "", result.block.getContent() );
+        assertEquals( 2, result.block.getParameters().size() );
+        assertEquals( "value1", result.block.getParameters().get( "param1" ) );
+        assertEquals( "value2", result.block.getParameters().get( "param2" ) );
     }
 
     public void testParseMacroWithContent()
         throws Exception
     {
-        List blocks = new ArrayList();
         String macro = "{macro}Some /=|content{/macro}";
-        int pos = parser.parse( macro + " ...", 1, blocks );
+        MacroParser.MacroParserResult result = parser.parse( macro + " ...", 1 );
 
-        assertEquals( macro.length(), pos );
-        assertEquals( 1, blocks.size() );
-        MacroBlock macroBlock = (MacroBlock) blocks.get( 0 );
-        assertEquals( "macro", macroBlock.getName() );
-        assertEquals( "Some /=|content", macroBlock.getContent() );
-        assertEquals( 0, macroBlock.getParameters().size() );
+        assertEquals( macro.length(), result.position );
+        assertNotNull( result.block );
+        assertEquals( "macro", result.block.getName() );
+        assertEquals( "Some /=|content", result.block.getContent() );
+        assertEquals( 0, result.block.getParameters().size() );
     }
 
     public void testParseMacroWithInvalidMacroName()
         throws Exception
     {
-        List blocks = new ArrayList();
         // This is not a macro. It should be ignored and no macro block should be created
         String macro = "{[link]/}";
-        int pos = parser.parse( macro + " ...", 1, blocks );
+        MacroParser.MacroParserResult result = parser.parse( macro + " ...", 1 );
 
-        assertEquals( 1, pos );
-        assertEquals( 0, blocks.size() );
+        assertEquals( 1, result.position );
+        assertNull( result.block );
     }
 
     public void testParseOldStyleMacroInCompatibilityModeWhenMultilineMacro()
         throws Exception
     {
         parser.setCompatibilityMode( true );
-        List blocks = new ArrayList();
         String macro = "{code}Some content here{code}";
-        int pos = parser.parse( macro + " ...", 1, blocks );
+        MacroParser.MacroParserResult result = parser.parse( macro + " ...", 1 );
 
-        assertEquals( macro.length(), pos );
-        assertEquals( 1, blocks.size() );
-        MacroBlock macroBlock = (MacroBlock) blocks.get( 0 );
-        assertEquals( "code", macroBlock.getName() );
-        assertEquals( "Some content here", macroBlock.getContent() );
-        assertEquals( 0, macroBlock.getParameters().size() );
+        assertEquals( macro.length(), result.position );
+        assertNotNull( result.block );
+        assertEquals( "code", result.block.getName() );
+        assertEquals( "Some content here", result.block.getContent() );
+        assertEquals( 0, result.block.getParameters().size() );
     }
 
     public void testParseOldStyleMacroInCompatibilityModeWhenSinglelineMacro()
         throws Exception
     {
         parser.setCompatibilityMode( true );
-        List blocks = new ArrayList();
         String macro = "{somesinglelinemacro}";
-        int pos = parser.parse( macro + " ...", 1, blocks );
+        MacroParser.MacroParserResult result = parser.parse( macro + " ...", 1 );
 
-        assertEquals( macro.length(), pos );
-        assertEquals( 1, blocks.size() );
-        MacroBlock macroBlock = (MacroBlock) blocks.get( 0 );
-        assertEquals( "somesinglelinemacro", macroBlock.getName() );
-        assertEquals( "", macroBlock.getContent() );
-        assertEquals( 0, macroBlock.getParameters().size() );
+        assertEquals( macro.length(), result.position );
+        assertNotNull( result.block );
+        assertEquals( "somesinglelinemacro", result.block.getName() );
+        assertEquals( "", result.block.getContent() );
+        assertEquals( 0, result.block.getParameters().size() );
     }
 
     public void testParseOldStyleMacroWithDefaultParameterWithNoValue()
         throws Exception
     {
         parser.setCompatibilityMode( true );
-        List blocks = new ArrayList();
         String macro = "{macro:value/}";
-        int pos = parser.parse( macro + " ...", 1, blocks );
+        MacroParser.MacroParserResult result = parser.parse( macro + " ...", 1 );
 
-        assertEquals( macro.length(), pos );
-        assertEquals( 1, blocks.size() );
-        MacroBlock macroBlock = (MacroBlock) blocks.get( 0 );
-        assertEquals( "macro", macroBlock.getName() );
-        assertEquals( "", macroBlock.getContent() );
-        assertEquals( 1, macroBlock.getParameters().size() );
-        assertEquals( "value", macroBlock.getParameters().get( "default" ) );
+        assertEquals( macro.length(), result.position );
+        assertNotNull( result.block );
+        assertEquals( "macro", result.block.getName() );
+        assertEquals( "", result.block.getContent() );
+        assertEquals( 1, result.block.getParameters().size() );
+        assertEquals( "value", result.block.getParameters().get( "default" ) );
+    }
+
+    public void testParseOldStyleMacroWithDefaultParameterWithNoValueAndOldClosingStyle()
+        throws Exception
+    {
+        parser.setCompatibilityMode( true );
+        String macro = "{macro:value}";
+        MacroParser.MacroParserResult result = parser.parse( macro + " ...", 1 );
+
+        assertEquals( macro.length(), result.position );
+        assertNotNull( result.block );
+        assertEquals( "macro", result.block.getName() );
+        assertEquals( "", result.block.getContent() );
+        assertEquals( 1, result.block.getParameters().size() );
+        assertEquals( "value", result.block.getParameters().get( "default" ) );
     }
 }

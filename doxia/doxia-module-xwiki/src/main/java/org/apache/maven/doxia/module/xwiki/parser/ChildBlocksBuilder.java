@@ -19,12 +19,12 @@ package org.apache.maven.doxia.module.xwiki.parser;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.confluence.parser.Block;
-import org.apache.maven.doxia.module.confluence.parser.BoldBlock;
-import org.apache.maven.doxia.module.confluence.parser.ItalicBlock;
-import org.apache.maven.doxia.module.confluence.parser.LinebreakBlock;
-import org.apache.maven.doxia.module.confluence.parser.LinkBlock;
-import org.apache.maven.doxia.module.confluence.parser.TextBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.Block;
+import org.apache.maven.doxia.module.xwiki.blocks.BoldBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.ItalicBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.LinebreakBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.LinkBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.TextBlock;
 import org.apache.maven.doxia.parser.ParseException;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -59,6 +59,11 @@ public class ChildBlocksBuilder
     public ChildBlocksBuilder( String input )
     {
         this.input = input;
+    }
+
+    public void setCompatibilityMode( boolean isInCompatibilityMode )
+    {
+        macroParser.setCompatibilityMode( isInCompatibilityMode );
     }
 
     /**
@@ -147,7 +152,9 @@ public class ChildBlocksBuilder
                     break;
                 case '{':
                     text = addTextBlockIfNecessary( blocks, specialBlocks, text );
-                    i = macroParser.parse( input, i + 1, blocks ) - 2;
+                    MacroParser.MacroParserResult result = macroParser.parse( input, i + 1 );
+                    i = result.position - 1;
+                    blocks.add( result.block );
                     break;
                 case '\\':
 

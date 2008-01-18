@@ -19,9 +19,8 @@ package org.apache.maven.doxia.module.xwiki.parser;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.confluence.parser.Block;
-import org.apache.maven.doxia.module.confluence.parser.BlockParser;
-import org.apache.maven.doxia.module.confluence.parser.FigureBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.Block;
+import org.apache.maven.doxia.module.xwiki.blocks.FigureBlock;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
@@ -31,9 +30,11 @@ import org.apache.maven.doxia.util.ByLineSource;
  * {@link org.apache.maven.doxia.module.xwiki.parser.MacroParser} when they're inside a paragraph.
  */
 public class FigureBlockParser
-    implements BlockParser
+    extends AbstractBlockParser
 {
-    static String LS = System.getProperty( "line.separator" );
+    private static String LS = System.getProperty( "line.separator" );
+
+    private MacroParser macroParser = new MacroParser();
 
     public boolean accept( String line, ByLineSource source )
     {
@@ -43,8 +44,22 @@ public class FigureBlockParser
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {
-        int pos = line.indexOf( "{image:" );
-        int pos2 = line.indexOf( "}", pos + 7 );
-        return new FigureBlock( line.substring( pos + 7, pos2 ) );
+        macroParser.setCompatibilityMode( isInCompatibilityMode() );
+        MacroParser.MacroParserResult result = macroParser.parse( line, 1 );
+
+        String caption = (String) result.block.getParameters().get( "alt" );
+        String location = (String) result.block.getParameters().get( "default" );
+
+        if ( location == null )
+        {
+            location = (String) result.block.getParameters().get( "file" );
+        }
+
+        if ( caption == null )
+        {
+            return new FigureBlock( location );
+        }
+
+        return new FigureBlock( location, caption );
     }
 }

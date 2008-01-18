@@ -20,7 +20,7 @@ package org.apache.maven.doxia.module.xwiki;
  */
 
 import org.apache.maven.doxia.module.confluence.parser.Block;
-import org.apache.maven.doxia.module.confluence.parser.BlockParser;
+import org.apache.maven.doxia.module.xwiki.parser.BlockParser;
 import org.apache.maven.doxia.module.xwiki.parser.FigureBlockParser;
 import org.apache.maven.doxia.module.xwiki.parser.ParagraphBlockParser;
 import org.apache.maven.doxia.module.xwiki.parser.SectionBlockParser;
@@ -52,6 +52,8 @@ public class XWikiParser
     {
         BlockParser headingParser = new SectionBlockParser();
         BlockParser figureParser = new FigureBlockParser();
+        figureParser.setCompatibilityMode( true );
+
 //        BlockParser verbatimParser = new VerbatimBlockParser();
 //        BlockParser definitionParser = new DefinitionListBlockParser();
 //        BlockParser horizontalRuleParser = new HorizontalRuleBlockParser();
@@ -60,12 +62,19 @@ public class XWikiParser
 
         BlockParser[] subparsers = new BlockParser[]{headingParser, figureParser/*, listParser, tableParser*/};
         BlockParser paragraphParser = new ParagraphBlockParser( subparsers );
+        paragraphParser.setCompatibilityMode( true );
 
         parsers = new BlockParser[]{headingParser, figureParser/*, verbatimParser, definitionParser, horizontalRuleParser,
                 listParser, tableParser*/, paragraphParser};
     }
 
-    public List parse( ByLineSource source )
+    public List parse( Reader reader )
+        throws ParseException
+    {
+        return parse( new ByLineReaderSource( reader ) );
+    }
+
+    private List parse( ByLineSource source )
         throws ParseException
     {
         List blocks = new ArrayList();

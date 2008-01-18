@@ -1,5 +1,6 @@
 package org.apache.maven.doxia.module.xwiki.parser;
 
+import org.apache.maven.doxia.module.xwiki.blocks.MacroBlock;
 import org.apache.maven.doxia.parser.ParseException;
 
 import java.util.ArrayList;
@@ -44,6 +45,13 @@ public class MacroParser
 
     private List multilineMacros;
 
+    public class MacroParserResult
+    {
+        public int position;
+
+        public MacroBlock block;
+    }
+
     public MacroParser()
     {
         this.multilineMacros = new ArrayList();
@@ -57,9 +65,10 @@ public class MacroParser
         this.isInCompatibilityMode = isInCompatibilityMode;
     }
 
-    public int parse( String input, int position, List blocks )
+    public MacroParserResult parse( String input, int position )
         throws ParseException
     {
+        MacroParserResult result = new MacroParserResult();
         String macroName = null;
         Map parameters = new HashMap();
         String parameterName = null;
@@ -121,7 +130,7 @@ public class MacroParser
                     {
                         text.append( c );
                     }
-                    else if (isInCompatibilityMode && state == STATE_PARAM_NAME)
+                    else if ( isInCompatibilityMode && state == STATE_PARAM_NAME )
                     {
                         if ( charAt( input, i ) == '}' )
                         {
@@ -146,7 +155,32 @@ public class MacroParser
                     // * {newmacro..}...{/newmacro}
                     // * {oldsinglelinemacro:...}
                     // * {oldmultilinemacro:...}...{oldmultilinemacro}
-                    if ( state == STATE_PARAM_VALUE )
+                    if ( state == STATE_PARAM_NAME )
+                    {
+                        if ( isInCompatibilityMode )
+                        {
+                            parameters.put( "default", text.toString() );
+                            text = new StringBuffer();
+
+                            // Since we can't guess if a macro is a multiline one or a single line one we rely on
+                            // a static list of known multiline macros...
+                            if ( multilineMacros.contains( macroName ) )
+                            {
+                                state = STATE_CONTENT;
+                            }
+                            else
+                            {
+                                state = STATE_END;
+                            }
+
+                        }
+                        else
+                        {
+                            throw new ParseException(
+                                "A value must be specified for a macro parameter (e.g. param=value)" );
+                        }
+                    }
+                    else if ( state == STATE_PARAM_VALUE )
                     {
                         parameters.put( parameterName, text.toString() );
                         text = new StringBuffer();
@@ -324,10 +358,12 @@ public class MacroParser
 
         if ( macroName != null )
         {
-            blocks.add( new MacroBlock( macroName, parameters, content, new ArrayList() ) );
+            result.block = new MacroBlock( macroName, parameters, content );
         }
 
-        return i;
+        result.position = i;
+
+        return result;
     }
 
     private static char charAt( String input, int i )

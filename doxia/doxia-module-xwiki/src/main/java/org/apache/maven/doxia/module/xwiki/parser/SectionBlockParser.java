@@ -19,9 +19,8 @@ package org.apache.maven.doxia.module.xwiki.parser;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.confluence.parser.Block;
-import org.apache.maven.doxia.module.confluence.parser.BlockParser;
-import org.apache.maven.doxia.module.confluence.parser.SectionBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.Block;
+import org.apache.maven.doxia.module.xwiki.blocks.SectionBlock;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
@@ -30,7 +29,7 @@ import org.apache.maven.doxia.util.ByLineSource;
  * @version $Id$
  */
 public class SectionBlockParser
-    implements BlockParser
+    extends AbstractBlockParser
 {
     public boolean accept( String line, ByLineSource source )
     {

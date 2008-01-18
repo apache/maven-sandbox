@@ -19,16 +19,14 @@ package org.apache.maven.doxia.module.xwiki.parser;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.confluence.parser.Block;
-import org.apache.maven.doxia.module.confluence.parser.BlockParser;
-import org.apache.maven.doxia.module.confluence.parser.ParagraphBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.Block;
+import org.apache.maven.doxia.module.xwiki.blocks.ParagraphBlock;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
 public class ParagraphBlockParser
-    implements BlockParser
+    extends AbstractBlockParser
 {
-
     private BlockParser[] parsers;
 
     public ParagraphBlockParser( BlockParser[] parsers )
@@ -47,6 +45,7 @@ public class ParagraphBlockParser
     {
 
         ChildBlocksBuilder builder = new ChildBlocksBuilder( appendUntilEmptyLine( line, source ) );
+        builder.setCompatibilityMode( isInCompatibilityMode() );
         return new ParagraphBlock( builder.getBlocks() );
     }
 

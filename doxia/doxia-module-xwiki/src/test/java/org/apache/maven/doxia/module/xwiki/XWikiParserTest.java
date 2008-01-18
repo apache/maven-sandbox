@@ -19,166 +19,58 @@ package org.apache.maven.doxia.module.xwiki;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.AbstractParserTest;
-import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.TextSink;
-import org.codehaus.plexus.util.StringUtils;
+import junit.framework.TestCase;
+import org.apache.maven.doxia.module.xwiki.blocks.FigureBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.ParagraphBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.TextBlock;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.StringReader;
+import java.util.List;
 
 /**
  * Test class for XWikiParser.
  */
 public class XWikiParserTest
-    extends AbstractParserTest
+    extends TestCase
 {
     private XWikiParser parser;
 
-    private StringWriter output;
-
-    private Reader reader;
-
-    private Writer writer;
-
-    /**
-     * {@inheritDoc}
-     */
     protected void setUp()
+    {
+        this.parser = new XWikiParser();
+    }
+
+    public void testSimpleImageOnALine()
         throws Exception
     {
-        super.setUp();
+        List blocks = parser.parse( new StringReader( "{image:photo.jpg}" ) );
 
-        parser = (XWikiParser) lookup( Parser.ROLE, "xwiki" );
-
-        output = null;
-        reader = null;
-        writer = null;
+        assertEquals( 1, blocks.size() );
+        assertTrue( blocks.get( 0 ) instanceof FigureBlock );
+        FigureBlock figureBlock = (FigureBlock) blocks.get( 0 );
+        assertEquals( "photo.jpg", figureBlock.getLocation() );
+        assertNull( figureBlock.getCaption() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void tearDown()
+    public void testImageInsideAParagraph()
         throws Exception
     {
-        if ( output != null )
-        {
-            output.close();
-        }
-        if ( reader != null )
-        {
-            reader.close();
-        }
-        if ( writer != null )
-        {
-            writer.close();
-        }
+        List blocks = parser.parse( new StringReader( "Image inside a {image:photo.jpg} paragraph." ) );
+        assertEquals( 1, blocks.size() );
+        assertTrue( blocks.get( 0 ) instanceof ParagraphBlock );
+        ParagraphBlock paraBlock = (ParagraphBlock) blocks.get( 0 );
+        assertEquals( 3, paraBlock.getBlocks().size() );
+        assertTrue( paraBlock.getBlocks().get( 0 ) instanceof TextBlock );
+        TextBlock textBlock1 = (TextBlock) paraBlock.getBlocks().get( 0 );
+        assertEquals( "Image inside a ", textBlock1.getText() );
 
-        super.tearDown();
+        // TODO: Decide if generate a MacroBlock or a FigureBlock
+        /*
+        FigureBlock figureBlock = (FigureBlock) paraBlock.getBlocks().get( 1 );
+        assertEquals( "photo.jpg ", figureBlock.getLocation() );
+        assertNull( figureBlock.getCaption() );
+        */
+        TextBlock textBlock2 = (TextBlock) paraBlock.getBlocks().get( 2 );
+        assertEquals( " paragraph.", textBlock2.getText() );
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected Parser createParser()
-    {
-        return parser;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected String outputExtension()
-    {
-        return "xwiki";
-    }
-
-    /**
-     * @throws Exception
-     */
-    public void testSectionTitles()
-        throws Exception
-    {
-        String result = locateAndParseTestSourceFile( "section" );
-
-        for ( int i = 1; i <= 5; i++ )
-        {
-            assertContainsLines( "Could not locate section " + i + " title", result,
-                                 "sectionTitle" + i + "\ntext: Section" + i );
-        }
-
-        assertContainsLines( "Section title has leading space", result, "sectionTitle1\ntext: TitleWithLeadingSpace" );
-        assertContainsLines( "Section title has leading spaces before title", result,
-                             "sectionTitle1\ntext: TitleWithSpacesBefore" );
-    }
-
-    /**
-     * @throws Exception
-     */
-    public void testFigure()
-        throws Exception
-    {
-        String result = locateAndParseTestSourceFile( "figure" );
-
-        assertContainsLines( result, "begin:figure\nfigureGraphics, name: photo.jpg\nend:figure\n" );
-        assertContainsLines( result, "Simple paragraph with {image:image.jpg}." );
-    }
-
-    /**
-     * @throws Exception
-     */
-    public void testParagraphWithSimpleFormatting()
-        throws Exception
-    {
-        String result = locateAndParseTestSourceFile( "simple-paragraph" );
-
-        assertContainsLines( result, "begin:bold\ntext: bold\n" );
-        assertContainsLines( result, "begin:italic\ntext: italic\n" );
-        assertContainsLines( result, "begin:monospaced\ntext: monospaced\n" );
-        assertContainsLines( result, "begin:link, name: http://jira.codehaus.org\ntext: http://jira.codehaus.org" );
-        assertContainsLines( result, "begin:link, name: http://jira.codehaus.org\ntext: JIRA\n" );
-        // four paragraphs in the input...
-        assertEquals( 5, result.split( "end:paragraph" ).length );
-    }
-
-    private void assertContainsLines( String message, String result, String lines )
-    {
-        lines = StringUtils.replace( lines, "\n", EOL );
-        if ( message != null )
-        {
-            assertTrue( message, result.indexOf( lines ) != -1 );
-        }
-        else
-        {
-            assertTrue( result.indexOf( lines ) != -1 );
-        }
-    }
-
-    private void assertContainsLines( String result, String lines )
-    {
-        this.assertContainsLines( null, result, lines );
-    }
-
-    private String locateAndParseTestSourceFile( String stem )
-        throws IOException, ParseException
-    {
-        output = new StringWriter();
-        reader = getTestReader( stem, outputExtension() );
-        writer = getTestWriter( stem, "txt" );
-
-        Sink sink = new TextSink( output );
-        createParser().parse( reader, sink );
-
-        // write to file
-        String expected = output.toString();
-        writer.write( expected );
-        writer.flush();
-        return expected;
-    }
-
 }
