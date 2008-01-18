@@ -3,9 +3,9 @@ package org.apache.maven.doxia.module.xwiki.parser;
 import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
 import org.apache.maven.doxia.sink.Sink;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 public class MacroBlock
     extends AbstractFatherBlock
@@ -15,7 +15,7 @@ public class MacroBlock
     private Map parameters;
 
     private String content;
-    
+
     public MacroBlock( String name, Map parameters, String content, List childBlocks )
     {
         super( childBlocks );
@@ -41,7 +41,7 @@ public class MacroBlock
 
     public Map getParameters()
     {
-        Map newParameters = new HashMap(this.parameters);
+        Map newParameters = new HashMap( this.parameters );
         return newParameters;
     }
 

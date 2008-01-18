@@ -11,7 +11,22 @@ import java.util.Map;
  * This class was written with performance in mind and thus is lacking clarity. Since this code is
  * in the rendering path it's important it be very fast.
  * <p/>
- * NOTE: Do NOT use this parser yet as it's not ready and not working.
+ * TODO: Compare speed with using regex. For example, something like this:
+ * <pre><code>
+ *         Pattern p = Pattern.compile("(?:(.*)(?::)?)?(.*)?(?:/)}(?:(.*)\\{(?:\\/)\1})?");
+ * <p/>
+ *         Matcher m = p.matcher(macro);
+ *         m.find();
+ *         Map parameters = new HashMap();
+ *         if (m.group(2) != null && m.group(2).length() > 0) {
+ *             StringTokenizer st = new StringTokenizer(m.group(2), "|");
+ *             while (st.hasMoreTokens()) {
+ *                 String param = st.nextToken();
+ *                 StringTokenizer st2 = new StringTokenizer(param, "=");
+ *                 parameters.put(st2.nextToken(), st2.nextToken());
+ *             }
+ *          }
+ * </code></pre>
  */
 public class MacroParser
 {
@@ -81,14 +96,17 @@ public class MacroParser
                     break;
                     // {macroname:... /}. Contraction of {macroname:...}{/macroname}
                 case '/':
-                    if ( state == STATE_PARAM_VALUE || state == STATE_NAME)
+                    if ( state == STATE_PARAM_VALUE || state == STATE_NAME )
                     {
                         if ( charAt( input, i ) == '}' )
                         {
                             i++;
-                            if (state == STATE_PARAM_VALUE) {
-                                parameters.put(parameterName, text.toString());
-                            } else {
+                            if ( state == STATE_PARAM_VALUE )
+                            {
+                                parameters.put( parameterName, text.toString() );
+                            }
+                            else
+                            {
                                 macroName = text.toString();
                             }
                             state = STATE_END;
@@ -99,9 +117,12 @@ public class MacroParser
                             text.append( c );
                         }
                     }
-                    else if (state == STATE_CONTENT) {
-                        text.append(c);
-                    } else {
+                    else if ( state == STATE_CONTENT )
+                    {
+                        text.append( c );
+                    }
+                    else
+                    {
                         throw new ParseException( "Invalid position for character '/' in Macro" );
                     }
                     break;
@@ -111,32 +132,48 @@ public class MacroParser
                     // * {newmacro..}...{/newmacro}
                     // * {oldsinglelinemacro:...}
                     // * {oldmultilinemacro:...}...{oldmultilinemacro}
-                    // * {oldmultilinemacro:...}...{/oldmultilinemacro}
-                    if ( state == STATE_PARAM_VALUE)
+                    if ( state == STATE_PARAM_VALUE )
                     {
-                        parameters.put(parameterName, text.toString());
+                        parameters.put( parameterName, text.toString() );
                         text = new StringBuffer();
 
                         // {macro:...}
                         if ( isInCompatibilityMode )
                         {
-                            // TODO
-                            throw new ParseException( "Compatibility mode for macros not implemented yet" );
+                            // Since we can't guess if a macro is a multiline one or a single line one we rely on
+                            // a static list of known multiline macros...
+                            if ( multilineMacros.contains( macroName ) )
+                            {
+                                state = STATE_CONTENT;
+                            }
+                            else
+                            {
+                                state = STATE_END;
+                            }
                         }
                         else
                         {
                             state = STATE_CONTENT;
                         }
                     }
-                    else if ( state == STATE_NAME) {
+                    else if ( state == STATE_NAME )
+                    {
                         macroName = text.toString();
                         text = new StringBuffer();
 
                         // {macro:...}
                         if ( isInCompatibilityMode )
                         {
-                            // TODO
-                            throw new ParseException( "Compatibility mode for macros not implemented yet" );
+                            // Since we can't guess if a macro is a multiline one or a single line one we rely on
+                            // a static list of known multiline macros...
+                            if ( multilineMacros.contains( macroName ) )
+                            {
+                                state = STATE_CONTENT;
+                            }
+                            else
+                            {
+                                state = STATE_END;
+                            }
                         }
                         else
                         {
@@ -172,10 +209,12 @@ public class MacroParser
                         content = text.toString();
                         i++;
                         char cc;
-                        do {
+                        do
+                        {
                             i++;
                             cc = input.charAt( i );
-                        } while ( cc != '}' && i < input.length() );
+                        }
+                        while ( cc != '}' && i < input.length() );
                         state = STATE_END;
                     }
                     else
@@ -189,8 +228,23 @@ public class MacroParser
                         {
                             if ( isInCompatibilityMode )
                             {
-                                // TODO
-                                throw new ParseException( "Compatibility mode for macros not implemented yet" );
+                                // Allow closing macros without using the '/' character
+                                // TODO: Add special support for code macros nested in other code macros and for
+                                // style macros nested in other style macros.
+
+                                // Verify that the following characters are the name of the macro and thus that this
+                                // '}' is the beginning of the macro closing.
+                                int pos = input.indexOf( macroName + "}", i + 1 );
+                                if ( pos == i + 1 )
+                                {
+                                    state = STATE_END;
+                                    i += macroName.length() + 1;
+                                    content = text.toString();
+                                }
+                                else
+                                {
+                                    text.append( c );
+                                }
                             }
                             else
                             {
@@ -207,7 +261,7 @@ public class MacroParser
                     // supported too in param values.
                     if ( state == STATE_PARAM_VALUE )
                     {
-                        parameters.put(parameterName, text.toString());
+                        parameters.put( parameterName, text.toString() );
                         text = new StringBuffer();
                         state = STATE_PARAM_NAME;
                     }
@@ -237,13 +291,27 @@ public class MacroParser
                     }
                     break;
                 default:
-                    text.append( c );
+                    // Any non alphanumeric character found when parsing the macro name should stop the parsing since
+                    // it means the text being parsed is not a macro.
+                    if ( ( state == STATE_NAME ) && ( ( c < 'a' || c > 'z' ) && ( c < 'A' || c > 'Z' ) ) )
+                    {
+                        // Invalid macro, exit
+                        state = STATE_END;
+                        i = position - 1;
+                    }
+                    else
+                    {
+                        text.append( c );
+                    }
             }
 
             i++;
         }
 
-        blocks.add( new MacroBlock( macroName, parameters, content, new ArrayList() ) );
+        if ( macroName != null )
+        {
+            blocks.add( new MacroBlock( macroName, parameters, content, new ArrayList() ) );
+        }
 
         return i;
     }
