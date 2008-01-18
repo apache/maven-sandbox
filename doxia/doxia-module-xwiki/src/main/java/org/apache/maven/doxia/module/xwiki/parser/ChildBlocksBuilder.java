@@ -147,7 +147,7 @@ public class ChildBlocksBuilder
                     break;
                 case '{':
                     text = addTextBlockIfNecessary( blocks, specialBlocks, text );
-                    i = macroParser.parse( input, i + 1, blocks );
+                    i = macroParser.parse( input, i + 1, blocks ) - 2;
                     break;
                 case '\\':
 

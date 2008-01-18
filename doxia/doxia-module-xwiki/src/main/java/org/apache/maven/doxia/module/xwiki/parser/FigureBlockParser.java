@@ -25,6 +25,11 @@ import org.apache.maven.doxia.module.confluence.parser.FigureBlock;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
+/**
+ * This parser is left for performance reasons since it's very often that an image macro is found on a line by itself.
+ * However note that macros (and thus this image macro) are also parsed by
+ * {@link org.apache.maven.doxia.module.xwiki.parser.MacroParser} when they're inside a paragraph.
+ */
 public class FigureBlockParser
     implements BlockParser
 {

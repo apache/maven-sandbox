@@ -26,7 +26,8 @@ public class MacroBlock
 
     public void before( Sink sink )
     {
-
+        // TODO: Make sure to generate existing events for some macros like for example for the image macro we should
+        // send the same events as the one sent by the FigureBlock block.
     }
 
     public void after( Sink sink )

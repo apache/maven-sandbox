@@ -136,4 +136,21 @@ public class MacroParserTest
         assertEquals( "", macroBlock.getContent() );
         assertEquals( 0, macroBlock.getParameters().size() );
     }
+
+    public void testParseOldStyleMacroWithDefaultParameterWithNoValue()
+        throws Exception
+    {
+        parser.setCompatibilityMode( true );
+        List blocks = new ArrayList();
+        String macro = "{macro:value/}";
+        int pos = parser.parse( macro + " ...", 1, blocks );
+
+        assertEquals( macro.length(), pos );
+        assertEquals( 1, blocks.size() );
+        MacroBlock macroBlock = (MacroBlock) blocks.get( 0 );
+        assertEquals( "macro", macroBlock.getName() );
+        assertEquals( "", macroBlock.getContent() );
+        assertEquals( 1, macroBlock.getParameters().size() );
+        assertEquals( "value", macroBlock.getParameters().get( "default" ) );
+    }
 }

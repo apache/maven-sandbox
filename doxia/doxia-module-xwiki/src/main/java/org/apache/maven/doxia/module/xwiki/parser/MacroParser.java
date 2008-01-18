@@ -121,6 +121,20 @@ public class MacroParser
                     {
                         text.append( c );
                     }
+                    else if (isInCompatibilityMode && state == STATE_PARAM_NAME)
+                    {
+                        if ( charAt( input, i ) == '}' )
+                        {
+                            // In compatibility mode, allow a parameter without value
+                            i++;
+                            parameters.put( "default", text.toString() );
+                            state = STATE_END;
+                        }
+                        else
+                        {
+                            throw new ParseException( "Character '/' is not valid in parameter names" );
+                        }
+                    }
                     else
                     {
                         throw new ParseException( "Invalid position for character '/' in Macro" );
