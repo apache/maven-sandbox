@@ -121,8 +121,8 @@
   </build>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/site/cookbook/generate-build-time/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/site/cookbook/generate-build-time/</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/sandbox/site/cookbook/generate-build-time/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/trunk/site/cookbook/generate-build-time/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/site/cookbook/generate-build-time/</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/maven/sandbox/trunk/site/cookbook/generate-build-time/</url>
   </scm>
 </project>
