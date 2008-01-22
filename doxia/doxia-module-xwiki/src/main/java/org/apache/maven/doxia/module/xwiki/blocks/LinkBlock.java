@@ -39,6 +39,16 @@ public class LinkBlock
         this.text = text;
     }
 
+    public String getReference()
+    {
+        return this.reference;
+    }
+
+    public String getText()
+    {
+        return this.text;
+    }
+
     public void traverse( Sink sink )
     {
         sink.link( reference );

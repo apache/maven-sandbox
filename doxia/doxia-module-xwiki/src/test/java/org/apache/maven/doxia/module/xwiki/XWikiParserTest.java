@@ -24,6 +24,9 @@ import org.apache.maven.doxia.module.xwiki.blocks.FigureBlock;
 import org.apache.maven.doxia.module.xwiki.blocks.ParagraphBlock;
 import org.apache.maven.doxia.module.xwiki.blocks.TextBlock;
 import org.apache.maven.doxia.module.xwiki.blocks.SectionBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.BoldBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.ItalicBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.LinkBlock;
 
 import java.io.StringReader;
 import java.util.List;
@@ -96,5 +99,36 @@ public class XWikiParserTest
         assertEquals( 1, ((SectionBlock) blocks.get( 5)).getLevel());
         assertEquals( "TitleWithSpacesBefore", ((SectionBlock) blocks.get( 6)).getTitle());
         assertEquals( 1, ((SectionBlock) blocks.get( 6)).getLevel());
+    }
+
+    public void testParagraphWithBoldAndItalic() throws Exception
+    {
+        List blocks = parser.parse( new StringReader( "Simple paragraph with *bold* and ~~italic~~ text." ) );
+        assertEquals( 1, blocks.size() );
+        ParagraphBlock paraBlock = (ParagraphBlock) blocks.get( 0 );
+        assertEquals( 5, paraBlock.getBlocks().size() );
+        assertEquals("Simple paragraph with ", ((TextBlock) paraBlock.getBlocks().get(0)).getText());        
+        BoldBlock boldBlock = (BoldBlock) paraBlock.getBlocks().get(1);
+        assertEquals(1, boldBlock.getBlocks().size());
+        assertEquals("bold", ((TextBlock) boldBlock.getBlocks().get(0)).getText());      
+        assertEquals(" and ", ((TextBlock) paraBlock.getBlocks().get(2)).getText());        
+        ItalicBlock italicBlock = (ItalicBlock) paraBlock.getBlocks().get(3);
+        assertEquals(1, italicBlock.getBlocks().size());
+        assertEquals("italic", ((TextBlock) italicBlock.getBlocks().get(0)).getText());
+        assertEquals(" text.", ((TextBlock) paraBlock.getBlocks().get(4)).getText());
+    }
+
+    /**
+     * Note: The Link parser is tested in the link parser test class. Here we're just testing that the XWiki parser
+     * understands a link inside a paragraph.
+     */
+    public void testParagraphWithLink() throws Exception
+    {
+        List blocks = parser.parse( new StringReader( "[JIRA|http://jira.codehaus.org]" ) );
+        assertEquals( 1, blocks.size() );
+        ParagraphBlock paraBlock = (ParagraphBlock) blocks.get( 0 );
+        assertEquals( 1, paraBlock.getBlocks().size() );
+        assertEquals("JIRA", ((LinkBlock) paraBlock.getBlocks().get(0)).getText());
+        assertEquals("http://jira.codehaus.org", ((LinkBlock) paraBlock.getBlocks().get(0)).getReference());        
     }
 }
