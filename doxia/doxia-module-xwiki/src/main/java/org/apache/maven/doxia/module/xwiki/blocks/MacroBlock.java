@@ -1,7 +1,5 @@
 package org.apache.maven.doxia.module.xwiki.blocks;
 
-import org.apache.maven.doxia.module.confluence.parser.Block;
-import org.apache.maven.doxia.module.confluence.parser.FigureBlock;
 import org.apache.maven.doxia.sink.Sink;
 
 import java.util.HashMap;
@@ -25,15 +23,7 @@ public class MacroBlock
 
     public void traverse( Sink sink )
     {
-        if ( name.equalsIgnoreCase( "image" ) )
-        {
-            FigureBlock block = new FigureBlock( (String) parameters.get( "default" ), (String) null );
-            block.traverse( sink );
-        }
-        else
-        {
-            // TODO
-        }
+        // TODO
     }
 
     public String getName()

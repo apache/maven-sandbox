@@ -63,13 +63,9 @@ public class XWikiParserTest
         assertTrue( paraBlock.getBlocks().get( 0 ) instanceof TextBlock );
         TextBlock textBlock1 = (TextBlock) paraBlock.getBlocks().get( 0 );
         assertEquals( "Image inside a ", textBlock1.getText() );
-
-        // TODO: Decide if generate a MacroBlock or a FigureBlock
-        /*
         FigureBlock figureBlock = (FigureBlock) paraBlock.getBlocks().get( 1 );
-        assertEquals( "photo.jpg ", figureBlock.getLocation() );
+        assertEquals( "photo.jpg", figureBlock.getLocation() );
         assertNull( figureBlock.getCaption() );
-        */
         TextBlock textBlock2 = (TextBlock) paraBlock.getBlocks().get( 2 );
         assertEquals( " paragraph.", textBlock2.getText() );
     }

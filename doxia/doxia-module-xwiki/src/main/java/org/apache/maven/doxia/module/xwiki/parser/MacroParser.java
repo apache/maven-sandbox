@@ -1,5 +1,7 @@
 package org.apache.maven.doxia.module.xwiki.parser;
 
+import org.apache.maven.doxia.module.xwiki.blocks.Block;
+import org.apache.maven.doxia.module.xwiki.blocks.FigureBlock;
 import org.apache.maven.doxia.module.xwiki.blocks.MacroBlock;
 import org.apache.maven.doxia.parser.ParseException;
 
@@ -49,7 +51,7 @@ public class MacroParser
     {
         public int position;
 
-        public MacroBlock block;
+        public Block block;
     }
 
     public MacroParser()
@@ -317,7 +319,13 @@ public class MacroParser
                     {
                         text.append( c );
                     }
-                    else
+                    else if (isInCompatibilityMode && state == STATE_PARAM_NAME)
+                    {
+                        parameters.put("default", text.toString());
+                        text = new StringBuffer();
+                        state = STATE_PARAM_NAME;
+                        
+                    }   else
                     {
                         throw new ParseException( "Invalid position for character '|' in Macro" );
                     }
@@ -345,7 +353,6 @@ public class MacroParser
                     {
                         // Invalid macro, exit
                         state = STATE_END;
-                        i = position - 1;
                     }
                     else
                     {
@@ -356,12 +363,46 @@ public class MacroParser
             i++;
         }
 
-        if ( macroName != null )
+        if (state != STATE_END || macroName == null) {
+            // This is not a valid macro. We have two choices here:
+            // 1) decide that the code is not a macro and reset the cursor position at the beginning
+            // 2) throw a parsing exception
+            // For the moment we consider that the code is not a macro (option 1)).
+            result.position = position;  
+        } else
         {
-            result.block = new MacroBlock( macroName, parameters, content );
+            result.block = createAppropriateBlock( macroName, parameters, content );
+            result.position = i;
         }
 
-        result.position = i;
+        return result;
+    }
+
+    private Block createAppropriateBlock( String macroName, Map parameters, String content )
+    {
+        Block result;
+        if ( macroName.equals( "image" ) )
+        {
+            String caption = (String) parameters.get( "alt" );
+            String location = (String) parameters.get( "default" );
+            if ( location == null )
+            {
+                location = (String) parameters.get( "file" );
+            }
+
+            if ( caption == null )
+            {
+                result = new FigureBlock( location );
+            }
+            else
+            {
+                result = new FigureBlock( location, caption );
+            }
+        }
+        else
+        {
+            result = new MacroBlock( macroName, parameters, content );
+        }
 
         return result;
     }

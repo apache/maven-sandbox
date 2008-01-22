@@ -25,7 +25,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
 /**
- * This parser is left for performance reasons since it's very often that an image macro is found on a line by itself.
+ * This parser is required to handle image macro not inside a paragraph (i.e. found on a line by itself).
  * However note that macros (and thus this image macro) are also parsed by
  * {@link org.apache.maven.doxia.module.xwiki.parser.MacroParser} when they're inside a paragraph.
  */
@@ -46,20 +46,6 @@ public class FigureBlockParser
     {
         macroParser.setCompatibilityMode( isInCompatibilityMode() );
         MacroParser.MacroParserResult result = macroParser.parse( line, 1 );
-
-        String caption = (String) result.block.getParameters().get( "alt" );
-        String location = (String) result.block.getParameters().get( "default" );
-
-        if ( location == null )
-        {
-            location = (String) result.block.getParameters().get( "file" );
-        }
-
-        if ( caption == null )
-        {
-            return new FigureBlock( location );
-        }
-
-        return new FigureBlock( location, caption );
+        return result.block;
     }
 }
