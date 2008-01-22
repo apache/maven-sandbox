@@ -23,8 +23,8 @@ import org.apache.maven.doxia.sink.Sink;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @todo XWiki supports 6 levels of titles.
  * @version $Id: SectionBlock.java 568157 2007-08-21 15:06:04Z ltheussl $
+ * @todo XWiki supports 6 levels of titles.
  */
 public class SectionBlock
     implements Block

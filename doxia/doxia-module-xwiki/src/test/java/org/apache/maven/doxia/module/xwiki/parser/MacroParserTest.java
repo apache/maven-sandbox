@@ -1,8 +1,8 @@
 package org.apache.maven.doxia.module.xwiki.parser;
 
 import junit.framework.TestCase;
-import org.apache.maven.doxia.module.xwiki.blocks.MacroBlock;
 import org.apache.maven.doxia.module.xwiki.blocks.FigureBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.MacroBlock;
 
 public class MacroParserTest
     extends TestCase
@@ -22,9 +22,9 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertEquals( "macro", ((MacroBlock) result.block).getName() );
-        assertEquals( "", ((MacroBlock) result.block).getContent() );
-        assertTrue( ((MacroBlock) result.block).getParameters().isEmpty() );
+        assertEquals( "macro", ( (MacroBlock) result.block ).getName() );
+        assertEquals( "", ( (MacroBlock) result.block ).getContent() );
+        assertTrue( ( (MacroBlock) result.block ).getParameters().isEmpty() );
     }
 
     public void testParseSimplestMacroWithExpandedClosingStyle()
@@ -35,9 +35,9 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertEquals( "macro", ((MacroBlock) result.block).getName() );
-        assertEquals( "", ((MacroBlock) result.block).getContent() );
-        assertTrue( ((MacroBlock) result.block).getParameters().isEmpty() );
+        assertEquals( "macro", ( (MacroBlock) result.block ).getName() );
+        assertEquals( "", ( (MacroBlock) result.block ).getContent() );
+        assertTrue( ( (MacroBlock) result.block ).getParameters().isEmpty() );
     }
 
     public void testParseMacroWithOneParameter()
@@ -48,10 +48,10 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertEquals( "macro", ((MacroBlock) result.block).getName() );
-        assertEquals( "", ((MacroBlock) result.block).getContent() );
-        assertEquals( 1, ((MacroBlock) result.block).getParameters().size() );
-        assertEquals( "value1", ((MacroBlock) result.block).getParameters().get( "param1" ) );
+        assertEquals( "macro", ( (MacroBlock) result.block ).getName() );
+        assertEquals( "", ( (MacroBlock) result.block ).getContent() );
+        assertEquals( 1, ( (MacroBlock) result.block ).getParameters().size() );
+        assertEquals( "value1", ( (MacroBlock) result.block ).getParameters().get( "param1" ) );
     }
 
     public void testParseMacroWithSeveralParameters()
@@ -62,11 +62,11 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertEquals( "macro", ((MacroBlock) result.block).getName() );
-        assertEquals( "", ((MacroBlock) result.block).getContent() );
-        assertEquals( 2, ((MacroBlock) result.block).getParameters().size() );
-        assertEquals( "value1", ((MacroBlock) result.block).getParameters().get( "param1" ) );
-        assertEquals( "value2", ((MacroBlock) result.block).getParameters().get( "param2" ) );
+        assertEquals( "macro", ( (MacroBlock) result.block ).getName() );
+        assertEquals( "", ( (MacroBlock) result.block ).getContent() );
+        assertEquals( 2, ( (MacroBlock) result.block ).getParameters().size() );
+        assertEquals( "value1", ( (MacroBlock) result.block ).getParameters().get( "param1" ) );
+        assertEquals( "value2", ( (MacroBlock) result.block ).getParameters().get( "param2" ) );
     }
 
     public void testParseMacroWithContent()
@@ -77,9 +77,9 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertEquals( "macro", ((MacroBlock) result.block).getName() );
-        assertEquals( "Some /=|content", ((MacroBlock) result.block).getContent() );
-        assertEquals( 0, ((MacroBlock) result.block).getParameters().size() );
+        assertEquals( "macro", ( (MacroBlock) result.block ).getName() );
+        assertEquals( "Some /=|content", ( (MacroBlock) result.block ).getContent() );
+        assertEquals( 0, ( (MacroBlock) result.block ).getParameters().size() );
     }
 
     public void testParseMacroWithInvalidMacroName()
@@ -102,9 +102,9 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertEquals( "code", ((MacroBlock) result.block).getName() );
-        assertEquals( "Some content here", ((MacroBlock) result.block).getContent() );
-        assertEquals( 0, ((MacroBlock) result.block).getParameters().size() );
+        assertEquals( "code", ( (MacroBlock) result.block ).getName() );
+        assertEquals( "Some content here", ( (MacroBlock) result.block ).getContent() );
+        assertEquals( 0, ( (MacroBlock) result.block ).getParameters().size() );
     }
 
     public void testParseOldStyleMacroInCompatibilityModeWhenSinglelineMacro()
@@ -116,9 +116,9 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertEquals( "somesinglelinemacro", ((MacroBlock) result.block).getName() );
-        assertEquals( "", ((MacroBlock) result.block).getContent() );
-        assertEquals( 0, ((MacroBlock) result.block).getParameters().size() );
+        assertEquals( "somesinglelinemacro", ( (MacroBlock) result.block ).getName() );
+        assertEquals( "", ( (MacroBlock) result.block ).getContent() );
+        assertEquals( 0, ( (MacroBlock) result.block ).getParameters().size() );
     }
 
     public void testParseOldStyleMacroWithDefaultParameterWithNoValue()
@@ -130,10 +130,10 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertEquals( "macro", ((MacroBlock) result.block).getName() );
-        assertEquals( "", ((MacroBlock) result.block).getContent() );
-        assertEquals( 1, ((MacroBlock) result.block).getParameters().size() );
-        assertEquals( "value", ((MacroBlock) result.block).getParameters().get( "default" ) );
+        assertEquals( "macro", ( (MacroBlock) result.block ).getName() );
+        assertEquals( "", ( (MacroBlock) result.block ).getContent() );
+        assertEquals( 1, ( (MacroBlock) result.block ).getParameters().size() );
+        assertEquals( "value", ( (MacroBlock) result.block ).getParameters().get( "default" ) );
     }
 
     public void testParseOldStyleMacroWithDefaultParameterWithNoValueAndOldClosingStyle()
@@ -145,10 +145,10 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertEquals( "macro", ((MacroBlock) result.block).getName() );
-        assertEquals( "", ((MacroBlock) result.block).getContent() );
-        assertEquals( 1, ((MacroBlock) result.block).getParameters().size() );
-        assertEquals( "value", ((MacroBlock) result.block).getParameters().get( "default" ) );
+        assertEquals( "macro", ( (MacroBlock) result.block ).getName() );
+        assertEquals( "", ( (MacroBlock) result.block ).getContent() );
+        assertEquals( 1, ( (MacroBlock) result.block ).getParameters().size() );
+        assertEquals( "value", ( (MacroBlock) result.block ).getParameters().get( "default" ) );
     }
 
     public void testParseImageMacroWithCaptionOldStyle()
@@ -160,9 +160,9 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertTrue(result.block instanceof FigureBlock );
-        assertEquals( "my.png", ((FigureBlock) result.block).getLocation() );
-        assertEquals( "caption", ((FigureBlock) result.block).getCaption());
+        assertTrue( result.block instanceof FigureBlock );
+        assertEquals( "my.png", ( (FigureBlock) result.block ).getLocation() );
+        assertEquals( "caption", ( (FigureBlock) result.block ).getCaption() );
     }
 
     public void testParseImageMacroWithoutCaptionOldStyle()
@@ -174,9 +174,9 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertTrue(result.block instanceof FigureBlock );
-        assertEquals( "my.png", ((FigureBlock) result.block).getLocation() );
-        assertNull( ((FigureBlock) result.block).getCaption());
+        assertTrue( result.block instanceof FigureBlock );
+        assertEquals( "my.png", ( (FigureBlock) result.block ).getLocation() );
+        assertNull( ( (FigureBlock) result.block ).getCaption() );
     }
 
     public void testParseImageMacroNewStyle()
@@ -187,8 +187,8 @@ public class MacroParserTest
 
         assertEquals( macro.length(), result.position );
         assertNotNull( result.block );
-        assertTrue(result.block instanceof FigureBlock );
-        assertEquals( "my.png", ((FigureBlock) result.block).getLocation() );
-        assertNull( ((FigureBlock) result.block).getCaption());
+        assertTrue( result.block instanceof FigureBlock );
+        assertEquals( "my.png", ( (FigureBlock) result.block ).getLocation() );
+        assertNull( ( (FigureBlock) result.block ).getCaption() );
     }
 }

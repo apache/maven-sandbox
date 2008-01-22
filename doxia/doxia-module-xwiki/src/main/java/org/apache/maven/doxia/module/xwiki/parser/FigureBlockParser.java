@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.xwiki.parser;
  */
 
 import org.apache.maven.doxia.module.xwiki.blocks.Block;
-import org.apache.maven.doxia.module.xwiki.blocks.FigureBlock;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 

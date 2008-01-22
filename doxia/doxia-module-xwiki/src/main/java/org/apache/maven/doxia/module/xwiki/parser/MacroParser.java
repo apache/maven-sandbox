@@ -319,13 +319,14 @@ public class MacroParser
                     {
                         text.append( c );
                     }
-                    else if (isInCompatibilityMode && state == STATE_PARAM_NAME)
+                    else if ( isInCompatibilityMode && state == STATE_PARAM_NAME )
                     {
-                        parameters.put("default", text.toString());
+                        parameters.put( "default", text.toString() );
                         text = new StringBuffer();
                         state = STATE_PARAM_NAME;
-                        
-                    }   else
+
+                    }
+                    else
                     {
                         throw new ParseException( "Invalid position for character '|' in Macro" );
                     }
@@ -363,13 +364,15 @@ public class MacroParser
             i++;
         }
 
-        if (state != STATE_END || macroName == null) {
+        if ( state != STATE_END || macroName == null )
+        {
             // This is not a valid macro. We have two choices here:
             // 1) decide that the code is not a macro and reset the cursor position at the beginning
             // 2) throw a parsing exception
             // For the moment we consider that the code is not a macro (option 1)).
-            result.position = position;  
-        } else
+            result.position = position;
+        }
+        else
         {
             result.block = createAppropriateBlock( macroName, parameters, content );
             result.position = i;

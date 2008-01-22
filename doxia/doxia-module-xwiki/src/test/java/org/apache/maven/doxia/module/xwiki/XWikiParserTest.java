@@ -20,13 +20,13 @@ package org.apache.maven.doxia.module.xwiki;
  */
 
 import junit.framework.TestCase;
-import org.apache.maven.doxia.module.xwiki.blocks.FigureBlock;
-import org.apache.maven.doxia.module.xwiki.blocks.ParagraphBlock;
-import org.apache.maven.doxia.module.xwiki.blocks.TextBlock;
-import org.apache.maven.doxia.module.xwiki.blocks.SectionBlock;
 import org.apache.maven.doxia.module.xwiki.blocks.BoldBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.FigureBlock;
 import org.apache.maven.doxia.module.xwiki.blocks.ItalicBlock;
 import org.apache.maven.doxia.module.xwiki.blocks.LinkBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.ParagraphBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.SectionBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.TextBlock;
 
 import java.io.StringReader;
 import java.util.List;
@@ -44,6 +44,10 @@ public class XWikiParserTest
         this.parser = new XWikiParser();
     }
 
+    /**
+     * Note: The Macro parsing is tested in {@link org.apache.maven.doxia.module.xwiki.parser.MacroParserTest}. Here
+     * we're just testing that the XWiki parser understands an image macro by itself on a line.
+     */
     public void testSimpleImageOnALine()
         throws Exception
     {
@@ -56,6 +60,10 @@ public class XWikiParserTest
         assertNull( figureBlock.getCaption() );
     }
 
+    /**
+     * Note: The Macro parsing is tested in {@link org.apache.maven.doxia.module.xwiki.parser.MacroParserTest}. Here
+     * we're just testing that the XWiki parser understands a macro located inside a paragrpah.
+     */
     public void testImageInsideAParagraph()
         throws Exception
     {
@@ -74,61 +82,59 @@ public class XWikiParserTest
         assertEquals( " paragraph.", textBlock2.getText() );
     }
 
-    public void testSections() throws Exception
+    public void testSections()
+        throws Exception
     {
-        String content = "1 Section1\n"
-            + "1.1 Section2\n"
-            + "1.1.1 Section3\n"
-            + "1.1.1.1 Section4\n"
-            + "1.1.1.1.1 Section5\n"
-            + "1  TitleWithLeadingSpace\n"
-            + "   1 TitleWithSpacesBefore";
+        String content = "1 Section1\n" + "1.1 Section2\n" + "1.1.1 Section3\n" + "1.1.1.1 Section4\n" +
+            "1.1.1.1.1 Section5\n" + "1  TitleWithLeadingSpace\n" + "   1 TitleWithSpacesBefore";
         List blocks = parser.parse( new StringReader( content ) );
         assertEquals( 7, blocks.size() );
-        assertEquals( "Section1", ((SectionBlock) blocks.get( 0)).getTitle());
-        assertEquals( 1, ((SectionBlock) blocks.get( 0)).getLevel());
-        assertEquals( "Section2", ((SectionBlock) blocks.get( 1)).getTitle());
-        assertEquals( 2, ((SectionBlock) blocks.get( 1)).getLevel());
-        assertEquals( "Section3", ((SectionBlock) blocks.get( 2)).getTitle());
-        assertEquals( 3, ((SectionBlock) blocks.get( 2)).getLevel());
-        assertEquals( "Section4", ((SectionBlock) blocks.get( 3)).getTitle());
-        assertEquals( 4, ((SectionBlock) blocks.get( 3)).getLevel());
-        assertEquals( "Section5", ((SectionBlock) blocks.get( 4)).getTitle());
-        assertEquals( 5, ((SectionBlock) blocks.get( 4)).getLevel());
-        assertEquals( "TitleWithLeadingSpace", ((SectionBlock) blocks.get( 5)).getTitle());
-        assertEquals( 1, ((SectionBlock) blocks.get( 5)).getLevel());
-        assertEquals( "TitleWithSpacesBefore", ((SectionBlock) blocks.get( 6)).getTitle());
-        assertEquals( 1, ((SectionBlock) blocks.get( 6)).getLevel());
+        assertEquals( "Section1", ( (SectionBlock) blocks.get( 0 ) ).getTitle() );
+        assertEquals( 1, ( (SectionBlock) blocks.get( 0 ) ).getLevel() );
+        assertEquals( "Section2", ( (SectionBlock) blocks.get( 1 ) ).getTitle() );
+        assertEquals( 2, ( (SectionBlock) blocks.get( 1 ) ).getLevel() );
+        assertEquals( "Section3", ( (SectionBlock) blocks.get( 2 ) ).getTitle() );
+        assertEquals( 3, ( (SectionBlock) blocks.get( 2 ) ).getLevel() );
+        assertEquals( "Section4", ( (SectionBlock) blocks.get( 3 ) ).getTitle() );
+        assertEquals( 4, ( (SectionBlock) blocks.get( 3 ) ).getLevel() );
+        assertEquals( "Section5", ( (SectionBlock) blocks.get( 4 ) ).getTitle() );
+        assertEquals( 5, ( (SectionBlock) blocks.get( 4 ) ).getLevel() );
+        assertEquals( "TitleWithLeadingSpace", ( (SectionBlock) blocks.get( 5 ) ).getTitle() );
+        assertEquals( 1, ( (SectionBlock) blocks.get( 5 ) ).getLevel() );
+        assertEquals( "TitleWithSpacesBefore", ( (SectionBlock) blocks.get( 6 ) ).getTitle() );
+        assertEquals( 1, ( (SectionBlock) blocks.get( 6 ) ).getLevel() );
     }
 
-    public void testParagraphWithBoldAndItalic() throws Exception
+    public void testParagraphWithBoldAndItalic()
+        throws Exception
     {
         List blocks = parser.parse( new StringReader( "Simple paragraph with *bold* and ~~italic~~ text." ) );
         assertEquals( 1, blocks.size() );
         ParagraphBlock paraBlock = (ParagraphBlock) blocks.get( 0 );
         assertEquals( 5, paraBlock.getBlocks().size() );
-        assertEquals("Simple paragraph with ", ((TextBlock) paraBlock.getBlocks().get(0)).getText());        
-        BoldBlock boldBlock = (BoldBlock) paraBlock.getBlocks().get(1);
-        assertEquals(1, boldBlock.getBlocks().size());
-        assertEquals("bold", ((TextBlock) boldBlock.getBlocks().get(0)).getText());      
-        assertEquals(" and ", ((TextBlock) paraBlock.getBlocks().get(2)).getText());        
-        ItalicBlock italicBlock = (ItalicBlock) paraBlock.getBlocks().get(3);
-        assertEquals(1, italicBlock.getBlocks().size());
-        assertEquals("italic", ((TextBlock) italicBlock.getBlocks().get(0)).getText());
-        assertEquals(" text.", ((TextBlock) paraBlock.getBlocks().get(4)).getText());
+        assertEquals( "Simple paragraph with ", ( (TextBlock) paraBlock.getBlocks().get( 0 ) ).getText() );
+        BoldBlock boldBlock = (BoldBlock) paraBlock.getBlocks().get( 1 );
+        assertEquals( 1, boldBlock.getBlocks().size() );
+        assertEquals( "bold", ( (TextBlock) boldBlock.getBlocks().get( 0 ) ).getText() );
+        assertEquals( " and ", ( (TextBlock) paraBlock.getBlocks().get( 2 ) ).getText() );
+        ItalicBlock italicBlock = (ItalicBlock) paraBlock.getBlocks().get( 3 );
+        assertEquals( 1, italicBlock.getBlocks().size() );
+        assertEquals( "italic", ( (TextBlock) italicBlock.getBlocks().get( 0 ) ).getText() );
+        assertEquals( " text.", ( (TextBlock) paraBlock.getBlocks().get( 4 ) ).getText() );
     }
 
     /**
-     * Note: The Link parser is tested in the link parser test class. Here we're just testing that the XWiki parser
+     * Note: The Link parsing is tested in the link parser test class. Here we're just testing that the XWiki parser
      * understands a link inside a paragraph.
      */
-    public void testParagraphWithLink() throws Exception
+    public void testParagraphWithLink()
+        throws Exception
     {
         List blocks = parser.parse( new StringReader( "[JIRA|http://jira.codehaus.org]" ) );
         assertEquals( 1, blocks.size() );
         ParagraphBlock paraBlock = (ParagraphBlock) blocks.get( 0 );
         assertEquals( 1, paraBlock.getBlocks().size() );
-        assertEquals("JIRA", ((LinkBlock) paraBlock.getBlocks().get(0)).getText());
-        assertEquals("http://jira.codehaus.org", ((LinkBlock) paraBlock.getBlocks().get(0)).getReference());        
+        assertEquals( "JIRA", ( (LinkBlock) paraBlock.getBlocks().get( 0 ) ).getText() );
+        assertEquals( "http://jira.codehaus.org", ( (LinkBlock) paraBlock.getBlocks().get( 0 ) ).getReference() );
     }
 }
