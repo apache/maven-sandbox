@@ -23,6 +23,7 @@ import junit.framework.TestCase;
 import org.apache.maven.doxia.module.xwiki.blocks.FigureBlock;
 import org.apache.maven.doxia.module.xwiki.blocks.ParagraphBlock;
 import org.apache.maven.doxia.module.xwiki.blocks.TextBlock;
+import org.apache.maven.doxia.module.xwiki.blocks.SectionBlock;
 
 import java.io.StringReader;
 import java.util.List;
@@ -68,5 +69,32 @@ public class XWikiParserTest
         assertNull( figureBlock.getCaption() );
         TextBlock textBlock2 = (TextBlock) paraBlock.getBlocks().get( 2 );
         assertEquals( " paragraph.", textBlock2.getText() );
+    }
+
+    public void testSections() throws Exception
+    {
+        String content = "1 Section1\n"
+            + "1.1 Section2\n"
+            + "1.1.1 Section3\n"
+            + "1.1.1.1 Section4\n"
+            + "1.1.1.1.1 Section5\n"
+            + "1  TitleWithLeadingSpace\n"
+            + "   1 TitleWithSpacesBefore";
+        List blocks = parser.parse( new StringReader( content ) );
+        assertEquals( 7, blocks.size() );
+        assertEquals( "Section1", ((SectionBlock) blocks.get( 0)).getTitle());
+        assertEquals( 1, ((SectionBlock) blocks.get( 0)).getLevel());
+        assertEquals( "Section2", ((SectionBlock) blocks.get( 1)).getTitle());
+        assertEquals( 2, ((SectionBlock) blocks.get( 1)).getLevel());
+        assertEquals( "Section3", ((SectionBlock) blocks.get( 2)).getTitle());
+        assertEquals( 3, ((SectionBlock) blocks.get( 2)).getLevel());
+        assertEquals( "Section4", ((SectionBlock) blocks.get( 3)).getTitle());
+        assertEquals( 4, ((SectionBlock) blocks.get( 3)).getLevel());
+        assertEquals( "Section5", ((SectionBlock) blocks.get( 4)).getTitle());
+        assertEquals( 5, ((SectionBlock) blocks.get( 4)).getLevel());
+        assertEquals( "TitleWithLeadingSpace", ((SectionBlock) blocks.get( 5)).getTitle());
+        assertEquals( 1, ((SectionBlock) blocks.get( 5)).getLevel());
+        assertEquals( "TitleWithSpacesBefore", ((SectionBlock) blocks.get( 6)).getTitle());
+        assertEquals( 1, ((SectionBlock) blocks.get( 6)).getLevel());
     }
 }

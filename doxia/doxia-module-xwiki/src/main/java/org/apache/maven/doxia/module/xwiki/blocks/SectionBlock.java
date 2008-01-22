@@ -23,6 +23,7 @@ import org.apache.maven.doxia.sink.Sink;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @todo XWiki supports 6 levels of titles.
  * @version $Id: SectionBlock.java 568157 2007-08-21 15:06:04Z ltheussl $
  */
 public class SectionBlock
@@ -36,6 +37,16 @@ public class SectionBlock
     {
         this.title = title;
         this.level = level;
+    }
+
+    public String getTitle()
+    {
+        return this.title;
+    }
+
+    public int getLevel()
+    {
+        return this.level;
     }
 
     public void traverse( Sink sink )
