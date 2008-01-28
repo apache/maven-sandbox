@@ -142,8 +142,12 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
             {
                 if ( getBaseURL() == null )
                 {
-                    LOG.warn( "Cannot check link [" + link + "] in page [" + lvi.getSource()
+                    if ( LOG.isWarnEnabled() )
+                    {
+
+                        LOG.warn( "Cannot check link [" + link + "] in page [" + lvi.getSource()
                             + "], as no base URL has been set!" );
+                    }
                     return new LinkValidationResult( LinkcheckFileResult.WARNING_LEVEL, false,
                             "No base URL specified" );
                 }
@@ -161,11 +165,7 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
             {
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.error( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]", t );
-                }
-                else
-                {
-                    LOG.error( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]" );
+                    LOG.debug( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]", t );
                 }
 
                 return new LinkValidationResult( LinkcheckFileResult.ERROR_LEVEL, false, t.getClass().getName() + " : "
@@ -179,8 +179,7 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
 
             if ( hm.getStatusCode() == HttpStatus.SC_OK )
             {
-                return new LinkValidationResult( LinkcheckFileResult.VALID_LEVEL, true, hm.getStatusCode() + " "
-                                + hm.getStatusText() );
+                return new HTTPLinkValidationResult( LinkcheckFileResult.VALID_LEVEL, true, hm.getStatusCode(), hm.getStatusText() );
             }
 
             // If there's a redirection ... add a warning
@@ -188,25 +187,29 @@ public final class OnlineHTTPLinkValidator extends HTTPLinkValidator
                             || hm.getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY
                             || hm.getStatusCode() == HttpStatus.SC_TEMPORARY_REDIRECT )
             {
-                LOG.warn( "Received: [" + hm.getStatusCode() + "] for [" + link + "] in page ["
-                                + lvi.getSource() + "]" );
+                if ( LOG.isWarnEnabled() )
+                {
+                    LOG.warn( "Received: [" + hm.getStatusCode() + "] for [" + link + "] in page [" + lvi.getSource()
+                        + "]" );
+                }
 
-                return new LinkValidationResult( LinkcheckFileResult.WARNING_LEVEL, true, hm.getStatusCode() + " "
-                                + hm.getStatusText() );
+                return new HTTPLinkValidationResult( LinkcheckFileResult.WARNING_LEVEL, true, hm.getStatusCode(), hm.getStatusText() );
             }
 
-            LOG.error( "Received: [" + hm.getStatusCode() + "] for [" + link + "] in page ["
-                            + lvi.getSource() + "]" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Received: [" + hm.getStatusCode() + "] for [" + link + "] in page [" + lvi.getSource()
+                    + "]" );
+            }
 
-            return new LinkValidationResult( LinkcheckFileResult.ERROR_LEVEL, false, hm.getStatusCode() + " "
-                            + hm.getStatusText() );
+            return new HTTPLinkValidationResult( LinkcheckFileResult.ERROR_LEVEL, false, hm.getStatusCode(), hm.getStatusText() );
 
         }
         catch ( Throwable t )
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.error( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]", t );
+                LOG.debug( "Received: [" + t + "] for [" + link + "] in page [" + lvi.getSource() + "]", t );
             }
             else
             {

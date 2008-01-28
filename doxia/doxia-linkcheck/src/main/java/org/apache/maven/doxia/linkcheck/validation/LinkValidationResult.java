@@ -22,10 +22,8 @@ package org.apache.maven.doxia.linkcheck.validation;
 import java.io.Serializable;
 
 /**
- * <p>
  * This class is used to return status responses from the validation handlers. A persistent result means that it can be
  * stored in the persistent cache and used across runs.
- * </p>
  *
  * @author <a href="mailto:bwalding@apache.org">Ben Walding</a>
  * @author <a href="mailto:aheritier@apache.org">Arnaud Heritier</a>
@@ -97,7 +95,12 @@ public class LinkValidationResult implements Serializable
     /** {@inheritDoc} */
     public String toString()
     {
-        return this.persistent + "/" + this.status + "/" + this.errorMessage;
-    }
+        StringBuffer sb = new StringBuffer();
 
+        sb.append( "persistent=" ).append( this.persistent ).append( '\n' );
+        sb.append( "status=" ).append( this.status ).append( '\n' );
+        sb.append( "errorMessage=" ).append( this.errorMessage );
+
+        return sb.toString();
+    }
 }

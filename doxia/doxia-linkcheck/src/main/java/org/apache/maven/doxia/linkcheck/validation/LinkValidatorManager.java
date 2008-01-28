@@ -22,6 +22,8 @@ package org.apache.maven.doxia.linkcheck.validation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
+import org.codehaus.plexus.util.SelectorUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,7 +58,7 @@ public class LinkValidatorManager implements Serializable
     private List validators = new LinkedList();
 
     /** excludes. */
-    private String[] excludes = new String[0];
+    private String[] excludedLinks = new String[0];
 
     /** cache. */
     private Map cache = new HashMap();
@@ -72,23 +74,27 @@ public class LinkValidatorManager implements Serializable
     }
 
     /**
-     * Returns the excludes.
+     * Returns the excludedLinks.
+     * Could contains a link, i.e. <code>http:&#47;&#47;maven.apache.org/</code>,
+     * or pattern links i.e. <code>http:&#47;&#47;maven.apache.org&#47;**&#47;*.html</code>
      *
      * @return String[]
      */
-    public String[] getExcludes()
+    public String[] getExcludedLinks()
     {
-        return this.excludes;
+        return this.excludedLinks;
     }
 
     /**
-     * Sets the excludes.
+     * Sets the excludedLinks.
+     * Could contains a link, i.e. <code>http:&#47;&#47;maven.apache.org/</code>,
+     * or pattern links i.e. <code>http:&#47;&#47;maven.apache.org&#47;**&#47;*.html</code>
      *
      * @param excl The excludes to set.
      */
-    public void setExcludes( String[] excl )
+    public void setExcludedLinks( String[] excl )
     {
-        this.excludes = excl;
+        this.excludedLinks = excl;
     }
 
     /**
@@ -116,9 +122,9 @@ public class LinkValidatorManager implements Serializable
             return cachedResult;
         }
 
-        for ( int i = 0; i < this.excludes.length; i++ )
+        for ( int i = 0; i < this.excludedLinks.length; i++ )
         {
-            if ( this.excludes[i] != null && lvi.getLink().startsWith( this.excludes[i] ) )
+            if ( this.excludedLinks[i] != null && matchPattern( lvi.getLink(), this.excludedLinks[i] ) )
             {
                 if ( LOG.isDebugEnabled() )
                 {
@@ -364,5 +370,26 @@ public class LinkValidatorManager implements Serializable
     public void setCachedResult( Object resourceKey, LinkValidationResult lvr )
     {
         this.cache.put( resourceKey, lvr );
+    }
+
+    protected static boolean matchPattern( String link, String pattern )
+    {
+        if ( pattern.indexOf( '*' ) == -1 )
+        {
+            if ( pattern.endsWith( "/" ) )
+            {
+                return link.indexOf( pattern.substring( 0, pattern.lastIndexOf( '/' ) ) ) != -1;
+            }
+
+            return link.indexOf( pattern ) != -1;
+        }
+
+        String diff = StringUtils.difference( link, pattern );
+        if ( diff.startsWith( "/" ) )
+        {
+            return SelectorUtils.match( pattern, link + "/" );
+        }
+
+        return SelectorUtils.match( pattern, link );
     }
 }

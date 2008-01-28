@@ -23,10 +23,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.maven.doxia.linkcheck.model.LinkcheckFile;
@@ -34,6 +36,7 @@ import org.apache.maven.doxia.linkcheck.model.LinkcheckFileResult;
 import org.apache.maven.doxia.linkcheck.model.LinkcheckModel;
 import org.apache.maven.doxia.linkcheck.model.io.xpp3.LinkcheckModelXpp3Writer;
 import org.apache.maven.doxia.linkcheck.validation.FileLinkValidator;
+import org.apache.maven.doxia.linkcheck.validation.HTTPLinkValidationResult;
 import org.apache.maven.doxia.linkcheck.validation.LinkValidationItem;
 import org.apache.maven.doxia.linkcheck.validation.LinkValidationResult;
 import org.apache.maven.doxia.linkcheck.validation.LinkValidatorManager;
@@ -41,6 +44,7 @@ import org.apache.maven.doxia.linkcheck.validation.MailtoLinkValidator;
 import org.apache.maven.doxia.linkcheck.validation.OfflineHTTPLinkValidator;
 import org.apache.maven.doxia.linkcheck.validation.OnlineHTTPLinkValidator;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * The main bean to be called whenever a set of documents should have their links checked.
@@ -68,8 +72,28 @@ public final class LinkCheck
     /** Linkcheck Cache. */
     private File linkCheckCache;
 
-    /** excluded links. */
+    /**
+     * To exclude some links. Could contains a link, i.e. <code>http:&#47;&#47;maven.apache.org</code>,
+     * or pattern links i.e. <code>http:&#47;&#47;maven.apache.org&#47;**&#47;*.html</code>
+     */
     private String[] excludedLinks = null;
+
+    /** To exclude some pages. */
+    private String[] excludedPages = null;
+
+    /**
+     * Excluded http errors only in on line mode.
+     *
+     * @see {@link HttpStatus} for all defined values.
+     */
+    private int[] excludedHttpStatusErrors = null;
+
+    /**
+     * Excluded http warnings only in on line mode.
+     *
+     * @see {@link HttpStatus} for all defined values.
+     */
+    private int[] excludedHttpStatusWarnings = null;
 
     /** Online mode. */
     private boolean online;
@@ -96,9 +120,10 @@ public final class LinkCheck
     private LinkcheckModel model = new LinkcheckModel();
 
     /**
-     * The current report level. Defaults to LinkCheckResult.WARNING.
+     * The current report level. Defaults to <code>LinkcheckFileResult#WARNING_LEVEL</code>.
      *
      * @return int
+     * @see LinkcheckFileResult#WARNING_LEVEL
      */
     public int getReportLevel()
     {
@@ -177,6 +202,8 @@ public final class LinkCheck
 
     /**
      * Returns the excluded links.
+     * Could contains a link, i.e. <code>http:&#47;&#47;maven.apache.org/</code>,
+     * or pattern links i.e. <code>http:&#47;&#47;maven.apache.org&#47;**&#47;*.html</code>
      *
      * @return String[]
      */
@@ -187,12 +214,78 @@ public final class LinkCheck
 
     /**
      * Sets the excluded links, a String[] with excluded locations.
+     * Could contains a link, i.e. <code>http:&#47;&#47;maven.apache.org/</code>,
+     * or pattern links i.e. <code>http:&#47;&#47;maven.apache.org&#47;**&#47;*.html</code>
      *
      * @param excl The excludes to set
      */
     public void setExcludedLinks( String[] excl )
     {
         this.excludedLinks = excl;
+    }
+
+    /**
+     * Returns the excluded pages.
+     *
+     * @return String[]
+     */
+    public String[] getExcludedPages()
+    {
+        return this.excludedPages;
+    }
+
+    /**
+     * Sets the excluded pages, a String[] with excluded locations.
+     *
+     * @param excl The excludes to set
+     */
+    public void setExcludedPages( String[] excl )
+    {
+        this.excludedPages = excl;
+    }
+
+    /**
+     * Returns the excluded HTTP errors, i.e. <code>404</code>.
+     *
+     * @return int[]
+     * @see {@link HttpStatus} for all possible values.
+     */
+    public int[] getExcludedHttpStatusErrors()
+    {
+        return this.excludedHttpStatusErrors;
+    }
+
+    /**
+     * Sets the excluded HTTP errors, i.e. <code>404</code>, a int[] with excluded errors.
+     *
+     * @param excl The excludes to set
+     * @see {@link HttpStatus} for all possible values.
+     */
+    public void setExcludedHttpStatusErrors( int[] excl )
+    {
+        this.excludedHttpStatusErrors = excl;
+    }
+
+    /**
+     * Returns the excluded HTTP warnings, i.e. <code>301</code>.
+     *
+     * @return int[]
+     * @see {@link HttpStatus} for all possible values.
+     */
+    public int[] getExcludedHttpStatusWarnings()
+    {
+        return this.excludedHttpStatusWarnings;
+    }
+
+    /**
+     * Sets the excluded HTTP warnings, i.e. <code>301</code>, a int[] with excluded errors.
+     *
+     * @param excl The excludes to set
+     * @see {@link HttpStatus} for all possible values.
+     */
+    public void setExcludedHttpStatusWarnings( int[] excl )
+    {
+        this.excludedHttpStatusWarnings = excl;
     }
 
     /**
@@ -229,9 +322,9 @@ public final class LinkCheck
     {
         this.lvm = new LinkValidatorManager();
 
-        if ( this.excludedLinks != null )
+        if ( getExcludedLinks() != null )
         {
-            this.lvm.setExcludes( excludedLinks );
+            this.lvm.setExcludedLinks( getExcludedLinks() );
         }
 
         this.lvm.addLinkValidator( new FileLinkValidator() );
@@ -374,6 +467,26 @@ public final class LinkCheck
                         LOG.debug( " File - " + file );
                     }
 
+                    if ( getExcludedPages() != null )
+                    {
+                        String diff = StringUtils.difference( getBasedir().getAbsolutePath(), file.getAbsolutePath() );
+                        if ( diff.startsWith( File.separator ) )
+                        {
+                            diff = diff.substring( 1 );
+                        }
+
+                        if ( Arrays.binarySearch( getExcludedPages(), diff ) >= 0 )
+                        {
+
+                            if ( LOG.isDebugEnabled() )
+                            {
+                                LOG.debug( " Ignored analysis of " + file );
+                            }
+
+                            continue;
+                        }
+                    }
+
                     String fileRelativePath = file.getAbsolutePath();
                     if ( fileRelativePath.startsWith( this.basedir.getAbsolutePath() ) )
                     {
@@ -476,17 +589,59 @@ public final class LinkCheck
 
                     break;
                 case LinkcheckFileResult.ERROR_LEVEL:
-                    linkcheckFile.setUnsuccessful( linkcheckFile.getUnsuccessful() + 1 );
+                    boolean ignoredError = false;
+                    if ( result instanceof HTTPLinkValidationResult)
+                    {
+                        HTTPLinkValidationResult httpResult = (HTTPLinkValidationResult)result;
 
-                    lcr.setStatus( LinkcheckFileResult.ERROR );
+
+                        if ( httpResult.getHttpStatusCode() > 0 && getExcludedHttpStatusErrors() != null
+                            && StringUtils.indexOfAny( String.valueOf( httpResult.getHttpStatusCode() ),
+                                                       toStringArray( getExcludedHttpStatusErrors() ) ) >= 0 )
+                        {
+                            ignoredError = true;
+                        }
+                    }
+
+                    if (ignoredError)
+                    {
+                        linkcheckFile.setSuccessful( linkcheckFile.getSuccessful() + 1 );
+                    }
+                    else
+                    {
+                        linkcheckFile.setUnsuccessful( linkcheckFile.getUnsuccessful() + 1 );
+                    }
+
+                    lcr.setStatus( ignoredError ? LinkcheckFileResult.VALID : LinkcheckFileResult.ERROR );
 
                     linkcheckFile.addResult( lcr );
 
                     break;
                 case LinkcheckFileResult.WARNING_LEVEL:
-                    linkcheckFile.setUnsuccessful( linkcheckFile.getUnsuccessful() + 1 );
+                    boolean ignoredWarning = false;
+                    if ( result instanceof HTTPLinkValidationResult)
+                    {
+                        HTTPLinkValidationResult httpResult = (HTTPLinkValidationResult)result;
 
-                    lcr.setStatus( LinkcheckFileResult.WARNING );
+                        if ( httpResult.getHttpStatusCode() > 0 && getExcludedHttpStatusWarnings() != null
+                            && StringUtils.indexOfAny( String.valueOf( httpResult.getHttpStatusCode() ),
+                                                       toStringArray( getExcludedHttpStatusWarnings() ) ) >= 0 )
+                        {
+                            ignoredWarning = true;
+                            System.out.println("IGNORED "+httpResult.getHttpStatusCode());
+                        }
+                    }
+
+                    if (ignoredWarning)
+                    {
+                        linkcheckFile.setSuccessful( linkcheckFile.getSuccessful() + 1 );
+                    }
+                    else
+                    {
+                        linkcheckFile.setUnsuccessful( linkcheckFile.getUnsuccessful() + 1 );
+                    }
+
+                    lcr.setStatus( ignoredWarning ? LinkcheckFileResult.VALID : LinkcheckFileResult.WARNING );
 
                     linkcheckFile.addResult( lcr );
 
@@ -603,6 +758,21 @@ public final class LinkCheck
         }
 
         dir = null;
+    }
+
+    private static String[] toStringArray( int[] array )
+    {
+        if ( array == null )
+        {
+            throw new IllegalArgumentException( "array could not be null" );
+        }
+
+        String[] result = new String[array.length];
+        for ( int i = 0; i < array.length; i++ )
+        {
+            result[i] = String.valueOf( array[i] );
+        }
+        return result;
     }
 
     /** Custom FilenameFilter used to search html files */
