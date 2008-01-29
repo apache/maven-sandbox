@@ -33,7 +33,8 @@ public abstract class HTTPLinkValidator implements LinkValidator
     {
         String link = lvi.getLink();
 
-        if ( !link.startsWith( "http://" ) && !link.startsWith( "https://" ) && !link.startsWith( "/" ) )
+        if ( !link.toLowerCase().startsWith( "http://" ) && !link.toLowerCase().startsWith( "https://" )
+            && !link.startsWith( "/" ) )
         {
             return null;
         }
