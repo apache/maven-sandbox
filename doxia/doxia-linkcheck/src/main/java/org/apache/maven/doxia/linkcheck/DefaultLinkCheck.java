@@ -55,13 +55,13 @@ import org.codehaus.plexus.util.StringUtils;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
-public final class LinkCheck
+public final class DefaultLinkCheck
 {
     /** Log. */
-    private static final Log LOG = LogFactory.getLog( LinkCheck.class );
+    private static final Log LOG = LogFactory.getLog( DefaultLinkCheck.class );
 
     /** FilenameFilter. */
-    private static final FilenameFilter CUSTOM_FF = new LinkCheck.CustomFilenameFilter();
+    private static final FilenameFilter CUSTOM_FF = new DefaultLinkCheck.CustomFilenameFilter();
 
     /** One MegaByte. */
     private static final long MEG = 1024 * 1024;

@@ -37,7 +37,7 @@ public class LinkCheckTest extends TestCase
 {
     public void testScan() throws Exception
     {
-        LinkCheck lc = new LinkCheck();
+        DefaultLinkCheck lc = new DefaultLinkCheck();
 
         lc.setOnline( true ); // TODO: check if online
 
