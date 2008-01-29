@@ -28,11 +28,15 @@ under the License.
   <body>
     <section name="Usage">
       <p>
-        Here's an example:
+        Here's a simple Java example:
       </p>
 
       <source>
-        LinkCheck lc = new LinkCheck();
+        LinkCheck lc = new DefaultLinkCheck();
+        /*
+         * If you are using Plexus:
+         * LinkCheck lc = (LinkCheck) lookup( LinkCheck.ROLE );
+         */
 
         lc.setOnline( true );
 
@@ -47,10 +51,9 @@ under the License.
                 "http://cvs.apache.org/viewcvs.cgi/maven-pluginszz/",
                 "http://cvs.apache.org/viewcvs.cgi/mavenzz/"
             };
-
         lc.setExcludedLinks( excludes );
 
-        lc.doExecute();
+        LinkcheckModel result = lc.execute();
       </source>
 
       <p>

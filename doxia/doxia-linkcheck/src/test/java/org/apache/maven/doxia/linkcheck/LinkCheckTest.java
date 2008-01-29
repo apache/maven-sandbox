@@ -25,19 +25,25 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.maven.doxia.linkcheck.model.LinkcheckFile;
-
-import junit.framework.TestCase;
+import org.apache.maven.doxia.linkcheck.model.LinkcheckModel;
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author Ben Walding
  * @author <a href="mailto:carlos@apache.org">Carlos Sanchez</a>
  * @version $Id$
  */
-public class LinkCheckTest extends TestCase
+public class LinkCheckTest
+    extends PlexusTestCase
 {
-    public void testScan() throws Exception
+    /**
+     * @throws Exception
+     */
+    public void testScan()
+        throws Exception
     {
-        DefaultLinkCheck lc = new DefaultLinkCheck();
+        LinkCheck lc = (LinkCheck) lookup( LinkCheck.ROLE );
+        assertNotNull( lc );
 
         lc.setOnline( true ); // TODO: check if online
 
@@ -49,17 +55,15 @@ public class LinkCheckTest extends TestCase
 
         lc.setLinkCheckCache( new File( "target/linkcheck/linkcheck.cache" ) ); // TODO
 
-        String[] excludes = new String[]
-            {
-                "http://cvs.apache.org/viewcvs.cgi/maven-pluginszz/",
-                "http://cvs.apache.org/viewcvs.cgi/mavenzz/"
-            };
+        String[] excludes = new String[] {
+            "http://cvs.apache.org/viewcvs.cgi/maven-pluginszz/",
+            "http://cvs.apache.org/viewcvs.cgi/mavenzz/" };
 
         lc.setExcludedLinks( excludes );
 
-        lc.doExecute();
+        LinkcheckModel result = lc.execute();
 
-        Iterator iter = lc.getModel().getFiles().iterator();
+        Iterator iter = result.getFiles().iterator();
 
         Map map = new HashMap();
 
@@ -69,7 +73,7 @@ public class LinkCheckTest extends TestCase
             map.put( ftc.getRelativePath(), ftc );
         }
 
-        assertEquals( "files.size()", 8, lc.getModel().getFiles().size() );
+        assertEquals( "files.size()", 8, result.getFiles().size() );
 
         check( map, "nolink.html", 0 );
         check( map, "test-resources/nolink.html", 0 );
@@ -99,5 +103,4 @@ public class LinkCheckTest extends TestCase
 
         assertEquals( name + ".getResults().size()", linkCount, ftc.getResults().size() );
     }
-
 }

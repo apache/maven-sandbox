@@ -54,8 +54,11 @@ import org.codehaus.plexus.util.StringUtils;
  * @author <a href="mailto:aheritier@apache.org">Arnaud Heritier</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
+ *
+ * @plexus.component role="org.apache.maven.doxia.linkcheck.LinkCheck" role-hint="default"
  */
 public final class DefaultLinkCheck
+    implements LinkCheck
 {
     /** Log. */
     private static final Log LOG = LogFactory.getLog( DefaultLinkCheck.class );
@@ -113,51 +116,141 @@ public final class DefaultLinkCheck
     /** The base URL for links that start with '/'. */
     private String baseURL;
 
-    /** The level to report, used in toXML(). */
-    private int reportLevel = LinkcheckFileResult.WARNING_LEVEL;
-
     /** The linkcheck model */
     private LinkcheckModel model = new LinkcheckModel();
 
-    /**
-     * The current report level. Defaults to <code>LinkcheckFileResult#WARNING_LEVEL</code>.
-     *
-     * @return int
-     * @see LinkcheckFileResult#WARNING_LEVEL
-     */
-    public int getReportLevel()
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
+
+    /** {@inheritDoc} */
+    public void setBasedir( File base )
     {
-        return this.reportLevel;
+        this.basedir = base;
     }
 
-    /**
-     * Set the report level.
-     *
-     * @param level the level to set.
-     */
-    public void setReportLevel( int level )
+    /** {@inheritDoc} */
+    public void setBaseURL( String url )
     {
-        this.reportLevel = level;
+        this.baseURL = url;
     }
+
+    /** {@inheritDoc} */
+    public void setExcludedHttpStatusErrors( int[] excl )
+    {
+        this.excludedHttpStatusErrors = excl;
+    }
+
+    /** {@inheritDoc} */
+    public void setExcludedHttpStatusWarnings( int[] excl )
+    {
+        this.excludedHttpStatusWarnings = excl;
+    }
+
+    /** {@inheritDoc} */
+    public void setExcludedLinks( String[] excl )
+    {
+        this.excludedLinks = excl;
+    }
+
+    /** {@inheritDoc} */
+    public void setExcludedPages( String[] excl )
+    {
+        this.excludedPages = excl;
+    }
+
+    /** {@inheritDoc} */
+    public void setHttp( HttpBean http )
+    {
+        this.http = http;
+    }
+
+    /** {@inheritDoc} */
+    public void setLinkCheckCache( File cacheFile )
+    {
+        this.linkCheckCache = cacheFile;
+    }
+
+    /** {@inheritDoc} */
+    public void setOnline( boolean onLine )
+    {
+        this.online = onLine;
+    }
+
+    /** {@inheritDoc} */
+    public void setReportOutput( File file )
+    {
+        this.reportOutput = file;
+    }
+
+    /** {@inheritDoc} */
+    public void setReportOutputEncoding( String encoding )
+    {
+        this.reportOutputEncoding = encoding;
+    }
+
+    /** {@inheritDoc} */
+    public LinkcheckModel execute()
+    {
+        if ( this.basedir == null )
+        {
+            LOG.error( "No base directory specified!" );
+
+            throw new NullPointerException( "The basedir can't be null!" );
+        }
+
+        if ( this.reportOutput == null )
+        {
+            LOG.warn( "No output file specified! Results will not be written!" );
+        }
+
+        model = new LinkcheckModel();
+        model.setModelEncoding( reportOutputEncoding );
+        model.setFiles( new LinkedList() );
+
+        displayMemoryConsumption();
+
+        LinkValidatorManager validator = getLinkValidatorManager();
+        validator.loadCache( this.linkCheckCache );
+
+        displayMemoryConsumption();
+
+        LOG.info( "Begin to check links in files..." );
+
+        findAndCheckFiles( this.basedir );
+
+        LOG.info( "Links checked." );
+
+        displayMemoryConsumption();
+
+        try
+        {
+            createDocument();
+        }
+        catch ( IOException e )
+        {
+            LOG.error( "Could not write to output file, results will be lost!", e );
+        }
+
+        validator.saveCache( this.linkCheckCache );
+
+        displayMemoryConsumption();
+
+        return model;
+    }
+
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
 
     /**
      * Whether links are checked in online mode.
      *
      * @return online
      */
-    public boolean isOnline()
+    private boolean isOnline()
     {
         return this.online;
-    }
-
-    /**
-     * Set the online mode.
-     *
-     * @param onLine online mode.
-     */
-    public void setOnline( boolean onLine )
-    {
-        this.online = onLine;
     }
 
     /**
@@ -165,39 +258,9 @@ public final class DefaultLinkCheck
      *
      * @return the base directory
      */
-    public File getBasedir()
+    private File getBasedir()
     {
         return this.basedir;
-    }
-
-    /**
-     * Set the base directory for the files to be linkchecked.
-     *
-     * @param base the base directory
-     */
-    public void setBasedir( File base )
-    {
-        this.basedir = base;
-    }
-
-    /**
-     * Returns the cache File.
-     *
-     * @return File
-     */
-    public File getLinkCheckCache()
-    {
-        return this.linkCheckCache;
-    }
-
-    /**
-     * Sets the cache File.
-     *
-     * @param cacheFile The cacheFile to set. Set this to null to ignore storing the cache.
-     */
-    public void setLinkCheckCache( File cacheFile )
-    {
-        this.linkCheckCache = cacheFile;
     }
 
     /**
@@ -207,21 +270,9 @@ public final class DefaultLinkCheck
      *
      * @return String[]
      */
-    public String[] getExcludedLinks()
+    private String[] getExcludedLinks()
     {
         return this.excludedLinks;
-    }
-
-    /**
-     * Sets the excluded links, a String[] with excluded locations.
-     * Could contains a link, i.e. <code>http:&#47;&#47;maven.apache.org/</code>,
-     * or pattern links i.e. <code>http:&#47;&#47;maven.apache.org&#47;**&#47;*.html</code>
-     *
-     * @param excl The excludes to set
-     */
-    public void setExcludedLinks( String[] excl )
-    {
-        this.excludedLinks = excl;
     }
 
     /**
@@ -229,19 +280,9 @@ public final class DefaultLinkCheck
      *
      * @return String[]
      */
-    public String[] getExcludedPages()
+    private String[] getExcludedPages()
     {
         return this.excludedPages;
-    }
-
-    /**
-     * Sets the excluded pages, a String[] with excluded locations.
-     *
-     * @param excl The excludes to set
-     */
-    public void setExcludedPages( String[] excl )
-    {
-        this.excludedPages = excl;
     }
 
     /**
@@ -250,20 +291,9 @@ public final class DefaultLinkCheck
      * @return int[]
      * @see {@link HttpStatus} for all possible values.
      */
-    public int[] getExcludedHttpStatusErrors()
+    private int[] getExcludedHttpStatusErrors()
     {
         return this.excludedHttpStatusErrors;
-    }
-
-    /**
-     * Sets the excluded HTTP errors, i.e. <code>404</code>, a int[] with excluded errors.
-     *
-     * @param excl The excludes to set
-     * @see {@link HttpStatus} for all possible values.
-     */
-    public void setExcludedHttpStatusErrors( int[] excl )
-    {
-        this.excludedHttpStatusErrors = excl;
     }
 
     /**
@@ -272,20 +302,19 @@ public final class DefaultLinkCheck
      * @return int[]
      * @see {@link HttpStatus} for all possible values.
      */
-    public int[] getExcludedHttpStatusWarnings()
+    private int[] getExcludedHttpStatusWarnings()
     {
         return this.excludedHttpStatusWarnings;
     }
 
     /**
-     * Sets the excluded HTTP warnings, i.e. <code>301</code>, a int[] with excluded errors.
+     * The model.
      *
-     * @param excl The excludes to set
-     * @see {@link HttpStatus} for all possible values.
+     * @return the model.
      */
-    public void setExcludedHttpStatusWarnings( int[] excl )
+    private LinkcheckModel getModel()
     {
-        this.excludedHttpStatusWarnings = excl;
+        return model;
     }
 
     /**
@@ -293,7 +322,7 @@ public final class DefaultLinkCheck
      *
      * @param validator the LinkValidatorManager to set
      */
-    public void setLinkValidatorManager( LinkValidatorManager validator )
+    private void setLinkValidatorManager( LinkValidatorManager validator )
     {
         this.lvm = validator;
     }
@@ -305,7 +334,7 @@ public final class DefaultLinkCheck
      *
      * @return the LinkValidatorManager
      */
-    public LinkValidatorManager getLinkValidatorManager()
+    private LinkValidatorManager getLinkValidatorManager()
     {
         if ( this.lvm == null )
         {
@@ -346,97 +375,6 @@ public final class DefaultLinkCheck
         }
 
         this.lvm.addLinkValidator( new MailtoLinkValidator() );
-    }
-
-    /**
-     * Set the output file for the results.
-     * If this is null, no output will be written.
-     *
-     * @param file the output file.
-     */
-    public void setReportOutput( File file )
-    {
-        this.reportOutput = file;
-    }
-
-    /**
-     * Returns the output file.
-     *
-     * @return File
-     */
-    public File getReportOutput()
-    {
-        return this.reportOutput;
-    }
-
-    /**
-     * Returns the outputEncoding.
-     *
-     * @return String
-     */
-    public String getReportOutputEncoding()
-    {
-        return this.reportOutputEncoding;
-    }
-
-    /**
-     * Sets the outputEncoding.
-     *
-     * @param encoding The outputEncoding to set.
-     */
-    public void setReportOutputEncoding( String encoding )
-    {
-        this.reportOutputEncoding = encoding;
-    }
-
-    /**
-     * The base URL.
-     *
-     * @return the base URL.
-     */
-    public String getBaseURL()
-    {
-        return this.baseURL;
-    }
-
-    /**
-     * Sets the base URL. This is pre-pended to links that start with '/'.
-     *
-     * @param url the base URL.
-     */
-    public void setBaseURL( String url )
-    {
-        this.baseURL = url;
-    }
-
-    /**
-     * The model.
-     *
-     * @return the model.
-     */
-    public LinkcheckModel getModel()
-    {
-        return model;
-    }
-
-    /**
-     * The http parameters bean.
-     *
-     * @return the http parameters bean.
-     */
-    public HttpBean getHttp()
-    {
-        return http;
-    }
-
-    /**
-     * Sets the http parameters bean.
-     *
-     * @param http parameters bean.
-     */
-    public void setHttp( HttpBean http )
-    {
-        this.http = http;
     }
 
     /**
@@ -628,7 +566,6 @@ public final class DefaultLinkCheck
                                                        toStringArray( getExcludedHttpStatusWarnings() ) ) >= 0 )
                         {
                             ignoredWarning = true;
-                            System.out.println("IGNORED "+httpResult.getHttpStatusCode());
                         }
                     }
 
@@ -662,56 +599,6 @@ public final class DefaultLinkCheck
         lcr = null;
         lvi = null;
         result = null;
-    }
-
-    /**
-     * Execute task.
-     */
-    public void doExecute()
-    {
-        if ( this.basedir == null )
-        {
-            LOG.error( "No base directory specified!" );
-
-            throw new NullPointerException( "The basedir can't be null!" );
-        }
-
-        if ( this.reportOutput == null )
-        {
-            LOG.warn( "No output file specified! Results will not be written!" );
-        }
-
-        model = new LinkcheckModel();
-        model.setModelEncoding( reportOutputEncoding );
-        model.setFiles( new LinkedList() );
-
-        displayMemoryConsumption();
-
-        LinkValidatorManager validator = getLinkValidatorManager();
-        validator.loadCache( this.linkCheckCache );
-
-        displayMemoryConsumption();
-
-        LOG.info( "Begin to check links in files..." );
-
-        findAndCheckFiles( this.basedir );
-
-        LOG.info( "Links checked." );
-
-        displayMemoryConsumption();
-
-        try
-        {
-            createDocument();
-        }
-        catch ( IOException e )
-        {
-            LOG.error( "Could not write to output file, results will be lost!", e );
-        }
-
-        validator.saveCache( this.linkCheckCache );
-
-        displayMemoryConsumption();
     }
 
     /**
