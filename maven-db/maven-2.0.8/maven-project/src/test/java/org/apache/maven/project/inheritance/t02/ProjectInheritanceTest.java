@@ -168,6 +168,6 @@ public class ProjectInheritanceTest
         
         List executions = testPlugin.getExecutions();
         
-        assertEquals( 1, executions.size() );
+        assertEquals( 3, executions.size() );
     }
 }

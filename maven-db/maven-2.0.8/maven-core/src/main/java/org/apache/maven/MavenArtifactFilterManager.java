@@ -62,8 +62,11 @@ public class MavenArtifactFilterManager
         artifacts.add( "wagon-provider-api" );
         artifacts.add( "wagon-file" );
         artifacts.add( "wagon-http-lightweight" );
+        artifacts.add( "wagon-http" );
         artifacts.add( "wagon-ssh" );
         artifacts.add( "wagon-ssh-external" );
+        artifacts.add( "commons-httpclient" );
+        artifacts.add( "backport-util-concurrent" );
 
         return new ExclusionSetFilter( artifacts );
     }
