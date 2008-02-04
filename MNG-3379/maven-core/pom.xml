@@ -114,8 +114,24 @@
     </dependency>
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
-      <artifactId>wagon-http-lightweight</artifactId>
+      <artifactId>wagon-http</artifactId>
+      <classifier>shaded</classifier>
       <scope>runtime</scope>
+      <exclusions>
+        <!-- would be nice if the shading process could write out a new POM :) -->
+        <exclusion>
+          <groupId>commons-httpclient</groupId>
+          <artifactId>commons-httpclient</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-codec</groupId>
+          <artifactId>commons-codec</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
