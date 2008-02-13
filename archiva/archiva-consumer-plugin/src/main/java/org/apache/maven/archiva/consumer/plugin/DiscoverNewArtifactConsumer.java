@@ -19,35 +19,34 @@ package org.apache.maven.archiva.consumer.plugin;
  * under the License.
  */
 
-import org.apache.maven.archiva.consumers.AbstractMonitoredConsumer;
-import org.apache.maven.archiva.consumers.KnownRepositoryContentConsumer;
-import org.apache.maven.archiva.consumers.ConsumerException;
-import org.apache.maven.archiva.configuration.ArchivaConfiguration;
-import org.apache.maven.archiva.configuration.FileTypes;
-import org.apache.maven.archiva.model.ArchivaRepository;
-import org.apache.maven.archiva.indexer.search.CrossRepositorySearch;
-import org.apache.maven.archiva.indexer.search.SearchResults;
-import org.apache.maven.archiva.indexer.search.SearchResultLimits;
-import org.apache.maven.archiva.indexer.search.SearchResultHit;
-import org.apache.commons.io.IOUtils;
-import org.codehaus.plexus.registry.RegistryListener;
-import org.codehaus.plexus.registry.Registry;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.io.File;
-import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.maven.archiva.configuration.ArchivaConfiguration;
+import org.apache.maven.archiva.configuration.FileTypes;
+import org.apache.maven.archiva.configuration.ManagedRepositoryConfiguration;
+import org.apache.maven.archiva.consumers.AbstractMonitoredConsumer;
+import org.apache.maven.archiva.consumers.ConsumerException;
+import org.apache.maven.archiva.consumers.KnownRepositoryContentConsumer;
+import org.apache.maven.archiva.indexer.search.CrossRepositorySearch;
+import org.apache.maven.archiva.indexer.search.SearchResultHit;
+import org.apache.maven.archiva.indexer.search.SearchResultLimits;
+import org.apache.maven.archiva.indexer.search.SearchResults;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.registry.Registry;
+import org.codehaus.plexus.registry.RegistryListener;
 
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  * @plexus.component role="org.apache.maven.archiva.consumers.KnownRepositoryContentConsumer"
- * role-hint="discover-new-artifact"
- * instantiation-strategy="per-lookup"
+ *                   role-hint="discover-new-artifact" instantiation-strategy="per-lookup"
  */
 public class DiscoverNewArtifactConsumer
     extends AbstractMonitoredConsumer
@@ -82,11 +81,11 @@ public class DiscoverNewArtifactConsumer
 
     private List includes = new ArrayList();
 
-    private ArchivaRepository repository;
+    private ManagedRepositoryConfiguration repository;
 
     private File dumpFile;
 
-    private static final String DUMP_FILE_NAME = "new-artifacts.zzz";
+    static final String DUMP_FILE_NAME = "new-artifacts.zzz";
 
     public String getId()
     {
@@ -113,16 +112,12 @@ public class DiscoverNewArtifactConsumer
         return this.includes;
     }
 
-    public void beginScan( ArchivaRepository repository )
+    public void beginScan( ManagedRepositoryConfiguration repository )
         throws ConsumerException
     {
-        if ( !repository.isManaged() )
-        {
-            throw new ConsumerException( "Consumer requires managed repository." );
-        }
-
         this.repository = repository;
-        dumpFile = new File( repository.getUrl().getPath() + "/" + DUMP_FILE_NAME );
+
+        dumpFile = new File( repository.getLocation() + "/" + DUMP_FILE_NAME );
 
         try
         {
@@ -130,7 +125,7 @@ public class DiscoverNewArtifactConsumer
             {
                 dumpFile.delete();
                 dumpFile = null;
-                dumpFile = new File( repository.getUrl().getPath() + "/" + DUMP_FILE_NAME );
+                dumpFile = new File( repository.getLocation() + "/" + DUMP_FILE_NAME );
             }
 
             dumpFile.createNewFile();
@@ -146,7 +141,20 @@ public class DiscoverNewArtifactConsumer
     {
         String id = repository.getId() + "/" + path;
 
-        SearchResults results = repoSearch.searchForTerm( path, new SearchResultLimits( 0 ) );
+        boolean found = isFoundInRepository( path, id );
+
+        if ( !found )
+        {
+            dumpToFile( id );
+        }
+    }
+
+    private boolean isFoundInRepository( String path, String id )
+    {
+        List repoSearchList = new ArrayList();
+        repoSearchList.add( repository.getId() );
+
+        SearchResults results = repoSearch.searchForTerm( "guest", repoSearchList, path, new SearchResultLimits( 0 ) );
 
         List hits = results.getHits();
         boolean found = false;
@@ -160,23 +168,12 @@ public class DiscoverNewArtifactConsumer
                 break;
             }
         }
-
-        if ( !found )
-        {
-            try
-            {
-                dumpToFile( id );
-            }
-            catch ( IOException ie )
-            {
-                throw new ConsumerException( ie.getMessage() );
-            }
-        }
+        return found;
     }
 
     public void completeScan()
     {
-        /* do nothing */
+       // dumpToFile( "Scan Complete" );
     }
 
     public void afterConfigurationChange( Registry registry, String propertyName, Object propertyValue )
@@ -195,7 +192,6 @@ public class DiscoverNewArtifactConsumer
     private void initIncludes()
     {
         includes.clear();
-
         includes.addAll( filetypes.getFileTypePatterns( FileTypes.INDEXABLE_CONTENT ) );
     }
 
@@ -215,9 +211,23 @@ public class DiscoverNewArtifactConsumer
     }
 
     private void dumpToFile( String id )
-        throws IOException
+        throws ConsumerException
     {
-        IOUtils.write( ( IOUtils.toString( new FileInputStream( dumpFile ) ) + "\n" + id ),
-                       new FileOutputStream( dumpFile ) );
+        try
+        {
+            
+             IOUtils.write(  IOUtils.toString( new FileInputStream( dumpFile ) ) + id +"\n" ,
+                            new FileOutputStream( dumpFile ) );
+        }
+        catch ( IOException e )
+        {
+            throw new ConsumerException( "Error writing '" + id + "' to new artifacts file '"
+                                          + dumpFile.getPath()  + "'", e );
+        }
+    }
+
+    public CrossRepositorySearch getSearch()
+    {
+        return repoSearch;
     }
 }

@@ -1,0 +1,35 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.apache.maven.archiva.consumers.KnownRepositoryContentConsumer</role>
+      <role-hint>discover-new-artifact</role-hint>
+      <implementation>org.apache.maven.archiva.consumer.plugin.DiscoverNewArtifactConsumer</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <description></description>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.archiva.configuration.FileTypes</role>
+          <field-name>filetypes</field-name>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.archiva.indexer.search.CrossRepositorySearch</role>
+          <role-hint>mockSearch</role-hint>
+          <field-name>repoSearch</field-name>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.archiva.configuration.ArchivaConfiguration</role>
+          <field-name>configuration</field-name>
+        </requirement>
+      </requirements>
+      <configuration>
+        <id>discover-new-artifact</id>
+        <description>Discover new artifacts in the repository.</description>
+      </configuration>
+    </component>    
+    <component>
+      <role>org.apache.maven.archiva.indexer.search.CrossRepositorySearch</role>
+      <role-hint>mockSearch</role-hint>
+      <implementation>org.apache.maven.archiva.consumer.plugin.MockRepositorySearch</implementation>      
+    </component>    
+  </components>
+</component-set>
