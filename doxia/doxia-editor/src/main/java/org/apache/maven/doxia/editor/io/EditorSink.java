@@ -19,7 +19,7 @@ package org.apache.maven.doxia.editor.io;
  * under the License.
  */
 
-import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.editor.model.DoxiaDocument;
 import org.apache.maven.doxia.editor.model.Section;
 import org.apache.maven.doxia.editor.model.Paragraph;
@@ -30,7 +30,7 @@ import org.apache.maven.doxia.editor.model.Text;
  * @version $Id$
  */
 public class EditorSink
-    implements Sink
+    extends SinkAdapter
 {
     private DoxiaDocument document;
 

@@ -20,25 +20,45 @@ under the License.
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.maven.doxia</groupId>
     <artifactId>doxia</artifactId>
-    <version>1.0-alpha-9-SNAPSHOT</version>
+    <version>1.0-beta-1-SNAPSHOT</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-editor</artifactId>
-  <version>1.0-alpha-1-SNAPSHOT</version>
   <name>Doxia :: Swing Editor</name>
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-core</artifactId>
-      <version>1.0-alpha-9-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-module-xdoc</artifactId>
-      <version>1.0-alpha-9-SNAPSHOT</version>
+      <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>doxia-module-apt</artifactId>
+      <version>${pom.version}</version>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorId>jar-with-dependencies</descriptorId>
+          <archive>
+            <manifest>
+              <mainClass>org.apache.maven.doxia.editor.DoxiaEditor</mainClass>
+              <addClasspath>true</addClasspath>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
