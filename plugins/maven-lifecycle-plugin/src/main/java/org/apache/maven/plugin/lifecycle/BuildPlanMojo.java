@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import org.apache.maven.execution.MavenSession;
 
 /**
  * Retrieves the build plan for the current project, and displays it to the logger's INFO log-level, or a file.
@@ -72,6 +73,12 @@ public class BuildPlanMojo
     private MavenProject project;
 
     /**
+     * @parameter default-value="${session}"
+     * @required
+     * @readonly
+     */
+    private MavenSession session;
+    /**
      * @component
      */
     private BuildPlanner buildPlanner;
@@ -90,7 +97,7 @@ public class BuildPlanMojo
         BuildPlan buildPlan;
         try
         {
-            buildPlan = buildPlanner.constructBuildPlan( taskList, project );
+            buildPlan = buildPlanner.constructBuildPlan( taskList, project, session );
         }
         catch ( LifecycleLoaderException e )
         {
