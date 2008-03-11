@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jar-details xmlns="http://archiva.apache.org/JARINFO/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://archiva.apache.org/jarinfo-v1_0_0.xsd">
+  <filename>dummy-test.jar</filename>
+  <timestamp>2007-08-22 13:44:55 UTC</timestamp>
+  <size>54321</size>
+  <size-uncompressed>0</size-uncompressed>
+  <sealed>false</sealed>
+</jar-details>

@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://archiva.apache.org/JARINFO/1.0.0" xmlns="http://archiva.apache.org/JARINFO/1.0.0">
+
+    <xs:element name="jar-details" type="JarDetailsType"></xs:element>
+
+    <xs:complexType name="JarDetailsType">
+    	<xs:annotation>
+    		<xs:documentation>
+    			The JarDetails model type
+    		</xs:documentation>
+    	</xs:annotation>
+    	<xs:sequence>
+    		<xs:element name="assigned-id" type="AssignedIdType"
+    			maxOccurs="1" minOccurs="0">
+    		</xs:element>
+    		<xs:element name="filename" type="xs:string" minOccurs="1"
+    			maxOccurs="1">
+    		</xs:element>
+    		<xs:element name="timestamp" type="TimestampType"
+    			minOccurs="1" maxOccurs="1">
+    		</xs:element>
+    		<xs:element name="size" type="xs:int" minOccurs="1"
+    			maxOccurs="1">
+    		</xs:element>
+    		<xs:element name="size-uncompressed" type="xs:int"
+    			minOccurs="0">
+    		</xs:element>
+    		<xs:element name="hash" type="HashType"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</xs:element>
+    		<xs:element name="sealed" type="xs:boolean" maxOccurs="1"
+    			minOccurs="0">
+    		</xs:element>
+    		<xs:element name="generator" type="GeneratorType"
+    			maxOccurs="1" minOccurs="1">
+    		</xs:element>
+    		<xs:element name="entries" type="JarEntriesType"
+    			maxOccurs="1" minOccurs="0">
+    		</xs:element>
+    		<xs:element name="bytecode" type="BytecodeType"
+    			maxOccurs="1" minOccurs="0">
+    		</xs:element>
+    		<xs:element name="inspected" type="InspectedIdType" maxOccurs="1" minOccurs="0"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="HashType">
+    	<xs:simpleContent>
+    		<xs:extension base="xs:string">
+    			<xs:attribute name="algorithm" type="hashAlgorithmType" use="required"></xs:attribute>
+    		</xs:extension>
+    	</xs:simpleContent></xs:complexType>
+
+    <xs:simpleType name="hashAlgorithmType">
+    	<xs:restriction base="xs:string">
+    		<xs:enumeration value="sha1"></xs:enumeration>
+    		<xs:enumeration value="md5"></xs:enumeration>
+    	</xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="GeneratorType">
+    	<xs:sequence>
+    		<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"></xs:element>
+    		<xs:element name="version" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+    		<xs:element name="timestamp" type="TimestampType" maxOccurs="1" minOccurs="1"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+
+
+
+    <xs:simpleType name="TimestampType">
+    	<xs:restriction base="xs:string">
+    	  <xs:pattern value="[12][0-9][0-9][0-9]-[01][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9] UTC"/>
+    	</xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="JarEntriesType">
+    	<xs:sequence>
+    		<xs:element name="dir" type="DirType" maxOccurs="unbounded" minOccurs="0"></xs:element>
+    		<xs:element name="file" type="FileType"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</xs:element>
+    	</xs:sequence>
+    	<xs:attribute name="count-dirs" type="xs:int" use="optional"></xs:attribute>
+    	<xs:attribute name="count-files" type="xs:int" use="optional"></xs:attribute>
+    	<xs:attribute name="count-total" type="xs:int" use="optional"></xs:attribute>
+    </xs:complexType>
+
+
+    <xs:complexType name="DirType">
+    	<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    	<xs:attribute name="timestamp" type="TimestampType" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="FileType">
+    	<xs:sequence>
+    		<xs:element name="hash" type="HashType"></xs:element>
+    	</xs:sequence>
+    	<xs:attribute name="name" type="xs:string"></xs:attribute>
+    	<xs:attribute name="timestamp" type="TimestampType"></xs:attribute>
+    	<xs:attribute name="size" type="xs:int"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="BytecodeType">
+    	<xs:sequence>
+    		<xs:element name="hash" type="HashType" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</xs:element>
+    		<xs:element name="jdk" type="xs:string"></xs:element>
+    		<xs:element name="debug" type="xs:boolean"></xs:element>
+    		<xs:element name="class" maxOccurs="unbounded" minOccurs="1" type="ClassType"></xs:element>
+            <xs:element name="package" maxOccurs="unbounded" minOccurs="0" type="xs:string"></xs:element>
+    	</xs:sequence>
+    	<xs:attribute name="count-classes" type="xs:int"
+    		use="optional">
+    	</xs:attribute>
+    	<xs:attribute name="count-packages" type="xs:int"
+    		use="optional">
+    	</xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="ClassType">
+    	<xs:sequence>
+    		<xs:element name="import" type="xs:string"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</xs:element>
+    		<xs:element name="method" type="xs:string" maxOccurs="unbounded" minOccurs="1"></xs:element>
+    	</xs:sequence>
+    	<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    	<xs:attribute name="version" type="xs:string" use="required"></xs:attribute>
+    	<xs:attribute name="jdk" type="xs:string" use="required"></xs:attribute>
+    	<xs:attribute name="debug" type="xs:boolean" use="required"></xs:attribute>
+    </xs:complexType>
+
+
+    <xs:complexType name="AssignedIdType">
+    	<xs:sequence>
+    		<xs:element name="groupId" type="xs:string"></xs:element>
+    		<xs:element name="artifactId" type="xs:string"></xs:element>
+    		<xs:element name="version" type="xs:string"></xs:element>
+    		<xs:element name="name" type="xs:string"></xs:element>
+    		<xs:element name="vendor" type="xs:string"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="InspectedIdType">
+    	<xs:sequence>
+    		<xs:element name="groupIds" maxOccurs="1" minOccurs="0">
+    			<xs:complexType>
+    				<xs:sequence>
+    					<xs:element name="groupId"
+    						type="InspectedValuesType" maxOccurs="unbounded" minOccurs="1">
+    					</xs:element>
+    				</xs:sequence>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="artifactIds" maxOccurs="1"
+    			minOccurs="0">
+    			<xs:complexType>
+    				<xs:sequence>
+    					<xs:element name="artifactId"
+    						type="InspectedValuesType" maxOccurs="unbounded" minOccurs="1">
+    					</xs:element>
+    				</xs:sequence>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="versions" maxOccurs="1" minOccurs="0">
+    			<xs:complexType>
+    				<xs:sequence>
+    					<xs:element name="version"
+    						type="InspectedValuesType" maxOccurs="unbounded" minOccurs="1">
+    					</xs:element>
+    				</xs:sequence>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="names" maxOccurs="1" minOccurs="0">
+    			<xs:complexType>
+    				<xs:sequence>
+    					<xs:element name="name"
+    						type="InspectedValuesType" maxOccurs="unbounded" minOccurs="1">
+    					</xs:element>
+    				</xs:sequence>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="vendors" maxOccurs="1" minOccurs="0">
+    			<xs:complexType>
+    				<xs:sequence>
+    					<xs:element name="vendor"
+    						type="InspectedValuesType" maxOccurs="unbounded" minOccurs="1">
+    					</xs:element>
+    				</xs:sequence>
+    			</xs:complexType>
+    		</xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="InspectedValuesType">
+    	<xs:sequence>
+    		<xs:element name="value" type="xs:string"
+    			maxOccurs="1" minOccurs="1">
+    		</xs:element>
+    		<xs:element name="weight" type="xs:int" maxOccurs="1" minOccurs="1"></xs:element>
+    		<xs:element name="origin" type="xs:string" maxOccurs="unbounded" minOccurs="1"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+
+
+
+</xs:schema>

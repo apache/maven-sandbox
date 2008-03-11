@@ -1,0 +1,61 @@
+ ------
+ Features
+ ------
+
+~~ Licensed to the Apache Software Foundation (ASF) under one
+~~ or more contributor license agreements.  See the NOTICE file
+~~ distributed with this work for additional information
+~~ regarding copyright ownership.  The ASF licenses this file
+~~ to you under the Apache License, Version 2.0 (the
+~~ "License"); you may not use this file except in compliance
+~~ with the License.  You may obtain a copy of the License at
+~~
+~~   http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing,
+~~ software distributed under the License is distributed on an
+~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~~ KIND, either express or implied.  See the License for the
+~~ specific language governing permissions and limitations
+~~ under the License.
+
+~~ NOTE: For help with the syntax of this file, see:
+~~ http://maven.apache.org/guides/mini/guide-apt-format.html
+
+Features of Archiva JarInfo
+
+# Analyze Jar
+## Identification of ids by jar file contents / name.
+## Weighted Identification System.
+# Create jarinfo file (xml of analyze info)
+# Make JarInfo Bundle (jar file of jarinfo files)
+## Walk Directory And Create
+# Standalone Command Line Bundle Maker
+# Get JarInfo Object
+
+Soon to Be Feature of Archiva JarInfo
+
+# JarInfo Bundle Management
+## Resolve Bundle List
+## Get Specific Bundle
+## Transfer Bundle
+## Iterate Bundle Contents
+# Make / Update Checksum Index
+# Make / Update Names Index
+# Make / Update Bytecode Index
+# Search Checksum Index
+# Search Names Index
+# Search Bytecode Index
+# Context Aware Search (any index, depending on search terms)
+# Maven Plugin
+# Q4E Plugin
+# Get JarInfo XML
+## Integration into Dependency Management Search.
+## Integration into Java Editor
+# Jar Identification Utility
+## Identification Persistence.
+### Individual Artifacts have pom created next to itself.
+### Group of Artifacts are persisted via pom.xml with install-file sections.
+## Jar Deployment
+## Jar Installation
+

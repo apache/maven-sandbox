@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jar-details xmlns="http://archiva.apache.org/JARINFO/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://archiva.apache.org/jarinfo-v1_0_0.xsd">
+  <assigned-id>
+    <groupId>org.apache.maven.shared</groupId>
+    <artifactId>maven-shared-jar</artifactId>
+    <version>1.0</version>
+  </assigned-id>
+  <filename>maven-shared-jar-1.0.jar</filename>
+  <timestamp>2007-12-08 15:28:21 UTC</timestamp>
+  <size>37030</size>
+  <size-uncompressed>74761</size-uncompressed>
+  <hash algorithm="md5">2be0f752bea6a42194c401d5f713ba6e</hash>
+  <hash algorithm="sha-1">6ba382560083d0c0f34ece30c868f05d5afe793b</hash>
+  <sealed>false</sealed>
+  <generator>
+    <name>archiva-jarinfo</name>
+    <version>1.0</version>
+    <timestamp>2007-12-11 16:31:43 UTC</timestamp>
+  </generator>
+  <entries count-dirs="15" count-files="28" count-total="43">
+    <dir name="META-INF/" timestamp="2007-07-05 02:11:40 UTC"/>
+    <dir name="META-INF/maven/" timestamp="2007-07-05 02:11:40 UTC"/>
+    <dir name="META-INF/maven/org.apache.maven.shared/" timestamp="2007-07-05 02:11:40 UTC"/>
+    <dir name="META-INF/maven/org.apache.maven.shared/maven-shared-jar/" timestamp="2007-07-05 02:11:40 UTC"/>
+    <dir name="META-INF/plexus/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <dir name="org/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <dir name="org/apache/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <dir name="org/apache/maven/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <dir name="org/apache/maven/shared/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <dir name="org/apache/maven/shared/jar/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <dir name="org/apache/maven/shared/jar/classes/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <dir name="org/apache/maven/shared/jar/identification/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <dir name="org/apache/maven/shared/jar/identification/exposers/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <dir name="org/apache/maven/shared/jar/identification/hash/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <dir name="org/apache/maven/shared/jar/identification/repository/" timestamp="2007-07-05 02:11:34 UTC"/>
+    <file name="META-INF/LICENSE.txt" size="11358" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">2b8b815229aa8a61e483fb4ba0588b8b6c491890</hash>
+    </file>
+    <file name="META-INF/MANIFEST.MF" size="124" timestamp="2007-07-05 02:11:38 UTC">
+      <hash algorithm="sha-1">4ee285f2ab13433fc62f08ef1ed0e6cc918f2dfe</hash>
+    </file>
+    <file name="META-INF/maven/org.apache.maven.shared/maven-shared-jar/pom.properties" size="122" timestamp="2007-07-05 02:11:38 UTC">
+      <hash algorithm="sha-1">423e9ebf4aedf697719eea23d5a43b9411254bdb</hash>
+    </file>
+    <file name="META-INF/maven/org.apache.maven.shared/maven-shared-jar/pom.xml" size="4613" timestamp="2007-07-05 02:11:28 UTC">
+      <hash algorithm="sha-1">f5059d0413522cfac8ef7071a834046178fd671a</hash>
+    </file>
+    <file name="META-INF/NOTICE.txt" size="635" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">055879c9a02270c3dceb1af43f763031cc8ca1ae</hash>
+    </file>
+    <file name="META-INF/plexus/components.xml" size="6682" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">d5c1089aad907e0053d941983c0de2414f80f3e7</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/classes/ImportVisitor.class" size="2949" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">a65ba8fb37cf41535294e729514202693bf276ff</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/classes/JarClasses.class" size="2155" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">401962e5d8a94c46ca997f5b8e9bbd5a1ea58a09</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/classes/JarClassesAnalysis.class" size="5308" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">0c0603e0f1bd2f03a4de29a3acf889530536d2db</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/exposers/EmbeddedMavenModelExposer.class" size="3539" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">5ea1426024822239c3b251f61ac8af815bbfaf38</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/exposers/FilenameExposer.class" size="1922" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">2f45722aafebcad6e33a8300feb72f5481d8ca3c</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/exposers/JarClassesExposer.class" size="1824" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">078d51535f39fbd3694a87ae72b1943d083bdf68</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/exposers/ManifestExposer.class" size="2666" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">acad1e14b4b8cd6ea5230ed11a4f52bc5572c7bd</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/exposers/RepositorySearchExposer.class" size="2882" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">f08d53fcea37f8fe396b0899a282dd014a3e0e71</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/exposers/StaticMainOutputExposer.class" size="1488" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">b83cd16a15f36a4a8fcf4972db0d6cbf2a11db28</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/exposers/TextFileExposer.class" size="3120" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">793c59925cc992e9bfbb6b2045e781a1244fc459</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/exposers/TimestampExposer.class" size="2432" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">c0ec9f85c0c31a904cd5452f34f7d9803f6584de</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/hash/JarBytecodeHashAnalyzer.class" size="2651" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">0c731bc1294b11fe1bb1e27068db891b4ce77599</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/hash/JarFileHashAnalyzer.class" size="1773" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">3f0cbdac5ebec6f25de3b30a5910975b7f848f1c</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/hash/JarHashAnalyzer.class" size="245" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">b997fffe088e50f039a0a9718e2392db0b4828c2</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/JarIdentification.class" size="3462" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">97629dc2c600181d57c58bf130cb52b14dbf94b3</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/JarIdentificationAnalysis.class" size="3479" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">87e813f0349c60dfc4598630c8a5cc4d3d43bb0a</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/JarIdentificationExposer.class" size="298" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">9927629d3ef4badfafa8afa3c6afbc542b4ad452</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/repository/EmptyRepositoryHashSearch.class" size="804" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">0ece1b020e7a88767c29fd46b526054f5df77002</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/identification/repository/RepositoryHashSearch.class" size="268" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">b2900318df60b3137f78b41ea06eabc2f875c15f</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/JarAnalyzer.class" size="3540" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">57a65630073136ec432d81040bc6590735ef2d57</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/JarAnalyzer$1.class" size="944" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">b16c95b64e978e0ff95bd94ee58cabc500ae0406</hash>
+    </file>
+    <file name="org/apache/maven/shared/jar/JarData.class" size="3478" timestamp="2007-07-05 02:11:34 UTC">
+      <hash algorithm="sha-1">52016a03644417188908b784e8cbd76465cd8136</hash>
+    </file>
+  </entries>
+  <bytecode count-classes="22" count-packages="6">
+    <hash algorithm="sha-1">e4f71f55529cb672f3a5387c66ef6791a7c55d65</hash>
+    <jdk>1.1</jdk>
+    <debug>true</debug>
+    <class name="org.apache.maven.shared.jar.classes.ImportVisitor" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">a65ba8fb37cf41535294e729514202693bf276ff</hash>
+      <import>java.lang.CharSequence</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.ArrayList</import>
+      <import>java.util.List</import>
+      <import>java.util.regex.Matcher</import>
+      <import>java.util.regex.Pattern</import>
+      <import>org.apache.bcel.classfile.ConstantClass</import>
+      <import>org.apache.bcel.classfile.ConstantPool</import>
+      <import>org.apache.bcel.classfile.ConstantUtf8</import>
+      <import>org.apache.bcel.classfile.EmptyVisitor</import>
+      <import>org.apache.bcel.classfile.JavaClass</import>
+      <import>org.apache.commons.collections.list.SetUniqueList</import>
+      <import>org.apache.maven.shared.jar.classes.ImportVisitor</import>
+      <method>&lt;init&gt;(Lorg/apache/bcel/classfile/JavaClass;)V</method>
+      <method>getImports()Ljava/util/List;</method>
+      <method>visitConstantClass(Lorg/apache/bcel/classfile/ConstantClass;)V</method>
+      <method>visitConstantUtf8(Lorg/apache/bcel/classfile/ConstantUtf8;)V</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.classes.JarClasses" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">401962e5d8a94c46ca997f5b8e9bbd5a1ea58a09</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.ArrayList</import>
+      <import>java.util.Collection</import>
+      <import>java.util.Collections</import>
+      <import>java.util.List</import>
+      <import>org.apache.commons.collections.list.SetUniqueList</import>
+      <import>org.apache.maven.shared.jar.classes.JarClasses</import>
+      <method>&lt;init&gt;()V</method>
+      <method>addClassName(Ljava/lang/String;)V</method>
+      <method>addPackage(Ljava/lang/String;)V</method>
+      <method>addMethod(Ljava/lang/String;)V</method>
+      <method>addImports(Ljava/util/List;)V</method>
+      <method>getImports()Ljava/util/List;</method>
+      <method>getClassNames()Ljava/util/List;</method>
+      <method>getPackages()Ljava/util/List;</method>
+      <method>isDebugPresent()Z</method>
+      <method>setDebugPresent(Z)V</method>
+      <method>getJdkRevision()Ljava/lang/String;</method>
+      <method>setJdkRevision(Ljava/lang/String;)V</method>
+      <method>getMethods()Ljava/util/List;</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.classes.JarClassesAnalysis" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">0c0603e0f1bd2f03a4de29a3acf889530536d2db</hash>
+      <import>java.io.File</import>
+      <import>java.io.IOException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.StringBuffer</import>
+      <import>java.lang.Throwable</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>java.util.jar.JarEntry</import>
+      <import>java.util.zip.ZipEntry</import>
+      <import>org.apache.bcel.classfile.Attribute</import>
+      <import>org.apache.bcel.classfile.ClassFormatException</import>
+      <import>org.apache.bcel.classfile.ClassParser</import>
+      <import>org.apache.bcel.classfile.DescendingVisitor</import>
+      <import>org.apache.bcel.classfile.FieldOrMethod</import>
+      <import>org.apache.bcel.classfile.JavaClass</import>
+      <import>org.apache.bcel.classfile.LineNumberTable</import>
+      <import>org.apache.bcel.classfile.Method</import>
+      <import>org.apache.bcel.classfile.Visitor</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.JarData</import>
+      <import>org.apache.maven.shared.jar.classes.ImportVisitor</import>
+      <import>org.apache.maven.shared.jar.classes.JarClasses</import>
+      <import>org.apache.maven.shared.jar.classes.JarClassesAnalysis</import>
+      <import>org.codehaus.plexus.logging.AbstractLogEnabled</import>
+      <import>org.codehaus.plexus.logging.Logger</import>
+      <method>&lt;init&gt;()V</method>
+      <method>analyze(Lorg/apache/maven/shared/jar/JarAnalyzer;)Lorg/apache/maven/shared/jar/classes/JarClasses;</method>
+      <method>hasDebugSymbols(Lorg/apache/bcel/classfile/JavaClass;)Z</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.exposers.EmbeddedMavenModelExposer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">5ea1426024822239c3b251f61ac8af815bbfaf38</hash>
+      <import>java.io.File</import>
+      <import>java.io.IOException</import>
+      <import>java.io.InputStream</import>
+      <import>java.io.InputStreamReader</import>
+      <import>java.io.Reader</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.StringBuffer</import>
+      <import>java.lang.Throwable</import>
+      <import>java.util.List</import>
+      <import>java.util.jar.JarEntry</import>
+      <import>java.util.zip.ZipEntry</import>
+      <import>org.apache.maven.model.Model</import>
+      <import>org.apache.maven.model.Organization</import>
+      <import>org.apache.maven.model.io.xpp3.MavenXpp3Reader</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationExposer</import>
+      <import>org.apache.maven.shared.jar.identification.exposers.EmbeddedMavenModelExposer</import>
+      <import>org.codehaus.plexus.logging.AbstractLogEnabled</import>
+      <import>org.codehaus.plexus.logging.Logger</import>
+      <import>org.codehaus.plexus.util.IOUtil</import>
+      <import>org.codehaus.plexus.util.xml.pull.XmlPullParserException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>expose(Lorg/apache/maven/shared/jar/identification/JarIdentification;Lorg/apache/maven/shared/jar/JarAnalyzer;)V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.exposers.FilenameExposer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">2f45722aafebcad6e33a8300feb72f5481d8ca3c</hash>
+      <import>java.io.File</import>
+      <import>java.lang.CharSequence</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.regex.Matcher</import>
+      <import>java.util.regex.Pattern</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationExposer</import>
+      <import>org.apache.maven.shared.jar.identification.exposers.FilenameExposer</import>
+      <import>org.codehaus.plexus.util.FileUtils</import>
+      <method>&lt;init&gt;()V</method>
+      <method>expose(Lorg/apache/maven/shared/jar/identification/JarIdentification;Lorg/apache/maven/shared/jar/JarAnalyzer;)V</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.exposers.JarClassesExposer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">078d51535f39fbd3694a87ae72b1943d083bdf68</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.classes.JarClasses</import>
+      <import>org.apache.maven.shared.jar.classes.JarClassesAnalysis</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationExposer</import>
+      <import>org.apache.maven.shared.jar.identification.exposers.JarClassesExposer</import>
+      <method>&lt;init&gt;()V</method>
+      <method>expose(Lorg/apache/maven/shared/jar/identification/JarIdentification;Lorg/apache/maven/shared/jar/JarAnalyzer;)V</method>
+      <method>setAnalyzer(Lorg/apache/maven/shared/jar/classes/JarClassesAnalysis;)V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.exposers.ManifestExposer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">acad1e14b4b8cd6ea5230ed11a4f52bc5572c7bd</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.Map</import>
+      <import>java.util.Map$Entry</import>
+      <import>java.util.Set</import>
+      <import>java.util.jar.Attributes</import>
+      <import>java.util.jar.Attributes$Name</import>
+      <import>java.util.jar.Manifest</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.JarData</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationExposer</import>
+      <import>org.apache.maven.shared.jar.identification.exposers.ManifestExposer</import>
+      <method>&lt;init&gt;()V</method>
+      <method>expose(Lorg/apache/maven/shared/jar/identification/JarIdentification;Lorg/apache/maven/shared/jar/JarAnalyzer;)V</method>
+      <method>addManifestAttributeValues(Ljava/util/jar/Attributes;Lorg/apache/maven/shared/jar/identification/JarIdentification;)V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.exposers.RepositorySearchExposer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">f08d53fcea37f8fe396b0899a282dd014a3e0e71</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.ArrayList</import>
+      <import>java.util.Collection</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>org.apache.maven.artifact.Artifact</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationExposer</import>
+      <import>org.apache.maven.shared.jar.identification.exposers.RepositorySearchExposer</import>
+      <import>org.apache.maven.shared.jar.identification.hash.JarHashAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.repository.RepositoryHashSearch</import>
+      <import>org.codehaus.plexus.logging.AbstractLogEnabled</import>
+      <method>&lt;init&gt;()V</method>
+      <method>expose(Lorg/apache/maven/shared/jar/identification/JarIdentification;Lorg/apache/maven/shared/jar/JarAnalyzer;)V</method>
+      <method>setRepositoryHashSearch(Lorg/apache/maven/shared/jar/identification/repository/RepositoryHashSearch;)V</method>
+      <method>setFileHashAnalyzer(Lorg/apache/maven/shared/jar/identification/hash/JarHashAnalyzer;)V</method>
+      <method>setBytecodeHashAnalyzer(Lorg/apache/maven/shared/jar/identification/hash/JarHashAnalyzer;)V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.exposers.StaticMainOutputExposer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">b83cd16a15f36a4a8fcf4972db0d6cbf2a11db28</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Collections</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationExposer</import>
+      <import>org.apache.maven.shared.jar.identification.exposers.StaticMainOutputExposer</import>
+      <method>&lt;init&gt;()V</method>
+      <method>expose(Lorg/apache/maven/shared/jar/identification/JarIdentification;Lorg/apache/maven/shared/jar/JarAnalyzer;)V</method>
+      <method>findStaticMainVersions()Ljava/util/List;</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.exposers.TextFileExposer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">793c59925cc992e9bfbb6b2045e781a1244fc459</hash>
+      <import>java.io.BufferedReader</import>
+      <import>java.io.IOException</import>
+      <import>java.io.InputStream</import>
+      <import>java.io.InputStreamReader</import>
+      <import>java.io.Reader</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.StringBuffer</import>
+      <import>java.lang.Throwable</import>
+      <import>java.util.ArrayList</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>java.util.jar.JarEntry</import>
+      <import>java.util.zip.ZipEntry</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationExposer</import>
+      <import>org.apache.maven.shared.jar.identification.exposers.TextFileExposer</import>
+      <import>org.codehaus.plexus.logging.AbstractLogEnabled</import>
+      <import>org.codehaus.plexus.logging.Logger</import>
+      <import>org.codehaus.plexus.util.IOUtil</import>
+      <import>org.codehaus.plexus.util.StringUtils</import>
+      <method>&lt;init&gt;()V</method>
+      <method>expose(Lorg/apache/maven/shared/jar/identification/JarIdentification;Lorg/apache/maven/shared/jar/JarAnalyzer;)V</method>
+      <method>findTextFileVersions(Lorg/apache/maven/shared/jar/JarAnalyzer;)Ljava/util/List;</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.exposers.TimestampExposer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">c0ec9f85c0c31a904cd5452f34f7d9803f6584de</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.text.DateFormat</import>
+      <import>java.text.SimpleDateFormat</import>
+      <import>java.util.Date</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>java.util.Locale</import>
+      <import>java.util.jar.JarEntry</import>
+      <import>java.util.zip.ZipEntry</import>
+      <import>org.apache.commons.collections.Bag</import>
+      <import>org.apache.commons.collections.bag.HashBag</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationExposer</import>
+      <import>org.apache.maven.shared.jar.identification.exposers.TimestampExposer</import>
+      <import>org.codehaus.plexus.util.StringUtils</import>
+      <method>&lt;init&gt;()V</method>
+      <method>expose(Lorg/apache/maven/shared/jar/identification/JarIdentification;Lorg/apache/maven/shared/jar/JarAnalyzer;)V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.hash.JarBytecodeHashAnalyzer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">0c731bc1294b11fe1bb1e27068db891b4ce77599</hash>
+      <import>java.io.IOException</import>
+      <import>java.io.InputStream</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>java.util.jar.JarEntry</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.JarData</import>
+      <import>org.apache.maven.shared.jar.identification.hash.JarBytecodeHashAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.hash.JarHashAnalyzer</import>
+      <import>org.codehaus.plexus.digest.DigesterException</import>
+      <import>org.codehaus.plexus.digest.StreamingDigester</import>
+      <import>org.codehaus.plexus.logging.AbstractLogEnabled</import>
+      <import>org.codehaus.plexus.logging.Logger</import>
+      <import>org.codehaus.plexus.util.IOUtil</import>
+      <method>&lt;init&gt;()V</method>
+      <method>computeHash(Lorg/apache/maven/shared/jar/JarAnalyzer;)Ljava/lang/String;</method>
+      <method>computeEntryBytecodeHash(Ljava/io/InputStream;)V</method>
+      <method>setDigester(Lorg/codehaus/plexus/digest/StreamingDigester;)V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.hash.JarFileHashAnalyzer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">3f0cbdac5ebec6f25de3b30a5910975b7f848f1c</hash>
+      <import>java.io.File</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.JarData</import>
+      <import>org.apache.maven.shared.jar.identification.hash.JarFileHashAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.hash.JarHashAnalyzer</import>
+      <import>org.codehaus.plexus.digest.Digester</import>
+      <import>org.codehaus.plexus.digest.DigesterException</import>
+      <import>org.codehaus.plexus.logging.AbstractLogEnabled</import>
+      <import>org.codehaus.plexus.logging.Logger</import>
+      <method>&lt;init&gt;()V</method>
+      <method>computeHash(Lorg/apache/maven/shared/jar/JarAnalyzer;)Ljava/lang/String;</method>
+      <method>setDigester(Lorg/codehaus/plexus/digest/Digester;)V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.hash.JarHashAnalyzer" version="45.3" jdk="1.1" debug="false">
+      <hash algorithm="sha-1">b997fffe088e50f039a0a9718e2392db0b4828c2</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.hash.JarHashAnalyzer</import>
+      <method>computeHash(Lorg/apache/maven/shared/jar/JarAnalyzer;)Ljava/lang/String;</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.JarIdentification" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">97629dc2c600181d57c58bf130cb52b14dbf94b3</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.ArrayList</import>
+      <import>java.util.List</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <method>&lt;init&gt;()V</method>
+      <method>addAndSetGroupId(Ljava/lang/String;)V</method>
+      <method>addGroupId(Ljava/lang/String;)V</method>
+      <method>addAndSetArtifactId(Ljava/lang/String;)V</method>
+      <method>addArtifactId(Ljava/lang/String;)V</method>
+      <method>addAndSetVersion(Ljava/lang/String;)V</method>
+      <method>addVersion(Ljava/lang/String;)V</method>
+      <method>addAndSetVendor(Ljava/lang/String;)V</method>
+      <method>addVendor(Ljava/lang/String;)V</method>
+      <method>addAndSetName(Ljava/lang/String;)V</method>
+      <method>addName(Ljava/lang/String;)V</method>
+      <method>addUnique(Ljava/util/List;Ljava/lang/String;)V</method>
+      <method>getArtifactId()Ljava/lang/String;</method>
+      <method>setArtifactId(Ljava/lang/String;)V</method>
+      <method>getGroupId()Ljava/lang/String;</method>
+      <method>setGroupId(Ljava/lang/String;)V</method>
+      <method>getName()Ljava/lang/String;</method>
+      <method>setName(Ljava/lang/String;)V</method>
+      <method>getVendor()Ljava/lang/String;</method>
+      <method>setVendor(Ljava/lang/String;)V</method>
+      <method>getVersion()Ljava/lang/String;</method>
+      <method>setVersion(Ljava/lang/String;)V</method>
+      <method>getPotentialVersions()Ljava/util/List;</method>
+      <method>getPotentialNames()Ljava/util/List;</method>
+      <method>getPotentialGroupIds()Ljava/util/List;</method>
+      <method>getPotentialArtifactIds()Ljava/util/List;</method>
+      <method>getPotentialVendors()Ljava/util/List;</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.JarIdentificationAnalysis" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">87e813f0349c60dfc4598630c8a5cc4d3d43bb0a</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Collections</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.JarData</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationAnalysis</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationExposer</import>
+      <import>org.codehaus.plexus.util.StringUtils</import>
+      <method>&lt;init&gt;()V</method>
+      <method>analyze(Lorg/apache/maven/shared/jar/JarAnalyzer;)Lorg/apache/maven/shared/jar/identification/JarIdentification;</method>
+      <method>normalize(Lorg/apache/maven/shared/jar/identification/JarIdentification;)V</method>
+      <method>pickSmallest(Ljava/util/List;)Ljava/lang/String;</method>
+      <method>pickLargest(Ljava/util/List;)Ljava/lang/String;</method>
+      <method>setExposers(Ljava/util/List;)V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.JarIdentificationExposer" version="45.3" jdk="1.1" debug="false">
+      <hash algorithm="sha-1">9927629d3ef4badfafa8afa3c6afbc542b4ad452</hash>
+      <import>java.lang.Object</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentificationExposer</import>
+      <method>expose(Lorg/apache/maven/shared/jar/identification/JarIdentification;Lorg/apache/maven/shared/jar/JarAnalyzer;)V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.repository.EmptyRepositoryHashSearch" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">0ece1b020e7a88767c29fd46b526054f5df77002</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Collections</import>
+      <import>java.util.List</import>
+      <import>org.apache.maven.shared.jar.identification.repository.EmptyRepositoryHashSearch</import>
+      <import>org.apache.maven.shared.jar.identification.repository.RepositoryHashSearch</import>
+      <method>&lt;init&gt;()V</method>
+      <method>searchBytecodeHash(Ljava/lang/String;)Ljava/util/List;</method>
+      <method>searchFileHash(Ljava/lang/String;)Ljava/util/List;</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.identification.repository.RepositoryHashSearch" version="45.3" jdk="1.1" debug="false">
+      <hash algorithm="sha-1">b2900318df60b3137f78b41ea06eabc2f875c15f</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.List</import>
+      <import>org.apache.maven.shared.jar.identification.repository.RepositoryHashSearch</import>
+      <method>searchFileHash(Ljava/lang/String;)Ljava/util/List;</method>
+      <method>searchBytecodeHash(Ljava/lang/String;)Ljava/util/List;</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.JarAnalyzer" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">57a65630073136ec432d81040bc6590735ef2d57</hash>
+      <import>java.io.File</import>
+      <import>java.io.IOException</import>
+      <import>java.io.InputStream</import>
+      <import>java.lang.CharSequence</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.ArrayList</import>
+      <import>java.util.Collections</import>
+      <import>java.util.Comparator</import>
+      <import>java.util.Enumeration</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>java.util.jar.JarEntry</import>
+      <import>java.util.jar.JarFile</import>
+      <import>java.util.jar.Manifest</import>
+      <import>java.util.regex.Matcher</import>
+      <import>java.util.regex.Pattern</import>
+      <import>java.util.zip.ZipEntry</import>
+      <import>java.util.zip.ZipFile</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer$1</import>
+      <import>org.apache.maven.shared.jar.JarData</import>
+      <method>&lt;init&gt;(Ljava/io/File;)V</method>
+      <method>getEntryInputStream(Ljava/util/jar/JarEntry;)Ljava/io/InputStream;</method>
+      <method>closeQuietly()V</method>
+      <method>filterEntries(Ljava/util/regex/Pattern;)Ljava/util/List;</method>
+      <method>getClassEntries()Ljava/util/List;</method>
+      <method>getMavenPomEntries()Ljava/util/List;</method>
+      <method>getVersionEntries()Ljava/util/List;</method>
+      <method>getEntries()Ljava/util/List;</method>
+      <method>getFile()Ljava/io/File;</method>
+      <method>getJarData()Lorg/apache/maven/shared/jar/JarData;</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.JarAnalyzer$1" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">b16c95b64e978e0ff95bd94ee58cabc500ae0406</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Comparator</import>
+      <import>java.util.jar.JarEntry</import>
+      <import>java.util.zip.ZipEntry</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer</import>
+      <import>org.apache.maven.shared.jar.JarAnalyzer$1</import>
+      <method>&lt;init&gt;(Lorg/apache/maven/shared/jar/JarAnalyzer;)V</method>
+      <method>compare(Ljava/lang/Object;Ljava/lang/Object;)I</method>
+    </class>
+    <class name="org.apache.maven.shared.jar.JarData" version="45.3" jdk="1.1" debug="true">
+      <hash algorithm="sha-1">52016a03644417188908b784e8cbd76465cd8136</hash>
+      <import>java.io.File</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Collections</import>
+      <import>java.util.List</import>
+      <import>java.util.jar.Attributes</import>
+      <import>java.util.jar.Attributes$Name</import>
+      <import>java.util.jar.Manifest</import>
+      <import>org.apache.maven.shared.jar.JarData</import>
+      <import>org.apache.maven.shared.jar.classes.JarClasses</import>
+      <import>org.apache.maven.shared.jar.identification.JarIdentification</import>
+      <import>org.codehaus.plexus.util.StringUtils</import>
+      <method>&lt;init&gt;(Ljava/io/File;Ljava/util/jar/Manifest;Ljava/util/List;)V</method>
+      <method>getEntries()Ljava/util/List;</method>
+      <method>getManifest()Ljava/util/jar/Manifest;</method>
+      <method>getFile()Ljava/io/File;</method>
+      <method>isSealed()Z</method>
+      <method>setFileHash(Ljava/lang/String;)V</method>
+      <method>getFileHash()Ljava/lang/String;</method>
+      <method>setBytecodeHash(Ljava/lang/String;)V</method>
+      <method>getBytecodeHash()Ljava/lang/String;</method>
+      <method>isDebugPresent()Z</method>
+      <method>setJarClasses(Lorg/apache/maven/shared/jar/classes/JarClasses;)V</method>
+      <method>getNumEntries()I</method>
+      <method>getNumClasses()I</method>
+      <method>getNumPackages()I</method>
+      <method>getJdkRevision()Ljava/lang/String;</method>
+      <method>setJarIdentification(Lorg/apache/maven/shared/jar/identification/JarIdentification;)V</method>
+      <method>getJarIdentification()Lorg/apache/maven/shared/jar/identification/JarIdentification;</method>
+      <method>getJarClasses()Lorg/apache/maven/shared/jar/classes/JarClasses;</method>
+    </class>
+    <package>org.apache.maven.shared.jar</package>
+    <package>org.apache.maven.shared.jar.classes</package>
+    <package>org.apache.maven.shared.jar.identification</package>
+    <package>org.apache.maven.shared.jar.identification.exposers</package>
+    <package>org.apache.maven.shared.jar.identification.hash</package>
+    <package>org.apache.maven.shared.jar.identification.repository</package>
+  </bytecode>
+  <inspected>
+    <groupIds>
+      <groupId>
+        <value>org.apache.maven.shared</value>
+        <weight>5000</weight>
+        <origin>embedded.pom.groupId</origin>
+      </groupId>
+      <groupId>
+        <value>org.apache.maven.shared.jar</value>
+        <weight>115</weight>
+        <origin>class.packages</origin>
+        <origin>class.packages.common</origin>
+      </groupId>
+      <groupId>
+        <value>org.apache.maven.shared.jar.identification.exposers</value>
+        <weight>40</weight>
+        <origin>class.packages</origin>
+      </groupId>
+      <groupId>
+        <value>org.apache.maven.shared.jar.classes</value>
+        <weight>15</weight>
+        <origin>class.packages</origin>
+      </groupId>
+      <groupId>
+        <value>org.apache.maven.shared.jar.identification</value>
+        <weight>15</weight>
+        <origin>class.packages</origin>
+      </groupId>
+      <groupId>
+        <value>org.apache.maven.shared.jar.identification.hash</value>
+        <weight>15</weight>
+        <origin>class.packages</origin>
+      </groupId>
+      <groupId>
+        <value>org.apache.maven.shared.jar.identification.repository</value>
+        <weight>10</weight>
+        <origin>class.packages</origin>
+      </groupId>
+    </groupIds>
+    <artifactIds>
+      <artifactId>
+        <value>maven-shared-jar</value>
+        <weight>5020</weight>
+        <origin>embedded.pom.artifactId</origin>
+        <origin>filename</origin>
+      </artifactId>
+    </artifactIds>
+    <versions>
+      <version>
+        <value>1.0</value>
+        <weight>5030</weight>
+        <origin>embedded.pom.version</origin>
+        <origin>filename</origin>
+      </version>
+      <version>
+        <value>20070704</value>
+        <weight>53</weight>
+        <origin>timestamps</origin>
+        <origin>timestamps.max</origin>
+      </version>
+    </versions>
+    <names>
+      <name>
+        <value>maven-shared-jar</value>
+        <weight>10</weight>
+        <origin>filename</origin>
+      </name>
+    </names>
+  </inspected>
+</jar-details>

@@ -1,0 +1,1949 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jar-details xmlns="http://archiva.apache.org/JARINFO/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://archiva.apache.org/jarinfo-v1_0_0.xsd">
+  <filename>mystery.jar</filename>
+  <timestamp>2007-12-08 15:28:21 UTC</timestamp>
+  <size>82512</size>
+  <size-uncompressed>240930</size-uncompressed>
+  <hash algorithm="md5">5449e46a8f13c0788b8811ffd231c45f</hash>
+  <hash algorithm="sha-1">b7e19cbd9b2be71442b21c36847a7434d30d6886</hash>
+  <sealed>false</sealed>
+  <generator>
+    <name>archiva-jarinfo</name>
+    <version>1.0</version>
+    <timestamp>2007-12-11 16:31:43 UTC</timestamp>
+  </generator>
+  <entries count-dirs="7" count-files="93" count-total="100">
+    <dir name="javax/" timestamp="2006-03-29 22:02:54 UTC"/>
+    <dir name="javax/jdo/" timestamp="2006-03-29 22:02:56 UTC"/>
+    <dir name="javax/jdo/datastore/" timestamp="2006-03-29 22:02:56 UTC"/>
+    <dir name="javax/jdo/identity/" timestamp="2006-03-29 22:02:56 UTC"/>
+    <dir name="javax/jdo/listener/" timestamp="2006-03-29 22:02:56 UTC"/>
+    <dir name="javax/jdo/spi/" timestamp="2006-03-29 22:02:56 UTC"/>
+    <dir name="META-INF/" timestamp="2006-03-29 22:03:12 UTC"/>
+    <file name="javax/jdo/Bundle.properties" size="5013" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">44d61a8a221cd0d4361d91259dd4f7f601c42bf1</hash>
+    </file>
+    <file name="javax/jdo/datastore/DataStoreCache.class" size="506" timestamp="2006-03-29 22:02:54 UTC">
+      <hash algorithm="sha-1">a16dd29341cc7bbbab2096abbf6097c5e89cacfc</hash>
+    </file>
+    <file name="javax/jdo/datastore/DataStoreCache$EmptyDataStoreCache.class" size="1619" timestamp="2006-03-29 22:02:54 UTC">
+      <hash algorithm="sha-1">51b3224eabf7d3fa1768b3293b082884e641f153</hash>
+    </file>
+    <file name="javax/jdo/datastore/JDOConnection.class" size="202" timestamp="2006-03-29 22:02:54 UTC">
+      <hash algorithm="sha-1">38c8f10e0174ab166aa6a6ae47bde1238499be68</hash>
+    </file>
+    <file name="javax/jdo/datastore/Sequence.class" size="289" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">73c79bfb51152e3afbc751bd3aa7551998e1d98d</hash>
+    </file>
+    <file name="javax/jdo/Extent.class" size="410" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">63d36b1ab100e330e91af4467523ad5865b742ab</hash>
+    </file>
+    <file name="javax/jdo/FetchPlan.class" size="1119" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">8dcb08caba2b78bdc7a5103191fa18804f0f393f</hash>
+    </file>
+    <file name="javax/jdo/identity/ByteIdentity.class" size="2306" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">9217ed29c90cd0f77b790092292c6a96447950b2</hash>
+    </file>
+    <file name="javax/jdo/identity/CharIdentity.class" size="2865" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">c6142fea461c40dc65442e687a932cf5d2c7b28e</hash>
+    </file>
+    <file name="javax/jdo/identity/IntIdentity.class" size="2291" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">a9fe0a1b2aeb39059bea8fa763ec50f3cd03abb5</hash>
+    </file>
+    <file name="javax/jdo/identity/LongIdentity.class" size="2301" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">7c9f9f23c054516ca3d48af01ba5d11e994df132</hash>
+    </file>
+    <file name="javax/jdo/identity/ObjectIdentity.class" size="3312" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">99bb4a81698f247b89ddbf7ed039b1bfd750b880</hash>
+    </file>
+    <file name="javax/jdo/identity/ObjectIdentity$1.class" size="561" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">5f1655890fafc9220bead084b7272744820df162</hash>
+    </file>
+    <file name="javax/jdo/identity/ShortIdentity.class" size="2316" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">f394f6c0eedceea43a540276f0e1cb3cc8cf8482</hash>
+    </file>
+    <file name="javax/jdo/identity/SingleFieldIdentity.class" size="2972" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">2e071b3d736f00e68f43841d5a35aa578f5f4a16</hash>
+    </file>
+    <file name="javax/jdo/identity/StringIdentity.class" size="1712" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">28d8fd69665a424e07c76d2ea5505d6909768f9d</hash>
+    </file>
+    <file name="javax/jdo/InstanceCallbacks.class" size="285" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">524282ae6ecf63fd87d72f78f5af91cf8f789824</hash>
+    </file>
+    <file name="javax/jdo/jdo.dtd" size="10669" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">a69014678f94fb6aa2c186afd1872024f6fcf7a2</hash>
+    </file>
+    <file name="javax/jdo/jdo.xsd" size="48595" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">ec91bb708536ee0adbcf5c4e4a8906dfc6efc5d8</hash>
+    </file>
+    <file name="javax/jdo/JDOCanRetryException.class" size="1307" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">6989c99518dfee96754d22a606e1de1a9ba5bc6b</hash>
+    </file>
+    <file name="javax/jdo/JDODataStoreException.class" size="1318" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">236c18c21d10a13a585a6cd6d24f76e849a53a7a</hash>
+    </file>
+    <file name="javax/jdo/JDODetachedFieldAccessException.class" size="832" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">3b0695f56136840e9eb46fb66dd2591dfdb03e1d</hash>
+    </file>
+    <file name="javax/jdo/JDOException.class" size="4867" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">e9cb1a96b05fbb7400fe0d6030bb711092c9e9af</hash>
+    </file>
+    <file name="javax/jdo/JDOFatalDataStoreException.class" size="987" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">05abb472bfce66016b6e83287fdeae8a4e1bee48</hash>
+    </file>
+    <file name="javax/jdo/JDOFatalException.class" size="1298" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">45a311089c122e2bd404a74a6c79b6ba32734770</hash>
+    </file>
+    <file name="javax/jdo/JDOFatalInternalException.class" size="815" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">33e0412946b9e48106a821855678f7dd5a95cc92</hash>
+    </file>
+    <file name="javax/jdo/JDOFatalUserException.class" size="1315" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">c5f92ca18aadad14522558a1b4da62ad73bbb9bd</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper.class" size="11600" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">988b2d4df783fc727e112725f54925e271796194</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$1.class" size="528" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">e8e62401846c4c46e692c5ab1baa1ab2358cead6</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$10.class" size="789" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">ed994592057119dbb0ea022e67dcef7107e8868a</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$11.class" size="790" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">f79fc975f52e718386202186a85b66b842a6c412</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$12.class" size="575" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">6b6ad2c5b49cdbc36fe76b84b6dc8bff99e2644e</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$2.class" size="808" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">e2a35e4d5c67cdffb6e1c105b723dfdcce3a546f</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$3.class" size="786" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">19fa21d49322b7b3cf12bc70d0938f19dd32db35</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$4.class" size="799" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">0de4aa1cb2f660fa137ac7161f95fec9a1834ba7</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$5.class" size="785" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">fcac2de97906a498250dac282d3c1f7b50f08f06</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$6.class" size="790" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">be676ba4f46151e8d6c3852692d09b3f432d571e</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$7.class" size="793" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">01c7a1a0f447e2fa662eb3b08136f1e15f5145d7</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$8.class" size="785" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">0b0d8bebc938eb513a9125fa2facefda91b9a904</hash>
+    </file>
+    <file name="javax/jdo/JDOHelper$9.class" size="783" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">c755748621b116be72d117c502ec3e33aabfde83</hash>
+    </file>
+    <file name="javax/jdo/JDONullIdentityException.class" size="980" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">89b43a0f64601587413dfccd164a7099b25735b7</hash>
+    </file>
+    <file name="javax/jdo/JDOObjectNotFoundException.class" size="825" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">44af0e2861c8e573a9feb2d96fac27b23f933edf</hash>
+    </file>
+    <file name="javax/jdo/JDOOptimisticVerificationException.class" size="854" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">50c4a3f5e067d331c3c41331100885e052e304f7</hash>
+    </file>
+    <file name="javax/jdo/jdoquery.dtd" size="1053" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">fcabc0fee4185c95453c0de574d41c806bd502ae</hash>
+    </file>
+    <file name="javax/jdo/jdoquery.xsd" size="4380" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">a0fff315a6da2ac368242f9df2cb5313ad8859d4</hash>
+    </file>
+    <file name="javax/jdo/JDOUnsupportedOptionException.class" size="826" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">c0a7a2fb7e2a360cd8c6be7db2f3fe1f6f0cd0cb</hash>
+    </file>
+    <file name="javax/jdo/JDOUserCallbackException.class" size="811" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">34c76280d8f8b8761d59110fd09f32b48b66658c</hash>
+    </file>
+    <file name="javax/jdo/JDOUserException.class" size="1303" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">eb4538f645bea9c5714e8c52134e4a536edae404</hash>
+    </file>
+    <file name="javax/jdo/listener/AttachCallback.class" size="205" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">68a4b1a3d6b6abba2fe7eed3e5ed8db8a160708f</hash>
+    </file>
+    <file name="javax/jdo/listener/AttachLifecycleListener.class" size="288" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">25c1befbfbc0c3c542ecf4da12804813c305adfd</hash>
+    </file>
+    <file name="javax/jdo/listener/ClearCallback.class" size="154" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">437001b90ab635f9addbbfa2d3c7726c6ed147d7</hash>
+    </file>
+    <file name="javax/jdo/listener/ClearLifecycleListener.class" size="284" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">8e16727221c10fcce5544cc8a53f812a1f8da341</hash>
+    </file>
+    <file name="javax/jdo/listener/CreateLifecycleListener.class" size="268" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">b32e466b28507f0c63c7e90cfa7e7185dec775ac</hash>
+    </file>
+    <file name="javax/jdo/listener/DeleteCallback.class" size="157" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">688c785eba919457e17e4d257df2f4b5fbacad77</hash>
+    </file>
+    <file name="javax/jdo/listener/DeleteLifecycleListener.class" size="288" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">40a3cfed8dabfd3bd9ae414fc847b5e8fa274603</hash>
+    </file>
+    <file name="javax/jdo/listener/DetachCallback.class" size="205" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">84ab80af81bf60b39b23c663c630989526cc1c8c</hash>
+    </file>
+    <file name="javax/jdo/listener/DetachLifecycleListener.class" size="288" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">bf107f8fda8e8ad577308f995b4bd0537521609f</hash>
+    </file>
+    <file name="javax/jdo/listener/DirtyLifecycleListener.class" size="284" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">8d95ca342454d3133f0a948c4393447805e26389</hash>
+    </file>
+    <file name="javax/jdo/listener/InstanceLifecycleEvent.class" size="2280" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">af956b891da97fc754ee262857b50c8d8b278238</hash>
+    </file>
+    <file name="javax/jdo/listener/InstanceLifecycleListener.class" size="150" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">9546bf23b70880ca49bda96f957c40a137bd981a</hash>
+    </file>
+    <file name="javax/jdo/listener/LoadCallback.class" size="152" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">13dcef64740faa244bc46ddf6dd7f895bb82cb54</hash>
+    </file>
+    <file name="javax/jdo/listener/LoadLifecycleListener.class" size="262" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">d526dea4840fbd12f40063b564c791454ada3ae6</hash>
+    </file>
+    <file name="javax/jdo/listener/StoreCallback.class" size="154" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">f026c3717014d0abbfdabc813614f80fae37e92f</hash>
+    </file>
+    <file name="javax/jdo/listener/StoreLifecycleListener.class" size="284" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">15ec1eb330f9c989880e3d94f6ac020278540575</hash>
+    </file>
+    <file name="javax/jdo/orm.dtd" size="7582" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">97eaae118899560494b26ad05aa630e793625501</hash>
+    </file>
+    <file name="javax/jdo/orm.xsd" size="33639" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">d29881bc0a68d6acc14348b7afbca73c45c5dc25</hash>
+    </file>
+    <file name="javax/jdo/PersistenceManager.class" size="3242" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">99e96666aece07f71b9ef605e7c0c2e8028f54e4</hash>
+    </file>
+    <file name="javax/jdo/PersistenceManagerFactory.class" size="1826" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">abaf5fc8a35f142f5cf6b859fe7929f01668d690</hash>
+    </file>
+    <file name="javax/jdo/Query.class" size="1553" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">540b130ce1537db491efa743cb6e0c1dc6e2a812</hash>
+    </file>
+    <file name="javax/jdo/spi/Detachable.class" size="155" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">34fe5405a7afb2f23ed06f0de50c1617455ef8bb</hash>
+    </file>
+    <file name="javax/jdo/spi/I18NHelper.class" size="7200" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">0038b6ec20fe66ad83b35ef5a62b2d6dfccd2fa4</hash>
+    </file>
+    <file name="javax/jdo/spi/I18NHelper$1.class" size="622" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">6c8efe8e21ef32639ccf9e781906061c2b064042</hash>
+    </file>
+    <file name="javax/jdo/spi/I18NHelper$2.class" size="536" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">7df862033d265a6dd1757a17b5834f03edb2f1db</hash>
+    </file>
+    <file name="javax/jdo/spi/JDOImplHelper.class" size="15596" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">70e28ba7744004389ac1463e6bf81bf4e19b1f3a</hash>
+    </file>
+    <file name="javax/jdo/spi/JDOImplHelper$1.class" size="1297" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">4aa15fa850ca5b66d372399477f4cd31fb368aca</hash>
+    </file>
+    <file name="javax/jdo/spi/JDOImplHelper$2.class" size="1025" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">e43b206349f435dbd329fce8361da46dbf28a9f8</hash>
+    </file>
+    <file name="javax/jdo/spi/JDOImplHelper$3.class" size="1543" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">d0759cb4e5819e06043889f2d036cbf9e712ddc0</hash>
+    </file>
+    <file name="javax/jdo/spi/JDOImplHelper$Meta.class" size="1651" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">5d565716ef48c1671b7f199d23ec091f02344fbd</hash>
+    </file>
+    <file name="javax/jdo/spi/JDOImplHelper$StateInterrogationBooleanReturn.class" size="340" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">c5a5e334befb880e13466a7e33557b4a787b2afc</hash>
+    </file>
+    <file name="javax/jdo/spi/JDOImplHelper$StateInterrogationObjectReturn.class" size="338" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">de45a0657f82dcb9ea369b8dfa61df60d1720efe</hash>
+    </file>
+    <file name="javax/jdo/spi/JDOImplHelper$StringConstructor.class" size="284" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">f0a58aef30b2bb90834717a65996c02914613638</hash>
+    </file>
+    <file name="javax/jdo/spi/JDOPermission.class" size="891" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">0ce583a57b959d6ff5d8f15a4c5426101c2ca74b</hash>
+    </file>
+    <file name="javax/jdo/spi/PersistenceCapable.class" size="1962" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">053ed287daa05de6948fd0eb7e21271c0e1ad49f</hash>
+    </file>
+    <file name="javax/jdo/spi/PersistenceCapable$ObjectIdFieldConsumer.class" size="620" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">e6fbff98fba9d9f43719ce7b764ef0eb179e4c3b</hash>
+    </file>
+    <file name="javax/jdo/spi/PersistenceCapable$ObjectIdFieldManager.class" size="432" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">b9b1b6449dfde1c65ee2cab744aa5a366cda2c3d</hash>
+    </file>
+    <file name="javax/jdo/spi/PersistenceCapable$ObjectIdFieldSupplier.class" size="610" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">7466df9f46f2b2d2eb16c7b678f5b5c907568bca</hash>
+    </file>
+    <file name="javax/jdo/spi/RegisterClassEvent.class" size="1332" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">ab1267cb716c9a3e34d611acce190c18d368f102</hash>
+    </file>
+    <file name="javax/jdo/spi/RegisterClassListener.class" size="232" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">538d628aed3df6f9263abe32e556c40d38c356dd</hash>
+    </file>
+    <file name="javax/jdo/spi/StateInterrogation.class" size="563" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">575416908190a22419c4628df9a3ec953f6cd82d</hash>
+    </file>
+    <file name="javax/jdo/spi/StateManager.class" size="3906" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">8f63e3c5e5e1c7936079d80635a0b0f700bae393</hash>
+    </file>
+    <file name="javax/jdo/Transaction.class" size="753" timestamp="2006-03-29 22:02:56 UTC">
+      <hash algorithm="sha-1">66ac44044e7239c666328fc35f757e087ad3a83c</hash>
+    </file>
+    <file name="META-INF/LICENSE.txt" size="11358" timestamp="2006-03-29 21:41:22 UTC">
+      <hash algorithm="sha-1">2b8b815229aa8a61e483fb4ba0588b8b6c491890</hash>
+    </file>
+    <file name="META-INF/MANIFEST.MF" size="414" timestamp="2006-03-29 22:03:10 UTC">
+      <hash algorithm="sha-1">14e76cfc55b2004b43caeb9979e7485cd22f1c16</hash>
+    </file>
+  </entries>
+  <bytecode count-classes="84" count-packages="5">
+    <hash algorithm="sha-1">4fe75b7de91f132989abe0104cd2853e12fe17bf</hash>
+    <jdk>1.4</jdk>
+    <debug>true</debug>
+    <class name="javax.jdo.datastore.DataStoreCache" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">a16dd29341cc7bbbab2096abbf6097c5e89cacfc</hash>
+      <import>java.lang.Class</import>
+      <import>java.lang.Object</import>
+      <import>java.util.Collection</import>
+      <import>javax.jdo.datastore.DataStoreCache</import>
+      <import>javax.jdo.datastore.DataStoreCache$EmptyDataStoreCache</import>
+      <method>evict(Ljava/lang/Object;)V</method>
+      <method>evictAll()V</method>
+      <method>evictAll([Ljava/lang/Object;)V</method>
+      <method>evictAll(Ljava/util/Collection;)V</method>
+      <method>evictAll(Ljava/lang/Class;Z)V</method>
+      <method>pin(Ljava/lang/Object;)V</method>
+      <method>pinAll(Ljava/util/Collection;)V</method>
+      <method>pinAll([Ljava/lang/Object;)V</method>
+      <method>pinAll(Ljava/lang/Class;Z)V</method>
+      <method>unpin(Ljava/lang/Object;)V</method>
+      <method>unpinAll(Ljava/util/Collection;)V</method>
+      <method>unpinAll([Ljava/lang/Object;)V</method>
+      <method>unpinAll(Ljava/lang/Class;Z)V</method>
+    </class>
+    <class name="javax.jdo.datastore.DataStoreCache$EmptyDataStoreCache" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">51b3224eabf7d3fa1768b3293b082884e641f153</hash>
+      <import>java.lang.Class</import>
+      <import>java.lang.Object</import>
+      <import>java.util.Collection</import>
+      <import>javax.jdo.datastore.DataStoreCache</import>
+      <import>javax.jdo.datastore.DataStoreCache$EmptyDataStoreCache</import>
+      <method>&lt;init&gt;()V</method>
+      <method>evict(Ljava/lang/Object;)V</method>
+      <method>evictAll()V</method>
+      <method>evictAll([Ljava/lang/Object;)V</method>
+      <method>evictAll(Ljava/util/Collection;)V</method>
+      <method>evictAll(Ljava/lang/Class;Z)V</method>
+      <method>pin(Ljava/lang/Object;)V</method>
+      <method>pinAll([Ljava/lang/Object;)V</method>
+      <method>pinAll(Ljava/util/Collection;)V</method>
+      <method>pinAll(Ljava/lang/Class;Z)V</method>
+      <method>unpin(Ljava/lang/Object;)V</method>
+      <method>unpinAll([Ljava/lang/Object;)V</method>
+      <method>unpinAll(Ljava/util/Collection;)V</method>
+      <method>unpinAll(Ljava/lang/Class;Z)V</method>
+    </class>
+    <class name="javax.jdo.datastore.JDOConnection" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">38c8f10e0174ab166aa6a6ae47bde1238499be68</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.datastore.JDOConnection</import>
+      <method>getNativeConnection()Ljava/lang/Object;</method>
+      <method>close()V</method>
+    </class>
+    <class name="javax.jdo.datastore.Sequence" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">73c79bfb51152e3afbc751bd3aa7551998e1d98d</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.datastore.Sequence</import>
+      <method>getName()Ljava/lang/String;</method>
+      <method>next()Ljava/lang/Object;</method>
+      <method>allocate(I)V</method>
+      <method>current()Ljava/lang/Object;</method>
+      <method>nextValue()J</method>
+      <method>currentValue()J</method>
+    </class>
+    <class name="javax.jdo.Extent" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">63d36b1ab100e330e91af4467523ad5865b742ab</hash>
+      <import>java.lang.Class</import>
+      <import>java.lang.Object</import>
+      <import>java.util.Iterator</import>
+      <import>javax.jdo.Extent</import>
+      <import>javax.jdo.FetchPlan</import>
+      <import>javax.jdo.PersistenceManager</import>
+      <method>iterator()Ljava/util/Iterator;</method>
+      <method>hasSubclasses()Z</method>
+      <method>getCandidateClass()Ljava/lang/Class;</method>
+      <method>getPersistenceManager()Ljavax/jdo/PersistenceManager;</method>
+      <method>closeAll()V</method>
+      <method>close(Ljava/util/Iterator;)V</method>
+      <method>getFetchPlan()Ljavax/jdo/FetchPlan;</method>
+    </class>
+    <class name="javax.jdo.FetchPlan" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">8dcb08caba2b78bdc7a5103191fa18804f0f393f</hash>
+      <import>java.lang.Class</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Collection</import>
+      <import>java.util.Set</import>
+      <import>javax.jdo.FetchPlan</import>
+      <method>addGroup(Ljava/lang/String;)Ljavax/jdo/FetchPlan;</method>
+      <method>removeGroup(Ljava/lang/String;)Ljavax/jdo/FetchPlan;</method>
+      <method>clearGroups()Ljavax/jdo/FetchPlan;</method>
+      <method>getGroups()Ljava/util/Set;</method>
+      <method>setGroups(Ljava/util/Collection;)Ljavax/jdo/FetchPlan;</method>
+      <method>setGroups([Ljava/lang/String;)Ljavax/jdo/FetchPlan;</method>
+      <method>setGroup(Ljava/lang/String;)Ljavax/jdo/FetchPlan;</method>
+      <method>setMaxFetchDepth(I)Ljavax/jdo/FetchPlan;</method>
+      <method>getMaxFetchDepth()I</method>
+      <method>setDetachmentRoots(Ljava/util/Collection;)Ljavax/jdo/FetchPlan;</method>
+      <method>getDetachmentRoots()Ljava/util/Collection;</method>
+      <method>setDetachmentRootClasses([Ljava/lang/Class;)Ljavax/jdo/FetchPlan;</method>
+      <method>getDetachmentRootClasses()[Ljava/lang/Class;</method>
+      <method>setFetchSize(I)Ljavax/jdo/FetchPlan;</method>
+      <method>getFetchSize()I</method>
+      <method>setDetachmentOptions(I)Ljavax/jdo/FetchPlan;</method>
+      <method>getDetachmentOptions()I</method>
+    </class>
+    <class name="javax.jdo.identity.ByteIdentity" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">9217ed29c90cd0f77b790092292c6a96447950b2</hash>
+      <import>java.io.IOException</import>
+      <import>java.io.ObjectInput</import>
+      <import>java.io.ObjectOutput</import>
+      <import>java.lang.Byte</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.identity.ByteIdentity</import>
+      <import>javax.jdo.identity.SingleFieldIdentity</import>
+      <method>construct(B)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;B)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/Byte;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;()V</method>
+      <method>getKey()B</method>
+      <method>toString()Ljava/lang/String;</method>
+      <method>equals(Ljava/lang/Object;)Z</method>
+      <method>createKeyAsObject()Ljava/lang/Object;</method>
+      <method>writeExternal(Ljava/io/ObjectOutput;)V</method>
+      <method>readExternal(Ljava/io/ObjectInput;)V</method>
+    </class>
+    <class name="javax.jdo.identity.CharIdentity" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">c6142fea461c40dc65442e687a932cf5d2c7b28e</hash>
+      <import>java.io.IOException</import>
+      <import>java.io.ObjectInput</import>
+      <import>java.io.ObjectOutput</import>
+      <import>java.lang.Character</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.IllegalArgumentException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.identity.CharIdentity</import>
+      <import>javax.jdo.identity.SingleFieldIdentity</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <method>construct(C)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;C)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/Character;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;()V</method>
+      <method>getKey()C</method>
+      <method>toString()Ljava/lang/String;</method>
+      <method>equals(Ljava/lang/Object;)Z</method>
+      <method>createKeyAsObject()Ljava/lang/Object;</method>
+      <method>writeExternal(Ljava/io/ObjectOutput;)V</method>
+      <method>readExternal(Ljava/io/ObjectInput;)V</method>
+      <method>computeHashCode()V</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="javax.jdo.identity.IntIdentity" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">a9fe0a1b2aeb39059bea8fa763ec50f3cd03abb5</hash>
+      <import>java.io.IOException</import>
+      <import>java.io.ObjectInput</import>
+      <import>java.io.ObjectOutput</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.Integer</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.identity.IntIdentity</import>
+      <import>javax.jdo.identity.SingleFieldIdentity</import>
+      <method>construct(I)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;I)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/Integer;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;()V</method>
+      <method>getKey()I</method>
+      <method>toString()Ljava/lang/String;</method>
+      <method>equals(Ljava/lang/Object;)Z</method>
+      <method>createKeyAsObject()Ljava/lang/Object;</method>
+      <method>writeExternal(Ljava/io/ObjectOutput;)V</method>
+      <method>readExternal(Ljava/io/ObjectInput;)V</method>
+    </class>
+    <class name="javax.jdo.identity.LongIdentity" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">7c9f9f23c054516ca3d48af01ba5d11e994df132</hash>
+      <import>java.io.IOException</import>
+      <import>java.io.ObjectInput</import>
+      <import>java.io.ObjectOutput</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.Long</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.identity.LongIdentity</import>
+      <import>javax.jdo.identity.SingleFieldIdentity</import>
+      <method>construct(J)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;J)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/Long;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;()V</method>
+      <method>getKey()J</method>
+      <method>toString()Ljava/lang/String;</method>
+      <method>equals(Ljava/lang/Object;)Z</method>
+      <method>createKeyAsObject()Ljava/lang/Object;</method>
+      <method>writeExternal(Ljava/io/ObjectOutput;)V</method>
+      <method>readExternal(Ljava/io/ObjectInput;)V</method>
+    </class>
+    <class name="javax.jdo.identity.ObjectIdentity" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">99bb4a81698f247b89ddbf7ed039b1bfd750b880</hash>
+      <import>java.io.IOException</import>
+      <import>java.io.ObjectInput</import>
+      <import>java.io.ObjectOutput</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.StringBuffer</import>
+      <import>java.security.AccessController</import>
+      <import>java.security.PrivilegedAction</import>
+      <import>javax.jdo.JDOUserException</import>
+      <import>javax.jdo.identity.ObjectIdentity</import>
+      <import>javax.jdo.identity.ObjectIdentity$1</import>
+      <import>javax.jdo.identity.SingleFieldIdentity</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;()V</method>
+      <method>getKey()Ljava/lang/Object;</method>
+      <method>toString()Ljava/lang/String;</method>
+      <method>equals(Ljava/lang/Object;)Z</method>
+      <method>writeExternal(Ljava/io/ObjectOutput;)V</method>
+      <method>readExternal(Ljava/io/ObjectInput;)V</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="javax.jdo.identity.ObjectIdentity$1" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">5f1655890fafc9220bead084b7272744820df162</hash>
+      <import>java.lang.Object</import>
+      <import>java.security.PrivilegedAction</import>
+      <import>javax.jdo.identity.ObjectIdentity$1</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <method>&lt;init&gt;()V</method>
+      <method>run()Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.identity.ShortIdentity" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">f394f6c0eedceea43a540276f0e1cb3cc8cf8482</hash>
+      <import>java.io.IOException</import>
+      <import>java.io.ObjectInput</import>
+      <import>java.io.ObjectOutput</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.Short</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.identity.ShortIdentity</import>
+      <import>javax.jdo.identity.SingleFieldIdentity</import>
+      <method>construct(S)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;S)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/Short;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;()V</method>
+      <method>getKey()S</method>
+      <method>toString()Ljava/lang/String;</method>
+      <method>equals(Ljava/lang/Object;)Z</method>
+      <method>createKeyAsObject()Ljava/lang/Object;</method>
+      <method>writeExternal(Ljava/io/ObjectOutput;)V</method>
+      <method>readExternal(Ljava/io/ObjectInput;)V</method>
+    </class>
+    <class name="javax.jdo.identity.SingleFieldIdentity" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">2e071b3d736f00e68f43841d5a35aa578f5f4a16</hash>
+      <import>java.io.Externalizable</import>
+      <import>java.io.IOException</import>
+      <import>java.io.ObjectInput</import>
+      <import>java.io.ObjectOutput</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.NullPointerException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.JDOFatalInternalException</import>
+      <import>javax.jdo.JDONullIdentityException</import>
+      <import>javax.jdo.identity.SingleFieldIdentity</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <method>&lt;init&gt;(Ljava/lang/Class;)V</method>
+      <method>&lt;init&gt;()V</method>
+      <method>setKeyAsObject(Ljava/lang/Object;)V</method>
+      <method>assertKeyNotNull(Ljava/lang/Object;)V</method>
+      <method>getTargetClass()Ljava/lang/Class;</method>
+      <method>getTargetClassName()Ljava/lang/String;</method>
+      <method>getKeyAsObject()Ljava/lang/Object;</method>
+      <method>createKeyAsObject()Ljava/lang/Object;</method>
+      <method>equals(Ljava/lang/Object;)Z</method>
+      <method>hashClassName()I</method>
+      <method>hashCode()I</method>
+      <method>writeExternal(Ljava/io/ObjectOutput;)V</method>
+      <method>readExternal(Ljava/io/ObjectInput;)V</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="javax.jdo.identity.StringIdentity" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">28d8fd69665a424e07c76d2ea5505d6909768f9d</hash>
+      <import>java.io.IOException</import>
+      <import>java.io.ObjectInput</import>
+      <import>java.io.ObjectOutput</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.identity.SingleFieldIdentity</import>
+      <import>javax.jdo.identity.StringIdentity</import>
+      <method>&lt;init&gt;(Ljava/lang/Class;Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;()V</method>
+      <method>getKey()Ljava/lang/String;</method>
+      <method>toString()Ljava/lang/String;</method>
+      <method>equals(Ljava/lang/Object;)Z</method>
+      <method>writeExternal(Ljava/io/ObjectOutput;)V</method>
+      <method>readExternal(Ljava/io/ObjectInput;)V</method>
+    </class>
+    <class name="javax.jdo.InstanceCallbacks" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">524282ae6ecf63fd87d72f78f5af91cf8f789824</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.InstanceCallbacks</import>
+      <import>javax.jdo.listener.ClearCallback</import>
+      <import>javax.jdo.listener.DeleteCallback</import>
+      <import>javax.jdo.listener.LoadCallback</import>
+      <import>javax.jdo.listener.StoreCallback</import>
+    </class>
+    <class name="javax.jdo.JDOCanRetryException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">6989c99518dfee96754d22a606e1de1a9ba5bc6b</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOCanRetryException</import>
+      <import>javax.jdo.JDOException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+    </class>
+    <class name="javax.jdo.JDODataStoreException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">236c18c21d10a13a585a6cd6d24f76e849a53a7a</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOCanRetryException</import>
+      <import>javax.jdo.JDODataStoreException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+    </class>
+    <class name="javax.jdo.JDODetachedFieldAccessException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">3b0695f56136840e9eb46fb66dd2591dfdb03e1d</hash>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDODetachedFieldAccessException</import>
+      <import>javax.jdo.JDOUserException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+    </class>
+    <class name="javax.jdo.JDOException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">e9cb1a96b05fbb7400fe0d6030bb711092c9e9af</hash>
+      <import>java.io.PrintStream</import>
+      <import>java.io.PrintWriter</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.Exception</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.RuntimeException</import>
+      <import>java.lang.String</import>
+      <import>java.lang.StringBuffer</import>
+      <import>java.lang.System</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOException</import>
+      <import>javax.jdo.JDOFatalInternalException</import>
+      <import>javax.jdo.JDOHelper</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+      <method>getFailedObject()Ljava/lang/Object;</method>
+      <method>getNestedExceptions()[Ljava/lang/Throwable;</method>
+      <method>getCause()Ljava/lang/Throwable;</method>
+      <method>initCause(Ljava/lang/Throwable;)Ljava/lang/Throwable;</method>
+      <method>toString()Ljava/lang/String;</method>
+      <method>printStackTrace()V</method>
+      <method>printStackTrace(Ljava/io/PrintStream;)V</method>
+      <method>printStackTrace(Ljava/io/PrintWriter;)V</method>
+      <method>exceptionToString(Ljava/lang/Exception;)Ljava/lang/String;</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="javax.jdo.JDOFatalDataStoreException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">05abb472bfce66016b6e83287fdeae8a4e1bee48</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOFatalDataStoreException</import>
+      <import>javax.jdo.JDOFatalException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+    </class>
+    <class name="javax.jdo.JDOFatalException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">45a311089c122e2bd404a74a6c79b6ba32734770</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOException</import>
+      <import>javax.jdo.JDOFatalException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+    </class>
+    <class name="javax.jdo.JDOFatalInternalException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">33e0412946b9e48106a821855678f7dd5a95cc92</hash>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOFatalException</import>
+      <import>javax.jdo.JDOFatalInternalException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+    </class>
+    <class name="javax.jdo.JDOFatalUserException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">c5f92ca18aadad14522558a1b4da62ad73bbb9bd</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOFatalException</import>
+      <import>javax.jdo.JDOFatalUserException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+    </class>
+    <class name="javax.jdo.JDOHelper" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">988b2d4df783fc727e112725f54925e271796194</hash>
+      <import>java.io.File</import>
+      <import>java.io.FileInputStream</import>
+      <import>java.io.FileNotFoundException</import>
+      <import>java.io.IOException</import>
+      <import>java.io.InputStream</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassCastException</import>
+      <import>java.lang.ClassLoader</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.Exception</import>
+      <import>java.lang.IllegalAccessException</import>
+      <import>java.lang.NoClassDefFoundError</import>
+      <import>java.lang.NoSuchMethodException</import>
+      <import>java.lang.NullPointerException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>java.lang.reflect.InvocationTargetException</import>
+      <import>java.lang.reflect.Method</import>
+      <import>java.security.AccessController</import>
+      <import>java.security.PrivilegedAction</import>
+      <import>java.util.ArrayList</import>
+      <import>java.util.Collection</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.Map</import>
+      <import>java.util.Properties</import>
+      <import>javax.jdo.JDOException</import>
+      <import>javax.jdo.JDOFatalInternalException</import>
+      <import>javax.jdo.JDOFatalUserException</import>
+      <import>javax.jdo.JDOHelper</import>
+      <import>javax.jdo.JDOHelper$1</import>
+      <import>javax.jdo.JDOHelper$10</import>
+      <import>javax.jdo.JDOHelper$11</import>
+      <import>javax.jdo.JDOHelper$12</import>
+      <import>javax.jdo.JDOHelper$2</import>
+      <import>javax.jdo.JDOHelper$3</import>
+      <import>javax.jdo.JDOHelper$4</import>
+      <import>javax.jdo.JDOHelper$5</import>
+      <import>javax.jdo.JDOHelper$6</import>
+      <import>javax.jdo.JDOHelper$7</import>
+      <import>javax.jdo.JDOHelper$8</import>
+      <import>javax.jdo.JDOHelper$9</import>
+      <import>javax.jdo.PersistenceManager</import>
+      <import>javax.jdo.PersistenceManagerFactory</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationBooleanReturn</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationObjectReturn</import>
+      <import>javax.jdo.spi.PersistenceCapable</import>
+      <import>javax.naming.Context</import>
+      <import>javax.naming.InitialContext</import>
+      <import>javax.naming.NamingException</import>
+      <import>javax.rmi.PortableRemoteObject</import>
+      <method>&lt;init&gt;()V</method>
+      <method>getPersistenceManager(Ljava/lang/Object;)Ljavax/jdo/PersistenceManager;</method>
+      <method>makeDirty(Ljava/lang/Object;Ljava/lang/String;)V</method>
+      <method>getObjectId(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>getObjectIds(Ljava/util/Collection;)Ljava/util/Collection;</method>
+      <method>getObjectIds([Ljava/lang/Object;)[Ljava/lang/Object;</method>
+      <method>getTransactionalObjectId(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>getVersion(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>isDirty(Ljava/lang/Object;)Z</method>
+      <method>isTransactional(Ljava/lang/Object;)Z</method>
+      <method>isPersistent(Ljava/lang/Object;)Z</method>
+      <method>isNew(Ljava/lang/Object;)Z</method>
+      <method>isDeleted(Ljava/lang/Object;)Z</method>
+      <method>isDetached(Ljava/lang/Object;)Z</method>
+      <method>getPersistenceManagerFactory(Ljava/util/Map;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getPersistenceManagerFactory(Ljava/util/Map;Ljava/lang/ClassLoader;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getPersistenceManagerFactory(Ljava/lang/String;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getPersistenceManagerFactory(Ljava/lang/String;Ljava/lang/ClassLoader;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getPersistenceManagerFactory(Ljava/lang/String;Ljava/lang/ClassLoader;Ljava/lang/ClassLoader;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getPersistenceManagerFactory(Ljava/io/File;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getPersistenceManagerFactory(Ljava/io/File;Ljava/lang/ClassLoader;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getPersistenceManagerFactory(Ljava/lang/String;Ljavax/naming/Context;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getPersistenceManagerFactory(Ljava/lang/String;Ljavax/naming/Context;Ljava/lang/ClassLoader;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getPersistenceManagerFactory(Ljava/io/InputStream;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getPersistenceManagerFactory(Ljava/io/InputStream;Ljava/lang/ClassLoader;)Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getContextClassLoader()Ljava/lang/ClassLoader;</method>
+      <method>class$(Ljava/lang/String;)Ljava/lang/Class;</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$1" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">e8e62401846c4c46e692c5ab1baa1ab2358cead6</hash>
+      <import>java.lang.Object</import>
+      <import>java.security.PrivilegedAction</import>
+      <import>javax.jdo.JDOHelper$1</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <method>&lt;init&gt;()V</method>
+      <method>run()Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$10" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">ed994592057119dbb0ea022e67dcef7107e8868a</hash>
+      <import>java.lang.Boolean</import>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.JDOHelper$10</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationBooleanReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>&lt;init&gt;()V</method>
+      <method>is(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Boolean;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$11" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">f79fc975f52e718386202186a85b66b842a6c412</hash>
+      <import>java.lang.Boolean</import>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.JDOHelper$11</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationBooleanReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>&lt;init&gt;()V</method>
+      <method>is(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Boolean;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$12" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">6b6ad2c5b49cdbc36fe76b84b6dc8bff99e2644e</hash>
+      <import>java.lang.ClassLoader</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.Thread</import>
+      <import>java.security.PrivilegedAction</import>
+      <import>javax.jdo.JDOHelper$12</import>
+      <method>&lt;init&gt;()V</method>
+      <method>run()Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$2" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">e2a35e4d5c67cdffb6e1c105b723dfdcce3a546f</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.JDOHelper$2</import>
+      <import>javax.jdo.PersistenceManager</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationObjectReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>&lt;init&gt;()V</method>
+      <method>get(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$3" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">19fa21d49322b7b3cf12bc70d0938f19dd32db35</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.JDOHelper$3</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationObjectReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>&lt;init&gt;()V</method>
+      <method>get(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$4" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">0de4aa1cb2f660fa137ac7161f95fec9a1834ba7</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.JDOHelper$4</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationObjectReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>&lt;init&gt;()V</method>
+      <method>get(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$5" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">fcac2de97906a498250dac282d3c1f7b50f08f06</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.JDOHelper$5</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationObjectReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>&lt;init&gt;()V</method>
+      <method>get(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$6" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">be676ba4f46151e8d6c3852692d09b3f432d571e</hash>
+      <import>java.lang.Boolean</import>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.JDOHelper$6</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationBooleanReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>&lt;init&gt;()V</method>
+      <method>is(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Boolean;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$7" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">01c7a1a0f447e2fa662eb3b08136f1e15f5145d7</hash>
+      <import>java.lang.Boolean</import>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.JDOHelper$7</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationBooleanReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>&lt;init&gt;()V</method>
+      <method>is(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Boolean;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$8" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">0b0d8bebc938eb513a9125fa2facefda91b9a904</hash>
+      <import>java.lang.Boolean</import>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.JDOHelper$8</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationBooleanReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>&lt;init&gt;()V</method>
+      <method>is(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Boolean;</method>
+    </class>
+    <class name="javax.jdo.JDOHelper$9" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">c755748621b116be72d117c502ec3e33aabfde83</hash>
+      <import>java.lang.Boolean</import>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.JDOHelper$9</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationBooleanReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>&lt;init&gt;()V</method>
+      <method>is(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Boolean;</method>
+    </class>
+    <class name="javax.jdo.JDONullIdentityException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">89b43a0f64601587413dfccd164a7099b25735b7</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDONullIdentityException</import>
+      <import>javax.jdo.JDOUserException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+    </class>
+    <class name="javax.jdo.JDOObjectNotFoundException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">44af0e2861c8e573a9feb2d96fac27b23f933edf</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDODataStoreException</import>
+      <import>javax.jdo.JDOObjectNotFoundException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+    </class>
+    <class name="javax.jdo.JDOOptimisticVerificationException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">50c4a3f5e067d331c3c41331100885e052e304f7</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOFatalDataStoreException</import>
+      <import>javax.jdo.JDOOptimisticVerificationException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+    </class>
+    <class name="javax.jdo.JDOUnsupportedOptionException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">c0a7a2fb7e2a360cd8c6be7db2f3fe1f6f0cd0cb</hash>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOUnsupportedOptionException</import>
+      <import>javax.jdo.JDOUserException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+    </class>
+    <class name="javax.jdo.JDOUserCallbackException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">34c76280d8f8b8761d59110fd09f32b48b66658c</hash>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOUserCallbackException</import>
+      <import>javax.jdo.JDOUserException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+    </class>
+    <class name="javax.jdo.JDOUserException" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">eb4538f645bea9c5714e8c52134e4a536edae404</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>javax.jdo.JDOCanRetryException</import>
+      <import>javax.jdo.JDOUserException</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;[Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/Throwable;Ljava/lang/Object;)V</method>
+    </class>
+    <class name="javax.jdo.listener.AttachCallback" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">68a4b1a3d6b6abba2fe7eed3e5ed8db8a160708f</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.AttachCallback</import>
+      <method>jdoPreAttach()V</method>
+      <method>jdoPostAttach(Ljava/lang/Object;)V</method>
+    </class>
+    <class name="javax.jdo.listener.AttachLifecycleListener" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">25c1befbfbc0c3c542ecf4da12804813c305adfd</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.AttachLifecycleListener</import>
+      <import>javax.jdo.listener.InstanceLifecycleEvent</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+      <method>preAttach(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+      <method>postAttach(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+    </class>
+    <class name="javax.jdo.listener.ClearCallback" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">437001b90ab635f9addbbfa2d3c7726c6ed147d7</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.ClearCallback</import>
+      <method>jdoPreClear()V</method>
+    </class>
+    <class name="javax.jdo.listener.ClearLifecycleListener" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">8e16727221c10fcce5544cc8a53f812a1f8da341</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.ClearLifecycleListener</import>
+      <import>javax.jdo.listener.InstanceLifecycleEvent</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+      <method>preClear(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+      <method>postClear(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+    </class>
+    <class name="javax.jdo.listener.CreateLifecycleListener" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">b32e466b28507f0c63c7e90cfa7e7185dec775ac</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.CreateLifecycleListener</import>
+      <import>javax.jdo.listener.InstanceLifecycleEvent</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+      <method>postCreate(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+    </class>
+    <class name="javax.jdo.listener.DeleteCallback" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">688c785eba919457e17e4d257df2f4b5fbacad77</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.DeleteCallback</import>
+      <method>jdoPreDelete()V</method>
+    </class>
+    <class name="javax.jdo.listener.DeleteLifecycleListener" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">40a3cfed8dabfd3bd9ae414fc847b5e8fa274603</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.DeleteLifecycleListener</import>
+      <import>javax.jdo.listener.InstanceLifecycleEvent</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+      <method>preDelete(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+      <method>postDelete(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+    </class>
+    <class name="javax.jdo.listener.DetachCallback" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">84ab80af81bf60b39b23c663c630989526cc1c8c</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.DetachCallback</import>
+      <method>jdoPreDetach()V</method>
+      <method>jdoPostDetach(Ljava/lang/Object;)V</method>
+    </class>
+    <class name="javax.jdo.listener.DetachLifecycleListener" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">bf107f8fda8e8ad577308f995b4bd0537521609f</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.DetachLifecycleListener</import>
+      <import>javax.jdo.listener.InstanceLifecycleEvent</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+      <method>preDetach(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+      <method>postDetach(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+    </class>
+    <class name="javax.jdo.listener.DirtyLifecycleListener" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">8d95ca342454d3133f0a948c4393447805e26389</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.DirtyLifecycleListener</import>
+      <import>javax.jdo.listener.InstanceLifecycleEvent</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+      <method>preDirty(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+      <method>postDirty(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+    </class>
+    <class name="javax.jdo.listener.InstanceLifecycleEvent" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">af956b891da97fc754ee262857b50c8d8b278238</hash>
+      <import>java.io.IOException</import>
+      <import>java.io.NotSerializableException</import>
+      <import>java.io.ObjectOutputStream</import>
+      <import>java.lang.IllegalArgumentException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.EventObject</import>
+      <import>javax.jdo.listener.InstanceLifecycleEvent</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <method>&lt;init&gt;(Ljava/lang/Object;I)V</method>
+      <method>&lt;init&gt;(Ljava/lang/Object;ILjava/lang/Object;)V</method>
+      <method>getEventType()I</method>
+      <method>getSource()Ljava/lang/Object;</method>
+      <method>getTarget()Ljava/lang/Object;</method>
+      <method>getPersistentInstance()Ljava/lang/Object;</method>
+      <method>getDetachedInstance()Ljava/lang/Object;</method>
+      <method>writeObject(Ljava/io/ObjectOutputStream;)V</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="javax.jdo.listener.InstanceLifecycleListener" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">9546bf23b70880ca49bda96f957c40a137bd981a</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+    </class>
+    <class name="javax.jdo.listener.LoadCallback" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">13dcef64740faa244bc46ddf6dd7f895bb82cb54</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.LoadCallback</import>
+      <method>jdoPostLoad()V</method>
+    </class>
+    <class name="javax.jdo.listener.LoadLifecycleListener" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">d526dea4840fbd12f40063b564c791454ada3ae6</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.InstanceLifecycleEvent</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+      <import>javax.jdo.listener.LoadLifecycleListener</import>
+      <method>postLoad(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+    </class>
+    <class name="javax.jdo.listener.StoreCallback" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">f026c3717014d0abbfdabc813614f80fae37e92f</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.StoreCallback</import>
+      <method>jdoPreStore()V</method>
+    </class>
+    <class name="javax.jdo.listener.StoreLifecycleListener" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">15ec1eb330f9c989880e3d94f6ac020278540575</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.listener.InstanceLifecycleEvent</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+      <import>javax.jdo.listener.StoreLifecycleListener</import>
+      <method>preStore(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+      <method>postStore(Ljavax/jdo/listener/InstanceLifecycleEvent;)V</method>
+    </class>
+    <class name="javax.jdo.PersistenceManager" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">99e96666aece07f71b9ef605e7c0c2e8028f54e4</hash>
+      <import>java.lang.Class</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Collection</import>
+      <import>javax.jdo.Extent</import>
+      <import>javax.jdo.FetchPlan</import>
+      <import>javax.jdo.JDOException</import>
+      <import>javax.jdo.PersistenceManager</import>
+      <import>javax.jdo.PersistenceManagerFactory</import>
+      <import>javax.jdo.Query</import>
+      <import>javax.jdo.Transaction</import>
+      <import>javax.jdo.datastore.JDOConnection</import>
+      <import>javax.jdo.datastore.Sequence</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+      <method>isClosed()Z</method>
+      <method>close()V</method>
+      <method>currentTransaction()Ljavax/jdo/Transaction;</method>
+      <method>evict(Ljava/lang/Object;)V</method>
+      <method>evictAll([Ljava/lang/Object;)V</method>
+      <method>evictAll(Ljava/util/Collection;)V</method>
+      <method>evictAll()V</method>
+      <method>refresh(Ljava/lang/Object;)V</method>
+      <method>refreshAll([Ljava/lang/Object;)V</method>
+      <method>refreshAll(Ljava/util/Collection;)V</method>
+      <method>refreshAll()V</method>
+      <method>refreshAll(Ljavax/jdo/JDOException;)V</method>
+      <method>newQuery()Ljavax/jdo/Query;</method>
+      <method>newQuery(Ljava/lang/Object;)Ljavax/jdo/Query;</method>
+      <method>newQuery(Ljava/lang/String;)Ljavax/jdo/Query;</method>
+      <method>newQuery(Ljava/lang/String;Ljava/lang/Object;)Ljavax/jdo/Query;</method>
+      <method>newQuery(Ljava/lang/Class;)Ljavax/jdo/Query;</method>
+      <method>newQuery(Ljavax/jdo/Extent;)Ljavax/jdo/Query;</method>
+      <method>newQuery(Ljava/lang/Class;Ljava/util/Collection;)Ljavax/jdo/Query;</method>
+      <method>newQuery(Ljava/lang/Class;Ljava/lang/String;)Ljavax/jdo/Query;</method>
+      <method>newQuery(Ljava/lang/Class;Ljava/util/Collection;Ljava/lang/String;)Ljavax/jdo/Query;</method>
+      <method>newQuery(Ljavax/jdo/Extent;Ljava/lang/String;)Ljavax/jdo/Query;</method>
+      <method>newNamedQuery(Ljava/lang/Class;Ljava/lang/String;)Ljavax/jdo/Query;</method>
+      <method>getExtent(Ljava/lang/Class;Z)Ljavax/jdo/Extent;</method>
+      <method>getExtent(Ljava/lang/Class;)Ljavax/jdo/Extent;</method>
+      <method>getObjectById(Ljava/lang/Object;Z)Ljava/lang/Object;</method>
+      <method>getObjectById(Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>getObjectById(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>getObjectId(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>getTransactionalObjectId(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>newObjectIdInstance(Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>getObjectsById(Ljava/util/Collection;Z)Ljava/util/Collection;</method>
+      <method>getObjectsById(Ljava/util/Collection;)Ljava/util/Collection;</method>
+      <method>getObjectsById([Ljava/lang/Object;Z)[Ljava/lang/Object;</method>
+      <method>getObjectsById([Ljava/lang/Object;)[Ljava/lang/Object;</method>
+      <method>makePersistent(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>makePersistentAll([Ljava/lang/Object;)[Ljava/lang/Object;</method>
+      <method>makePersistentAll(Ljava/util/Collection;)Ljava/util/Collection;</method>
+      <method>deletePersistent(Ljava/lang/Object;)V</method>
+      <method>deletePersistentAll([Ljava/lang/Object;)V</method>
+      <method>deletePersistentAll(Ljava/util/Collection;)V</method>
+      <method>makeTransient(Ljava/lang/Object;)V</method>
+      <method>makeTransientAll([Ljava/lang/Object;)V</method>
+      <method>makeTransientAll(Ljava/util/Collection;)V</method>
+      <method>makeTransient(Ljava/lang/Object;Z)V</method>
+      <method>makeTransientAll([Ljava/lang/Object;Z)V</method>
+      <method>makeTransientAll(Ljava/util/Collection;Z)V</method>
+      <method>makeTransactional(Ljava/lang/Object;)V</method>
+      <method>makeTransactionalAll([Ljava/lang/Object;)V</method>
+      <method>makeTransactionalAll(Ljava/util/Collection;)V</method>
+      <method>makeNontransactional(Ljava/lang/Object;)V</method>
+      <method>makeNontransactionalAll([Ljava/lang/Object;)V</method>
+      <method>makeNontransactionalAll(Ljava/util/Collection;)V</method>
+      <method>retrieve(Ljava/lang/Object;)V</method>
+      <method>retrieve(Ljava/lang/Object;Z)V</method>
+      <method>retrieveAll(Ljava/util/Collection;)V</method>
+      <method>retrieveAll(Ljava/util/Collection;Z)V</method>
+      <method>retrieveAll([Ljava/lang/Object;)V</method>
+      <method>retrieveAll([Ljava/lang/Object;Z)V</method>
+      <method>setUserObject(Ljava/lang/Object;)V</method>
+      <method>getUserObject()Ljava/lang/Object;</method>
+      <method>getPersistenceManagerFactory()Ljavax/jdo/PersistenceManagerFactory;</method>
+      <method>getObjectIdClass(Ljava/lang/Class;)Ljava/lang/Class;</method>
+      <method>setMultithreaded(Z)V</method>
+      <method>getMultithreaded()Z</method>
+      <method>setIgnoreCache(Z)V</method>
+      <method>getIgnoreCache()Z</method>
+      <method>getDetachAllOnCommit()Z</method>
+      <method>setDetachAllOnCommit(Z)V</method>
+      <method>detachCopy(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>detachCopyAll(Ljava/util/Collection;)Ljava/util/Collection;</method>
+      <method>detachCopyAll([Ljava/lang/Object;)[Ljava/lang/Object;</method>
+      <method>putUserObject(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>getUserObject(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>removeUserObject(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>flush()V</method>
+      <method>checkConsistency()V</method>
+      <method>getFetchPlan()Ljavax/jdo/FetchPlan;</method>
+      <method>newInstance(Ljava/lang/Class;)Ljava/lang/Object;</method>
+      <method>getSequence(Ljava/lang/String;)Ljavax/jdo/datastore/Sequence;</method>
+      <method>getDataStoreConnection()Ljavax/jdo/datastore/JDOConnection;</method>
+      <method>addInstanceLifecycleListener(Ljavax/jdo/listener/InstanceLifecycleListener;[Ljava/lang/Class;)V</method>
+      <method>removeInstanceLifecycleListener(Ljavax/jdo/listener/InstanceLifecycleListener;)V</method>
+    </class>
+    <class name="javax.jdo.PersistenceManagerFactory" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">abaf5fc8a35f142f5cf6b859fe7929f01668d690</hash>
+      <import>java.io.Serializable</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Collection</import>
+      <import>java.util.Properties</import>
+      <import>javax.jdo.PersistenceManager</import>
+      <import>javax.jdo.PersistenceManagerFactory</import>
+      <import>javax.jdo.datastore.DataStoreCache</import>
+      <import>javax.jdo.listener.InstanceLifecycleListener</import>
+      <method>close()V</method>
+      <method>isClosed()Z</method>
+      <method>getPersistenceManager()Ljavax/jdo/PersistenceManager;</method>
+      <method>getPersistenceManager(Ljava/lang/String;Ljava/lang/String;)Ljavax/jdo/PersistenceManager;</method>
+      <method>setConnectionUserName(Ljava/lang/String;)V</method>
+      <method>getConnectionUserName()Ljava/lang/String;</method>
+      <method>setConnectionPassword(Ljava/lang/String;)V</method>
+      <method>setConnectionURL(Ljava/lang/String;)V</method>
+      <method>getConnectionURL()Ljava/lang/String;</method>
+      <method>setConnectionDriverName(Ljava/lang/String;)V</method>
+      <method>getConnectionDriverName()Ljava/lang/String;</method>
+      <method>setConnectionFactoryName(Ljava/lang/String;)V</method>
+      <method>getConnectionFactoryName()Ljava/lang/String;</method>
+      <method>setConnectionFactory(Ljava/lang/Object;)V</method>
+      <method>getConnectionFactory()Ljava/lang/Object;</method>
+      <method>setConnectionFactory2Name(Ljava/lang/String;)V</method>
+      <method>getConnectionFactory2Name()Ljava/lang/String;</method>
+      <method>setConnectionFactory2(Ljava/lang/Object;)V</method>
+      <method>getConnectionFactory2()Ljava/lang/Object;</method>
+      <method>setMultithreaded(Z)V</method>
+      <method>getMultithreaded()Z</method>
+      <method>setMapping(Ljava/lang/String;)V</method>
+      <method>getMapping()Ljava/lang/String;</method>
+      <method>setOptimistic(Z)V</method>
+      <method>getOptimistic()Z</method>
+      <method>setRetainValues(Z)V</method>
+      <method>getRetainValues()Z</method>
+      <method>setRestoreValues(Z)V</method>
+      <method>getRestoreValues()Z</method>
+      <method>setNontransactionalRead(Z)V</method>
+      <method>getNontransactionalRead()Z</method>
+      <method>setNontransactionalWrite(Z)V</method>
+      <method>getNontransactionalWrite()Z</method>
+      <method>setIgnoreCache(Z)V</method>
+      <method>getIgnoreCache()Z</method>
+      <method>getDetachAllOnCommit()Z</method>
+      <method>setDetachAllOnCommit(Z)V</method>
+      <method>getProperties()Ljava/util/Properties;</method>
+      <method>supportedOptions()Ljava/util/Collection;</method>
+      <method>getDataStoreCache()Ljavax/jdo/datastore/DataStoreCache;</method>
+      <method>addInstanceLifecycleListener(Ljavax/jdo/listener/InstanceLifecycleListener;[Ljava/lang/Class;)V</method>
+      <method>removeInstanceLifecycleListener(Ljavax/jdo/listener/InstanceLifecycleListener;)V</method>
+    </class>
+    <class name="javax.jdo.Query" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">540b130ce1537db491efa743cb6e0c1dc6e2a812</hash>
+      <import>java.io.Serializable</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.Collection</import>
+      <import>java.util.Map</import>
+      <import>javax.jdo.Extent</import>
+      <import>javax.jdo.FetchPlan</import>
+      <import>javax.jdo.PersistenceManager</import>
+      <import>javax.jdo.Query</import>
+      <method>setClass(Ljava/lang/Class;)V</method>
+      <method>setCandidates(Ljavax/jdo/Extent;)V</method>
+      <method>setCandidates(Ljava/util/Collection;)V</method>
+      <method>setFilter(Ljava/lang/String;)V</method>
+      <method>declareImports(Ljava/lang/String;)V</method>
+      <method>declareParameters(Ljava/lang/String;)V</method>
+      <method>declareVariables(Ljava/lang/String;)V</method>
+      <method>setOrdering(Ljava/lang/String;)V</method>
+      <method>setIgnoreCache(Z)V</method>
+      <method>getIgnoreCache()Z</method>
+      <method>compile()V</method>
+      <method>execute()Ljava/lang/Object;</method>
+      <method>execute(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>execute(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>execute(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>executeWithMap(Ljava/util/Map;)Ljava/lang/Object;</method>
+      <method>executeWithArray([Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>getPersistenceManager()Ljavax/jdo/PersistenceManager;</method>
+      <method>close(Ljava/lang/Object;)V</method>
+      <method>closeAll()V</method>
+      <method>setGrouping(Ljava/lang/String;)V</method>
+      <method>setUnique(Z)V</method>
+      <method>setResult(Ljava/lang/String;)V</method>
+      <method>setResultClass(Ljava/lang/Class;)V</method>
+      <method>setRange(JJ)V</method>
+      <method>setRange(Ljava/lang/String;)V</method>
+      <method>addExtension(Ljava/lang/String;Ljava/lang/Object;)V</method>
+      <method>setExtensions(Ljava/util/Map;)V</method>
+      <method>getFetchPlan()Ljavax/jdo/FetchPlan;</method>
+      <method>deletePersistentAll([Ljava/lang/Object;)J</method>
+      <method>deletePersistentAll(Ljava/util/Map;)J</method>
+      <method>deletePersistentAll()J</method>
+      <method>setUnmodifiable()V</method>
+      <method>isUnmodifiable()Z</method>
+    </class>
+    <class name="javax.jdo.spi.Detachable" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">34fe5405a7afb2f23ed06f0de50c1617455ef8bb</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.spi.Detachable</import>
+      <method>jdoReplaceDetachedState()V</method>
+    </class>
+    <class name="javax.jdo.spi.I18NHelper" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">0038b6ec20fe66ad83b35ef5a62b2d6dfccd2fa4</hash>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassLoader</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.Integer</import>
+      <import>java.lang.NoClassDefFoundError</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.StringBuffer</import>
+      <import>java.lang.Throwable</import>
+      <import>java.security.AccessController</import>
+      <import>java.security.PrivilegedAction</import>
+      <import>java.text.MessageFormat</import>
+      <import>java.util.Hashtable</import>
+      <import>java.util.Locale</import>
+      <import>java.util.ResourceBundle</import>
+      <import>javax.jdo.JDOFatalInternalException</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <import>javax.jdo.spi.I18NHelper$1</import>
+      <import>javax.jdo.spi.I18NHelper$2</import>
+      <method>&lt;init&gt;()V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/ClassLoader;)V</method>
+      <method>getInstance(Ljava/lang/String;)Ljavax/jdo/spi/I18NHelper;</method>
+      <method>getInstance(Ljava/lang/Class;)Ljavax/jdo/spi/I18NHelper;</method>
+      <method>getInstance(Ljava/lang/String;Ljava/lang/ClassLoader;)Ljavax/jdo/spi/I18NHelper;</method>
+      <method>msg(Ljava/lang/String;)Ljava/lang/String;</method>
+      <method>msg(Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/String;</method>
+      <method>msg(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/String;</method>
+      <method>msg(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/String;</method>
+      <method>msg(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;</method>
+      <method>msg(Ljava/lang/String;I)Ljava/lang/String;</method>
+      <method>msg(Ljava/lang/String;Z)Ljava/lang/String;</method>
+      <method>getResourceBundle()Ljava/util/ResourceBundle;</method>
+      <method>loadBundle(Ljava/lang/String;Ljava/lang/ClassLoader;)Ljava/util/ResourceBundle;</method>
+      <method>assertBundle()V</method>
+      <method>assertBundle(Ljava/lang/String;)V</method>
+      <method>getMessage(Ljava/util/ResourceBundle;Ljava/lang/String;)Ljava/lang/String;</method>
+      <method>getMessage(Ljava/util/ResourceBundle;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;</method>
+      <method>getMessage(Ljava/util/ResourceBundle;Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/String;</method>
+      <method>getMessage(Ljava/util/ResourceBundle;Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/String;</method>
+      <method>getMessage(Ljava/util/ResourceBundle;Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/String;</method>
+      <method>getMessage(Ljava/util/ResourceBundle;Ljava/lang/String;I)Ljava/lang/String;</method>
+      <method>getMessage(Ljava/util/ResourceBundle;Ljava/lang/String;Z)Ljava/lang/String;</method>
+      <method>getPackageName(Ljava/lang/String;)Ljava/lang/String;</method>
+      <method>getSystemClassLoaderPrivileged()Ljava/lang/ClassLoader;</method>
+      <method>class$(Ljava/lang/String;)Ljava/lang/Class;</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="javax.jdo.spi.I18NHelper$1" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">6c8efe8e21ef32639ccf9e781906061c2b064042</hash>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassLoader</import>
+      <import>java.lang.Object</import>
+      <import>java.security.PrivilegedAction</import>
+      <import>javax.jdo.spi.I18NHelper$1</import>
+      <method>&lt;init&gt;(Ljava/lang/Class;)V</method>
+      <method>run()Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.spi.I18NHelper$2" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">7df862033d265a6dd1757a17b5834f03edb2f1db</hash>
+      <import>java.lang.ClassLoader</import>
+      <import>java.lang.Object</import>
+      <import>java.security.PrivilegedAction</import>
+      <import>javax.jdo.spi.I18NHelper$2</import>
+      <method>&lt;init&gt;()V</method>
+      <method>run()Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.spi.JDOImplHelper" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">70e28ba7744004389ac1463e6bf81bf4e19b1f3a</hash>
+      <import>java.lang.Boolean</import>
+      <import>java.lang.Class</import>
+      <import>java.lang.ClassCastException</import>
+      <import>java.lang.ClassLoader</import>
+      <import>java.lang.ClassNotFoundException</import>
+      <import>java.lang.Exception</import>
+      <import>java.lang.NoClassDefFoundError</import>
+      <import>java.lang.NullPointerException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.SecurityException</import>
+      <import>java.lang.SecurityManager</import>
+      <import>java.lang.String</import>
+      <import>java.lang.System</import>
+      <import>java.lang.Throwable</import>
+      <import>java.lang.reflect.Constructor</import>
+      <import>java.security.Permission</import>
+      <import>java.text.DateFormat</import>
+      <import>java.text.SimpleDateFormat</import>
+      <import>java.util.ArrayList</import>
+      <import>java.util.Collection</import>
+      <import>java.util.Collections</import>
+      <import>java.util.HashMap</import>
+      <import>java.util.HashSet</import>
+      <import>java.util.Iterator</import>
+      <import>java.util.List</import>
+      <import>java.util.Locale</import>
+      <import>java.util.Map</import>
+      <import>java.util.Set</import>
+      <import>java.util.WeakHashMap</import>
+      <import>javax.jdo.JDOException</import>
+      <import>javax.jdo.JDOFatalInternalException</import>
+      <import>javax.jdo.JDOFatalUserException</import>
+      <import>javax.jdo.JDOUserException</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$1</import>
+      <import>javax.jdo.spi.JDOImplHelper$2</import>
+      <import>javax.jdo.spi.JDOImplHelper$3</import>
+      <import>javax.jdo.spi.JDOImplHelper$Meta</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationBooleanReturn</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationObjectReturn</import>
+      <import>javax.jdo.spi.JDOImplHelper$StringConstructor</import>
+      <import>javax.jdo.spi.JDOPermission</import>
+      <import>javax.jdo.spi.PersistenceCapable</import>
+      <import>javax.jdo.spi.PersistenceCapable$ObjectIdFieldConsumer</import>
+      <import>javax.jdo.spi.PersistenceCapable$ObjectIdFieldSupplier</import>
+      <import>javax.jdo.spi.RegisterClassEvent</import>
+      <import>javax.jdo.spi.RegisterClassListener</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <import>javax.jdo.spi.StateManager</import>
+      <method>&lt;init&gt;()V</method>
+      <method>getInstance()Ljavax/jdo/spi/JDOImplHelper;</method>
+      <method>getFieldNames(Ljava/lang/Class;)[Ljava/lang/String;</method>
+      <method>getFieldTypes(Ljava/lang/Class;)[Ljava/lang/Class;</method>
+      <method>getFieldFlags(Ljava/lang/Class;)[B</method>
+      <method>getPersistenceCapableSuperclass(Ljava/lang/Class;)Ljava/lang/Class;</method>
+      <method>newInstance(Ljava/lang/Class;Ljavax/jdo/spi/StateManager;)Ljavax/jdo/spi/PersistenceCapable;</method>
+      <method>newInstance(Ljava/lang/Class;Ljavax/jdo/spi/StateManager;Ljava/lang/Object;)Ljavax/jdo/spi/PersistenceCapable;</method>
+      <method>newObjectIdInstance(Ljava/lang/Class;)Ljava/lang/Object;</method>
+      <method>newObjectIdInstance(Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>copyKeyFieldsToObjectId(Ljava/lang/Class;Ljavax/jdo/spi/PersistenceCapable$ObjectIdFieldSupplier;Ljava/lang/Object;)V</method>
+      <method>copyKeyFieldsFromObjectId(Ljava/lang/Class;Ljavax/jdo/spi/PersistenceCapable$ObjectIdFieldConsumer;Ljava/lang/Object;)V</method>
+      <method>registerClass(Ljava/lang/Class;[Ljava/lang/String;[Ljava/lang/Class;[BLjava/lang/Class;Ljavax/jdo/spi/PersistenceCapable;)V</method>
+      <method>unregisterClasses(Ljava/lang/ClassLoader;)V</method>
+      <method>unregisterClass(Ljava/lang/Class;)V</method>
+      <method>addRegisterClassListener(Ljavax/jdo/spi/RegisterClassListener;)V</method>
+      <method>removeRegisterClassListener(Ljavax/jdo/spi/RegisterClassListener;)V</method>
+      <method>getRegisteredClasses()Ljava/util/Collection;</method>
+      <method>getMeta(Ljava/lang/Class;)Ljavax/jdo/spi/JDOImplHelper$Meta;</method>
+      <method>registerAuthorizedStateManagerClass(Ljava/lang/Class;)V</method>
+      <method>registerAuthorizedStateManagerClasses(Ljava/util/Collection;)V</method>
+      <method>checkAuthorizedStateManager(Ljavax/jdo/spi/StateManager;)V</method>
+      <method>checkAuthorizedStateManagerClass(Ljava/lang/Class;)V</method>
+      <method>registerStringConstructor(Ljava/lang/Class;Ljavax/jdo/spi/JDOImplHelper$StringConstructor;)Ljava/lang/Object;</method>
+      <method>getLocale(Ljava/lang/String;)Ljava/util/Locale;</method>
+      <method>isClassLoadable(Ljava/lang/String;)Z</method>
+      <method>construct(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;</method>
+      <method>registerDateFormat(Ljava/text/DateFormat;)V</method>
+      <method>addStateInterrogation(Ljavax/jdo/spi/StateInterrogation;)V</method>
+      <method>removeStateInterrogation(Ljavax/jdo/spi/StateInterrogation;)V</method>
+      <method>getStateInterrogationIterator()Ljava/util/Iterator;</method>
+      <method>nonBinaryCompatibleMakeDirty(Ljava/lang/Object;Ljava/lang/String;)V</method>
+      <method>nonBinaryCompatibleIs(Ljava/lang/Object;Ljavax/jdo/spi/JDOImplHelper$StateInterrogationBooleanReturn;)Z</method>
+      <method>nonBinaryCompatibleGet(Ljava/lang/Object;Ljavax/jdo/spi/JDOImplHelper$StateInterrogationObjectReturn;)Ljava/lang/Object;</method>
+      <method>class$(Ljava/lang/String;)Ljava/lang/Class;</method>
+      <method>access$000()Ljavax/jdo/spi/I18NHelper;</method>
+      <method>access$100(Ljava/lang/String;)Ljava/util/Locale;</method>
+      <method>access$200()Ljava/text/DateFormat;</method>
+      <method>access$300()Ljava/lang/String;</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="javax.jdo.spi.JDOImplHelper$1" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">4aa15fa850ca5b66d372399477f4cd31fb368aca</hash>
+      <import>java.lang.Exception</import>
+      <import>java.lang.IllegalArgumentException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>java.util.Currency</import>
+      <import>javax.jdo.JDOUserException</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$1</import>
+      <import>javax.jdo.spi.JDOImplHelper$StringConstructor</import>
+      <method>&lt;init&gt;()V</method>
+      <method>construct(Ljava/lang/String;)Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.spi.JDOImplHelper$2" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">e43b206349f435dbd329fce8361da46dbf28a9f8</hash>
+      <import>java.lang.Exception</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.Throwable</import>
+      <import>java.util.Locale</import>
+      <import>javax.jdo.JDOUserException</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$2</import>
+      <import>javax.jdo.spi.JDOImplHelper$StringConstructor</import>
+      <method>&lt;init&gt;()V</method>
+      <method>construct(Ljava/lang/String;)Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.spi.JDOImplHelper$3" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">d0759cb4e5819e06043889f2d036cbf9e712ddc0</hash>
+      <import>java.lang.Integer</import>
+      <import>java.lang.Long</import>
+      <import>java.lang.NumberFormatException</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.text.DateFormat</import>
+      <import>java.text.ParsePosition</import>
+      <import>java.util.Date</import>
+      <import>javax.jdo.JDOUserException</import>
+      <import>javax.jdo.spi.I18NHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$3</import>
+      <import>javax.jdo.spi.JDOImplHelper$StringConstructor</import>
+      <method>&lt;init&gt;()V</method>
+      <method>construct(Ljava/lang/String;)Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.spi.JDOImplHelper$Meta" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">5d565716ef48c1671b7f199d23ec091f02344fbd</hash>
+      <import>java.lang.Class</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.lang.StringBuffer</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$Meta</import>
+      <import>javax.jdo.spi.PersistenceCapable</import>
+      <method>&lt;init&gt;([Ljava/lang/String;[Ljava/lang/Class;[BLjava/lang/Class;Ljavax/jdo/spi/PersistenceCapable;)V</method>
+      <method>getFieldNames()[Ljava/lang/String;</method>
+      <method>getFieldTypes()[Ljava/lang/Class;</method>
+      <method>getFieldFlags()[B</method>
+      <method>getPersistenceCapableSuperclass()Ljava/lang/Class;</method>
+      <method>getPC()Ljavax/jdo/spi/PersistenceCapable;</method>
+      <method>toString()Ljava/lang/String;</method>
+    </class>
+    <class name="javax.jdo.spi.JDOImplHelper$StateInterrogationBooleanReturn" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">c5a5e334befb880e13466a7e33557b4a787b2afc</hash>
+      <import>java.lang.Boolean</import>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationBooleanReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>is(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Boolean;</method>
+    </class>
+    <class name="javax.jdo.spi.JDOImplHelper$StateInterrogationObjectReturn" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">de45a0657f82dcb9ea369b8dfa61df60d1720efe</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StateInterrogationObjectReturn</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>get(Ljava/lang/Object;Ljavax/jdo/spi/StateInterrogation;)Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.spi.JDOImplHelper$StringConstructor" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">f0a58aef30b2bb90834717a65996c02914613638</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.JDOImplHelper$StringConstructor</import>
+      <method>construct(Ljava/lang/String;)Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.spi.JDOPermission" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">0ce583a57b959d6ff5d8f15a4c5426101c2ca74b</hash>
+      <import>java.lang.String</import>
+      <import>java.security.BasicPermission</import>
+      <import>javax.jdo.spi.JDOPermission</import>
+      <method>&lt;init&gt;(Ljava/lang/String;)V</method>
+      <method>&lt;init&gt;(Ljava/lang/String;Ljava/lang/String;)V</method>
+      <method>&lt;clinit&gt;()V</method>
+    </class>
+    <class name="javax.jdo.spi.PersistenceCapable" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">053ed287daa05de6948fd0eb7e21271c0e1ad49f</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.SecurityException</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.PersistenceManager</import>
+      <import>javax.jdo.spi.PersistenceCapable</import>
+      <import>javax.jdo.spi.PersistenceCapable$ObjectIdFieldConsumer</import>
+      <import>javax.jdo.spi.PersistenceCapable$ObjectIdFieldManager</import>
+      <import>javax.jdo.spi.PersistenceCapable$ObjectIdFieldSupplier</import>
+      <import>javax.jdo.spi.StateManager</import>
+      <method>jdoGetPersistenceManager()Ljavax/jdo/PersistenceManager;</method>
+      <method>jdoReplaceStateManager(Ljavax/jdo/spi/StateManager;)V</method>
+      <method>jdoProvideField(I)V</method>
+      <method>jdoProvideFields([I)V</method>
+      <method>jdoReplaceField(I)V</method>
+      <method>jdoReplaceFields([I)V</method>
+      <method>jdoReplaceFlags()V</method>
+      <method>jdoCopyFields(Ljava/lang/Object;[I)V</method>
+      <method>jdoMakeDirty(Ljava/lang/String;)V</method>
+      <method>jdoGetObjectId()Ljava/lang/Object;</method>
+      <method>jdoGetTransactionalObjectId()Ljava/lang/Object;</method>
+      <method>jdoGetVersion()Ljava/lang/Object;</method>
+      <method>jdoIsDirty()Z</method>
+      <method>jdoIsTransactional()Z</method>
+      <method>jdoIsPersistent()Z</method>
+      <method>jdoIsNew()Z</method>
+      <method>jdoIsDeleted()Z</method>
+      <method>jdoIsDetached()Z</method>
+      <method>jdoNewInstance(Ljavax/jdo/spi/StateManager;)Ljavax/jdo/spi/PersistenceCapable;</method>
+      <method>jdoNewInstance(Ljavax/jdo/spi/StateManager;Ljava/lang/Object;)Ljavax/jdo/spi/PersistenceCapable;</method>
+      <method>jdoNewObjectIdInstance()Ljava/lang/Object;</method>
+      <method>jdoNewObjectIdInstance(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>jdoCopyKeyFieldsToObjectId(Ljava/lang/Object;)V</method>
+      <method>jdoCopyKeyFieldsToObjectId(Ljavax/jdo/spi/PersistenceCapable$ObjectIdFieldSupplier;Ljava/lang/Object;)V</method>
+      <method>jdoCopyKeyFieldsFromObjectId(Ljavax/jdo/spi/PersistenceCapable$ObjectIdFieldConsumer;Ljava/lang/Object;)V</method>
+    </class>
+    <class name="javax.jdo.spi.PersistenceCapable$ObjectIdFieldConsumer" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">e6fbff98fba9d9f43719ce7b764ef0eb179e4c3b</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.spi.PersistenceCapable</import>
+      <import>javax.jdo.spi.PersistenceCapable$ObjectIdFieldConsumer</import>
+      <method>storeBooleanField(IZ)V</method>
+      <method>storeCharField(IC)V</method>
+      <method>storeByteField(IB)V</method>
+      <method>storeShortField(IS)V</method>
+      <method>storeIntField(II)V</method>
+      <method>storeLongField(IJ)V</method>
+      <method>storeFloatField(IF)V</method>
+      <method>storeDoubleField(ID)V</method>
+      <method>storeStringField(ILjava/lang/String;)V</method>
+      <method>storeObjectField(ILjava/lang/Object;)V</method>
+    </class>
+    <class name="javax.jdo.spi.PersistenceCapable$ObjectIdFieldManager" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">b9b1b6449dfde1c65ee2cab744aa5a366cda2c3d</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.spi.PersistenceCapable</import>
+      <import>javax.jdo.spi.PersistenceCapable$ObjectIdFieldConsumer</import>
+      <import>javax.jdo.spi.PersistenceCapable$ObjectIdFieldManager</import>
+      <import>javax.jdo.spi.PersistenceCapable$ObjectIdFieldSupplier</import>
+    </class>
+    <class name="javax.jdo.spi.PersistenceCapable$ObjectIdFieldSupplier" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">7466df9f46f2b2d2eb16c7b678f5b5c907568bca</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.spi.PersistenceCapable</import>
+      <import>javax.jdo.spi.PersistenceCapable$ObjectIdFieldSupplier</import>
+      <method>fetchBooleanField(I)Z</method>
+      <method>fetchCharField(I)C</method>
+      <method>fetchByteField(I)B</method>
+      <method>fetchShortField(I)S</method>
+      <method>fetchIntField(I)I</method>
+      <method>fetchLongField(I)J</method>
+      <method>fetchFloatField(I)F</method>
+      <method>fetchDoubleField(I)D</method>
+      <method>fetchStringField(I)Ljava/lang/String;</method>
+      <method>fetchObjectField(I)Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.spi.RegisterClassEvent" version="47.0" jdk="1.4" debug="true">
+      <hash algorithm="sha-1">ab1267cb716c9a3e34d611acce190c18d368f102</hash>
+      <import>java.lang.Class</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>java.util.EventObject</import>
+      <import>javax.jdo.spi.JDOImplHelper</import>
+      <import>javax.jdo.spi.RegisterClassEvent</import>
+      <method>&lt;init&gt;(Ljavax/jdo/spi/JDOImplHelper;Ljava/lang/Class;[Ljava/lang/String;[Ljava/lang/Class;[BLjava/lang/Class;)V</method>
+      <method>getRegisteredClass()Ljava/lang/Class;</method>
+      <method>getFieldNames()[Ljava/lang/String;</method>
+      <method>getFieldTypes()[Ljava/lang/Class;</method>
+      <method>getFieldFlags()[B</method>
+      <method>getPersistenceCapableSuperclass()Ljava/lang/Class;</method>
+    </class>
+    <class name="javax.jdo.spi.RegisterClassListener" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">538d628aed3df6f9263abe32e556c40d38c356dd</hash>
+      <import>java.lang.Object</import>
+      <import>java.util.EventListener</import>
+      <import>javax.jdo.spi.RegisterClassEvent</import>
+      <import>javax.jdo.spi.RegisterClassListener</import>
+      <method>registerClass(Ljavax/jdo/spi/RegisterClassEvent;)V</method>
+    </class>
+    <class name="javax.jdo.spi.StateInterrogation" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">575416908190a22419c4628df9a3ec953f6cd82d</hash>
+      <import>java.lang.Boolean</import>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.PersistenceManager</import>
+      <import>javax.jdo.spi.StateInterrogation</import>
+      <method>isPersistent(Ljava/lang/Object;)Ljava/lang/Boolean;</method>
+      <method>isTransactional(Ljava/lang/Object;)Ljava/lang/Boolean;</method>
+      <method>isDirty(Ljava/lang/Object;)Ljava/lang/Boolean;</method>
+      <method>isNew(Ljava/lang/Object;)Ljava/lang/Boolean;</method>
+      <method>isDeleted(Ljava/lang/Object;)Ljava/lang/Boolean;</method>
+      <method>isDetached(Ljava/lang/Object;)Ljava/lang/Boolean;</method>
+      <method>getPersistenceManager(Ljava/lang/Object;)Ljavax/jdo/PersistenceManager;</method>
+      <method>getObjectId(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>getTransactionalObjectId(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>getVersion(Ljava/lang/Object;)Ljava/lang/Object;</method>
+      <method>makeDirty(Ljava/lang/Object;Ljava/lang/String;)Z</method>
+    </class>
+    <class name="javax.jdo.spi.StateManager" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">8f63e3c5e5e1c7936079d80635a0b0f700bae393</hash>
+      <import>java.lang.Object</import>
+      <import>java.lang.String</import>
+      <import>javax.jdo.PersistenceManager</import>
+      <import>javax.jdo.spi.Detachable</import>
+      <import>javax.jdo.spi.PersistenceCapable</import>
+      <import>javax.jdo.spi.StateManager</import>
+      <method>replacingFlags(Ljavax/jdo/spi/PersistenceCapable;)B</method>
+      <method>replacingStateManager(Ljavax/jdo/spi/PersistenceCapable;Ljavax/jdo/spi/StateManager;)Ljavax/jdo/spi/StateManager;</method>
+      <method>isDirty(Ljavax/jdo/spi/PersistenceCapable;)Z</method>
+      <method>isTransactional(Ljavax/jdo/spi/PersistenceCapable;)Z</method>
+      <method>isPersistent(Ljavax/jdo/spi/PersistenceCapable;)Z</method>
+      <method>isNew(Ljavax/jdo/spi/PersistenceCapable;)Z</method>
+      <method>isDeleted(Ljavax/jdo/spi/PersistenceCapable;)Z</method>
+      <method>getPersistenceManager(Ljavax/jdo/spi/PersistenceCapable;)Ljavax/jdo/PersistenceManager;</method>
+      <method>makeDirty(Ljavax/jdo/spi/PersistenceCapable;Ljava/lang/String;)V</method>
+      <method>getObjectId(Ljavax/jdo/spi/PersistenceCapable;)Ljava/lang/Object;</method>
+      <method>getTransactionalObjectId(Ljavax/jdo/spi/PersistenceCapable;)Ljava/lang/Object;</method>
+      <method>getVersion(Ljavax/jdo/spi/PersistenceCapable;)Ljava/lang/Object;</method>
+      <method>isLoaded(Ljavax/jdo/spi/PersistenceCapable;I)Z</method>
+      <method>preSerialize(Ljavax/jdo/spi/PersistenceCapable;)V</method>
+      <method>getBooleanField(Ljavax/jdo/spi/PersistenceCapable;IZ)Z</method>
+      <method>getCharField(Ljavax/jdo/spi/PersistenceCapable;IC)C</method>
+      <method>getByteField(Ljavax/jdo/spi/PersistenceCapable;IB)B</method>
+      <method>getShortField(Ljavax/jdo/spi/PersistenceCapable;IS)S</method>
+      <method>getIntField(Ljavax/jdo/spi/PersistenceCapable;II)I</method>
+      <method>getLongField(Ljavax/jdo/spi/PersistenceCapable;IJ)J</method>
+      <method>getFloatField(Ljavax/jdo/spi/PersistenceCapable;IF)F</method>
+      <method>getDoubleField(Ljavax/jdo/spi/PersistenceCapable;ID)D</method>
+      <method>getStringField(Ljavax/jdo/spi/PersistenceCapable;ILjava/lang/String;)Ljava/lang/String;</method>
+      <method>getObjectField(Ljavax/jdo/spi/PersistenceCapable;ILjava/lang/Object;)Ljava/lang/Object;</method>
+      <method>setBooleanField(Ljavax/jdo/spi/PersistenceCapable;IZZ)V</method>
+      <method>setCharField(Ljavax/jdo/spi/PersistenceCapable;ICC)V</method>
+      <method>setByteField(Ljavax/jdo/spi/PersistenceCapable;IBB)V</method>
+      <method>setShortField(Ljavax/jdo/spi/PersistenceCapable;ISS)V</method>
+      <method>setIntField(Ljavax/jdo/spi/PersistenceCapable;III)V</method>
+      <method>setLongField(Ljavax/jdo/spi/PersistenceCapable;IJJ)V</method>
+      <method>setFloatField(Ljavax/jdo/spi/PersistenceCapable;IFF)V</method>
+      <method>setDoubleField(Ljavax/jdo/spi/PersistenceCapable;IDD)V</method>
+      <method>setStringField(Ljavax/jdo/spi/PersistenceCapable;ILjava/lang/String;Ljava/lang/String;)V</method>
+      <method>setObjectField(Ljavax/jdo/spi/PersistenceCapable;ILjava/lang/Object;Ljava/lang/Object;)V</method>
+      <method>providedBooleanField(Ljavax/jdo/spi/PersistenceCapable;IZ)V</method>
+      <method>providedCharField(Ljavax/jdo/spi/PersistenceCapable;IC)V</method>
+      <method>providedByteField(Ljavax/jdo/spi/PersistenceCapable;IB)V</method>
+      <method>providedShortField(Ljavax/jdo/spi/PersistenceCapable;IS)V</method>
+      <method>providedIntField(Ljavax/jdo/spi/PersistenceCapable;II)V</method>
+      <method>providedLongField(Ljavax/jdo/spi/PersistenceCapable;IJ)V</method>
+      <method>providedFloatField(Ljavax/jdo/spi/PersistenceCapable;IF)V</method>
+      <method>providedDoubleField(Ljavax/jdo/spi/PersistenceCapable;ID)V</method>
+      <method>providedStringField(Ljavax/jdo/spi/PersistenceCapable;ILjava/lang/String;)V</method>
+      <method>providedObjectField(Ljavax/jdo/spi/PersistenceCapable;ILjava/lang/Object;)V</method>
+      <method>replacingBooleanField(Ljavax/jdo/spi/PersistenceCapable;I)Z</method>
+      <method>replacingCharField(Ljavax/jdo/spi/PersistenceCapable;I)C</method>
+      <method>replacingByteField(Ljavax/jdo/spi/PersistenceCapable;I)B</method>
+      <method>replacingShortField(Ljavax/jdo/spi/PersistenceCapable;I)S</method>
+      <method>replacingIntField(Ljavax/jdo/spi/PersistenceCapable;I)I</method>
+      <method>replacingLongField(Ljavax/jdo/spi/PersistenceCapable;I)J</method>
+      <method>replacingFloatField(Ljavax/jdo/spi/PersistenceCapable;I)F</method>
+      <method>replacingDoubleField(Ljavax/jdo/spi/PersistenceCapable;I)D</method>
+      <method>replacingStringField(Ljavax/jdo/spi/PersistenceCapable;I)Ljava/lang/String;</method>
+      <method>replacingObjectField(Ljavax/jdo/spi/PersistenceCapable;I)Ljava/lang/Object;</method>
+      <method>replacingDetachedState(Ljavax/jdo/spi/Detachable;[Ljava/lang/Object;)[Ljava/lang/Object;</method>
+    </class>
+    <class name="javax.jdo.Transaction" version="47.0" jdk="1.4" debug="false">
+      <hash algorithm="sha-1">66ac44044e7239c666328fc35f757e087ad3a83c</hash>
+      <import>java.lang.Object</import>
+      <import>javax.jdo.PersistenceManager</import>
+      <import>javax.jdo.Transaction</import>
+      <import>javax.transaction.Synchronization</import>
+      <method>begin()V</method>
+      <method>commit()V</method>
+      <method>rollback()V</method>
+      <method>isActive()Z</method>
+      <method>getRollbackOnly()Z</method>
+      <method>setRollbackOnly()V</method>
+      <method>setNontransactionalRead(Z)V</method>
+      <method>getNontransactionalRead()Z</method>
+      <method>setNontransactionalWrite(Z)V</method>
+      <method>getNontransactionalWrite()Z</method>
+      <method>setRetainValues(Z)V</method>
+      <method>getRetainValues()Z</method>
+      <method>setRestoreValues(Z)V</method>
+      <method>getRestoreValues()Z</method>
+      <method>setOptimistic(Z)V</method>
+      <method>getOptimistic()Z</method>
+      <method>setSynchronization(Ljavax/transaction/Synchronization;)V</method>
+      <method>getSynchronization()Ljavax/transaction/Synchronization;</method>
+      <method>getPersistenceManager()Ljavax/jdo/PersistenceManager;</method>
+    </class>
+    <package>javax.jdo</package>
+    <package>javax.jdo.datastore</package>
+    <package>javax.jdo.identity</package>
+    <package>javax.jdo.listener</package>
+    <package>javax.jdo.spi</package>
+  </bytecode>
+  <inspected>
+    <groupIds>
+      <groupId>
+        <value>javax.jdo</value>
+        <weight>270</weight>
+        <origin>class.packages</origin>
+        <origin>class.packages.common</origin>
+      </groupId>
+      <groupId>
+        <value>javax.jdo.spi</value>
+        <weight>105</weight>
+        <origin>class.packages</origin>
+      </groupId>
+      <groupId>
+        <value>javax.jdo.listener</value>
+        <weight>80</weight>
+        <origin>class.packages</origin>
+      </groupId>
+      <groupId>
+        <value>javax.jdo.identity</value>
+        <weight>45</weight>
+        <origin>class.packages</origin>
+      </groupId>
+      <groupId>
+        <value>javax.jdo.datastore</value>
+        <weight>20</weight>
+        <origin>class.packages</origin>
+      </groupId>
+      <groupId>
+        <value>jdo2-api</value>
+        <weight>20</weight>
+        <origin>manifest.main.groupId</origin>
+      </groupId>
+    </groupIds>
+    <artifactIds>
+      <artifactId>
+        <value>mystery</value>
+        <weight>20</weight>
+        <origin>filename</origin>
+      </artifactId>
+    </artifactIds>
+    <versions>
+      <version>
+        <value>20060329</value>
+        <weight>110</weight>
+        <origin>timestamps</origin>
+        <origin>timestamps.max</origin>
+      </version>
+      <version>
+        <value>2.0</value>
+        <weight>100</weight>
+        <origin>manifest.main.version.impl</origin>
+      </version>
+      <version>
+        <value>JDO 2.0</value>
+        <weight>50</weight>
+        <origin>manifest.main.version.spec</origin>
+      </version>
+    </versions>
+    <names>
+      <name>
+        <value>Java Data Objects 2.0 (JDO) API</value>
+        <weight>100</weight>
+        <origin>manifest.main.name.spec</origin>
+      </name>
+      <name>
+        <value>javax.jdo</value>
+        <weight>50</weight>
+        <origin>manifest.main.name.impl</origin>
+      </name>
+      <name>
+        <value>mystery</value>
+        <weight>10</weight>
+        <origin>filename</origin>
+      </name>
+    </names>
+    <vendors>
+      <vendor>
+        <value>Apache Software Foundation</value>
+        <weight>150</weight>
+        <origin>manifest.main.vendor.impl</origin>
+        <origin>manifest.main.vendor.spec</origin>
+      </vendor>
+    </vendors>
+  </inspected>
+</jar-details>
+
