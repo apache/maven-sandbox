@@ -43,7 +43,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptor>src/assemble/bin.xml</descriptor>
-          <finalName>maven-${version}</finalName>
+          <finalName>maven-${project.version}</finalName>
 <!--
           <includeSite>true</includeSite>
 -->

@@ -27,7 +27,7 @@
           <descriptors>
             <descriptor>src/assembly/bin.xml</descriptor>
           </descriptors>
-          <finalName>archiva-jarinfo-cli-${version}</finalName>
+          <finalName>archiva-jarinfo-cli-${project.version}</finalName>
         </configuration>
       </plugin>
     </plugins>
