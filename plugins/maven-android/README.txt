@@ -4,7 +4,7 @@ Prerequisites:
 
 Steps to get working:
 1) Set ANDROID_SDK variable to the path of the android sdk
-2) Add ANDROID_SDK to your path
+2) Add ANDROID_SDK/tools to your path
 3) Run the install script included in the maven-android project.
 4) Build maven-android project: mvn install
 5) Create an android project: http://code.google.com/android/reference/othertools.html#activitycreator
