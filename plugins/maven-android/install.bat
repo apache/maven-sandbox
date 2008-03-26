@@ -1,1 +1,1 @@
-mvn install:install-file -Dfile=%ANDROID_SDK%\android.jar -DgroupId=android -DartifactId=android -Dversion=m3-rc20a -Dpackaging=jar
+mvn install:install-file -Dfile=%ANDROID_SDK%\android.jar -DgeneratePom=true -DgroupId=android -DartifactId=android -Dversion=m3-rc20a -Dpackaging=jar
