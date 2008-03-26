@@ -83,10 +83,10 @@ public class AaptCompilerMojo extends AbstractMojo {
         commands.add("compile");
         commands.add("-m");
         commands.add("-J");
-        commands.add(project.getBasedir().getAbsolutePath() +  File.separatorChar + "src");
+        commands.add(project.getBuild().getSourceDirectory());
 
         commands.add("-M");
-        commands.add(project.getBasedir().getAbsolutePath() +  File.separatorChar + "AndroidManifest.xml");
+        commands.add(project.getBasedir().getAbsolutePath() + File.separatorChar + "AndroidManifest.xml");
         if (resourceDirectory.exists()) {
             commands.add("-S");
             commands.add(resourceDirectory.getAbsolutePath());
