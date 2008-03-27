@@ -8,6 +8,9 @@
          </implementation>
          <configuration>
             <phases>
+               <generate-sources>
+                   org.apache.maven.plugins:maven-aidl-plugin:generate
+               </generate-sources>
                <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
                <compile>
                   org.apache.maven.plugins:maven-aapt-plugin:compile,
