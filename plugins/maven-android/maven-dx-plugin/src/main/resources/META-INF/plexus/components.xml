@@ -34,6 +34,21 @@
          </configuration>
       </component>
       <component>
+         <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+         <role-hint>android:par</role-hint>
+         <implementation>
+            org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
+         </implementation>
+         <configuration>
+            <phases>
+               <process-resources>org.apache.maven.plugins:maven-par-plugin:resources</process-resources>
+               <package>
+                  org.apache.maven.plugins:maven-par-plugin:package
+               </package>
+            </phases>
+         </configuration>
+      </component>
+      <component>
          <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
          <role-hint>android:dex</role-hint>
          <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
@@ -49,6 +64,15 @@
          <configuration>
             <extension>apk</extension>
             <type>android:apk</type>
+         </configuration>
+      </component>
+      <component>
+         <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+         <role-hint>android:par</role-hint>
+         <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+         <configuration>
+            <extension>par</extension>
+            <type>android:par</type>
          </configuration>
       </component>
    </components>

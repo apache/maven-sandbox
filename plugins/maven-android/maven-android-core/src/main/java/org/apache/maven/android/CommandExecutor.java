@@ -181,24 +181,24 @@ public interface CommandExecutor
                         result = CommandLineUtils.executeCommandLine( commandline, stdOut, stdErr );
                         if ( logger != null )
                         {
-                            logger.debug( "NMAVEN-040-000: Executed command: Commandline = " + commandline +
+                            logger.debug( "ANDROID-040-000: Executed command: Commandline = " + commandline +
                                 ", Result = " + result );
                         }
                         else
                         {
-                            System.out.println( "NMAVEN-040-000: Executed command: Commandline = " + commandline +
+                            System.out.println( "ANDROID-040-000: Executed command: Commandline = " + commandline +
                                 ", Result = " + result );
                         }
                         if ( ( failsOnErrorOutput && stdErr.hasError() ) || result != 0 )
                         {
-                            throw new ExecutionException( "NMAVEN-040-001: Could not execute: Command = " +
+                            throw new ExecutionException( "ANDROID-040-001: Could not execute: Command = " +
                                 commandline.toString() + ", Result = " + result );
                         }
                     }
                     catch ( CommandLineException e )
                     {
                         throw new ExecutionException(
-                            "NMAVEN-040-002: Could not execute: Command = " + commandline.toString() );
+                            "ANDROID-040-002: Could not execute: Command = " + commandline.toString() );
                     }
                 }
 
@@ -240,7 +240,7 @@ public interface CommandExecutor
                     {
                         if ( logger == null )
                         {
-                            System.out.println( "NMAVEN-040-003: Error Log not set: Will not output error logs" );
+                            System.out.println( "ANDROID-040-003: Error Log not set: Will not output error logs" );
                         }
                         error = false;
                     }

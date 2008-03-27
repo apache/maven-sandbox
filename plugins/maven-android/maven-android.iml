@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module version="4" relativePaths="true" type="JAVA_MODULE">
-  <component name="ModuleRootManager" />
-  <component name="NewModuleRootManager">
+<module relativePaths="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -12,8 +11,9 @@
       <sourceFolder url="file://$MODULE_DIR$/maven-android-core/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/maven-dx-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/maven-location-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/maven-par-plugin/src/main/java" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library>
@@ -64,6 +64,24 @@
       <library>
         <CLASSES>
           <root url="jar://$localRepository$/org/apache/maven/maven-model/2.0.8/maven-model-2.0.8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-artifact/2.0.8/maven-artifact-2.0.8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-archiver/1.0-alpha-9/plexus-archiver-1.0-alpha-9.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

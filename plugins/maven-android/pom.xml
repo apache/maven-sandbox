@@ -32,6 +32,7 @@ under the License.
       <module>maven-adb-plugin</module>
       <module>maven-android-core</module>
       <module>maven-dx-plugin</module>
+      <module>maven-par-plugin</module>       
    </modules>
    <dependencies>
       <dependency>
@@ -42,7 +43,7 @@ under the License.
       <dependency>
          <groupId>org.codehaus.plexus</groupId>
          <artifactId>plexus-container-default</artifactId>
-         <version>1.0-alpha-34</version>
+         <version>1.0-alpha-15</version>
       </dependency>
       <dependency>
          <groupId>org.apache.maven</groupId>
