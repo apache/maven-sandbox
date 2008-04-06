@@ -37,6 +37,14 @@
           <inputEncoding>UTF-16</inputEncoding>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <sourceEncoding>UTF-16</sourceEncoding>
+        </configuration>
+      </plugin>
     </plugins>
   </reporting>
 </project>
