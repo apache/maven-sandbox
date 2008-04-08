@@ -1,0 +1,9 @@
+Run either:
+
+mvn test -DrepositoryLocation=/path/to/repository -Dincludes=org/apache/maven/**/*.pom
+
+or
+
+mvn test -DrepositoryLocation=/path/to/repository -Dincludes=org/apache/maven/**/*.pom -Dmaven21
+
+You can change includes as needed to a different set of POMs to check. The default is **/*.pom
