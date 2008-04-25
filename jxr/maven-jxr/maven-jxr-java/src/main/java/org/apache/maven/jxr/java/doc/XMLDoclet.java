@@ -957,12 +957,12 @@ public class XMLDoclet
     private static void copyDtd( ClassLoader classloader, File outputDirectory )
         throws IOException
     {
-        InputStream is = classloader.getResourceAsStream( XMLDoclet.class.getPackage().getName().replace( ".", "/" )
+        InputStream is = classloader.getResourceAsStream( XMLDoclet.class.getPackage().getName().replace( '.', '/' )
             + "/" + XMLDOCLET_DTD );
 
         if ( is == null )
         {
-            throw new IOException( "The resource " + XMLDoclet.class.getPackage().getName().replace( ".", "/" ) + "/"
+            throw new IOException( "The resource " + XMLDoclet.class.getPackage().getName().replace( '.', '/' ) + "/"
                 + XMLDOCLET_DTD + " doesn't exist." );
         }
 

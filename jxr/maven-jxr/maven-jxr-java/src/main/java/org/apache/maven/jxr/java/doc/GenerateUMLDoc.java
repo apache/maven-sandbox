@@ -432,7 +432,7 @@ public class GenerateUMLDoc
 
             InputStream is = getClass().getClassLoader().getResourceAsStream(
                                                                               GenerateUMLDoc.class.getPackage()
-                                                                                  .getName().replace( ".", "/" )
+                                                                                  .getName().replace( '.', '/' )
                                                                                   + "/xml2dot.xsl" );
             if ( is == null )
             {
