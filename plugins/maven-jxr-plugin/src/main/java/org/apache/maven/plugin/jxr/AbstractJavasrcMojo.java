@@ -28,6 +28,7 @@ import org.apache.maven.jxr.java.src.JavaSrcOptions;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -96,7 +97,7 @@ public abstract class AbstractJavasrcMojo
     /**
      * Specifies the encoding name of the source files.
      *
-     * @parameter expression="${encoding}"
+     * @parameter expression="${encoding}" default-value="${project.build.sourceEncoding}"
      */
     private String encoding;
 
@@ -157,6 +158,16 @@ public abstract class AbstractJavasrcMojo
     private String windowTitle;
 
     /**
+     * Gets the effective source file encoding.
+     *
+     * @return The effective source file encoding, defaults to <code>ISO-8859-1</code> instead of <code>null</code>.
+     */
+    protected String getEncoding()
+    {
+        return ( encoding == null ) ? ReaderFactory.ISO_8859_1 : encoding;
+    }
+
+    /**
      * Execute the <code>JavaSrc</code>.
      *
      * @throws IOException if any
@@ -179,10 +190,7 @@ public abstract class AbstractJavasrcMojo
         {
             options.setDoctitle( this.doctitle );
         }
-        if ( StringUtils.isNotEmpty( this.encoding ) )
-        {
-            options.setEncoding( this.encoding );
-        }
+        options.setEncoding( getEncoding() );
         if ( StringUtils.isNotEmpty( this.footer ) )
         {
             options.setFooter( this.footer );
