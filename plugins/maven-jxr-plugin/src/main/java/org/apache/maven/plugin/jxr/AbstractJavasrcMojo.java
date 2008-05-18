@@ -158,16 +158,6 @@ public abstract class AbstractJavasrcMojo
     private String windowTitle;
 
     /**
-     * Gets the effective source file encoding.
-     *
-     * @return The effective source file encoding, defaults to <code>ISO-8859-1</code> instead of <code>null</code>.
-     */
-    protected String getEncoding()
-    {
-        return ( encoding == null ) ? ReaderFactory.ISO_8859_1 : encoding;
-    }
-
-    /**
      * Execute the <code>JavaSrc</code>.
      *
      * @throws IOException if any
@@ -190,7 +180,10 @@ public abstract class AbstractJavasrcMojo
         {
             options.setDoctitle( this.doctitle );
         }
-        options.setEncoding( getEncoding() );
+        if ( StringUtils.isNotEmpty( this.encoding ) )
+        {   
+            options.setEncoding( this.encoding );   
+        }
         if ( StringUtils.isNotEmpty( this.footer ) )
         {
             options.setFooter( this.footer );
