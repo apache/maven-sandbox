@@ -184,6 +184,11 @@ public abstract class AbstractJavasrcMojo
         {   
             options.setEncoding( this.encoding );   
         }
+        else
+        {
+            getLog().warn( "File encoding has not been set, using platform encoding " + ReaderFactory.FILE_ENCODING
+                           + ", i.e. build is platform dependent!" );
+        }
         if ( StringUtils.isNotEmpty( this.footer ) )
         {
             options.setFooter( this.footer );
