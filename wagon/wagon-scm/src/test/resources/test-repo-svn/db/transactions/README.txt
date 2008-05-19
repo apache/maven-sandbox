@@ -1,1 +1,0 @@
-File required to get the folder copied to target/test-classes (empty folders are not copied)
