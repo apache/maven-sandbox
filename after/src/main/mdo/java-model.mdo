@@ -1,0 +1,23 @@
+<model>
+  <id>maven-java-mojo-test-model</id>
+  <name>ModelloJavaMojoTestModel</name>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.codehaus.mojo.modello.javatest</value>
+    </default>
+  </defaults>
+  <classes>
+    <class rootElement="true">
+      <name>Model</name>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>extend</name>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+  </classes>
+</model>
