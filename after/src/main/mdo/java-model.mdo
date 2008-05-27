@@ -1,10 +1,10 @@
 <model>
   <id>maven-java-mojo-test-model</id>
-  <name>ModelloJavaMojoTestModel</name>
+  <name>Model</name>
   <defaults>
     <default>
       <key>package</key>
-      <value>org.codehaus.mojo.modello.javatest</value>
+      <value>test</value>
     </default>
   </defaults>
   <classes>

@@ -95,6 +95,22 @@
       <artifactId>dom4j</artifactId>
       <version>1.6.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.registry</groupId>
+      <artifactId>plexus-registry-commons</artifactId>
+      <version>1.0-alpha-2</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-component-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>javax.jdo</groupId>
+      <artifactId>jdo2-api</artifactId>
+      <version>2.0</version>
+    </dependency>
   </dependencies>
   <reporting>
     <plugins>
@@ -120,7 +136,7 @@
       </plugin>
     </plugins>
   </reporting>
-  <!-- TODO: MCHANGES-71, MINVOKER-30, MPLUGIN-100, MPLUGIN-101, PLX-371, shitty, taglist -->
+  <!-- TODO: MCHANGES-71, MINVOKER-30, MPLUGIN-100, MPLUGIN-101, shitty, taglist -->
   <properties>
     <project.build.sourceEncoding>UTF-16</project.build.sourceEncoding>
   </properties>
