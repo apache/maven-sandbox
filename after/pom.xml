@@ -150,9 +150,14 @@
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+        <version>2.3-SNAPSHOT</version><!-- MTAGLIST-27 -->
+      </plugin>
     </plugins>
   </reporting>
-  <!-- TODO: MCHANGES-71, MINVOKER-30, MPLUGIN-100, MPLUGIN-101, shitty, taglist -->
+  <!-- TODO: MCHANGES-71, MINVOKER-30, MPLUGIN-100, MPLUGIN-101, shitty -->
   <properties>
     <project.build.sourceEncoding>UTF-16</project.build.sourceEncoding>
   </properties>
