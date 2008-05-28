@@ -1,0 +1,68 @@
+<project>
+    <dependencies>
+        <dependency>
+            <version>
+                1.4
+            </version>
+            <artifactId>
+                artifact-dep
+            </artifactId>
+            <groupId>
+                org.apache.maven.dep
+            </groupId>
+
+        </dependency>
+        <dependency>
+            <scope>
+                compile
+            </scope>
+            <version>
+                1.1
+            </version>
+            <artifactId>
+                artifact-dep
+            </artifactId>
+            <groupId>
+                org.apache.maven.dep
+            </groupId>
+
+        </dependency>
+        <dependency>
+            <version>
+                1.0
+            </version>
+            <artifactId>
+                bogus-dep
+            </artifactId>
+            <groupId>
+                org.bogus
+            </groupId>
+
+        </dependency>
+        <dependency>
+            <version>
+                1.1
+            </version>
+            <artifactId>
+                artifact-dep
+            </artifactId>
+            <groupId>
+                org.apache.maven.dep
+            </groupId>
+
+        </dependency>
+
+    </dependencies>
+
+</dependencyManagement>
+<dependencies>
+<dependency>
+    <artifactId>
+        org.apache.maven.dep
+    </artifactId>
+
+</dependency>
+
+</dependencies>
+
+        </project>
