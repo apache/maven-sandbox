@@ -58,9 +58,9 @@ public final class ModelMarshaller {
                         break;
                     }
                     case XmlPullParser.START_TAG: {
-                        if (parser.isEmptyElementTag()) {
-                            tagValue = "";
-                        }
+                     //   if (parser.isEmptyElementTag()) {
+                     //       tagValue = "";
+                     //   }
 
                         if (!tagName.equals(baseUri)) {
                             modelProperties.add(new ModelProperty(tagName, tagValue));
@@ -107,6 +107,7 @@ public final class ModelMarshaller {
 
         StringBuffer sb = new StringBuffer();
         List<String> lastUriTags = new ArrayList<String>();
+        int n = 1;
         for (ModelProperty mp : modelProperties) {
             String uri = mp.getUri();
             if (!uri.startsWith(baseUri)) {
@@ -124,10 +125,13 @@ public final class ModelMarshaller {
             if (mp.getResolvedValue() != null) {
                 sb.append(mp.getResolvedValue());
                 sb.append(toEndTag(tag));
+                n = 2;
+            } else {
+                n = 1;
             }
             lastUriTags = tagNames;
         }
-        for (int i = lastUriTags.size() - 1; i >= 1; i--) {
+        for (int i = lastUriTags.size() - n; i >= 1; i--) {
             sb.append(toEndTag(lastUriTags.get(i)));
         }
         return sb.toString();

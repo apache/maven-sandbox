@@ -15,10 +15,20 @@ import java.util.List;
 public class ModelMarshallerTest {
 
     @Test
-    public void unmarshalWithemptyTags() throws IOException {
+    public void unmarshalWithEmptyTags() throws IOException {
         List<ModelProperty> modelProperties = Arrays.asList(
                 new ModelProperty("http://apache.org/maven/project", null),
                 new ModelProperty("http://apache.org/maven/project/dependencies#collection", null)
+        );
+        String xml = ModelMarshaller.unmarshalModelPropertiesToXml(modelProperties, "http://apache.org/maven");
+        System.out.println("COMPLETE:" + xml); //TODO: Verify proper xml
+    }
+
+    @Test
+    public void unmarshalWithSingleProperty() throws IOException {
+        List<ModelProperty> modelProperties = Arrays.asList(
+                new ModelProperty("http://apache.org/maven/project", null),
+                new ModelProperty("http://apache.org/maven/project/modelVersion", "4.0.0")
         );
         String xml = ModelMarshaller.unmarshalModelPropertiesToXml(modelProperties, "http://apache.org/maven");
         System.out.println("COMPLETE:" + xml); //TODO: Verify proper xml
