@@ -7,6 +7,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +15,17 @@ import java.util.List;
 public class ModelMarshallerTest {
 
     @Test
-    public void marshal() throws IOException {       
+    public void unmarshalWithemptyTags() throws IOException {
+        List<ModelProperty> modelProperties = Arrays.asList(
+                new ModelProperty("http://apache.org/maven/project", null),
+                new ModelProperty("http://apache.org/maven/project/dependencies#collection", null)
+        );
+        String xml = ModelMarshaller.unmarshalModelPropertiesToXml(modelProperties, "http://apache.org/maven");
+        System.out.println("COMPLETE:" + xml); //TODO: Verify proper xml
+    }
+
+    @Test
+    public void marshal() throws IOException {
         List<ModelProperty> modelProperties = ModelMarshaller.marshallXmlToModelProperties(
                 new ByteArrayInputStream("<project><version>1.1</version></project>".getBytes()),
                 "http://apache.org/maven", null);

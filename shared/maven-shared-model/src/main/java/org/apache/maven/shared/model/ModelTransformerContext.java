@@ -32,11 +32,22 @@ public final class ModelTransformerContext {
         this.factories = (factories == null) ? Collections.EMPTY_LIST : factories;
     }
 
+    /**
+     * Transforms and interpolates specified hierarchical list of domain models (inheritence) to target domain model.
+     * Unlike ModelTransformerContext#transform(java.util.List, ModelTransformer, ModelTransformer), this method requires
+     * the user to add interpolator properties. It's intended to be used by IDEs.
+     *
+     * @param domainModels
+     * @param fromModelTransformer
+     * @param toModelTransformer
+     * @param interpolatorProperties properties to use during interpolation.
+     * @return
+     * @throws IOException
+     */
     public DomainModel transform(List<DomainModel> domainModels, ModelTransformer fromModelTransformer,
                                  ModelTransformer toModelTransformer,
                                  Collection<InterpolatorProperty> interpolatorProperties) throws IOException {
-        List<InterpolatorProperty> properties = new ArrayList<InterpolatorProperty>(systemInterpolatorProperties);
-        properties.addAll(interpolatorProperties);
+        List<InterpolatorProperty> properties = new ArrayList<InterpolatorProperty>(interpolatorProperties);
 
         String baseUriForModel = fromModelTransformer.getBaseUri();
         List<ModelProperty> modelProperties = sort(fromModelTransformer.transformToModelProperties(domainModels),
@@ -74,8 +85,8 @@ public final class ModelTransformerContext {
         }
 
         List<ModelProperty> unresolvedProperties = new ArrayList<ModelProperty>();
-        for(ModelProperty mp : mps) {
-            if(!mp.isResolved()) {
+        for (ModelProperty mp : mps) {
+            if (!mp.isResolved()) {
                 unresolvedProperties.add(mp);
             }
         }
@@ -89,20 +100,23 @@ public final class ModelTransformerContext {
         return toModelTransformer.transformToDomainModel(mps);
     }
 
-
     /**
-     * Transforms specified hierarchical list of domain models (inheritence) to target domain model.
+     * Transforms and interpolates specified hierarchical list of domain models (inheritence) to target domain model.
+     * Uses standard environmental and system properties for intepolation.
      *
      * @param domainModels
      * @param fromModelTransformer
      * @param toModelTransformer
-     * @return
+     * @return 
+     * @throws IOException
      */
     public DomainModel transform(List<DomainModel> domainModels, ModelTransformer fromModelTransformer,
                                  ModelTransformer toModelTransformer)
             throws IOException {
-        return this.transform(domainModels, fromModelTransformer, toModelTransformer, new ArrayList<InterpolatorProperty>());
+        return this.transform(domainModels, fromModelTransformer, toModelTransformer, systemInterpolatorProperties);
     }
+
+    
 
     /**
      * Sorts specified list of model properties. Typically the list contain property information from the entire

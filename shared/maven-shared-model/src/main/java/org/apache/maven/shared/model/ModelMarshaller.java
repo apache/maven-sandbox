@@ -47,7 +47,7 @@ public final class ModelMarshaller {
         String tagValue = null;
 
         try {
-           for (;;parser.next()) {
+            for (; ; parser.next()) {
                 int type = parser.getEventType();
                 switch (type) {
                     case XmlPullParser.TEXT: {
@@ -58,6 +58,10 @@ public final class ModelMarshaller {
                         break;
                     }
                     case XmlPullParser.START_TAG: {
+                        if (parser.isEmptyElementTag()) {
+                            tagValue = "";
+                        }
+
                         if (!tagName.equals(baseUri)) {
                             modelProperties.add(new ModelProperty(tagName, tagValue));
                         }
@@ -123,7 +127,7 @@ public final class ModelMarshaller {
             }
             lastUriTags = tagNames;
         }
-        for (int i = lastUriTags.size() - 2; i >= 0; i--) {
+        for (int i = lastUriTags.size() - 1; i >= 1; i--) {
             sb.append(toEndTag(lastUriTags.get(i)));
         }
         return sb.toString();

@@ -80,10 +80,10 @@ public final class ModelProperty {
     }
 
     public InterpolatorProperty asInterpolatorProperty(String baseUri) {
-        if(uri.contains("#collection") || value == null) {
+        if (uri.contains("#collection") || value == null) {
             return null;
         }
-        String key = "${" + uri.replace(baseUri +"/", "").replace("/", ".") + "}";
+        String key = "${" + uri.replace(baseUri + "/", "").replace("/", ".") + "}";
         return new InterpolatorProperty(key, value);
     }
 
@@ -94,19 +94,15 @@ public final class ModelProperty {
         if (isResolved()) {
             return;
         }
-        boolean isModified = false;
         for (String expression : expressions) {
             if (property.getKey().equals(expression)) {
                 resolvedValue = resolvedValue.replace(property.getKey(), property.getValue());
-                isModified = true;
+                expressions.clear();
+                Matcher matcher = EXPRESSION_PATTERN.matcher(resolvedValue);
+                while (matcher.find()) {
+                    expressions.add(matcher.group(0));
+                }
                 break;
-            }
-        }
-        if (isModified) {
-            expressions.clear();
-            Matcher matcher = EXPRESSION_PATTERN.matcher(value);
-            while (matcher.find()) {
-                expressions.add(matcher.group(0));
             }
         }
     }
