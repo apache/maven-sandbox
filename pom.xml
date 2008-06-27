@@ -236,6 +236,11 @@ under the License.
   <dependencyManagement>
     <!--end-->
     <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.shared</groupId>
+            <artifactId>maven-shared-model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>        
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-workspace</artifactId>

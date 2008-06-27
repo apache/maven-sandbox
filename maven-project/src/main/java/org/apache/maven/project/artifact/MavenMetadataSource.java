@@ -442,8 +442,8 @@ public class MavenMetadataSource
         return projectArtifacts;
     }
 
-    public List<ArtifactVersion> retrieveAvailableVersions( Artifact artifact, ArtifactRepository localRepository,
-                                                            List<ArtifactRepository> remoteRepositories )
+    public List retrieveAvailableVersions( Artifact artifact, ArtifactRepository localRepository,
+                                                            List remoteRepositories )
         throws ArtifactMetadataRetrievalException
     {
         RepositoryMetadata metadata = new ArtifactRepositoryMetadata( artifact );
@@ -459,7 +459,7 @@ public class MavenMetadataSource
         return retrieveAvailableVersionsFromMetadata( metadata.getMetadata() );
     }
 
-    public List<ArtifactVersion> retrieveAvailableVersionsFromDeploymentRepository(
+    public List retrieveAvailableVersionsFromDeploymentRepository(
                                                                                     Artifact artifact,
                                                                                     ArtifactRepository localRepository,
                                                                                     ArtifactRepository deploymentRepository )
@@ -478,7 +478,7 @@ public class MavenMetadataSource
         return retrieveAvailableVersionsFromMetadata( metadata.getMetadata() );
     }
 
-    private List<ArtifactVersion> retrieveAvailableVersionsFromMetadata( Metadata repoMetadata )
+    private List retrieveAvailableVersionsFromMetadata( Metadata repoMetadata )
     {
         List<ArtifactVersion> versions;
         if ( ( repoMetadata != null ) && ( repoMetadata.getVersioning() != null ) )
@@ -492,7 +492,7 @@ public class MavenMetadataSource
         }
         else
         {
-            versions = Collections.<ArtifactVersion> emptyList();
+            versions = Collections.EMPTY_LIST;
         }
 
         return versions;
