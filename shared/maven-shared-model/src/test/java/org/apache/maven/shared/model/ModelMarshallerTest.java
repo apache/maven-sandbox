@@ -15,7 +15,7 @@ import java.util.List;
 public class ModelMarshallerTest {
 
     @Test
-    public void unmarshalWithEmptyTags() throws IOException {
+    public void unmarshalWithEmptyCollectionTags() throws IOException {
         List<ModelProperty> modelProperties = Arrays.asList(
                 new ModelProperty("http://apache.org/maven/project", null),
                 new ModelProperty("http://apache.org/maven/project/dependencies#collection", null)
@@ -30,6 +30,23 @@ public class ModelMarshallerTest {
                 new ModelProperty("http://apache.org/maven/project", null),
                 new ModelProperty("http://apache.org/maven/project/modelVersion", "4.0.0")
         );
+        String xml = ModelMarshaller.unmarshalModelPropertiesToXml(modelProperties, "http://apache.org/maven");
+        System.out.println("COMPLETE:" + xml); //TODO: Verify proper xml
+    }
+
+    @Test
+    public void unmarshalWithEmptyTags111() throws IOException {
+ /*       List<ModelProperty> modelProperties = Arrays.asList(
+                new ModelProperty("http://apache.org/maven/project", null),
+                new ModelProperty("http://apache.org/maven/project/developers#collection", null),
+                new ModelProperty("http://apache.org/maven/project/developers#collection/developer", null),
+                new ModelProperty("http://apache.org/maven/project/developers#collection/developer/organization", null),
+                new ModelProperty("http://apache.org/maven/project/modelVersion", "4.0.0")
+        );    */
+         List<ModelProperty> modelProperties = ModelMarshaller.marshallXmlToModelProperties(
+                new ByteArrayInputStream("<project><S></S><version>1.2</version><developers><developer><organization></organization></developer></developers><modelVersion>4</modelVersion></project>".getBytes()),
+                "http://apache.org/maven", null);
+
         String xml = ModelMarshaller.unmarshalModelPropertiesToXml(modelProperties, "http://apache.org/maven");
         System.out.println("COMPLETE:" + xml); //TODO: Verify proper xml
     }
