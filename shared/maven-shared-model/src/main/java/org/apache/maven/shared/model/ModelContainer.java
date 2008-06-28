@@ -35,5 +35,7 @@ public interface ModelContainer {
      * @return new instance of model container
      */
     ModelContainer createNewInstance(List<ModelProperty> modelProperties);
+
+    void sort(List<ModelProperty> modelProperties);
     
 }

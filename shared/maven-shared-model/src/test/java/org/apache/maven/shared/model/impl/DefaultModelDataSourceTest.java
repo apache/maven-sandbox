@@ -257,6 +257,10 @@ public class DefaultModelDataSourceTest {
             public ModelContainer createNewInstance(List<ModelProperty> modelProperties) {
                 return new DummyModelContainer(modelProperties);
             }
+
+            public void sort(List<ModelProperty> modelProperties) {
+
+            }
         }
     }
 }

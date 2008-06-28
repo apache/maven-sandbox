@@ -156,6 +156,7 @@ public final class DefaultModelDataSource implements ModelDataSource {
                 uris.add(p.getUri());
             }
         }
+        a.sort(processedProperties);
         return processedProperties;
     }
 }

@@ -30,7 +30,7 @@ public final class ModelMarshaller {
 
         List<ModelProperty> modelProperties = new ArrayList<ModelProperty>();
 
-        KXmlParser parser = new KXmlParser();
+        KXmlParser parser = new KXmlParser();       
         try {
             parser.setInput(inputStream, null);
         } catch (XmlPullParserException e) {
@@ -49,7 +49,6 @@ public final class ModelMarshaller {
         try {
             for (; ; parser.next()) {
                 int type = parser.getEventType();
-               // System.out.println(parser.isEmptyElementTag());
                 switch (type) {
                     case XmlPullParser.TEXT: {
                         String tmp = parser.getText();
@@ -78,9 +77,7 @@ public final class ModelMarshaller {
                         break;
                     }
                     case XmlPullParser.END_TAG: {
-                        // if (parser.isEmptyElementTag()) {
-                           if(tagValue == null) tagValue = "";
-                       // }
+                        if (tagValue == null) tagValue = "";
                         break;
                     }
                     case XmlPullParser.END_DOCUMENT: {

@@ -72,18 +72,19 @@ public final class ModelTransformerContext {
                 }
             }
         }
-        System.out.println("Time= " + (System.currentTimeMillis() - start));
+      //  System.out.println("Time= " + (System.currentTimeMillis() - start));
 
         //interpolator
         List<ModelProperty> mps = modelDataSource.getModelProperties();
         long s = System.currentTimeMillis();
+        /*
         for (ModelProperty mp : mps) {
             InterpolatorProperty ip = mp.asInterpolatorProperty(baseUriForModel);
             if (ip != null) {
                 properties.add(ip);
             }
         }
-
+         */
         List<ModelProperty> unresolvedProperties = new ArrayList<ModelProperty>();
         for (ModelProperty mp : mps) {
             if (!mp.isResolved()) {
@@ -96,7 +97,7 @@ public final class ModelTransformerContext {
                 mp.resolveWith(ip);
             }
         }
-        System.out.println("Resolve Time = " + (System.currentTimeMillis() - s));
+        //System.out.println("Resolve Time = " + (System.currentTimeMillis() - s));
         return toModelTransformer.transformToDomainModel(mps);
     }
 

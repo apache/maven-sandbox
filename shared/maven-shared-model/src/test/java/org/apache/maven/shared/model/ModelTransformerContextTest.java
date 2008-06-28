@@ -11,6 +11,45 @@ public class ModelTransformerContextTest {
 
 
     @Test
+    public void sortWithDuplicateProperty1() {
+/*
+Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId, Value = maven-release-plugin, Resolved Value = maven-release-plugin
+Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/arguments, Value = -Prelease, Resolved Value = -Prelease
+Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/goals, Value = deploy, Resolved Value = deploy
+Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/useReleaseProfile, Value = false, Resolved Value = false
+*/
+        ModelProperty dup0 = new ModelProperty("http://apache.org/maven/project", null);
+        ModelProperty dup1 = new ModelProperty("http://apache.org/maven/project/build", null);
+        ModelProperty dup2 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement", null);
+        ModelProperty dup3 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection", null);
+        ModelProperty dup4 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin", null);
+        ModelProperty dup5 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration", null);
+        ModelProperty dup6 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/tagBase", "tag");
+        ModelProperty dup7 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/version", "1.1");
+
+        ModelProperty dup10 = new ModelProperty("http://apache.org/maven/project", null);
+        ModelProperty dup11 = new ModelProperty("http://apache.org/maven/project/build", null);
+        ModelProperty dup12 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement", null);
+        ModelProperty dup13 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection", null);
+        ModelProperty dup14 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin", null);
+        ModelProperty dup15 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration", null);
+        ModelProperty dup16 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/tagBase", "tag");
+        ModelProperty dup17 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/version", "1.1");
+
+        List<ModelProperty> modelProperties = Arrays.asList(dup0, dup1, dup2, dup3, dup4, dup5, dup6, dup7,
+                dup10, dup11, dup12, dup13, dup14, dup15, dup16, dup17);
+
+        ModelTransformerContext ctx = new ModelTransformerContext(new ArrayList<ModelContainerFactory>());
+        List<ModelProperty> sortedProperties = ctx.sort(modelProperties, "http://apache.org/maven");
+        for(ModelProperty mp : sortedProperties) {
+            System.out.println(mp);
+        }
+     //   assertTrue(sortedProperties.contains(dup0));
+     //   assertFalse(sortedProperties.contains(dup1));
+    }
+
+    @Test
     public void sortWithDuplicateProperty() {
         ModelProperty dup0 = new ModelProperty("http://apache.org/maven/project/version", "1.1");
         ModelProperty dup1 = new ModelProperty("http://apache.org/maven/project/version", "1.2");
