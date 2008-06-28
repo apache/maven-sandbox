@@ -68,7 +68,8 @@ public final class PomClassicTransformer implements ModelTransformer {
                 "http://apache.org/maven/project/build/pluginManagement/plugins/plugin/dependencies#collection",
                 "http://apache.org/maven/project/profiles/profile/reporting/plugins/plugin/reportSets#collection",
                 "http://apache.org/maven/project/profiles/profile/build/plugins#collection",
-                "http://apache.org/maven/project/profiles/profile/build/plugins/plugin/executions#collection"
+                "http://apache.org/maven/project/profiles/profile/build/plugins/plugin/executions#collection",
+                "http://apache.org/maven/project/modules#collection"
         ));
     }
 
@@ -82,7 +83,7 @@ public final class PomClassicTransformer implements ModelTransformer {
             return new PomClassicDomainModel(new MavenXpp3Reader().read(new StringReader(xml)));
         } catch (XmlPullParserException e) {
             StringBuffer sb = new StringBuffer("\r\n");
-            for(ModelProperty mp : properties) {
+            for (ModelProperty mp : properties) {
                 sb.append(mp).append("\r\n");
             }
             throw new IOException(e + ":\r\n" + xml + sb.toString());
@@ -97,6 +98,7 @@ public final class PomClassicTransformer implements ModelTransformer {
         List<ModelProperty> modelProperties = new ArrayList<ModelProperty>();
         List<String> projectNames = new ArrayList<String>();
         StringBuffer scmUrl = new StringBuffer();
+
         for (DomainModel domainModel : domainModels) {
             if (!(domainModel instanceof PomClassicDomainModel)) {
                 throw new IllegalArgumentException("domainModels: Invalid domain model");
@@ -104,8 +106,17 @@ public final class PomClassicTransformer implements ModelTransformer {
             List<ModelProperty> tmp = ModelMarshaller.marshallXmlToModelProperties(
                     ((PomClassicDomainModel) domainModel).getInputStream(), ProjectUri.baseUri, uris);
 
-            //Missing groupId, use parent one
-            if(getPropertyFor(ProjectUri.groupId, tmp) == null) {
+            //Modules Not Inherited Rule
+            if (domainModels.indexOf(domainModel) != 0) {
+                ModelProperty modulesProperty = getPropertyFor(ProjectUri.Modules.xUri, tmp);
+                if(modulesProperty != null) {
+                    tmp.remove(modulesProperty);
+                    tmp.removeAll(getPropertiesFor(ProjectUri.Modules.module, tmp));
+                }
+            }
+
+            //Missing groupId, use parent one Rule
+            if (getPropertyFor(ProjectUri.groupId, tmp) == null) {
                 ModelProperty parentGroupId = getPropertyFor(ProjectUri.Parent.groupId, tmp);
                 tmp.add(new ModelProperty(ProjectUri.groupId, parentGroupId.getValue()));
             }
@@ -114,7 +125,7 @@ public final class PomClassicTransformer implements ModelTransformer {
             ModelProperty scmUrlProperty = getPropertyFor(ProjectUri.Scm.url, tmp);
             if (scmUrl.length() == 0 && scmUrlProperty != null) {
                 scmUrl.append(scmUrlProperty.getValue());
-                for(String projectName : projectNames) {
+                for (String projectName : projectNames) {
                     scmUrl.append("/").append(projectName);
                 }
                 int index = tmp.indexOf(scmUrlProperty);
@@ -128,6 +139,15 @@ public final class PomClassicTransformer implements ModelTransformer {
         return modelProperties;
     }
 
+    private static List<ModelProperty> getPropertiesFor(String uri, List<ModelProperty> properties) {
+        List<ModelProperty> modelProperties = new ArrayList<ModelProperty>();
+        for (ModelProperty mp : properties) {
+            if (uri.equals(mp.getUri())) {
+                modelProperties.add(mp);
+            }
+        }
+        return modelProperties;
+    }
 
     private static ModelProperty getPropertyFor(String uri, List<ModelProperty> properties) {
         for (ModelProperty mp : properties) {

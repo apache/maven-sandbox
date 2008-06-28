@@ -4,6 +4,8 @@ import org.apache.maven.shared.model.*;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.Model;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.validation.ModelValidationResult;
+import org.apache.maven.project.validation.ModelValidator;
 import org.apache.maven.project.builder.*;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
@@ -24,6 +26,8 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
     private ArtifactResolver artifactResolver;
 
     private Logger logger;
+
+    private ModelValidator validator;
 
     public DefaultProjectBuilder() {
     }
@@ -66,6 +70,8 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         Model model = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
                 transformer, properties)).getModel();
 
+        validateModel(model);
+
         MavenProject mavenProject = new MavenProject(model);
         mavenProject.setArtifact(artifactFactory.createProjectArtifact(model.getGroupId(), model.getArtifactId(),
                 model.getVersion()));
@@ -102,7 +108,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
             artifactParent.setFile(parentFile);
         }
         PomClassicDomainModel parentDomainModel = new PomClassicDomainModel(new FileInputStream(artifactParent.getFile()));
-        if(!parentDomainModel.matchesParent(domainModel.getModel().getParent())) {
+        if (!parentDomainModel.matchesParent(domainModel.getModel().getParent())) {
             logger.warn("Parent pom ids do not match: File = " + artifactParent.getFile().getAbsolutePath());
             return domainModels;
         }
@@ -114,5 +120,14 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
     public void enableLogging(Logger logger) {
         this.logger = logger;
+    }
+
+    private void validateModel(Model model)
+            throws IOException {
+        ModelValidationResult validationResult = validator.validate(model);
+
+        if (validationResult.getMessageCount() > 0) {
+            throw new IOException("Failed to validate: " + validationResult.toString());
+        }
     }
 }

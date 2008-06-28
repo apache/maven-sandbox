@@ -675,7 +675,10 @@ public class ProjectUri {
         }
     }
 
-    public static String modules = "http://apache.org/maven/project/modules";
+    public static class Modules {
+        public static String xUri = "http://apache.org/maven/project/modules#collection";
+        public static String module = "http://apache.org/maven/project/modules#collection/module";
+    }
 
     public static class Repositories {
         public static String xUri = "http://apache.org/maven/project/repositories#collection";
