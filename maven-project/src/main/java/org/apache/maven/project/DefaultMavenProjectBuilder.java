@@ -973,7 +973,7 @@ public class DefaultMavenProjectBuilder
             projectDir = pomFile.getAbsoluteFile().getParentFile();
         }
 
-       // model = modelInterpolator.interpolate( model, projectDir, config, getLogger().isDebugEnabled() );
+        model = modelInterpolator.interpolate( model, projectDir, config, getLogger().isDebugEnabled() );
 
         // We must inject any imported dependencyManagement information ahead of the defaults injection.
         if ( !isSuperPom )
