@@ -24,8 +24,8 @@ if ( debug )
   puts "Executing in: #{pwd}"
 end
 
-source_user = 'deployment'
-source_passwd = 'f00by12'
+source_user = 'USERNAME'
+source_passwd = 'CHANGEME'
 
 source_repo_url = "http://repository.sonatype.org:8081/nexus/content/repositories/staged-releases/#{artifact_id}"
 source_repo_id = "staged.releases"
