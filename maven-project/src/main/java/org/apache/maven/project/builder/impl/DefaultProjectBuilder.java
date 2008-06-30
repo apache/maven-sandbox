@@ -70,7 +70,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         Model model = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
                 transformer, properties)).getModel();
 
-        validateModel(model);
+        //validateModel(model);
 
         MavenProject mavenProject = new MavenProject(model);
         mavenProject.setArtifact(artifactFactory.createProjectArtifact(model.getGroupId(), model.getArtifactId(),

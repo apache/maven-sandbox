@@ -32,14 +32,19 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         MavenXpp3Writer writer = new MavenXpp3Writer();
         writer.write(new OutputStreamWriter(baos), model);
-        inputStream = baos.toByteArray();
+        inputStream = removeIllegalCharacters(baos.toByteArray());
     }
 
     public PomClassicDomainModel(InputStream inputStream) throws IOException {
         if (inputStream == null) {
             throw new IllegalArgumentException("inputStream: null");
         }
-        this.inputStream = IOUtil.toByteArray(inputStream);
+        this.inputStream = removeIllegalCharacters(IOUtil.toByteArray(inputStream));
+    }
+
+    //TODO: Workaround
+    private byte[] removeIllegalCharacters(byte[] bytes) {
+        return new String(bytes).replaceAll("&oslash;", "").getBytes();
     }
 
     public boolean matchesParent(Parent parent) {

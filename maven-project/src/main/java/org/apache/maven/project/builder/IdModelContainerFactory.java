@@ -66,6 +66,10 @@ public class IdModelContainerFactory implements ModelContainerFactory {
             return new IdModelContainer(modelProperties);
         }
 
+        public void sort(List<ModelProperty> modelProperties) {
+
+        }
+
         public List<ModelProperty> getProperties() {
             return properties;
         }

@@ -103,8 +103,15 @@ public final class PomClassicTransformer implements ModelTransformer {
             if (!(domainModel instanceof PomClassicDomainModel)) {
                 throw new IllegalArgumentException("domainModels: Invalid domain model");
             }
+
             List<ModelProperty> tmp = ModelMarshaller.marshallXmlToModelProperties(
                     ((PomClassicDomainModel) domainModel).getInputStream(), ProjectUri.baseUri, uris);
+
+            //Missing Version Rule
+            if (getPropertyFor(ProjectUri.version, tmp) == null) {
+                ModelProperty parentVersion = getPropertyFor(ProjectUri.Parent.version, tmp);
+                tmp.add(new ModelProperty(ProjectUri.version, parentVersion.getValue()));
+            }
 
             //Modules Not Inherited Rule
             if (domainModels.indexOf(domainModel) != 0) {
@@ -121,6 +128,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                 tmp.add(new ModelProperty(ProjectUri.groupId, parentGroupId.getValue()));
             }
 
+
             //SCM Rule
             ModelProperty scmUrlProperty = getPropertyFor(ProjectUri.Scm.url, tmp);
             if (scmUrl.length() == 0 && scmUrlProperty != null) {
@@ -135,6 +143,13 @@ public final class PomClassicTransformer implements ModelTransformer {
             projectNames.add(0, getPropertyFor(ProjectUri.artifactId, tmp).getValue());
 
             modelProperties.addAll(tmp);
+
+            //Remove Parent Info
+            for(ModelProperty mp : tmp) {
+                if(mp.getUri().startsWith(ProjectUri.Parent.xUri)) {
+                    modelProperties.remove(mp);
+                }
+            }
         }
         return modelProperties;
     }
