@@ -87,21 +87,24 @@ if ( exit_code != 0 )
   exit exit_code
 end
 
-puts "Cleaning staging repository: #{source_repo_url}"
-
-maint_url = URI.parse( source_repo_url )
-
-maint_req = HTTP::Delete.new( maint_url.path )
-maint_req.basic_auth( source_user, source_passwd )
-
-maint_response = HTTP.start( maint_url.host, maint_url.port ) do |http|
-  http.request( maint_req )
-end
-
-puts "Got response:\n\n'#{maint_response.body}'\n\n" if debug
-
-if not maint_response.kind_of?( HTTPSuccess )
-  puts "Bad HTTP response (#{maint_response})."
-  exit -10000
-end
+############
+# The following will do a HTTP DELETE on the staging repository, to clean out the artifact's staging point for the next release.
+############
+#puts "Cleaning staging repository: #{source_repo_url}"
+#
+#maint_url = URI.parse( source_repo_url )
+#
+#maint_req = HTTP::Delete.new( maint_url.path )
+#maint_req.basic_auth( source_user, source_passwd )
+#
+#maint_response = HTTP.start( maint_url.host, maint_url.port ) do |http|
+#  http.request( maint_req )
+#end
+#
+#puts "Got response:\n\n'#{maint_response.body}'\n\n" if debug
+#
+#if not maint_response.kind_of?( HTTPSuccess )
+#  puts "Bad HTTP response (#{maint_response})."
+#  exit -10000
+#end
 
