@@ -65,6 +65,7 @@ import org.apache.maven.project.interpolation.ModelInterpolator;
 import org.apache.maven.project.path.PathTranslator;
 import org.apache.maven.project.validation.ModelValidationResult;
 import org.apache.maven.project.validation.ModelValidator;
+import org.apache.maven.project.builder.ProjectBuilder;
 import org.apache.maven.wagon.events.TransferListener;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
@@ -171,6 +172,8 @@ public class DefaultMavenProjectBuilder
     private ModelInterpolator modelInterpolator;
 
     private ArtifactRepositoryFactory artifactRepositoryFactory;
+
+    private ProjectBuilder projectBuilder;
 
     // ----------------------------------------------------------------------
     // I am making this available for use with a new method that takes a
