@@ -72,32 +72,39 @@ public final class ModelTransformerContext {
                 }
             }
         }
-      //  System.out.println("Time= " + (System.currentTimeMillis() - start));
+        //  System.out.println("Time= " + (System.currentTimeMillis() - start));
 
         //interpolator
         List<ModelProperty> mps = modelDataSource.getModelProperties();
         long s = System.currentTimeMillis();
-        /*
+
         for (ModelProperty mp : mps) {
             InterpolatorProperty ip = mp.asInterpolatorProperty(baseUriForModel);
             if (ip != null) {
                 properties.add(ip);
             }
         }
-         */
+
         List<ModelProperty> unresolvedProperties = new ArrayList<ModelProperty>();
         for (ModelProperty mp : mps) {
             if (!mp.isResolved()) {
                 unresolvedProperties.add(mp);
             }
         }
-
+        /*
+        System.out.println("Properties: " + properties.size());
         for (InterpolatorProperty ip : properties) {
             for (ModelProperty mp : unresolvedProperties) {
+                System.out.println(ip);
                 mp.resolveWith(ip);
+                System.out.println(mp);
+                System.out.println("-------------------");
             }
         }
+
+        */
         //System.out.println("Resolve Time = " + (System.currentTimeMillis() - s));
+        validate(mps);
         return toModelTransformer.transformToDomainModel(mps);
     }
 
@@ -108,7 +115,7 @@ public final class ModelTransformerContext {
      * @param domainModels
      * @param fromModelTransformer
      * @param toModelTransformer
-     * @return 
+     * @return
      * @throws IOException
      */
     public DomainModel transform(List<DomainModel> domainModels, ModelTransformer fromModelTransformer,
@@ -117,7 +124,6 @@ public final class ModelTransformerContext {
         return this.transform(domainModels, fromModelTransformer, toModelTransformer, systemInterpolatorProperties);
     }
 
-    
 
     /**
      * Sorts specified list of model properties. Typically the list contain property information from the entire
@@ -152,5 +158,41 @@ public final class ModelTransformerContext {
             }
         }
         return processedProperties;
+    }
+    /*
+    private static List<ModelProperty> validateWithCorrections(List<ModelProperty> modelProperties) throws IOException {
+        List<ModelProperty> mps = new ArrayList<ModelProperty>();
+        mps.add(modelProperties.get(0));
+        for (int i = 1; i < modelProperties.size(); i++) {
+            ModelProperty previous = modelProperties.get(i - 1);
+            ModelProperty current = modelProperties.get(i);
+            if ((!previous.isParentOf(current) && current.getDepth() > previous.getDepth())
+                    || (current.getDepth() - previous.getDepth() > 1)) {
+                for (int j = mps.size(); j <= 0; j--) {
+                    if (mps.get(j - 1).isParentOf(current)) {
+                        mps.add(j - 1, current);
+                        break;
+                    }
+                }
+            } else {
+                mps.add(current);
+            }
+        }
+        return mps;
+    }
+    */
+    private static void validate(List<ModelProperty> modelProperties) throws IOException {
+        for (int i = 1; i < modelProperties.size(); i++) {
+            ModelProperty previous = modelProperties.get(i - 1);
+            ModelProperty current = modelProperties.get(i);
+            if ((!previous.isParentOf(current) && current.getDepth() > previous.getDepth())
+                    || (current.getDepth() - previous.getDepth() > 1)) {
+                int j = 0;
+                for (ModelProperty mp : modelProperties) {
+                    System.out.println((j++) + ":" + mp);
+                }
+                throw new IOException("Invalid Model Property: Property " + current + ", Line = " + i);
+            }
+        }
     }
 }

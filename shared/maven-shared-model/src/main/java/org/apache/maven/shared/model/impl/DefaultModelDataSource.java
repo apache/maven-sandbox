@@ -32,8 +32,8 @@ public final class DefaultModelDataSource implements ModelDataSource {
         delete(b);
 
         List<ModelProperty> joinedProperties = mergeModelContainers(a, b);
-        if(modelProperties.size() == 0) {
-            startIndex = 0;    
+        if (modelProperties.size() == 0) {
+            startIndex = 0;
         }
         modelProperties.addAll(startIndex, joinedProperties);
         return a.createNewInstance(joinedProperties);
@@ -135,6 +135,16 @@ public final class DefaultModelDataSource implements ModelDataSource {
         }
     }
 
+
+    private static int findLastIndexOfParent(ModelProperty modelProperty, List<ModelProperty> modelProperties) {
+        for (int i = modelProperties.size() - 1; i >= 0; i--) {
+            if (modelProperties.get(i).isParentOf(modelProperty)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     /**
      * Removes duplicate model properties from the containers and return list.
      *
@@ -152,11 +162,10 @@ public final class DefaultModelDataSource implements ModelDataSource {
 
         for (ModelProperty p : m) {
             if (!uris.contains(p.getUri())) {
-                processedProperties.add(p);
+                processedProperties.add(findLastIndexOfParent(p, processedProperties) + 1, p);
                 uris.add(p.getUri());
             }
         }
-        a.sort(processedProperties);
         return processedProperties;
     }
 }

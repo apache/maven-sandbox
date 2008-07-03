@@ -22,6 +22,8 @@ public final class ModelProperty {
      */
     private final String value;
 
+    private final int depth;
+
     private String resolvedValue;
 
     private final List<String> expressions;
@@ -47,6 +49,7 @@ public final class ModelProperty {
                 expressions.add(matcher.group(0));
             }
         }
+        depth = uri.split("/").length;
     }
 
     /**
@@ -78,6 +81,26 @@ public final class ModelProperty {
     public ModelProperty createCopyOfOriginal() {
         return new ModelProperty(uri, value);
     }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public boolean isParentOf(ModelProperty modelProperty) {
+        if( Math.abs(depth - modelProperty.getDepth()) > 1) {
+            return false;
+        }
+        if (uri.equals(modelProperty.getUri()) || uri.startsWith(modelProperty.getUri())) {
+            return false;
+        }
+        return (modelProperty.getUri().startsWith(uri));
+    }
+    /*
+        public boolean isParentOf(ModelProperty modelProperty) {
+        return !(uri.equals(modelProperty.getUri()) || uri.startsWith(modelProperty.getUri()))
+                && (modelProperty.getUri().startsWith(uri));
+    }
+     */
 
     public InterpolatorProperty asInterpolatorProperty(String baseUri) {
         if (uri.contains("#collection") || value == null) {

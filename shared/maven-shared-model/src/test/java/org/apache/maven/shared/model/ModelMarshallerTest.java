@@ -8,6 +8,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +31,22 @@ public class ModelMarshallerTest {
                 new ModelProperty("http://apache.org/maven/project", null),
                 new ModelProperty("http://apache.org/maven/project/modelVersion", "4.0.0")
         );
+        String xml = ModelMarshaller.unmarshalModelPropertiesToXml(modelProperties, "http://apache.org/maven");
+        System.out.println("COMPLETE:" + xml); //TODO: Verify proper xml
+    }
+    @Test
+    public void unmarshalWithEmptyTags112() throws IOException {
+ /*       List<ModelProperty> modelProperties = Arrays.asList(
+                new ModelProperty("http://apache.org/maven/project", null),
+                new ModelProperty("http://apache.org/maven/project/developers#collection", null),
+                new ModelProperty("http://apache.org/maven/project/developers#collection/developer", null),
+                new ModelProperty("http://apache.org/maven/project/developers#collection/developer/organization", null),
+                new ModelProperty("http://apache.org/maven/project/modelVersion", "4.0.0")
+        );    */
+         List<ModelProperty> modelProperties = ModelMarshaller.marshallXmlToModelProperties(
+                new FileInputStream("C:\\Documents and Settings\\sisbell\\.m2\\repository\\org\\mortbay\\jetty\\project\\6.1.5\\project-6.1.5.pom"),
+                "http://apache.org/maven", null);
+
         String xml = ModelMarshaller.unmarshalModelPropertiesToXml(modelProperties, "http://apache.org/maven");
         System.out.println("COMPLETE:" + xml); //TODO: Verify proper xml
     }
