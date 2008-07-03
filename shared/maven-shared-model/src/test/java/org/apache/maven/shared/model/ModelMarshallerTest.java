@@ -3,12 +3,10 @@ package org.apache.maven.shared.model;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,7 +90,7 @@ public class ModelMarshallerTest {
     }
      */
     @Test(expected = IllegalArgumentException.class)
-    public void unmarshalWithNullBaseUri() throws IOException, XmlPullParserException {
+    public void unmarshalWithNullBaseUri() throws IOException {
         List<ModelProperty> modelProperties = Arrays.asList(
                 new ModelProperty("http://apache.org/maven/project", null)
         );
@@ -101,7 +99,7 @@ public class ModelMarshallerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void unmarshalWithEmptyBaseUri() throws IOException, XmlPullParserException {
+    public void unmarshalWithEmptyBaseUri() throws IOException {
         List<ModelProperty> modelProperties = Arrays.asList(
                 new ModelProperty("http://apache.org/maven/project", null)
         );
@@ -110,17 +108,17 @@ public class ModelMarshallerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void unmarshalWithEmptyModelProperties() throws IOException, XmlPullParserException {
+    public void unmarshalWithEmptyModelProperties() throws IOException  {
         ModelMarshaller.unmarshalModelPropertiesToXml(new ArrayList<ModelProperty>(), "http://apache.org/maven/project");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void unmarshalWithNullModelProperties() throws IOException, XmlPullParserException {
+    public void unmarshalWithNullModelProperties() throws IOException {
         ModelMarshaller.unmarshalModelPropertiesToXml(null, "http://apache.org/maven/project");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void unmarshalWithIncorrectModelPropertyUri() throws IOException, XmlPullParserException {
+    public void unmarshalWithIncorrectModelPropertyUri() throws IOException  {
         List<ModelProperty> modelProperties = Arrays.asList(
                 new ModelProperty("http://apache.org/maven/project", null),
                 new ModelProperty("http://bogus.org/maven", "1.1")

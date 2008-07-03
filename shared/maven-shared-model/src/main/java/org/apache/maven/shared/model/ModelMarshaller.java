@@ -1,16 +1,11 @@
 package org.apache.maven.shared.model;
 
-import org.kxml2.io.KXmlParser;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileReader;
 import java.util.*;
 
 /**
@@ -57,10 +52,6 @@ public final class ModelMarshaller {
 
                     case XMLStreamConstants.START_ELEMENT: {
                         depth++;
-                     //   if (xmlStreamReader.getElementText() == null) {
-                     //       tagValue = "";
-                     //   }
-
                         if (!tagName.equals(baseUri)) {
                             modelProperties.add(new ModelProperty(tagName, tagValue));
                         }
@@ -102,74 +93,6 @@ public final class ModelMarshaller {
 
             }
         }
-        /*
-        KXmlParser parser = new KXmlParser();
-        try {
-            parser.setInput(inputStream, null);
-        } catch (XmlPullParserException e) {
-            try {
-                inputStream.close();
-            } catch (IOException e1) {
-
-            }
-            throw new IOException(e.toString());
-        }
-        */
-        /*
-        Uri uri = new Uri(baseUri);
-        String tagName = baseUri;
-        String tagValue = null;
-
-        try {
-            for (; ; parser.next()) {
-                int type = parser.getEventType();
-                switch (type) {
-                    case XmlPullParser.TEXT: {
-                        String tmp = parser.getText();
-                        if (tmp != null && tmp.trim().length() != 0) {
-                            tagValue = tmp;
-                        }
-                        break;
-                    }
-                    case XmlPullParser.START_TAG: {
-                        if (parser.isEmptyElementTag()) {
-                            tagValue = "";
-                        }
-
-                        if (!tagName.equals(baseUri)) {
-                            modelProperties.add(new ModelProperty(tagName, tagValue));
-                        }
-
-                        tagName = uri.getUriFor(parser.getName(), parser.getDepth());
-                        if (collections.contains(tagName + "#collection")) {
-                            tagName = tagName + "#collection";
-                            uri.addTag(parser.getName() + "#collection");
-                        } else {
-                            uri.addTag(parser.getName());
-                        }
-                        tagValue = null;
-                        break;
-                    }
-                    case XmlPullParser.END_TAG: {
-                        if (tagValue == null) tagValue = "";
-                        break;
-                    }
-                    case XmlPullParser.END_DOCUMENT: {
-                        modelProperties.add(new ModelProperty(tagName, tagValue));
-                        return modelProperties;
-                    }
-                }
-            }
-        } catch (XmlPullParserException e) {
-            throw new IOException(":" + e.toString());
-        } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-
-            }
-        }
-        */
     }
 
 

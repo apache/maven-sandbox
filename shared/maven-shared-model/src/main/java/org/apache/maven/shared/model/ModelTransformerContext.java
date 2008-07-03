@@ -159,28 +159,7 @@ public final class ModelTransformerContext {
         }
         return processedProperties;
     }
-    /*
-    private static List<ModelProperty> validateWithCorrections(List<ModelProperty> modelProperties) throws IOException {
-        List<ModelProperty> mps = new ArrayList<ModelProperty>();
-        mps.add(modelProperties.get(0));
-        for (int i = 1; i < modelProperties.size(); i++) {
-            ModelProperty previous = modelProperties.get(i - 1);
-            ModelProperty current = modelProperties.get(i);
-            if ((!previous.isParentOf(current) && current.getDepth() > previous.getDepth())
-                    || (current.getDepth() - previous.getDepth() > 1)) {
-                for (int j = mps.size(); j <= 0; j--) {
-                    if (mps.get(j - 1).isParentOf(current)) {
-                        mps.add(j - 1, current);
-                        break;
-                    }
-                }
-            } else {
-                mps.add(current);
-            }
-        }
-        return mps;
-    }
-    */
+
     private static void validate(List<ModelProperty> modelProperties) throws IOException {
         for (int i = 1; i < modelProperties.size(); i++) {
             ModelProperty previous = modelProperties.get(i - 1);
