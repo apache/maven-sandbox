@@ -20,9 +20,16 @@ public final class DefaultModelDataSource implements ModelDataSource {
         if (b == null || b.getProperties() == null) {
             throw new IllegalArgumentException("b: null or b.properties: empty");
         }
+
         if (!modelProperties.containsAll(a.getProperties())) {
+            for (ModelProperty mp : a.getProperties()) {
+                if (!modelProperties.contains(mp)) {
+                    System.out.println(mp);
+                }
+            }
             throw new DataSourceException("ModelContainer 'a' contains elements not within datasource");
         }
+
         if (a.equals(b) || b.getProperties().size() == 0) {
             return a;
         }
@@ -110,7 +117,31 @@ public final class DefaultModelDataSource implements ModelDataSource {
                 }
             }
         }
+
+        //verify data source integrity
+        List<ModelProperty> unknownProperties = findUnknownModelPropertiesFrom(modelContainers);
+        if(!unknownProperties.isEmpty()) {
+            for(ModelProperty mp : unknownProperties) {
+                System.out.println(mp);
+            }
+            throw new DataSourceException("ModelContainer contains elements not within datasource");
+        }
+
         return modelContainers;
+    }
+
+    private List<ModelProperty> findUnknownModelPropertiesFrom(List<ModelContainer> modelContainers) {
+        List<ModelProperty> modelProperties = new ArrayList<ModelProperty>();
+        for(ModelContainer mc: modelContainers) {
+            if (!modelProperties.containsAll(mc.getProperties())) {
+                for (ModelProperty mp : mc.getProperties()) {
+                    if (!modelProperties.contains(mp)) {
+                        modelProperties.add(mp);
+                    }
+                }
+            }
+        }
+        return modelProperties;
     }
 
     public void init(List<ModelProperty> modelProperties, Collection<ModelContainerFactory> modelContainerFactories) {

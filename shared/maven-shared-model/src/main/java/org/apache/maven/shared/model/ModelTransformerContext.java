@@ -27,6 +27,8 @@ public final class ModelTransformerContext {
 
     /**
      * Default constructor
+     *
+     * @param factories model container factories. Value may be null.
      */
     public ModelTransformerContext(Collection<ModelContainerFactory> factories) {
         this.factories = (factories == null) ? Collections.EMPTY_LIST : factories;
@@ -37,12 +39,12 @@ public final class ModelTransformerContext {
      * Unlike ModelTransformerContext#transform(java.util.List, ModelTransformer, ModelTransformer), this method requires
      * the user to add interpolator properties. It's intended to be used by IDEs.
      *
-     * @param domainModels
-     * @param fromModelTransformer
-     * @param toModelTransformer
+     * @param domainModels the domain model list to transform
+     * @param fromModelTransformer transformer that transforms from specified domain models to canonical data model
+     * @param toModelTransformer transformer that transforms from canonical data model to returned domain model
      * @param interpolatorProperties properties to use during interpolation.
-     * @return
-     * @throws IOException
+     * @return processed domain model
+     * @throws IOException if there was a problem with the transform
      */
     public DomainModel transform(List<DomainModel> domainModels, ModelTransformer fromModelTransformer,
                                  ModelTransformer toModelTransformer,
@@ -54,7 +56,7 @@ public final class ModelTransformerContext {
                 baseUriForModel);
         ModelDataSource modelDataSource = new DefaultModelDataSource();
         modelDataSource.init(modelProperties, factories);
-        long start = System.currentTimeMillis();
+
         for (ModelContainerFactory factory : factories) {
             for (String uri : factory.getUris()) {
                 List<ModelContainer> modelContainers = modelDataSource.queryFor(uri);
@@ -72,11 +74,9 @@ public final class ModelTransformerContext {
                 }
             }
         }
-        //  System.out.println("Time= " + (System.currentTimeMillis() - start));
 
         //interpolator
         List<ModelProperty> mps = modelDataSource.getModelProperties();
-        long s = System.currentTimeMillis();
 
         for (ModelProperty mp : mps) {
             InterpolatorProperty ip = mp.asInterpolatorProperty(baseUriForModel);
@@ -103,7 +103,6 @@ public final class ModelTransformerContext {
         }
 
         */
-        //System.out.println("Resolve Time = " + (System.currentTimeMillis() - s));
         validate(mps);
         return toModelTransformer.transformToDomainModel(mps);
     }
