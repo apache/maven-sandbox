@@ -1,6 +1,7 @@
 package org.apache.maven.project.builder;
 
 import org.apache.maven.shared.model.*;
+
 import java.util.*;
 
 public class IdModelContainerFactory implements ModelContainerFactory {
@@ -12,7 +13,7 @@ public class IdModelContainerFactory implements ModelContainerFactory {
             ProjectUri.Repositories.Repository.xUri,
             ProjectUri.Reporting.Plugins.Plugin.ReportSets.ReportSet.xUri,
             ProjectUri.Profiles.Profile.xUri
-            ));
+    ));
 
     public Collection<String> getUris() {
         return uris;
@@ -41,9 +42,9 @@ public class IdModelContainerFactory implements ModelContainerFactory {
                 }
             }
 
-         //   if (id == null) {
-         //       throw new IllegalArgumentException("properties does not contain id");
-         //   }
+            //   if (id == null) {
+            //       throw new IllegalArgumentException("properties does not contain id");
+            //   }
         }
 
         public ModelContainerAction containerAction(ModelContainer modelContainer) {
@@ -56,7 +57,7 @@ public class IdModelContainerFactory implements ModelContainerFactory {
             }
 
             IdModelContainer c = (IdModelContainer) modelContainer;
-            if(c.id == null || id == null) {
+            if (c.id == null || id == null) {
                 return ModelContainerAction.NOP;
             }
             return (c.id.equals(id)) ? ModelContainerAction.JOIN : ModelContainerAction.NOP;
@@ -67,7 +68,12 @@ public class IdModelContainerFactory implements ModelContainerFactory {
         }
 
         public void sort(List<ModelProperty> modelProperties) {
-
+            //Collections.sort(modelProperties, new IdModelComparator());
+         /*   System.out.println("END SORT");
+            for(ModelProperty mp : modelProperties) {
+                System.out.println(mp);
+            }
+            */
         }
 
         public List<ModelProperty> getProperties() {
@@ -76,6 +82,20 @@ public class IdModelContainerFactory implements ModelContainerFactory {
 
         public String toString() {
             return "ID = " + id;
+        }
+    }
+
+    private static class IdModelComparator implements Comparator {
+        public int compare(Object o1, Object o2) {
+            ModelProperty a = (ModelProperty) o1;
+            ModelProperty b = (ModelProperty) o2;
+            System.out.println(a + " : " + b);
+            if (a.isParentOf(b)) {
+                System.out.println("IS PARENT ABOVE:");
+                return -1;
+            }
+
+            return 0;
         }
     }
 }

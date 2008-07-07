@@ -1,0 +1,2649 @@
+<project>
+    <properties>
+        <organization.logo>
+            http://www.apache.org/images/asf_logo_wide.gif
+        </organization.logo>
+
+    </properties>
+    <repositories>
+        <repository>
+            <releases>
+                <enabled>
+                    false
+                </enabled>
+
+            </releases>
+            <url>
+                http://people.apache.org/repo/m2-snapshot-repository
+            </url>
+            <name>
+                Apache Snapshot Repository
+            </name>
+            <id>
+                apache.snapshots
+            </id>
+
+        </repository>
+
+    </repositories>
+    <organization>
+        <url>
+            http://www.apache.org/
+        </url>
+        <name>
+            The Apache Software Foundation
+        </name>
+
+    </organization>
+    <licenses>
+        <license>
+            <distribution>
+                repo
+            </distribution>
+            <url>
+                http://www.apache.org/licenses/LICENSE-2.0.txt
+            </url>
+            <name>
+                The Apache Software License, Version 2.0
+            </name>
+
+        </license>
+
+    </licenses>
+    <developers>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Torbjorn Eikli Smorgrav
+            </name>
+            <id>
+                smorgrav
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Shinobu Kuwai
+            </name>
+            <id>
+                shinobu
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Rahul Thakur
+            </name>
+            <id>
+                rinku
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Ralph Goers
+            </name>
+            <id>
+                rgoers
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -6
+            </timezone>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <email>
+                pschneider@gmail.com
+            </email>
+            <name>
+                Patrick Schneider
+            </name>
+            <id>
+                pschneider
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <email>
+                olamy@apache.org
+            </email>
+            <name>
+                Olivier Lamy
+            </name>
+            <id>
+                olamy
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Maria Odea B. Ching
+            </name>
+            <id>
+                oching
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Milos Kleint
+            </name>
+            <id>
+                mkleint
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Jeff Jensen
+            </name>
+            <id>
+                jjensen
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Herve Boutemy
+            </name>
+            <id>
+                hboutemy
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                0
+            </timezone>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <email>
+                handyande@apache.org
+            </email>
+            <name>
+                Andrew Williams
+            </name>
+            <id>
+                handyande
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Felipe Leme
+            </name>
+            <id>
+                felipeal
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +8
+            </timezone>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <organization>
+                Mergere
+            </organization>
+            <email>
+                epunzalan@mergere.com
+            </email>
+            <name>
+                Edwin Punzalan
+            </name>
+            <id>
+                epunzalan
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Daniel Rall
+            </name>
+            <id>
+                dlr
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -5
+            </timezone>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <organization>
+                IONA
+            </organization>
+            <email>
+                dkulp@apache.org
+            </email>
+            <name>
+                Daniel Kulp
+            </name>
+            <id>
+                dkulp
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Daniel Fabulich
+            </name>
+            <id>
+                dfabulich
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                David Blevins
+            </name>
+            <id>
+                dblevins
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Dan Tran
+            </name>
+            <id>
+                dantran
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Chris Stevenson
+            </name>
+            <id>
+                chrisjs
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Fabrice Bellingard
+            </name>
+            <id>
+                bellingard
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Henri Yandell
+            </name>
+            <id>
+                bayard
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Barrie Treloar
+            </name>
+            <id>
+                baerrach
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <name>
+                Allan Q. Ramirez
+            </name>
+            <id>
+                aramirez
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -7
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <email>
+                wsmoak@apache.org
+            </email>
+            <name>
+                Wendy Smoak
+            </name>
+            <id>
+                wsmoak
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -5
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                vsiveton@apache.org
+            </email>
+            <name>
+                Vincent Siveton
+            </name>
+            <id>
+                vsiveton
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                vmassol@apache.org
+            </email>
+            <name>
+                Vincent Massol
+            </name>
+            <id>
+                vmassol
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                trygvis@apache.org
+            </email>
+            <name>
+                Trygve Laugstol
+            </name>
+            <id>
+                trygvis
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                snicoll@apache.org
+            </email>
+            <name>
+                Stephane Nicoll
+            </name>
+            <id>
+                snicoll
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -6
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                IBM
+            </organization>
+            <email>
+                mperham@gmail.com
+            </email>
+            <name>
+                Mike Perham
+            </name>
+            <id>
+                mperham
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                ltheussl@apache.org
+            </email>
+            <name>
+                Lukas Theussl
+            </name>
+            <id>
+                ltheussl
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                Neonics
+            </organization>
+            <email>
+                kenney@apache.org
+            </email>
+            <name>
+                Kenney Westerhof
+            </name>
+            <id>
+                kenney
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -6
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                jmcconnell@apache.org
+            </email>
+            <name>
+                Jesse McConnell
+            </name>
+            <id>
+                jmcconnell
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +8
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                jtolentino@apache.org
+            </email>
+            <name>
+                Ernesto Tolentino Jr.
+            </name>
+            <id>
+                jtolentino
+            </id>
+
+        </developer>
+        <developer>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <name>
+                James Strachan
+            </name>
+            <id>
+                jstrachan
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -5
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                joakime@apache.org
+            </email>
+            <name>
+                Joakim Erdfelt
+            </name>
+            <id>
+                joakime
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -5
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                jdcasey@apache.org
+            </email>
+            <name>
+                John Casey
+            </name>
+            <id>
+                jdcasey
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                openmind
+            </organization>
+            <email>
+                fgiust@apache.org
+            </email>
+            <name>
+                Fabrizio Giustina
+            </name>
+            <id>
+                fgiust
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                evenisse@apache.org
+            </email>
+            <name>
+                Emmanuel Venisse
+            </name>
+            <id>
+                evenisse
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                dennisl@apache.org
+            </email>
+            <name>
+                Dennis Lundberg
+            </name>
+            <id>
+                dennisl
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                carlos@apache.org
+            </email>
+            <name>
+                Carlos Sanchez
+            </name>
+            <id>
+                carlos
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -5
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                brianf@apache.org
+            </email>
+            <name>
+                Brian Fox
+            </name>
+            <id>
+                brianf
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +10
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                brett@apache.org
+            </email>
+            <name>
+                Brett Porter
+            </name>
+            <id>
+                brett
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organizationUrl>
+                http://www.octo.com
+            </organizationUrl>
+            <organization>
+                OCTO Technology
+            </organization>
+            <email>
+                aheritier@apache.org
+            </email>
+            <name>
+                Arnaud Heritier
+            </name>
+            <id>
+                aheritier
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -5
+            </timezone>
+            <roles>
+                <role>
+                    PMC Chair
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                jason@maven.org
+            </email>
+            <name>
+                Jason van Zyl
+            </name>
+            <id>
+                jvanzyl
+            </id>
+
+        </developer>
+
+    </developers>
+    <ciManagement>
+        <notifiers>
+            <notifier>
+                <configuration>
+                    <address>
+                        notifications@maven.apache.org
+                    </address>
+
+                </configuration>
+                <type>
+                    mail
+                </type>
+
+            </notifier>
+
+        </notifiers>
+        <url>
+            http://maven.zones.apache.org/continuum
+        </url>
+        <system>
+            continuum
+        </system>
+
+    </ciManagement>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <configuration>
+                        <archive>
+                        <manifest>
+                        <addDefaultImplementationEntries>
+                            true
+                        </addDefaultImplementationEntries>
+                        <addDefaultSpecificationEntries>
+                            true
+                        </addDefaultSpecificationEntries>
+                        <jvm>
+                            ${JAVA_1_3_HOME}/bin/java
+                        </jvm>
+                        <childDelegation>
+                            true
+                        </childDelegation>
+                        <forkMode>
+                            once
+                        </forkMode>
+                        <executable>
+                            ${JAVA_1_3_HOME}/bin/javac
+                        </executable>
+
+                    </configuration>
+
+                </plugin>
+
+            </plugins>
+            <version>
+                2.1
+            </version>
+            <artifactId>
+                maven-jar-plugin
+            </artifactId>
+            <groupId>
+                org.apache.maven.plugins
+            </groupId>
+            <plugin>
+                <artifactId>
+                    maven-surefire-report-plugin
+                </artifactId>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+
+            </plugin>
+
+        </plugins>
+        <plugin>
+            <configuration>
+                <target>
+                    1.4
+                </target>
+                <source>
+                    1.4
+                </source>
+
+            </configuration>
+            <artifactId>
+                maven-compiler-plugin
+            </artifactId>
+            <groupId>
+                org.apache.maven.plugins
+            </groupId>
+
+        </plugin>
+        <plugin>
+            <configuration>
+                <tagBase>
+                    https://svn.apache.org/repos/asf/maven/surefire/tags
+                </tagBase>
+
+            </configuration>
+            <artifactId>
+                maven-release-plugin
+            </artifactId>
+
+        </plugin>
+        <plugin>
+            <version>
+                2.3.1
+            </version>
+            <artifactId>
+                maven-surefire-plugin
+            </artifactId>
+
+        </plugin>
+
+    </plugins>
+    <id>
+        reporting
+    </id>
+
+</profile>
+<plugins>
+<plugin>
+    <executions>
+        <execution>
+            <configuration>
+                <resourceBundles>
+                    <resourceBundle>
+                        org.apache:apache-jar-resource-bundle:1.3
+                    </resourceBundle>
+
+                </resourceBundles>
+
+            </configuration>
+            <goals>
+                <goal>
+                    process
+                </goal>
+
+            </goals>
+
+        </execution>
+
+    </executions>
+    <version>
+        1.0-alpha-6
+    </version>
+    <artifactId>
+        maven-remote-resources-plugin
+    </artifactId>
+    <groupId>
+        org.apache.maven.plugins
+    </groupId>
+
+</plugin>
+<plugin>
+    <version>
+        2.0.4
+    </version>
+    <artifactId>
+        maven-source-plugin
+    </artifactId>
+
+</plugin>
+<plugin>
+    <configuration>
+        <target>
+            1.3
+        </target>
+        <source>
+            1.3
+        </source>
+
+    </configuration>
+    <artifactId>
+        maven-compiler-plugin
+    </artifactId>
+
+</plugin>
+<plugin>
+    <version>
+        2.0-beta-5
+    </version>
+    <artifactId>
+        maven-site-plugin
+    </artifactId>
+
+</plugin>
+
+</plugins>
+<profile>
+<build>
+    <plugins>
+        <plugin>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>
+                            check
+                        </goal>
+
+                    </goals>
+
+                </execution>
+
+            </executions>
+            <version>
+                1.0-beta-1
+            </version>
+            <artifactId>
+                maven-docck-plugin
+            </artifactId>
+            <groupId>
+                org.apache.maven.plugins
+            </groupId>
+
+        </plugin>
+
+    </plugins>
+
+</build>
+<activation>
+    <property>
+        <value>
+            true
+        </value>
+        <name>
+            enableCiProfile
+        </name>
+
+    </property>
+
+</activation>
+<id>
+    ci
+</id>
+
+</profile>
+<profile>
+<build>
+    <pluginManagement>
+        <plugins>
+            <plugin>
+                <configuration>
+                    <compilerVersion>
+                        1.4
+                    </compilerVersion>
+                    <fork>
+                        false
+                    </fork>
+
+                </configuration>
+                <artifactId>
+                    maven-compiler-plugin
+                </artifactId>
+
+            </plugin>
+
+        </plugins>
+
+    </pluginManagement>
+
+</build>
+<id>
+    jdk1.3
+</id>
+
+</profile>
+
+        </profiles>
+<dependencyManagement>
+<dependencies>
+    <dependency>
+        <version>
+            1.4.9
+        </version>
+        <artifactId>
+            plexus-utils
+        </artifactId>
+        <groupId>
+            org.codehaus.plexus
+        </groupId>
+
+    </dependency>
+    <dependency>
+        <version>
+            2.4.2
+        </version>
+        <artifactId>
+            surefire-booter
+        </artifactId>
+        <groupId>
+            org.apache.maven.surefire
+        </groupId>
+
+    </dependency>
+    <dependency>
+        <version>
+            2.4.2
+        </version>
+        <artifactId>
+            surefire-api
+        </artifactId>
+        <groupId>
+            org.apache.maven.surefire
+        </groupId>
+
+    </dependency>
+
+</dependencies>
+
+</dependencyManagement>
+<scm>
+<url>
+    http://svn.apache.org/viewcvs.cgi/maven/surefire/tags/surefire-2.4.2/maven-surefire-plugin
+</url>
+<developerConnection>
+    scm:svn:https://svn.apache.org/repos/asf/maven/surefire/tags/surefire-2.4.2
+</developerConnection>
+<connection>
+    scm:svn:http://svn.apache.org/repos/asf/maven/surefire/tags/surefire-2.4.2
+</connection>
+
+</scm>
+<inceptionYear>
+2004
+</inceptionYear>
+<issueManagement>
+<url>
+    http://jira.codehaus.org/browse/SUREFIRE
+</url>
+<system>
+    jira
+</system>
+
+</issueManagement>
+<url>
+http://maven.apache.org/surefire
+</url>
+<description>
+Surefire is a test framework project.
+</description>
+<version>
+2.4.2
+</version>
+<reporting>
+<plugins>
+    <plugin>
+        <artifactId>
+            maven-plugin-plugin
+        </artifactId>
+        <groupId>
+            org.apache.maven.plugins
+        </groupId>
+
+    </plugin>
+
+</plugins>
+
+</reporting>
+<distributionManagement>
+<snapshotRepository>
+    <url>
+        scp://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository
+    </url>
+    <name>
+        Apache Development Snapshot Repository
+    </name>
+    <id>
+        apache.snapshots
+    </id>
+
+</snapshotRepository>
+<repository>
+    <url>
+        scp://people.apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository
+    </url>
+    <name>
+        Apache Release Distribution Repository
+    </name>
+    <id>
+        apache.releases
+    </id>
+
+</repository>
+<site>
+    <url>
+        scp://people.apache.org/www/maven.apache.org/plugins/maven-surefire-plugin
+    </url>
+    <id>
+        apache.website
+    </id>
+
+</site>
+
+</distributionManagement>
+<profiles>
+<profile>
+    <build>
+        <plugins>
+            <plugin>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>
+                                jar
+                            </goal>
+
+                        </goals>
+                        <id>
+                            attach-javadocs
+                        </id>
+
+                    </execution>
+
+                </executions>
+                <version>
+                    2.3
+                </version>
+                <artifactId>
+                    maven-javadoc-plugin
+                </artifactId>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+
+            </plugin>
+            <plugin>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>
+                                jar
+                            </goal>
+
+                        </goals>
+                        <id>
+                            attach-sources
+                        </id>
+
+                    </execution>
+
+                </executions>
+                <version>
+                    2.0.3
+                </version>
+                <artifactId>
+                    maven-source-plugin
+                </artifactId>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+
+            </plugin>
+            <plugin>
+                <configuration>
+                    <updateReleaseInfo>
+                        true
+                    </updateReleaseInfo>
+                    <altDeploymentRepository>
+                        ${deploy.altRepository}
+                    </altDeploymentRepository>
+
+                </configuration>
+                <version>
+                    2.3
+                </version>
+                <artifactId>
+                    maven-deploy-plugin
+                </artifactId>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+                <inherited>
+                    true
+                </inherited>
+
+            </plugin>
+            <plugin>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>
+                                sign
+                            </goal>
+
+                        </goals>
+
+                    </execution>
+
+                </executions>
+                <configuration>
+                    <passphrase>
+                        ${gpg.passphrase}
+                    </passphrase>
+
+                </configuration>
+                <version>
+                    1.0-alpha-4
+                </version>
+                <artifactId>
+                    maven-gpg-plugin
+                </artifactId>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+
+            </plugin>
+
+        </plugins>
+
+    </build>
+    <id>
+        release
+    </id>
+
+</profile>
+<profile>
+    <reporting>
+        <plugins>
+            <plugin>
+                <configuration>
+                    <links>
+                        <link>
+                            http://velocity.apache.org/engine/releases/velocity-1.5/apidocs/
+                        </link>
+                        <link>
+                            http://jakarta.apache.org/regexp/apidocs/
+                        </link>
+                        <link>
+                            http://logging.apache.org/log4j/1.2/apidocs/
+                        </link>
+                        <link>
+                            http://junit.sourceforge.net/javadoc/
+                        </link>
+                        <link>
+                            http://commons.apache.org/pool/apidocs/
+                        </link>
+                        <link>
+                            http://commons.apache.org/logging/apidocs/
+                        </link>
+                        <link>
+                            http://commons.apache.org/httpclient/apidocs/
+                        </link>
+                        <link>
+                            http://commons.apache.org/fileupload/apidocs/
+                        </link>
+                        <link>
+                            http://commons.apache.org/dbcp/apidocs/
+                        </link>
+                        <link>
+                            http://commons.apache.org/collections/apidocs-COLLECTIONS_3_0/
+                        </link>
+                        <link>
+                            http://java.sun.com/j2se/1.5.0/docs/api
+                        </link>
+                        <link>
+                            http://java.sun.com/j2ee/1.4/docs/api
+                        </link>
+                        <link>
+                            http://java.sun.com/j2se/1.4.2/docs/api
+                        </link>
+
+                    </links>
+
+                </configuration>
+                <artifactId>
+                    maven-javadoc-plugin
+                </artifactId>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+
+            </plugin>
+            <plugin>
+                <artifactId>
+                    maven-jxr-plugin
+                </artifactId>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+
+            </plugin>
+            <plugin>
+                <artifactId>
+                    taglist-maven-plugin
+                </artifactId>
+                <groupId>
+                    org.codehaus.mojo
+                </groupId>
+
+            </plugin>
+            <plugin>
+                <artifactId>
+                    cobertura-maven-plugin
+                </artifactId>
+                <groupId>
+                    org.codehaus.mojo
+                </groupId>
+
+            </plugin>
+            <plugin>
+                <artifactId>
+                    maven-pmd-plugin
+                </artifactId>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+
+            </plugin>
+            <plugin>
+                <configuration>
+                    <headerLocation>
+                        http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-checkstyle-plugin/src/main/resources/config/maven-header.txt
+                    </headerLocation>
+                    <configLocation>
+                        http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-checkstyle-plugin/src/main/resources/config/maven_checks.xml
+                    </configLocation>
+
+                </configuration>
+                <artifactId>
+                    maven-checkstyle-plugin
+                </artifactId>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+
+            </plugin>
+
+        </plugins>
+
+    </reporting>
+
+</profile>
+
+</profiles>
+<dependencies>
+<dependency>
+    <scope>
+        test
+    </scope>
+    <version>
+        1.0.1
+    </version>
+    <artifactId>
+        jmock
+    </artifactId>
+    <groupId>
+        jmock
+    </groupId>
+
+</dependency>
+<dependency>
+    <scope>
+        test
+    </scope>
+    <version>
+        3.8.1
+    </version>
+    <artifactId>
+        junit
+    </artifactId>
+    <groupId>
+        junit
+    </groupId>
+
+</dependency>
+<dependency>
+    <version>
+        2.0
+    </version>
+    <artifactId>
+        maven-core
+    </artifactId>
+    <groupId>
+        org.apache.maven
+    </groupId>
+
+</dependency>
+<dependency>
+    <version>
+        2.0
+    </version>
+    <artifactId>
+        maven-project
+    </artifactId>
+    <groupId>
+        org.apache.maven
+    </groupId>
+
+</dependency>
+<dependency>
+    <version>
+        2.0
+    </version>
+    <artifactId>
+        maven-artifact
+    </artifactId>
+    <groupId>
+        org.apache.maven
+    </groupId>
+
+</dependency>
+<dependency>
+    <artifactId>
+        plexus-utils
+    </artifactId>
+    <groupId>
+        org.codehaus.plexus
+    </groupId>
+
+</dependency>
+<dependency>
+    <artifactId>
+        surefire-booter
+    </artifactId>
+    <groupId>
+        org.apache.maven.surefire
+    </groupId>
+
+</dependency>
+<dependency>
+    <version>
+        2.0
+    </version>
+    <artifactId>
+        maven-plugin-api
+    </artifactId>
+    <groupId>
+        org.apache.maven
+    </groupId>
+
+</dependency>
+
+</dependencies>
+<contributors>
+<contributor>
+    <roles>
+        <role>
+            Java Developer
+        </role>
+
+    </roles>
+    <organization>
+        ASF
+    </organization>
+    <email>
+        vincent.siveton@gmail.com
+    </email>
+    <name>
+        Vincent Siveton
+    </name>
+
+</contributor>
+<contributor>
+    <name>
+        Jesse Kuhnert
+    </name>
+
+</contributor>
+<contributor>
+    <email>
+        joakim@erdfelt.com
+    </email>
+    <name>
+        Joakim Erdfelt
+    </name>
+
+</contributor>
+
+</contributors>
+<mailingLists>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/www-announce/
+    </archive>
+    <post>
+        announce@apache.org
+    </post>
+    <unsubscribe>
+        announce-unsubscribe@apache.org
+    </unsubscribe>
+    <subscribe>
+        announce-subscribe@apache.org
+    </subscribe>
+    <name>
+        Apache Announce List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-notifications/
+    </archive>
+    <unsubscribe>
+        notifications-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        notifications-subscribe@maven.apache.org
+    </subscribe>
+    <post>
+        notifications@maven.apache.org
+    </post>
+    <name>
+        Maven Notifications List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-issues/
+    </archive>
+    <unsubscribe>
+        issues-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        issues-subscribe@maven.apache.org
+    </subscribe>
+    <post>
+        issues@maven.apache.org
+    </post>
+    <name>
+        Maven Issues List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-announce/
+    </archive>
+    <unsubscribe>
+        announce-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        announce-subscribe@maven.apache.org
+    </subscribe>
+    <post>
+        announce@maven.apache.org
+    </post>
+    <name>
+        Maven Announcements List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-surefire-commits/
+    </archive>
+    <unsubscribe>
+        surefire-commits-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        surefire-commits-subscribe@maven.apache.org
+    </subscribe>
+    <name>
+        Surefire Commits List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-surefire-dev/
+    </archive>
+    <unsubscribe>
+        surfire-dev-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        surefire-dev-subscribe@maven.apache.org
+    </subscribe>
+    <name>
+        Surefire Developer List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-surefire-users/
+    </archive>
+    <unsubscribe>
+        surefire-users-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        surefire-users-subscribe@maven.apache.org
+    </subscribe>
+    <name>
+        Surefire User List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-notifications/
+    </archive>
+    <unsubscribe>
+        notifications-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        notifications-subscribe@maven.apache.org
+    </subscribe>
+    <post>
+        notifications@maven.apache.org
+    </post>
+    <name>
+        Maven Notifications List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-issues/
+    </archive>
+    <unsubscribe>
+        issues-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        issues-subscribe@maven.apache.org
+    </subscribe>
+    <post>
+        issues@maven.apache.org
+    </post>
+    <name>
+        Maven Issues List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-announce/
+    </archive>
+    <unsubscribe>
+        announce-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        announce-subscribe@maven.apache.org
+    </subscribe>
+    <post>
+        announce@maven.apache.org
+    </post>
+    <name>
+        Maven Announcements List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-dev
+    </archive>
+    <post>
+        commits@maven.apache.org
+    </post>
+    <unsubscribe>
+        commits-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        commits-subscribe@maven.apache.org
+    </subscribe>
+    <name>
+        Maven Commits List
+    </name>
+
+</mailingList>
+<mailingList>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-dev
+    </archive>
+    <post>
+        dev@maven.apache.org
+    </post>
+    <unsubscribe>
+        dev-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        dev-subscribe@maven.apache.org
+    </subscribe>
+    <name>
+        Maven Developer List
+    </name>
+
+</mailingList>
+<mailingList>
+    <otherArchives>
+        <otherArchive>
+            http://www.nabble.com/Maven---Users-f178.html
+        </otherArchive>
+        <otherArchive>
+            http://www.mail-archive.com/users@maven.apache.org/
+        </otherArchive>
+
+    </otherArchives>
+    <archive>
+        http://mail-archives.apache.org/mod_mbox/maven-users
+    </archive>
+    <post>
+        users@maven.apache.org
+    </post>
+    <unsubscribe>
+        users-unsubscribe@maven.apache.org
+    </unsubscribe>
+    <subscribe>
+        users-subscribe@maven.apache.org
+    </subscribe>
+    <name>
+        Maven User List
+    </name>
+
+</mailingList>
+
+</mailingLists>
+<name>
+Maven Surefire Plugin
+</name>
+<packaging>
+maven-plugin
+</packaging>
+<groupId>
+org.apache.maven.plugins
+</groupId>
+<artifactId>
+maven-surefire-plugin
+</artifactId>
+<modelVersion>
+4.0.0
+</modelVersion>
+
+        </project>
+
+        Uri = http://apache.org/maven/project, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/properties, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/properties/organization.logo, Value = http://www.apache.org/images/asf_logo_wide.gif, Resolved Value = http://www.apache.org/images/asf_logo_wide.gif
+        Uri = http://apache.org/maven/project/repositories#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/repositories#collection/repository, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/repositories#collection/repository/releases, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/repositories#collection/repository/releases/enabled, Value = false, Resolved Value = false
+        Uri = http://apache.org/maven/project/repositories#collection/repository/url, Value = http://people.apache.org/repo/m2-snapshot-repository, Resolved Value = http://people.apache.org/repo/m2-snapshot-repository
+        Uri = http://apache.org/maven/project/repositories#collection/repository/name, Value = Apache Snapshot Repository, Resolved Value = Apache Snapshot Repository
+        Uri = http://apache.org/maven/project/repositories#collection/repository/id, Value = apache.snapshots, Resolved Value = apache.snapshots
+        Uri = http://apache.org/maven/project/organization, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/organization/url, Value = http://www.apache.org/, Resolved Value = http://www.apache.org/
+        Uri = http://apache.org/maven/project/organization/name, Value = The Apache Software Foundation, Resolved Value = The Apache Software Foundation
+        Uri = http://apache.org/maven/project/licenses#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/licenses#collection/license, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/licenses#collection/license/distribution, Value = repo, Resolved Value = repo
+        Uri = http://apache.org/maven/project/licenses#collection/license/url, Value = http://www.apache.org/licenses/LICENSE-2.0.txt, Resolved Value = http://www.apache.org/licenses/LICENSE-2.0.txt
+        Uri = http://apache.org/maven/project/licenses#collection/license/name, Value = The Apache Software License, Version 2.0, Resolved Value = The Apache Software License, Version 2.0
+        Uri = http://apache.org/maven/project/developers#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Torbjorn Eikli Smorgrav, Resolved Value = Torbjorn Eikli Smorgrav
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = smorgrav, Resolved Value = smorgrav
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Shinobu Kuwai, Resolved Value = Shinobu Kuwai
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = shinobu, Resolved Value = shinobu
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Rahul Thakur, Resolved Value = Rahul Thakur
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = rinku, Resolved Value = rinku
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Ralph Goers, Resolved Value = Ralph Goers
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = rgoers, Resolved Value = rgoers
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = -6, Resolved Value = -6
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = pschneider@gmail.com, Resolved Value = pschneider@gmail.com
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Patrick Schneider, Resolved Value = Patrick Schneider
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = pschneider, Resolved Value = pschneider
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = olamy@apache.org, Resolved Value = olamy@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Olivier Lamy, Resolved Value = Olivier Lamy
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = olamy, Resolved Value = olamy
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Maria Odea B. Ching, Resolved Value = Maria Odea B. Ching
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = oching, Resolved Value = oching
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Milos Kleint, Resolved Value = Milos Kleint
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = mkleint, Resolved Value = mkleint
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Jeff Jensen, Resolved Value = Jeff Jensen
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = jjensen, Resolved Value = jjensen
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Herve Boutemy, Resolved Value = Herve Boutemy
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = hboutemy, Resolved Value = hboutemy
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = 0, Resolved Value = 0
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = handyande@apache.org, Resolved Value = handyande@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Andrew Williams, Resolved Value = Andrew Williams
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = handyande, Resolved Value = handyande
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Felipe Leme, Resolved Value = Felipe Leme
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = felipeal, Resolved Value = felipeal
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +8, Resolved Value = +8
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = Mergere, Resolved Value = Mergere
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = epunzalan@mergere.com, Resolved Value = epunzalan@mergere.com
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Edwin Punzalan, Resolved Value = Edwin Punzalan
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = epunzalan, Resolved Value = epunzalan
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Daniel Rall, Resolved Value = Daniel Rall
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = dlr, Resolved Value = dlr
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = -5, Resolved Value = -5
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = IONA, Resolved Value = IONA
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = dkulp@apache.org, Resolved Value = dkulp@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Daniel Kulp, Resolved Value = Daniel Kulp
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = dkulp, Resolved Value = dkulp
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Daniel Fabulich, Resolved Value = Daniel Fabulich
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = dfabulich, Resolved Value = dfabulich
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = David Blevins, Resolved Value = David Blevins
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = dblevins, Resolved Value = dblevins
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Dan Tran, Resolved Value = Dan Tran
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = dantran, Resolved Value = dantran
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Chris Stevenson, Resolved Value = Chris Stevenson
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = chrisjs, Resolved Value = chrisjs
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Fabrice Bellingard, Resolved Value = Fabrice Bellingard
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = bellingard, Resolved Value = bellingard
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Henri Yandell, Resolved Value = Henri Yandell
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = bayard, Resolved Value = bayard
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Barrie Treloar, Resolved Value = Barrie Treloar
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = baerrach, Resolved Value = baerrach
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = Committer, Resolved Value = Committer
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Allan Q. Ramirez, Resolved Value = Allan Q. Ramirez
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = aramirez, Resolved Value = aramirez
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = -7, Resolved Value = -7
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = wsmoak@apache.org, Resolved Value = wsmoak@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Wendy Smoak, Resolved Value = Wendy Smoak
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = wsmoak, Resolved Value = wsmoak
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = -5, Resolved Value = -5
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = vsiveton@apache.org, Resolved Value = vsiveton@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Vincent Siveton, Resolved Value = Vincent Siveton
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = vsiveton, Resolved Value = vsiveton
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = vmassol@apache.org, Resolved Value = vmassol@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Vincent Massol, Resolved Value = Vincent Massol
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = vmassol, Resolved Value = vmassol
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = trygvis@apache.org, Resolved Value = trygvis@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Trygve Laugstol, Resolved Value = Trygve Laugstol
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = trygvis, Resolved Value = trygvis
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = snicoll@apache.org, Resolved Value = snicoll@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Stephane Nicoll, Resolved Value = Stephane Nicoll
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = snicoll, Resolved Value = snicoll
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = -6, Resolved Value = -6
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = IBM, Resolved Value = IBM
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = mperham@gmail.com, Resolved Value = mperham@gmail.com
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Mike Perham, Resolved Value = Mike Perham
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = mperham, Resolved Value = mperham
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = ltheussl@apache.org, Resolved Value = ltheussl@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Lukas Theussl, Resolved Value = Lukas Theussl
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = ltheussl, Resolved Value = ltheussl
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = Neonics, Resolved Value = Neonics
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = kenney@apache.org, Resolved Value = kenney@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Kenney Westerhof, Resolved Value = Kenney Westerhof
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = kenney, Resolved Value = kenney
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = -6, Resolved Value = -6
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = jmcconnell@apache.org, Resolved Value = jmcconnell@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Jesse McConnell, Resolved Value = Jesse McConnell
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = jmcconnell, Resolved Value = jmcconnell
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +8, Resolved Value = +8
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = jtolentino@apache.org, Resolved Value = jtolentino@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Ernesto Tolentino Jr., Resolved Value = Ernesto Tolentino Jr.
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = jtolentino, Resolved Value = jtolentino
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = James Strachan, Resolved Value = James Strachan
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = jstrachan, Resolved Value = jstrachan
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = -5, Resolved Value = -5
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = joakime@apache.org, Resolved Value = joakime@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Joakim Erdfelt, Resolved Value = Joakim Erdfelt
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = joakime, Resolved Value = joakime
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = -5, Resolved Value = -5
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = jdcasey@apache.org, Resolved Value = jdcasey@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = John Casey, Resolved Value = John Casey
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = jdcasey, Resolved Value = jdcasey
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = openmind, Resolved Value = openmind
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = fgiust@apache.org, Resolved Value = fgiust@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Fabrizio Giustina, Resolved Value = Fabrizio Giustina
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = fgiust, Resolved Value = fgiust
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = evenisse@apache.org, Resolved Value = evenisse@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Emmanuel Venisse, Resolved Value = Emmanuel Venisse
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = evenisse, Resolved Value = evenisse
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = dennisl@apache.org, Resolved Value = dennisl@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Dennis Lundberg, Resolved Value = Dennis Lundberg
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = dennisl, Resolved Value = dennisl
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = carlos@apache.org, Resolved Value = carlos@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Carlos Sanchez, Resolved Value = Carlos Sanchez
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = carlos, Resolved Value = carlos
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = -5, Resolved Value = -5
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = brianf@apache.org, Resolved Value = brianf@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Brian Fox, Resolved Value = Brian Fox
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = brianf, Resolved Value = brianf
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +10, Resolved Value = +10
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = brett@apache.org, Resolved Value = brett@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Brett Porter, Resolved Value = Brett Porter
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = brett, Resolved Value = brett
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = +1, Resolved Value = +1
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Member, Resolved Value = PMC Member
+        Uri = http://apache.org/maven/project/developers#collection/developer/organizationUrl, Value = http://www.octo.com, Resolved Value = http://www.octo.com
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = OCTO Technology, Resolved Value = OCTO Technology
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = aheritier@apache.org, Resolved Value = aheritier@apache.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Arnaud Heritier, Resolved Value = Arnaud Heritier
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = aheritier, Resolved Value = aheritier
+        Uri = http://apache.org/maven/project/developers#collection/developer, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/timezone, Value = -5, Resolved Value = -5
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/developers#collection/developer/roles/role, Value = PMC Chair, Resolved Value = PMC Chair
+        Uri = http://apache.org/maven/project/developers#collection/developer/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/developers#collection/developer/email, Value = jason@maven.org, Resolved Value = jason@maven.org
+        Uri = http://apache.org/maven/project/developers#collection/developer/name, Value = Jason van Zyl, Resolved Value = Jason van Zyl
+        Uri = http://apache.org/maven/project/developers#collection/developer/id, Value = jvanzyl, Resolved Value = jvanzyl
+        Uri = http://apache.org/maven/project/ciManagement, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/ciManagement/notifiers#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/ciManagement/notifiers#collection/notifier, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/ciManagement/notifiers#collection/notifier/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/ciManagement/notifiers#collection/notifier/configuration/address, Value = notifications@maven.apache.org, Resolved Value = notifications@maven.apache.org
+        Uri = http://apache.org/maven/project/ciManagement/notifiers#collection/notifier/type, Value = mail, Resolved Value = mail
+        Uri = http://apache.org/maven/project/ciManagement/url, Value = http://maven.zones.apache.org/continuum, Resolved Value = http://maven.zones.apache.org/continuum
+        Uri = http://apache.org/maven/project/ciManagement/system, Value = continuum, Resolved Value = continuum
+        Uri = http://apache.org/maven/project/build, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/archive, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/archive/manifest, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/archive/manifest/addDefaultImplementationEntries, Value = true, Resolved Value = true
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/archive/manifest/addDefaultSpecificationEntries, Value = true, Resolved Value = true
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement/plugins/plugin/configuration/jvm, Value = ${JAVA_1_3_HOME}/bin/java, Resolved Value = ${JAVA_1_3_HOME}/bin/java
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement/plugins/plugin/configuration/childDelegation, Value = true, Resolved Value = true
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement/plugins/plugin/configuration/forkMode, Value = once, Resolved Value = once
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement/plugins/plugin/configuration/executable, Value = ${JAVA_1_3_HOME}/bin/javac, Resolved Value = ${JAVA_1_3_HOME}/bin/javac
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/version, Value = 2.1, Resolved Value = 2.1
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId, Value = maven-jar-plugin, Resolved Value = maven-jar-plugin
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/artifactId, Value = maven-surefire-report-plugin, Resolved Value = maven-surefire-report-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/target, Value = 1.4, Resolved Value = 1.4
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/source, Value = 1.4, Resolved Value = 1.4
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId, Value = maven-compiler-plugin, Resolved Value = maven-compiler-plugin
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/tagBase, Value = https://svn.apache.org/repos/asf/maven/surefire/tags, Resolved Value = https://svn.apache.org/repos/asf/maven/surefire/tags
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId, Value = maven-release-plugin, Resolved Value = maven-release-plugin
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/version, Value = 2.3.1, Resolved Value = 2.3.1
+        Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId, Value = maven-surefire-plugin, Resolved Value = maven-surefire-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/id, Value = reporting, Resolved Value = reporting
+        Uri = http://apache.org/maven/project/build/plugins#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/executions, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/executions/execution, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/executions/execution/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/executions/execution/configuration/resourceBundles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/executions/execution/configuration/resourceBundles/resourceBundle, Value = org.apache:apache-jar-resource-bundle:1.3, Resolved Value = org.apache:apache-jar-resource-bundle:1.3
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/executions/execution/goals, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/executions/execution/goals/goal, Value = process, Resolved Value = process
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/version, Value = 1.0-alpha-6, Resolved Value = 1.0-alpha-6
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/artifactId, Value = maven-remote-resources-plugin, Resolved Value = maven-remote-resources-plugin
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/version, Value = 2.0.4, Resolved Value = 2.0.4
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/artifactId, Value = maven-source-plugin, Resolved Value = maven-source-plugin
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/configuration/target, Value = 1.3, Resolved Value = 1.3
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/configuration/source, Value = 1.3, Resolved Value = 1.3
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/artifactId, Value = maven-compiler-plugin, Resolved Value = maven-compiler-plugin
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/version, Value = 2.0-beta-5, Resolved Value = 2.0-beta-5
+        Uri = http://apache.org/maven/project/build/plugins#collection/plugin/artifactId, Value = maven-site-plugin, Resolved Value = maven-site-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution/goals, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution/goals/goal, Value = check, Resolved Value = check
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/version, Value = 1.0-beta-1, Resolved Value = 1.0-beta-1
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/artifactId, Value = maven-docck-plugin, Resolved Value = maven-docck-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/profiles#collection/profile/activation, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/activation/property, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/activation/property/value, Value = true, Resolved Value = true
+        Uri = http://apache.org/maven/project/profiles#collection/profile/activation/property/name, Value = enableCiProfile, Resolved Value = enableCiProfile
+        Uri = http://apache.org/maven/project/profiles#collection/profile/id, Value = ci, Resolved Value = ci
+        Uri = http://apache.org/maven/project/profiles#collection/profile, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement/plugins, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement/plugins/plugin/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement/plugins/plugin/configuration/compilerVersion, Value = 1.4, Resolved Value = 1.4
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement/plugins/plugin/configuration/fork, Value = false, Resolved Value = false
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/pluginManagement/plugins/plugin/artifactId, Value = maven-compiler-plugin, Resolved Value = maven-compiler-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/id, Value = jdk1.3, Resolved Value = jdk1.3
+        Uri = http://apache.org/maven/project/dependencyManagement, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency/version, Value = 1.4.9, Resolved Value = 1.4.9
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency/artifactId, Value = plexus-utils, Resolved Value = plexus-utils
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency/groupId, Value = org.codehaus.plexus, Resolved Value = org.codehaus.plexus
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency/version, Value = 2.4.2, Resolved Value = 2.4.2
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency/artifactId, Value = surefire-booter, Resolved Value = surefire-booter
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency/groupId, Value = org.apache.maven.surefire, Resolved Value = org.apache.maven.surefire
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency/version, Value = 2.4.2, Resolved Value = 2.4.2
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency/artifactId, Value = surefire-api, Resolved Value = surefire-api
+        Uri = http://apache.org/maven/project/dependencyManagement/dependencies#collection/dependency/groupId, Value = org.apache.maven.surefire, Resolved Value = org.apache.maven.surefire
+        Uri = http://apache.org/maven/project/scm, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/scm/url, Value = http://svn.apache.org/viewcvs.cgi/maven/surefire/tags/surefire-2.4.2/maven-surefire-plugin, Resolved Value = http://svn.apache.org/viewcvs.cgi/maven/surefire/tags/surefire-2.4.2/maven-surefire-plugin
+        Uri = http://apache.org/maven/project/scm/developerConnection, Value = scm:svn:https://svn.apache.org/repos/asf/maven/surefire/tags/surefire-2.4.2, Resolved Value = scm:svn:https://svn.apache.org/repos/asf/maven/surefire/tags/surefire-2.4.2
+        Uri = http://apache.org/maven/project/scm/connection, Value = scm:svn:http://svn.apache.org/repos/asf/maven/surefire/tags/surefire-2.4.2, Resolved Value = scm:svn:http://svn.apache.org/repos/asf/maven/surefire/tags/surefire-2.4.2
+        Uri = http://apache.org/maven/project/inceptionYear, Value = 2004, Resolved Value = 2004
+        Uri = http://apache.org/maven/project/issueManagement, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/issueManagement/url, Value = http://jira.codehaus.org/browse/SUREFIRE, Resolved Value = http://jira.codehaus.org/browse/SUREFIRE
+        Uri = http://apache.org/maven/project/issueManagement/system, Value = jira, Resolved Value = jira
+        Uri = http://apache.org/maven/project/url, Value = http://maven.apache.org/surefire, Resolved Value = http://maven.apache.org/surefire
+        Uri = http://apache.org/maven/project/description, Value = Surefire is a test framework project., Resolved Value = Surefire is a test framework project.
+        Uri = http://apache.org/maven/project/version, Value = 2.4.2, Resolved Value = 2.4.2
+        Uri = http://apache.org/maven/project/reporting, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/reporting/plugins#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/reporting/plugins#collection/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/reporting/plugins#collection/plugin/artifactId, Value = maven-plugin-plugin, Resolved Value = maven-plugin-plugin
+        Uri = http://apache.org/maven/project/reporting/plugins#collection/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/distributionManagement, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/distributionManagement/snapshotRepository, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/distributionManagement/snapshotRepository/url, Value = scp://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository, Resolved Value = scp://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository
+        Uri = http://apache.org/maven/project/distributionManagement/snapshotRepository/name, Value = Apache Development Snapshot Repository, Resolved Value = Apache Development Snapshot Repository
+        Uri = http://apache.org/maven/project/distributionManagement/snapshotRepository/id, Value = apache.snapshots, Resolved Value = apache.snapshots
+        Uri = http://apache.org/maven/project/distributionManagement/repository, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/distributionManagement/repository/url, Value = scp://people.apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository, Resolved Value = scp://people.apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository
+        Uri = http://apache.org/maven/project/distributionManagement/repository/name, Value = Apache Release Distribution Repository, Resolved Value = Apache Release Distribution Repository
+        Uri = http://apache.org/maven/project/distributionManagement/repository/id, Value = apache.releases, Resolved Value = apache.releases
+        Uri = http://apache.org/maven/project/distributionManagement/site, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/distributionManagement/site/url, Value = scp://people.apache.org/www/maven.apache.org/plugins/maven-surefire-plugin, Resolved Value = scp://people.apache.org/www/maven.apache.org/plugins/maven-surefire-plugin
+        Uri = http://apache.org/maven/project/distributionManagement/site/id, Value = apache.website, Resolved Value = apache.website
+        Uri = http://apache.org/maven/project/profiles#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution/goals, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution/goals/goal, Value = jar, Resolved Value = jar
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution/id, Value = attach-javadocs, Resolved Value = attach-javadocs
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/version, Value = 2.3, Resolved Value = 2.3
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/artifactId, Value = maven-javadoc-plugin, Resolved Value = maven-javadoc-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution/goals, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution/goals/goal, Value = jar, Resolved Value = jar
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution/id, Value = attach-sources, Resolved Value = attach-sources
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/version, Value = 2.0.3, Resolved Value = 2.0.3
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/artifactId, Value = maven-source-plugin, Resolved Value = maven-source-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/configuration/updateReleaseInfo, Value = true, Resolved Value = true
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/configuration/altDeploymentRepository, Value = ${deploy.altRepository}, Resolved Value = ${deploy.altRepository}
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/version, Value = 2.3, Resolved Value = 2.3
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/artifactId, Value = maven-deploy-plugin, Resolved Value = maven-deploy-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/inherited, Value = true, Resolved Value = true
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution/goals, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/executions/execution/goals/goal, Value = sign, Resolved Value = sign
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/configuration/passphrase, Value = ${gpg.passphrase}, Resolved Value = ${gpg.passphrase}
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/version, Value = 1.0-alpha-4, Resolved Value = 1.0-alpha-4
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/artifactId, Value = maven-gpg-plugin, Resolved Value = maven-gpg-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/build/plugins/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/profiles#collection/profile/id, Value = release, Resolved Value = release
+        Uri = http://apache.org/maven/project/profiles#collection/profile, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://velocity.apache.org/engine/releases/velocity-1.5/apidocs/, Resolved Value = http://velocity.apache.org/engine/releases/velocity-1.5/apidocs/
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://jakarta.apache.org/regexp/apidocs/, Resolved Value = http://jakarta.apache.org/regexp/apidocs/
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://logging.apache.org/log4j/1.2/apidocs/, Resolved Value = http://logging.apache.org/log4j/1.2/apidocs/
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://junit.sourceforge.net/javadoc/, Resolved Value = http://junit.sourceforge.net/javadoc/
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://commons.apache.org/pool/apidocs/, Resolved Value = http://commons.apache.org/pool/apidocs/
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://commons.apache.org/logging/apidocs/, Resolved Value = http://commons.apache.org/logging/apidocs/
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://commons.apache.org/httpclient/apidocs/, Resolved Value = http://commons.apache.org/httpclient/apidocs/
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://commons.apache.org/fileupload/apidocs/, Resolved Value = http://commons.apache.org/fileupload/apidocs/
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://commons.apache.org/dbcp/apidocs/, Resolved Value = http://commons.apache.org/dbcp/apidocs/
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://commons.apache.org/collections/apidocs-COLLECTIONS_3_0/, Resolved Value = http://commons.apache.org/collections/apidocs-COLLECTIONS_3_0/
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://java.sun.com/j2se/1.5.0/docs/api, Resolved Value = http://java.sun.com/j2se/1.5.0/docs/api
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://java.sun.com/j2ee/1.4/docs/api, Resolved Value = http://java.sun.com/j2ee/1.4/docs/api
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/links/link, Value = http://java.sun.com/j2se/1.4.2/docs/api, Resolved Value = http://java.sun.com/j2se/1.4.2/docs/api
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/artifactId, Value = maven-javadoc-plugin, Resolved Value = maven-javadoc-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/artifactId, Value = maven-jxr-plugin, Resolved Value = maven-jxr-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/artifactId, Value = taglist-maven-plugin, Resolved Value = taglist-maven-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/groupId, Value = org.codehaus.mojo, Resolved Value = org.codehaus.mojo
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/artifactId, Value = cobertura-maven-plugin, Resolved Value = cobertura-maven-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/groupId, Value = org.codehaus.mojo, Resolved Value = org.codehaus.mojo
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/artifactId, Value = maven-pmd-plugin, Resolved Value = maven-pmd-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/headerLocation, Value = http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-checkstyle-plugin/src/main/resources/config/maven-header.txt, Resolved Value = http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-checkstyle-plugin/src/main/resources/config/maven-header.txt
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/configuration/configLocation, Value = http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-checkstyle-plugin/src/main/resources/config/maven_checks.xml, Resolved Value = http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-checkstyle-plugin/src/main/resources/config/maven_checks.xml
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/artifactId, Value = maven-checkstyle-plugin, Resolved Value = maven-checkstyle-plugin
+        Uri = http://apache.org/maven/project/profiles#collection/profile/reporting/plugins/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/dependencies#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/scope, Value = test, Resolved Value = test
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/version, Value = 1.0.1, Resolved Value = 1.0.1
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/artifactId, Value = jmock, Resolved Value = jmock
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/groupId, Value = jmock, Resolved Value = jmock
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/scope, Value = test, Resolved Value = test
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/version, Value = 3.8.1, Resolved Value = 3.8.1
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/artifactId, Value = junit, Resolved Value = junit
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/groupId, Value = junit, Resolved Value = junit
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/version, Value = 2.0, Resolved Value = 2.0
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/artifactId, Value = maven-core, Resolved Value = maven-core
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/groupId, Value = org.apache.maven, Resolved Value = org.apache.maven
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/version, Value = 2.0, Resolved Value = 2.0
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/artifactId, Value = maven-project, Resolved Value = maven-project
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/groupId, Value = org.apache.maven, Resolved Value = org.apache.maven
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/version, Value = 2.0, Resolved Value = 2.0
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/artifactId, Value = maven-artifact, Resolved Value = maven-artifact
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/groupId, Value = org.apache.maven, Resolved Value = org.apache.maven
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/artifactId, Value = plexus-utils, Resolved Value = plexus-utils
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/groupId, Value = org.codehaus.plexus, Resolved Value = org.codehaus.plexus
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/artifactId, Value = surefire-booter, Resolved Value = surefire-booter
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/groupId, Value = org.apache.maven.surefire, Resolved Value = org.apache.maven.surefire
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/version, Value = 2.0, Resolved Value = 2.0
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/artifactId, Value = maven-plugin-api, Resolved Value = maven-plugin-api
+        Uri = http://apache.org/maven/project/dependencies#collection/dependency/groupId, Value = org.apache.maven, Resolved Value = org.apache.maven
+        Uri = http://apache.org/maven/project/contributors#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/contributors#collection/contributor, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/contributors#collection/contributor/roles, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/contributors#collection/contributor/roles/role, Value = Java Developer, Resolved Value = Java Developer
+        Uri = http://apache.org/maven/project/contributors#collection/contributor/organization, Value = ASF, Resolved Value = ASF
+        Uri = http://apache.org/maven/project/contributors#collection/contributor/email, Value = vincent.siveton@gmail.com, Resolved Value = vincent.siveton@gmail.com
+        Uri = http://apache.org/maven/project/contributors#collection/contributor/name, Value = Vincent Siveton, Resolved Value = Vincent Siveton
+        Uri = http://apache.org/maven/project/contributors#collection/contributor, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/contributors#collection/contributor/name, Value = Jesse Kuhnert, Resolved Value = Jesse Kuhnert
+        Uri = http://apache.org/maven/project/contributors#collection/contributor, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/contributors#collection/contributor/email, Value = joakim@erdfelt.com, Resolved Value = joakim@erdfelt.com
+        Uri = http://apache.org/maven/project/contributors#collection/contributor/name, Value = Joakim Erdfelt, Resolved Value = Joakim Erdfelt
+        Uri = http://apache.org/maven/project/mailingLists#collection, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/www-announce/, Resolved Value = http://mail-archives.apache.org/mod_mbox/www-announce/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/post, Value = announce@apache.org, Resolved Value = announce@apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = announce-unsubscribe@apache.org, Resolved Value = announce-unsubscribe@apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = announce-subscribe@apache.org, Resolved Value = announce-subscribe@apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Apache Announce List, Resolved Value = Apache Announce List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-notifications/, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-notifications/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = notifications-unsubscribe@maven.apache.org, Resolved Value = notifications-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = notifications-subscribe@maven.apache.org, Resolved Value = notifications-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/post, Value = notifications@maven.apache.org, Resolved Value = notifications@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Maven Notifications List, Resolved Value = Maven Notifications List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-issues/, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-issues/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = issues-unsubscribe@maven.apache.org, Resolved Value = issues-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = issues-subscribe@maven.apache.org, Resolved Value = issues-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/post, Value = issues@maven.apache.org, Resolved Value = issues@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Maven Issues List, Resolved Value = Maven Issues List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-announce/, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-announce/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = announce-unsubscribe@maven.apache.org, Resolved Value = announce-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = announce-subscribe@maven.apache.org, Resolved Value = announce-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/post, Value = announce@maven.apache.org, Resolved Value = announce@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Maven Announcements List, Resolved Value = Maven Announcements List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-surefire-commits/, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-surefire-commits/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = surefire-commits-unsubscribe@maven.apache.org, Resolved Value = surefire-commits-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = surefire-commits-subscribe@maven.apache.org, Resolved Value = surefire-commits-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Surefire Commits List, Resolved Value = Surefire Commits List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-surefire-dev/, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-surefire-dev/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = surfire-dev-unsubscribe@maven.apache.org, Resolved Value = surfire-dev-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = surefire-dev-subscribe@maven.apache.org, Resolved Value = surefire-dev-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Surefire Developer List, Resolved Value = Surefire Developer List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-surefire-users/, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-surefire-users/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = surefire-users-unsubscribe@maven.apache.org, Resolved Value = surefire-users-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = surefire-users-subscribe@maven.apache.org, Resolved Value = surefire-users-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Surefire User List, Resolved Value = Surefire User List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-notifications/, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-notifications/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = notifications-unsubscribe@maven.apache.org, Resolved Value = notifications-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = notifications-subscribe@maven.apache.org, Resolved Value = notifications-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/post, Value = notifications@maven.apache.org, Resolved Value = notifications@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Maven Notifications List, Resolved Value = Maven Notifications List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-issues/, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-issues/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = issues-unsubscribe@maven.apache.org, Resolved Value = issues-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = issues-subscribe@maven.apache.org, Resolved Value = issues-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/post, Value = issues@maven.apache.org, Resolved Value = issues@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Maven Issues List, Resolved Value = Maven Issues List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-announce/, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-announce/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = announce-unsubscribe@maven.apache.org, Resolved Value = announce-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = announce-subscribe@maven.apache.org, Resolved Value = announce-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/post, Value = announce@maven.apache.org, Resolved Value = announce@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Maven Announcements List, Resolved Value = Maven Announcements List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-dev, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-dev
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/post, Value = commits@maven.apache.org, Resolved Value = commits@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = commits-unsubscribe@maven.apache.org, Resolved Value = commits-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = commits-subscribe@maven.apache.org, Resolved Value = commits-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Maven Commits List, Resolved Value = Maven Commits List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-dev, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-dev
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/post, Value = dev@maven.apache.org, Resolved Value = dev@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = dev-unsubscribe@maven.apache.org, Resolved Value = dev-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = dev-subscribe@maven.apache.org, Resolved Value = dev-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Maven Developer List, Resolved Value = Maven Developer List
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/otherArchives, Value = null, Resolved Value = null
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/otherArchives/otherArchive, Value = http://www.nabble.com/Maven---Users-f178.html, Resolved Value = http://www.nabble.com/Maven---Users-f178.html
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/otherArchives/otherArchive, Value = http://www.mail-archive.com/users@maven.apache.org/, Resolved Value = http://www.mail-archive.com/users@maven.apache.org/
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/archive, Value = http://mail-archives.apache.org/mod_mbox/maven-users, Resolved Value = http://mail-archives.apache.org/mod_mbox/maven-users
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/post, Value = users@maven.apache.org, Resolved Value = users@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/unsubscribe, Value = users-unsubscribe@maven.apache.org, Resolved Value = users-unsubscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/subscribe, Value = users-subscribe@maven.apache.org, Resolved Value = users-subscribe@maven.apache.org
+        Uri = http://apache.org/maven/project/mailingLists#collection/mailingList/name, Value = Maven User List, Resolved Value = Maven User List
+        Uri = http://apache.org/maven/project/name, Value = Maven Surefire Plugin, Resolved Value = Maven Surefire Plugin
+        Uri = http://apache.org/maven/project/packaging, Value = maven-plugin, Resolved Value = maven-plugin
+        Uri = http://apache.org/maven/project/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
+        Uri = http://apache.org/maven/project/artifactId, Value = maven-surefire-plugin, Resolved Value = maven-surefire-plugin
+        Uri = http://apache.org/maven/project/modelVersion, Value = 4.0.0, Resolved Value = 4.0.0
+
+        at org.apache.maven.project.builder.PomClassicTransformer.transformToDomainModel(PomClassicTransformer.java:89)
+        at org.apache.maven.shared.model.ModelTransformerContext.transform(ModelTransformerContext.java:110)
+        at org.apache.maven.project.builder.impl.DefaultProjectBuilder.buildFromStream(DefaultProjectBuilder.java:70)
+        at org.apache.maven.project.builder.BuilderTest.testA(BuilderTest.java:48)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+        at java.lang.reflect.Method.invoke(Method.java:597)
+        at junit.framework.TestCase.runTest(TestCase.java:154)
+        at junit.framework.TestCase.runBare(TestCase.java:127)
+        at junit.framework.TestResult$1.protect(TestResult.java:106)
+        at junit.framework.TestResult.runProtected(TestResult.java:124)
+        at junit.framework.TestResult.run(TestResult.java:109)
+        at junit.framework.TestCase.run(TestCase.java:118)
+        at junit.textui.TestRunner.doRun(TestRunner.java:116)
+        at com.intellij.rt.execution.junit.IdeaTestRunner.doRun(IdeaTestRunner.java:65)
+        at junit.textui.TestRunner.doRun(TestRunner.java:109)
+        at com.intellij.rt.execution.junit.IdeaTestRunner.startRunnerWithArgs(IdeaTestRunner.java:24)
+        at com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:118)
+        at com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:40)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+        at java.lang.reflect.Method.invoke(Method.java:597)
+        at com.intellij.rt.execution.application.AppMain.main(AppMain.java:90)
+
+        java.lang.NullPointerException
+        at org.apache.maven.project.builder.BuilderTest.testA(BuilderTest.java:55)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+        at com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:40)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+        at com.intellij.rt.execution.application.AppMain.main(AppMain.java:90)
+
+
+        Process finished with exit code -1

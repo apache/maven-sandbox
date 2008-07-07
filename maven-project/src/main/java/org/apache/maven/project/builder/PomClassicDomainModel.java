@@ -68,7 +68,7 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
      * @return maven model
      */
     public Model getModel() throws IOException {
-        try {
+        try {                                                                
             return new MavenXpp3Reader().read(new StringReader(new String(inputStream)));
         }
         catch (XmlPullParserException e) {

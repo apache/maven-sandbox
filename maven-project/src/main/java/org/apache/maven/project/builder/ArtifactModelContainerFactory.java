@@ -7,12 +7,20 @@ import java.util.*;
 public final class ArtifactModelContainerFactory implements ModelContainerFactory {
 
     private static final Collection<String> uris = Collections.unmodifiableList(Arrays.asList(
+
             ProjectUri.DependencyManagement.Dependencies.Dependency.xUri,
             ProjectUri.Dependencies.Dependency.xUri,
+
             ProjectUri.Profiles.Profile.DependencyManagement.Dependencies.Dependency.xUri,
             ProjectUri.Profiles.Profile.Dependencies.Dependency.xUri,
+            ProjectUri.Profiles.Profile.Build.Plugins.Plugin.xUri,
+            ProjectUri.Profiles.Profile.Build.PluginManagement.Plugins.Plugin.xUri,
+            ProjectUri.Profiles.Profile.Build.PluginManagement.Plugins.Plugin.Dependencies.Dependency.xUri,
+
+
             ProjectUri.Build.PluginManagement.Plugins.Plugin.xUri,
             ProjectUri.Build.PluginManagement.Plugins.Plugin.Dependencies.Dependency.xUri,
+
             ProjectUri.Build.Plugins.Plugin.xUri,
             ProjectUri.Build.Plugins.Plugin.Dependencies.Dependency.xUri,
             ProjectUri.Build.Plugins.Plugin.Dependencies.Dependency.Exclusions.Exclusion.xUri
@@ -97,9 +105,18 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
             if (modelProperties.isEmpty()) {
                 return;
             }
+            /*
             if (modelProperties.get(0).getUri().equals(ProjectUri.Build.PluginManagement.Plugins.Plugin.xUri)) {
                 Collections.sort(modelProperties, new ModelComparator());
+            } else if (modelProperties.get(0).getUri().equals(ProjectUri.Build.Plugins.Plugin.xUri)) {
+                Collections.sort(modelProperties, new PluginConfigModelComparator());
+            } else if (modelProperties.get(0).getUri().equals(ProjectUri.Profiles.Profile.Build.Plugins.Plugin.xUri)) {
+                Collections.sort(modelProperties, new ProfilePluginConfigModelComparator());
+            } else
+            if (modelProperties.get(0).getUri().equals(ProjectUri.Profiles.Profile.Build.PluginManagement.Plugins.Plugin.xUri)) {
+                Collections.sort(modelProperties, new ProfilePluginManagementConfigModelComparator());
             }
+            */
         }
 
         public String toString() {
@@ -112,11 +129,19 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
             ModelProperty a = (ModelProperty) o1;
             ModelProperty b = (ModelProperty) o2;
             //System.out.println(a + " : " + b);
+            if (a.getUri().endsWith("groupId") || a.getUri().endsWith("artifactId") || a.getUri().endsWith("version") || a.getUri().endsWith("id")) {
+                return -1;
+            } else if (a.isParentOf(b)) {
+                return -1;
+            }
+            /*
             if (a.getUri().endsWith("groupId")) {
                 return -1;
             } else if (a.getUri().endsWith("artifactId")) {
                 return -1;
             } else if (a.getUri().endsWith("version")) {
+                return -1;
+            } else if (b.getUri().startsWith(a.getUri())) {
                 return -1;
             } else if (a.getUri().equals(ProjectUri.Build.PluginManagement.Plugins.Plugin.configuration)) {
                 if (b.getUri().startsWith(ProjectUri.Build.PluginManagement.Plugins.Plugin.configuration)) {
@@ -126,6 +151,93 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
             } else if (a.getUri().startsWith(ProjectUri.Build.PluginManagement.Plugins.Plugin.configuration)) {
                 return 1;
             }
+            */
+            return 0;
+        }
+    }
+
+    private static class PluginConfigModelComparator implements Comparator {
+        public int compare(Object o1, Object o2) {
+            ModelProperty a = (ModelProperty) o1;
+            ModelProperty b = (ModelProperty) o2;
+            //System.out.println(a + " : " + b);
+            if (a.getUri().endsWith("groupId") || a.getUri().endsWith("artifactId") || a.getUri().endsWith("version") || a.getUri().endsWith("id")) {
+                return -1;
+            } else if (a.isParentOf(b)) {
+                return -1;
+            }/*
+            if (a.getUri().endsWith("groupId")) {
+                return -1;
+            } else if (a.getUri().endsWith("artifactId")) {
+                return -1;
+            } else if (a.getUri().endsWith("version")) {
+                return -1;
+            } else if (b.getUri().startsWith(a.getUri())) {
+                return -1;
+            } else if (a.getUri().equals(ProjectUri.Build.Plugins.Plugin.configuration)) {
+                if (b.getUri().startsWith(ProjectUri.Build.Plugins.Plugin.configuration)) {
+                    return 0;
+                }
+                return 1;
+            } else if (a.getUri().startsWith(ProjectUri.Build.Plugins.Plugin.configuration)) {
+                return 1;
+            }
+            */
+            return 0;
+        }
+    }
+
+    private static class ProfilePluginConfigModelComparator implements Comparator {
+        public int compare(Object o1, Object o2) {
+            ModelProperty a = (ModelProperty) o1;
+            ModelProperty b = (ModelProperty) o2;
+            if (a.getUri().endsWith("groupId") || a.getUri().endsWith("artifactId") || a.getUri().endsWith("version") || a.getUri().endsWith("id")) {
+                return -1;
+            } else if (a.isParentOf(b)) {
+                return -1;
+            }
+            /*
+            if (a.getUri().endsWith("groupId") || a.getUri().endsWith("artifactId") || a.getUri().endsWith("version")) {
+                return -1;
+            } else if (b.getUri().startsWith(a.getUri())) {
+                return -1;
+            } else if (a.getUri().equals(ProjectUri.Profiles.Profile.Build.Plugins.Plugin.configuration)) {
+                if (b.getUri().startsWith(ProjectUri.Profiles.Profile.Build.Plugins.Plugin.configuration)) {
+                    return 0;
+                }
+                return 1;
+            } else if (a.getUri().startsWith(ProjectUri.Profiles.Profile.Build.Plugins.Plugin.configuration)) {
+                return 1;
+            }
+            */
+            return 0;
+        }
+    }
+
+    private static class ProfilePluginManagementConfigModelComparator implements Comparator {
+        public int compare(Object o1, Object o2) {
+            System.out.println("COMPARE");
+            ModelProperty a = (ModelProperty) o1;
+            ModelProperty b = (ModelProperty) o2;
+            // System.out.println(a + " : " + b);
+            if (a.getUri().endsWith("groupId") || a.getUri().endsWith("artifactId") || a.getUri().endsWith("version") || a.getUri().endsWith("id")) {
+                return -1;
+            } else if (a.isParentOf(b)) {
+                return -1;
+            }
+            /*else if (b.getUri().startsWith(a.getUri())) {
+                return -1;
+            } else
+            if (a.getUri().equals(ProjectUri.Profiles.Profile.Build.PluginManagement.Plugins.Plugin.configuration)) {
+                if (b.getUri().startsWith(ProjectUri.Profiles.Profile.Build.PluginManagement.Plugins.Plugin.configuration)) {
+                    return 0;
+                }
+                return 1;
+            } else
+            if (a.getUri().startsWith(ProjectUri.Profiles.Profile.Build.PluginManagement.Plugins.Plugin.configuration)) {
+                return 1;
+            }
+            */
             return 0;
         }
     }

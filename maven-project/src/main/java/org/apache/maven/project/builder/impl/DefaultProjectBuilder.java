@@ -42,10 +42,10 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
     public MavenProject buildFromArtifact(Artifact artifact, Collection<InterpolatorProperty> interpolatorProperties, PomArtifactResolver resolver)
             throws IOException {
         resolver.resolve(artifact);
-        return buildFromStream(new FileInputStream(artifact.getFile()), interpolatorProperties, resolver);
+        return buildFromStream(new FileInputStream(artifact.getFile()), interpolatorProperties, resolver, null);//TODO: Fix
     }
 
-    public MavenProject buildFromStream(InputStream pom, Collection<InterpolatorProperty> interpolatorProperties, PomArtifactResolver resolver)
+    public MavenProject buildFromStream(InputStream pom, Collection<InterpolatorProperty> interpolatorProperties, PomArtifactResolver resolver, File projectDirectory)
             throws IOException {
 
         if (pom == null) {
@@ -62,11 +62,11 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         DomainModel domainModel = new PomClassicDomainModel(pom);
         List<DomainModel> domainModels = new ArrayList<DomainModel>();
         domainModels.add(domainModel);
-        domainModels.addAll(getDomainModelParentsFromRepository((PomClassicDomainModel) domainModel, resolver));
+        domainModels.addAll(getDomainModelParentsFromRepository((PomClassicDomainModel) domainModel, resolver, projectDirectory));
 
         PomClassicTransformer transformer = new PomClassicTransformer(null);
         ModelTransformerContext ctx = new ModelTransformerContext(
-                (Collection) Arrays.asList(new ArtifactModelContainerFactory()));
+                Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
         Model model = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
                 transformer, properties)).getModel();
 
@@ -75,11 +75,13 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         MavenProject mavenProject = new MavenProject(model);
         mavenProject.setArtifact(artifactFactory.createProjectArtifact(model.getGroupId(), model.getArtifactId(),
                 model.getVersion()));
+        //System.out.println(((PomClassicDomainModel) ctx.transform(domainModels, transformer,
+        //        transformer, properties)).asString());
         return mavenProject;
     }
 
     private List<DomainModel> getDomainModelParentsFromRepository(PomClassicDomainModel domainModel,
-                                                                  PomArtifactResolver artifactResolver) throws IOException {
+                                                                  PomArtifactResolver artifactResolver, File projectDirectory) throws IOException {
         if (artifactFactory == null) {
             throw new IllegalArgumentException("artifactFactory: not initialized");
         }
@@ -98,7 +100,12 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         if (!artifactParent.getFile().exists()) {
             logger.info("Parent pom does not exist in repository: File = " + artifactParent.getFile().getAbsolutePath());
             Model model = domainModel.getModel();
-            File parentFile = new File(model.getParent().getRelativePath()).getCanonicalFile();
+            System.out.println("PATH = " + projectDirectory.getAbsolutePath() + ":" + model.getParent().getRelativePath());
+            System.out.println(new File(projectDirectory, model.getParent().getRelativePath()).getCanonicalFile());
+            File parentFile = new File(projectDirectory, model.getParent().getRelativePath()).getCanonicalFile();
+            if( parentFile.isDirectory()) {
+                parentFile = new File(parentFile, "pom.xml");
+            }
             if (!parentFile.exists()) {
                 logger.warn("Parent pom does not exist on local path: File = " + parentFile.getAbsolutePath());
                 return domainModels;
@@ -110,11 +117,11 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         PomClassicDomainModel parentDomainModel = new PomClassicDomainModel(new FileInputStream(artifactParent.getFile()));
         if (!parentDomainModel.matchesParent(domainModel.getModel().getParent())) {
             logger.warn("Parent pom ids do not match: File = " + artifactParent.getFile().getAbsolutePath());
-            return domainModels;
+           // return domainModels;
         }
 
         domainModels.add(parentDomainModel);
-        domainModels.addAll(getDomainModelParentsFromRepository(parentDomainModel, artifactResolver));
+        domainModels.addAll(getDomainModelParentsFromRepository(parentDomainModel, artifactResolver, projectDirectory));
         return domainModels;
     }
 

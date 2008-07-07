@@ -19,6 +19,6 @@ public interface ProjectBuilder {
             throws IOException;
 
     MavenProject buildFromStream(InputStream pom, Collection<InterpolatorProperty> interpolatorProperties,
-                                 PomArtifactResolver resolver)
+                                 PomArtifactResolver resolver, File projectDirectory)
             throws IOException;
 }

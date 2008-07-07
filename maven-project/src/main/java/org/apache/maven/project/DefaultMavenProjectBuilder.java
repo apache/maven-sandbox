@@ -66,6 +66,7 @@ import org.apache.maven.project.path.PathTranslator;
 import org.apache.maven.project.validation.ModelValidationResult;
 import org.apache.maven.project.validation.ModelValidator;
 import org.apache.maven.project.builder.ProjectBuilder;
+import org.apache.maven.project.builder.PomArtifactResolver;
 import org.apache.maven.wagon.events.TransferListener;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
@@ -80,11 +81,7 @@ import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -504,7 +501,8 @@ public class DefaultMavenProjectBuilder
                                                       boolean checkDistributionManagementStatus )
         throws ProjectBuildingException
     {
-        Model model = readModel( "unknown", projectDescriptor, true );
+        Model model = //readModel( "unknown", projectDescriptor, true );
+         readModel( "unknown", projectDescriptor, new PomArtifactResolver(config.getLocalRepository(), new ArrayList(), artifactResolver) );
 
         MavenProject project = buildInternal( projectDescriptor.getAbsolutePath(), model, config,
                                               buildArtifactRepositories( getSuperModel() ), projectDescriptor,
@@ -560,7 +558,7 @@ public class DefaultMavenProjectBuilder
 
             File file = projectArtifact.getFile();
 
-            model = readModel( projectId, file, false );
+            model =  readModel( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
 
             String downloadUrl = null;
 
@@ -1108,6 +1106,7 @@ public class DefaultMavenProjectBuilder
 
         if ( validationResult.getMessageCount() > 0 )
         {
+
             throw new InvalidProjectModelException( projectId, pomLocation, "Failed to validate POM",
                                                     validationResult );
         }
@@ -1294,6 +1293,8 @@ public class DefaultMavenProjectBuilder
 
                 if ( ( parentDescriptor != null ) && parentDescriptor.exists() )
                 {
+                    System.out.println("Should not find parent");
+                    /*
                     Model candidateParent = readModel( projectId, parentDescriptor, strict );
 
                     String candidateParentGroupId = candidateParent.getGroupId();
@@ -1322,13 +1323,14 @@ public class DefaultMavenProjectBuilder
                         getLogger().debug( "Invalid parent-POM referenced by relative path '" +
                             parentModel.getRelativePath() + "' in parent specification in " + project.getId() + ":" +
                             "\n  Specified: " + parentModel.getId() + "\n  Found:     " + candidateParent.getId() );
-                    }
+                    }    */
                 }
                 else if ( getLogger().isDebugEnabled() )
                 {
                     getLogger().debug(
                         "Parent-POM: " + parentModel.getId() + " not found in relative path: " + parentRelativePath );
                 }
+
             }
 
             Artifact parentArtifact = null;
@@ -1543,7 +1545,25 @@ public class DefaultMavenProjectBuilder
             }
         }
     }
+    private Model readModel( String projectId,
+                            File projectDescriptor,
+                            PomArtifactResolver resolver )
+       throws ProjectBuildingException
+   {
+       System.out.println(projectDescriptor.getAbsolutePath());
 
+       MavenProject mavenProject;
+       try {
+           mavenProject = projectBuilder.buildFromStream(new FileInputStream(projectDescriptor), null, resolver, projectDescriptor.getParentFile());
+       } catch (IOException e) {
+           e.printStackTrace();
+           throw new ProjectBuildingException(projectId, "File = " + projectDescriptor.getAbsolutePath() , e);
+       }
+
+      return mavenProject.getModel();
+
+   }
+     /*
     private Model readModel( String projectId,
                              File file,
                              boolean strict )
@@ -1570,6 +1590,7 @@ public class DefaultMavenProjectBuilder
             IOUtil.close( reader );
         }
     }
+    */
 
     private Model readModel( String projectId,
                              String pomLocation,
@@ -1597,6 +1618,7 @@ public class DefaultMavenProjectBuilder
         }
     }
 
+    //For super pom
     private Model readModel( String projectId,
                              URL url,
                              boolean strict )
