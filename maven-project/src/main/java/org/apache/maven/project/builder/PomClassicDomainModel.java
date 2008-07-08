@@ -20,6 +20,8 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
 
     private byte[] inputStream;
 
+    private String eventHistory;
+
     /**
      * Constructor
      *
@@ -78,5 +80,13 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
 
     public InputStream getInputStream() {
         return new ByteArrayInputStream(Arrays.copyOf(inputStream, inputStream.length));
+    }
+
+    public String getEventHistory() {
+        return eventHistory;
+    }
+
+    public void setEventHistory(String eventHistory) {
+        this.eventHistory = eventHistory;
     }
 }

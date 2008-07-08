@@ -82,11 +82,13 @@ public final class PomClassicTransformer implements ModelTransformer {
             xml = ModelMarshaller.unmarshalModelPropertiesToXml(properties, ProjectUri.baseUri);
             return new PomClassicDomainModel(new MavenXpp3Reader().read(new StringReader(xml)));
         } catch (XmlPullParserException e) {
+            /*
             StringBuffer sb = new StringBuffer("\r\n");
             for (ModelProperty mp : properties) {
                 sb.append(mp).append("\r\n");
             }
-            throw new IOException(e + ":\r\n" + xml + sb.toString());
+            */
+            throw new IOException(e + ":\r\n" + xml);
         }
     }
 

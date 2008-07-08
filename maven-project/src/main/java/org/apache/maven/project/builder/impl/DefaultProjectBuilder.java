@@ -95,7 +95,11 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
         Artifact artifactParent =
                 artifactFactory.createParentArtifact(parent.getGroupId(), parent.getArtifactId(), parent.getVersion());
-        artifactResolver.resolve(artifactParent);
+        try {
+            artifactResolver.resolve(artifactParent);
+        } catch (IOException e) {
+            throw new IOException("getDomainModelFromRepository", e);
+        }
 
         if (!artifactParent.getFile().exists()) {
             logger.info("Parent pom does not exist in repository: File = " + artifactParent.getFile().getAbsolutePath());

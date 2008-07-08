@@ -7,8 +7,8 @@ import java.util.*;
 public class IdModelContainerFactory implements ModelContainerFactory {
 
     private static final Collection<String> uris = Collections.unmodifiableList(Arrays.asList(
-            ProjectUri.Build.Plugins.Plugin.Executions.Execution.xUri,
-            ProjectUri.Build.PluginManagement.Plugins.Plugin.Executions.Execution.xUri,
+            //ProjectUri.Build.Plugins.Plugin.Executions.Execution.xUri,
+            //ProjectUri.Build.PluginManagement.Plugins.Plugin.Executions.Execution.xUri,
             ProjectUri.PluginRepositories.PluginRepository.xUri,
             ProjectUri.Repositories.Repository.xUri,
             ProjectUri.Reporting.Plugins.Plugin.ReportSets.ReportSet.xUri,
@@ -37,7 +37,7 @@ public class IdModelContainerFactory implements ModelContainerFactory {
             this.properties = Collections.unmodifiableList(this.properties);
 
             for (ModelProperty mp : properties) {
-                if (mp.getUri().endsWith("id")) {
+                if (mp.getUri().endsWith("/id")) {
                     this.id = mp.getValue();
                 }
             }

@@ -1,0 +1,1228 @@
+<project>
+    <repositories>
+        <repository>
+            <releases>
+                <enabled>
+                    false
+                </enabled>
+
+            </releases>
+            <url>
+                http://people.apache.org/repo/m2-snapshot-repository
+            </url>
+            <name>
+                Apache Snapshot Repository
+            </name>
+            <id>
+                apache.snapshots
+            </id>
+
+        </repository>
+
+    </repositories>
+    <organization>
+        <url>
+            http://www.apache.org/
+        </url>
+        <name>
+            Apache Software Foundation
+        </name>
+
+    </organization>
+    <licenses>
+        <license>
+            <distribution>
+                repo
+            </distribution>
+            <url>
+                http://www.apache.org/licenses/LICENSE-2.0.txt
+            </url>
+            <name>
+                The Apache Software License, Version 2.0
+            </name>
+
+        </license>
+
+    </licenses>
+    <developers>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                aheritier@apache.org
+            </email>
+            <name>
+                Arnaud Heritier
+            </name>
+            <id>
+                aheritier
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                dennisl@apache.org
+            </email>
+            <name>
+                Dennis Lundberg
+            </name>
+            <id>
+                dennisl
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                carlos@apache.org
+            </email>
+            <name>
+                Carlos Sanchez
+            </name>
+            <id>
+                carlos
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -5
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                vsiveton@apache.org
+            </email>
+            <name>
+                Vincent Siveton
+            </name>
+            <id>
+                vsiveton
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                trygvis@apache.org
+            </email>
+            <name>
+                Trygve Laugstol
+            </name>
+            <id>
+                trygvis
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -5
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                jdcasey@apache.org
+            </email>
+            <name>
+                John Casey
+            </name>
+            <id>
+                jdcasey
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -6
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                IBM
+            </organization>
+            <email>
+                mperham@gmail.com
+            </email>
+            <name>
+                Mike Perham
+            </name>
+            <id>
+                mperham
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +8
+            </timezone>
+            <roles>
+                <role>
+                    Committer
+                </role>
+
+            </roles>
+            <organization>
+                Mergere
+            </organization>
+            <email>
+                epunzalan@mergere.com
+            </email>
+            <name>
+                Edwin Punzalan
+            </name>
+            <id>
+                epunzalan
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                openmind
+            </organization>
+            <email>
+                fgiust@apache.org
+            </email>
+            <name>
+                Fabrizio Giustina
+            </name>
+            <id>
+                fgiust
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                vmassol@apache.org
+            </email>
+            <name>
+                Vincent Massol
+            </name>
+            <id>
+                vmassol
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                snicoll@apache.org
+            </email>
+            <name>
+                Stephane Nicoll
+            </name>
+            <id>
+                snicoll
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                Neonics
+            </organization>
+            <email>
+                kenney@apache.org
+            </email>
+            <name>
+                Kenney Westerhof
+            </name>
+            <id>
+                kenney
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +1
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                evenisse@apache.org
+            </email>
+            <name>
+                Emmanuel Venisse
+            </name>
+            <id>
+                evenisse
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                +10
+            </timezone>
+            <roles>
+                <role>
+                    PMC Member
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                brett@apache.org
+            </email>
+            <name>
+                Brett Porter
+            </name>
+            <id>
+                brett
+            </id>
+
+        </developer>
+        <developer>
+            <timezone>
+                -5
+            </timezone>
+            <roles>
+                <role>
+                    PMC Chair
+                </role>
+
+            </roles>
+            <organization>
+                ASF
+            </organization>
+            <email>
+                jason@maven.org
+            </email>
+            <name>
+                Jason van Zyl
+            </name>
+            <id>
+                jvanzyl
+            </id>
+
+        </developer>
+
+    </developers>
+    <ciManagement>
+        <notifiers>
+            <notifier>
+                <configuration>
+                    <address>
+                        notifications@maven.apache.org
+                    </address>
+
+                </configuration>
+                <type>
+                    mail
+                </type>
+
+            </notifier>
+
+        </notifiers>
+        <url>
+            http://maven.zones.apache.org:8080/continuum
+        </url>
+        <system>
+            continuum
+        </system>
+
+    </ciManagement>
+    <profiles>
+        <profile>
+            <reporting>
+                <plugins>
+                    <plugin>
+                        <configuration>
+                            <links>
+                                <link>
+                                    http://jakarta.apache.org/velocity/api/
+                                </link>
+                                <link>
+                                    http://jakarta.apache.org/regexp/apidocs/
+                                </link>
+                                <link>
+                                    http://logging.apache.org/log4j/docs/api/
+                                </link>
+                                <link>
+                                    http://www.junit.org/junit/javadoc/
+                                </link>
+                                <link>
+                                    http://jakarta.apache.org/commons/pool/apidocs/
+                                </link>
+                                <link>
+                                    http://jakarta.apache.org/commons/logging/apidocs/
+                                </link>
+                                <link>
+                                    http://jakarta.apache.org/commons/httpclient/apidocs/
+                                </link>
+                                <link>
+                                    http://jakarta.apache.org/commons/fileupload/apidocs/
+                                </link>
+                                <link>
+                                    http://jakarta.apache.org/commons/dbcp/apidocs/
+                                </link>
+                                <link>
+                                    http://jakarta.apache.org/commons/collections/apidocs-COLLECTIONS_3_0/
+                                </link>
+                                <link>
+                                    http://java.sun.com/j2se/1.5.0/docs/api
+                                </link>
+                                <link>
+                                    http://java.sun.com/j2ee/1.4/docs/api
+                                </link>
+
+                            </links>
+
+                        </configuration>
+                        <artifactId>
+                            maven-javadoc-plugin
+                        </artifactId>
+                        <groupId>
+                            org.apache.maven.plugins
+                        </groupId>
+
+                    </plugin>
+                    <plugin>
+                        <artifactId>
+                            maven-jxr-plugin
+                        </artifactId>
+                        <groupId>
+                            org.apache.maven.plugins
+                        </groupId>
+
+                    </plugin>
+                    <plugin>
+                        <artifactId>
+                            taglist-maven-plugin
+                        </artifactId>
+                        <groupId>
+                            org.codehaus.mojo
+                        </groupId>
+
+                    </plugin>
+                    <plugin>
+                        <artifactId>
+                            cobertura-maven-plugin
+                        </artifactId>
+                        <groupId>
+                            org.codehaus.mojo
+                        </groupId>
+
+                    </plugin>
+                    <plugin>
+                        <artifactId>
+                            maven-pmd-plugin
+                        </artifactId>
+                        <groupId>
+                            org.apache.maven.plugins
+                        </groupId>
+
+                    </plugin>
+                    <plugin>
+                        <configuration>
+                            <headerLocation>
+                                http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-checkstyle-plugin/src/main/resources/config/maven-header.txt
+                            </headerLocation>
+                            <configLocation>
+                                http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-checkstyle-plugin/src/main/resources/config/maven_checks.xml
+                            </configLocation>
+
+                        </configuration>
+                        <artifactId>
+                            maven-checkstyle-plugin
+                        </artifactId>
+                        <groupId>
+                            org.apache.maven.plugins
+                        </groupId>
+
+                    </plugin>
+                    <plugin>
+                        <artifactId>
+                            maven-surefire-report-plugin
+                        </artifactId>
+                        <groupId>
+                            org.apache.maven.plugins
+                        </groupId>
+
+                    </plugin>
+                    <plugin>
+                        <artifactId>
+                            maven-plugin-plugin
+                        </artifactId>
+                        <groupId>
+                            org.apache.maven.plugins
+                        </groupId>
+
+                    </plugin>
+
+                </plugins>
+
+            </reporting>
+            <build>
+                <plugins>
+                    <plugin>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>
+                                        cpd-check
+                                    </goal>
+
+                                </goals>
+
+                            </execution>
+
+                        </executions>
+                        <artifactId>
+                            maven-pmd-plugin
+                        </artifactId>
+                        <groupId>
+                            org.apache.maven.plugins
+                        </groupId>
+
+                    </plugin>
+
+                </plugins>
+
+            </build>
+            <id>
+                reporting
+            </id>
+
+        </profile>
+        <profile>
+            <build>
+                <plugins>
+                    <plugin>
+                        <executions>
+                            <execution>
+                                <configuration>
+                                    <resourceBundles>
+                                        <resourceBundle>
+                                            org.apache:apache-jar-resource-bundle:1.0
+                                        </resourceBundle>
+
+                                    </resourceBundles>
+
+                                </configuration>
+                                <goals>
+                                    <goal>
+                                        process
+                                    </goal>
+
+                                </goals>
+
+                            </execution>
+
+                        </executions>
+                        <version>
+                            1.0-alpha-1
+                        </version>
+                        <artifactId>
+                            maven-remote-resources-plugin
+                        </artifactId>
+
+                    </plugin>
+                    <plugin>
+                        <artifactId>
+                            maven-gpg-plugin
+                        </artifactId>
+                        <version>
+                            1.0-alpha-1
+                        </version>
+                        <configuration>
+                            <passphrase>
+                                ${gpg.passphrase}
+                            </passphrase>
+
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>
+                                        sign
+                                    </goal>
+
+                                </goals>
+
+                            </execution>
+
+                        </executions>
+
+                    </plugin>
+                    <plugin>
+                        <inherited>
+                            true
+                        </inherited>
+                        <artifactId>
+                            maven-javadoc-plugin
+                        </artifactId>
+                        <version>
+                            2.2
+                        </version>
+                        <executions>
+                            <execution>
+                                <id>
+                                    attach-javadocs
+                                </id>
+                                <goals>
+                                    <goal>
+                                        jar
+                                    </goal>
+
+                                </goals>
+
+                            </execution>
+
+                        </executions>
+
+                    </plugin>
+                    <plugin>
+                        <inherited>
+                            true
+                        </inherited>
+                        <artifactId>
+                            maven-source-plugin
+                        </artifactId>
+                        <version>
+                            2.0.2
+                        </version>
+                        <executions>
+                            <execution>
+                                <id>
+                                    attach-sources
+                                </id>
+                                <goals>
+                                    <goal>
+                                        jar
+                                    </goal>
+
+                                </goals>
+
+                            </execution>
+
+                        </executions>
+
+                    </plugin>
+
+                </plugins>
+
+            </build>
+            <id>
+                directRelease
+            </id>
+
+        </profile>
+        <profile>
+            <build>
+                <plugins>
+                    <plugin>
+                        <executions>
+                            <execution>
+                                <configuration>
+                                    <stagingSiteURL>
+                                        ${staging.siteURL}
+                                    </stagingSiteURL>
+
+                                </configuration>
+                                <goals>
+                                    <goal>
+                                        stage-deploy
+                                    </goal>
+
+                                </goals>
+
+                            </execution>
+
+                        </executions>
+                        <version>
+                            2.0-beta-5
+                        </version>
+                        <artifactId>
+                            maven-site-plugin
+                        </artifactId>
+
+                    </plugin>
+                    <plugin>
+                        <configuration>
+                            <altDeploymentRepository>
+                                ${deploy.altRepository}
+                            </altDeploymentRepository>
+                            <updateReleaseInfo>
+                                true
+                            </updateReleaseInfo>
+
+                        </configuration>
+                        <version>
+                            2.3-SNAPSHOT
+                        </version>
+                        <artifactId>
+                            maven-deploy-plugin
+                        </artifactId>
+                        <inherited>
+                            true
+                        </inherited>
+
+                    </plugin>
+
+                </plugins>
+
+            </build>
+            <id>
+                staging
+            </id>
+
+        </profile>
+        <profile>
+            <build>
+                <plugins>
+
+            </build>
+            <id>
+                sharedResources
+            </id>
+
+        </profile>
+        <profile>
+            <build>
+                <plugins>
+                    <plugin>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>
+                                        check
+                                    </goal>
+
+                                </goals>
+
+                            </execution>
+
+                        </executions>
+                        <version>
+                            1.0-beta-1
+                        </version>
+                        <artifactId>
+                            maven-docck-plugin
+                        </artifactId>
+
+                    </plugin>
+
+                </plugins>
+
+            </build>
+            <activation>
+                <property>
+                    <value>
+                        true
+                    </value>
+                    <name>
+                        enableCiProfile
+                    </name>
+
+                </property>
+
+            </activation>
+            <id>
+                ciProfile
+            </id>
+
+        </profile>
+
+    </profiles>
+    <reporting>
+        <plugins>
+
+        </plugins>
+
+    </reporting>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <configuration>
+                        <tagBase>
+                            https://svn.apache.org/repos/asf/maven/plugins/tags
+                        </tagBase>
+
+                    </configuration>
+                    <version>
+                        2.0-beta-4
+                    </version>
+                    <artifactId>
+                        maven-release-plugin
+                    </artifactId>
+
+                </plugin>
+
+            </plugins>
+
+        </pluginManagement>
+
+    </build>
+    <mailingLists>
+        <mailingList>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/www-announce/
+            </archive>
+            <post>
+                announce@apache.org
+            </post>
+            <unsubscribe>
+                announce-unsubscribe@apache.org
+            </unsubscribe>
+            <subscribe>
+                announce-subscribe@apache.org
+            </subscribe>
+            <name>
+                Apache Announce List
+            </name>
+
+        </mailingList>
+        <mailingList>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/maven-notifications/
+            </archive>
+            <unsubscribe>
+                notifications-unsubscribe@maven.apache.org
+            </unsubscribe>
+            <subscribe>
+                notifications-subscribe@maven.apache.org
+            </subscribe>
+            <post>
+                notifications@maven.apache.org
+            </post>
+            <name>
+                Maven Notifications List
+            </name>
+
+        </mailingList>
+        <mailingList>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/maven-issues/
+            </archive>
+            <unsubscribe>
+                issues-unsubscribe@maven.apache.org
+            </unsubscribe>
+            <subscribe>
+                issues-subscribe@maven.apache.org
+            </subscribe>
+            <post>
+                issues@maven.apache.org
+            </post>
+            <name>
+                Maven Issues List
+            </name>
+
+        </mailingList>
+        <mailingList>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/maven-announce/
+            </archive>
+            <unsubscribe>
+                announce-unsubscribe@maven.apache.org
+            </unsubscribe>
+            <subscribe>
+                announce-subscribe@maven.apache.org
+            </subscribe>
+            <post>
+                announce@maven.apache.org
+            </post>
+            <name>
+                Maven Announcements List
+            </name>
+
+        </mailingList>
+        <mailingList>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/maven-notifications/
+            </archive>
+            <unsubscribe>
+                notifications-unsubscribe@maven.apache.org
+            </unsubscribe>
+            <subscribe>
+                notifications-subscribe@maven.apache.org
+            </subscribe>
+            <post>
+                notifications@maven.apache.org
+            </post>
+            <name>
+                Maven Notifications List
+            </name>
+
+        </mailingList>
+        <mailingList>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/maven-issues/
+            </archive>
+            <unsubscribe>
+                issues-unsubscribe@maven.apache.org
+            </unsubscribe>
+            <subscribe>
+                issues-subscribe@maven.apache.org
+            </subscribe>
+            <post>
+                issues@maven.apache.org
+            </post>
+            <name>
+                Maven Issues List
+            </name>
+
+        </mailingList>
+        <mailingList>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/maven-announce/
+            </archive>
+            <unsubscribe>
+                announce-unsubscribe@maven.apache.org
+            </unsubscribe>
+            <subscribe>
+                announce-subscribe@maven.apache.org
+            </subscribe>
+            <post>
+                announce@maven.apache.org
+            </post>
+            <name>
+                Maven Announcements List
+            </name>
+
+        </mailingList>
+        <mailingList>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/maven-dev
+            </archive>
+            <post>
+                commits@maven.apache.org
+            </post>
+            <unsubscribe>
+                commits-unsubscribe@maven.apache.org
+            </unsubscribe>
+            <subscribe>
+                commits-subscribe@maven.apache.org
+            </subscribe>
+            <name>
+                Maven Commits List
+            </name>
+
+        </mailingList>
+        <mailingList>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/maven-dev
+            </archive>
+            <post>
+                dev@maven.apache.org
+            </post>
+            <unsubscribe>
+                dev-unsubscribe@maven.apache.org
+            </unsubscribe>
+            <subscribe>
+                dev-subscribe@maven.apache.org
+            </subscribe>
+            <name>
+                Maven Developer List
+            </name>
+
+        </mailingList>
+        <mailingList>
+            <otherArchives>
+                <otherArchive>
+                    http://www.nabble.com/Maven---Users-f178.html
+                </otherArchive>
+                <otherArchive>
+                    http://www.mail-archive.com/users@maven.apache.org/
+                </otherArchive>
+
+            </otherArchives>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/maven-users
+            </archive>
+            <post>
+                users@maven.apache.org
+            </post>
+            <unsubscribe>
+                users-unsubscribe@maven.apache.org
+            </unsubscribe>
+            <subscribe>
+                users-subscribe@maven.apache.org
+            </subscribe>
+            <name>
+                Maven User List
+            </name>
+
+        </mailingList>
+
+    </mailingLists>
+    <url>
+        http://maven.apache.org/plugins/
+    </url>
+    <description>
+        Maven Plugins
+    </description>
+    <groupId>
+        org.apache.maven.plugins
+    </groupId>
+    <distributionManagement>
+        <snapshotRepository>
+            <url>
+                scp://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository
+            </url>
+            <name>
+                Apache Development Snapshot Repository
+            </name>
+            <id>
+                apache.snapshots
+            </id>
+
+        </snapshotRepository>
+        <repository>
+            <url>
+                scp://people.apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository
+            </url>
+            <name>
+                Apache Release Distribution Repository
+            </name>
+            <id>
+                apache.releases
+            </id>
+
+        </repository>
+        <site>
+            <url>
+                scp://people.apache.org/www/maven.apache.org/plugins/
+            </url>
+            <id>
+                apache.website
+            </id>
+
+        </site>
+        <status>
+            deployed
+        </status>
+
+    </distributionManagement>
+    <dependencies>
+        <dependency>
+            <scope>
+                test
+            </scope>
+            <version>
+                1.0-beta-1
+            </version>
+            <artifactId>
+                maven-plugin-testing-harness
+            </artifactId>
+            <groupId>
+                org.apache.maven.shared
+            </groupId>
+
+        </dependency>
+        <dependency>
+            <version>
+                2.0
+            </version>
+            <artifactId>
+                maven-artifact
+            </artifactId>
+            <groupId>
+                org.apache.maven
+            </groupId>
+
+        </dependency>
+        <dependency>
+            <version>
+                2.0
+            </version>
+            <artifactId>
+                maven-artifact-manager
+            </artifactId>
+            <groupId>
+                org.apache.maven
+            </groupId>
+
+        </dependency>
+        <dependency>
+            <version>
+                2.0
+            </version>
+            <artifactId>
+                maven-project
+            </artifactId>
+            <groupId>
+                org.apache.maven
+            </groupId>
+
+        </dependency>
+        <dependency>
+            <version>
+                2.0
+            </version>
+            <artifactId>
+                maven-core
+            </artifactId>
+            <groupId>
+                org.apache.maven
+            </groupId>
+
+        </dependency>
+        <dependency>
+            <version>
+                2.0
+            </version>
+            <artifactId>
+                maven-plugin-api
+            </artifactId>
+            <groupId>
+                org.apache.maven
+            </groupId>
+
+        </dependency>
+
+    </dependencies>
+    <scm>
+        <url>
+            https://svn.apache.org/repos/asf/maven/plugins/tags/maven-deploy-plugin-2.3
+        </url>
+        <developerConnection>
+            scm:svn:https://svn.apache.org/repos/asf/maven/plugins/tags/maven-deploy-plugin-2.3
+        </developerConnection>
+        <connection>
+            scm:svn:https://svn.apache.org/repos/asf/maven/plugins/tags/maven-deploy-plugin-2.3
+        </connection>
+
+    </scm>
+    <inceptionYear>
+        2004
+    </inceptionYear>
+    <issueManagement>
+        <url>
+            http://jira.codehaus.org/browse/MDEPLOY
+        </url>
+        <system>
+            JIRA
+        </system>
+
+    </issueManagement>
+    <prerequisites>
+
+    </prerequisites>
+    <version>
+        2.3
+    </version>
+    <name>
+        Maven Deploy Plugin
+    </name>
+    <packaging>
+        maven-plugin
+    </packaging>
+    <artifactId>
+        maven-deploy-plugin
+    </artifactId>
+    <modelVersion>
+        4.0.0
+    </modelVersion>
+
+</project>
