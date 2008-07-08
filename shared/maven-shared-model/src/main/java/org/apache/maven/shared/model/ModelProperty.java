@@ -131,6 +131,6 @@ public final class ModelProperty {
     }
 
     public String toString() {
-        return "Uri = " + uri + ", Value = " + value + ", Resolved Value = " + resolvedValue;
+        return "Uri = " + uri + ", Value = " + value + ", Resolved Value = " + resolvedValue + ", Hash = " + this.hashCode();
     }
 }

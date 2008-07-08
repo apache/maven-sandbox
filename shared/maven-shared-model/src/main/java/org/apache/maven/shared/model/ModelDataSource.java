@@ -49,4 +49,6 @@ public interface ModelDataSource {
      * @param modelProperties the model properties that back the data source
      */
     void init(List<ModelProperty> modelProperties, Collection<ModelContainerFactory> modelContainerFactories);
+
+    String getEventHistory();
 }

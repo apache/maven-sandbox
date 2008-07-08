@@ -6,4 +6,8 @@ package org.apache.maven.shared.model;
  * the appropriate domain model type(s).
  */
 public interface DomainModel {
+
+    String getEventHistory();
+
+    void setEventHistory(String history);
 }

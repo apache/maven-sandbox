@@ -3,6 +3,7 @@ package org.apache.maven.shared.model.impl;
 import org.apache.maven.shared.model.*;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Default implementation of the ModelDataSource.
@@ -11,7 +12,22 @@ public final class DefaultModelDataSource implements ModelDataSource {
 
     private List<ModelProperty> modelProperties;
 
+    private List<ModelProperty> originalModelProperties;
+
+    private List<DeleteEvent> deleteEvents;
+
     private Map<String, ModelContainerFactory> modelContainerFactoryMap;
+
+    private static Logger logger = Logger.getAnonymousLogger();
+
+    private static boolean aContainsAnyOfB(List<ModelProperty> a, List<ModelProperty> b) {
+        for (ModelProperty mp : b) {
+            if (a.contains(mp)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public ModelContainer join(ModelContainer a, ModelContainer b) throws DataSourceException {
         if (a == null || a.getProperties() == null || a.getProperties().size() == 0) {
@@ -22,11 +38,29 @@ public final class DefaultModelDataSource implements ModelDataSource {
         }
 
         if (!modelProperties.containsAll(a.getProperties())) {
+            List<ModelProperty> unknownProperties = new ArrayList<ModelProperty>();
             for (ModelProperty mp : a.getProperties()) {
                 if (!modelProperties.contains(mp)) {
-                    System.out.println(mp);
+                    unknownProperties.add(mp);
                 }
             }
+            List<DeleteEvent> des = new ArrayList<DeleteEvent>();
+            for (DeleteEvent de : deleteEvents) {
+                if (aContainsAnyOfB(de.getRemovedModelProperties(), unknownProperties)) {
+                    des.add(de);
+                }
+            }
+            //output
+            StringBuffer sb = new StringBuffer();
+            sb.append("Found unknown properties in container 'a': Name = ").append(a.getClass().getName()).append("\r\n");
+            for (ModelProperty mp : unknownProperties) {
+                sb.append(mp).append("\r\n");
+            }
+
+        //    for (DeleteEvent de : des) {
+        //        sb.append(de.toString());
+        //    }
+            System.out.println(sb);
             throw new DataSourceException("ModelContainer 'a' contains elements not within datasource");
         }
 
@@ -39,10 +73,20 @@ public final class DefaultModelDataSource implements ModelDataSource {
         delete(b);
 
         List<ModelProperty> joinedProperties = mergeModelContainers(a, b);
+
         if (modelProperties.size() == 0) {
             startIndex = 0;
         }
         modelProperties.addAll(startIndex, joinedProperties);
+
+        List<ModelProperty> deletedProperties = new ArrayList<ModelProperty>();
+        deletedProperties.addAll(a.getProperties());
+        deletedProperties.addAll(b.getProperties());
+        deletedProperties.removeAll(joinedProperties);
+        if (deletedProperties.size() > 0) {
+            deleteEvents.add(new DeleteEvent(a, b, deletedProperties, "join"));
+        }
+        
         return a.createNewInstance(joinedProperties);
     }
 
@@ -54,6 +98,7 @@ public final class DefaultModelDataSource implements ModelDataSource {
             throw new IllegalArgumentException("modelContainer.properties: null");
         }
         modelProperties.removeAll(modelContainer.getProperties());
+        deleteEvents.add(new DeleteEvent(modelContainer, null, modelContainer.getProperties(), "delete"));
     }
 
     public List<ModelProperty> getModelProperties() {
@@ -120,28 +165,14 @@ public final class DefaultModelDataSource implements ModelDataSource {
 
         //verify data source integrity
         List<ModelProperty> unknownProperties = findUnknownModelPropertiesFrom(modelContainers);
-        if(!unknownProperties.isEmpty()) {
-            for(ModelProperty mp : unknownProperties) {
-                System.out.println(mp);
+        if (!unknownProperties.isEmpty()) {
+            for (ModelProperty mp : unknownProperties) {
+                System.out.println("Missing property from ModelContainer: " + mp);
             }
-            throw new DataSourceException("ModelContainer contains elements not within datasource");
+            throw new DataSourceException("Unable to query datasource. ModelContainer contains elements not within datasource");
         }
 
         return modelContainers;
-    }
-
-    private List<ModelProperty> findUnknownModelPropertiesFrom(List<ModelContainer> modelContainers) {
-        List<ModelProperty> modelProperties = new ArrayList<ModelProperty>();
-        for(ModelContainer mc: modelContainers) {
-            if (!modelProperties.containsAll(mc.getProperties())) {
-                for (ModelProperty mp : mc.getProperties()) {
-                    if (!modelProperties.contains(mp)) {
-                        modelProperties.add(mp);
-                    }
-                }
-            }
-        }
-        return modelProperties;
     }
 
     public void init(List<ModelProperty> modelProperties, Collection<ModelContainerFactory> modelContainerFactories) {
@@ -153,6 +184,8 @@ public final class DefaultModelDataSource implements ModelDataSource {
         }
         this.modelProperties = new LinkedList<ModelProperty>(modelProperties);
         this.modelContainerFactoryMap = new HashMap<String, ModelContainerFactory>();
+        this.deleteEvents = new ArrayList<DeleteEvent>();
+        this.originalModelProperties = new ArrayList<ModelProperty>(modelProperties);
 
         for (ModelContainerFactory factory : modelContainerFactories) {
             Collection<String> uris = factory.getUris();
@@ -166,6 +199,37 @@ public final class DefaultModelDataSource implements ModelDataSource {
         }
     }
 
+    public String getEventHistory() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Original Model Properties\r\n");
+        for(ModelProperty mp : originalModelProperties) {
+            sb.append(mp).append("\r\n");
+        }
+
+        for(DeleteEvent de : deleteEvents) {
+            sb.append(de.toString());
+        }
+
+        sb.append("Processed Model Properties\r\n");
+        for(ModelProperty mp : modelProperties) {
+            sb.append(mp).append("\r\n");
+        }
+        return sb.toString();
+    }
+
+    private List<ModelProperty> findUnknownModelPropertiesFrom(List<ModelContainer> modelContainers) {
+        List<ModelProperty> unknownProperties = new ArrayList<ModelProperty>();
+        for (ModelContainer mc : modelContainers) {
+            if (!modelProperties.containsAll(mc.getProperties())) {
+                for (ModelProperty mp : mc.getProperties()) {
+                    if (!modelProperties.contains(mp)) {
+                        unknownProperties.add(mp);
+                    }
+                }
+            }
+        }
+        return unknownProperties;
+    }
 
     private static int findLastIndexOfParent(ModelProperty modelProperty, List<ModelProperty> modelProperties) {
         for (int i = modelProperties.size() - 1; i >= 0; i--) {
@@ -181,9 +245,9 @@ public final class DefaultModelDataSource implements ModelDataSource {
      *
      * @param a container A
      * @param b container B
-     * @return
+     * @return list of merged properties
      */
-    private static List<ModelProperty> mergeModelContainers(ModelContainer a, ModelContainer b) {
+    protected static List<ModelProperty> mergeModelContainers(ModelContainer a, ModelContainer b) {
         List<ModelProperty> m = new ArrayList<ModelProperty>();
         m.addAll(a.getProperties());
         m.addAll(b.getProperties());
@@ -198,5 +262,60 @@ public final class DefaultModelDataSource implements ModelDataSource {
             }
         }
         return processedProperties;
+    }
+
+    private static class DeleteEvent {
+
+        private List<ModelProperty> removedModelProperties;
+
+        private ModelContainer mcA;
+
+        private ModelContainer mcB;
+
+        private String methodName;
+
+        DeleteEvent(ModelContainer mcA, ModelContainer mcB, List<ModelProperty> removedModelProperties, String methodName) {
+            this.mcA = mcA;
+            this.mcB = mcB;
+            this.removedModelProperties = removedModelProperties;
+            this.methodName = methodName;
+        }
+
+        public ModelContainer getMcA() {
+            return mcA;
+        }
+
+        public ModelContainer getMcB() {
+            return mcB;
+        }
+
+        public List<ModelProperty> getRemovedModelProperties() {
+            return removedModelProperties;
+        }
+
+        public String getMethodName() {
+            return methodName;
+        }
+
+        public String toString() {
+            StringBuffer sb = new StringBuffer();
+            sb.append("Delete Event: ").append(methodName).append("\r\n");
+            sb.append("Model Container A:\r\n");
+            for (ModelProperty mp : mcA.getProperties()) {
+                sb.append(mp).append("\r\n");
+            }
+            if (mcB != null) {
+                sb.append("Model Container B:\r\n");
+                for (ModelProperty mp : mcB.getProperties()) {
+                    sb.append(mp).append("\r\n");
+                }
+            }
+
+            sb.append("Removed Properties:\r\n");
+            for (ModelProperty mp : removedModelProperties) {
+                sb.append(mp).append("\r\n");
+            }
+            return sb.toString();
+        }
     }
 }

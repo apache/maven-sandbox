@@ -12,13 +12,6 @@ public class ModelTransformerContextTest {
 
     @Test
     public void sortWithDuplicateProperty1() {
-/*
-Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId, Value = maven-release-plugin, Resolved Value = maven-release-plugin
-Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/groupId, Value = org.apache.maven.plugins, Resolved Value = org.apache.maven.plugins
-Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/arguments, Value = -Prelease, Resolved Value = -Prelease
-Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/goals, Value = deploy, Resolved Value = deploy
-Uri = http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration/useReleaseProfile, Value = false, Resolved Value = false
-*/
         ModelProperty dup0 = new ModelProperty("http://apache.org/maven/project", null);
         ModelProperty dup1 = new ModelProperty("http://apache.org/maven/project/build", null);
         ModelProperty dup2 = new ModelProperty("http://apache.org/maven/project/build/pluginManagement", null);

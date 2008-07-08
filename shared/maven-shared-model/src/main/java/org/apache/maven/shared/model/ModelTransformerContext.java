@@ -4,6 +4,7 @@ import org.apache.maven.shared.model.impl.DefaultModelDataSource;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Logger;
 
 
 /**
@@ -15,6 +16,8 @@ public final class ModelTransformerContext {
 
     private final static List<InterpolatorProperty> systemInterpolatorProperties = new ArrayList<InterpolatorProperty>();
 
+    private static Logger logger = Logger.getAnonymousLogger();
+
     static {
         for (Map.Entry<Object, Object> e : System.getProperties().entrySet()) {
             systemInterpolatorProperties.add(new InterpolatorProperty("${" + e.getKey() + "}", (String) e.getValue()));
@@ -23,6 +26,15 @@ public final class ModelTransformerContext {
         for (Map.Entry<String, String> e : System.getenv().entrySet()) {
             systemInterpolatorProperties.add(new InterpolatorProperty("${env." + e.getKey() + "}", e.getValue()));
         }
+    }
+
+    private static boolean aContainsAnyOfB(List<ModelProperty> a, List<ModelProperty> b) {
+        for (ModelProperty mp : b) {
+            if (a.contains(mp)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -39,9 +51,9 @@ public final class ModelTransformerContext {
      * Unlike ModelTransformerContext#transform(java.util.List, ModelTransformer, ModelTransformer), this method requires
      * the user to add interpolator properties. It's intended to be used by IDEs.
      *
-     * @param domainModels the domain model list to transform
-     * @param fromModelTransformer transformer that transforms from specified domain models to canonical data model
-     * @param toModelTransformer transformer that transforms from canonical data model to returned domain model
+     * @param domainModels           the domain model list to transform
+     * @param fromModelTransformer   transformer that transforms from specified domain models to canonical data model
+     * @param toModelTransformer     transformer that transforms from canonical data model to returned domain model
      * @param interpolatorProperties properties to use during interpolation.
      * @return processed domain model
      * @throws IOException if there was a problem with the transform
@@ -60,15 +72,28 @@ public final class ModelTransformerContext {
         for (ModelContainerFactory factory : factories) {
             for (String uri : factory.getUris()) {
                 List<ModelContainer> modelContainers = modelDataSource.queryFor(uri);
+                List<ModelContainer> removedModelContainers = new ArrayList<ModelContainer>();
                 Collections.reverse(modelContainers);
                 for (int i = 0; i < modelContainers.size(); i++) {
                     ModelContainer mcA = modelContainers.get(i);
+                    if (removedModelContainers.contains(mcA)) {
+                        continue;
+                    }
                     for (ModelContainer mcB : modelContainers.subList(i + 1, modelContainers.size())) {
                         ModelContainerAction action = mcA.containerAction(mcB);
+
                         if (ModelContainerAction.DELETE.equals(action)) {
                             modelDataSource.delete(mcB);
+                            removedModelContainers.add(mcB);
                         } else if (ModelContainerAction.JOIN.equals(action)) {
-                            modelDataSource.join(mcA, mcB);
+                            try {
+                                mcA = modelDataSource.join(mcA, mcB);
+                                removedModelContainers.add(mcB);
+                            } catch (DataSourceException e) {
+                                System.out.println(modelDataSource.getEventHistory());
+                                throw new IOException("Failed to join model containers: URI = " + uri
+                                        + ", Factory = " + factory.getClass().getName(), e);
+                            }
                         }
                     }
                 }
@@ -103,8 +128,16 @@ public final class ModelTransformerContext {
         }
 
         */
-        validate(mps);
-        return toModelTransformer.transformToDomainModel(mps);
+
+        try {
+            validate(mps);
+            DomainModel domainModel = toModelTransformer.transformToDomainModel(mps);
+            domainModel.setEventHistory(modelDataSource.getEventHistory());
+            return domainModel;
+        } catch (IOException e) {
+            System.out.println(modelDataSource.getEventHistory());
+            throw new IOException(e);
+        }
     }
 
     /**

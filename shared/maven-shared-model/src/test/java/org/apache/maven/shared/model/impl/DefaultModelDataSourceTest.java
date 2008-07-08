@@ -1,14 +1,14 @@
 package org.apache.maven.shared.model.impl;
 
 import org.apache.maven.shared.model.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.io.IOException;
 
 public class DefaultModelDataSourceTest {
 
@@ -19,7 +19,39 @@ public class DefaultModelDataSourceTest {
     }
 
     @Test
-    public void join1() throws DataSourceException {
+    public void mergeModelContainers() throws IOException {
+        List<ModelProperty> modelProperties = Arrays.asList(
+                new ModelProperty("http://apache.org/maven/project", null),
+                new ModelProperty("http://apache.org/maven/project/build", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection", null),
+
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/version", "2.0.2"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId", "maven-compiler-plugin"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/groupId", "org.apache.maven.plugins"),
+
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/version", "2.0.2"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId", "maven-compiler-plugin"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/groupId", "org.apache.maven.plugins"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/a", "a")
+        );
+
+
+        DummyModelContainerFactory factory = new DummyModelContainerFactory();
+
+        DefaultModelDataSource datasource = new DefaultModelDataSource();
+        datasource.init(modelProperties, factories);
+
+        List<ModelProperty> mps = datasource.mergeModelContainers(
+                factory.create(new ArrayList<ModelProperty>(modelProperties.subList(4, 8))),
+                factory.create(new ArrayList<ModelProperty>(modelProperties.subList(8, 13))));
+        assertTrue(mps.containsAll(new ArrayList<ModelProperty>(modelProperties.subList(4, 8))));
+    }
+
+    @Test
+    public void join1() throws DataSourceException, IOException {
         List<ModelProperty> modelProperties = Arrays.asList(
                 new ModelProperty("http://apache.org/maven/project", null),
                 new ModelProperty("http://apache.org/maven/project/build", null),
@@ -49,11 +81,15 @@ public class DefaultModelDataSourceTest {
                 factory.create(new ArrayList<ModelProperty>(modelProperties.subList(8, 12))));
 
         for (ModelProperty mp : joinedModelContainer.getProperties()) {
-            //System.out.println("-" + mp);
+            System.out.println("-" + mp);
+        }
+
+        if (!datasource.getModelProperties().containsAll(joinedModelContainer.getProperties())) {
+            throw new IOException();
         }
 
         for (ModelProperty mp : datasource.getModelProperties()) {
-            //System.out.println("+" + mp);
+            System.out.println("+" + mp);
         }
 
     }
@@ -132,7 +168,7 @@ public class DefaultModelDataSourceTest {
         assertEquals(modelContainer, modelContainerA);
     }
 
-
+    /*
     @Test(expected = DataSourceException.class)
     public void joinContainerWithElementsNotInDataSource() throws DataSourceException {
         ModelProperty mpA = new ModelProperty("a", null);
@@ -152,6 +188,7 @@ public class DefaultModelDataSourceTest {
                 factory.create(new ArrayList<ModelProperty>(modelProperties.subList(0, 3))),
                 factory.create(new ArrayList<ModelProperty>(modelProperties.subList(1, 2))));
     }
+    */
 
     @Test
     public void cannotModifyDataSourceFromInitializedList() {
