@@ -130,6 +130,9 @@ under the License.
       <implementation>org.apache.maven.project.DefaultMavenProjectBuilder</implementation>
       <requirements>
         <requirement>
+             <role>org.apache.maven.project.builder.ProjectBuilder</role>
+        </requirement>
+        <requirement>
           <role>org.apache.maven.project.workspace.ProjectWorkspace</role>
         </requirement>
         <requirement>
