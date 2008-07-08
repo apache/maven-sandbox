@@ -69,6 +69,8 @@ import org.apache.maven.project.path.PathTranslator;
 import org.apache.maven.project.validation.ModelValidationResult;
 import org.apache.maven.project.validation.ModelValidator;
 import org.apache.maven.project.workspace.ProjectWorkspace;
+import org.apache.maven.project.builder.PomArtifactResolver;
+import org.apache.maven.project.builder.ProjectBuilder;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -77,11 +79,7 @@ import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -165,6 +163,8 @@ public class DefaultMavenProjectBuilder
     private MavenTools mavenTools;
 
     private ProjectWorkspace projectWorkspace;
+
+    private ProjectBuilder projectBuilder;
 
     //DO NOT USE, it is here only for backward compatibility reasons. The existing
     // maven-assembly-plugin (2.2-beta-1) is accessing it via reflection.
@@ -555,8 +555,9 @@ public class DefaultMavenProjectBuilder
             artifactResolver.resolve( projectArtifact, remoteArtifactRepositories, localRepository );
 
             File file = projectArtifact.getFile();
+            model = readModel( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
 
-            model = readModel( projectId, file, STRICT_MODEL_PARSING );
+           // model = readModel( projectId, file, STRICT_MODEL_PARSING );
 
             String downloadUrl = null;
 
@@ -2081,4 +2082,24 @@ public class DefaultMavenProjectBuilder
     {
         this.logger = logger;
     }
+
+    private Model readModel( String projectId,
+                            File projectDescriptor,
+                            PomArtifactResolver resolver )
+       throws ProjectBuildingException
+   {
+       //System.out.println(projectDescriptor.getAbsolutePath());
+
+       MavenProject mavenProject;
+       try {
+           mavenProject = projectBuilder.buildFromStream(new FileInputStream(projectDescriptor), null, resolver,
+                   projectDescriptor.getParentFile());
+       } catch (IOException e) {
+           e.printStackTrace();
+           throw new ProjectBuildingException(projectId, "File = " + projectDescriptor.getAbsolutePath() , e);
+       }
+
+      return mavenProject.getModel();
+
+   }
 }
