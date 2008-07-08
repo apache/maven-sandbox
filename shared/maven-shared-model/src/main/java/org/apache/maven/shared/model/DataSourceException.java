@@ -13,11 +13,4 @@ public class DataSourceException extends IOException {
         super(message);
     }
 
-    public DataSourceException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public DataSourceException(Throwable cause) {
-        super(cause);
-    }
 }

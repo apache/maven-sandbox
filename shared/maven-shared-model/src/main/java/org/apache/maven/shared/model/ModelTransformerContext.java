@@ -91,8 +91,9 @@ public final class ModelTransformerContext {
                                 removedModelContainers.add(mcB);
                             } catch (DataSourceException e) {
                                 System.out.println(modelDataSource.getEventHistory());
+                                e.printStackTrace();
                                 throw new IOException("Failed to join model containers: URI = " + uri
-                                        + ", Factory = " + factory.getClass().getName(), e);
+                                        + ", Factory = " + factory.getClass().getName());
                             }
                         }
                     }
@@ -136,7 +137,8 @@ public final class ModelTransformerContext {
             return domainModel;
         } catch (IOException e) {
             System.out.println(modelDataSource.getEventHistory());
-            throw new IOException(e);
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
         }
     }
 

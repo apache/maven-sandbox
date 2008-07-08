@@ -1,5 +1,6 @@
 package org.apache.maven.shared.model;
 
+
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
