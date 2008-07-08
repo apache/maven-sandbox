@@ -98,7 +98,8 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         try {
             artifactResolver.resolve(artifactParent);
         } catch (IOException e) {
-            throw new IOException("getDomainModelFromRepository", e);
+            e.printStackTrace();
+            throw new IOException("getDomainModelFromRepository");
         }
 
         if (!artifactParent.getFile().exists()) {

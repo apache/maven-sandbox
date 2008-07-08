@@ -69,13 +69,18 @@ under the License.
       <artifactId>wagon-file</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.woodstox</groupId>
+      <artifactId>wstx-asl</artifactId>
+      <version>3.2.6</version>
+    </dependency>
         <dependency>
             <groupId>org.apache.maven.shared</groupId>
             <artifactId>maven-shared-model</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>            
+        </dependency>
   </dependencies>
-    <!--
+
   <build>
     <plugins>
       <plugin>
@@ -93,5 +98,5 @@ under the License.
       </plugin>
     </plugins>
   </build>
-  -->
+
 </project>

@@ -45,9 +45,11 @@ public class PomArtifactResolver {
                     resolver.resolveAlways(artifact, remoteRepositories, localRepository);
                 }
             } catch (ArtifactNotFoundException e) {
-                throw new IOException("Parent pom not found: File = " + artifactFile.getAbsolutePath(), e);
+                e.printStackTrace();
+                throw new IOException("Parent pom not found: File = " + artifactFile.getAbsolutePath());
             } catch (ArtifactResolutionException e) {
-                throw new IOException("Parent pom not found: File = " + artifactFile.getAbsolutePath(), e);
+                e.printStackTrace();
+                throw new IOException("Parent pom not found: File = " + artifactFile.getAbsolutePath());
             }
         }
     }

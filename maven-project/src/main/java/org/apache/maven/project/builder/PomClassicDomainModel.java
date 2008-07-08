@@ -5,13 +5,11 @@ import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.apache.maven.shared.model.InputStreamDomainModel;
-import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 
 import java.io.*;
-import java.util.Arrays;
 
 /**
  * Provides a wrapper for the maven model.
@@ -74,12 +72,15 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
             return new MavenXpp3Reader().read(new StringReader(new String(inputStream)));
         }
         catch (XmlPullParserException e) {
-            throw new IOException(e);
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
         }
     }
 
     public InputStream getInputStream() {
-        return new ByteArrayInputStream(Arrays.copyOf(inputStream, inputStream.length));
+        byte[] copy = new byte[inputStream.length];
+        System.arraycopy(inputStream, 0, copy, 0, inputStream.length);
+        return new ByteArrayInputStream(copy);
     }
 
     public String getEventHistory() {
