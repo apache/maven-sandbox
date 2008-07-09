@@ -9,6 +9,7 @@ import org.apache.maven.project.validation.ModelValidator;
 import org.apache.maven.project.builder.*;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
@@ -95,6 +96,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
         Artifact artifactParent =
                 artifactFactory.createParentArtifact(parent.getGroupId(), parent.getArtifactId(), parent.getVersion());
+
         try {
             artifactResolver.resolve(artifactParent);
         } catch (IOException e) {

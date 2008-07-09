@@ -7,9 +7,11 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 
 import java.util.List;
 import java.util.Date;
+import java.util.HashSet;
 import java.io.IOException;
 import java.io.File;
 
@@ -36,6 +38,27 @@ public class PomArtifactResolver {
         File artifactFile = new File(localRepository.getBasedir(), localRepository.pathOf(artifact));
         artifact.setFile(artifactFile);
 
+        for(ArtifactRepository ar: remoteRepositories) {
+            System.out.println("repository: " + ar.getUrl());
+        }
+
+        try {
+            resolver.resolve( artifact, remoteRepositories, localRepository );
+        } catch (ArtifactResolutionException e) {
+            throw new IOException(e.getMessage());
+        } catch (ArtifactNotFoundException e) {
+            throw new IOException(e.getMessage());
+        }
+        /*
+        ArtifactResolutionRequest request = new ArtifactResolutionRequest()
+                .setArtifact(artifact)
+                .setLocalRepository(localRepository)
+                .setArtifactDependencies(new HashSet<Artifact>())
+                .setRemoteRepostories(remoteRepositories);
+        resolver.resolve(request);
+        */
+
+        /*
         if (!artifact.isSnapshot() && (ArtifactStatus.NONE.compareTo(ArtifactStatus.DEPLOYED) < 0)) {
             ArtifactRepositoryPolicy policy = new ArtifactRepositoryPolicy();
             policy.setUpdatePolicy(ArtifactRepositoryPolicy.UPDATE_POLICY_NEVER);
@@ -52,5 +75,6 @@ public class PomArtifactResolver {
                 throw new IOException("Parent pom not found: File = " + artifactFile.getAbsolutePath());
             }
         }
+        */
     }
 }
