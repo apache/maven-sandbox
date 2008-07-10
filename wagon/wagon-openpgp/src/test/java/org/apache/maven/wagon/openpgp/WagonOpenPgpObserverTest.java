@@ -1,33 +1,44 @@
 package org.apache.maven.wagon.openpgp;
 
 /*
- * Copyright 2005 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import org.apache.commons.openpgp.BouncyCastleKeyRing;
 import org.apache.commons.openpgp.BouncyCastleOpenPgpSignatureVerifier;
 import org.apache.commons.openpgp.KeyRing;
+import org.apache.commons.openpgp.OpenPgpException;
 import org.apache.commons.openpgp.OpenPgpSignatureVerifier;
 import org.apache.commons.openpgp.SignatureStatus;
+import org.apache.maven.wagon.ConnectionException;
 import org.apache.maven.wagon.FileTestUtils;
+import org.apache.maven.wagon.ResourceDoesNotExistException;
+import org.apache.maven.wagon.TransferFailedException;
 import org.apache.maven.wagon.Wagon;
+import org.apache.maven.wagon.authentication.AuthenticationException;
+import org.apache.maven.wagon.authorization.AuthorizationException;
 import org.apache.maven.wagon.repository.Repository;
 import org.codehaus.plexus.PlexusTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 /**
  * Test the wagon observer for open pgp signatures.
@@ -69,7 +80,6 @@ public class WagonOpenPgpObserverTest
 
         wagon.connect( repository );
 
-        // TODO: use streams when available
         wagon.put( getTestFile( "src/test/resources/test-input.txt" ), "test-input.txt" );
 
         byte[] signature = observer.getActualSignature();
@@ -80,9 +90,9 @@ public class WagonOpenPgpObserverTest
 
         // check signature
         OpenPgpSignatureVerifier verifier = new BouncyCastleOpenPgpSignatureVerifier();
-        SignatureStatus status = verifier.verifyDetachedSignature( getClass().getResourceAsStream( "/test-input.txt" ),
-                                                                   new ByteArrayInputStream( signature ), keyRing,
-                                                                   false );
+        SignatureStatus status =
+            verifier.verifyDetachedSignature( getClass().getResourceAsStream( "/test-input.txt" ),
+                                              new ByteArrayInputStream( signature ), keyRing );
 
         assertNotNull( "check we got a status", status );
         assertTrue( "check it was successful", status.isValid() );
@@ -91,8 +101,17 @@ public class WagonOpenPgpObserverTest
     public void testVerify()
         throws Exception
     {
-        WagonOpenPgpSignatureVerifierObserver observer = new WagonOpenPgpSignatureVerifierObserver(
-            getClass().getResourceAsStream( "/test-signature.bpg" ), keyRing, false );
+        verifySignature( "/test-input.txt.sig" );
+        
+        verifySignature( "/test-input.txt.asc" );
+    }
+
+    private void verifySignature( String name )
+        throws OpenPgpException, IOException, Exception, MalformedURLException, ConnectionException,
+        AuthenticationException, TransferFailedException, ResourceDoesNotExistException, AuthorizationException
+    {
+        WagonOpenPgpSignatureVerifierObserver observer =
+            new WagonOpenPgpSignatureVerifierObserver( getClass().getResourceAsStream( name ), keyRing );
 
         Wagon wagon = (Wagon) lookup( Wagon.ROLE, "file" );
 
@@ -106,7 +125,6 @@ public class WagonOpenPgpObserverTest
 
         wagon.connect( repository );
 
-        // TODO: use streams when available
         wagon.get( "test-input.txt", new File( tempDir, "test-input.txt" ) );
 
         SignatureStatus status = observer.getStatus();
