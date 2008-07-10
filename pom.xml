@@ -256,6 +256,8 @@
     <plexusInterpolationVersion>1.0</plexusInterpolationVersion>
     <plexusUtilsVersion>1.5.4</plexusUtilsVersion>
     <wagonVersion>1.0-beta-3</wagonVersion>
+    <mavenSharedModelVersion>1.0-SNAPSHOT</mavenSharedModelVersion>
+    <woodstoxVersion>3.2.6</woodstoxVersion>
   </properties>
   
   <!--start-->
@@ -416,6 +418,17 @@
           </exclusion>
         </exclusions>
       </dependency>   
+      <!-- New Model Parser -->
+      <dependency>
+        <groupId>org.codehaus.woodstox</groupId>
+        <artifactId>wstx-asl</artifactId>
+        <version>${woodstoxVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.shared</groupId>
+        <artifactId>maven-shared-model</artifactId>
+        <version>${mavenSharedModelVersion}</version>
+      </dependency>
       <!-- Needed for backward compat aspect. -->
       <dependency>
         <groupId>aspectj</groupId>
