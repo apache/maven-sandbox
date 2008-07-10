@@ -46,7 +46,7 @@ under the License.
 
   <target name="pull" depends="init" unless="skip.pull">    
     <property name="verbose" value="false"/>
-    <property name="bootstrap.repository" value="${basedir}/bootstrap-repository"/>
+    <property name="maven.repo.local" value="${basedir}/bootstrap-repository"/>
     <!-- Pull the dependencies that Maven needs to build -->
     <copy file="pom.xml" tofile="dependencies.xml"/>
     <replace file="${basedir}/dependencies.xml" token="&lt;!--start--&gt;" value="&lt;!--"/>
@@ -54,7 +54,7 @@ under the License.
     <artifact:pom file="${basedir}/dependencies.xml" id="pom"/>                                                                                                     
     <artifact:dependencies pathId="pom.pathid" filesetId="pom.fileset" verbose="${verbose}">
        <!--
-       <localRepository path="${bootstrap.repository}"/>
+       <localRepository path="${maven.repo.local}"/>
        -->
        <pom refid="pom"/>                                                                                                                                       
     </artifact:dependencies>      
@@ -63,7 +63,7 @@ under the License.
     <!-- Pull the dependencies for Modello -->
     <artifact:dependencies pathId="modello.pathid" filesetId="modello.fileset" verbose="${verbose}">
        <!--
-       <localRepository path="${bootstrap.repository}"/>
+       <localRepository path="${maven.repo.local}"/>
        -->
        <dependency groupId="org.codehaus.modello" artifactId="modello-maven-plugin" version="1.0-alpha-17"/>                                                                                                                                      
     </artifact:dependencies>          
