@@ -92,6 +92,6 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
 
     //TODO: Workaround
     private byte[] removeIllegalCharacters(byte[] bytes) {
-        return new String(bytes).replaceAll("&(?![a-zA-Z]{1,8};)", "&amp;").getBytes();
+        return new String(bytes).replaceAll("&oslash;", "").replaceAll("&(?![a-zA-Z]{1,8};)", "&amp;").getBytes();
     }
 }
