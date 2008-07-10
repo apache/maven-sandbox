@@ -8,7 +8,6 @@ import org.apache.maven.shared.model.InputStreamDomainModel;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-
 import java.io.*;
 
 /**
@@ -42,11 +41,6 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
         this.inputStream = removeIllegalCharacters(IOUtil.toByteArray(inputStream));
     }
 
-    //TODO: Workaround
-    private byte[] removeIllegalCharacters(byte[] bytes) {
-        return new String(bytes).replaceAll("&oslash;", "").getBytes();
-    }
-
     public boolean matchesParent(Parent parent) {
         Model model;
         try {
@@ -54,8 +48,13 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
         } catch (IOException e) {
             return false;
         }
-        return (parent.getGroupId().equals(model.getGroupId()) && parent.getArtifactId().equals(model.getArtifactId())
-                && parent.getVersion().equals(model.getVersion()));
+
+        String groupId = (model.getGroupId() == null) ? model.getParent().getGroupId() : model.getGroupId();
+        String artifactId = (model.getArtifactId() == null) ? model.getParent().getArtifactId() : model.getArtifactId();
+        String version = (model.getVersion() == null) ? model.getParent().getVersion() : model.getVersion();
+
+        return (parent.getGroupId().equals(groupId) && parent.getArtifactId().equals(artifactId)
+                && parent.getVersion().equals(version));
     }
 
     public String asString() {
@@ -89,5 +88,10 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
 
     public void setEventHistory(String eventHistory) {
         this.eventHistory = eventHistory;
+    }
+
+    //TODO: Workaround
+    private byte[] removeIllegalCharacters(byte[] bytes) {
+        return new String(bytes).replaceAll("&oslash;", "").getBytes();
     }
 }

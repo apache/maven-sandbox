@@ -1,6 +1,9 @@
 package org.apache.maven.project.builder;
 
-import org.apache.maven.shared.model.*;
+import org.apache.maven.shared.model.ModelContainer;
+import org.apache.maven.shared.model.ModelContainerAction;
+import org.apache.maven.shared.model.ModelContainerFactory;
+import org.apache.maven.shared.model.ModelProperty;
 
 import java.util.*;
 
@@ -10,13 +13,6 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
 
             ProjectUri.DependencyManagement.Dependencies.Dependency.xUri,
             ProjectUri.Dependencies.Dependency.xUri,
-
-       //     ProjectUri.Profiles.Profile.DependencyManagement.Dependencies.Dependency.xUri,
-       //     ProjectUri.Profiles.Profile.Dependencies.Dependency.xUri,
-           // ProjectUri.Profiles.Profile.Build.Plugins.Plugin.xUri,
-           // ProjectUri.Profiles.Profile.Build.PluginManagement.Plugins.Plugin.xUri,
-           // ProjectUri.Profiles.Profile.Build.PluginManagement.Plugins.Plugin.Dependencies.Dependency.xUri,
-
 
             ProjectUri.Build.PluginManagement.Plugins.Plugin.xUri,
             ProjectUri.Build.PluginManagement.Plugins.Plugin.Dependencies.Dependency.xUri,
@@ -49,7 +45,6 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
 
         private ArtifactModelContainer(List<ModelProperty> properties) {
             this.properties = new ArrayList<ModelProperty>(properties);
-            //Collections.sort(this.properties, new ModelPropertyComparator());
             this.properties = Collections.unmodifiableList(this.properties);
 
             for (ModelProperty mp : properties) {

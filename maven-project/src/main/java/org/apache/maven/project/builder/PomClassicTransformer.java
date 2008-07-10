@@ -1,8 +1,10 @@
 package org.apache.maven.project.builder;
 
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-
-import org.apache.maven.shared.model.*;
+import org.apache.maven.shared.model.DomainModel;
+import org.apache.maven.shared.model.ModelMarshaller;
+import org.apache.maven.shared.model.ModelProperty;
+import org.apache.maven.shared.model.ModelTransformer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.IOException;
@@ -16,15 +18,11 @@ public final class PomClassicTransformer implements ModelTransformer {
 
     private Set<String> uris;
 
-    public PomClassicTransformer() {
-
-    }
-
     public String getBaseUri() {
         return ProjectUri.baseUri;
     }
 
-    public PomClassicTransformer(Set<String> uris) {
+    public PomClassicTransformer() {
         this.uris = new HashSet<String>(Arrays.asList(
                 "http://apache.org/maven/project/build/resources#collection",
                 "http://apache.org/maven/project/build/plugins/plugin/dependencies/dependency/exclusions#collection",
@@ -82,12 +80,6 @@ public final class PomClassicTransformer implements ModelTransformer {
             xml = ModelMarshaller.unmarshalModelPropertiesToXml(properties, ProjectUri.baseUri);
             return new PomClassicDomainModel(new MavenXpp3Reader().read(new StringReader(xml)));
         } catch (XmlPullParserException e) {
-            /*
-            StringBuffer sb = new StringBuffer("\r\n");
-            for (ModelProperty mp : properties) {
-                sb.append(mp).append("\r\n");
-            }
-            */
             throw new IOException(e + ":\r\n" + xml);
         }
     }
@@ -174,7 +166,5 @@ public final class PomClassicTransformer implements ModelTransformer {
         }
         return null;
     }
-
-
 }
 

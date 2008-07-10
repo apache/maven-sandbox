@@ -1,14 +1,15 @@
 package org.apache.maven.project.builder;
 
-import org.apache.maven.shared.model.*;
+import org.apache.maven.shared.model.ModelContainer;
+import org.apache.maven.shared.model.ModelContainerAction;
+import org.apache.maven.shared.model.ModelContainerFactory;
+import org.apache.maven.shared.model.ModelProperty;
 
 import java.util.*;
 
 public class IdModelContainerFactory implements ModelContainerFactory {
 
     private static final Collection<String> uris = Collections.unmodifiableList(Arrays.asList(
-            //ProjectUri.Build.Plugins.Plugin.Executions.Execution.xUri,
-            //ProjectUri.Build.PluginManagement.Plugins.Plugin.Executions.Execution.xUri,
             ProjectUri.PluginRepositories.PluginRepository.xUri,
             ProjectUri.Repositories.Repository.xUri,
             ProjectUri.Reporting.Plugins.Plugin.ReportSets.ReportSet.xUri,
@@ -41,10 +42,6 @@ public class IdModelContainerFactory implements ModelContainerFactory {
                     this.id = mp.getValue();
                 }
             }
-
-            //   if (id == null) {
-            //       throw new IllegalArgumentException("properties does not contain id");
-            //   }
         }
 
         public ModelContainerAction containerAction(ModelContainer modelContainer) {
@@ -68,12 +65,7 @@ public class IdModelContainerFactory implements ModelContainerFactory {
         }
 
         public void sort(List<ModelProperty> modelProperties) {
-            //Collections.sort(modelProperties, new IdModelComparator());
-         /*   System.out.println("END SORT");
-            for(ModelProperty mp : modelProperties) {
-                System.out.println(mp);
-            }
-            */
+
         }
 
         public List<ModelProperty> getProperties() {
@@ -82,20 +74,6 @@ public class IdModelContainerFactory implements ModelContainerFactory {
 
         public String toString() {
             return "ID = " + id;
-        }
-    }
-
-    private static class IdModelComparator implements Comparator {
-        public int compare(Object o1, Object o2) {
-            ModelProperty a = (ModelProperty) o1;
-            ModelProperty b = (ModelProperty) o2;
-            System.out.println(a + " : " + b);
-            if (a.isParentOf(b)) {
-                System.out.println("IS PARENT ABOVE:");
-                return -1;
-            }
-
-            return 0;
         }
     }
 }

@@ -1,13 +1,12 @@
 package org.apache.maven.project.builder;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.InterpolatorProperty;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.Artifact;
 
-import java.io.InputStream;
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 
 public interface ProjectBuilder {

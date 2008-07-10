@@ -1,30 +1,31 @@
 package org.apache.maven.project.builder.impl;
 
-import org.apache.maven.shared.model.*;
-import org.apache.maven.model.Parent;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.builder.*;
 import org.apache.maven.project.validation.ModelValidationResult;
 import org.apache.maven.project.validation.ModelValidator;
-import org.apache.maven.project.builder.*;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
-import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.shared.model.DomainModel;
+import org.apache.maven.shared.model.InterpolatorProperty;
+import org.apache.maven.shared.model.ModelTransformerContext;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
     private ArtifactFactory artifactFactory;
-
-    private ArtifactResolver artifactResolver;
 
     private Logger logger;
 
@@ -42,6 +43,9 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
     public MavenProject buildFromArtifact(Artifact artifact, Collection<InterpolatorProperty> interpolatorProperties, PomArtifactResolver resolver)
             throws IOException {
+        if(resolver == null) {
+            throw new IllegalArgumentException("resolver: null");
+        }
         resolver.resolve(artifact);
         return buildFromStream(new FileInputStream(artifact.getFile()), interpolatorProperties, resolver, null);//TODO: Fix
     }
@@ -52,6 +56,14 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         if (pom == null) {
             throw new IllegalArgumentException("pom: null");
         }
+
+        if(resolver == null) {
+            throw new IllegalArgumentException("resolver: null");
+        }
+
+        if(projectDirectory == null) {
+            throw new IllegalArgumentException("projectDirectory: null");
+        }        
 
         List<InterpolatorProperty> properties;
         if (interpolatorProperties == null) {
@@ -65,7 +77,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         domainModels.add(domainModel);
         domainModels.addAll(getDomainModelParentsFromRepository((PomClassicDomainModel) domainModel, resolver, projectDirectory));
 
-        PomClassicTransformer transformer = new PomClassicTransformer(null);
+        PomClassicTransformer transformer = new PomClassicTransformer();
         ModelTransformerContext ctx = new ModelTransformerContext(
                 Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
         Model model = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
@@ -76,8 +88,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         MavenProject mavenProject = new MavenProject(model);
         mavenProject.setArtifact(artifactFactory.createProjectArtifact(model.getGroupId(), model.getArtifactId(),
                 model.getVersion()));
-        //System.out.println(((PomClassicDomainModel) ctx.transform(domainModels, transformer,
-        //        transformer, properties)).asString());
+
         return mavenProject;
     }
 
@@ -107,8 +118,8 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         if (!artifactParent.getFile().exists()) {
             logger.info("Parent pom does not exist in repository: File = " + artifactParent.getFile().getAbsolutePath());
             Model model = domainModel.getModel();
-            System.out.println("PATH = " + projectDirectory.getAbsolutePath() + ":" + model.getParent().getRelativePath());
-            System.out.println(new File(projectDirectory, model.getParent().getRelativePath()).getCanonicalFile());
+           // System.out.println("PATH = " + projectDirectory.getAbsolutePath() + ":" + model.getParent().getRelativePath());
+           // System.out.println(new File(projectDirectory, model.getParent().getRelativePath()).getCanonicalFile());
             File parentFile = new File(projectDirectory, model.getParent().getRelativePath()).getCanonicalFile();
             if( parentFile.isDirectory()) {
                 parentFile = new File(parentFile, "pom.xml");
@@ -124,7 +135,6 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         PomClassicDomainModel parentDomainModel = new PomClassicDomainModel(new FileInputStream(artifactParent.getFile()));
         if (!parentDomainModel.matchesParent(domainModel.getModel().getParent())) {
             logger.warn("Parent pom ids do not match: File = " + artifactParent.getFile().getAbsolutePath());
-           // return domainModels;
         }
 
         domainModels.add(parentDomainModel);

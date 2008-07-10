@@ -118,10 +118,6 @@ under the License.
                 <requirement>
                     <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
                 </requirement>
-                <requirement>
-                    <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
-                    <role-hint>default</role-hint>
-                </requirement>
             </requirements>
         </component>      
     <component>
