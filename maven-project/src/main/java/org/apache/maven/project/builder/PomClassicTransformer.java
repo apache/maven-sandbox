@@ -75,9 +75,19 @@ public final class PomClassicTransformer implements ModelTransformer {
         if (properties == null) {
             throw new IllegalArgumentException("properties: null");
         }
+
+        List<ModelProperty> props = new ArrayList<ModelProperty>();
+        for(ModelProperty mp : properties) { //TODO: Resolved values
+            if(mp.getValue() != null && mp.getValue().contains("=")) {
+                props.add(new ModelProperty(mp.getUri(), "<![CDATA[" + mp.getValue() + "]]>"));
+            } else {
+                props.add(mp);
+            }
+        }
+
         String xml = null;
         try {
-            xml = ModelMarshaller.unmarshalModelPropertiesToXml(properties, ProjectUri.baseUri);
+            xml = ModelMarshaller.unmarshalModelPropertiesToXml(props, ProjectUri.baseUri);
             return new PomClassicDomainModel(new MavenXpp3Reader().read(new StringReader(xml)));
         } catch (XmlPullParserException e) {
             throw new IOException(e + ":\r\n" + xml);
