@@ -6,6 +6,8 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.apache.maven.shared.model.InputStreamDomainModel;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.ReaderFactory;
+import org.codehaus.plexus.util.WriterFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.*;
@@ -15,7 +17,7 @@ import java.io.*;
  */
 public final class PomClassicDomainModel implements InputStreamDomainModel {
 
-    private byte[] inputStream;
+    private byte[] inputBytes;
 
     private String eventHistory;
 
@@ -29,16 +31,18 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
             throw new IllegalArgumentException("model: null");
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Writer out = WriterFactory.newXmlWriter( baos );
         MavenXpp3Writer writer = new MavenXpp3Writer();
-        writer.write(new OutputStreamWriter(baos), model);
-        inputStream = removeIllegalCharacters(baos.toByteArray());
+        writer.write( out, model );
+        out.close();
+        inputBytes = removeIllegalCharacters(baos.toByteArray());
     }
 
     public PomClassicDomainModel(InputStream inputStream) throws IOException {
         if (inputStream == null) {
             throw new IllegalArgumentException("inputStream: null");
         }
-        this.inputStream = removeIllegalCharacters(IOUtil.toByteArray(inputStream));
+        this.inputBytes = removeIllegalCharacters(IOUtil.toByteArray(inputStream));
     }
 
     public boolean matchesParent(Parent parent) {
@@ -58,7 +62,15 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
     }
 
     public String asString() {
-        return new String(inputStream);
+        try
+        {
+            return IOUtil.toString( ReaderFactory.newXmlReader( new ByteArrayInputStream( inputBytes ) ) );
+        }
+        catch ( IOException ioe )
+        {
+            // should not occur: everything is in-memory
+            return "";
+        }
     }
 
     /**
@@ -68,7 +80,7 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
      */
     public Model getModel() throws IOException {
         try {                                                                
-            return new MavenXpp3Reader().read(new StringReader(new String(inputStream)));
+            return new MavenXpp3Reader().read( new ByteArrayInputStream( inputBytes ) );
         }
         catch (XmlPullParserException e) {
             e.printStackTrace();
@@ -77,8 +89,8 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
     }
 
     public InputStream getInputStream() {
-        byte[] copy = new byte[inputStream.length];
-        System.arraycopy(inputStream, 0, copy, 0, inputStream.length);
+        byte[] copy = new byte[inputBytes.length];
+        System.arraycopy(inputBytes, 0, copy, 0, inputBytes.length);
         return new ByteArrayInputStream(copy);
     }
 
@@ -92,6 +104,8 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
 
     //TODO: Workaround
     private byte[] removeIllegalCharacters(byte[] bytes) {
+        // what is it supposed to do? which are the illegal characters to remove?
+        // for encoding support, new String(bytes) and String.getBytes() should not be used
         return new String(bytes).replaceAll("&oslash;", "").replaceAll("&(?![a-zA-Z]{1,8};)", "&amp;").getBytes();
     }
 }
