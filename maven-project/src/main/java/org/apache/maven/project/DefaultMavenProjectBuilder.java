@@ -555,7 +555,15 @@ public class DefaultMavenProjectBuilder
             artifactResolver.resolve( projectArtifact, remoteArtifactRepositories, localRepository );
 
             File file = projectArtifact.getFile();
-            model = readModel( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
+            if(isOldProjectBuilder) {
+                logger.info("Old Project Builder");
+                model = readModel( projectId, file, STRICT_MODEL_PARSING );
+            }  else {
+                logger.info("New Project Builder");
+                model = readModel( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
+            }
+
+            //model = readModel( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
 
            // model = readModel( projectId, file, STRICT_MODEL_PARSING );
 
@@ -2081,6 +2089,17 @@ public class DefaultMavenProjectBuilder
     public void enableLogging( Logger logger )
     {
         this.logger = logger;
+    }
+
+
+    private boolean isOldProjectBuilder = false;
+
+    protected void setOldProjectBuilder() {
+        isOldProjectBuilder = true;
+    }
+
+    protected void setNewProjectBuilder() {
+        isOldProjectBuilder = false;
     }
 
     private Model readModel( String projectId,
