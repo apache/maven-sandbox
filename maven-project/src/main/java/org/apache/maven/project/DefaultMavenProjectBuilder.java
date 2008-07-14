@@ -560,17 +560,7 @@ public class DefaultMavenProjectBuilder
             artifactResolver.resolve( projectArtifact, remoteArtifactRepositories, localRepository );
 
             File file = projectArtifact.getFile();
-            if(isOldProjectBuilder) {
-                logger.info("Old Project Builder");
-                model = readModel( projectId, file, STRICT_MODEL_PARSING );
-            }  else {
-                logger.info("New Project Builder");
-                model = readModel( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
-            }
-
-            //model = readModel( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
-
-           // model = readModel( projectId, file, STRICT_MODEL_PARSING );
+            model = readModel( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
 
             String downloadUrl = null;
 
