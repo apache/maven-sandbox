@@ -139,4 +139,15 @@ public abstract class AbstractMavenProjectTestCase
         return projectBuilder.build( pom, getLocalRepository(), new DefaultProfileManager( getContainer(), ctx ) );
     }
 
+    protected MavenProject getProjectOld( File pom)
+        throws Exception
+    {
+        Properties props = System.getProperties();
+        ProfileActivationContext ctx = new DefaultProfileActivationContext( props, false );
+
+        ((DefaultMavenProjectBuilder) projectBuilder).setOldProjectBuilder();
+
+
+        return projectBuilder.build( pom, getLocalRepository(), new DefaultProfileManager( getContainer(), ctx ) );
+    }
 }

@@ -132,6 +132,9 @@ public final class PomClassicTransformer implements ModelTransformer {
                 tmp.add(new ModelProperty(ProjectUri.groupId, parentGroupId.getValue()));
             }
 
+            //Not inherited plugin rule
+            
+
 
             //SCM Rule
             ModelProperty scmUrlProperty = getPropertyFor(ProjectUri.Scm.url, tmp);

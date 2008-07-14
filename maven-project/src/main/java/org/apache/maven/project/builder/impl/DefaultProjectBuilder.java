@@ -131,8 +131,8 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
             if (!parentFile.exists()) {
                 logger.warn("Parent pom does not exist on local path: File = " + parentFile.getAbsolutePath());
-                  throw new IOException("Parent pom does not exist: File = " + artifactParent.getFile() + ", Child Id = " +
-                          model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion());
+//                  throw new IOException("Parent pom does not exist: File = " + artifactParent.getFile() + ", Child Id = " +
+ //                         model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion());
             }
             artifactParent.setFile(parentFile);
         }
