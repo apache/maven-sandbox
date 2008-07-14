@@ -101,34 +101,38 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         List<DomainModel> domainModels = new ArrayList<DomainModel>();
 
         Parent parent = domainModel.getModel().getParent();
+     
         if (parent == null) {
             return domainModels;
         }
-
+         logger.info("Parent: " + parent.getArtifactId());
         Artifact artifactParent =
                 artifactFactory.createParentArtifact(parent.getGroupId(), parent.getArtifactId(), parent.getVersion());
 
         try {
             artifactResolver.resolve(artifactParent);
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new IOException("getDomainModelFromRepository");
+           // throw new IOException("getDomainModelFromRepository");
         }
 
         if (!artifactParent.getFile().exists()) {
             logger.info("Parent pom does not exist in repository: File = " + artifactParent.getFile().getAbsolutePath());
             Model model = domainModel.getModel();
-           // System.out.println("PATH = " + projectDirectory.getAbsolutePath() + ":" + model.getParent().getRelativePath());
-           // System.out.println(new File(projectDirectory, model.getParent().getRelativePath()).getCanonicalFile());
+
             File parentFile = new File(projectDirectory, model.getParent().getRelativePath()).getCanonicalFile();
             if( parentFile.isDirectory()) {
                 parentFile = new File(parentFile, "pom.xml");
             }
+
+            //logger.info("Project Directory = " + projectDirectory.getAbsolutePath()) ;
+            //logger.info("Relative PATH = " + model.getParent().getRelativePath());
+            //logger.info("File:" + new File(projectDirectory, model.getParent().getRelativePath()).getAbsolutePath());
+            //logger.info("Canonical Parent File: = " + parentFile.getAbsolutePath());
+
             if (!parentFile.exists()) {
                 logger.warn("Parent pom does not exist on local path: File = " + parentFile.getAbsolutePath());
-                return domainModels;
-                //  throw new IOException("Parent pom does not exist: File = " + artifactParent.getFile() + ", Child Id = " +
-                //          model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion());
+                  throw new IOException("Parent pom does not exist: File = " + artifactParent.getFile() + ", Child Id = " +
+                          model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion());
             }
             artifactParent.setFile(parentFile);
         }
@@ -138,7 +142,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         }
 
         domainModels.add(parentDomainModel);
-        domainModels.addAll(getDomainModelParentsFromRepository(parentDomainModel, artifactResolver, projectDirectory));
+        domainModels.addAll(getDomainModelParentsFromRepository(parentDomainModel, artifactResolver, artifactParent.getFile().getParentFile()));
         return domainModels;
     }
 

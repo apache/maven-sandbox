@@ -11,7 +11,7 @@ package org.apache.maven.project;
  *
  *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
+ * Unless required by applicable law or agreed to in writing,                      r
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
@@ -502,7 +502,11 @@ public class DefaultMavenProjectBuilder
         {
 //            getLogger().debug( "Allowing project-build to proceed for: " + projectDescriptor );
 
-            Model model = readModel( "unknown", projectDescriptor, STRICT_MODEL_PARSING );
+            //Model model = readModel( "unknown", projectDescriptor, STRICT_MODEL_PARSING );
+
+            Model model = readModel( "unknown", projectDescriptor, new PomArtifactResolver(config.getLocalRepository(),
+                    buildArtifactRepositories( getSuperModel() ), artifactResolver) );
+
 
             project = buildInternal( model,
                 config,
@@ -511,6 +515,7 @@ public class DefaultMavenProjectBuilder
                 STRICT_MODEL_PARSING,
                 true,
                 true );
+                
         }
 //        else
 //        {
@@ -1796,48 +1801,6 @@ public class DefaultMavenProjectBuilder
         }
     }
 
-    private Model readModel( String projectId,
-                             File file,
-                             boolean strict )
-        throws ProjectBuildingException
-    {
-        Reader reader = null;
-        try
-        {
-            reader = ReaderFactory.newXmlReader( file );
-
-            String modelSource = IOUtil.toString( reader );
-
-            checkModelVersion( modelSource, projectId, file );
-
-            StringReader sReader = new StringReader( modelSource );
-
-            try
-            {
-                return modelReader.read( sReader, strict );
-            }
-            catch ( XmlPullParserException e )
-            {
-                throw new InvalidProjectModelException( projectId, "Parse error reading POM. Reason: " + e.getMessage(),
-                                                        file, e );
-            }
-        }
-        catch ( FileNotFoundException e )
-        {
-            throw new ProjectBuildingException( projectId,
-                "Could not find the model file '" + file.getAbsolutePath() + "'.", file, e );
-        }
-        catch ( IOException e )
-        {
-            throw new ProjectBuildingException( projectId, "Failed to build model from file '" +
-                file.getAbsolutePath() + "'.\nError: \'" + e.getLocalizedMessage() + "\'", file, e );
-        }
-        finally
-        {
-            IOUtil.close( reader );
-        }
-    }
-
     private void checkModelVersion( String modelSource,
                                     String projectId,
                                     File file )
@@ -2107,8 +2070,14 @@ public class DefaultMavenProjectBuilder
                             PomArtifactResolver resolver )
        throws ProjectBuildingException
    {
-       //System.out.println(projectDescriptor.getAbsolutePath());
+       if(projectDescriptor == null) {
+           throw new IllegalArgumentException("projectDescriptor: null, Project Id =" + projectId);
+       }
 
+       if(projectBuilder == null) {
+           throw new IllegalArgumentException("projectBuilder: not initialized");
+       }
+       
        MavenProject mavenProject;
        try {
            mavenProject = projectBuilder.buildFromStream(new FileInputStream(projectDescriptor), null, resolver,
