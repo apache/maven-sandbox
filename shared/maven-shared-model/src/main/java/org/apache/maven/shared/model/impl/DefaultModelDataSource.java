@@ -20,15 +20,6 @@ public final class DefaultModelDataSource implements ModelDataSource {
 
     private static Logger logger = Logger.getAnonymousLogger();
 
-    private static boolean aContainsAnyOfB(List<ModelProperty> a, List<ModelProperty> b) {
-        for (ModelProperty mp : b) {
-            if (a.contains(mp)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public ModelContainer join(ModelContainer a, ModelContainer b) throws DataSourceException {
         if (a == null || a.getProperties() == null || a.getProperties().size() == 0) {
             throw new IllegalArgumentException("a or a.properties: empty");
@@ -57,9 +48,9 @@ public final class DefaultModelDataSource implements ModelDataSource {
                 sb.append(mp).append("\r\n");
             }
 
-        //    for (DeleteEvent de : des) {
-        //        sb.append(de.toString());
-        //    }
+            //    for (DeleteEvent de : des) {
+            //        sb.append(de.toString());
+            //    }
             System.out.println(sb);
             throw new DataSourceException("ModelContainer 'a' contains elements not within datasource");
         }
@@ -86,7 +77,7 @@ public final class DefaultModelDataSource implements ModelDataSource {
         if (deletedProperties.size() > 0) {
             deleteEvents.add(new DeleteEvent(a, b, deletedProperties, "join"));
         }
-        
+
         return a.createNewInstance(joinedProperties);
     }
 
@@ -202,16 +193,16 @@ public final class DefaultModelDataSource implements ModelDataSource {
     public String getEventHistory() {
         StringBuffer sb = new StringBuffer();
         sb.append("Original Model Properties\r\n");
-        for(ModelProperty mp : originalModelProperties) {
+        for (ModelProperty mp : originalModelProperties) {
             sb.append(mp).append("\r\n");
         }
 
-        for(DeleteEvent de : deleteEvents) {
+        for (DeleteEvent de : deleteEvents) {
             sb.append(de.toString());
         }
 
         sb.append("Processed Model Properties\r\n");
-        for(ModelProperty mp : modelProperties) {
+        for (ModelProperty mp : modelProperties) {
             sb.append(mp).append("\r\n");
         }
         return sb.toString();
@@ -233,15 +224,14 @@ public final class DefaultModelDataSource implements ModelDataSource {
 
     private static int findLastIndexOfParent(ModelProperty modelProperty, List<ModelProperty> modelProperties) {
         for (int i = modelProperties.size() - 1; i >= 0; i--) {
-            if(modelProperties.get(i).getUri().equals(modelProperty.getUri())) {               
-                for(int j = i; i <= modelProperties.size(); j++)    {
-                    if(!modelProperties.get(j).getUri().startsWith(modelProperty.getUri())) {
-                        return j -1;
+            if (modelProperties.get(i).getUri().equals(modelProperty.getUri())) {
+                for (int j = i; j < modelProperties.size(); j++) {
+                    if (!modelProperties.get(j).getUri().startsWith(modelProperty.getUri())) {
+                        return j - 1;
                     }
                 }
-                return modelProperties.size() - 1;    
-            }
-            else if (modelProperties.get(i).isParentOf(modelProperty)) {
+                return modelProperties.size() - 1;
+            } else if (modelProperties.get(i).isParentOf(modelProperty)) {
                 return i;
             }
         }
@@ -265,19 +255,26 @@ public final class DefaultModelDataSource implements ModelDataSource {
         List<String> uris = new ArrayList<String>();
         String baseUri = a.getProperties().get(0).getUri();
         for (ModelProperty p : m) {
-           // System.out.println("A:" + p.getUri());
-          //  System.out.println("B:" + baseUri);
             String subUri = p.getUri().substring(baseUri.length(), p.getUri().length());
             if (!uris.contains(p.getUri())
-            || (subUri.contains("#collection") && !subUri.endsWith("#collection"))) {
+                    || (subUri.contains("#collection") && !subUri.endsWith("#collection"))) {
                 processedProperties.add(findLastIndexOfParent(p, processedProperties) + 1, p);
                 uris.add(p.getUri());
             }
         }
-        for(ModelProperty mp : processedProperties) {
+        for (ModelProperty mp : processedProperties) {
             System.out.println(mp);
         }
         return processedProperties;
+    }
+
+    private static boolean aContainsAnyOfB(List<ModelProperty> a, List<ModelProperty> b) {
+        for (ModelProperty mp : b) {
+            if (a.contains(mp)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static class DeleteEvent {
