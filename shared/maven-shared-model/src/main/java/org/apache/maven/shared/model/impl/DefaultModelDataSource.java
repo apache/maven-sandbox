@@ -246,7 +246,6 @@ public final class DefaultModelDataSource implements ModelDataSource {
      * @return list of merged properties
      */
     protected static List<ModelProperty> mergeModelContainers(ModelContainer a, ModelContainer b) {
-        System.out.println("Merge");
         List<ModelProperty> m = new ArrayList<ModelProperty>();
         m.addAll(a.getProperties());
         m.addAll(b.getProperties());
@@ -262,9 +261,11 @@ public final class DefaultModelDataSource implements ModelDataSource {
                 uris.add(p.getUri());
             }
         }
+        /*
         for (ModelProperty mp : processedProperties) {
             System.out.println(mp);
         }
+        */
         return processedProperties;
     }
 
