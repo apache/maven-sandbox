@@ -28,15 +28,6 @@ public final class ModelTransformerContext {
         }
     }
 
-    private static boolean aContainsAnyOfB(List<ModelProperty> a, List<ModelProperty> b) {
-        for (ModelProperty mp : b) {
-            if (a.contains(mp)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Default constructor
      *

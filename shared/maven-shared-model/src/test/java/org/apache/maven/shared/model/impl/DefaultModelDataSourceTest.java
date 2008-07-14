@@ -19,6 +19,49 @@ public class DefaultModelDataSourceTest {
     }
 
     @Test
+    public void mergeModelContainersCollectionsOfCollections() throws IOException {
+        List<ModelProperty> modelProperties = Arrays.asList(
+                new ModelProperty("http://apache.org/maven/project", null),
+                new ModelProperty("http://apache.org/maven/project/build", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection", null),
+
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/version", "2.0.2"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId", "maven-compiler-plugin"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/groupId", "org.apache.maven.plugins"),
+
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/dependencies#collection", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/dependencies#collection/dependency", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/dependencies#collection/dependency/groupId", "gid1"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/dependencies#collection/dependency/artifactId", "art1"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/dependencies#collection/dependency/version", "2.0"),
+
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/version", "2.0.2"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId", "maven-compiler-plugin"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/groupId", "org.apache.maven.plugins"),
+
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/dependencies#collection", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/dependencies#collection/dependency", null),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/dependencies#collection/dependency/groupId", "gid1"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/dependencies#collection/dependency/artifactId", "art1"),
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/dependencies#collection/dependency/version", "1.0")
+        );
+
+
+        DummyModelContainerFactory factory = new DummyModelContainerFactory();
+
+        DefaultModelDataSource datasource = new DefaultModelDataSource();
+        datasource.init(modelProperties, factories);
+
+        List<ModelProperty> mps = datasource.mergeModelContainers(
+                factory.create(new ArrayList<ModelProperty>(modelProperties.subList(4, 13))),
+                factory.create(new ArrayList<ModelProperty>(modelProperties.subList(13, 21))));
+        assertTrue(mps.containsAll(new ArrayList<ModelProperty>(modelProperties.subList(4, 8))));
+    }
+
+    @Test
     public void mergeModelContainers() throws IOException {
         List<ModelProperty> modelProperties = Arrays.asList(
                 new ModelProperty("http://apache.org/maven/project", null),
@@ -34,8 +77,7 @@ public class DefaultModelDataSourceTest {
                 new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin", null),
                 new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/version", "2.0.2"),
                 new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/artifactId", "maven-compiler-plugin"),
-                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/groupId", "org.apache.maven.plugins"),
-                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/a", "a")
+                new ModelProperty("http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/groupId", "org.apache.maven.plugins")
         );
 
 
@@ -46,7 +88,7 @@ public class DefaultModelDataSourceTest {
 
         List<ModelProperty> mps = datasource.mergeModelContainers(
                 factory.create(new ArrayList<ModelProperty>(modelProperties.subList(4, 8))),
-                factory.create(new ArrayList<ModelProperty>(modelProperties.subList(8, 13))));
+                factory.create(new ArrayList<ModelProperty>(modelProperties.subList(8, 12))));
         assertTrue(mps.containsAll(new ArrayList<ModelProperty>(modelProperties.subList(4, 8))));
     }
 

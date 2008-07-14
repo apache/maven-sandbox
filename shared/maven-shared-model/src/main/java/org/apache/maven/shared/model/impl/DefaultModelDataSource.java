@@ -233,7 +233,15 @@ public final class DefaultModelDataSource implements ModelDataSource {
 
     private static int findLastIndexOfParent(ModelProperty modelProperty, List<ModelProperty> modelProperties) {
         for (int i = modelProperties.size() - 1; i >= 0; i--) {
-            if (modelProperties.get(i).isParentOf(modelProperty)) {
+            if(modelProperties.get(i).getUri().equals(modelProperty.getUri())) {               
+                for(int j = i; i <= modelProperties.size(); j++)    {
+                    if(!modelProperties.get(j).getUri().startsWith(modelProperty.getUri())) {
+                        return j -1;
+                    }
+                }
+                return modelProperties.size() - 1;    
+            }
+            else if (modelProperties.get(i).isParentOf(modelProperty)) {
                 return i;
             }
         }
@@ -248,18 +256,26 @@ public final class DefaultModelDataSource implements ModelDataSource {
      * @return list of merged properties
      */
     protected static List<ModelProperty> mergeModelContainers(ModelContainer a, ModelContainer b) {
+        System.out.println("Merge");
         List<ModelProperty> m = new ArrayList<ModelProperty>();
         m.addAll(a.getProperties());
         m.addAll(b.getProperties());
 
         LinkedList<ModelProperty> processedProperties = new LinkedList<ModelProperty>();
         List<String> uris = new ArrayList<String>();
-
+        String baseUri = a.getProperties().get(0).getUri();
         for (ModelProperty p : m) {
-            if (!uris.contains(p.getUri())) {
+           // System.out.println("A:" + p.getUri());
+          //  System.out.println("B:" + baseUri);
+            String subUri = p.getUri().substring(baseUri.length(), p.getUri().length());
+            if (!uris.contains(p.getUri())
+            || (subUri.contains("#collection") && !subUri.endsWith("#collection"))) {
                 processedProperties.add(findLastIndexOfParent(p, processedProperties) + 1, p);
                 uris.add(p.getUri());
             }
+        }
+        for(ModelProperty mp : processedProperties) {
+            System.out.println(mp);
         }
         return processedProperties;
     }
