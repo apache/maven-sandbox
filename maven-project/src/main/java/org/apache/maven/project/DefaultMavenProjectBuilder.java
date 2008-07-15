@@ -502,9 +502,9 @@ public class DefaultMavenProjectBuilder
         {
 //            getLogger().debug( "Allowing project-build to proceed for: " + projectDescriptor );
 
-            //Model model = readModel( "unknown", projectDescriptor, STRICT_MODEL_PARSING );
+            //Model model = readModelFromLocalPath( "unknown", projectDescriptor, STRICT_MODEL_PARSING );
 
-            Model model = readModel( "unknown", projectDescriptor, new PomArtifactResolver(config.getLocalRepository(),
+            Model model = readModelFromLocalPath( "unknown", projectDescriptor, new PomArtifactResolver(config.getLocalRepository(),
                     buildArtifactRepositories( getSuperModel() ), artifactResolver) );
 
 
@@ -560,7 +560,7 @@ public class DefaultMavenProjectBuilder
             artifactResolver.resolve( projectArtifact, remoteArtifactRepositories, localRepository );
 
             File file = projectArtifact.getFile();
-            model = readModel( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
+            model = readModelFromRepository( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
 
             String downloadUrl = null;
 
@@ -1003,7 +1003,7 @@ public class DefaultMavenProjectBuilder
 
         // We will return a different project object using the new model (hence the need to return a project, not just modify the parameter)
         project = new MavenProject( model );
-
+                               
         project.setOriginalModel( originalModel );
 
         project.setActiveProfiles( activeProfiles );
@@ -2045,17 +2045,7 @@ public class DefaultMavenProjectBuilder
     }
 
 
-    private boolean isOldProjectBuilder = false;
-
-    protected void setOldProjectBuilder() {
-        isOldProjectBuilder = true;
-    }
-
-    protected void setNewProjectBuilder() {
-        isOldProjectBuilder = false;
-    }
-
-    private Model readModel( String projectId,
+    private Model readModelFromLocalPath( String projectId,
                             File projectDescriptor,
                             PomArtifactResolver resolver )
        throws ProjectBuildingException
@@ -2070,8 +2060,34 @@ public class DefaultMavenProjectBuilder
        
        MavenProject mavenProject;
        try {
-           mavenProject = projectBuilder.buildFromStream(new FileInputStream(projectDescriptor), null, resolver,
+           mavenProject = projectBuilder.buildFromLocalPath(new FileInputStream(projectDescriptor), null, resolver,
                    projectDescriptor.getParentFile());
+       } catch (IOException e) {
+           e.printStackTrace();
+           throw new ProjectBuildingException(projectId, "File = " + projectDescriptor.getAbsolutePath() , e);
+       }
+
+      return mavenProject.getModel();
+
+   }
+
+    private Model readModelFromRepository( String projectId,
+                            File projectDescriptor,
+                            PomArtifactResolver resolver )
+       throws ProjectBuildingException
+   {
+       if(projectDescriptor == null) {
+           throw new IllegalArgumentException("projectDescriptor: null, Project Id =" + projectId);
+       }
+
+       if(projectBuilder == null) {
+           throw new IllegalArgumentException("projectBuilder: not initialized");
+       }
+
+       MavenProject mavenProject;
+       try {
+           mavenProject = projectBuilder.buildFromRepository(new FileInputStream(projectDescriptor), null, resolver
+           );
        } catch (IOException e) {
            e.printStackTrace();
            throw new ProjectBuildingException(projectId, "File = " + projectDescriptor.getAbsolutePath() , e);

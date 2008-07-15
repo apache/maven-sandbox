@@ -13,11 +13,12 @@ public interface ProjectBuilder {
 
     String ROLE = ProjectBuilder.class.getName();
 
-    MavenProject buildFromArtifact(Artifact artifact, Collection<InterpolatorProperty> interpolatorProperties,
-                                   PomArtifactResolver resolver)
+    MavenProject buildFromLocalPath(InputStream pom, Collection<InterpolatorProperty> interpolatorProperties,
+                                 PomArtifactResolver resolver, File baseDirectory)
             throws IOException;
 
-    MavenProject buildFromStream(InputStream pom, Collection<InterpolatorProperty> interpolatorProperties,
-                                 PomArtifactResolver resolver, File projectDirectory)
+    MavenProject buildFromRepository(InputStream pom, Collection<InterpolatorProperty> interpolatorProperties,
+                                     PomArtifactResolver resolver)
             throws IOException;
+
 }
