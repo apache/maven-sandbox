@@ -25,6 +25,7 @@ import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.Resource;
+import org.apache.maven.project.builder.PomClassicDomainModel;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;

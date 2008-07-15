@@ -84,7 +84,9 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
                 transformer, properties)).getModel();
 
         //validateModel(model);
-
+        for(DomainModel dm : domainModels) {
+       //     System.out.println(dm.getEventHistory());    
+        }
         MavenProject mavenProject = new MavenProject(model);
         mavenProject.setArtifact(artifactFactory.createProjectArtifact(model.getGroupId(), model.getArtifactId(),
                 model.getVersion()));

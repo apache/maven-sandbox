@@ -63,7 +63,7 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
             }
 
             if (artifactId == null) {
-                throw new IllegalArgumentException("properties does not contain artifact id. Group ID = " + groupId +
+                throw new IllegalArgumentException("Properties does not contain artifact id. Group ID = " + groupId +
                         ", Version = " + version);
             }
         }
@@ -103,7 +103,7 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
             StringBuffer sb = new StringBuffer();
             sb.append("Group ID = ").append(groupId).append(", Artifact ID = ").append(artifactId)
                     .append(", Version").append(version).append("\r\n");
-            for(ModelProperty mp : properties) {
+            for (ModelProperty mp : properties) {
                 sb.append(mp).append("\r\n");
             }
             return sb.toString();

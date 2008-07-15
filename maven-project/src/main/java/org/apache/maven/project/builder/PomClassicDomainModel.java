@@ -15,7 +15,8 @@ import java.io.*;
 /**
  * Provides a wrapper for the maven model.
  */
-public final class PomClassicDomainModel implements InputStreamDomainModel {
+public final class
+        PomClassicDomainModel implements InputStreamDomainModel {
 
     private byte[] inputBytes;
 
@@ -99,6 +100,10 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
     }
 
     public void setEventHistory(String eventHistory) {
+        if(eventHistory == null) {
+            throw new IllegalArgumentException("eventHistory: null");
+        }
+        //System.out.println(eventHistory);
         this.eventHistory = eventHistory;
     }
 
