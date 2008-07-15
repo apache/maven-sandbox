@@ -38,6 +38,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                 ProjectUri.Dependencies.Dependency.Exclusions.xUri,
 
                 ProjectUri.DependencyManagement.Dependencies.xUri,
+                ProjectUri.DependencyManagement.Dependencies.Dependency.Exclusions.xUri,
 
                 ProjectUri.Developers.xUri,
                 ProjectUri.Licenses.xUri,
@@ -46,24 +47,22 @@ public final class PomClassicTransformer implements ModelTransformer {
                 ProjectUri.PluginRepositories.xUri,
 
                 ProjectUri.Profiles.xUri,
+                ProjectUri.Profiles.Profile.Build.Plugins.Plugin.Dependencies.xUri,
+                ProjectUri.Profiles.Profile.Build.Resources.xUri,
                 ProjectUri.Profiles.Profile.Build.TestResources.xUri,
                 ProjectUri.Profiles.Profile.Dependencies.xUri,
+                ProjectUri.Profiles.Profile.Dependencies.Dependency.Exclusions.xUri,
                 ProjectUri.Profiles.Profile.DependencyManagement.Dependencies.xUri,
+                ProjectUri.Profiles.Profile.PluginRepositories.xUri,
                 ProjectUri.Profiles.Profile.Repositories.xUri,
 
                 ProjectUri.Reporting.Plugins.xUri,
+                ProjectUri.Reporting.Plugins.Plugin.ReportSets.xUri,
 
                 ProjectUri.Repositories.xUri,
 
-                "http://apache.org/maven/project/dependencyManagement/dependencies/dependency/exclusions#collection",
-                "http://apache.org/maven/project/reporting/plugins/plugin/reportSets#collection",
-
                 "http://apache.org/maven/project/profiles/profile/build/pluginManagement/plugins/plugin/dependencies#collection",
-                "http://apache.org/maven/project/profiles/profile/build/resources#collection",
                 "http://apache.org/maven/project/profiles/profile/build/pluginManagement/plugins/plugin/dependencies/dependency/exclusions#collection",
-                "http://apache.org/maven/project/profiles/profile/build/plugins/plugin/dependencies#collection",
-                "http://apache.org/maven/project/profiles/profile/pluginRepositories#collection",
-                "http://apache.org/maven/project/profiles/profile/dependencies/dependency/exclusions#collection",
                 "http://apache.org/maven/project/profiles/profile/build/pluginManagement/plugins/plugin/executions#collection",
                 "http://apache.org/maven/project/profiles/profile/build/pluginManagement/plugins#collection",
                 "http://apache.org/maven/project/profiles/profile/build/plugins/plugin/dependencies/dependency/exclusions#collection",
@@ -74,7 +73,6 @@ public final class PomClassicTransformer implements ModelTransformer {
                 "http://apache.org/maven/project/profiles/profile/build/plugins/plugin/executions#collection",
 
                 "http://apache.org/maven/project/build/plugins/plugin/dependencies/dependency/exclusions#collection",
-                "http://apache.org/maven/project/build/plugins/plugin/dependencies#collection",
                 "http://apache.org/maven/project/build/pluginManagement/plugins/plugin/dependencies/dependency/exclusions#collection",
                 "http://apache.org/maven/project/build/pluginManagement/plugins/plugin/executions#collection",
                 "http://apache.org/maven/project/build/pluginManagement/plugins/plugin/dependencies#collection"
@@ -113,7 +111,8 @@ public final class PomClassicTransformer implements ModelTransformer {
         List<ModelProperty> modelProperties = new ArrayList<ModelProperty>();
         List<String> projectNames = new ArrayList<String>();
         StringBuffer scmUrl = new StringBuffer();
-
+        StringBuffer scmConnectionUrl = new StringBuffer();
+        StringBuffer scmDeveloperUrl = new StringBuffer();
         for (DomainModel domainModel : domainModels) {
             if (!(domainModel instanceof PomClassicDomainModel)) {
                 throw new IllegalArgumentException("domainModels: Invalid domain model");
@@ -154,7 +153,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                         if (mp.getUri().equals(ProjectUri.Build.Plugins.Plugin.Executions.Execution.inherited)
                                 && mp.getValue() != null && mp.getValue().equals("false")) {
                             removeProperties.addAll(container.getProperties());
-                            for (int j = tmp.indexOf(mp); j >=0; j--) {
+                            for (int j = tmp.indexOf(mp); j >= 0; j--) {
                                 if (tmp.get(j).getUri().equals(ProjectUri.Build.Plugins.Plugin.Executions.xUri)) {
                                     removeProperties.add(tmp.get(j));
                                     break;
@@ -178,6 +177,31 @@ public final class PomClassicTransformer implements ModelTransformer {
                 tmp.remove(index);
                 tmp.add(index, new ModelProperty(ProjectUri.Scm.url, scmUrl.toString()));
             }
+
+            //SCM Connection Rule
+            scmUrlProperty = getPropertyFor(ProjectUri.Scm.connection, tmp);
+            if (scmConnectionUrl.length() == 0 && scmUrlProperty != null) {
+                scmConnectionUrl.append(scmUrlProperty.getValue());
+                for (String projectName : projectNames) {
+                    scmConnectionUrl.append("/").append(projectName);
+                }
+                int index = tmp.indexOf(scmUrlProperty);
+                tmp.remove(index);
+                tmp.add(index, new ModelProperty(ProjectUri.Scm.connection, scmConnectionUrl.toString()));
+            }
+
+            //SCM Developer Rule
+            scmUrlProperty = getPropertyFor(ProjectUri.Scm.developerConnection, tmp);
+            if (scmDeveloperUrl.length() == 0 && scmUrlProperty != null) {
+                scmDeveloperUrl.append(scmUrlProperty.getValue());
+                for (String projectName : projectNames) {
+                    scmDeveloperUrl.append("/").append(projectName);
+                }
+                int index = tmp.indexOf(scmUrlProperty);
+                tmp.remove(index);
+                tmp.add(index, new ModelProperty(ProjectUri.Scm.developerConnection, scmDeveloperUrl.toString()));
+            }
+
             projectNames.add(0, getPropertyFor(ProjectUri.artifactId, tmp).getValue());
 
             modelProperties.addAll(tmp);
