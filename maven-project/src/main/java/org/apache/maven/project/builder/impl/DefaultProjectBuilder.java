@@ -43,25 +43,26 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
     public MavenProject buildFromArtifact(Artifact artifact, Collection<InterpolatorProperty> interpolatorProperties, PomArtifactResolver resolver)
             throws IOException {
-        if(resolver == null) {
+        if (resolver == null) {
             throw new IllegalArgumentException("resolver: null");
         }
         resolver.resolve(artifact);
         return buildFromStream(new FileInputStream(artifact.getFile()), interpolatorProperties, resolver, null);//TODO: Fix
     }
 
-    public MavenProject buildFromStream(InputStream pom, Collection<InterpolatorProperty> interpolatorProperties, PomArtifactResolver resolver, File projectDirectory)
+    public MavenProject buildFromStream(InputStream pom, Collection<InterpolatorProperty> interpolatorProperties,
+                                        PomArtifactResolver resolver, File projectDirectory)
             throws IOException {
 
         if (pom == null) {
             throw new IllegalArgumentException("pom: null");
         }
 
-        if(resolver == null) {
+        if (resolver == null) {
             throw new IllegalArgumentException("resolver: null");
         }
 
-        if(projectDirectory == null) {
+        if (projectDirectory == null) {
             throw new IllegalArgumentException("projectDirectory: null");
         }
 
@@ -83,13 +84,25 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         Model model = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
                 transformer, properties)).getModel();
 
-      //  validateModel(model);
-        for(DomainModel dm : domainModels) {
-       //     System.out.println(dm.getEventHistory());
+        //  validateModel(model);
+        for (DomainModel dm : domainModels) {
+            //     System.out.println(dm.getEventHistory());
         }
         MavenProject mavenProject = new MavenProject(model);
-        mavenProject.setArtifact(artifactFactory.createProjectArtifact(model.getGroupId(), model.getArtifactId(),
-                model.getVersion()));
+        Artifact artifact = artifactFactory.createProjectArtifact(model.getGroupId(), model.getArtifactId(),
+                model.getVersion());
+        if (mavenProject.getBuild() != null && mavenProject.getBuild().getOutputDirectory() != null
+                &&  mavenProject.getBuild().getFinalName() != null) {
+            File artifactFile = new File(mavenProject.getBuild().getOutputDirectory(), mavenProject.getBuild().getFinalName());
+            if (!artifactFile.exists()) {
+                throw new IOException("Artifact does not exist: File = " + artifactFile.getAbsolutePath());
+            }
+            artifact.setFile(artifactFile);
+        }  else {
+            logger.warn("Build section of pom is null");
+        }
+
+        mavenProject.setArtifact(artifact);
 
         return mavenProject;
     }
@@ -114,7 +127,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         try {
             artifactResolver.resolve(artifactParent);
         } catch (IOException e) {
-           // throw new IOException("getDomainModelFromRepository");
+            // throw new IOException("getDomainModelFromRepository");
         }
 
         if (!artifactParent.getFile().exists()) {
@@ -122,7 +135,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
             Model model = domainModel.getModel();
 
             File parentFile = new File(projectDirectory, model.getParent().getRelativePath()).getCanonicalFile();
-            if( parentFile.isDirectory()) {
+            if (parentFile.isDirectory()) {
                 parentFile = new File(parentFile, "pom.xml");
             }
 
@@ -134,7 +147,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
             if (!parentFile.exists()) {
                 logger.warn("Parent pom does not exist on local path: File = " + parentFile.getAbsolutePath());
 //                  throw new IOException("Parent pom does not exist: File = " + artifactParent.getFile() + ", Child Id = " +
- //                         model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion());
+                //                         model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion());
             }
             artifactParent.setFile(parentFile);
         }
