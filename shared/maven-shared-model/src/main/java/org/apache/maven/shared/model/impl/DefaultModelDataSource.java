@@ -147,6 +147,9 @@ public final class DefaultModelDataSource implements ModelDataSource {
                     break;
                 }
                 case END_TAG: {
+                    if(!i.hasNext()) {
+                        tmp.add(mp);
+                    }
                     modelContainers.add(factory.create(tmp));
                     tmp.clear();
                     state = NO_TAG;
@@ -254,7 +257,12 @@ public final class DefaultModelDataSource implements ModelDataSource {
         List<String> uris = new ArrayList<String>();
         String baseUri = a.getProperties().get(0).getUri();
         for (ModelProperty p : m) {
-            String subUri = p.getUri().substring(baseUri.length(), p.getUri().length());
+            int modelPropertyLength = p.getUri().length();
+            if(baseUri.length() > modelPropertyLength ) {
+                throw new IllegalArgumentException("Base URI is longer than model property uri: Base URI = " + baseUri
+                        + ", ModelProperty = " + p);
+            }
+            String subUri = p.getUri().substring(baseUri.length(), modelPropertyLength );
             if (!uris.contains(p.getUri())
                     || (subUri.contains("#collection") && !subUri.endsWith("#collection"))) {
                 processedProperties.add(findLastIndexOfParent(p, processedProperties) + 1, p);
