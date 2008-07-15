@@ -93,13 +93,12 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
                 model.getVersion());
         if (mavenProject.getBuild() != null && mavenProject.getBuild().getOutputDirectory() != null
                 && mavenProject.getBuild().getFinalName() != null) {
-            File artifactFile = new File(mavenProject.getBuild().getOutputDirectory(), mavenProject.getBuild().getFinalName());
+            File artifactFile = new File(mavenProject.getBuild().getDirectory(), mavenProject.getBuild().getFinalName()
+                    + "." + mavenProject.getPackaging());//TODO: fix extension
             if (!artifactFile.exists()) {
                 throw new IOException("Artifact does not exist: File = " + artifactFile.getAbsolutePath());
             }
             artifact.setFile(artifactFile);
-        } else {
-            logger.warn("Build section of pom is null");
         }
 
         mavenProject.setArtifact(artifact);
