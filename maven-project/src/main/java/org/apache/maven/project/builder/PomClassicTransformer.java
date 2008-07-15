@@ -142,7 +142,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                 tmp.add(new ModelProperty(ProjectUri.groupId, parentGroupId.getValue()));
             }
 
-            //Not inherited plugin execution rule
+            //Not inherited plugin execution rule            
             if (domainModels.indexOf(domainModel) > 0) {
                 List<ModelProperty> removeProperties = new ArrayList<ModelProperty>();
                 ModelDataSource source = new DefaultModelDataSource();
@@ -154,6 +154,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                                 && mp.getValue() != null && mp.getValue().equals("false")) {
                             removeProperties.addAll(container.getProperties());
                             for (int j = tmp.indexOf(mp); j >= 0; j--) {
+                                System.out.println("------" + tmp.get(j));
                                 if (tmp.get(j).getUri().equals(ProjectUri.Build.Plugins.Plugin.Executions.xUri)) {
                                     removeProperties.add(tmp.get(j));
                                     break;
@@ -165,6 +166,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                 }
                 tmp.removeAll(removeProperties);
             }
+
 
             //SCM Rule
             ModelProperty scmUrlProperty = getPropertyFor(ProjectUri.Scm.url, tmp);
