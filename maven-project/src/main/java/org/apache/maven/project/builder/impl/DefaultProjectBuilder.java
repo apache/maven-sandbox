@@ -107,7 +107,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         if (parent == null) {
             return domainModels;
         }
-         logger.info("Parent: " + parent.getArtifactId());
+
         Artifact artifactParent =
                 artifactFactory.createParentArtifact(parent.getGroupId(), parent.getArtifactId(), parent.getVersion());
 
