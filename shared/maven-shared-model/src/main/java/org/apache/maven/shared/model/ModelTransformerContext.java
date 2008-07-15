@@ -62,7 +62,13 @@ public final class ModelTransformerContext {
 
         for (ModelContainerFactory factory : factories) {
             for (String uri : factory.getUris()) {
-                List<ModelContainer> modelContainers = modelDataSource.queryFor(uri);
+                List<ModelContainer> modelContainers = null;
+                try {
+                    modelContainers = modelDataSource.queryFor(uri);
+                } catch (IllegalArgumentException e) {
+                    System.out.println(modelDataSource.getEventHistory());
+                    throw new IllegalArgumentException(e);
+                }
                 List<ModelContainer> removedModelContainers = new ArrayList<ModelContainer>();
                 Collections.reverse(modelContainers);
                 for (int i = 0; i < modelContainers.size(); i++) {
