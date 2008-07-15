@@ -87,7 +87,7 @@ public final class PomClassicTransformer implements ModelTransformer {
 
         List<ModelProperty> props = new ArrayList<ModelProperty>();
         for (ModelProperty mp : properties) { //TODO: Resolved values
-            if (mp.getValue() != null && mp.getValue().contains("=")) {
+            if (mp.getValue() != null && (mp.getValue().contains("=") || mp.getValue().contains("<"))) {
                 props.add(new ModelProperty(mp.getUri(), "<![CDATA[" + mp.getValue() + "]]>"));
             } else {
                 props.add(mp);
