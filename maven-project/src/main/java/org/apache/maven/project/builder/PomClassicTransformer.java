@@ -207,7 +207,7 @@ public final class PomClassicTransformer implements ModelTransformer {
             if (domainModels.size() > 1) {
                 ModelDataSource source = new DefaultModelDataSource();
                 source.init(tmp, Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
-                List<ModelContainer> containers = null;
+                List<ModelContainer> containers;
                 try {
                     containers = source.queryFor(ProjectUri.Dependencies.Dependency.xUri);
                 } catch (IllegalArgumentException e) {

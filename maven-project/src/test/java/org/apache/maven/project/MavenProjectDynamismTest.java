@@ -112,14 +112,14 @@ public class MavenProjectDynamismTest
         children = conf.getChildren();
         assertEquals( 3, children.length );
 
-        assertEquals( "Configuration parameter: " + children[0].getName() + " should have "
-                      + projectGidExpr + " as its value.", children[0].getValue(), projectGidExpr );
+        assertEquals( "Configuration parameter: " + children[2].getName() + " should have "
+                      + projectGidExpr + " as its value.", children[2].getValue(), projectGidExpr );
 
         assertEquals( "Configuration parameter: " + children[1].getName() + " should have "
                       + pomGidExpr + " as its value.", children[1].getValue(), pomGidExpr );
 
-        assertEquals( "Configuration parameter: " + children[2].getName() + " should have "
-                      + nakedGidExpr + " as its value.", children[2].getValue(), nakedGidExpr );
+        assertEquals( "Configuration parameter: " + children[0].getName() + " should have "
+                      + nakedGidExpr + " as its value.", children[0].getValue(), nakedGidExpr );
     }
 
     public void testRoundTrip()
