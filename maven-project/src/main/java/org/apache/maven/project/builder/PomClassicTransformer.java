@@ -154,7 +154,6 @@ public final class PomClassicTransformer implements ModelTransformer {
                                 && mp.getValue() != null && mp.getValue().equals("false")) {
                             removeProperties.addAll(container.getProperties());
                             for (int j = tmp.indexOf(mp); j >= 0; j--) {
-                                System.out.println("------" + tmp.get(j));
                                 if (tmp.get(j).getUri().equals(ProjectUri.Build.Plugins.Plugin.Executions.xUri)) {
                                     removeProperties.add(tmp.get(j));
                                     break;
@@ -208,7 +207,12 @@ public final class PomClassicTransformer implements ModelTransformer {
             if (domainModels.size() > 1) {
                 ModelDataSource source = new DefaultModelDataSource();
                 source.init(tmp, Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
-                List<ModelContainer> containers = source.queryFor(ProjectUri.Dependencies.Dependency.xUri);
+                List<ModelContainer> containers = null;
+                try {
+                    containers = source.queryFor(ProjectUri.Dependencies.Dependency.xUri);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException(source.getEventHistory(), e);
+                }
                 int index = tmp.indexOf(getPropertyFor(ProjectUri.Dependencies.xUri, tmp));
                 if (index > -1) {
                     for (ModelContainer container : containers) {

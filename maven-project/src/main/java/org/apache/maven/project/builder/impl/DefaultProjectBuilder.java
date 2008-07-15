@@ -63,7 +63,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
         if(projectDirectory == null) {
             throw new IllegalArgumentException("projectDirectory: null");
-        }        
+        }
 
         List<InterpolatorProperty> properties;
         if (interpolatorProperties == null) {
@@ -83,9 +83,9 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         Model model = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
                 transformer, properties)).getModel();
 
-        //validateModel(model);
+      //  validateModel(model);
         for(DomainModel dm : domainModels) {
-       //     System.out.println(dm.getEventHistory());    
+       //     System.out.println(dm.getEventHistory());
         }
         MavenProject mavenProject = new MavenProject(model);
         mavenProject.setArtifact(artifactFactory.createProjectArtifact(model.getGroupId(), model.getArtifactId(),
@@ -103,7 +103,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         List<DomainModel> domainModels = new ArrayList<DomainModel>();
 
         Parent parent = domainModel.getModel().getParent();
-     
+
         if (parent == null) {
             return domainModels;
         }
