@@ -209,6 +209,7 @@ public final class PomClassicTransformer implements ModelTransformer {
             }
              
             //Ordered Dependency Rule
+            /*
             if (domainModels.size() > 1) {
                 ModelDataSource source = new DefaultModelDataSource();
                 source.init(tmp, Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
@@ -226,7 +227,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                     }
                 }
             }
-
+            */
 
             ModelProperty artifactId = getPropertyFor(ProjectUri.artifactId, tmp);
             if(artifactId != null) {
