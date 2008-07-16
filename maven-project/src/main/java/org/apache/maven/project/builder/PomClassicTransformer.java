@@ -207,7 +207,17 @@ public final class PomClassicTransformer implements ModelTransformer {
                 tmp.remove(index);
                 tmp.add(index, new ModelProperty(ProjectUri.Scm.developerConnection, scmDeveloperUrl.toString()));
             }
-             
+
+            //Remove Plugin Repository Inheritance Rule
+            List<ModelProperty> pluginRepoProperties = new ArrayList<ModelProperty>();
+            for(ModelProperty mp : tmp) {
+                if(domainModels.indexOf(domainModel) > 0 && mp.getUri().startsWith(ProjectUri.PluginRepositories.xUri)){
+                    pluginRepoProperties.add(mp);
+                }
+            }
+            tmp.removeAll(pluginRepoProperties);
+
+
             //Ordered Dependency Rule
             /*
             if (domainModels.size() > 1) {
