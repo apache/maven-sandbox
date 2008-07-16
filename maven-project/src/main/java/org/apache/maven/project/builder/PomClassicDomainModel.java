@@ -107,6 +107,10 @@ public final class
         this.eventHistory = eventHistory;
     }
 
+    public boolean equals(Object o) {
+        return o instanceof PomClassicDomainModel && this.asString().equals(((PomClassicDomainModel) o).asString());
+    }
+
     //TODO: Workaround
     private byte[] removeIllegalCharacters(byte[] bytes) {
         // what is it supposed to do? which are the illegal characters to remove?

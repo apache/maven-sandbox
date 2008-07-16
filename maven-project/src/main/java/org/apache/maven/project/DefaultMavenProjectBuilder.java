@@ -82,18 +82,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 /*:apt
 
@@ -525,18 +514,40 @@ public class DefaultMavenProjectBuilder
                 true );
             //TODO: Compare models
             */
-            try {
+        PomClassicDomainModel domainModel = null;
+        PomClassicDomainModel legacy_domainModel = null;
+        try {
+            domainModel = new PomClassicDomainModel(model);
+            legacy_domainModel = new PomClassicDomainModel(legacy_project.getModel());
+
+            if(!domainModel.equals(legacy_domainModel)) {
+                byte[] x = domainModel.asString().getBytes();
+                byte[] y = legacy_domainModel.asString().getBytes();
+                int breakPoint = x.length;
+                for(int i = 0; i < x.length; i++) {
+                    if(x[i] != y[i]) {
+                        System.out.println("Break at position = " + i);
+                        breakPoint = i;
+                        break;
+                    }
+                }
+
                 System.out.println("-----------------***");
-                System.out.println(new PomClassicDomainModel(model).asString());
-                System.out.println(new PomClassicDomainModel(legacy_project.getModel()).asString());
+                System.out.println(domainModel.asString().substring(0, breakPoint));
+                System.out.println("--------------------BREAK-------------------");
+                System.out.println(domainModel.asString().substring(breakPoint, x.length));
+
+                System.out.println(legacy_domainModel.asString().substring(0, breakPoint));
+                System.out.println("--------------------BREAK-------------------");
+                System.out.println(legacy_domainModel.asString().substring(breakPoint, y.length));
+
                 System.out.println("------------------");
                 throw new ProjectBuildingException("", "");
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-       // }
-
-
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         return legacy_project;
     }
 
@@ -2117,7 +2128,8 @@ public class DefaultMavenProjectBuilder
 
        MavenProject mavenProject;
        try {
-           mavenProject = projectBuilder.buildFromLocalPath(new FileInputStream(projectDescriptor), null, resolver,
+           mavenProject = projectBuilder.buildFromLocalPath(new FileInputStream(projectDescriptor),
+                   Arrays.asList(getSuperModel()), null, resolver,
                    projectDescriptor.getParentFile());
        } catch (IOException e) {
            e.printStackTrace();
@@ -2143,7 +2155,8 @@ public class DefaultMavenProjectBuilder
 
        MavenProject mavenProject;
        try {
-           mavenProject = projectBuilder.buildFromRepository(new FileInputStream(projectDescriptor), null, resolver
+           mavenProject = projectBuilder.buildFromRepository(new FileInputStream(projectDescriptor),
+                   Arrays.asList(getSuperModel()), null, resolver
            );
        } catch (IOException e) {
            e.printStackTrace();

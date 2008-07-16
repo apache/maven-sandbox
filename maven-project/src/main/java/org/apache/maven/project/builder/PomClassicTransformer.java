@@ -120,11 +120,13 @@ public final class PomClassicTransformer implements ModelTransformer {
 
             List<ModelProperty> tmp = ModelMarshaller.marshallXmlToModelProperties(
                     ((PomClassicDomainModel) domainModel).getInputStream(), ProjectUri.baseUri, uris);
-
+ 
             //Missing Version Rule
             if (getPropertyFor(ProjectUri.version, tmp) == null) {
                 ModelProperty parentVersion = getPropertyFor(ProjectUri.Parent.version, tmp);
-                tmp.add(new ModelProperty(ProjectUri.version, parentVersion.getValue()));
+                if(parentVersion != null) {
+                    tmp.add(new ModelProperty(ProjectUri.version, parentVersion.getValue()));
+                }
             }
 
             //Modules Not Inherited Rule
@@ -139,7 +141,10 @@ public final class PomClassicTransformer implements ModelTransformer {
             //Missing groupId, use parent one Rule
             if (getPropertyFor(ProjectUri.groupId, tmp) == null) {
                 ModelProperty parentGroupId = getPropertyFor(ProjectUri.Parent.groupId, tmp);
-                tmp.add(new ModelProperty(ProjectUri.groupId, parentGroupId.getValue()));
+                if(parentGroupId != null) {
+                    tmp.add(new ModelProperty(ProjectUri.groupId, parentGroupId.getValue()));   
+                }
+
             }
 
             //Not inherited plugin execution rule            
@@ -202,7 +207,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                 tmp.remove(index);
                 tmp.add(index, new ModelProperty(ProjectUri.Scm.developerConnection, scmDeveloperUrl.toString()));
             }
-
+             
             //Ordered Dependency Rule
             if (domainModels.size() > 1) {
                 ModelDataSource source = new DefaultModelDataSource();
@@ -222,7 +227,12 @@ public final class PomClassicTransformer implements ModelTransformer {
                 }
             }
 
-            projectNames.add(0, getPropertyFor(ProjectUri.artifactId, tmp).getValue());
+
+            ModelProperty artifactId = getPropertyFor(ProjectUri.artifactId, tmp);
+            if(artifactId != null) {
+                projectNames.add(0, artifactId.getValue());
+            }
+
 
             modelProperties.addAll(tmp);
 

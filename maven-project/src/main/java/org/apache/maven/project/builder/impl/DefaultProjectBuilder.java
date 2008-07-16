@@ -18,10 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
@@ -41,7 +38,8 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         this.artifactFactory = artifactFactory;
     }
 
-    public MavenProject buildFromRepository(InputStream pom, Collection<InterpolatorProperty> interpolatorProperties,
+    public MavenProject buildFromRepository(InputStream pom, List<Model> inheritedModels,
+                                            Collection<InterpolatorProperty> interpolatorProperties,
                                             PomArtifactResolver resolver)
             throws IOException {
 
@@ -51,6 +49,13 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
         if (resolver == null) {
             throw new IllegalArgumentException("resolver: null");
+        }
+
+        if(inheritedModels == null) {
+            inheritedModels = new ArrayList<Model>();
+        } else {
+            inheritedModels = new ArrayList<Model>(inheritedModels);
+            Collections.reverse(inheritedModels);                     
         }
 
         List<InterpolatorProperty> properties;
@@ -64,6 +69,9 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         List<DomainModel> domainModels = new ArrayList<DomainModel>();
         domainModels.add(domainModel);
         domainModels.addAll(getDomainModelParentsFromRepository((PomClassicDomainModel) domainModel, resolver));
+        for(Model model : inheritedModels) {
+            domainModels.add(new PomClassicDomainModel(model));
+        }
 
         PomClassicTransformer transformer = new PomClassicTransformer();
         ModelTransformerContext ctx = new ModelTransformerContext(
@@ -74,8 +82,9 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         return new MavenProject(model);
     }
 
-    public MavenProject buildFromLocalPath(InputStream pom, Collection<InterpolatorProperty> interpolatorProperties,
-                                        PomArtifactResolver resolver, File projectDirectory)
+    public MavenProject buildFromLocalPath(InputStream pom, List<Model> inheritedModels,
+                                           Collection<InterpolatorProperty> interpolatorProperties,
+                                           PomArtifactResolver resolver, File projectDirectory)
             throws IOException {
 
         if (pom == null) {
@@ -90,6 +99,13 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
             throw new IllegalArgumentException("projectDirectory: null");
         }
 
+        if(inheritedModels == null) {
+            inheritedModels = new ArrayList<Model>();
+        } else {
+            inheritedModels = new ArrayList<Model>(inheritedModels);
+            Collections.reverse(inheritedModels);
+        }
+
         List<InterpolatorProperty> properties;
         if (interpolatorProperties == null) {
             properties = new ArrayList<InterpolatorProperty>();
@@ -100,8 +116,10 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         PomClassicDomainModel domainModel = new PomClassicDomainModel(pom);
         List<DomainModel> domainModels = new ArrayList<DomainModel>();
         domainModels.add(domainModel);
+
         if(domainModel.getModel().getParent() != null) {
             if(isParentLocal(domainModel.getModel().getParent(), projectDirectory )) {
+                logger.info("Found parent on local path:");
                  domainModels.addAll(getDomainModelParentsFromLocalPath(domainModel, resolver,
                          projectDirectory));
             }  else {
@@ -109,13 +127,17 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
             }
         }
 
+        for(Model model : inheritedModels) {
+            domainModels.add(new PomClassicDomainModel(model));
+        }
+
         PomClassicTransformer transformer = new PomClassicTransformer();
         ModelTransformerContext ctx = new ModelTransformerContext(
                 Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
-        Model model = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
-                transformer, properties)).getModel();
-     //   System.out.println(new PomClassicDomainModel(model).asString());
-        return new MavenProject(model);
+        PomClassicDomainModel transformedDomainModel = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
+                transformer, properties));
+        logger.info(transformedDomainModel.getEventHistory());
+        return new MavenProject(transformedDomainModel.getModel());
     }
 
     private boolean isParentLocal(Parent parent, File projectDirectory){
@@ -124,7 +146,6 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
             if (f.isDirectory()) {
                 f = new File(f, "pom.xml");
             }
-          //  logger.info("File: " + f.getAbsolutePath());
             return f.exists();
         } catch (IOException e) {
             e.printStackTrace();
@@ -143,6 +164,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         Parent parent = domainModel.getModel().getParent();
 
         if (parent == null) {
+            logger.info("End of inheritance chain");
             return domainModels;
         }
 
@@ -153,6 +175,10 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         PomClassicDomainModel parentDomainModel = new PomClassicDomainModel(new FileInputStream(artifactParent.getFile()));
         if (!parentDomainModel.matchesParent(domainModel.getModel().getParent())) {
             logger.warn("Parent pom ids do not match: File = " + artifactParent.getFile().getAbsolutePath());
+            return domainModels;
+        } else {
+            logger.info("Adding pom to hierarchy: Group Id = " + parent.getGroupId() + ", Artifact Id ="
+                + parent.getArtifactId()  + ", Version = " + parent.getVersion() + ", File" + artifactParent.getFile());
         }
 
         domainModels.add(parentDomainModel);
@@ -175,6 +201,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         Parent parent = domainModel.getModel().getParent();
 
         if (parent == null) {
+            logger.info("End of inheritance chain");
             return domainModels;
         }
 
