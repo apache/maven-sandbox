@@ -220,9 +220,24 @@ public final class PomClassicTransformer implements ModelTransformer {
              for(ModelProperty mp : tmp) {
                 if(domainModels.indexOf(domainModel) > 0 && mp.getUri().equals(ProjectUri.name)){
                     clearedProperties.add(mp);
+                    break;
                 }
             }
 
+            //Packaging Inheritance Rule
+             for(ModelProperty mp : tmp) {
+                if(domainModels.indexOf(domainModel) > 0 && mp.getUri().equals(ProjectUri.packaging)){
+                    clearedProperties.add(mp);
+                    break;
+                }
+            }
+
+            //Build Resources Inheritence Rule
+             for(ModelProperty mp : tmp) {
+                if(domainModels.indexOf(domainModel) > 0 && mp.getUri().startsWith(ProjectUri.Build.Resources.xUri)){
+                    clearedProperties.add(mp);
+                }
+            }
 
             //Ordered Dependency Rule
             /*
