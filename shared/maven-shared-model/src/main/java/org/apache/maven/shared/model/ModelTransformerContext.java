@@ -62,7 +62,7 @@ public final class ModelTransformerContext {
 
         for (ModelContainerFactory factory : factories) {
             for (String uri : factory.getUris()) {
-                List<ModelContainer> modelContainers = null;
+                List<ModelContainer> modelContainers;
                 try {
                     modelContainers = modelDataSource.queryFor(uri);
                 } catch (IllegalArgumentException e) {
@@ -114,18 +114,18 @@ public final class ModelTransformerContext {
                 unresolvedProperties.add(mp);
             }
         }
-        /*
-        System.out.println("Properties: " + properties.size());
+
         for (InterpolatorProperty ip : properties) {
             for (ModelProperty mp : unresolvedProperties) {
-                System.out.println(ip);
-                mp.resolveWith(ip);
-                System.out.println(mp);
-                System.out.println("-------------------");
+              //  mp.resolveWith(ip);
+              //  System.out.println(mp);
+               // System.out.println("-------------------");
             }
         }
 
-        */
+
+
+        mps = reverseSort(mps);
 
         try {
             validate(mps);
@@ -186,8 +186,42 @@ public final class ModelTransformerContext {
                 int pst = position.indexOf(parentUri) + 1;
                 processedProperties.add(pst, p);
                 position.add(pst, uri);
+            } 
+        }
+        logger.info("Properties removed through sort: " + (properties.size() - processedProperties.size()));
+        return processedProperties;
+    }
+
+    protected List<ModelProperty> reverseSort(List<ModelProperty> properties) {
+        if (properties == null) {
+            throw new IllegalArgumentException("properties");
+        }
+        LinkedList<ModelProperty> processedProperties = new LinkedList<ModelProperty>();
+
+        int currentIndex = -1;
+        String currentUri = "";
+        for (ModelProperty p : properties) {
+            String uri = p.getUri();
+            String parentUri = uri.substring(0, uri.lastIndexOf("/"));
+
+            if (parentUri.endsWith("#collection")) {
+                for (int j = processedProperties.size(); j >= 0; j--) {
+                    if (properties.get(j).getUri().equals(parentUri)) {
+                        currentIndex = j + 1;
+                        break;
+                    }
+                }
+                currentUri = p.getUri();
+                processedProperties.add(currentIndex, p);
+            }  else if(p.getUri().startsWith(currentUri)){
+                currentIndex++;
+                processedProperties.add(currentIndex, p);
+            } else {
+                currentIndex++;
+                processedProperties.add(p);
             }
         }
+        logger.info("Properties removed through reverse sort: " + (properties.size() - processedProperties.size()));
         return processedProperties;
     }
 
