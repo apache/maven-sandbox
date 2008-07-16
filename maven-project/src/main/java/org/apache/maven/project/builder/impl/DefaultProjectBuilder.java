@@ -136,7 +136,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
                 Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
         PomClassicDomainModel transformedDomainModel = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
                 transformer, properties));
-        logger.info(transformedDomainModel.getEventHistory());
+        //logger.info(transformedDomainModel.getEventHistory());
         return new MavenProject(transformedDomainModel.getModel());
     }
 

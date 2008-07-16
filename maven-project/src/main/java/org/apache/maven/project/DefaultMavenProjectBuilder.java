@@ -46,6 +46,7 @@ import org.apache.maven.model.Extension;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginManagement;
+import org.apache.maven.model.Parent;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Repository;
 import org.apache.maven.model.Resource;
@@ -504,7 +505,9 @@ public class DefaultMavenProjectBuilder
 
             Model model = readModelFromLocalPath( "unknown", projectDescriptor, new PomArtifactResolver(config.getLocalRepository(),
                     buildArtifactRepositories( getSuperModel() ), artifactResolver) );
-            /*
+            Parent parent = legacy_model.getParent();
+
+            model.setParent(null);
             MavenProject project = buildInternal(model,
                 config,
                 buildArtifactRepositories( getSuperModel() ),
@@ -512,12 +515,12 @@ public class DefaultMavenProjectBuilder
                 STRICT_MODEL_PARSING,
                 true,
                 true );
-            //TODO: Compare models
-            */
+
+              project.getModel().setParent(parent);
         PomClassicDomainModel domainModel = null;
         PomClassicDomainModel legacy_domainModel = null;
         try {
-            domainModel = new PomClassicDomainModel(model);
+            domainModel = new PomClassicDomainModel(project.getModel());
             legacy_domainModel = new PomClassicDomainModel(legacy_project.getModel());
 
             if(!domainModel.equals(legacy_domainModel)) {
@@ -872,8 +875,9 @@ public class DefaultMavenProjectBuilder
 
 //        getLogger().debug( "Caching project: " + project.getId() + " (also keyed by file: " + project.getFile() + ")" );
 
-        projectWorkspace.storeProjectByCoordinate( project );
-        projectWorkspace.storeProjectByFile( project );
+        //TODO: SI  - Disable for now
+     //   projectWorkspace.storeProjectByCoordinate( project );
+     //   projectWorkspace.storeProjectByFile( project );
 
         project.setManagedVersionMap( createManagedVersionMap( projectId, project.getDependencyManagement(), projectDescriptor ) );
 

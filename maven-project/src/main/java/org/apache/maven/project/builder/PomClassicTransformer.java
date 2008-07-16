@@ -120,7 +120,8 @@ public final class PomClassicTransformer implements ModelTransformer {
 
             List<ModelProperty> tmp = ModelMarshaller.marshallXmlToModelProperties(
                     ((PomClassicDomainModel) domainModel).getInputStream(), ProjectUri.baseUri, uris);
- 
+            List clearedProperties = new ArrayList<ModelProperty>();
+
             //Missing Version Rule
             if (getPropertyFor(ProjectUri.version, tmp) == null) {
                 ModelProperty parentVersion = getPropertyFor(ProjectUri.Parent.version, tmp);
@@ -209,13 +210,18 @@ public final class PomClassicTransformer implements ModelTransformer {
             }
 
             //Remove Plugin Repository Inheritance Rule
-            List<ModelProperty> pluginRepoProperties = new ArrayList<ModelProperty>();
             for(ModelProperty mp : tmp) {
                 if(domainModels.indexOf(domainModel) > 0 && mp.getUri().startsWith(ProjectUri.PluginRepositories.xUri)){
-                    pluginRepoProperties.add(mp);
+                    clearedProperties.add(mp);
                 }
             }
-            tmp.removeAll(pluginRepoProperties);
+
+            //Project Name Inheritance Rule
+             for(ModelProperty mp : tmp) {
+                if(domainModels.indexOf(domainModel) > 0 && mp.getUri().equals(ProjectUri.name)){
+                    clearedProperties.add(mp);
+                }
+            }
 
 
             //Ordered Dependency Rule
@@ -244,17 +250,16 @@ public final class PomClassicTransformer implements ModelTransformer {
                 projectNames.add(0, artifactId.getValue());
             }
 
-
+            tmp.removeAll(clearedProperties);
             modelProperties.addAll(tmp);
 
             //Remove Parent Info
-            /*
             for (ModelProperty mp : tmp) {
                 if (mp.getUri().startsWith(ProjectUri.Parent.xUri)) {
                     modelProperties.remove(mp);
                 }
             }
-            */
+            
         }
         return modelProperties;
     }
