@@ -227,11 +227,13 @@ public final class PomClassicTransformer implements ModelTransformer {
             modelProperties.addAll(tmp);
 
             //Remove Parent Info
+            /*
             for (ModelProperty mp : tmp) {
                 if (mp.getUri().startsWith(ProjectUri.Parent.xUri)) {
                     modelProperties.remove(mp);
                 }
             }
+            */
         }
         return modelProperties;
     }

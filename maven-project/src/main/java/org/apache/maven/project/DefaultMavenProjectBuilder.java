@@ -37,18 +37,7 @@ import org.apache.maven.artifact.resolver.filter.ExcludesArtifactFilter;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.ManagedVersionMap;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.apache.maven.model.Build;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.DependencyManagement;
-import org.apache.maven.model.DistributionManagement;
-import org.apache.maven.model.Exclusion;
-import org.apache.maven.model.Extension;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.Plugin;
-import org.apache.maven.model.PluginManagement;
-import org.apache.maven.model.ReportPlugin;
-import org.apache.maven.model.Repository;
-import org.apache.maven.model.Resource;
+import org.apache.maven.model.*;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.profiles.MavenProfilesBuilder;
 import org.apache.maven.profiles.ProfileManager;
@@ -497,7 +486,7 @@ public class DefaultMavenProjectBuilder
 //        getLogger().debug( "Checking cache-hit on project (in build*): " + projectDescriptor );
 
         MavenProject project = projectWorkspace.getProject( projectDescriptor );
-
+        Parent modelParent = null;
         if ( project == null )
         {
 //            getLogger().debug( "Allowing project-build to proceed for: " + projectDescriptor );
@@ -507,6 +496,8 @@ public class DefaultMavenProjectBuilder
             Model model = readModelFromLocalPath( "unknown", projectDescriptor, new PomArtifactResolver(config.getLocalRepository(),
                     buildArtifactRepositories( getSuperModel() ), artifactResolver) );
 
+            modelParent = model.getParent();
+            model.setParent(null);
 
             project = buildInternal( model,
                 config,
@@ -522,6 +513,7 @@ public class DefaultMavenProjectBuilder
 //            getLogger().debug( "Returning cached project: " + project );
 //        }
 
+        project.getModel().setParent(modelParent);
         return project;
     }
 
@@ -554,13 +546,16 @@ public class DefaultMavenProjectBuilder
         }
 
         Model model;
-
+        Parent modelParent = null;
         try
         {
             artifactResolver.resolve( projectArtifact, remoteArtifactRepositories, localRepository );
 
             File file = projectArtifact.getFile();
             model = readModelFromRepository( projectId, file, new PomArtifactResolver(localRepository, remoteArtifactRepositories, artifactResolver) );
+
+            modelParent = model.getParent();
+            model.setParent(null);
 
             String downloadUrl = null;
 
@@ -597,6 +592,7 @@ public class DefaultMavenProjectBuilder
             throw new ProjectBuildingException( projectId, "POM '" + projectId + "' not found in repository: " + e.getMessage(), e );
         }
 
+        model.setParent(modelParent);
         return model;
     }
 

@@ -70,7 +70,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
                 Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
         Model model = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
                 transformer, properties)).getModel();
-                System.out.println("*:" + new PomClassicDomainModel(model).asString());
+              //  System.out.println("*:" + new PomClassicDomainModel(model).asString());
         return new MavenProject(model);
     }
 
@@ -114,7 +114,7 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
                 Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
         Model model = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
                 transformer, properties)).getModel();
-        System.out.println(new PomClassicDomainModel(model).asString());
+     //   System.out.println(new PomClassicDomainModel(model).asString());
         return new MavenProject(model);
     }
 
