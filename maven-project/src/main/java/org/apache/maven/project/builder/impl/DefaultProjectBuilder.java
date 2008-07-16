@@ -179,12 +179,12 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         }
 
         Model model = domainModel.getModel();
-        /*
+        
         logger.info("-----------------");
-        logger.info("Project Directory =" + projectDirectory.getAbsolutePath());
+        System.out.println("Project Directory =" + projectDirectory.getAbsolutePath());
         logger.info("Parent Path = " + model.getParent().getRelativePath());
         logger.info("Relative Path = " + new File(projectDirectory, model.getParent().getRelativePath()));
-        */
+
         File parentFile = new File(projectDirectory, model.getParent().getRelativePath()).getCanonicalFile();
         //logger.info("Parent File = " + parentFile.getAbsolutePath());
         if (parentFile.isDirectory()) {

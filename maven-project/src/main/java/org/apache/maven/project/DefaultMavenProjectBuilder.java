@@ -71,6 +71,7 @@ import org.apache.maven.project.validation.ModelValidator;
 import org.apache.maven.project.workspace.ProjectWorkspace;
 import org.apache.maven.project.builder.PomArtifactResolver;
 import org.apache.maven.project.builder.ProjectBuilder;
+import org.apache.maven.project.builder.PomClassicDomainModel;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -498,8 +499,8 @@ public class DefaultMavenProjectBuilder
 
         MavenProject legacy_project = projectWorkspace.getProject( projectDescriptor );
 
-        if ( legacy_project == null )
-        {
+   //     if ( legacy_project == null )
+     //   {
 //            getLogger().debug( "Allowing project-build to proceed for: " + projectDescriptor );
 
             Model legacy_model = readModelLegacy( "unknown", projectDescriptor, STRICT_MODEL_PARSING );
@@ -524,12 +525,17 @@ public class DefaultMavenProjectBuilder
                 true );
             //TODO: Compare models
             */
+            try {
+                System.out.println("-----------------***");
+                System.out.println(new PomClassicDomainModel(model).asString());
+                System.out.println(new PomClassicDomainModel(legacy_project.getModel()).asString());
+                System.out.println("------------------");
+                throw new ProjectBuildingException("", "");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+       // }
 
-        }
-//        else
-//        {
-//            getLogger().debug( "Returning cached project: " + project );
-//        }
 
         return legacy_project;
     }
