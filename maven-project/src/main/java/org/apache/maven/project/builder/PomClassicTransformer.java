@@ -25,10 +25,15 @@ public final class PomClassicTransformer implements ModelTransformer {
                 ProjectUri.Build.Extensions.xUri,
                 ProjectUri.Build.PluginManagement.Plugins.xUri,
                 ProjectUri.Build.Plugins.xUri,
+                ProjectUri.Build.Plugins.Plugin.configuration,
                 ProjectUri.Build.Plugins.Plugin.Dependencies.xUri,
                 ProjectUri.Build.Plugins.Plugin.Executions.xUri,
                 ProjectUri.Build.Resources.xUri,
+                ProjectUri.Build.Resources.Resource.includes,
+                ProjectUri.Build.Resources.Resource.excludes,
                 ProjectUri.Build.TestResources.xUri,
+                //ProjectUri.Build.TestResources.TestResource.Includes.xUri,
+              //  ProjectUri.Build.TestResources.TestResource.excludes,
 
                 ProjectUri.CiManagement.Notifiers.xUri,
 
@@ -41,6 +46,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                 ProjectUri.DependencyManagement.Dependencies.Dependency.Exclusions.xUri,
 
                 ProjectUri.Developers.xUri,
+                ProjectUri.Developers.Developer.roles,
                 ProjectUri.Licenses.xUri,
                 ProjectUri.MailingLists.xUri,
                 ProjectUri.Modules.xUri,
@@ -239,26 +245,12 @@ public final class PomClassicTransformer implements ModelTransformer {
                 }
             }
 
-            //Ordered Dependency Rule
-            /*
-            if (domainModels.size() > 1) {
-                ModelDataSource source = new DefaultModelDataSource();
-                source.init(tmp, Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
-                List<ModelContainer> containers;
-                try {
-                    containers = source.queryFor(ProjectUri.Dependencies.Dependency.xUri);
-                } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException(source.getEventHistory(), e);
-                }
-                int index = tmp.indexOf(getPropertyFor(ProjectUri.Dependencies.xUri, tmp));
-                if (index > -1) {
-                    for (ModelContainer container : containers) {
-                        tmp.removeAll(container.getProperties());
-                        tmp.addAll(index + 1, container.getProperties());
-                    }
-                }
-            }
-            */
+            //Build Test Resources Inheritance Rule
+            for(ModelProperty mp : tmp) {
+               if(domainModels.indexOf(domainModel) > 0 && mp.getUri().startsWith(ProjectUri.Build.TestResources.xUri)){
+                   clearedProperties.add(mp);
+               }
+           }
 
             ModelProperty artifactId = getPropertyFor(ProjectUri.artifactId, tmp);
             if(artifactId != null) {

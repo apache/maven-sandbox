@@ -83,7 +83,7 @@ public class ProjectUri {
             public static String url = "http://apache.org/maven/project/developers#collection/developer/url";
             public static String organization = "http://apache.org/maven/project/developers#collection/developer/organization";
             public static String organizationUrl = "http://apache.org/maven/project/developers#collection/developer/organizationUrl";
-            public static String roles = "http://apache.org/maven/project/developers#collection/developer/roles";
+            public static String roles = "http://apache.org/maven/project/developers#collection/developer/roles#collection";
             public static String timezone = "http://apache.org/maven/project/developers#collection/developer/timezone";
             public static String properties = "http://apache.org/maven/project/developers#collection/developer/properties";
         }
@@ -99,7 +99,7 @@ public class ProjectUri {
             public static String url = "http://apache.org/maven/project/contributors#collection/contributor/url";
             public static String organization = "http://apache.org/maven/project/contributors#collection/contributor/organization";
             public static String organizationUrl = "http://apache.org/maven/project/contributors#collection/contributor/organizationUrl";
-            public static String roles = "http://apache.org/maven/project/contributors#collection/contributor/roles";
+            public static String roles = "http://apache.org/maven/project/contributors#collection/contributor/roles#collection";
             public static String timezone = "http://apache.org/maven/project/contributors#collection/contributor/timezone";
             public static String properties = "http://apache.org/maven/project/contributors#collection/contributor/properties";
         }
@@ -160,8 +160,8 @@ public class ProjectUri {
                 public static String targetPath = "http://apache.org/maven/project/build/resources#collection/resource/targetPath";
                 public static String filtering = "http://apache.org/maven/project/build/resources#collection/resource/filtering";
                 public static String directory = "http://apache.org/maven/project/build/resources#collection/resource/directory";
-                public static String includes = "http://apache.org/maven/project/build/resources#collection/resource/includes";
-                public static String excludes = "http://apache.org/maven/project/build/resources#collection/resource/excludes";
+                public static String includes = "http://apache.org/maven/project/build/resources#collection/resource/includes#collection";
+                public static String excludes = "http://apache.org/maven/project/build/resources#collection/resource/excludes#collection";
             }
         }
 
@@ -173,8 +173,11 @@ public class ProjectUri {
                 public static String targetPath = "http://apache.org/maven/project/build/testResources#collection/testResource/targetPath";
                 public static String filtering = "http://apache.org/maven/project/build/testResources#collection/testResource/filtering";
                 public static String directory = "http://apache.org/maven/project/build/testResources#collection/testResource/directory";
-                public static String includes = "http://apache.org/maven/project/build/testResources#collection/testResource/includes";
                 public static String excludes = "http://apache.org/maven/project/build/testResources#collection/testResource/excludes";
+                public static class Includes {
+                    public static String xUri = "http://apache.org/maven/project/build/testResources#collection/testResource/includes";
+                    public static String include = "http://apache.org/maven/project/build/testResources#collection/testResource/includes/include";
+                }
             }
         }
 
@@ -237,7 +240,7 @@ public class ProjectUri {
 
                     public static String goals = "http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/goals";
                     public static String inherited = "http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/inherited";
-                    public static String configuration = "http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration";
+                    public static String configuration = "http://apache.org/maven/project/build/pluginManagement/plugins#collection/plugin/configuration#collection";
                 }
             }
         }
@@ -294,7 +297,7 @@ public class ProjectUri {
 
                 public static String goals = "http://apache.org/maven/project/build/plugins#collection/plugin/goals";
                 public static String inherited = "http://apache.org/maven/project/build/plugins#collection/plugin/inherited";
-                public static String configuration = "http://apache.org/maven/project/build/plugins#collection/plugin/configuration";
+                public static String configuration = "http://apache.org/maven/project/build/plugins#collection/plugin/configuration#collection";
             }
         }
     }
@@ -337,29 +340,30 @@ public class ProjectUri {
                 public static String defaultGoal = "http://apache.org/maven/project/profiles#collection/profile/build/defaultGoal";
 
                 public static class Resources {
-                    public static String xUri = "http://apache.org/maven/project/profiles#collection/profile/build/resources";
+                    public static String xUri = "http://apache.org/maven/project/profiles#collection/profile/build/resources#collection";
 
                     public static class Resource {
-                        public static String xUri = "http://apache.org/maven/project/profiles#collection/profile/build/resources/resource";
-                        public static String targetPath = "http://apache.org/maven/project/profiles#collection/profile/build/resources/resource/targetPath";
-                        public static String filtering = "http://apache.org/maven/project/profiles#collection/profile/build/resources/resource/filtering";
-                        public static String directory = "http://apache.org/maven/project/profiles#collection/profile/build/resources/resource/directory";
-                        public static String includes = "http://apache.org/maven/project/profiles#collection/profile/build/resources/resource/includes";
-                        public static String excludes = "http://apache.org/maven/project/profiles#collection/profile/build/resources/resource/excludes";
+                        public static String xUri = "http://apache.org/maven/project/profiles#collection/profile/build/resources#collection/resource";
+                        public static String targetPath = "http://apache.org/maven/project/profiles#collection/profile/build/resources#collection/resource/targetPath";
+                        public static String filtering = "http://apache.org/maven/project/profiles#collection/profile/build/resources#collection/resource/filtering";
+                        public static String directory = "http://apache.org/maven/project/profiles#collection/profile/build/resources#collection/resource/directory";
+                        public static String includes = "http://apache.org/maven/project/profiles#collection/profile/build/resources#collection/resource/includes#collection";
+                        public static String excludes = "http://apache.org/maven/project/profiles#collection/profile/build/resources#collection/resource/excludes#collection";
                     }
                 }
 
                 public static class TestResources {
-                    public static String xUri = "http://apache.org/maven/project/profiles#collection/profile/build/testResources";
+                    public static String xUri = "http://apache.org/maven/project/profiles#collection/profile/build/testResources#collection";
 
                     public static class TestResource {
-                        public static String xUri = "http://apache.org/maven/project/profiles#collection/profile/build/testResources/testResource";
-                        public static String targetPath = "http://apache.org/maven/project/profiles#collection/profile/build/testResources/testResource/targetPath";
-                        public static String filtering = "http://apache.org/maven/project/profiles#collection/profile/build/testResources/testResource/filtering";
-                        public static String directory = "http://apache.org/maven/project/profiles#collection/profile/build/testResources/testResource/directory";
-                        public static String includes = "http://apache.org/maven/project/profiles#collection/profile/build/testResources/testResource/includes";
-                        public static String excludes = "http://apache.org/maven/project/profiles#collection/profile/build/testResources/testResource/excludes";
-                    }
+                        public static String xUri = "http://apache.org/maven/project/profiles#collection/profile/build/testResources#collection/testResource";
+                        public static String targetPath = "http://apache.org/maven/project/profiles#collection/profile/build/testResources#collection/testResource/targetPath";
+                        public static String filtering = "http://apache.org/maven/project/profiles#collection/profile/build/testResources#collection/testResource/filtering";
+                        public static String directory = "http://apache.org/maven/project/profiles#collection/profile/build/testResources#collection/testResource/directory";
+                        public static String includes = "http://apache.org/maven/project/profiles#collection/profile/build/testResources#collection/testResource/includes#collection";
+                        public static String excludes = "http://apache.org/maven/project/profiles#collection/profile/build/testResources#collection/testResource/excludes#collection";
+
+                   }
                 }
 
                 public static String directory = "http://apache.org/maven/project/profiles#collection/profile/build/directory";

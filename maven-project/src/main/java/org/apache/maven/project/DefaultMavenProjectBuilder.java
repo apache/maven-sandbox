@@ -516,7 +516,7 @@ public class DefaultMavenProjectBuilder
                 true,
                 true );
 
-              project.getModel().setParent(parent);
+        project.getModel().setParent(parent);
         PomClassicDomainModel domainModel = null;
         PomClassicDomainModel legacy_domainModel = null;
         try {
@@ -551,7 +551,7 @@ public class DefaultMavenProjectBuilder
             e.printStackTrace();
         }
         
-        return legacy_project;
+        return project;
     }
 
     private Model findModelFromRepository( Artifact artifact,
