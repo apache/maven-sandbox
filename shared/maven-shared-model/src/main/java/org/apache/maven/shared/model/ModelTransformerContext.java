@@ -53,10 +53,10 @@ public final class ModelTransformerContext {
                                  ModelTransformer toModelTransformer,
                                  Collection<InterpolatorProperty> interpolatorProperties) throws IOException {
         List<InterpolatorProperty> properties = new ArrayList<InterpolatorProperty>(interpolatorProperties);
+        List<ModelProperty> originalProperties = fromModelTransformer.transformToModelProperties(domainModels);
 
         String baseUriForModel = fromModelTransformer.getBaseUri();
-        List<ModelProperty> modelProperties = sort(fromModelTransformer.transformToModelProperties(domainModels),
-                baseUriForModel);
+        List<ModelProperty> modelProperties = sort(originalProperties, baseUriForModel);
         ModelDataSource modelDataSource = new DefaultModelDataSource();
         modelDataSource.init(modelProperties, factories);
 
@@ -124,11 +124,8 @@ public final class ModelTransformerContext {
         }
 
 
-
-        mps = reverseSort(mps);
-
+        Collections.sort(mps, new ModelPropertyCompator(originalProperties));
         try {
-            validate(mps);
             DomainModel domainModel = toModelTransformer.transformToDomainModel(mps);
             domainModel.setEventHistory(modelDataSource.getEventHistory());
             return domainModel;
@@ -154,7 +151,6 @@ public final class ModelTransformerContext {
             throws IOException {
         return this.transform(domainModels, fromModelTransformer, toModelTransformer, systemInterpolatorProperties);
     }
-
 
     /**
      * Sorts specified list of model properties. Typically the list contain property information from the entire
@@ -192,51 +188,21 @@ public final class ModelTransformerContext {
         return processedProperties;
     }
 
-    protected List<ModelProperty> reverseSort(List<ModelProperty> properties) {
-        if (properties == null) {
-            throw new IllegalArgumentException("properties");
+    private class ModelPropertyCompator implements Comparator {
+
+        private List<ModelProperty> original;
+
+        public ModelPropertyCompator(List<ModelProperty> original) {
+            this.original = original;
         }
-        LinkedList<ModelProperty> processedProperties = new LinkedList<ModelProperty>();
 
-        int currentIndex = -1;
-        String currentUri = "";
-        for (ModelProperty p : properties) {
-            String uri = p.getUri();
-            String parentUri = uri.substring(0, uri.lastIndexOf("/"));
-
-            if (parentUri.endsWith("#collection")) {
-                for (int j = processedProperties.size(); j >= 0; j--) {
-                    if (properties.get(j).getUri().equals(parentUri)) {
-                        currentIndex = j + 1;
-                        break;
-                    }
-                }
-                currentUri = p.getUri();
-                processedProperties.add(currentIndex, p);
-            }  else if(p.getUri().startsWith(currentUri)){
-                currentIndex++;
-                processedProperties.add(currentIndex, p);
+        public int compare(Object o1, Object o2) {
+            if(original.indexOf(o1) > original.indexOf(o2)) {
+                return 1;
             } else {
-                currentIndex++;
-                processedProperties.add(p);
+                return -1;
             }
-        }
-        logger.info("Properties removed through reverse sort: " + (properties.size() - processedProperties.size()));
-        return processedProperties;
-    }
 
-    private static void validate(List<ModelProperty> modelProperties) throws IOException {
-        for (int i = 1; i < modelProperties.size(); i++) {
-            ModelProperty previous = modelProperties.get(i - 1);
-            ModelProperty current = modelProperties.get(i);
-            if ((!previous.isParentOf(current) && current.getDepth() > previous.getDepth())
-                    || (current.getDepth() - previous.getDepth() > 1)) {
-                int j = 0;
-                for (ModelProperty mp : modelProperties) {
-                    System.out.println((j++) + ":" + mp);
-                }
-                throw new IOException("Invalid Model Property: Property " + current + ", Line = " + i);
-            }
         }
     }
 }

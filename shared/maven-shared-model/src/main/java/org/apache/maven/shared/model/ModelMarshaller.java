@@ -113,21 +113,29 @@ public final class ModelMarshaller {
         int n = 1;
         for (ModelProperty mp : modelProperties) {
             String uri = mp.getUri();
+            System.out.println(mp);
             if (!uri.startsWith(baseUri)) {
                 throw new IllegalArgumentException("Passed in model property that does not match baseUri: Property URI = "
                         + uri + ", Base URI = " + baseUri);
             }
             List<String> tagNames = getTagNamesFromUri(basePosition, uri);
+           // System.out.println(lastUriTags.size() + ":" + tagNames.size());
+           // String s = (lastUriTags.size() > 0) ? "LAST = " + lastUriTags.get(lastUriTags.size()-1) : "";
+           // String t = ((tagNames.size() > 0) ? ", CURRENT = " + tagNames.get(tagNames.size()-1) : ":");
+           // System.out.println(s + t);
             if (lastUriTags.size() > tagNames.size()) {
                 for (int i = lastUriTags.size() - 1; i >= tagNames.size(); i--) {
+             //       System.out.println("End tag without value: "+ toEndTag(lastUriTags.get(i - 1).trim()));
                     sb.append(toEndTag(lastUriTags.get(i - 1)));
                 }
             }
             String tag = tagNames.get(tagNames.size() - 1);
             sb.append(toStartTag(tag));
+           // System.out.println(toStartTag(tag).trim());
             if (mp.getResolvedValue() != null) {
                 sb.append(mp.getResolvedValue());
                 sb.append(toEndTag(tag));
+             //   System.out.println("End tag with value: "+ tag.trim() + ", value = " +  mp.getResolvedValue().trim());
                 n = 2;
             } else {
                 n = 1;
@@ -135,13 +143,14 @@ public final class ModelMarshaller {
             lastUriTags = tagNames;
         }
         for (int i = lastUriTags.size() - n; i >= 1; i--) {
+            //System.out.println("END T = " + toEndTag(lastUriTags.get(i)) );
             sb.append(toEndTag(lastUriTags.get(i)));
         }
         return sb.toString();
     }
 
     private static List<String> getTagNamesFromUri(int basePosition, String uri) {
-        return Arrays.asList(uri.substring(basePosition).replace("#collection", "").split("/"));
+        return Arrays.asList(uri.substring(basePosition).replaceAll("#collection", "").split("/"));
     }
 
     private static String toStartTag(String value) {
