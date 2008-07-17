@@ -517,6 +517,7 @@ public class DefaultMavenProjectBuilder
                 true );
 
         project.getModel().setParent(parent);
+        /*
         PomClassicDomainModel domainModel = null;
         PomClassicDomainModel legacy_domainModel = null;
         try {
@@ -545,12 +546,12 @@ public class DefaultMavenProjectBuilder
                 System.out.println(legacy_domainModel.asString().substring(breakPoint, y.length));
 
                 System.out.println("------------------");
-                throw new ProjectBuildingException("", "");
+               // throw new ProjectBuildingException("", "");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+         */
         return project;
     }
 
@@ -582,16 +583,50 @@ public class DefaultMavenProjectBuilder
                 artifact.getScope() );
         }
 
+        Model legacy_model;
         Model model;
-
         try
         {
             artifactResolver.resolve( projectArtifact, remoteArtifactRepositories, localRepository );
 
             File file = projectArtifact.getFile();
 
-            model = readModelLegacy( projectId, file, STRICT_MODEL_PARSING );
+            legacy_model = readModelLegacy( projectId, file, STRICT_MODEL_PARSING );
 
+            model =  readModelFromRepository( "unknown", file, new PomArtifactResolver(localRepository,
+                    buildArtifactRepositories( getSuperModel() ), artifactResolver) );
+            model.setParent(legacy_model.getParent());
+
+            /*
+            PomClassicDomainModel domainModel = new PomClassicDomainModel(model);
+            PomClassicDomainModel legacy_domainModel = new PomClassicDomainModel(legacy_model);
+
+            if(!domainModel.equals(legacy_domainModel)) {
+                byte[] x = domainModel.asString().getBytes();
+                byte[] y = legacy_domainModel.asString().getBytes();
+                int breakPoint = x.length;
+                for(int i = 0; i < x.length; i++) {
+                    if(x[i] != y[i]) {
+                        System.out.println("Break at position = " + i);
+                        breakPoint = i;
+                        break;
+                    }
+                }
+
+                System.out.println("-----------------Repository Model: File* = " + file.getAbsolutePath());
+                System.out.println(domainModel.asString().substring(0, breakPoint));
+                System.out.println("--------------------BREAK-------------------");
+                System.out.println(domainModel.asString().substring(breakPoint, x.length));
+
+                System.out.println(legacy_domainModel.asString().substring(0, breakPoint));
+                System.out.println("--------------------BREAK-------------------");
+                System.out.println(legacy_domainModel.asString().substring(breakPoint, y.length));
+
+                System.out.println("------------------");
+              //  throw new ProjectBuildingException("", "");
+
+            }
+            */
             String downloadUrl = null;
 
             ArtifactStatus status = ArtifactStatus.NONE;
@@ -626,6 +661,10 @@ public class DefaultMavenProjectBuilder
         {
             throw new ProjectBuildingException( projectId, "POM '" + projectId + "' not found in repository: " + e.getMessage(), e );
         }
+        /*
+        catch(IOException e) {
+            throw new ProjectBuildingException( projectId, "POM '" + projectId + "' not found in repository: " + e.getMessage(), e );
+        } */
 
         return model;
     }
