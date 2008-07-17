@@ -53,10 +53,10 @@ public final class ModelTransformerContext {
                                  ModelTransformer toModelTransformer,
                                  Collection<InterpolatorProperty> interpolatorProperties) throws IOException {
         List<InterpolatorProperty> properties = new ArrayList<InterpolatorProperty>(interpolatorProperties);
-        List<ModelProperty> originalProperties = fromModelTransformer.transformToModelProperties(domainModels);
 
         String baseUriForModel = fromModelTransformer.getBaseUri();
-        List<ModelProperty> modelProperties = sort(originalProperties, baseUriForModel);
+        List<ModelProperty> modelProperties = sort(fromModelTransformer.transformToModelProperties(domainModels),
+                baseUriForModel);
         ModelDataSource modelDataSource = new DefaultModelDataSource();
         modelDataSource.init(modelProperties, factories);
 
@@ -123,8 +123,8 @@ public final class ModelTransformerContext {
             }
         }
 
+        mps = sort(mps, baseUriForModel );
 
-        Collections.sort(mps, new ModelPropertyCompator(originalProperties));
         try {
             DomainModel domainModel = toModelTransformer.transformToDomainModel(mps);
             domainModel.setEventHistory(modelDataSource.getEventHistory());
@@ -186,23 +186,5 @@ public final class ModelTransformerContext {
         }
         logger.info("Properties removed through sort: " + (properties.size() - processedProperties.size()));
         return processedProperties;
-    }
-
-    private class ModelPropertyCompator implements Comparator {
-
-        private List<ModelProperty> original;
-
-        public ModelPropertyCompator(List<ModelProperty> original) {
-            this.original = original;
-        }
-
-        public int compare(Object o1, Object o2) {
-            if(original.indexOf(o1) > original.indexOf(o2)) {
-                return 1;
-            } else {
-                return -1;
-            }
-
-        }
     }
 }
