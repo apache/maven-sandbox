@@ -79,6 +79,7 @@ public final class ModelMarshaller {
                     }
                     case XMLStreamConstants.ATTRIBUTE: {
                         for (int i = 0; i < xmlStreamReader.getAttributeCount(); i++) {
+
                             attributes.put(tagName + "#property/" + xmlStreamReader.getAttributeName(i).getLocalPart(),
                                     xmlStreamReader.getAttributeValue(i));
                         }
@@ -183,12 +184,12 @@ public final class ModelMarshaller {
 
     private static String toStartTag(String value, ModelProperty attribute) {
         StringBuffer sb = new StringBuffer();
-        sb.append("<").append(value);
+        sb.append("\r\n<").append(value);
         if(attribute != null) {
             sb.append(" ").append(attribute.getUri().substring(attribute.getUri().indexOf("#property/") + 10)).append("=\"")
                     .append(attribute.getValue()).append("\" ");
         }
-        sb.append(">\r\n");
+        sb.append(">");
         return sb.toString();
     }
 
@@ -197,7 +198,7 @@ public final class ModelMarshaller {
             return "";
         }
         StringBuffer sb = new StringBuffer();
-        sb.append("\r\n</").append(value).append(">\r\n");
+        sb.append("</").append(value).append(">");
         return sb.toString();
     }
 
