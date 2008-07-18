@@ -22,6 +22,9 @@ public final class
 
     private String eventHistory;
 
+    private Model model;
+
+
     /**
      * Constructor
      *
@@ -44,6 +47,25 @@ public final class
             throw new IllegalArgumentException("inputStream: null");
         }
         this.inputBytes = removeIllegalCharacters(IOUtil.toByteArray(inputStream));
+    }
+
+    public boolean matchesModel(Model a) {
+        Model model;
+        try {
+            model = getModel();
+        } catch (IOException e) {
+            return false;
+        }
+
+        String groupId = (model.getGroupId() == null) ? model.getParent().getGroupId() : model.getGroupId();
+        String artifactId = (model.getArtifactId() == null) ? model.getParent().getArtifactId() : model.getArtifactId();
+        String version = (model.getVersion() == null) ? model.getParent().getVersion() : model.getVersion();
+
+        String aGroupId = (a.getGroupId() == null) ? a.getParent().getGroupId() : a.getGroupId();
+        String aArtifactId = (a.getArtifactId() == null) ? a.getParent().getArtifactId() : a.getArtifactId();
+        String aVersion = (a.getVersion() == null) ? a.getParent().getVersion() : a.getVersion();
+
+        return groupId.equals(aGroupId) && artifactId.equals(aArtifactId) && version.equals(aVersion);
     }
 
     public boolean matchesParent(Parent parent) {
@@ -80,8 +102,11 @@ public final class
      * @return maven model
      */
     public Model getModel() throws IOException {
+        if(model != null) {
+            return model;
+        }
         try {                                                                
-            return new MavenXpp3Reader().read( new ByteArrayInputStream( inputBytes ) );
+            return new MavenXpp3Reader().read( ReaderFactory.newXmlReader(new ByteArrayInputStream( inputBytes )) );
         }
         catch (XmlPullParserException e) {
             e.printStackTrace();

@@ -15,7 +15,6 @@ public class IdModelContainerFactory implements ModelContainerFactory {
             ProjectUri.Reporting.Plugins.Plugin.ReportSets.ReportSet.xUri,
             ProjectUri.Profiles.Profile.xUri,
             ProjectUri.Build.Plugins.Plugin.Executions.Execution.xUri
-            //ProjectUri.Profiles.Profile.Build.Plugins.Plugin.Executions.Execution.xUri
     ));
 
     public Collection<String> getUris() {

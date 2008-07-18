@@ -41,6 +41,8 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
 
         private String version;
 
+        private String type;
+
         private List<ModelProperty> properties;
 
         private ArtifactModelContainer(List<ModelProperty> properties) {
@@ -54,6 +56,8 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
                     this.artifactId = mp.getValue();
                 } else if (mp.getUri().endsWith("groupId")) {
                     this.groupId = mp.getValue();
+                } else if(mp.getUri().equals(ProjectUri.Dependencies.Dependency.type)) {
+                    this.type = mp.getValue();
                 }
             }
             if (groupId == null) {
@@ -65,6 +69,10 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
             if (artifactId == null) {
                 throw new IllegalArgumentException("Properties does not contain artifact id. Group ID = " + groupId +
                         ", Version = " + version);
+            }
+
+            if(type == null) {
+                type = "";
             }
         }
 
@@ -82,7 +90,16 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
                 if (c.version == null) {
                     return ModelContainerAction.NOP;
                 }
-                return (c.version.equals(version)) ? ModelContainerAction.JOIN : ModelContainerAction.DELETE;
+
+                if(c.version.equals(version)) {
+                    if(c.type.equals(type)) {
+                        return ModelContainerAction.JOIN;
+                    } else {
+                        return ModelContainerAction.NOP; 
+                    }
+                } else {
+                   return ModelContainerAction.DELETE;
+                }
             } else {
                 return ModelContainerAction.NOP;
             }

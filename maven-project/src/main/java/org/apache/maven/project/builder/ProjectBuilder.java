@@ -19,9 +19,4 @@ public interface ProjectBuilder {
                                     PomArtifactResolver resolver, File baseDirectory)
             throws IOException;
 
-    MavenProject buildFromRepository(InputStream pom, List<Model> inheritedModels,
-                                     Collection<InterpolatorProperty> interpolatorProperties,
-                                     PomArtifactResolver resolver)
-            throws IOException;
-
 }

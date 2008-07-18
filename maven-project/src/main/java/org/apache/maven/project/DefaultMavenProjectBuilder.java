@@ -126,7 +126,7 @@ public class DefaultMavenProjectBuilder
     implements MavenProjectBuilder,
     Initializable, LogEnabled
 {
-    protected MavenProfilesBuilder profilesBuilder;
+    protected MavenProfilesBuilder profilesBuilder;                        
 
     protected ArtifactResolver artifactResolver;
 
@@ -487,28 +487,16 @@ public class DefaultMavenProjectBuilder
     {
 //        getLogger().debug( "Checking cache-hit on project (in build*): " + projectDescriptor );
 
-        MavenProject legacy_project = projectWorkspace.getProject( projectDescriptor );
+        MavenProject project = projectWorkspace.getProject( projectDescriptor );
 
-   //     if ( legacy_project == null )
-     //   {
-//            getLogger().debug( "Allowing project-build to proceed for: " + projectDescriptor );
-
-            Model legacy_model = readModelLegacy( "unknown", projectDescriptor, STRICT_MODEL_PARSING );
-
-            legacy_project = buildInternal(legacy_model,
-                config,
-                buildArtifactRepositories( getSuperModel() ),
-                projectDescriptor,
-                STRICT_MODEL_PARSING,
-                true,
-                true );
-
+        if ( project == null )
+        {
             Model model = readModelFromLocalPath( "unknown", projectDescriptor, new PomArtifactResolver(config.getLocalRepository(),
                     buildArtifactRepositories( getSuperModel() ), artifactResolver) );
-            Parent parent = legacy_model.getParent();
+            Parent parent = model.getParent();
 
-            model.setParent(null);
-            MavenProject project = buildInternal(model,
+           //model.setParent(null);
+            project = buildInternal(model,
                 config,
                 buildArtifactRepositories( getSuperModel() ),
                 projectDescriptor,
@@ -516,42 +504,9 @@ public class DefaultMavenProjectBuilder
                 true,
                 true );
 
-        project.getModel().setParent(parent);
-        /*
-        PomClassicDomainModel domainModel = null;
-        PomClassicDomainModel legacy_domainModel = null;
-        try {
-            domainModel = new PomClassicDomainModel(project.getModel());
-            legacy_domainModel = new PomClassicDomainModel(legacy_project.getModel());
+       //     project.getModel().setParent(parent);
 
-            if(!domainModel.equals(legacy_domainModel)) {
-                byte[] x = domainModel.asString().getBytes();
-                byte[] y = legacy_domainModel.asString().getBytes();
-                int breakPoint = x.length;
-                for(int i = 0; i < x.length; i++) {
-                    if(x[i] != y[i]) {
-                        System.out.println("Break at position = " + i);
-                        breakPoint = i;
-                        break;
-                    }
-                }
-
-                System.out.println("-----------------***");
-                System.out.println(domainModel.asString().substring(0, breakPoint));
-                System.out.println("--------------------BREAK-------------------");
-                System.out.println(domainModel.asString().substring(breakPoint, x.length));
-
-                System.out.println(legacy_domainModel.asString().substring(0, breakPoint));
-                System.out.println("--------------------BREAK-------------------");
-                System.out.println(legacy_domainModel.asString().substring(breakPoint, y.length));
-
-                System.out.println("------------------");
-               // throw new ProjectBuildingException("", "");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-         */
         return project;
     }
 
@@ -560,8 +515,9 @@ public class DefaultMavenProjectBuilder
                                            ArtifactRepository localRepository )
         throws ProjectBuildingException
     {
-        String projectId = safeVersionlessKey( artifact.getGroupId(), artifact.getArtifactId() );
 
+        String projectId = safeVersionlessKey( artifact.getGroupId(), artifact.getArtifactId() );
+        getLogger().info("findModelFromRepository ID = " + projectId);
         remoteArtifactRepositories = normalizeToArtifactRepositories( remoteArtifactRepositories, projectId );
 
         Artifact projectArtifact;
@@ -593,45 +549,11 @@ public class DefaultMavenProjectBuilder
 
             legacy_model = readModelLegacy( projectId, file, STRICT_MODEL_PARSING );
 
-            model =  readModelFromRepository( "unknown", file, new PomArtifactResolver(localRepository,
-                    buildArtifactRepositories( getSuperModel() ), artifactResolver) );
-            model.setParent(legacy_model.getParent());
-
-            /*
-            PomClassicDomainModel domainModel = new PomClassicDomainModel(model);
-            PomClassicDomainModel legacy_domainModel = new PomClassicDomainModel(legacy_model);
-
-            if(!domainModel.equals(legacy_domainModel)) {
-                byte[] x = domainModel.asString().getBytes();
-                byte[] y = legacy_domainModel.asString().getBytes();
-                int breakPoint = x.length;
-                for(int i = 0; i < x.length; i++) {
-                    if(x[i] != y[i]) {
-                        System.out.println("Break at position = " + i);
-                        breakPoint = i;
-                        break;
-                    }
-                }
-
-                System.out.println("-----------------Repository Model: File* = " + file.getAbsolutePath());
-                System.out.println(domainModel.asString().substring(0, breakPoint));
-                System.out.println("--------------------BREAK-------------------");
-                System.out.println(domainModel.asString().substring(breakPoint, x.length));
-
-                System.out.println(legacy_domainModel.asString().substring(0, breakPoint));
-                System.out.println("--------------------BREAK-------------------");
-                System.out.println(legacy_domainModel.asString().substring(breakPoint, y.length));
-
-                System.out.println("------------------");
-              //  throw new ProjectBuildingException("", "");
-
-            }
-            */
             String downloadUrl = null;
 
             ArtifactStatus status = ArtifactStatus.NONE;
 
-            DistributionManagement distributionManagement = model.getDistributionManagement();
+            DistributionManagement distributionManagement = legacy_model.getDistributionManagement();
 
             if ( distributionManagement != null )
             {
@@ -650,7 +572,7 @@ public class DefaultMavenProjectBuilder
             }
             else
             {
-                projectArtifact.setDownloadUrl( model.getUrl() );
+                projectArtifact.setDownloadUrl( legacy_model.getUrl() );
             }
         }
         catch ( ArtifactResolutionException e )
@@ -661,12 +583,8 @@ public class DefaultMavenProjectBuilder
         {
             throw new ProjectBuildingException( projectId, "POM '" + projectId + "' not found in repository: " + e.getMessage(), e );
         }
-        /*
-        catch(IOException e) {
-            throw new ProjectBuildingException( projectId, "POM '" + projectId + "' not found in repository: " + e.getMessage(), e );
-        } */
 
-        return model;
+        return legacy_model;
     }
 
     private List normalizeToArtifactRepositories( List remoteArtifactRepositories,
@@ -914,9 +832,9 @@ public class DefaultMavenProjectBuilder
 
 //        getLogger().debug( "Caching project: " + project.getId() + " (also keyed by file: " + project.getFile() + ")" );
 
-        //TODO: SI  - Disable for now
-     //   projectWorkspace.storeProjectByCoordinate( project );
-     //   projectWorkspace.storeProjectByFile( project );
+
+        projectWorkspace.storeProjectByCoordinate( project );
+        projectWorkspace.storeProjectByFile( project );
 
         project.setManagedVersionMap( createManagedVersionMap( projectId, project.getDependencyManagement(), projectDescriptor ) );
 
@@ -2172,35 +2090,8 @@ public class DefaultMavenProjectBuilder
        MavenProject mavenProject;
        try {
            mavenProject = projectBuilder.buildFromLocalPath(new FileInputStream(projectDescriptor),
-                   Arrays.asList(getSuperModel()), null, resolver,
+                   null, null, resolver,
                    projectDescriptor.getParentFile());
-       } catch (IOException e) {
-           e.printStackTrace();
-           throw new ProjectBuildingException(projectId, "File = " + projectDescriptor.getAbsolutePath() , e);
-       }
-
-      return mavenProject.getModel();
-
-   }
-
-    private Model readModelFromRepository( String projectId,
-                            File projectDescriptor,
-                            PomArtifactResolver resolver )
-       throws ProjectBuildingException
-   {
-       if(projectDescriptor == null) {
-           throw new IllegalArgumentException("projectDescriptor: null, Project Id =" + projectId);
-       }
-
-       if(projectBuilder == null) {
-           throw new IllegalArgumentException("projectBuilder: not initialized");
-       }
-
-       MavenProject mavenProject;
-       try {
-           mavenProject = projectBuilder.buildFromRepository(new FileInputStream(projectDescriptor),
-                   Arrays.asList(getSuperModel()), null, resolver
-           );
        } catch (IOException e) {
            e.printStackTrace();
            throw new ProjectBuildingException(projectId, "File = " + projectDescriptor.getAbsolutePath() , e);

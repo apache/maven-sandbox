@@ -24,6 +24,9 @@ public final class PomClassicTransformer implements ModelTransformer {
         this.uris = new HashSet<String>(Arrays.asList(
                 ProjectUri.Build.Extensions.xUri,
                 ProjectUri.Build.PluginManagement.Plugins.xUri,
+                ProjectUri.Build.PluginManagement.Plugins.Plugin.Dependencies.xUri,
+                ProjectUri.Build.PluginManagement.Plugins.Plugin.Dependencies.Dependency.Exclusions.xUri,
+                ProjectUri.Build.PluginManagement.Plugins.Plugin.Executions.xUri,
                 ProjectUri.Build.Plugins.xUri,
                 ProjectUri.Build.Plugins.Plugin.configuration,
                 ProjectUri.Build.Plugins.Plugin.Dependencies.xUri,
@@ -32,9 +35,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                 ProjectUri.Build.Resources.Resource.includes,
                 ProjectUri.Build.Resources.Resource.excludes,
                 ProjectUri.Build.TestResources.xUri,
-                //ProjectUri.Build.TestResources.TestResource.Includes.xUri,
-              //  ProjectUri.Build.TestResources.TestResource.excludes,
-
+   
                 ProjectUri.CiManagement.Notifiers.xUri,
 
                 ProjectUri.Contributors.xUri,
@@ -76,13 +77,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                 "http://apache.org/maven/project/profiles/profile/build/plugins/plugin/dependencies/dependency/exclusions#collection",
                 "http://apache.org/maven/project/profiles/profile/dependencyManagement/dependencies/dependency/exclusions#collection",
                 "http://apache.org/maven/project/profiles/profile/reporting/plugins/plugin/reportSets#collection",
-                "http://apache.org/maven/project/profiles/profile/build/plugins/plugin/executions#collection",
-
-                "http://apache.org/maven/project/build/plugins/plugin/dependencies/dependency/exclusions#collection",
-                "http://apache.org/maven/project/build/pluginManagement/plugins/plugin/dependencies/dependency/exclusions#collection",
-                "http://apache.org/maven/project/build/pluginManagement/plugins/plugin/executions#collection",
-                "http://apache.org/maven/project/build/pluginManagement/plugins/plugin/dependencies#collection"
-
+                "http://apache.org/maven/project/profiles/profile/build/plugins/plugin/executions#collection"
         ));
     }
 
@@ -250,8 +245,15 @@ public final class PomClassicTransformer implements ModelTransformer {
                if(domainModels.indexOf(domainModel) > 0 && mp.getUri().startsWith(ProjectUri.Build.TestResources.xUri)){
                    clearedProperties.add(mp);
                }
-           }
+            }
 
+            //Profiles not inherited rule
+            for(ModelProperty mp : tmp) {
+               if(domainModels.indexOf(domainModel) > 0 && mp.getUri().startsWith(ProjectUri.Profiles.xUri)){
+                   clearedProperties.add(mp);
+               }
+            }
+                       
             ModelProperty artifactId = getPropertyFor(ProjectUri.artifactId, tmp);
             if(artifactId != null) {
                 projectNames.add(0, artifactId.getValue());
@@ -261,12 +263,13 @@ public final class PomClassicTransformer implements ModelTransformer {
             modelProperties.addAll(tmp);
 
             //Remove Parent Info
+            /*
             for (ModelProperty mp : tmp) {
                 if (mp.getUri().startsWith(ProjectUri.Parent.xUri)) {
                     modelProperties.remove(mp);
                 }
             }
-            
+                       */
         }
         return modelProperties;
     }
