@@ -35,6 +35,7 @@ public final class DefaultModelDataSource implements ModelDataSource {
                     unknownProperties.add(mp);
                 }
             }
+
             List<DeleteEvent> des = new ArrayList<DeleteEvent>();
             for (DeleteEvent de : deleteEvents) {
                 if (aContainsAnyOfB(de.getRemovedModelProperties(), unknownProperties)) {
@@ -48,9 +49,6 @@ public final class DefaultModelDataSource implements ModelDataSource {
                 sb.append(mp).append("\r\n");
             }
 
-            //    for (DeleteEvent de : des) {
-            //        sb.append(de.toString());
-            //    }
             System.out.println(sb);
             throw new DataSourceException("ModelContainer 'a' contains elements not within datasource");
         }
@@ -269,11 +267,6 @@ public final class DefaultModelDataSource implements ModelDataSource {
                 uris.add(p.getUri());
             }
         }
-        /*
-        for (ModelProperty mp : processedProperties) {
-            System.out.println(mp);
-        }
-        */
         return processedProperties;
     }
 

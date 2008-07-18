@@ -14,6 +14,9 @@ import java.util.*;
  */
 public final class ModelMarshaller {
 
+    private ModelMarshaller() {
+    }
+
     public static List<ModelProperty> marshallXmlToModelProperties(InputStream inputStream, String baseUri,
                                                                    Set<String> collections)
             throws IOException {
@@ -39,6 +42,7 @@ public final class ModelMarshaller {
         XMLStreamReader xmlStreamReader = null;
         try {
             xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
+            Map<String, String> attributes = new HashMap<String, String>();
             for (; ; xmlStreamReader.next()) {
                 int type = xmlStreamReader.getEventType();
                 switch (type) {
@@ -55,6 +59,12 @@ public final class ModelMarshaller {
                         depth++;
                         if (!tagName.equals(baseUri)) {
                             modelProperties.add(new ModelProperty(tagName, tagValue));
+                            if (!attributes.isEmpty()) {
+                                for (Map.Entry<String, String> e : attributes.entrySet()) {
+                                    modelProperties.add(new ModelProperty(e.getKey(), e.getValue()));
+                                }
+                                attributes.clear();
+                            }
                         }
 
                         tagName = uri.getUriFor(xmlStreamReader.getName().getLocalPart(), depth);
@@ -65,6 +75,13 @@ public final class ModelMarshaller {
                             uri.addTag(xmlStreamReader.getName().getLocalPart());
                         }
                         tagValue = null;
+
+                    }
+                    case XMLStreamConstants.ATTRIBUTE: {
+                        for (int i = 0; i < xmlStreamReader.getAttributeCount(); i++) {
+                            attributes.put(tagName + "#property/" + xmlStreamReader.getAttributeName(i).getLocalPart(),
+                                    xmlStreamReader.getAttributeValue(i));
+                        }
                         break;
                     }
                     case XMLStreamConstants.END_ELEMENT: {
@@ -74,6 +91,12 @@ public final class ModelMarshaller {
                     }
                     case XMLStreamConstants.END_DOCUMENT: {
                         modelProperties.add(new ModelProperty(tagName, tagValue));
+                        if (!attributes.isEmpty()) {
+                            for (Map.Entry<String, String> e : attributes.entrySet()) {
+                                modelProperties.add(new ModelProperty(e.getKey(), e.getValue()));
+                            }
+                            attributes.clear();
+                        }
                         return modelProperties;
                     }
                 }
@@ -81,7 +104,7 @@ public final class ModelMarshaller {
         } catch (XMLStreamException e) {
             throw new IOException(":" + e.toString());
         } finally {
-            if(xmlStreamReader != null) {
+            if (xmlStreamReader != null) {
                 try {
                     xmlStreamReader.close();
                 } catch (XMLStreamException e) {
@@ -95,7 +118,6 @@ public final class ModelMarshaller {
             }
         }
     }
-
 
     public static String unmarshalModelPropertiesToXml(List<ModelProperty> modelProperties, String baseUri) throws IOException {
         if (modelProperties == null || modelProperties.isEmpty()) {
@@ -113,8 +135,11 @@ public final class ModelMarshaller {
         int n = 1;
         for (ModelProperty mp : modelProperties) {
             String uri = mp.getUri();
-            String val = (mp.getValue() != null) ? "\"" + mp.getValue() + "\"" : null;
-         //   System.out.println("new ModelProperty(\"" + mp.getUri() +"\" , " + val +"),");
+            if(uri.contains("#property")) {
+                continue;    
+            }
+            //String val = (mp.getValue() != null) ? "\"" + mp.getValue() + "\"" : null;
+            //   System.out.println("new ModelProperty(\"" + mp.getUri() +"\" , " + val +"),");
             if (!uri.startsWith(baseUri)) {
                 throw new IllegalArgumentException("Passed in model property that does not match baseUri: Property URI = "
                         + uri + ", Base URI = " + baseUri);
@@ -126,7 +151,17 @@ public final class ModelMarshaller {
                 }
             }
             String tag = tagNames.get(tagNames.size() - 1);
-            sb.append(toStartTag(tag));
+
+            ModelProperty attribute = null;
+            int peekIndex = modelProperties.indexOf(mp) + 1;
+            if(peekIndex <= modelProperties.size() - 1) {
+                ModelProperty peekProperty = modelProperties.get(peekIndex);
+                if(peekProperty.getUri().contains("#property")) {
+                    attribute = peekProperty;
+                }
+            }
+
+            sb.append(toStartTag(tag, attribute));
             if (mp.getResolvedValue() != null) {
                 sb.append(mp.getResolvedValue());
                 sb.append(toEndTag(tag));
@@ -146,9 +181,14 @@ public final class ModelMarshaller {
         return Arrays.asList(uri.substring(basePosition).replaceAll("#collection", "").split("/"));
     }
 
-    private static String toStartTag(String value) {
+    private static String toStartTag(String value, ModelProperty attribute) {
         StringBuffer sb = new StringBuffer();
-        sb.append("<").append(value).append(">\r\n");
+        sb.append("<").append(value);
+        if(attribute != null) {
+            sb.append(" ").append(attribute.getUri().substring(attribute.getUri().indexOf("#property/") + 10)).append("=\"")
+                    .append(attribute.getValue()).append("\" ");
+        }
+        sb.append(">\r\n");
         return sb.toString();
     }
 

@@ -127,7 +127,7 @@ public final class ModelTransformerContext {
 
         try {
             DomainModel domainModel = toModelTransformer.transformToDomainModel(mps);
-            domainModel.setEventHistory(modelDataSource.getEventHistory());
+            //domainModel.setEventHistory(modelDataSource.getEventHistory());
             return domainModel;
         } catch (IOException e) {
             System.out.println(modelDataSource.getEventHistory());
@@ -173,7 +173,7 @@ public final class ModelTransformerContext {
 
         for (ModelProperty p : properties) {
             String uri = p.getUri();
-            String parentUri = uri.substring(0, uri.lastIndexOf("/"));
+            String parentUri = uri.substring(0, uri.lastIndexOf("/")).replaceAll("#property", "");
             if (!projectIsContained && uri.equals(baseUri)) {
                 projectIsContained = true;
                 processedProperties.add(p);
@@ -184,7 +184,6 @@ public final class ModelTransformerContext {
                 position.add(pst, uri);
             } 
         }
-        logger.info("Properties removed through sort: " + (properties.size() - processedProperties.size()));
         return processedProperties;
     }
 }
