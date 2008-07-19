@@ -1,8 +1,19 @@
 package org.apache.maven.shared.model.impl;
 
-import org.apache.maven.shared.model.*;
+import org.apache.maven.shared.model.DataSourceException;
+import org.apache.maven.shared.model.ModelContainer;
+import org.apache.maven.shared.model.ModelContainerFactory;
+import org.apache.maven.shared.model.ModelDataSource;
+import org.apache.maven.shared.model.ModelProperty;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**

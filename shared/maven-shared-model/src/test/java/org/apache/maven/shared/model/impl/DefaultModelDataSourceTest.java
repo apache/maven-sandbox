@@ -1,14 +1,19 @@
 package org.apache.maven.shared.model.impl;
 
-import org.apache.maven.shared.model.*;
+import org.apache.maven.shared.model.DataSourceException;
+import org.apache.maven.shared.model.ModelContainer;
+import org.apache.maven.shared.model.ModelContainerAction;
+import org.apache.maven.shared.model.ModelContainerFactory;
+import org.apache.maven.shared.model.ModelDataSource;
+import org.apache.maven.shared.model.ModelProperty;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.io.IOException;
 
 public class DefaultModelDataSourceTest
 {
