@@ -28,7 +28,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                 ProjectUri.Build.PluginManagement.Plugins.Plugin.Dependencies.Dependency.Exclusions.xUri,
                 ProjectUri.Build.PluginManagement.Plugins.Plugin.Executions.xUri,
                 ProjectUri.Build.Plugins.xUri,
-                ProjectUri.Build.Plugins.Plugin.configuration,
+                //ProjectUri.Build.Plugins.Plugin.configuration,
                 ProjectUri.Build.Plugins.Plugin.Dependencies.xUri,
                 ProjectUri.Build.Plugins.Plugin.Executions.xUri,
                 ProjectUri.Build.Resources.xUri,
@@ -253,7 +253,8 @@ public final class PomClassicTransformer implements ModelTransformer {
                    clearedProperties.add(mp);
                }
             }
-                       
+
+                      
             ModelProperty artifactId = getPropertyFor(ProjectUri.artifactId, tmp);
             if(artifactId != null) {
                 projectNames.add(0, artifactId.getValue());
@@ -261,6 +262,8 @@ public final class PomClassicTransformer implements ModelTransformer {
 
             tmp.removeAll(clearedProperties);
             modelProperties.addAll(tmp);
+
+
 
             //Remove Parent Info
             /*

@@ -493,9 +493,6 @@ public class DefaultMavenProjectBuilder
         {
             Model model = readModelFromLocalPath( "unknown", projectDescriptor, new PomArtifactResolver(config.getLocalRepository(),
                     buildArtifactRepositories( getSuperModel() ), artifactResolver) );
-            Parent parent = model.getParent();
-
-           //model.setParent(null);
             project = buildInternal(model,
                 config,
                 buildArtifactRepositories( getSuperModel() ),
@@ -503,9 +500,6 @@ public class DefaultMavenProjectBuilder
                 STRICT_MODEL_PARSING,
                 true,
                 true );
-
-       //     project.getModel().setParent(parent);
-
         }
         return project;
     }

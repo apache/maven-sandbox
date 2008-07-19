@@ -88,7 +88,10 @@ public final class ArtifactModelContainerFactory implements ModelContainerFactor
             ArtifactModelContainer c = (ArtifactModelContainer) modelContainer;
             if (c.groupId.equals(groupId) && c.artifactId.equals(artifactId)) {
                 if (c.version == null) {
-                    return ModelContainerAction.NOP;
+                    if(version == null) {
+                        return ModelContainerAction.JOIN;
+                    }
+                    return ModelContainerAction.DELETE;//TODO Verify - PluginManagement Section may make versions equal
                 }
 
                 if(c.version.equals(version)) {
