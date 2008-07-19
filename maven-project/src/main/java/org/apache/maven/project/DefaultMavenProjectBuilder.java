@@ -511,7 +511,6 @@ public class DefaultMavenProjectBuilder
     {
 
         String projectId = safeVersionlessKey( artifact.getGroupId(), artifact.getArtifactId() );
-        getLogger().info("findModelFromRepository ID = " + projectId);
         remoteArtifactRepositories = normalizeToArtifactRepositories( remoteArtifactRepositories, projectId );
 
         Artifact projectArtifact;
@@ -534,7 +533,6 @@ public class DefaultMavenProjectBuilder
         }
 
         Model legacy_model;
-        Model model;
         try
         {
             artifactResolver.resolve( projectArtifact, remoteArtifactRepositories, localRepository );

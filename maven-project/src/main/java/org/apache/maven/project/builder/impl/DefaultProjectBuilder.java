@@ -42,8 +42,6 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
                                            Collection<InterpolatorProperty> interpolatorProperties,
                                            PomArtifactResolver resolver, File projectDirectory)
             throws IOException {
-        logger.info("BuildFromLocalPath");
-        long start = System.currentTimeMillis();
         if (pom == null) {
             throw new IllegalArgumentException("pom: null");
         }
@@ -93,7 +91,6 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         PomClassicDomainModel transformedDomainModel = ((PomClassicDomainModel) ctx.transform(domainModels, transformer,
                 transformer, properties));
         Model model = transformedDomainModel.getModel();
-        System.out.println("buildFromLocalPath: Time = " + (System.currentTimeMillis() - start));
         return new MavenProject(model);
     }
 
@@ -115,8 +112,6 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
         if (artifactFactory == null) {
             throw new IllegalArgumentException("artifactFactory: not initialized");
         }
-
-        long start = System.currentTimeMillis();
 
         List<DomainModel> domainModels = new ArrayList<DomainModel>();
 
@@ -141,8 +136,8 @@ public final class DefaultProjectBuilder implements ProjectBuilder, LogEnabled {
 
         domainModels.add(parentDomainModel);
         domainModels.addAll(getDomainModelParentsFromRepository(parentDomainModel, artifactResolver));
-        System.out.println("getDomainModelParentsFromRepository: Time = " + (System.currentTimeMillis() - start) + ", Gid ="
-                + parent.getGroupId() + ", Artifact Id= " + parent.getArtifactId() + ", Version = " + parent.getVersion());
+       // System.out.println("getDomainModelParentsFromRepository: Time = " + (System.currentTimeMillis() - start) + ", Gid ="
+       //         + parent.getGroupId() + ", Artifact Id= " + parent.getArtifactId() + ", Version = " + parent.getVersion());
         return domainModels;
     }
 
