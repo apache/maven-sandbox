@@ -29,7 +29,11 @@ import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.WriterFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
 
 /**
  * Provides a wrapper for the maven model.
@@ -38,8 +42,14 @@ public final class PomClassicDomainModel
     implements InputStreamDomainModel
 {
 
+    /**
+     * Bytes containing the underlying model
+     */
     private byte[] inputBytes;
 
+    /**
+     * History of joins and deletes of model properties
+     */
     private String eventHistory;
 
     /**

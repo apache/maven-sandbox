@@ -29,6 +29,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Provides methods for resolving of artifacts.
+ */
 public class PomArtifactResolver
 {
 

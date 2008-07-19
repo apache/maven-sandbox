@@ -24,7 +24,12 @@ import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.builder.*;
+import org.apache.maven.project.builder.ArtifactModelContainerFactory;
+import org.apache.maven.project.builder.IdModelContainerFactory;
+import org.apache.maven.project.builder.PomArtifactResolver;
+import org.apache.maven.project.builder.PomClassicDomainModel;
+import org.apache.maven.project.builder.PomClassicTransformer;
+import org.apache.maven.project.builder.ProjectBuilder;
 import org.apache.maven.project.validation.ModelValidationResult;
 import org.apache.maven.project.validation.ModelValidator;
 import org.apache.maven.shared.model.DomainModel;
@@ -37,22 +42,40 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
+/**
+ * Default implementation of the project builder.
+ */
 public final class DefaultProjectBuilder
     implements ProjectBuilder, LogEnabled
 {
 
     private ArtifactFactory artifactFactory;
 
+    /**
+     * Logger instance
+     */
     private Logger logger;
 
     private ModelValidator validator;
 
+    /**
+     * Default constructor
+     */
     public DefaultProjectBuilder()
     {
     }
 
+    /**
+     * Constructor
+     *
+     * @param artifactFactory the artifact factory
+     */
     protected DefaultProjectBuilder( ArtifactFactory artifactFactory )
     {
         if ( artifactFactory == null )
@@ -62,6 +85,9 @@ public final class DefaultProjectBuilder
         this.artifactFactory = artifactFactory;
     }
 
+    /**
+     * @see ProjectBuilder#buildFromLocalPath(java.io.InputStream, java.util.List, java.util.Collection, org.apache.maven.project.builder.PomArtifactResolver, java.io.File)
+     */
     public MavenProject buildFromLocalPath( InputStream pom, List<Model> inheritedModels,
                                             Collection<InterpolatorProperty> interpolatorProperties,
                                             PomArtifactResolver resolver, File projectDirectory )

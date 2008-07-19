@@ -24,7 +24,11 @@ import org.apache.maven.shared.model.ModelContainerAction;
 import org.apache.maven.shared.model.ModelContainerFactory;
 import org.apache.maven.shared.model.ModelProperty;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public final class ArtifactModelContainerFactory
     implements ModelContainerFactory
@@ -165,10 +169,6 @@ public final class ArtifactModelContainerFactory
         public List<ModelProperty> getProperties()
         {
             return properties;
-        }
-
-        public void sort( List<ModelProperty> modelProperties )
-        {
         }
 
         public String toString()

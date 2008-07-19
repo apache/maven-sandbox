@@ -29,11 +29,25 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Provides services for building maven projects from models.
+ */
 public interface ProjectBuilder
 {
 
     String ROLE = ProjectBuilder.class.getName();
 
+    /**
+     * Returns a maven project for the specified input stream.
+     *
+     * @param pom                    input stream of the model
+     * @param inheritedModels        list of models containing additional parent models in order from most to least specialized
+     * @param interpolatorProperties properties used for interpolation of properties within the model
+     * @param resolver               artifact resolver used in resolving artifacts
+     * @param baseDirectory          the base directory of the model
+     * @return a maven project for the specified input stream
+     * @throws IOException if there is a problem in the construction of the maven project
+     */
     MavenProject buildFromLocalPath( InputStream pom, List<Model> inheritedModels,
                                      Collection<InterpolatorProperty> interpolatorProperties,
                                      PomArtifactResolver resolver, File baseDirectory )

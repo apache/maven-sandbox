@@ -20,13 +20,22 @@ package org.apache.maven.project.builder;
  */
 
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.shared.model.*;
+import org.apache.maven.shared.model.DomainModel;
+import org.apache.maven.shared.model.ModelContainer;
+import org.apache.maven.shared.model.ModelDataSource;
+import org.apache.maven.shared.model.ModelMarshaller;
+import org.apache.maven.shared.model.ModelProperty;
+import org.apache.maven.shared.model.ModelTransformer;
 import org.apache.maven.shared.model.impl.DefaultModelDataSource;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Provides methods for transforming model properties into a domain model for the pom classic format and vice versa.
