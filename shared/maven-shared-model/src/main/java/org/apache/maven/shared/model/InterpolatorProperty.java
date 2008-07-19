@@ -19,13 +19,27 @@ package org.apache.maven.shared.model;
  * under the License.
  */
 
+/**
+ * Provides interpolator property information.
+ */
 public final class InterpolatorProperty
 {
-
+    /**
+     * The key (or name) of the property
+     */
     private final String key;
 
+    /**
+     * The value of the property
+     */
     private final String value;
 
+    /**
+     * Constructor
+     *
+     * @param key   the key (or name) of the property. May not be null
+     * @param value the value of the property. May not be null.
+     */
     public InterpolatorProperty( String key, String value )
     {
         if ( key == null )
@@ -41,16 +55,32 @@ public final class InterpolatorProperty
         this.value = value;
     }
 
+    /**
+     * Returns key (or name) of property.
+     *
+     * @return key (or name) of property
+     */
     public String getKey()
     {
         return key;
     }
 
+    /**
+     * Returns value of property.
+     *
+     * @return value of property
+     */
     public String getValue()
     {
         return value;
     }
 
+    /**
+     * Returns true if key values match, otherwise returns false.
+     *
+     * @param o interpolator property to compare
+     * @return true if key values match, otherwise returns false
+     */
     public boolean equals( Object o )
     {
         if ( this == o )
@@ -72,6 +102,11 @@ public final class InterpolatorProperty
         return true;
     }
 
+    /**
+     * Returns hash code of interpolator property key.
+     *
+     * @return hash code of interpolator property key
+     */
     public int hashCode()
     {
         return key.hashCode();

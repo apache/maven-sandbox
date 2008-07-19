@@ -72,5 +72,10 @@ public interface ModelDataSource
      */
     void init( List<ModelProperty> modelProperties, Collection<ModelContainerFactory> modelContainerFactories );
 
+    /**
+     * Return history of all joins and deletes
+     *
+     * @return history of all joins and deletes
+     */
     String getEventHistory();
 }

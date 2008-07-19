@@ -30,6 +30,9 @@ import java.util.regex.Pattern;
 public final class ModelProperty
 {
 
+    /**
+     * A pattern used for finding pom, project and env properties
+     */
     private static final Pattern EXPRESSION_PATTERN = Pattern.compile( "\\$\\{(pom\\.|project\\.|env\\.)?([^}]+)\\}" );
 
     /**
@@ -42,11 +45,20 @@ public final class ModelProperty
      */
     private final String value;
 
+    /**
+     * The count of '/' within this model property's uri, which is the depth of its XML nodes.
+     */
     private final int depth;
 
+    /**
+     * Value of this model property after interpolation
+     */
     private String resolvedValue;
 
-    private final List<String> expressions;
+    /**
+     * List of unresolved expressions within this model property's value
+     */
+    private final List<String> unresolvedExpressions;
 
     /**
      * Constructor
@@ -64,13 +76,13 @@ public final class ModelProperty
         this.value = value;
         resolvedValue = value;
 
-        expressions = new ArrayList<String>();
+        unresolvedExpressions = new ArrayList<String>();
         if ( value != null )
         {
             Matcher matcher = EXPRESSION_PATTERN.matcher( value );
             while ( matcher.find() )
             {
-                expressions.add( matcher.group( 0 ) );
+                unresolvedExpressions.add( matcher.group( 0 ) );
             }
         }
         depth = uri.split( "/" ).length;
@@ -87,35 +99,61 @@ public final class ModelProperty
     }
 
     /**
-     * Returns value for the key. Value may be null.
+     * Returns value for the URI key. Value may be null.
      *
-     * @return value for the key. Value may be null.
+     * @return value for the URI key. Value may be null
      */
     public String getValue()
     {
         return value;
     }
 
+    /**
+     * Value of this model property after interpolation.
+     *
+     * @return value of this model property after interpolation
+     */
     public String getResolvedValue()
     {
         return resolvedValue;
     }
 
+    /**
+     * Returns true if model property is completely interpolated, otherwise returns false.
+     *
+     * @return true if model property is completely interpolated, otherwise returns false
+     */
     public boolean isResolved()
     {
-        return expressions.isEmpty();
+        return unresolvedExpressions.isEmpty();
     }
 
+    /**
+     * Returns copy of the uninterpolated model property
+     *
+     * @return copy of the uninterpolated model property
+     */
     public ModelProperty createCopyOfOriginal()
     {
         return new ModelProperty( uri, value );
     }
 
+    /**
+     * Returns the count of '/' within this model property's uri, which is the depth of its XML nodes.
+     *
+     * @return the count of '/' within this model property's uri, which is the depth of its XML nodes
+     */
     public int getDepth()
     {
         return depth;
     }
 
+    /**
+     * Returns true if this model property is a direct parent of the specified model property, otherwise returns false.
+     *
+     * @param modelProperty the model property
+     * @return true if this model property is a direct parent of the specified model property, otherwise returns false
+     */
     public boolean isParentOf( ModelProperty modelProperty )
     {
         if ( Math.abs( depth - modelProperty.getDepth() ) > 1 )
@@ -128,13 +166,15 @@ public final class ModelProperty
         }
         return ( modelProperty.getUri().startsWith( uri ) );
     }
-    /*
-        public boolean isParentOf(ModelProperty modelProperty) {
-        return !(uri.equals(modelProperty.getUri()) || uri.startsWith(modelProperty.getUri()))
-                && (modelProperty.getUri().startsWith(uri));
-    }
-     */
 
+    /**
+     * Returns this model property as an interpolator property, allowing the interpolation of model elements within
+     * other model elements.
+     *
+     * @param baseUri the base uri of the model property
+     * @return this model property as an interpolator property, allowing the interpolation of model elements within
+     *         other model elements
+     */
     public InterpolatorProperty asInterpolatorProperty( String baseUri )
     {
         if ( uri.contains( "#collection" ) || value == null )
@@ -145,6 +185,11 @@ public final class ModelProperty
         return new InterpolatorProperty( key, value );
     }
 
+    /**
+     * Resolves any unresolved model property expressions using the specified interpolator property
+     *
+     * @param property the interpolator property used to resolve
+     */
     public void resolveWith( InterpolatorProperty property )
     {
         if ( property == null )
@@ -155,16 +200,16 @@ public final class ModelProperty
         {
             return;
         }
-        for ( String expression : expressions )
+        for ( String expression : unresolvedExpressions )
         {
             if ( property.getKey().equals( expression ) )
             {
                 resolvedValue = resolvedValue.replace( property.getKey(), property.getValue() );
-                expressions.clear();
+                unresolvedExpressions.clear();
                 Matcher matcher = EXPRESSION_PATTERN.matcher( resolvedValue );
                 while ( matcher.find() )
                 {
-                    expressions.add( matcher.group( 0 ) );
+                    unresolvedExpressions.add( matcher.group( 0 ) );
                 }
                 break;
             }

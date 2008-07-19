@@ -56,6 +56,4 @@ public interface ModelContainer
      */
     ModelContainer createNewInstance( List<ModelProperty> modelProperties );
 
-    void sort( List<ModelProperty> modelProperties );
-
 }

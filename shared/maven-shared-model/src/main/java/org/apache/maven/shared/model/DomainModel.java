@@ -27,7 +27,17 @@ package org.apache.maven.shared.model;
 public interface DomainModel
 {
 
+    /**
+     * Returns event history of joins and deletes used in constructing this domain model.
+     *
+     * @return event history of joins and deletes used in constructing this domain model
+     */
     String getEventHistory();
 
+    /**
+     * Sets event history of joins and deletes used in constructing this domain model
+     *
+     * @param history history of joins and deletes used in constructing this domain model
+     */
     void setEventHistory( String history );
 }

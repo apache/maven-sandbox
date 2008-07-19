@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 
 /**
@@ -37,12 +36,16 @@ import java.util.logging.Logger;
 public final class ModelTransformerContext
 {
 
+    /**
+     * Factories to use for construction of model containers
+     */
     private final Collection<ModelContainerFactory> factories;
 
+    /**
+     * List of system and environmental properties to use during interpolation
+     */
     private final static List<InterpolatorProperty> systemInterpolatorProperties =
         new ArrayList<InterpolatorProperty>();
-
-    private static Logger logger = Logger.getAnonymousLogger();
 
     static
     {
@@ -166,16 +169,17 @@ public final class ModelTransformerContext
             }
         }
 
+        /*
         for ( InterpolatorProperty ip : properties )
         {
             for ( ModelProperty mp : unresolvedProperties )
             {
-                //  mp.resolveWith(ip);
-                //  System.out.println(mp);
-                // System.out.println("-------------------");
+                  mp.resolveWith(ip);
+                  System.out.println(mp);
+                 System.out.println("-------------------");
             }
         }
-
+        */
         mps = sort( mps, baseUriForModel );
 
         try
@@ -196,11 +200,11 @@ public final class ModelTransformerContext
      * Transforms and interpolates specified hierarchical list of domain models (inheritence) to target domain model.
      * Uses standard environmental and system properties for intepolation.
      *
-     * @param domainModels
-     * @param fromModelTransformer
-     * @param toModelTransformer
-     * @return
-     * @throws IOException
+     * @param domainModels         the domain model list to transform
+     * @param fromModelTransformer transformer that transforms from specified domain models to canonical data model
+     * @param toModelTransformer   transformer that transforms from canonical data model to returned domain model
+     * @return processed domain model
+     * @throws IOException if there was a problem with the transform
      */
     public DomainModel transform( List<DomainModel> domainModels, ModelTransformer fromModelTransformer,
                                   ModelTransformer toModelTransformer )
@@ -217,7 +221,7 @@ public final class ModelTransformerContext
      * a #collection (http://apache.org/model/project/dependencyManagement/dependencies#collection/dependency)
      *
      * @param properties unsorted list of model properties. List may not be null.
-     * @param baseUri
+     * @param baseUri    the base URI of every model property
      * @return sorted list of model properties
      */
     protected List<ModelProperty> sort( List<ModelProperty> properties, String baseUri )

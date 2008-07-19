@@ -21,16 +21,27 @@ package org.apache.maven.shared.model;
 
 import java.io.IOException;
 
+/**
+ * Exeception class whose instance is thrown if there is an illegal state within a data source.
+ */
 public class DataSourceException
     extends IOException
 {
     static final long serialVersionUID = 8738495672439L;
 
+    /**
+     * Default constructor
+     */
     public DataSourceException()
     {
         super();
     }
 
+    /**
+     * Constructor
+     *
+     * @param message exception message
+     */
     public DataSourceException( String message )
     {
         super( message );

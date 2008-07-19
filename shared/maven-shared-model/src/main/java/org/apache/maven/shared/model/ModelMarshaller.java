@@ -40,10 +40,22 @@ import java.util.Set;
 public final class ModelMarshaller
 {
 
+    /**
+     * Private Constructor
+     */
     private ModelMarshaller()
     {
     }
 
+    /**
+     * Returns list of model properties transformed from the specified input stream.
+     *
+     * @param inputStream input stream containing the xml document. May not be null.
+     * @param baseUri     the base uri of every model property. May not be null or empty.
+     * @param collections set of uris that are to be treated as a collection (multiple entries). May be null.
+     * @return list of model properties transformed from the specified input stream.
+     * @throws IOException if there was a problem doing the transform
+     */
     public static List<ModelProperty> marshallXmlToModelProperties( InputStream inputStream, String baseUri,
                                                                     Set<String> collections )
         throws IOException
@@ -53,7 +65,7 @@ public final class ModelMarshaller
             throw new IllegalArgumentException( "inputStream: null" );
         }
 
-        if ( baseUri == null )
+        if ( baseUri == null || baseUri.trim().length() == 0 )
         {
             throw new IllegalArgumentException( "baseUri: null" );
         }
@@ -184,6 +196,14 @@ public final class ModelMarshaller
         }
     }
 
+    /**
+     * Returns XML string unmarshalled from the specified list of model properties
+     *
+     * @param modelProperties the model properties to unmarshal. May not be null or empty
+     * @param baseUri         the base uri of every model property. May not be null or empty.
+     * @return XML string unmarshalled from the specified list of model properties
+     * @throws IOException if there was a problem with unmarshalling
+     */
     public static String unmarshalModelPropertiesToXml( List<ModelProperty> modelProperties, String baseUri )
         throws IOException
     {
@@ -258,14 +278,29 @@ public final class ModelMarshaller
         return sb.toString();
     }
 
+    /**
+     * Returns list of tag names parsed from the specified uri. All #collection parts of the tag are removed from the
+     * tag names.
+     *
+     * @param basePosition the base position in the specified URI to start the parse
+     * @param uri          the uri to parse for tag names
+     * @return list of tag names parsed from the specified uri
+     */
     private static List<String> getTagNamesFromUri( int basePosition, String uri )
     {
         return Arrays.asList( uri.substring( basePosition ).replaceAll( "#collection", "" ).split( "/" ) );
     }
 
+    /**
+     * Returns the XML formatted start tag for the specified value and the specified attribute.
+     *
+     * @param value     the value to use for the start tag
+     * @param attribute the attribute to use in constructing of start tag
+     * @return the XML formatted start tag for the specified value and the specified attribute
+     */
     private static String toStartTag( String value, ModelProperty attribute )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer(); //TODO: Support more than one attribute
         sb.append( "\r\n<" ).append( value );
         if ( attribute != null )
         {
@@ -277,6 +312,12 @@ public final class ModelMarshaller
         return sb.toString();
     }
 
+    /**
+     * Returns XML formatted end tag for the specified value.
+     *
+     * @param value the value to use for the end tag
+     * @return xml formatted end tag for the specified value
+     */
     private static String toEndTag( String value )
     {
         if ( value.trim().length() == 0 )
@@ -288,6 +329,9 @@ public final class ModelMarshaller
         return sb.toString();
     }
 
+    /**
+     * Class for storing information about URIs.
+     */
     private static class Uri
     {
 

@@ -430,10 +430,6 @@ public class DefaultModelDataSourceTest
                 return new DummyModelContainer( modelProperties );
             }
 
-            public void sort( List<ModelProperty> modelProperties )
-            {
-
-            }
         }
     }
 }
