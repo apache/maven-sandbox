@@ -178,7 +178,7 @@ public final class ModelTransformerContext {
                 projectIsContained = true;
                 processedProperties.add(p);
                 position.add(0, uri);
-            } else if (!position.contains(uri) || (parentUri.contains("#collection"))) {
+            } else if (!position.contains(uri) || parentUri.contains("#collection")) {
                 int pst = position.indexOf(parentUri) + 1;
                 processedProperties.add(pst, p);
                 position.add(pst, uri);

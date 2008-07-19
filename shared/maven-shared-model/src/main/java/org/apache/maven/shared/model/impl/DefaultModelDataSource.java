@@ -251,6 +251,14 @@ public final class DefaultModelDataSource implements ModelDataSource {
         m.addAll(a.getProperties());
         m.addAll(b.getProperties());
 
+        List<String> combineChildrenUris = new ArrayList<String>();
+        for(ModelProperty mp: m) {
+            String x = mp.getUri();
+            if(x.endsWith("#property/combine.children") && mp.getValue().equals("append")) {
+                combineChildrenUris.add(x.substring(0, x.length() - 26));    
+            }
+        }
+
         LinkedList<ModelProperty> processedProperties = new LinkedList<ModelProperty>();
         List<String> uris = new ArrayList<String>();
         String baseUri = a.getProperties().get(0).getUri();
@@ -261,11 +269,13 @@ public final class DefaultModelDataSource implements ModelDataSource {
                         + ", ModelProperty = " + p);
             }
             String subUri = p.getUri().substring(baseUri.length(), modelPropertyLength );
+
             if (!uris.contains(p.getUri())
-                    || (subUri.contains("#collection") && !subUri.endsWith("#collection"))) {
+                    || (subUri.contains("#collection") && !subUri.endsWith("#collection"))
+                    && (!combineChildrenUris.contains(p.getUri()) || p.getUri().endsWith("#property/combine.children"))) {
                 processedProperties.add(findLastIndexOfParent(p, processedProperties) + 1, p);
                 uris.add(p.getUri());
-            }
+            } 
         }
         return processedProperties;
     }
