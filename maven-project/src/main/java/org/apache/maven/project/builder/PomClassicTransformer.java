@@ -1,5 +1,24 @@
 package org.apache.maven.project.builder;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.shared.model.*;
 import org.apache.maven.shared.model.impl.DefaultModelDataSource;
@@ -14,12 +33,14 @@ import java.util.*;
  */
 public final class PomClassicTransformer implements ModelTransformer {
 
-    private Set<String> uris;
+    /**
+     * The URIs this tranformer supports
+     */
+    private final Set<String> uris;
 
-    public String getBaseUri() {
-        return ProjectUri.baseUri;
-    }
-
+    /**
+     * Default constructor
+     */
     public PomClassicTransformer() {
         this.uris = new HashSet<String>(Arrays.asList(
                 ProjectUri.Build.Extensions.xUri,
@@ -81,6 +102,9 @@ public final class PomClassicTransformer implements ModelTransformer {
         ));
     }
 
+    /**
+     * @see ModelTransformer#transformToDomainModel(java.util.List)
+     */
     public DomainModel transformToDomainModel(List<ModelProperty> properties) throws IOException {
         if (properties == null) {
             throw new IllegalArgumentException("properties: null");
@@ -104,6 +128,9 @@ public final class PomClassicTransformer implements ModelTransformer {
         }
     }
 
+    /**
+     * @see ModelTransformer#transformToModelProperties(java.util.List)
+     */
     public List<ModelProperty> transformToModelProperties(List<DomainModel> domainModels) throws IOException {
         if (domainModels == null || domainModels.isEmpty()) {
             throw new IllegalArgumentException("domainModels: null or empty");
@@ -301,6 +328,22 @@ public final class PomClassicTransformer implements ModelTransformer {
         return modelProperties;
     }
 
+    /**
+     * Returns the base uri of all model properties: http://apache.org/maven/project/
+     *
+     * @return Returns the base uri of all model properties: http://apache.org/maven/project/
+     */
+    public String getBaseUri() {
+        return ProjectUri.baseUri;
+    }
+
+    /**
+     * Returns all model properties containing the specified uri from the specified properties list.
+     *
+     * @param uri the uri to use in finding the returned model properties
+     * @param properties the model properties list to search
+     * @return all model properties containing the specified uri from the specified properties list
+     */
     private static List<ModelProperty> getPropertiesFor(String uri, List<ModelProperty> properties) {
         List<ModelProperty> modelProperties = new ArrayList<ModelProperty>();
         for (ModelProperty mp : properties) {
@@ -311,6 +354,14 @@ public final class PomClassicTransformer implements ModelTransformer {
         return modelProperties;
     }
 
+
+    /**
+     * Returns the first model property containing the specified uri from the specified properties list.
+     *
+     * @param uri the uri to use in finding the returned model property
+     * @param properties the model properties list to search
+     * @return the first model property containing the specified uri from the specified properties list.
+     */
     private static ModelProperty getPropertyFor(String uri, List<ModelProperty> properties) {
         for (ModelProperty mp : properties) {
             if (uri.equals(mp.getUri())) {
