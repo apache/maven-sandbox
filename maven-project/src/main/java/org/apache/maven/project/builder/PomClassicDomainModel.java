@@ -34,7 +34,9 @@ import java.io.*;
 /**
  * Provides a wrapper for the maven model.
  */
-public final class PomClassicDomainModel implements InputStreamDomainModel {
+public final class PomClassicDomainModel
+    implements InputStreamDomainModel
+{
 
     private byte[] inputBytes;
 
@@ -51,9 +53,12 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
      * @param model maven model
      * @throws IOException if there is a problem constructing the model
      */
-    public PomClassicDomainModel(Model model) throws IOException {
-        if (model == null) {
-            throw new IllegalArgumentException("model: null");
+    public PomClassicDomainModel( Model model )
+        throws IOException
+    {
+        if ( model == null )
+        {
+            throw new IllegalArgumentException( "model: null" );
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Writer out = WriterFactory.newXmlWriter( baos );
@@ -69,11 +74,14 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
      * @param inputStream input stream of the maven model
      * @throws IOException if there is a problem constructing the model
      */
-    public PomClassicDomainModel(InputStream inputStream) throws IOException {
-        if (inputStream == null) {
-            throw new IllegalArgumentException("inputStream: null");
+    public PomClassicDomainModel( InputStream inputStream )
+        throws IOException
+    {
+        if ( inputStream == null )
+        {
+            throw new IllegalArgumentException( "inputStream: null" );
         }
-        this.inputBytes = IOUtil.toByteArray(inputStream);
+        this.inputBytes = IOUtil.toByteArray( inputStream );
     }
 
 
@@ -83,50 +91,64 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
      *
      * @param a model to compare
      * @return true if groupId.equals(a.groupId) && artifactId.equals(a.artifactId) && version.equals(a.version),
-     * otherwise returns false.
+     *         otherwise returns false.
      */
-    public boolean matchesModel(Model a) {
-        if(a == null) {
-            throw new IllegalArgumentException("a: null");
+    public boolean matchesModel( Model a )
+    {
+        if ( a == null )
+        {
+            throw new IllegalArgumentException( "a: null" );
         }
-        if(model == null) {
-            try {
+        if ( model == null )
+        {
+            try
+            {
                 model = getModel();
-            } catch (IOException e) {
+            }
+            catch ( IOException e )
+            {
                 return false;
             }
         }
 
-        String groupId = (model.getGroupId() == null) ? model.getParent().getGroupId() : model.getGroupId();
-        String artifactId = (model.getArtifactId() == null) ? model.getParent().getArtifactId() : model.getArtifactId();
-        String version = (model.getVersion() == null) ? model.getParent().getVersion() : model.getVersion();
+        String groupId = ( model.getGroupId() == null ) ? model.getParent().getGroupId() : model.getGroupId();
+        String artifactId =
+            ( model.getArtifactId() == null ) ? model.getParent().getArtifactId() : model.getArtifactId();
+        String version = ( model.getVersion() == null ) ? model.getParent().getVersion() : model.getVersion();
 
-        String aGroupId = (a.getGroupId() == null) ? a.getParent().getGroupId() : a.getGroupId();
-        String aArtifactId = (a.getArtifactId() == null) ? a.getParent().getArtifactId() : a.getArtifactId();
-        String aVersion = (a.getVersion() == null) ? a.getParent().getVersion() : a.getVersion();
+        String aGroupId = ( a.getGroupId() == null ) ? a.getParent().getGroupId() : a.getGroupId();
+        String aArtifactId = ( a.getArtifactId() == null ) ? a.getParent().getArtifactId() : a.getArtifactId();
+        String aVersion = ( a.getVersion() == null ) ? a.getParent().getVersion() : a.getVersion();
 
-        return groupId.equals(aGroupId) && artifactId.equals(aArtifactId) && version.equals(aVersion);
+        return groupId.equals( aGroupId ) && artifactId.equals( aArtifactId ) && version.equals( aVersion );
     }
 
 
-    public boolean matchesParent(Parent parent) {
-        if(parent == null) {
-            throw new IllegalArgumentException("parent: null");
+    public boolean matchesParent( Parent parent )
+    {
+        if ( parent == null )
+        {
+            throw new IllegalArgumentException( "parent: null" );
         }
-        if(model == null) {
-            try {
+        if ( model == null )
+        {
+            try
+            {
                 model = getModel();
-            } catch (IOException e) {
+            }
+            catch ( IOException e )
+            {
                 return false;
             }
         }
 
-        String groupId = (model.getGroupId() == null) ? model.getParent().getGroupId() : model.getGroupId();
-        String artifactId = (model.getArtifactId() == null) ? model.getParent().getArtifactId() : model.getArtifactId();
-        String version = (model.getVersion() == null) ? model.getParent().getVersion() : model.getVersion();
+        String groupId = ( model.getGroupId() == null ) ? model.getParent().getGroupId() : model.getGroupId();
+        String artifactId =
+            ( model.getArtifactId() == null ) ? model.getParent().getArtifactId() : model.getArtifactId();
+        String version = ( model.getVersion() == null ) ? model.getParent().getVersion() : model.getVersion();
 
-        return (parent.getGroupId().equals(groupId) && parent.getArtifactId().equals(artifactId)
-                && parent.getVersion().equals(version));
+        return ( parent.getGroupId().equals( groupId ) && parent.getArtifactId().equals( artifactId ) &&
+            parent.getVersion().equals( version ) );
     }
 
     /**
@@ -134,7 +156,8 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
      *
      * @return XML model as string
      */
-    public String asString() {
+    public String asString()
+    {
         try
         {
             return IOUtil.toString( ReaderFactory.newXmlReader( new ByteArrayInputStream( inputBytes ) ) );
@@ -151,41 +174,50 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
      *
      * @return maven model
      */
-    public Model getModel() throws IOException {
-        if(model != null) {
+    public Model getModel()
+        throws IOException
+    {
+        if ( model != null )
+        {
             return model;
         }
-        try {
-            return new MavenXpp3Reader().read(ReaderFactory.newXmlReader(new ByteArrayInputStream( inputBytes )) );
+        try
+        {
+            return new MavenXpp3Reader().read( ReaderFactory.newXmlReader( new ByteArrayInputStream( inputBytes ) ) );
         }
-        catch (XmlPullParserException e) {
+        catch ( XmlPullParserException e )
+        {
             e.printStackTrace();
-            throw new IOException(e.getMessage());
+            throw new IOException( e.getMessage() );
         }
     }
 
     /**
      * @see org.apache.maven.shared.model.InputStreamDomainModel#getInputStream()
      */
-    public InputStream getInputStream() {
+    public InputStream getInputStream()
+    {
         byte[] copy = new byte[inputBytes.length];
-        System.arraycopy(inputBytes, 0, copy, 0, inputBytes.length);
-        return new ByteArrayInputStream(copy);
+        System.arraycopy( inputBytes, 0, copy, 0, inputBytes.length );
+        return new ByteArrayInputStream( copy );
     }
 
     /**
      * @see org.apache.maven.shared.model.DomainModel#getEventHistory()
      */
-    public String getEventHistory() {
+    public String getEventHistory()
+    {
         return eventHistory;
     }
 
     /**
      * @see org.apache.maven.shared.model.DomainModel#setEventHistory(String)
      */
-    public void setEventHistory(String eventHistory) {
-        if(eventHistory == null) {
-            throw new IllegalArgumentException("eventHistory: null");
+    public void setEventHistory( String eventHistory )
+    {
+        if ( eventHistory == null )
+        {
+            throw new IllegalArgumentException( "eventHistory: null" );
         }
         this.eventHistory = eventHistory;
     }
@@ -196,8 +228,9 @@ public final class PomClassicDomainModel implements InputStreamDomainModel {
      * @param o domain model
      * @return true if this.asString.equals(o.asString()), otherwise false.
      */
-    public boolean equals(Object o) {
-        return o instanceof PomClassicDomainModel && this.asString().equals(((PomClassicDomainModel) o).asString());
+    public boolean equals( Object o )
+    {
+        return o instanceof PomClassicDomainModel && this.asString().equals( ( (PomClassicDomainModel) o ).asString() );
     }
 
 }

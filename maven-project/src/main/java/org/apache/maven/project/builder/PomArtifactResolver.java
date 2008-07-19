@@ -29,7 +29,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class PomArtifactResolver {
+public class PomArtifactResolver
+{
 
     /**
      * Local repository used in resolving artifacts
@@ -49,12 +50,13 @@ public class PomArtifactResolver {
     /**
      * Constructor
      *
-     * @param localRepository local repository used in resolving artifacts
+     * @param localRepository    local repository used in resolving artifacts
      * @param remoteRepositories remote repositories used in resolving artifacts
-     * @param resolver artifact resolver used to resolve artifacts
+     * @param resolver           artifact resolver used to resolve artifacts
      */
-    public PomArtifactResolver(ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories,
-                               ArtifactResolver resolver) {
+    public PomArtifactResolver( ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories,
+                                ArtifactResolver resolver )
+    {
         this.localRepository = localRepository;
         this.remoteRepositories = remoteRepositories;
         this.resolver = resolver;
@@ -66,16 +68,23 @@ public class PomArtifactResolver {
      * @param artifact the artifact to resolve
      * @throws IOException if there is a problem resolving the artifact
      */
-    public void resolve(Artifact artifact) throws IOException {
-        File artifactFile = new File(localRepository.getBasedir(), localRepository.pathOf(artifact));
-        artifact.setFile(artifactFile);
+    public void resolve( Artifact artifact )
+        throws IOException
+    {
+        File artifactFile = new File( localRepository.getBasedir(), localRepository.pathOf( artifact ) );
+        artifact.setFile( artifactFile );
 
-        try {
+        try
+        {
             resolver.resolve( artifact, remoteRepositories, localRepository );
-        } catch (ArtifactResolutionException e) {
-            throw new IOException(e.getMessage());
-        } catch (ArtifactNotFoundException e) {
-            throw new IOException(e.getMessage());
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new IOException( e.getMessage() );
+        }
+        catch ( ArtifactNotFoundException e )
+        {
+            throw new IOException( e.getMessage() );
         }
     }
 }

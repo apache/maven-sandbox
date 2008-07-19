@@ -29,13 +29,14 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 
-public interface ProjectBuilder {
+public interface ProjectBuilder
+{
 
     String ROLE = ProjectBuilder.class.getName();
 
-    MavenProject buildFromLocalPath(InputStream pom, List<Model> inheritedModels,
-                                    Collection<InterpolatorProperty> interpolatorProperties,
-                                    PomArtifactResolver resolver, File baseDirectory)
-            throws IOException;
+    MavenProject buildFromLocalPath( InputStream pom, List<Model> inheritedModels,
+                                     Collection<InterpolatorProperty> interpolatorProperties,
+                                     PomArtifactResolver resolver, File baseDirectory )
+        throws IOException;
 
 }
