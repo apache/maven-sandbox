@@ -99,7 +99,7 @@ public class ConsoleDownloadMonitor
     public synchronized void transferCompleted( TransferEvent transferEvent )
     {
         super.transferCompleted(transferEvent);
-        downloads.remove(transferEvent.getResource());
+        downloads.remove(new ResourceWrapper(transferEvent.getResource()));
     }
 
     /**

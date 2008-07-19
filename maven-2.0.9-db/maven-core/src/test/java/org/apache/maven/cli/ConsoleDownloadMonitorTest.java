@@ -70,6 +70,22 @@ public class ConsoleDownloadMonitorTest
         assertEquals("3/9K 4/9K\r", new String(bout.toByteArray()));
     }
 
+    public void testTransferProgressTwoFilesFirstRemoved()
+        throws Exception
+    {
+        byte[] buffer = new byte[2048];
+        monitor.transferProgress( new TransferEventMock(new Resource("foo"), 10000), buffer, 1024 );
+        assertEquals("1/9K\r", new String(bout.toByteArray()));
+        bout.reset();
+        monitor.transferProgress( new TransferEventMock(new Resource("bar"), 10000), buffer, 2048 );
+        assertEquals("1/9K 2/9K\r", new String(bout.toByteArray()));
+        bout.reset();
+        monitor.transferCompleted( new TransferEventMock(new Resource("foo"), 10000));
+        bout.reset();
+        monitor.transferProgress( new TransferEventMock(new Resource("bar"), 10000), buffer, 2048 );
+        assertEquals("4/9K\r", new String(bout.toByteArray()));
+    }
+
     public void testGetDownloadStatusForResource() 
     {
         ConsoleDownloadMonitor cm = (ConsoleDownloadMonitor)monitor;
