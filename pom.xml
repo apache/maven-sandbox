@@ -396,11 +396,18 @@ under the License.
   </dependencyManagement>
 
   <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://people.apache.org/www/maven.apache.org/ref/${project.version}/</url>
-    </site>
-  </distributionManagement>
+      <repository>
+         <id>maven-db</id>
+         <name>Don's Maven Release Repository</name>
+         <url>scp://people.apache.org/home/mrdon/public_html/repository</url>
+      </repository>
+      <snapshotRepository>
+         <uniqueVersion>true</uniqueVersion>
+         <id>maven-db</id>
+         <name>Don's Maven Development Repository</name>
+         <url>scp://people.apache.org/home/mrdon/public_html/repository</url>
+      </snapshotRepository>
+   </distributionManagement>
 
   <profiles>
     <profile>
