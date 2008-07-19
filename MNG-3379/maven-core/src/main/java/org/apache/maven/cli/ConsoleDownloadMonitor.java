@@ -20,10 +20,13 @@ package org.apache.maven.cli;
  */
 
 import org.apache.maven.wagon.WagonConstants;
+import org.apache.maven.wagon.resource.Resource;
 import org.apache.maven.wagon.events.TransferEvent;
 
+import java.util.*;
+
 /**
- * Console download progress meter.
+ * Console download progress meter.  Properly handles multiple downloads simultaneously.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @version $Id$
@@ -31,7 +34,12 @@ import org.apache.maven.wagon.events.TransferEvent;
 public class ConsoleDownloadMonitor
     extends AbstractConsoleDownloadMonitor
 {
-    private long complete;
+    private Map/*<Resource,Integer>*/ downloads;
+
+    public ConsoleDownloadMonitor()
+    {
+        downloads = new LinkedHashMap();
+    }
 
     public void transferInitiated( TransferEvent transferEvent )
     {
@@ -40,9 +48,8 @@ public class ConsoleDownloadMonitor
         String url = transferEvent.getWagon().getRepository().getUrl();
 
         // TODO: can't use getLogger() because this isn't currently instantiated as a component
-        System.out.println( message + ": " + url + "/" + transferEvent.getResource().getName() );
+        out.println( message + ": " + url + "/" + transferEvent.getResource().getName() );
 
-        complete = 0;
     }
 
     public void transferStarted( TransferEvent transferEvent )
@@ -50,21 +57,49 @@ public class ConsoleDownloadMonitor
         // This space left intentionally blank
     }
 
-    public void transferProgress( TransferEvent transferEvent, byte[] buffer, int length )
+    public synchronized void transferProgress( TransferEvent transferEvent, byte[] buffer, int length )
     {
-        long total = transferEvent.getResource().getContentLength();
-        complete += length;
-        // TODO [BP]: Sys.out may no longer be appropriate, but will \r work with getLogger()?
+        Resource resource = transferEvent.getResource();
+        if (!downloads.containsKey(resource))
+        {
+            downloads.put(resource, new Long(length));
+        } else
+        {
+            Long complete = (Long) downloads.get(resource);
+            complete = new Long(complete.longValue() + length);
+            downloads.put(resource, complete);
+        }
+
+        for (Iterator i = downloads.entrySet().iterator(); i.hasNext(); )
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+            Long complete = (Long)entry.getValue();
+            String status = getDownloadStatusForResource(complete.longValue(), ((Resource)entry.getKey()).getContentLength());
+            out.print(status);
+            if (i.hasNext())
+            {
+                out.print(" ");
+            }
+        }
+        out.print("\r");
+    }
+
+    String getDownloadStatusForResource(long progress, long total)
+    {
         if ( total >= 1024 )
         {
-            System.out.print(
-                ( complete / 1024 ) + "/" + ( total == WagonConstants.UNKNOWN_LENGTH ? "?" : ( total / 1024 ) + "K" ) +
-                    "\r" );
+            return (progress / 1024 ) + "/" + ( total == WagonConstants.UNKNOWN_LENGTH ? "?" : ( total / 1024 ) + "K");
         }
         else
         {
-            System.out.print( complete + "/" + ( total == WagonConstants.UNKNOWN_LENGTH ? "?" : total + "b" ) + "\r" );
+            return progress + "/" + ( total == WagonConstants.UNKNOWN_LENGTH ? "?" : total + "b" );
         }
+    }
+
+    public synchronized void transferCompleted( TransferEvent transferEvent )
+    {
+        super.transferCompleted(transferEvent);
+        downloads.remove(transferEvent.getResource());
     }
 }
 

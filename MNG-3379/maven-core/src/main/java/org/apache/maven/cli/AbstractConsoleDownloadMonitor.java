@@ -24,6 +24,8 @@ import org.apache.maven.wagon.events.TransferEvent;
 import org.apache.maven.wagon.events.TransferListener;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
+import java.io.PrintStream;
+
 /**
  * Abstract console download progress meter.
  * 
@@ -36,6 +38,8 @@ public abstract class AbstractConsoleDownloadMonitor
     implements TransferListener
 {
 
+    PrintStream out = System.out;
+
     public void transferInitiated( TransferEvent transferEvent )
     {
         String message = transferEvent.getRequestType() == TransferEvent.REQUEST_PUT ? "Uploading" : "Downloading";
@@ -43,7 +47,7 @@ public abstract class AbstractConsoleDownloadMonitor
         String url = transferEvent.getWagon().getRepository().getUrl();
 
         // TODO: can't use getLogger() because this isn't currently instantiated as a component
-        System.out.println( message + ": " + url + "/" + transferEvent.getResource().getName() );
+        out.println( message + ": " + url + "/" + transferEvent.getResource().getName() );
     }
 
     /**
@@ -69,14 +73,14 @@ public abstract class AbstractConsoleDownloadMonitor
         {
             String type = ( transferEvent.getRequestType() == TransferEvent.REQUEST_PUT ? "uploaded" : "downloaded" );
             String l = contentLength >= 1024 ? ( contentLength / 1024 ) + "K" : contentLength + "b";
-            System.out.println( l + " " + type );
+            out.println( l + " " + type + "                                  ");
         }
     }
 
     public void transferError( TransferEvent transferEvent )
     {
         // TODO: can't use getLogger() because this isn't currently instantiated as a component
-        transferEvent.getException().printStackTrace();
+        transferEvent.getException().printStackTrace(out);
     }
 
     /**
