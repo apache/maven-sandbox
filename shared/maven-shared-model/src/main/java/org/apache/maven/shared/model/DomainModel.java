@@ -5,9 +5,10 @@ package org.apache.maven.shared.model;
  * used to expose model elements directly. Each respective ModelTransformer implementation should know how to cast to
  * the appropriate domain model type(s).
  */
-public interface DomainModel {
+public interface DomainModel
+{
 
     String getEventHistory();
 
-    void setEventHistory(String history);
+    void setEventHistory( String history );
 }

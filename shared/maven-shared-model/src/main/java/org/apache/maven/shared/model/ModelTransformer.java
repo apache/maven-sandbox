@@ -8,7 +8,8 @@ import java.util.List;
  * ModelTransformer.transformToDomainModel == ModelTransformer.transformToModelProperties if list of model
  * properties specified in transformToDomainModel contains only one property with a uri of http://apache.org/model/project.
  */
-public interface ModelTransformer {
+public interface ModelTransformer
+{
 
     String getBaseUri();
 
@@ -19,7 +20,8 @@ public interface ModelTransformer {
      * @param properties list of model properties to transform into domain model. List may not be null.
      * @return domain model
      */
-    DomainModel transformToDomainModel(List<ModelProperty> properties) throws IOException;
+    DomainModel transformToDomainModel( List<ModelProperty> properties )
+        throws IOException;
 
     /**
      * Transforms specified list of domain models to a property list. The list of domain models should be in order of
@@ -28,6 +30,7 @@ public interface ModelTransformer {
      * @param domainModels list of domain models to transform to a list of model properties. List may not be null.
      * @return list of model properties
      */
-    List<ModelProperty> transformToModelProperties(List<DomainModel> domainModels) throws IOException;
+    List<ModelProperty> transformToModelProperties( List<DomainModel> domainModels )
+        throws IOException;
 
 }

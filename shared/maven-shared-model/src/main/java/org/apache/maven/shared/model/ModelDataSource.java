@@ -6,7 +6,8 @@ import java.util.List;
 /**
  * Provides services for joining, deleting and querying model containers.
  */
-public interface ModelDataSource {
+public interface ModelDataSource
+{
 
     /**
      * Join model properties of the specified container a with the specified container b. Any elements of model container
@@ -17,14 +18,15 @@ public interface ModelDataSource {
      * @param b model container without precedence
      * @return joined model container
      */
-    ModelContainer join(ModelContainer a, ModelContainer b) throws DataSourceException;
+    ModelContainer join( ModelContainer a, ModelContainer b )
+        throws DataSourceException;
 
     /**
      * Deletes properties of the specified model container from the data source.
      *
      * @param modelContainer the model container that holds the properties to be deleted
      */
-    void delete(ModelContainer modelContainer);
+    void delete( ModelContainer modelContainer );
 
 
     /**
@@ -40,7 +42,8 @@ public interface ModelDataSource {
      * @param uri
      * @return
      */
-    List<ModelContainer> queryFor(String uri) throws DataSourceException;
+    List<ModelContainer> queryFor( String uri )
+        throws DataSourceException;
 
 
     /**
@@ -48,7 +51,7 @@ public interface ModelDataSource {
      *
      * @param modelProperties the model properties that back the data source
      */
-    void init(List<ModelProperty> modelProperties, Collection<ModelContainerFactory> modelContainerFactories);
+    void init( List<ModelProperty> modelProperties, Collection<ModelContainerFactory> modelContainerFactories );
 
     String getEventHistory();
 }

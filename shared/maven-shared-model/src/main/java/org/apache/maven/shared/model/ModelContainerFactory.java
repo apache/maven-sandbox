@@ -7,10 +7,11 @@ import java.util.List;
  * Factory for returning model container instances. Unlike most factories, implementations of this class are meant to
  * create only one type of model container instance.
  */
-public interface ModelContainerFactory {
+public interface ModelContainerFactory
+{
 
     /**
-     * Returns collection of URIs asscociated with this factory. 
+     * Returns collection of URIs asscociated with this factory.
      *
      * @return collection of URIs asscociated with this factory
      */
@@ -24,5 +25,5 @@ public interface ModelContainerFactory {
      * @param modelProperties the model properties to be contained within the model container
      * @return the model container
      */
-    ModelContainer create(List<ModelProperty> modelProperties);
+    ModelContainer create( List<ModelProperty> modelProperties );
 }

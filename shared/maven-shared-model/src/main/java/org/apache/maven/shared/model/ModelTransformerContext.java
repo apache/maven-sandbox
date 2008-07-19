@@ -10,21 +10,27 @@ import java.util.logging.Logger;
 /**
  * Primary context for this package. Provides methods for doing transforms.
  */
-public final class ModelTransformerContext {
+public final class ModelTransformerContext
+{
 
     private final Collection<ModelContainerFactory> factories;
 
-    private final static List<InterpolatorProperty> systemInterpolatorProperties = new ArrayList<InterpolatorProperty>();
+    private final static List<InterpolatorProperty> systemInterpolatorProperties =
+        new ArrayList<InterpolatorProperty>();
 
     private static Logger logger = Logger.getAnonymousLogger();
 
-    static {
-        for (Map.Entry<Object, Object> e : System.getProperties().entrySet()) {
-            systemInterpolatorProperties.add(new InterpolatorProperty("${" + e.getKey() + "}", (String) e.getValue()));
+    static
+    {
+        for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+        {
+            systemInterpolatorProperties.add(
+                new InterpolatorProperty( "${" + e.getKey() + "}", (String) e.getValue() ) );
         }
 
-        for (Map.Entry<String, String> e : System.getenv().entrySet()) {
-            systemInterpolatorProperties.add(new InterpolatorProperty("${env." + e.getKey() + "}", e.getValue()));
+        for ( Map.Entry<String, String> e : System.getenv().entrySet() )
+        {
+            systemInterpolatorProperties.add( new InterpolatorProperty( "${env." + e.getKey() + "}", e.getValue() ) );
         }
     }
 
@@ -33,8 +39,9 @@ public final class ModelTransformerContext {
      *
      * @param factories model container factories. Value may be null.
      */
-    public ModelTransformerContext(Collection<ModelContainerFactory> factories) {
-        this.factories = (factories == null) ? Collections.EMPTY_LIST : factories;
+    public ModelTransformerContext( Collection<ModelContainerFactory> factories )
+    {
+        this.factories = ( factories == null ) ? Collections.EMPTY_LIST : factories;
     }
 
     /**
@@ -49,48 +56,64 @@ public final class ModelTransformerContext {
      * @return processed domain model
      * @throws IOException if there was a problem with the transform
      */
-    public DomainModel transform(List<DomainModel> domainModels, ModelTransformer fromModelTransformer,
-                                 ModelTransformer toModelTransformer,
-                                 Collection<InterpolatorProperty> interpolatorProperties) throws IOException {
-        List<InterpolatorProperty> properties = new ArrayList<InterpolatorProperty>(interpolatorProperties);
+    public DomainModel transform( List<DomainModel> domainModels, ModelTransformer fromModelTransformer,
+                                  ModelTransformer toModelTransformer,
+                                  Collection<InterpolatorProperty> interpolatorProperties )
+        throws IOException
+    {
+        List<InterpolatorProperty> properties = new ArrayList<InterpolatorProperty>( interpolatorProperties );
 
         String baseUriForModel = fromModelTransformer.getBaseUri();
-        List<ModelProperty> modelProperties = sort(fromModelTransformer.transformToModelProperties(domainModels),
-                baseUriForModel);
+        List<ModelProperty> modelProperties =
+            sort( fromModelTransformer.transformToModelProperties( domainModels ), baseUriForModel );
         ModelDataSource modelDataSource = new DefaultModelDataSource();
-        modelDataSource.init(modelProperties, factories);
+        modelDataSource.init( modelProperties, factories );
 
-        for (ModelContainerFactory factory : factories) {
-            for (String uri : factory.getUris()) {
+        for ( ModelContainerFactory factory : factories )
+        {
+            for ( String uri : factory.getUris() )
+            {
                 List<ModelContainer> modelContainers;
-                try {
-                    modelContainers = modelDataSource.queryFor(uri);
-                } catch (IllegalArgumentException e) {
-                    System.out.println(modelDataSource.getEventHistory());
-                    throw new IllegalArgumentException(e);
+                try
+                {
+                    modelContainers = modelDataSource.queryFor( uri );
+                }
+                catch ( IllegalArgumentException e )
+                {
+                    System.out.println( modelDataSource.getEventHistory() );
+                    throw new IllegalArgumentException( e );
                 }
                 List<ModelContainer> removedModelContainers = new ArrayList<ModelContainer>();
-                Collections.reverse(modelContainers);
-                for (int i = 0; i < modelContainers.size(); i++) {
-                    ModelContainer mcA = modelContainers.get(i);
-                    if (removedModelContainers.contains(mcA)) {
+                Collections.reverse( modelContainers );
+                for ( int i = 0; i < modelContainers.size(); i++ )
+                {
+                    ModelContainer mcA = modelContainers.get( i );
+                    if ( removedModelContainers.contains( mcA ) )
+                    {
                         continue;
                     }
-                    for (ModelContainer mcB : modelContainers.subList(i + 1, modelContainers.size())) {
-                        ModelContainerAction action = mcA.containerAction(mcB);
+                    for ( ModelContainer mcB : modelContainers.subList( i + 1, modelContainers.size() ) )
+                    {
+                        ModelContainerAction action = mcA.containerAction( mcB );
 
-                        if (ModelContainerAction.DELETE.equals(action)) {
-                            modelDataSource.delete(mcB);
-                            removedModelContainers.add(mcB);
-                        } else if (ModelContainerAction.JOIN.equals(action)) {
-                            try {
-                                mcA = modelDataSource.join(mcA, mcB);
-                                removedModelContainers.add(mcB);
-                            } catch (DataSourceException e) {
-                                System.out.println(modelDataSource.getEventHistory());
+                        if ( ModelContainerAction.DELETE.equals( action ) )
+                        {
+                            modelDataSource.delete( mcB );
+                            removedModelContainers.add( mcB );
+                        }
+                        else if ( ModelContainerAction.JOIN.equals( action ) )
+                        {
+                            try
+                            {
+                                mcA = modelDataSource.join( mcA, mcB );
+                                removedModelContainers.add( mcB );
+                            }
+                            catch ( DataSourceException e )
+                            {
+                                System.out.println( modelDataSource.getEventHistory() );
                                 e.printStackTrace();
-                                throw new IOException("Failed to join model containers: URI = " + uri
-                                        + ", Factory = " + factory.getClass().getName());
+                                throw new IOException( "Failed to join model containers: URI = " + uri +
+                                    ", Factory = " + factory.getClass().getName() );
                             }
                         }
                     }
@@ -101,38 +124,47 @@ public final class ModelTransformerContext {
         //interpolator
         List<ModelProperty> mps = modelDataSource.getModelProperties();
 
-        for (ModelProperty mp : mps) {
-            InterpolatorProperty ip = mp.asInterpolatorProperty(baseUriForModel);
-            if (ip != null) {
-                properties.add(ip);
+        for ( ModelProperty mp : mps )
+        {
+            InterpolatorProperty ip = mp.asInterpolatorProperty( baseUriForModel );
+            if ( ip != null )
+            {
+                properties.add( ip );
             }
         }
 
         List<ModelProperty> unresolvedProperties = new ArrayList<ModelProperty>();
-        for (ModelProperty mp : mps) {
-            if (!mp.isResolved()) {
-                unresolvedProperties.add(mp);
+        for ( ModelProperty mp : mps )
+        {
+            if ( !mp.isResolved() )
+            {
+                unresolvedProperties.add( mp );
             }
         }
 
-        for (InterpolatorProperty ip : properties) {
-            for (ModelProperty mp : unresolvedProperties) {
-              //  mp.resolveWith(ip);
-              //  System.out.println(mp);
-               // System.out.println("-------------------");
+        for ( InterpolatorProperty ip : properties )
+        {
+            for ( ModelProperty mp : unresolvedProperties )
+            {
+                //  mp.resolveWith(ip);
+                //  System.out.println(mp);
+                // System.out.println("-------------------");
             }
         }
 
-        mps = sort(mps, baseUriForModel );
+        mps = sort( mps, baseUriForModel );
 
-        try {
-            DomainModel domainModel = toModelTransformer.transformToDomainModel(mps);
+        try
+        {
+            DomainModel domainModel = toModelTransformer.transformToDomainModel( mps );
             //domainModel.setEventHistory(modelDataSource.getEventHistory());
             return domainModel;
-        } catch (IOException e) {
-            System.out.println(modelDataSource.getEventHistory());
+        }
+        catch ( IOException e )
+        {
+            System.out.println( modelDataSource.getEventHistory() );
             e.printStackTrace();
-            throw new IOException(e.getMessage());
+            throw new IOException( e.getMessage() );
         }
     }
 
@@ -146,10 +178,11 @@ public final class ModelTransformerContext {
      * @return
      * @throws IOException
      */
-    public DomainModel transform(List<DomainModel> domainModels, ModelTransformer fromModelTransformer,
-                                 ModelTransformer toModelTransformer)
-            throws IOException {
-        return this.transform(domainModels, fromModelTransformer, toModelTransformer, systemInterpolatorProperties);
+    public DomainModel transform( List<DomainModel> domainModels, ModelTransformer fromModelTransformer,
+                                  ModelTransformer toModelTransformer )
+        throws IOException
+    {
+        return this.transform( domainModels, fromModelTransformer, toModelTransformer, systemInterpolatorProperties );
     }
 
     /**
@@ -163,26 +196,32 @@ public final class ModelTransformerContext {
      * @param baseUri
      * @return sorted list of model properties
      */
-    protected List<ModelProperty> sort(List<ModelProperty> properties, String baseUri) {
-        if (properties == null) {
-            throw new IllegalArgumentException("properties");
+    protected List<ModelProperty> sort( List<ModelProperty> properties, String baseUri )
+    {
+        if ( properties == null )
+        {
+            throw new IllegalArgumentException( "properties" );
         }
         LinkedList<ModelProperty> processedProperties = new LinkedList<ModelProperty>();
         List<String> position = new ArrayList<String>();
         boolean projectIsContained = false;
 
-        for (ModelProperty p : properties) {
+        for ( ModelProperty p : properties )
+        {
             String uri = p.getUri();
-            String parentUri = uri.substring(0, uri.lastIndexOf("/")).replaceAll("#property", "");
-            if (!projectIsContained && uri.equals(baseUri)) {
+            String parentUri = uri.substring( 0, uri.lastIndexOf( "/" ) ).replaceAll( "#property", "" );
+            if ( !projectIsContained && uri.equals( baseUri ) )
+            {
                 projectIsContained = true;
-                processedProperties.add(p);
-                position.add(0, uri);
-            } else if (!position.contains(uri) || parentUri.contains("#collection")) {
-                int pst = position.indexOf(parentUri) + 1;
-                processedProperties.add(pst, p);
-                position.add(pst, uri);
-            } 
+                processedProperties.add( p );
+                position.add( 0, uri );
+            }
+            else if ( !position.contains( uri ) || parentUri.contains( "#collection" ) )
+            {
+                int pst = position.indexOf( parentUri ) + 1;
+                processedProperties.add( pst, p );
+                position.add( pst, uri );
+            }
         }
         return processedProperties;
     }

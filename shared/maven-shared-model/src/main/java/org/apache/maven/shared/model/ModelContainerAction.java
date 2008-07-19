@@ -3,7 +3,8 @@ package org.apache.maven.shared.model;
 /**
  * Model container actions
  */
-public enum ModelContainerAction {
+public enum ModelContainerAction
+{
     /**
      * Join two containers
      */

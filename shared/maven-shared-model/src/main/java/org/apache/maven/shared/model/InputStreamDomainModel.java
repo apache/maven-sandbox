@@ -5,10 +5,12 @@ import java.io.InputStream;
 /**
  * Provides service for obtaining input stream of domain model.
  */
-public interface InputStreamDomainModel extends DomainModel {
+public interface InputStreamDomainModel
+    extends DomainModel
+{
 
     /**
-     * Returns input stream of domain model. 
+     * Returns input stream of domain model.
      *
      * @return input stream of domain model
      */
