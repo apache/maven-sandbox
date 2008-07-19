@@ -28,7 +28,7 @@ public final class PomClassicTransformer implements ModelTransformer {
                 ProjectUri.Build.PluginManagement.Plugins.Plugin.Dependencies.Dependency.Exclusions.xUri,
                 ProjectUri.Build.PluginManagement.Plugins.Plugin.Executions.xUri,
                 ProjectUri.Build.Plugins.xUri,
-                //ProjectUri.Build.Plugins.Plugin.configuration,
+                ProjectUri.Build.Plugins.Plugin.configuration,
                 ProjectUri.Build.Plugins.Plugin.Dependencies.xUri,
                 ProjectUri.Build.Plugins.Plugin.Executions.xUri,
                 ProjectUri.Build.Resources.xUri,
@@ -162,6 +162,30 @@ public final class PomClassicTransformer implements ModelTransformer {
                             removeProperties.addAll(container.getProperties());
                             for (int j = tmp.indexOf(mp); j >= 0; j--) {
                                 if (tmp.get(j).getUri().equals(ProjectUri.Build.Plugins.Plugin.Executions.xUri)) {
+                                    removeProperties.add(tmp.get(j));
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                tmp.removeAll(removeProperties);
+            }
+
+            //Not inherited plugin rule
+            if (domainModels.indexOf(domainModel) > 0) {
+                List<ModelProperty> removeProperties = new ArrayList<ModelProperty>();
+                ModelDataSource source = new DefaultModelDataSource();
+                source.init(tmp, Arrays.asList(new ArtifactModelContainerFactory(), new IdModelContainerFactory()));
+                List<ModelContainer> containers = source.queryFor(ProjectUri.Build.Plugins.Plugin.xUri);
+                for (ModelContainer container : containers) {
+                    for (ModelProperty mp : container.getProperties()) {
+                        if (mp.getUri().equals(ProjectUri.Build.Plugins.Plugin.inherited)
+                                && mp.getValue() != null && mp.getValue().equals("false")) {
+                            removeProperties.addAll(container.getProperties());
+                            for (int j = tmp.indexOf(mp); j >= 0; j--) {
+                                if (tmp.get(j).getUri().equals(ProjectUri.Build.Plugins.Plugin.xUri)) {
                                     removeProperties.add(tmp.get(j));
                                     break;
                                 }

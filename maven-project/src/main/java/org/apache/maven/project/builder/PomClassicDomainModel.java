@@ -39,14 +39,14 @@ public final class
         MavenXpp3Writer writer = new MavenXpp3Writer();
         writer.write( out, model );
         out.close();
-        inputBytes = removeIllegalCharacters(baos.toByteArray());
+        inputBytes = baos.toByteArray();
     }
 
     public PomClassicDomainModel(InputStream inputStream) throws IOException {
         if (inputStream == null) {
             throw new IllegalArgumentException("inputStream: null");
         }
-        this.inputBytes = removeIllegalCharacters(IOUtil.toByteArray(inputStream));
+        this.inputBytes = IOUtil.toByteArray(inputStream);
     }
 
     public boolean matchesModel(Model a) {
@@ -105,8 +105,8 @@ public final class
         if(model != null) {
             return model;
         }
-        try {                                                                
-            return new MavenXpp3Reader().read( ReaderFactory.newXmlReader(new ByteArrayInputStream( inputBytes )) );
+        try {
+            return new MavenXpp3Reader().read(ReaderFactory.newXmlReader(new ByteArrayInputStream( inputBytes )) );
         }
         catch (XmlPullParserException e) {
             e.printStackTrace();
