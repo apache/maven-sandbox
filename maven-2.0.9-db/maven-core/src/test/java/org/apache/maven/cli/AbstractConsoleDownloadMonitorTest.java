@@ -38,7 +38,7 @@ public abstract class AbstractConsoleDownloadMonitorTest
     extends TestCase
 {
 
-    private AbstractConsoleDownloadMonitor monitor;
+    protected AbstractConsoleDownloadMonitor monitor;
 
     public AbstractConsoleDownloadMonitorTest()
     {
@@ -92,14 +92,24 @@ public abstract class AbstractConsoleDownloadMonitorTest
         monitor.debug( "msg" );
     }
 
-    private class TransferEventMock
+    static class TransferEventMock
         extends TransferEvent
     {
+
         public TransferEventMock()
             throws ConnectionException, AuthenticationException
         {
             super( new FileWagon(), new Resource(), TransferEvent.TRANSFER_INITIATED, TransferEvent.REQUEST_GET );
             getResource().setContentLength( 100000 );
+            Repository repository = new Repository();
+            getWagon().connect( repository );
+        }
+
+        public TransferEventMock(Resource resource, int length)
+            throws ConnectionException, AuthenticationException
+        {
+            super( new FileWagon(), resource, TransferEvent.TRANSFER_INITIATED, TransferEvent.REQUEST_GET );
+            getResource().setContentLength(length);
             Repository repository = new Repository();
             getWagon().connect( repository );
         }
