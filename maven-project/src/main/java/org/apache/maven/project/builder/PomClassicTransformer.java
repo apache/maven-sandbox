@@ -36,6 +36,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Provides methods for transforming model properties into a domain model for the pom classic format and vice versa.
@@ -48,6 +50,10 @@ public final class PomClassicTransformer
      * The URIs this tranformer supports
      */
     private final Set<String> uris;
+
+    private static Map<String, List<ModelProperty>> cache = new HashMap<String, List<ModelProperty>>();
+
+    //private static List<DomainModel> cache = new ArrayList<DomainModel>();
 
     /**
      * Default constructor
@@ -144,7 +150,7 @@ public final class PomClassicTransformer
         {
             throw new IOException( e + ":\r\n" + xml );
         }
-    }
+        }
 
     /**
      * @see ModelTransformer#transformToModelProperties(java.util.List)
@@ -167,6 +173,14 @@ public final class PomClassicTransformer
             if ( !( domainModel instanceof PomClassicDomainModel ) )
             {
                 throw new IllegalArgumentException( "domainModels: Invalid domain model" );
+            }
+
+            PomClassicDomainModel pomDomainModel = (PomClassicDomainModel) domainModel;
+            if ( cache.containsKey( pomDomainModel.getId() ) )
+            {
+                System.out.println( "Found in cache: ID = " + pomDomainModel.getId() );
+                modelProperties.addAll( cache.get( pomDomainModel.getId() ) );
+                continue;
             }
 
             List<ModelProperty> tmp = ModelMarshaller.marshallXmlToModelProperties(
@@ -235,7 +249,6 @@ public final class PomClassicTransformer
                 }
                 tmp.removeAll( removeProperties );
             }
-
             //Not inherited plugin rule
             if ( domainModels.indexOf( domainModel ) > 0 )
             {
@@ -293,7 +306,6 @@ public final class PomClassicTransformer
                 tmp.remove( index );
                 tmp.add( index, new ModelProperty( ProjectUri.Scm.connection, scmConnectionUrl.toString() ) );
             }
-
             //SCM Developer Rule
             scmUrlProperty = getPropertyFor( ProjectUri.Scm.developerConnection, tmp );
             if ( scmDeveloperUrl.length() == 0 && scmUrlProperty != null )
@@ -308,65 +320,25 @@ public final class PomClassicTransformer
                 tmp.add( index, new ModelProperty( ProjectUri.Scm.developerConnection, scmDeveloperUrl.toString() ) );
             }
 
+
             //Remove Plugin Repository Inheritance Rule
-            for ( ModelProperty mp : tmp )
-            {
-                if ( domainModels.indexOf( domainModel ) > 0 &&
-                    mp.getUri().startsWith( ProjectUri.PluginRepositories.xUri ) )
-                {
-                    clearedProperties.add( mp );
-                }
-            }
-
             //Project Name Inheritance Rule
-            for ( ModelProperty mp : tmp )
-            {
-                if ( domainModels.indexOf( domainModel ) > 0 && mp.getUri().equals( ProjectUri.name ) )
-                {
-                    clearedProperties.add( mp );
-                    break;
-                }
-            }
-
             //Packaging Inheritance Rule
-            for ( ModelProperty mp : tmp )
-            {
-                if ( domainModels.indexOf( domainModel ) > 0 && mp.getUri().equals( ProjectUri.packaging ) )
-                {
-                    clearedProperties.add( mp );
-                    break;
-                }
-            }
-
             //Build Resources Inheritence Rule
-            for ( ModelProperty mp : tmp )
-            {
-                if ( domainModels.indexOf( domainModel ) > 0 &&
-                    mp.getUri().startsWith( ProjectUri.Build.Resources.xUri ) )
-                {
-                    clearedProperties.add( mp );
-                }
-            }
-
             //Build Test Resources Inheritance Rule
-            for ( ModelProperty mp : tmp )
-            {
-                if ( domainModels.indexOf( domainModel ) > 0 &&
-                    mp.getUri().startsWith( ProjectUri.Build.TestResources.xUri ) )
-                {
-                    clearedProperties.add( mp );
-                }
-            }
-
             //Profiles not inherited rule
             for ( ModelProperty mp : tmp )
             {
-                if ( domainModels.indexOf( domainModel ) > 0 && mp.getUri().startsWith( ProjectUri.Profiles.xUri ) )
+                String uri = mp.getUri();
+                if ( domainModels.indexOf( domainModel ) > 0 && ( uri.equals( ProjectUri.name ) ||
+                    uri.equals( ProjectUri.packaging ) || uri.startsWith( ProjectUri.Profiles.xUri ) ||
+                    uri.startsWith( ProjectUri.Build.Resources.xUri ) ||
+                    uri.startsWith( ProjectUri.Build.TestResources.xUri ) ||
+                    uri.startsWith( ProjectUri.PluginRepositories.xUri ) ) )
                 {
                     clearedProperties.add( mp );
                 }
             }
-
             ModelProperty artifactId = getPropertyFor( ProjectUri.artifactId, tmp );
             if ( artifactId != null )
             {
@@ -375,6 +347,11 @@ public final class PomClassicTransformer
 
             tmp.removeAll( clearedProperties );
             modelProperties.addAll( tmp );
+
+            if ( domainModels.indexOf( domainModel ) > 0 )
+            {
+                //cache.put( pomDomainModel.getId(), modelProperties );
+            }
 
             //Remove Parent Info
             /*

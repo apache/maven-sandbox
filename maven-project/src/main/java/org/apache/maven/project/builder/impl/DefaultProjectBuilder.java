@@ -152,6 +152,7 @@ public final class DefaultProjectBuilder
         PomClassicTransformer transformer = new PomClassicTransformer();
         ModelTransformerContext ctx = new ModelTransformerContext(
             Arrays.asList( new ArtifactModelContainerFactory(), new IdModelContainerFactory() ) );
+
         PomClassicDomainModel transformedDomainModel =
             ( (PomClassicDomainModel) ctx.transform( domainModels, transformer, transformer, properties ) );
         Model model = transformedDomainModel.getModel();
@@ -213,8 +214,6 @@ public final class DefaultProjectBuilder
 
         domainModels.add( parentDomainModel );
         domainModels.addAll( getDomainModelParentsFromRepository( parentDomainModel, artifactResolver ) );
-        // System.out.println("getDomainModelParentsFromRepository: Time = " + (System.currentTimeMillis() - start) + ", Gid ="
-        //         + parent.getGroupId() + ", Artifact Id= " + parent.getArtifactId() + ", Version = " + parent.getVersion());
         return domainModels;
     }
 
@@ -229,7 +228,6 @@ public final class DefaultProjectBuilder
         {
             throw new IllegalArgumentException( "artifactFactory: not initialized" );
         }
-        long start = System.currentTimeMillis();
 
         List<DomainModel> domainModels = new ArrayList<DomainModel>();
 
@@ -273,8 +271,6 @@ public final class DefaultProjectBuilder
             }
         }
 
-        //    System.out.println("getDomainModelParentsFromLocalPath: Time = " + (System.currentTimeMillis() - start) + ", Gid ="
-        //           + model.getGroupId() + ", Artifact Id= " + model.getArtifactId() + ", Version = " + model.getVersion());
         return domainModels;
     }
 

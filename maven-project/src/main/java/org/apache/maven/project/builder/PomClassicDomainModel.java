@@ -57,6 +57,8 @@ public final class PomClassicDomainModel
      */
     private Model model;
 
+    private String id;
+
     /**
      * Constructor
      *
@@ -120,17 +122,32 @@ public final class PomClassicDomainModel
                 return false;
             }
         }
+        return a.getId().equals( this.getId() );
+    }
 
-        String groupId = ( model.getGroupId() == null ) ? model.getParent().getGroupId() : model.getGroupId();
-        String artifactId =
-            ( model.getArtifactId() == null ) ? model.getParent().getArtifactId() : model.getArtifactId();
-        String version = ( model.getVersion() == null ) ? model.getParent().getVersion() : model.getVersion();
+    public String getId()
+    {
+        if ( id == null )
+        {
+            if ( model == null )
+            {
+                try
+                {
+                    model = getModel();
+                }
+                catch ( IOException e )
+                {
+                    return "";
+                }
+            }
+            String groupId = ( model.getGroupId() == null ) ? model.getParent().getGroupId() : model.getGroupId();
+            String artifactId =
+                ( model.getArtifactId() == null ) ? model.getParent().getArtifactId() : model.getArtifactId();
+            String version = ( model.getVersion() == null ) ? model.getParent().getVersion() : model.getVersion();
 
-        String aGroupId = ( a.getGroupId() == null ) ? a.getParent().getGroupId() : a.getGroupId();
-        String aArtifactId = ( a.getArtifactId() == null ) ? a.getParent().getArtifactId() : a.getArtifactId();
-        String aVersion = ( a.getVersion() == null ) ? a.getParent().getVersion() : a.getVersion();
-
-        return groupId.equals( aGroupId ) && artifactId.equals( aArtifactId ) && version.equals( aVersion );
+            id = groupId + ":" + artifactId + ":" + version;
+        }
+        return id;
     }
 
 
@@ -140,25 +157,7 @@ public final class PomClassicDomainModel
         {
             throw new IllegalArgumentException( "parent: null" );
         }
-        if ( model == null )
-        {
-            try
-            {
-                model = getModel();
-            }
-            catch ( IOException e )
-            {
-                return false;
-            }
-        }
-
-        String groupId = ( model.getGroupId() == null ) ? model.getParent().getGroupId() : model.getGroupId();
-        String artifactId =
-            ( model.getArtifactId() == null ) ? model.getParent().getArtifactId() : model.getArtifactId();
-        String version = ( model.getVersion() == null ) ? model.getParent().getVersion() : model.getVersion();
-
-        return ( parent.getGroupId().equals( groupId ) && parent.getArtifactId().equals( artifactId ) &&
-            parent.getVersion().equals( version ) );
+        return getId().equals( parent.getGroupId() + ":" + parent.getArtifactId() + ":" + parent.getVersion() );
     }
 
     /**
@@ -240,7 +239,7 @@ public final class PomClassicDomainModel
      */
     public boolean equals( Object o )
     {
-        return o instanceof PomClassicDomainModel && this.asString().equals( ( (PomClassicDomainModel) o ).asString() );
+        return o instanceof PomClassicDomainModel && getId().equals( ( (PomClassicDomainModel) o ).getId() );
     }
 
 }
