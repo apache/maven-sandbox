@@ -576,8 +576,7 @@ public class DefaultModelLineageBuilderTest
 
         return model;
     }
-    /*
-    Commented out the following tests: They fail when disabling aspects, which are incompatible with 1.5 syntax
+
     public void testReadPOMWithParentMissingFromRepository()
         throws IOException
     {
@@ -664,6 +663,5 @@ public class DefaultModelLineageBuilderTest
         }
 
     }
-    */
 
 }

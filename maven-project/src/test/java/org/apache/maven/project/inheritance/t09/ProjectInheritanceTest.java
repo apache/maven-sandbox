@@ -70,6 +70,7 @@ public class ProjectInheritanceTest
         MavenProject project0 = getProjectWithDependencies( pom0 );
         MavenProject project1 = getProjectWithDependencies( pom1 );
 
+        assertEquals( pom0Basedir, project1.getParent().getBasedir().getCanonicalFile() );
         Map map = project1.getArtifactMap();
 
         assertNotNull("No artifacts", map);
@@ -104,6 +105,7 @@ public class ProjectInheritanceTest
         MavenProject project0 = getProjectWithDependencies( pom0 );
         MavenProject project2 = getProjectWithDependencies( pom2 );
 
+        assertEquals( pom0Basedir, project2.getParent().getBasedir().getCanonicalFile() );
         Map map = project2.getArtifactMap();
         assertNotNull( "No artifacts", map );
         assertTrue( "No Artifacts", map.size() > 0 );

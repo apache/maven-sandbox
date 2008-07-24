@@ -58,6 +58,7 @@ public class ProjectInheritanceTest
         MavenProject project0 = getProjectWithDependencies( pom0 );
         MavenProject project1 = getProjectWithDependencies( pom1 );
 
+        assertEquals( pom0Basedir, project1.getParent().getBasedir().getCanonicalFile() );
         assertNull( "dependencyManagement has overwritten the scope of the currently building child project",
                     project1.getArtifact().getScope() );
     }

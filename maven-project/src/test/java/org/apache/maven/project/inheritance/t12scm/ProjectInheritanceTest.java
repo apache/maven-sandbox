@@ -93,9 +93,10 @@ public class ProjectInheritanceTest
         System.out.println( "Child SCM developer connection is: "
                             + project1.getScm().getDeveloperConnection() );
 
-        assertEquals("http://host/viewer?path=/p0/p1", project1.getScm().getUrl());
-        assertEquals( "scm:svn:http://host/p0/p1", project1.getScm().getConnection() );
-        assertEquals("scm:svn:https://host/p0/p1", project1.getScm().getDeveloperConnection());
+        assertEquals( project1.getScm().getUrl(), "http://host/viewer?path=/p0/p1" );
+        assertEquals( project1.getScm().getConnection(), "scm:svn:http://host/p0/p1" );
+        assertEquals( project1.getScm().getDeveloperConnection(),
+                      "scm:svn:https://host/p0/p1" );
     }
 
 //    public void testScmInfoCalculatedCorrectlyOnChildReadFromLocalRepository()

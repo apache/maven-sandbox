@@ -21,7 +21,6 @@ package org.apache.maven.project.inheritance.t07;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.builder.PomClassicDomainModel;
 import org.apache.maven.project.inheritance.AbstractProjectInheritanceTestCase;
 
 import java.io.File;
@@ -62,10 +61,11 @@ public class ProjectInheritanceTest
         MavenProject project0 = getProjectWithDependencies( pom0 );
         MavenProject project1 = getProjectWithDependencies( pom1 );
 
+        assertEquals( pom0Basedir, project1.getParent().getBasedir().getCanonicalFile() );
+        System.out.println("Project " + project1.getId() + " " + project1);
         Set set = project1.getArtifacts();
         assertNotNull("No artifacts", set);
         assertTrue("No Artifacts", set.size() > 0);
-       // System.out.println(new PomClassicDomainModel(project1.getModel()).asString());
         Iterator iter = set.iterator();
         assertTrue("Set size should be 3, is " + set.size(), set.size() == 3);
 

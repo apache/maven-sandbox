@@ -62,6 +62,8 @@ public class ProjectImportsTest extends AbstractProjectImportsTestCase
         // MavenProject project0 = getProjectWithDependencies( pom0 );
         MavenProject project1 = getProjectWithDependencies( pom1 );
 
+        assertEquals( pom0Basedir, project1.getParent().getBasedir().getCanonicalFile() );
+
         Map map = project1.getArtifactMap();
         assertNotNull("No artifacts", map);
         assertTrue("No Artifacts", map.size() > 0);
@@ -123,7 +125,7 @@ public class ProjectImportsTest extends AbstractProjectImportsTestCase
 
         assertTrue("Incorrect version for " + a.getDependencyConflictId(), a.getVersion().equals("1.0"));
         assertTrue("Incorrect version for " + b.getDependencyConflictId(), b.getVersion().equals("1.1"));
-       // assertTrue("Incorrect version for " + c.getDependencyConflictId(), c.getVersion().equals("1.0")); TODO:add back in
+        assertTrue("Incorrect version for " + c.getDependencyConflictId(), c.getVersion().equals("1.0"));
         assertTrue("Incorrect version for " + d.getDependencyConflictId(), d.getVersion().equals("1.0"));
     }
 }
