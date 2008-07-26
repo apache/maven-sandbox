@@ -29,7 +29,7 @@ extends TestCase
 //  ArtifactMetadata md = new ArtifactMetadata( "pmd:pmd:3.9" );
 //  File repo = new File("./target/test-classes/localRepo");
 
-  File repo = new File("./target/test-classes/controlledRepo");
+  File repoDir = new File("./target/test-classes/controlledRepo");
   
   MetadataTree mt;
   DefaultLocalRepository localRepo;
@@ -42,7 +42,7 @@ extends TestCase
   {
 System.out.println("Current dir is "+ new File(".").getCanonicalPath() );
     processor = new MetadataProcessorMock();
-    localRepo = new DefaultLocalRepository( "local", repo, processor );
+    localRepo = new DefaultLocalRepository( "local", repoDir, processor );
     
     reps = new ArrayList<Repository>(4);
     reps.add(  localRepo );
