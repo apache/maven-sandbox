@@ -160,6 +160,8 @@ implements RepositoryReader, MetadataReader
         
         rr = RepositoryOperationResult.add( rr, vmd );
       }
+      if( rr != null )
+        res.put( bmd, rr );
     }
     
     return res;
