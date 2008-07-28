@@ -1,4 +1,4 @@
-package org.apache.maven.mercury.repository;
+package org.apache.maven.mercury.repository.local.m2;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,22 +12,27 @@ import org.apache.maven.mercury.ArtifactMetadata;
 import org.apache.maven.mercury.DefaultArtifact;
 import org.apache.maven.mercury.metadata.version.VersionException;
 import org.apache.maven.mercury.metadata.version.VersionRange;
+import org.apache.maven.mercury.repository.LocalRepository;
+import org.apache.maven.mercury.repository.MetadataProcessingException;
+import org.apache.maven.mercury.repository.MetadataProcessor;
+import org.apache.maven.mercury.repository.MetadataReader;
+import org.apache.maven.mercury.repository.Repository;
 import org.apache.maven.mercury.repository.api.RepositoryException;
 import org.apache.maven.mercury.repository.api.RepositoryOperationResult;
 import org.apache.maven.mercury.repository.api.RepositoryReader;
 import org.mortbay.log.Log;
 
-public class LocalRepositoryReader
+public class LocalRepositoryReaderM2
 implements RepositoryReader, MetadataReader
 {
-  private static final org.slf4j.Logger _log = org.slf4j.LoggerFactory.getLogger( LocalRepositoryReader.class ); 
+  private static final org.slf4j.Logger _log = org.slf4j.LoggerFactory.getLogger( LocalRepositoryReaderM2.class ); 
   //---------------------------------------------------------------------------------------------------------------
   LocalRepository _repo;
   File _repoDir;
   
   MetadataProcessor _mdProcessor;
   //---------------------------------------------------------------------------------------------------------------
-  public LocalRepositoryReader( LocalRepository repo, MetadataProcessor mdProcessor )
+  public LocalRepositoryReaderM2( LocalRepository repo, MetadataProcessor mdProcessor )
   {
     if( repo == null )
       throw new IllegalArgumentException("localRepo cannot be null");

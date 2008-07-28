@@ -5,6 +5,7 @@ import java.io.File;
 import org.apache.maven.mercury.repository.api.NonExistentProtocolException;
 import org.apache.maven.mercury.repository.api.RepositoryReader;
 import org.apache.maven.mercury.repository.api.RepositoryWriter;
+import org.apache.maven.mercury.repository.local.m2.LocalRepositoryReaderM2;
 
 public class DefaultLocalRepository
 extends AbstractRepository
@@ -27,7 +28,7 @@ implements LocalRepository
     public RepositoryReader getReader()
     {
       if( reader == null )
-        reader = new LocalRepositoryReader( this, processor );
+        reader = new LocalRepositoryReaderM2( this, processor );
 
       return reader;
     }

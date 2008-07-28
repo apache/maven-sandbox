@@ -70,7 +70,7 @@ extends TestCase
     RetrievalResponse response = _retriever.retrieve(_request);
     
     if( response.hasExceptions() )
-      fail("retrieval exceptions: "+response.getExceptions() );
+      fail("retrieval exceptions: "+response.getExceptions()+"\nReading from "+aaMdBinding.getRemoteUrl() );
     
     Metadata mmd = _reader.read( new FileInputStream( temp ) );
     temp.delete();
