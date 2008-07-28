@@ -114,12 +114,12 @@ public class DefaultSatSolverTest
     
     MetadataTreeNode first = bbl.get(0);
     assertNotNull("bad first element", first );
-    assertEquals( "bad first element's GAV", "b:b:1", first.getMd().getGAV() );
+    assertEquals( "bad first element's GAV", "b:b:1::jar", first.getMd().getGAV() );
     assertEquals( "bad first element's depth", 1, first.getDepth() );
     
     MetadataTreeNode second = bbl.get(1);
     assertNotNull("bad second element", second );
-    assertEquals( "bad second element's GAV", "b:b:2", second.getMd().getGAV() );
+    assertEquals( "bad second element's GAV", "b:b:2::jar", second.getMd().getGAV() );
     assertEquals( "bad second element's depth", 2, second.getDepth() );
   }
   //----------------------------------------------------------------------
