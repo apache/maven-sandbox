@@ -43,7 +43,7 @@
   </dependencies>
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/branches/scm/git-provider-db</connection>
-    <developerConnection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/branches/scm/git-provider-db</developerConnection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/scm/git-provider-db</developerConnection>
   </scm>
   <distributionManagement>
       <repository>
