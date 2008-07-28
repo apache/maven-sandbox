@@ -36,6 +36,13 @@ public interface Repository
    */
   public boolean isLocal();
   
+
+  /**
+   * Indicates whether it's even possible to write to this Repository. If there are multiple localRepo's and Artifact
+   * needs to be downloaded - it will be "written" to all "local" repositories that are not "readOnly".
+   */
+  public boolean isReadOnly();
+  
     /**
      * get default reader, if any
      * 

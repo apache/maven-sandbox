@@ -49,4 +49,9 @@ implements RemoteRepository
     {
      return false;
     }
+
+    public boolean isReadOnly()
+    {
+      return false;
+    }
 }

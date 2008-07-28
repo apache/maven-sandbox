@@ -53,4 +53,9 @@ implements LocalRepository
     {
       return true;
     }
+
+    public boolean isReadOnly()
+    {
+      return false;
+    }
 }
