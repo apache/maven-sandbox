@@ -21,16 +21,42 @@
   <parent>
     <artifactId>maven-scm-providers</artifactId>
     <groupId>org.apache.maven.scm</groupId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>maven-scm-providers-git</artifactId>
   <packaging>pom</packaging>
   <name>Maven SCM git Provider - Parent</name>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1-db-1-SNAPSHOT</version>
   <modules>
     <module>maven-scm-provider-git-commons</module>
     <module>maven-scm-provider-gitexe</module>
     <module>maven-scm-provider-gittest</module>
   </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.5.4</version>
+    </dependency>
+  </dependencies>
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/branches/scm/git-provider-db</connection>
+    <developerConnection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/branches/scm/git-provider-db</developerConnection>
+  </scm>
+  <distributionManagement>
+      <repository>
+         <id>maven-db</id>
+         <name>Don's Maven Release Repository</name>
+         <url>scp://people.apache.org/home/mrdon/public_html/repository</url>
+      </repository>
+      <snapshotRepository>
+         <uniqueVersion>true</uniqueVersion>
+         <id>maven-db</id>
+         <name>Don's Maven Development Repository</name>
+         <url>scp://people.apache.org/home/mrdon/public_html/repository</url>
+      </snapshotRepository>
+   </distributionManagement>
+
 </project>

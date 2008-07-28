@@ -21,9 +21,9 @@ package org.apache.maven.scm.provider.git.gitexe.command.changelog;
 
 import org.apache.maven.scm.ScmBranch;
 import org.apache.maven.scm.ScmRevision;
-import org.apache.maven.scm.ScmTestCase;
 import org.apache.maven.scm.ScmVersion;
 import org.apache.maven.scm.provider.git.repository.GitScmProviderRepository;
+import org.apache.maven.scm.provider.git.gitexe.command.GitScmTestCaseAdapter;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.cli.Commandline;
 
@@ -36,7 +36,7 @@ import java.util.Date;
  * @version $Id$
  */
 public class GitChangeLogCommandTest
-    extends ScmTestCase
+    extends GitScmTestCaseAdapter
 {
     public void testCommandLineNoDates()
         throws Exception
