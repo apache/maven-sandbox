@@ -20,8 +20,8 @@ package org.apache.maven.scm.provider.git.gitexe.command.checkin;
  */
 
 import org.apache.maven.scm.ScmFileSet;
-import org.apache.maven.scm.ScmTestCase;
 import org.apache.maven.scm.provider.git.repository.GitScmProviderRepository;
+import org.apache.maven.scm.provider.git.gitexe.command.GitScmTestCaseAdapter;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.cli.Commandline;
 
@@ -31,7 +31,7 @@ import java.io.File;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  */
 public class GitCheckInCommandTest
-    extends ScmTestCase
+    extends GitScmTestCaseAdapter
 {
     private File messageFile;
 
