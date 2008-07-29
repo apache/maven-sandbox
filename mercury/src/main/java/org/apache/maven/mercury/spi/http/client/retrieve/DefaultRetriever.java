@@ -280,6 +280,9 @@ public class DefaultRetriever implements Retriever
         return null;
         
         URL bindingURL = new URL(binding.getRemoteUrl());
+        if (_servers == null)
+            return null;
+        
         Iterator<Server> itor = _servers.iterator();
         Server server = null;
         while(itor.hasNext() && server==null)
@@ -297,10 +300,13 @@ public class DefaultRetriever implements Retriever
     private Set<StreamObserver> createStreamObservers (Server server)
     {
         HashSet<StreamObserver> observers = new HashSet<StreamObserver>();
-        Set<StreamObserverFactory> factories = server.getStreamObserverFactories();
-        for (StreamObserverFactory f:factories)
+        if (server != null)
         {
-            observers.add(f.newInstance());
+            Set<StreamObserverFactory> factories = server.getStreamObserverFactories();
+            for (StreamObserverFactory f:factories)
+            {
+                observers.add(f.newInstance());
+            }
         }
         return observers;
     }
