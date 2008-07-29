@@ -1,6 +1,6 @@
 package org.apache.maven.mercury.metadata;
 
-import org.apache.maven.mercury.ArtifactBasicMetadata;
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
 
 /**
  * This is a member of a chain of filters that can stop an ArtifactMetadata 

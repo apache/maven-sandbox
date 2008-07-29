@@ -1,4 +1,4 @@
-package org.apache.maven.mercury;
+package org.apache.maven.mercury.artifact;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
@@ -17,6 +17,7 @@ package org.apache.maven.mercury;
 
 import java.io.File;
 import java.util.regex.Pattern;
+
 
 /*
  * Description of an artifact.

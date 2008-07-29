@@ -8,8 +8,8 @@ import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.LogFactoryImpl;
-import org.apache.maven.mercury.ArtifactMetadata;
-import org.apache.maven.mercury.ArtifactScopeEnum;
+import org.apache.maven.mercury.artifact.ArtifactMetadata;
+import org.apache.maven.mercury.artifact.ArtifactScopeEnum;
 import org.apache.maven.mercury.repository.MetadataProcessorMock;
 import org.apache.maven.mercury.repository.api.MetadataProcessor;
 import org.apache.maven.mercury.repository.api.Repository;

@@ -1,6 +1,6 @@
 package org.apache.maven.mercury.metadata;
 
-import org.apache.maven.mercury.ArtifactMetadata;
+import org.apache.maven.mercury.artifact.ArtifactMetadata;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

@@ -3,9 +3,9 @@ package org.apache.maven.mercury.repository.api;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.maven.mercury.ArtifactBasicMetadata;
-import org.apache.maven.mercury.ArtifactMetadata;
-import org.apache.maven.mercury.DefaultArtifact;
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
+import org.apache.maven.mercury.artifact.ArtifactMetadata;
+import org.apache.maven.mercury.artifact.DefaultArtifact;
 
 /**
  * Repository reader API to be implemented by any repo implementation that wishes 

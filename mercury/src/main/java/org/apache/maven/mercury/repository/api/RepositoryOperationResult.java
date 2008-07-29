@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.maven.mercury.ArtifactBasicMetadata;
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
 /**
  * generic repository operation result. Represents a List of <T extends ArtifactBasicMetadata> 
  * objects and a set of exceptions thrown in the process 

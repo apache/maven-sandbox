@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.maven.mercury.ArtifactBasicMetadata;
-import org.apache.maven.mercury.ArtifactMetadata;
-import org.apache.maven.mercury.DefaultArtifact;
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
+import org.apache.maven.mercury.artifact.ArtifactMetadata;
+import org.apache.maven.mercury.artifact.DefaultArtifact;
 import org.apache.maven.mercury.metadata.version.VersionException;
 import org.apache.maven.mercury.metadata.version.VersionRange;
 import org.apache.maven.mercury.repository.api.AbstracRepositoryReader;

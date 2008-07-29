@@ -1,4 +1,4 @@
-package org.apache.maven.mercury;
+package org.apache.maven.mercury.artifact;
 
 import org.apache.maven.mercury.repository.api.RepositoryReader;
 

@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.maven.mercury.ArtifactBasicMetadata;
-import org.apache.maven.mercury.ArtifactMetadata;
-import org.apache.maven.mercury.ArtifactScopeEnum;
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
+import org.apache.maven.mercury.artifact.ArtifactMetadata;
+import org.apache.maven.mercury.artifact.ArtifactScopeEnum;
 import org.apache.maven.mercury.metadata.MetadataTreeNode;
 import org.apache.maven.mercury.metadata.MetadataTreeNodeGAComparator;
 import org.apache.maven.mercury.metadata.MetadataTreeNodeGAVComparator;

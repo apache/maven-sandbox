@@ -1,6 +1,6 @@
 package org.apache.maven.mercury.repository.api;
 
-import org.apache.maven.mercury.ArtifactBasicMetadata;
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
 
 
 /**

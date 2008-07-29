@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.maven.mercury.ArtifactBasicMetadata;
-import org.apache.maven.mercury.ArtifactMetadata;
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
+import org.apache.maven.mercury.artifact.ArtifactMetadata;
 
 /**
  * this helper class hides the necessity to talk to localRepo and a bunch of remoteRepos.

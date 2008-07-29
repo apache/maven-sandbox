@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.maven.mercury.ArtifactMetadata;
-import org.apache.maven.mercury.ArtifactScopeEnum;
+import org.apache.maven.mercury.artifact.ArtifactMetadata;
+import org.apache.maven.mercury.artifact.ArtifactScopeEnum;
 
 /*
  * classpath container that is aware of the classpath scope

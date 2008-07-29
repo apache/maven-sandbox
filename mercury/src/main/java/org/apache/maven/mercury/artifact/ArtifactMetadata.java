@@ -1,6 +1,7 @@
-package org.apache.maven.mercury;
+package org.apache.maven.mercury.artifact;
 
 import java.util.List;
+
 
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * built on top of ArtifactBasicMetadata
  * 
  * @author Oleg Gusakov
- * @version $Id$
+ * @version $Id: ArtifactMetadata.java 680879 2008-07-29 23:27:00Z ogusakov $
  */
 public class ArtifactMetadata
 extends ArtifactBasicMetadata

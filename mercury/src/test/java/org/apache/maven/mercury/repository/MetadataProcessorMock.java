@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.digester.Digester;
-import org.apache.maven.mercury.ArtifactBasicMetadata;
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
 import org.apache.maven.mercury.repository.api.MetadataProcessingException;
 import org.apache.maven.mercury.repository.api.MetadataProcessor;
 import org.apache.maven.mercury.repository.api.MetadataReader;

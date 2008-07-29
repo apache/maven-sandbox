@@ -1,4 +1,5 @@
-package org.apache.maven.mercury;
+package org.apache.maven.mercury.artifact;
+
 
 
 /**

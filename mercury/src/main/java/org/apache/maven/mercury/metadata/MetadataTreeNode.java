@@ -3,9 +3,9 @@ package org.apache.maven.mercury.metadata;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.mercury.ArtifactBasicMetadata;
-import org.apache.maven.mercury.ArtifactMetadata;
-import org.apache.maven.mercury.ArtifactScopeEnum;
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
+import org.apache.maven.mercury.artifact.ArtifactMetadata;
+import org.apache.maven.mercury.artifact.ArtifactScopeEnum;
 /**
  * metadata [dirty] Tree
  * 

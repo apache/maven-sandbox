@@ -2,7 +2,7 @@ package org.apache.maven.mercury.metadata;
 
 import junit.framework.TestCase;
 
-import org.apache.maven.mercury.ArtifactMetadata;
+import org.apache.maven.mercury.artifact.ArtifactMetadata;
 
 public abstract class AbstractSimpleTreeTest
 extends TestCase
