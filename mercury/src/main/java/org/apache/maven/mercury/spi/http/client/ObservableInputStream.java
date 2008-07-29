@@ -34,7 +34,7 @@ public class ObservableInputStream extends FilterInputStream
 {
     Set<StreamObserver> observers = new HashSet<StreamObserver>();
 
-    protected ObservableInputStream(InputStream in)
+    public ObservableInputStream(InputStream in)
     {
         super(in);
     }
@@ -42,21 +42,24 @@ public class ObservableInputStream extends FilterInputStream
     public int read(byte[] b, int off, int len) throws IOException
     {
         int result = in.read(b, off, len);
-        if (result != -1) {
+        if (result != -1) 
+        {
             notifyListeners(b, off, result);
         }
         return result;
     }
 
    
-    public int read(byte[] b) throws IOException
+    public int read() throws IOException
     {
         int ch = in.read();
-        if (ch != -1) {
+        if (ch != -1) 
+        {
             notifyListeners(ch);
         }
         return ch;
     }
+
     
     public void addObserver (StreamObserver o)
     {
