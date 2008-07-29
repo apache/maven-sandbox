@@ -174,18 +174,12 @@ implements RepositoryReader, MetadataReader
     return res;
   }
   //---------------------------------------------------------------------------------------------------------------
-  public byte[] readMetadata( ArtifactBasicMetadata bmd )
-  throws MetadataProcessingException
-  {
-    return readRawData( bmd, "pom" );
-  }
-  //---------------------------------------------------------------------------------------------------------------
-  public byte[] readRawData( ArtifactBasicMetadata bmd, String type )
+  public byte[] readRawData( ArtifactBasicMetadata bmd, String classifier, String type )
   throws MetadataProcessingException
   {
     String bmdPath = bmd.getGroupId().replace( '.', '/' )+"/"+bmd.getArtifactId()+"/"+bmd.getVersion();
     
-    File pomFile = new File( _repoDir, bmdPath+"/"+bmd.getBaseName()+'.' + (type == null ? bmd.getType() : type ) );
+    File pomFile = new File( _repoDir, bmdPath+"/"+bmd.getBaseName(classifier)+'.' + (type == null ? bmd.getType() : type ) );
     
     if( ! pomFile.exists() )
       return null;

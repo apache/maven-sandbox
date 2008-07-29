@@ -16,11 +16,12 @@ public interface MetadataReader
    * read content pointed by bmd. It will return POM bytes regardless of actual bmd type
    * 
    * @param bmd coordinates
+   * @param classifier - replaces the getClassifier() from bmd if not null
    * @param type - replaces the getType() from bmd if not null
    * @return
    * @throws MetadataProcessingException
    */
-  public byte [] readRawData( ArtifactBasicMetadata bmd, String type )
+  public byte [] readRawData( ArtifactBasicMetadata bmd, String classifier, String type )
   throws MetadataProcessingException;
 
   /**

@@ -18,6 +18,7 @@ import org.apache.maven.mercury.ArtifactMetadata;
  *
  */
 public class VirtualRepositoryReader
+implements MetadataReader
 {
   //----------------------------------------------------------------------------------------------------------------------------
   private List<Repository>       _repositories = new ArrayList<Repository>(8);
@@ -158,6 +159,38 @@ public class VirtualRepositoryReader
         md.setReader( rr );
         return md;
       }
+    }
+    
+    return null;
+  }
+  //----------------------------------------------------------------------------------------------------------------------------
+  /* (non-Javadoc)
+   * @see org.apache.maven.mercury.repository.api.MetadataReader#readMetadata(org.apache.maven.mercury.ArtifactBasicMetadata)
+   */
+  public byte[] readMetadata( ArtifactBasicMetadata bmd )
+      throws MetadataProcessingException
+  {
+    return readRawData( bmd, "", "pom" );
+  }
+  //----------------------------------------------------------------------------------------------------------------------------
+  /* (non-Javadoc)
+   * @see org.apache.maven.mercury.repository.api.MetadataReader#readRawData(org.apache.maven.mercury.ArtifactBasicMetadata, java.lang.String)
+   */
+  public byte[] readRawData( ArtifactBasicMetadata bmd, String classifier, String type )
+  throws MetadataProcessingException
+  {
+    if( bmd == null )
+      throw new IllegalArgumentException("null bmd supplied");
+    
+    init();
+    
+    byte [] res = null;
+    
+    for( RepositoryReader rr : _repositoryReaders )
+    {
+      res = rr.readRawData( bmd, classifier, type );
+      if( res != null )
+        return res;
     }
     
     return null;

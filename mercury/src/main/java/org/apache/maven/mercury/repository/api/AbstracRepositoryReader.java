@@ -1,5 +1,7 @@
 package org.apache.maven.mercury.repository.api;
 
+import org.apache.maven.mercury.ArtifactBasicMetadata;
+
 
 /**
  * This is to keep MetadataProcessor for all readers
@@ -9,7 +11,7 @@ package org.apache.maven.mercury.repository.api;
  *
  */
 public abstract class AbstracRepositoryReader
-implements RepositoryReader
+implements RepositoryReader, MetadataReader
 {
   protected MetadataProcessor _mdProcessor;
   
@@ -21,6 +23,12 @@ implements RepositoryReader
   public MetadataProcessor getMetadataProcessor()
   {
     return _mdProcessor;
+  }
+  
+  public byte[] readMetadata( ArtifactBasicMetadata bmd  )
+  throws MetadataProcessingException
+  {
+    return readRawData( bmd, "", "pom" );
   }
   
 }
