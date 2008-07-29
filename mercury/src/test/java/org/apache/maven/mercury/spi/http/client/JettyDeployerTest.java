@@ -122,12 +122,17 @@ public class JettyDeployerTest extends TestCase
         _putServer = new SimplePutServer();
         _putServer.start();
         _port = String.valueOf(_putServer.getPort());
+        setUpVerifiers();
+        super.setUp();
+    }
+    
+    protected void setUpVerifiers () throws Exception
+    {
         HashSet<org.apache.maven.mercury.transport.api.Server> remoteServerTypes = new HashSet<org.apache.maven.mercury.transport.api.Server>();
         remoteServerType = new org.apache.maven.mercury.transport.api.Server(new URL(_HOST_FRAGMENT+_port));
         factories = new HashSet<StreamObserverFactory>();       
         remoteServerTypes.add(remoteServerType);
         _deployer.setServers(remoteServerTypes);
-        super.setUp();
     }
 
     protected void tearDown() throws Exception

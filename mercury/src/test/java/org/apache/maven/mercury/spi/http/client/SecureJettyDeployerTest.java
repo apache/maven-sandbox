@@ -37,6 +37,7 @@ public class SecureJettyDeployerTest extends JettyDeployerTest
         _putServer = new SecurePutServer();
         _putServer.start();
         _port = String.valueOf(_putServer.getPort());
+        setUpVerifiers();
         //super.setUp();
     }
 
