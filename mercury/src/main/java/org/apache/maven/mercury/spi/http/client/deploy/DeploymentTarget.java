@@ -22,11 +22,17 @@ package org.apache.maven.mercury.spi.http.client.deploy;
 import org.apache.maven.mercury.spi.http.client.Binding;
 import org.apache.maven.mercury.spi.http.client.MercuryException;
 import org.apache.maven.mercury.spi.http.validate.Validator;
+import org.apache.maven.mercury.transport.api.StreamObserver;
+import org.apache.maven.mercury.transport.api.Verifier;
 import org.mortbay.jetty.client.HttpClient;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public abstract class DeploymentTarget
@@ -34,18 +40,18 @@ public abstract class DeploymentTarget
     public static final String __DIGEST_SUFFIX = ".sha1";
 
 
-    private HttpClient _httpClient;
-    private String _batchId;
-    private Binding _binding;
-    private Set<Validator> _validators;
-    private File _localChecksumFile;
-    private String _calculatedChecksum;
-    private TargetState _targetState;
-    private TargetState _checksumState;
-    private MercuryException _exception;
-    private String _remoteJettyUrl;
-
-
+    protected HttpClient _httpClient;
+    protected String _batchId;
+    protected Binding _binding;
+    protected Set<Validator> _validators;
+    protected TargetState _targetState;
+    protected TargetState _checksumState;
+    protected MercuryException _exception;
+    protected String _remoteJettyUrl;
+    protected Set<StreamObserver> _observers = new HashSet<StreamObserver>();
+    protected List<Verifier> _verifiers = new ArrayList<Verifier>();
+    protected int _index = -1; 
+    
     public abstract void onComplete();
 
     public abstract void onError( MercuryException exception );
@@ -117,18 +123,24 @@ public abstract class DeploymentTarget
         }
     }
 
-    public DeploymentTarget( HttpClient client, String batchId, Binding binding, Set<Validator> validators )
+    public DeploymentTarget( HttpClient client, String batchId, Binding binding, Set<Validator> validators, Set<StreamObserver> observers )
     {
         _httpClient = client;
         _batchId = batchId;
         _binding = binding;
         _validators = validators;
+        
+        for (StreamObserver o:observers)
+        {
+            if (Verifier.class.isAssignableFrom(o.getClass()))
+                _verifiers.add((Verifier)o);
+            _observers.add(o);
+        }
+      
         if ( _binding == null || _binding.getLocalFile() == null || !_binding.getLocalFile().exists() )
         {
             throw new IllegalArgumentException( "No local file to deploy" );
         }
-        _localChecksumFile = new File( _binding.getLocalFile().getParentFile(),
-            _binding.getLocalFile().getName() + __DIGEST_SUFFIX );
         _targetState = new TargetState();
         _checksumState = new TargetState();
     }
@@ -146,52 +158,39 @@ public abstract class DeploymentTarget
             _exception = ( t instanceof MercuryException ? (MercuryException) t : new MercuryException( _binding, t ) );
         }
 
-        //if the target file can be fetched then get it
-        if ( _targetState.isStart() )
+        if (_exception != null)
         {
-            System.err.println( "Starting deployment of " + _binding.getLocalFile().getName() );
-            deployLocalFile( _localChecksumFile.exists() );
+            onError(_exception);
         }
-
-        //if there is a local checksum file, then get it
-        if ( _checksumState.isStart() && _localChecksumFile.exists() )
+        else
         {
-            System.err.println( "Starting deployment of checksum file for " + _binding.getLocalFile().getName() );
-            deployChecksumFile();
-        }
+            //if the target file can be uploaded, then upload it, calculating checksums on the fly as necessary
+            if ( _targetState.isStart() )
+            {
+                deployLocalFile();
+            }
 
-        //if the local checksum file doesn't exist then only upload it after the target file has been sent,
-        //as we need to calculate the checksum as we send it
-        if ( _targetState.isReady() && _checksumState.isStart() && !_localChecksumFile.exists() )
-        {
-            System.err.println( "Calculated checksum ready, starting deployment" );
-            deployChecksumFile();
-        }
+            //Upload the checksums
+            if ( _targetState.isReady() && (++_index) < _verifiers.size() )
+            {
+                deployChecksumFile();
+            }
 
-        if ( _targetState.isReady() && _checksumState.isReady() )
-        {
-            if ( _exception == null )
+            if ( _targetState.isReady() && _checksumState.isReady() )
             {
                 onComplete();
-            }
-            else
-            {
-                onError( _exception );
             }
         }
     }
 
-    private void deployLocalFile( boolean checksumExists )
+    private void deployLocalFile()
     {
-        FilePutExchange exchange = new FilePutExchange( _batchId, _binding, _binding.getLocalFile(), true, _httpClient )
+        FilePutExchange exchange = new FilePutExchange( _batchId, _binding, _binding.getLocalFile(), _observers, _httpClient )
         {
-            public void onFileComplete( String url, File localFile,
-                                        String digest )
+            public void onFileComplete( String url, File localFile )
             {
                 DeploymentTarget.this._remoteJettyUrl = getRemoteJettyUrl();
-                _calculatedChecksum = digest;
                 _targetState.ready();
-                System.err.println( "File complete " + url );
                 updateState( null );
             }
 
@@ -199,7 +198,6 @@ public abstract class DeploymentTarget
             {
                 DeploymentTarget.this._remoteJettyUrl = getRemoteJettyUrl();
                 _targetState.ready( e );
-                System.err.println( "File complete " + url );
                 updateState( e );
             }
         };
@@ -211,49 +209,45 @@ public abstract class DeploymentTarget
     private void deployChecksumFile()
     {
         Binding binding = _binding;
-        File file = _localChecksumFile;
-        if ( !_localChecksumFile.exists() && _calculatedChecksum != null )
+        File file = null;
+        Verifier v =  _verifiers.get(_index);
+
+        //No local checksum file, so make a temporary one using the checksum we 
+        //calculated as we uploaded the file
+        try
         {
-            //No local checksum file, so make a temporary one using the checksum we 
-            //calculated as we uploaded the file
-            try
-            {
-                binding = new Binding();
-                binding.setRemoteUrl( _binding.getRemoteUrl() + __DIGEST_SUFFIX );
-                file = File.createTempFile( _binding.getLocalFile().getName() + __DIGEST_SUFFIX, ".tmp" );
-                OutputStreamWriter fw = new OutputStreamWriter( new FileOutputStream( file ), "UTF-8" );
-                fw.write( _calculatedChecksum );
-                fw.close();
-                binding.setLocalFile( file );
-            }
-            catch ( Exception e )
-            {
-                _checksumState.ready( e );
-            }
-        }
-        else
-        {
+
             binding = new Binding();
-            binding.setRemoteUrl( _binding.getRemoteUrl() + __DIGEST_SUFFIX );
-            binding.setLocalFile( _localChecksumFile );
+            binding.setRemoteUrl( _binding.getRemoteUrl() + v.getExtension() );
+            file = File.createTempFile( _binding.getLocalFile().getName() + v.getExtension(), ".tmp" );
+            OutputStreamWriter fw = new OutputStreamWriter( new FileOutputStream( file ), "UTF-8" );
+            fw.write( v.getSignature() );
+            fw.close();
+            binding.setLocalFile( file );
+        }
+        catch ( Exception e )
+        {
+            _checksumState.ready( e );
         }
 
+
         //upload the checksum file
-        FilePutExchange exchange = new FilePutExchange( _batchId, binding, file, false, _httpClient )
+        Set<StreamObserver> emptySet = Collections.emptySet();
+        FilePutExchange exchange = new FilePutExchange( _batchId, binding, file, emptySet, _httpClient )
         {
-            public void onFileComplete( String url, File localFile, String digest )
+            public void onFileComplete( String url, File localFile )
             {
                 DeploymentTarget.this._remoteJettyUrl = getRemoteJettyUrl();
-                _checksumState.ready();
-                System.err.println( "Checksum file complete: " + url );
+                if (_index == (_verifiers.size() - 1))
+                    _checksumState.ready();
                 updateState( null );
             }
 
             public void onFileError( String url, Exception e )
             {
                 DeploymentTarget.this._remoteJettyUrl = getRemoteJettyUrl();
-                _checksumState.ready( e );
-                System.err.println( "Checksum file error: " + url );
+                if (_index == (_verifiers.size() - 1))
+                    _checksumState.ready( e );
                 updateState( e );
             }
         };

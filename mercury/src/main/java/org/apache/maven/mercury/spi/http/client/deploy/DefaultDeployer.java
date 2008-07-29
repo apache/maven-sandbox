@@ -23,12 +23,18 @@ import org.apache.maven.mercury.spi.http.client.Binding;
 import org.apache.maven.mercury.spi.http.client.FileExchange;
 import org.apache.maven.mercury.spi.http.client.HandshakeExchange;
 import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.transport.api.Server;
+import org.apache.maven.mercury.transport.api.StreamObserver;
+import org.apache.maven.mercury.transport.api.StreamObserverFactory;
 import org.mortbay.jetty.HttpMethods;
 import org.mortbay.jetty.client.HttpClient;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +49,7 @@ public class DefaultDeployer implements Deployer
 {
     private HttpClient _httpClient;
     private BatchIdGenerator _idGenerator;
-
+    private Set<Server> _servers = new HashSet<Server>();
 
     public DefaultDeployer()
         throws MercuryException
@@ -93,6 +99,17 @@ public class DefaultDeployer implements Deployer
     public HttpClient getHttpClient()
     {
         return _httpClient;
+    }
+    
+    public void setServers (Set<Server>servers)
+    {
+        _servers.clear();
+        _servers.addAll(servers);
+    }
+    
+    public Set<Server> getServers()
+    {
+        return _servers;
     }
 
     /**
@@ -168,7 +185,9 @@ public class DefaultDeployer implements Deployer
             DeploymentTarget target = null;
             try
             {
-                target = new DeploymentTarget( _httpClient, batchId, binding, request.getValidators() )
+                Server server = resolveServer(binding);
+                Set<StreamObserver> observers = createStreamObservers(server);
+                target = new DeploymentTarget( _httpClient, batchId, binding, request.getValidators(), observers )
                 {
                     public void onComplete()
                     {
@@ -284,4 +303,36 @@ public class DefaultDeployer implements Deployer
             callback.onComplete( response );
         }
     }
+ 
+    private Server resolveServer (Binding binding)
+    throws MalformedURLException
+    {
+        if (binding.getRemoteUrl() == null)
+        return null;
+        
+        URL bindingURL = new URL(binding.getRemoteUrl());
+        Iterator<Server> itor = _servers.iterator();
+        Server server = null;
+        while(itor.hasNext() && server==null)
+        {
+            Server s = itor.next();
+            if (bindingURL.getProtocol().equalsIgnoreCase(s.getURL().getProtocol()) 
+                    && bindingURL.getHost().equalsIgnoreCase(s.getURL().getHost())
+                    && bindingURL.getPort() == s.getURL().getPort())
+                server = s;
+        }
+        return server;
+    }
+    
+    private Set<StreamObserver> createStreamObservers (Server server)
+    {
+        HashSet<StreamObserver> observers = new HashSet<StreamObserver>();
+        Set<StreamObserverFactory> factories = server.getStreamObserverFactories();
+        for (StreamObserverFactory f:factories)
+        {
+            observers.add(f.newInstance());
+        }
+        return observers;
+    }
+
 }

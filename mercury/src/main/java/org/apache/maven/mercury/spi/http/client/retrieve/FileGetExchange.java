@@ -80,8 +80,6 @@ public abstract class FileGetExchange extends FileExchange
     protected void onResponseComplete()
     {
         //All bytes of file have been received
-        String digest = null;
-
         try
         {
             if ( _status == HttpServletResponse.SC_NOT_FOUND )
@@ -95,14 +93,7 @@ public abstract class FileGetExchange extends FileExchange
                 return;
             }
 
-            if ( _outputStream != null )
-            {
-                
-                /*
-             
-                */
-            }
-            onFileComplete( _url, _localFile, digest );
+            onFileComplete( _url, _localFile );
         }
         catch ( Exception e )
         {

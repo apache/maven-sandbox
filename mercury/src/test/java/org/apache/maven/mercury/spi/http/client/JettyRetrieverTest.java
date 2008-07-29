@@ -19,26 +19,21 @@
 
 package org.apache.maven.mercury.spi.http.client;
 
+import java.io.File;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
+
 import junit.framework.TestCase;
 
-import org.apache.maven.mercury.spi.http.client.Binding;
-import org.apache.maven.mercury.spi.http.client.MercuryException;
 import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetrievalRequest;
 import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetriever;
 import org.apache.maven.mercury.spi.http.client.retrieve.RetrievalResponse;
 import org.apache.maven.mercury.spi.http.server.SimpleTestServer;
 import org.apache.maven.mercury.spi.http.validate.Validator;
-import org.apache.maven.mercury.transport.SHA1Verifier;
 import org.apache.maven.mercury.transport.SHA1VerifierFactory;
 import org.apache.maven.mercury.transport.api.Server;
-import org.apache.maven.mercury.transport.api.StreamObserver;
 import org.apache.maven.mercury.transport.api.StreamObserverFactory;
-import org.apache.maven.mercury.transport.api.Verifier;
-
-import java.io.File;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
 
 public class JettyRetrieverTest extends TestCase
 {

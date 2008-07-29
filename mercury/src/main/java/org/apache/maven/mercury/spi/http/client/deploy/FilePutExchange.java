@@ -22,7 +22,9 @@ package org.apache.maven.mercury.spi.http.client.deploy;
 import org.apache.maven.mercury.spi.http.client.Binding;
 import org.apache.maven.mercury.spi.http.client.FileExchange;
 import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.ObservableInputStream;
 import org.apache.maven.mercury.transport.ChecksumCalculator;
+import org.apache.maven.mercury.transport.api.StreamObserver;
 import org.mortbay.io.Buffer;
 import org.mortbay.jetty.HttpMethods;
 import org.mortbay.jetty.client.HttpClient;
@@ -35,6 +37,8 @@ import java.io.InputStream;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -45,21 +49,21 @@ import java.security.NoSuchAlgorithmException;
  */
 public abstract class FilePutExchange extends FileExchange
 {
-    private boolean _digestRequired;
     private String _batchId;
     private InputStream _inputStream;
     private String _remoteRepoUrl;
     private String _remoteBatchId;
-
-    public abstract void onFileComplete( String url, File localFile, String digest );
+    private Set<StreamObserver> _observers = new HashSet<StreamObserver>();
+    
+    public abstract void onFileComplete( String url, File localFile );
 
     public abstract void onFileError( String url, Exception e );
 
 
-    public FilePutExchange( String batchId, Binding binding, File localFile, boolean isDigestRequired, HttpClient client )
+    public FilePutExchange( String batchId, Binding binding, File localFile, Set<StreamObserver> observers, HttpClient client )
     {
         super( binding, localFile, client );
-        _digestRequired = isDigestRequired;
+        _observers.addAll(observers);
         _batchId = batchId;
     }
 
@@ -73,11 +77,10 @@ public abstract class FilePutExchange extends FileExchange
         try
         {
             setMethod( HttpMethods.PUT );
-            setRequestContentSource( getInputStream() );
             setRequestHeader( "Content-Type", "application/octet-stream" );
             setRequestHeader( "Content-Length", String.valueOf( _localFile.length() ) );
-            setRequestHeader( __BATCH_HEADER, _batchId );
-            System.err.println( "Sending PUT for " + getURI() );
+            setRequestContentSource( getInputStream() );
+            setRequestHeader( __BATCH_HEADER, _batchId );            
             super.send();
         }
         catch ( Exception e )
@@ -111,8 +114,6 @@ public abstract class FilePutExchange extends FileExchange
 
     protected void onResponseComplete()
     {
-        System.err.println( "On ResponseComplete for put for " + _url );
-        String digest = null;
         try
         {
             if ( _status != HttpServletResponse.SC_OK && _status != HttpServletResponse.SC_CREATED && _status != HttpServletResponse.SC_NO_CONTENT )
@@ -128,12 +129,8 @@ public abstract class FilePutExchange extends FileExchange
                 return;
             }
 
-            if ( _digestRequired && _inputStream != null )
-            {
-                byte[] bytes = ( (DigestInputStream) _inputStream ).getMessageDigest().digest();
-                digest = ChecksumCalculator.encodeToAsciiHex( bytes );
-            }
-            onFileComplete( _url, _localFile, digest );
+            //we've uploaded the file
+            onFileComplete( _url, _localFile );
         }
         catch ( Exception e )
         {
@@ -147,17 +144,10 @@ public abstract class FilePutExchange extends FileExchange
     {
         if ( _inputStream == null )
         {
-            if ( !_digestRequired )
-            {
-                _inputStream = new FileInputStream( _localFile );
-            }
-            else
-            {
-                MessageDigest digest = MessageDigest.getInstance( "SHA-1" );
-                _inputStream = new DigestInputStream( new FileInputStream( _localFile ), digest );
-            }
-        }
-        System.err.println( "Returning input stream for " + _localFile.getName() );
+            ObservableInputStream ois = new ObservableInputStream( new FileInputStream( _localFile ));
+            _inputStream = ois;
+            ois.addObservers(_observers);
+        }    
         return _inputStream;
     }
 }

@@ -44,7 +44,7 @@ public abstract class FileExchange extends HttpExchange
     protected File _localFile;
     protected Binding _binding;
 
-    public abstract void onFileComplete( String url, File localFile, String digest );
+    public abstract void onFileComplete( String url, File localFile );
 
     public abstract void onFileError( String url, Exception e );
 

@@ -29,6 +29,8 @@ import org.apache.maven.mercury.spi.http.client.deploy.DeployResponse;
 import org.apache.maven.mercury.spi.http.server.SecurePutServer;
 import org.apache.maven.mercury.spi.http.server.SimplePutServer;
 import org.apache.maven.mercury.spi.http.validate.Validator;
+import org.apache.maven.mercury.transport.SHA1VerifierFactory;
+import org.apache.maven.mercury.transport.api.StreamObserverFactory;
 import org.mortbay.jetty.Server;
 import org.mortbay.util.IO;
 
@@ -61,6 +63,8 @@ public class JettyDeployerTest extends TestCase
     Binding _binding3 = new Binding();
     Binding _binding4 = new Binding();
     Binding _binding5 = new Binding();
+    org.apache.maven.mercury.transport.api.Server remoteServerType;
+    HashSet<StreamObserverFactory> factories;
     
     private class DeployRequestImpl implements DeployRequest
     {
@@ -113,10 +117,16 @@ public class JettyDeployerTest extends TestCase
 
     protected void setUp() throws Exception
     {        
+
         _deployer = new DefaultDeployer();
         _putServer = new SimplePutServer();
         _putServer.start();
         _port = String.valueOf(_putServer.getPort());
+        HashSet<org.apache.maven.mercury.transport.api.Server> remoteServerTypes = new HashSet<org.apache.maven.mercury.transport.api.Server>();
+        remoteServerType = new org.apache.maven.mercury.transport.api.Server(new URL(_HOST_FRAGMENT+_port));
+        factories = new HashSet<StreamObserverFactory>();       
+        remoteServerTypes.add(remoteServerType);
+        _deployer.setServers(remoteServerTypes);
         super.setUp();
     }
 
@@ -131,6 +141,8 @@ public class JettyDeployerTest extends TestCase
     {
         HashSet<Binding> bindings = new HashSet<Binding>();
         DeployRequestImpl request = new DeployRequestImpl();
+        factories.add(new SHA1VerifierFactory(false, true)); //!lenient, sufficient
+        remoteServerType.setStreamObserverFactories(factories);
         
         _file0 = new File(_baseDir, "file0.txt");
         _file1 = new File(_baseDir, "file1.txt");
@@ -183,7 +195,9 @@ public class JettyDeployerTest extends TestCase
         assertTrue (f5.exists());
         assertTrue (f5cs.exists());
     }
-    
+    /* This test duplicates the one above unless we allow for checksum files to
+     * be pre-existing
+     
     public void testUploadOKMissingChecksum () throws Exception
     {
         HashSet<Binding> bindings = new HashSet<Binding>();
@@ -252,9 +266,14 @@ public class JettyDeployerTest extends TestCase
         assertTrue (f5.exists());
         assertTrue (f5cs.exists());
     }
+    */
     
+    
+
     public void testUploadFail () throws Exception 
-    {
+    {        
+        factories.add(new SHA1VerifierFactory(false, true)); //!lenient, sufficient
+        remoteServerType.setStreamObserverFactories(factories);
         HashSet<Binding> bindings = new HashSet<Binding>();
         DeployRequestImpl request = new DeployRequestImpl();
 
@@ -296,7 +315,7 @@ public class JettyDeployerTest extends TestCase
         request.setBindings(bindings);            
         DeployResponse response = _deployer.deploy(request);
 
-        //for (BatchException t:response.getExceptions())
+        //for (MercuryException t:response.getExceptions())
         //    t.printStackTrace();
 
         //as the serverside is not running the mercury enhancements to the put filter, then
@@ -332,9 +351,11 @@ public class JettyDeployerTest extends TestCase
         assertFalse (f7.exists());
         assertFalse (f7cs.exists());
     }
-    
+  
     public void testUploadFailFast () throws Exception 
     {
+        factories.add(new SHA1VerifierFactory(false, true)); //!lenient, sufficient
+        remoteServerType.setStreamObserverFactories(factories);
         HashSet<Binding> bindings = new HashSet<Binding>();
         DeployRequestImpl request = new DeployRequestImpl();
 
@@ -396,4 +417,5 @@ public class JettyDeployerTest extends TestCase
         
         Thread.sleep(500);
     }
+    
 }

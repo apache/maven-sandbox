@@ -394,7 +394,7 @@ public abstract class RetrievalTarget
         //get the file, calculating the digest for it on the fly
         FileExchange exchange = new FileGetExchange( _binding, getTempFile(), _observers, _retriever.getHttpClient() )
         {
-            public void onFileComplete( String url, File localFile, String digest )
+            public void onFileComplete( String url, File localFile )
             {
                 //we got the target file ok, so tell our main callback
                 _targetState = __READY_STATE;
