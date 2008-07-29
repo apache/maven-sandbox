@@ -354,8 +354,7 @@ public abstract class RetrievalTarget
                     {
                         if (v.isSufficient())
                             _verifierMap.clear(); //remove all other entries, we only need one checksum
-                        
-                        _verifierMap.put(v, getResponseContent());
+                        _verifierMap.put(v, getResponseContent().trim());
                     }
                     updateChecksumState(index, null);
                 }
