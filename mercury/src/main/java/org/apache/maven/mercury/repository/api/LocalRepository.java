@@ -1,4 +1,6 @@
-package org.apache.maven.mercury.repository;
+package org.apache.maven.mercury.repository.api;
+
+import java.io.File;
 
 
 /*
@@ -22,8 +24,8 @@ package org.apache.maven.mercury.repository;
 
 /**
  */
-public interface RemoteRepository
-    extends Repository
+public interface LocalRepository
+extends Repository
 {
-    String getUrl();
+    File getDirectory();
 }

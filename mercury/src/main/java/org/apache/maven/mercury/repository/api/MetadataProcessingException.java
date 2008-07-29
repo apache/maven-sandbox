@@ -1,4 +1,4 @@
-package org.apache.maven.mercury.repository;
+package org.apache.maven.mercury.repository.api;
 
 /**
  *

@@ -1,6 +1,5 @@
 package org.apache.maven.mercury;
 
-import java.util.Collection;
 import java.util.List;
 
 

@@ -1,6 +1,5 @@
 package org.apache.maven.mercury.repository.api;
 
-import java.util.List;
 
 /**
  * This is a generic repository event callback. Used by all repository operations

@@ -21,7 +21,6 @@ package org.apache.maven.mercury.transport;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 import org.apache.maven.mercury.transport.api.Verifier;
 

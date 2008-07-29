@@ -1,8 +1,5 @@
-package org.apache.maven.mercury.repository;
+package org.apache.maven.mercury.repository.api;
 
-import org.apache.maven.mercury.repository.api.NonExistentProtocolException;
-import org.apache.maven.mercury.repository.api.RepositoryReader;
-import org.apache.maven.mercury.repository.api.RepositoryWriter;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -29,6 +26,12 @@ public interface Repository
 {
   String getId();
   
+
+  /**
+   * repository type - m2, nexus, ivy, p2 - to name a few. It defines the RepositoryReader/Writer 
+   * that will be searched for in the registry.
+   */
+  public String getType();
 
   /**
    * Indicates whether this is local Repository. This flag defines the necessity to download

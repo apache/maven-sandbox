@@ -3,12 +3,9 @@ package org.apache.maven.mercury.repository.api;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.maven.mercury.Artifact;
 import org.apache.maven.mercury.ArtifactBasicMetadata;
 import org.apache.maven.mercury.ArtifactMetadata;
 import org.apache.maven.mercury.DefaultArtifact;
-import org.apache.maven.mercury.repository.MetadataProcessor;
-import org.apache.maven.mercury.repository.Repository;
 
 /**
  * Repository reader API to be implemented by any repo implementation that wishes 
@@ -20,6 +17,7 @@ import org.apache.maven.mercury.repository.Repository;
  *
  */
 public interface RepositoryReader
+extends RepositoryOperator, MetadataReader
 {
   /**
    * given basic coordinates query - instantiate all available matches as ArtifactBasicMetadata objects. 
@@ -68,4 +66,5 @@ public interface RepositoryReader
    * Need if to trick circular dependency on maven-project, projectBuilder hides behind this processor
    */
   public void setMetadataProcessor( MetadataProcessor mdProcessor );
+  public MetadataProcessor getMetadataProcessor();
 }

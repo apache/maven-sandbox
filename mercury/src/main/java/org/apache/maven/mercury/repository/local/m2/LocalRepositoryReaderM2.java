@@ -12,25 +12,27 @@ import org.apache.maven.mercury.ArtifactMetadata;
 import org.apache.maven.mercury.DefaultArtifact;
 import org.apache.maven.mercury.metadata.version.VersionException;
 import org.apache.maven.mercury.metadata.version.VersionRange;
-import org.apache.maven.mercury.repository.LocalRepository;
-import org.apache.maven.mercury.repository.MetadataProcessingException;
-import org.apache.maven.mercury.repository.MetadataProcessor;
-import org.apache.maven.mercury.repository.MetadataReader;
-import org.apache.maven.mercury.repository.Repository;
+import org.apache.maven.mercury.repository.api.AbstracRepositoryReader;
+import org.apache.maven.mercury.repository.api.AbstractRepository;
+import org.apache.maven.mercury.repository.api.LocalRepository;
+import org.apache.maven.mercury.repository.api.MetadataProcessingException;
+import org.apache.maven.mercury.repository.api.MetadataProcessor;
+import org.apache.maven.mercury.repository.api.MetadataReader;
+import org.apache.maven.mercury.repository.api.Repository;
 import org.apache.maven.mercury.repository.api.RepositoryException;
 import org.apache.maven.mercury.repository.api.RepositoryOperationResult;
 import org.apache.maven.mercury.repository.api.RepositoryReader;
-import org.mortbay.log.Log;
 
 public class LocalRepositoryReaderM2
+extends AbstracRepositoryReader
 implements RepositoryReader, MetadataReader
 {
   private static final org.slf4j.Logger _log = org.slf4j.LoggerFactory.getLogger( LocalRepositoryReaderM2.class ); 
   //---------------------------------------------------------------------------------------------------------------
+  private static final String [] _protocols = new String [] { "file" };
+  
   LocalRepository _repo;
   File _repoDir;
-  
-  MetadataProcessor _mdProcessor;
   //---------------------------------------------------------------------------------------------------------------
   public LocalRepositoryReaderM2( LocalRepository repo, MetadataProcessor mdProcessor )
   {
@@ -172,17 +174,18 @@ implements RepositoryReader, MetadataReader
     return res;
   }
   //---------------------------------------------------------------------------------------------------------------
-  public void setMetadataProcessor( MetadataProcessor mdProcessor )
+  public byte[] readMetadata( ArtifactBasicMetadata bmd )
+  throws MetadataProcessingException
   {
-    this._mdProcessor = mdProcessor;
+    return readRawData( bmd, "pom" );
   }
   //---------------------------------------------------------------------------------------------------------------
-  public byte[] readMetadata( ArtifactBasicMetadata bmd )
+  public byte[] readRawData( ArtifactBasicMetadata bmd, String type )
   throws MetadataProcessingException
   {
     String bmdPath = bmd.getGroupId().replace( '.', '/' )+"/"+bmd.getArtifactId()+"/"+bmd.getVersion();
     
-    File pomFile = new File( _repoDir, bmdPath+"/"+bmd.getBaseName()+".pom" );
+    File pomFile = new File( _repoDir, bmdPath+"/"+bmd.getBaseName()+'.' + (type == null ? bmd.getType() : type ) );
     
     if( ! pomFile.exists() )
       return null;
@@ -207,5 +210,18 @@ implements RepositoryReader, MetadataReader
     }
   }
   //---------------------------------------------------------------------------------------------------------------
+  public boolean canHandle( String protocol )
+  {
+    return AbstractRepository.DEFAULT_LOCAL_READ_PROTOCOL.equals( protocol );
+  }
+  //---------------------------------------------------------------------------------------------------------------
+  public String[] getProtocols()
+  {
+    return _protocols;
+  }
+  //---------------------------------------------------------------------------------------------------------------
+  public void close()
+  {
+  }
   //---------------------------------------------------------------------------------------------------------------
 }

@@ -1,5 +1,6 @@
 package org.apache.maven.mercury.repository.remote.m2;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,44 +13,81 @@ import org.apache.maven.mercury.ArtifactMetadata;
 import org.apache.maven.mercury.DefaultArtifact;
 import org.apache.maven.mercury.metadata.version.VersionException;
 import org.apache.maven.mercury.metadata.version.VersionRange;
-import org.apache.maven.mercury.repository.LocalRepository;
-import org.apache.maven.mercury.repository.MetadataProcessingException;
-import org.apache.maven.mercury.repository.MetadataProcessor;
-import org.apache.maven.mercury.repository.MetadataReader;
-import org.apache.maven.mercury.repository.Repository;
+import org.apache.maven.mercury.repository.api.AbstracRepositoryReader;
+import org.apache.maven.mercury.repository.api.AbstractRepository;
+import org.apache.maven.mercury.repository.api.MetadataProcessingException;
+import org.apache.maven.mercury.repository.api.MetadataProcessor;
+import org.apache.maven.mercury.repository.api.MetadataReader;
+import org.apache.maven.mercury.repository.api.RemoteRepository;
+import org.apache.maven.mercury.repository.api.Repository;
 import org.apache.maven.mercury.repository.api.RepositoryException;
 import org.apache.maven.mercury.repository.api.RepositoryOperationResult;
 import org.apache.maven.mercury.repository.api.RepositoryReader;
-import org.mortbay.log.Log;
-
+import org.apache.maven.mercury.repository.metadata.Metadata;
+import org.apache.maven.mercury.repository.metadata.io.xpp3.MetadataXpp3Reader;
+import org.apache.maven.mercury.spi.http.client.Binding;
+import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetrievalRequest;
+import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetriever;
+import org.apache.maven.mercury.spi.http.client.retrieve.RetrievalResponse;
+import org.codehaus.plexus.i18n.DefaultLanguage;
+import org.codehaus.plexus.i18n.Language;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+/**
+ * implementation of M2 remote repository reader. Actual Transport used comes from RemoteRepository Server' URL
+ * 
+ *  Current implementation does not do the check and uses jetty-client directly. 
+ *  TODO - re-implements after jetty-client implements Transport 
+ *
+ *
+ * @author Oleg Gusakov
+ * @version $Id$
+ *
+ */
 public class RemoteRepositoryReaderM2
+extends AbstracRepositoryReader
 implements RepositoryReader, MetadataReader
 {
   private static final org.slf4j.Logger _log = org.slf4j.LoggerFactory.getLogger( RemoteRepositoryReaderM2.class ); 
-  //---------------------------------------------------------------------------------------------------------------
-  LocalRepository _repo;
-  File _repoDir;
+  private static final Language _lang = new DefaultLanguage( RemoteRepositoryReaderM2.class );
+  // TODO - replace with known Transport's protocols. Should be similar to RepositoryReader/Writer registration
+  private static final String [] _protocols = new String [] { "http", "https" };
   
-  MetadataProcessor _mdProcessor;
+  // TODO replace with Transport
+  private DefaultRetriever _transport;
   //---------------------------------------------------------------------------------------------------------------
-  public RemoteRepositoryReaderM2( LocalRepository repo, MetadataProcessor mdProcessor )
+  RemoteRepository _repo;
+  //---------------------------------------------------------------------------------------------------------------
+  public RemoteRepositoryReaderM2( RemoteRepository repo, MetadataProcessor mdProcessor )
+  throws RepositoryException
   {
+    
     if( repo == null )
-      throw new IllegalArgumentException("localRepo cannot be null");
+      throw new IllegalArgumentException( _lang.getMessage( "bad.repository.null") );
     
-    _repoDir = repo.getDirectory();
-    if( _repoDir == null )
-      throw new IllegalArgumentException("localRepo directory cannot be null");
+    if( repo.getServer() == null )
+      throw new IllegalArgumentException( _lang.getMessage( "bad.repository.server.null") );
     
-    if( !_repoDir.exists() )
-      throw new IllegalArgumentException("localRepo directory \""+_repoDir.getAbsolutePath()+"\" should exist");
-
+    if( repo.getServer().getURL() == null )
+      throw new IllegalArgumentException( _lang.getMessage( "bad.repository.server.url.null") );
+    
     _repo = repo;
     
     if( mdProcessor == null )
       throw new IllegalArgumentException("MetadataProcessor cannot be null ");
     
     setMetadataProcessor(  mdProcessor );
+    
+    try
+    {
+      // TODO 2008-07-29 og: here I should analyze Server protocol
+      //                     and come with appropriate Transport implementation 
+      _transport = new DefaultRetriever();
+    }
+    catch( MercuryException e )
+    {
+      throw new RepositoryException(e);
+    }
   }
   //---------------------------------------------------------------------------------------------------------------
   public Repository getRepository()
@@ -77,25 +115,8 @@ implements RepositoryReader, MetadataReader
 
     Map<ArtifactBasicMetadata, ArtifactMetadata> ror = new HashMap<ArtifactBasicMetadata, ArtifactMetadata>(16);
     
-    File pomFile = null;
     for( ArtifactBasicMetadata bmd : query )
     {
-      String pomPath = bmd.getGroupId().replace( '.', '/' )
-                      + "/" + bmd.getArtifactId()
-                      + "/" + bmd.getVersion()
-                      + "/" + bmd.getBaseName()
-                      + ".pom"
-                      ;
-      
-      pomFile = new File( _repoDir, pomPath );
-      if( ! pomFile.exists() )
-      {
-        _log.warn( "file \""+pomPath+"\" does not exist in local repo" );
-        continue;
-      }
-      
-      // TODO HIGH og: delegate POM processing to maven-project
-      // for testing purpose - I plug in my test processor
       try
       {
         List<ArtifactBasicMetadata> deps = _mdProcessor.getDependencies( bmd, this );
@@ -118,24 +139,50 @@ implements RepositoryReader, MetadataReader
   /**
    * direct disk search, no redirects, first attempt
    */
-  public Map<ArtifactBasicMetadata, RepositoryOperationResult<ArtifactBasicMetadata>> readVersions(
-      List<? extends ArtifactBasicMetadata> query )
+  public Map<ArtifactBasicMetadata, RepositoryOperationResult<ArtifactBasicMetadata>> readVersions( List<? extends ArtifactBasicMetadata> query )
       throws RepositoryException,
       IllegalArgumentException
   {
     if( query == null || query.size() < 1 )
       return null;
+
     Map<ArtifactBasicMetadata, RepositoryOperationResult<ArtifactBasicMetadata>> res = new HashMap<ArtifactBasicMetadata, RepositoryOperationResult<ArtifactBasicMetadata>>( query.size() );
     
-    File gaDir = null;
+    String gaPath = null;
     for( ArtifactBasicMetadata bmd : query )
     {
-      gaDir = new File( _repoDir, bmd.getGroupId().replace( '.', '/' )+"/"+bmd.getArtifactId() );
-      if( ! gaDir.exists() )
+      gaPath = bmd.getGroupId().replace( '.', '/' )+'/'+bmd.getArtifactId()+"/maven-metadata.xml";
+      
+      byte[] mavenMetadata;
+      try
+      {
+        mavenMetadata = readRawData( gaPath );
+      }
+      catch( MetadataProcessingException e )
+      {
+        continue;
+      }
+      
+      if( mavenMetadata == null )
         continue;
       
-      File [] versionFiles = gaDir.listFiles();
-      
+      MetadataXpp3Reader mmReader = new MetadataXpp3Reader();
+      Metadata mmd;
+      try
+      {
+        mmd = mmReader.read( new ByteArrayInputStream(mavenMetadata) );
+      }
+      catch( IOException e )
+      {
+        _log.warn( _lang.getMessage( "maven.metadata.xml.exception", e.getMessage(), gaPath, _repo.getId() ) );
+        continue;
+      }
+      catch( XmlPullParserException pe )
+      {
+        _log.error( pe.getMessage() );
+        throw new RepositoryException( pe );
+      }
+
       RepositoryOperationResult<ArtifactBasicMetadata> rr = null;
       VersionRange versionQuery;
       try
@@ -148,12 +195,14 @@ implements RepositoryReader, MetadataReader
         continue;
       }
       
-      for( File vf : versionFiles )
+      for( Object vo : mmd.getVersioning().getVersions() )
       {
-        if( !vf.isDirectory() )
+        if( vo == null || !(vo instanceof String) )
           continue;
         
-        if( !versionQuery.includes(  vf.getName() )  )
+        String v = (String)vo;
+        
+        if( !versionQuery.includes(  v )  )
           continue;
         
         ArtifactBasicMetadata vmd = new ArtifactBasicMetadata();
@@ -161,7 +210,7 @@ implements RepositoryReader, MetadataReader
         vmd.setArtifactId(  bmd.getArtifactId() );
         vmd.setClassifier( bmd.getClassifier() );
         vmd.setType( bmd.getType() );
-        vmd.setVersion( vf.getName() );
+        vmd.setVersion( v );
         
         rr = RepositoryOperationResult.add( rr, vmd );
       }
@@ -172,27 +221,45 @@ implements RepositoryReader, MetadataReader
     return res;
   }
   //---------------------------------------------------------------------------------------------------------------
-  public void setMetadataProcessor( MetadataProcessor mdProcessor )
-  {
-    this._mdProcessor = mdProcessor;
-  }
-  //---------------------------------------------------------------------------------------------------------------
-  public byte[] readMetadata( ArtifactBasicMetadata bmd )
+  public byte[] readMetadata( ArtifactBasicMetadata bmd  )
   throws MetadataProcessingException
   {
-    String bmdPath = bmd.getGroupId().replace( '.', '/' )+"/"+bmd.getArtifactId()+"/"+bmd.getVersion();
+    return readRawData( bmd, "pom" );
+  }
+  //---------------------------------------------------------------------------------------------------------------
+  public byte[] readRawData( ArtifactBasicMetadata bmd, String type )
+  throws MetadataProcessingException
+  {
+    String bmdPath = bmd.getGroupId().replace( '.', '/' )
+                    + '/'+bmd.getArtifactId()
+                    + '/'+bmd.getVersion()
+                    + '/'+bmd.getBaseName()
+                    + '.' + (type == null ? bmd.getType() : type )
+                    ;
     
-    File pomFile = new File( _repoDir, bmdPath+"/"+bmd.getBaseName()+".pom" );
-    
-    if( ! pomFile.exists() )
-      return null;
-    
+    return readRawData( bmdPath );
+  }
+  //---------------------------------------------------------------------------------------------------------------
+  private byte[] readRawData( String path )
+  throws MetadataProcessingException
+  {
     FileInputStream fis = null;
-    
     try
     {
-      fis = new FileInputStream( pomFile );
-      int len = (int)pomFile.length();
+      File tempFile = File.createTempFile( "mercury", "readraw" );
+      Binding binding = new Binding( _repo.getServer().getURL().toString()+'/'+path , tempFile, false );
+      DefaultRetrievalRequest request = new DefaultRetrievalRequest();
+      request.addBinding( binding );
+      
+      RetrievalResponse response = _transport.retrieve( request );
+      
+      if( response.hasExceptions() )
+      {
+        throw new MetadataProcessingException( response.getExceptions().toString() );
+      }
+    
+      fis = new FileInputStream( tempFile );
+      int len = (int)tempFile.length();
       byte [] pom = new byte [ len ];
       fis.read( pom );
       return pom;
@@ -207,5 +274,20 @@ implements RepositoryReader, MetadataReader
     }
   }
   //---------------------------------------------------------------------------------------------------------------
+  public boolean canHandle(
+      String protocol )
+  {
+    return AbstractRepository.DEFAULT_REMOTE_READ_PROTOCOL.equals( protocol );
+  }
   //---------------------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------------------
+  public void close()
+  {
+    // TODO Auto-generated method stub
+    
+  }
+  public String[] getProtocols()
+  {
+    return _protocols;
+  }
 }

@@ -19,7 +19,9 @@
 
 package org.apache.maven.mercury.transport.api;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 
 import org.apache.maven.mercury.repository.api.RepositoryException;
@@ -35,7 +37,16 @@ public class Binding
   
   protected URI                 remoteResource;
   protected File                localFile;
-  protected byte []             localBuffer;
+  /** 
+   * inbound in-memory binding for reading remote content.
+   * It is created by the constructor
+   */
+  protected ByteArrayOutputStream localOS;
+  /**
+   * this is outbound in-memory binding. IS is passed by the client
+   */
+  protected InputStream         localIS;
+
   protected boolean             lenientChecksum = true;
 
   protected RepositoryException error;
@@ -54,13 +65,24 @@ public class Binding
     this.lenientChecksum = lenientChecksum;
   }
 
-  public Binding(
-      URI remoteUrl,
-      byte [] localbuffer,
-      boolean lenientChecksum )
+  /** 
+   * this is in-memory binding for writing remote content into localOS
+   * 
+   * @param remoteUrl
+   * @param lenientChecksum
+   */
+  public Binding( URI remoteUrl, boolean lenientChecksum )
   {
     this.remoteResource = remoteUrl;
-    this.localBuffer = localbuffer;
+    // let's assume 4k on average
+    this.localOS = new ByteArrayOutputStream( 4*1024 );
+    this.lenientChecksum = lenientChecksum;
+  }
+
+  public Binding( URI remoteUrl, InputStream is, boolean lenientChecksum )
+  {
+    this.remoteResource = remoteUrl;
+    this.localIS = is;
     this.lenientChecksum = lenientChecksum;
   }
 
@@ -69,8 +91,7 @@ public class Binding
     return lenientChecksum;
   }
 
-  public void setLenientChecksum(
-      boolean leniantChecksum )
+  public void setLenientChecksum( boolean leniantChecksum )
   {
     this.lenientChecksum = leniantChecksum;
   }
@@ -99,12 +120,20 @@ public class Binding
   
   public boolean isInMemory()
   {
-    return localBuffer != null;
+    return localIS != null || localOS != null;
   }
   
   public boolean isFile()
   {
     return localFile != null;
+  }
+  
+  public byte [] getInboundContent()
+  {
+    if( localOS != null )
+      return localOS.toByteArray();
+    
+    return null;
   }
 
 }

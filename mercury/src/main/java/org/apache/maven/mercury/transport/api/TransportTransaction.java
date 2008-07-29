@@ -1,6 +1,8 @@
 package org.apache.maven.mercury.transport.api;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,11 +62,20 @@ public class TransportTransaction
     return this;
   }
   //------------------------------------------------------------------------------------------------
-  public TransportTransaction add( URI remoteResource, byte [] localResource, boolean lenientChecksum )
+  public TransportTransaction add( URI remoteResource, boolean lenientChecksum )
   {
     init();
     
-    _bindings.add( new Binding( remoteResource, localResource, lenientChecksum ) );
+    _bindings.add( new Binding( remoteResource, lenientChecksum ) );
+    
+    return this;
+  }
+  //------------------------------------------------------------------------------------------------
+  public TransportTransaction add( URI remoteResource, InputStream is, boolean lenientChecksum )
+  {
+    init();
+    
+    _bindings.add( new Binding( remoteResource, is, lenientChecksum ) );
     
     return this;
   }
@@ -82,7 +93,7 @@ public class TransportTransaction
   {
     init();
     
-    _bindings.add( new Binding( remoteResource, localResource, true ) );
+    _bindings.add( new Binding( remoteResource, new ByteArrayInputStream(localResource), true ) );
     
     return this;
   }

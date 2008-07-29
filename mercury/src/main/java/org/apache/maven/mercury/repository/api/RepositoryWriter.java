@@ -14,6 +14,7 @@ import org.apache.maven.mercury.Artifact;
  *
  */
 public interface RepositoryWriter
+extends RepositoryOperator
 {
   /**
    * write (upload) given artifact to the repository

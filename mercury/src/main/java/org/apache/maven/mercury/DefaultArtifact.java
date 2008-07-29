@@ -16,11 +16,8 @@ package org.apache.maven.mercury;
  */
 
 import java.io.File;
-import java.util.List;
-import java.util.regex.Matcher;
 
-import org.apache.maven.mercury.repository.Repository;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.maven.mercury.repository.api.Repository;
 
 /*
  * @author Jason van Zyl

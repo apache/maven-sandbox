@@ -1,14 +1,15 @@
 package org.apache.maven.mercury.repository;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.digester.Digester;
 import org.apache.maven.mercury.ArtifactBasicMetadata;
-import org.apache.maven.mercury.ArtifactMetadata;
+import org.apache.maven.mercury.repository.api.MetadataProcessingException;
+import org.apache.maven.mercury.repository.api.MetadataProcessor;
+import org.apache.maven.mercury.repository.api.MetadataReader;
 import org.xml.sax.SAXException;
 
 /**

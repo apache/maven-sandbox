@@ -11,9 +11,7 @@ import org.apache.maven.mercury.ArtifactMetadata;
 import org.apache.maven.mercury.ArtifactScopeEnum;
 import org.apache.maven.mercury.metadata.sat.DefaultSatSolver;
 import org.apache.maven.mercury.metadata.sat.SatException;
-import org.apache.maven.mercury.repository.LocalRepository;
-import org.apache.maven.mercury.repository.RemoteRepository;
-import org.apache.maven.mercury.repository.Repository;
+import org.apache.maven.mercury.repository.api.Repository;
 import org.apache.maven.mercury.repository.api.RepositoryException;
 import org.apache.maven.mercury.repository.api.VirtualRepositoryReader;
 

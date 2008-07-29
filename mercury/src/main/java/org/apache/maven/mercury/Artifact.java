@@ -16,10 +16,7 @@ package org.apache.maven.mercury;
  */
 
 import java.io.File;
-import java.util.List;
 import java.util.regex.Pattern;
-
-import org.apache.maven.mercury.repository.Repository;
 
 /*
  * Description of an artifact.

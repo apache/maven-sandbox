@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import junit.framework.TestCase;
+
 import org.apache.maven.mercury.ArtifactMetadata;
 import org.apache.maven.mercury.ArtifactScopeEnum;
 import org.apache.maven.mercury.metadata.ClassicDepthComparator;
 import org.apache.maven.mercury.metadata.ClassicVersionComparator;
 import org.apache.maven.mercury.metadata.MetadataTreeNode;
-
-import junit.framework.TestCase;
 
 /**
  * @author <a href="oleg@codehaus.org">Oleg Gusakov</a>

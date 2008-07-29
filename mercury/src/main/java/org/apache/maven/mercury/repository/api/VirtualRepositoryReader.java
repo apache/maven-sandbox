@@ -1,17 +1,12 @@
 package org.apache.maven.mercury.repository.api;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.maven.mercury.ArtifactBasicMetadata;
 import org.apache.maven.mercury.ArtifactMetadata;
-import org.apache.maven.mercury.metadata.MetadataTreeException;
-import org.apache.maven.mercury.repository.LocalRepository;
-import org.apache.maven.mercury.repository.RemoteRepository;
-import org.apache.maven.mercury.repository.Repository;
 
 /**
  * this helper class hides the necessity to talk to localRepo and a bunch of remoteRepos.
@@ -84,12 +79,23 @@ public class VirtualRepositoryReader
     
     _repositoryReaders = new RepositoryReader[ repositoryCount ];
     
+    // move local repo's upfront - they are faster!
     int i = 0;
     for( Repository r : _repositories )
     {
+      if( ! r.isLocal() )
+        continue;
+      
       _repositoryReaders[ i++ ] = r.getReader();
-      if( r.isLocal() )
+      if( ! r.isReadOnly() )
         _localRepository = (LocalRepository)r.getReader().getRepository();
+    }
+    for( Repository r : _repositories )
+    {
+      if( r.isLocal() )
+        continue;
+
+      _repositoryReaders[ i++ ] = r.getReader();
     }
     _initialized = true;
   }

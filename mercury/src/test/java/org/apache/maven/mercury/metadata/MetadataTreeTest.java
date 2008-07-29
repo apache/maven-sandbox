@@ -10,10 +10,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.apache.maven.mercury.ArtifactMetadata;
 import org.apache.maven.mercury.ArtifactScopeEnum;
-import org.apache.maven.mercury.repository.DefaultLocalRepository;
-import org.apache.maven.mercury.repository.MetadataProcessor;
 import org.apache.maven.mercury.repository.MetadataProcessorMock;
-import org.apache.maven.mercury.repository.Repository;
+import org.apache.maven.mercury.repository.api.MetadataProcessor;
+import org.apache.maven.mercury.repository.api.Repository;
+import org.apache.maven.mercury.repository.local.m2.LocalRepositoryM2;
 
 
 /**
@@ -32,7 +32,7 @@ extends TestCase
   File repoDir = new File("./target/test-classes/controlledRepo");
   
   MetadataTree mt;
-  DefaultLocalRepository localRepo;
+  LocalRepositoryM2 localRepo;
   List<Repository> reps;
   MetadataProcessor processor;
   //----------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ extends TestCase
   {
 System.out.println("Current dir is "+ new File(".").getCanonicalPath() );
     processor = new MetadataProcessorMock();
-    localRepo = new DefaultLocalRepository( "local", repoDir, processor );
+    localRepo = new LocalRepositoryM2( "local", repoDir, processor );
     
     reps = new ArrayList<Repository>(4);
     reps.add(  localRepo );
