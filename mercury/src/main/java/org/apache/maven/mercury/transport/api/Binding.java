@@ -47,8 +47,7 @@ public class Binding
    */
   protected InputStream         localIS;
 
-
-  protected RepositoryException error;
+  protected Exception error;
 
   public Binding()
   {
@@ -76,6 +75,12 @@ public class Binding
     this.localOS = new ByteArrayOutputStream( 4*1024 );
   }
 
+  /**
+   * outbound constructor - send contents of the stream to remoteUrl
+   * 
+   * @param remoteUrl
+   * @param is
+   */
   public Binding( URL remoteUrl, InputStream is )
   {
     this.remoteResource = remoteUrl;
@@ -87,19 +92,17 @@ public class Binding
     return remoteResource;
   }
 
-  public void setRemoteResource(
-      URL remoteResource )
+  public void setRemoteResource( URL remoteResource )
   {
     this.remoteResource = remoteResource;
   }
 
-  public RepositoryException getError()
+  public Exception getError()
   {
     return error;
   }
 
-  public void setError(
-      RepositoryException error )
+  public void setError( Exception error )
   {
     this.error = error;
   }

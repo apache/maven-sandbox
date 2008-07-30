@@ -101,6 +101,18 @@ public class TransportTransaction
     this._bindings = bindings;
   }
   //------------------------------------------------------------------------------------------------
+  public boolean hasErrors()
+  {
+    if( _bindings == null )
+      return false;
+    
+    for( Binding b : _bindings )
+      if( b.getError() != null )
+        return true;
+    
+    return false;
+  }
+  //------------------------------------------------------------------------------------------------
   public void clearErrors()
   {
     if( _bindings == null )
