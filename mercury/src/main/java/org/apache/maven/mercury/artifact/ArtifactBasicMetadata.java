@@ -44,6 +44,42 @@ public class ArtifactBasicMetadata
   transient RepositoryReader _reader;
   
   //------------------------------------------------------------------
+  public ArtifactBasicMetadata()
+  {
+  }
+  //------------------------------------------------------------------
+  /**
+   * create basic out of <b>group:artifact:version:classifier:type</b> string, use 
+   * empty string to specify missing component - for instance query for common-1.3.zip
+   * can be specified as ":common:1.3::zip" - note missing groupId and classifier. 
+   */
+  public ArtifactBasicMetadata( String query )
+  {
+    if( query == null )
+      return;
+    
+    String [] tokens = query.split(":");
+    
+    if( tokens == null || tokens.length < 1 )
+      return;
+
+    int count = tokens.length;
+    
+    this.groupId = nullify( tokens[0] );
+  
+    if( count > 1 )
+      this.artifactId = nullify( tokens[1] );
+    
+    if( count > 2 )
+      this.version = nullify( tokens[2] );
+    
+    if( count > 3 )
+      this.classifier = nullify( tokens[3] );
+    
+    if( count > 4 )
+      this.type = nullify( tokens[4] );
+  }
+  //------------------------------------------------------------------
   /**
    * create basic out of <b>group:artifact:version:classifier:type</b> string, use 
    * empty string to specify missing component - for instance query for common-1.3.zip
@@ -51,31 +87,7 @@ public class ArtifactBasicMetadata
    */
   public static ArtifactBasicMetadata create( String query )
   {
-    ArtifactBasicMetadata mdq = new ArtifactBasicMetadata();
-    
-    if( query == null )
-      return null;
-    
-    String [] tokens = query.split(":");
-    
-    if( tokens == null || tokens.length < 1 )
-      return mdq;
-
-    int count = tokens.length;
-    
-    mdq.groupId = nullify( tokens[0] );
-  
-    if( count > 1 )
-      mdq.artifactId = nullify( tokens[1] );
-    
-    if( count > 2 )
-      mdq.version = nullify( tokens[2] );
-    
-    if( count > 3 )
-      mdq.classifier = nullify( tokens[3] );
-    
-    if( count > 4 )
-      mdq.type = nullify( tokens[4] );
+    ArtifactBasicMetadata mdq = new ArtifactBasicMetadata( query );
     
     return mdq;
   }

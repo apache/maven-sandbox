@@ -1,5 +1,6 @@
 package org.apache.maven.mercury.repository.metadata;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,7 +11,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
 import org.apache.maven.mercury.repository.MetadataProcessorMock;
+import org.apache.maven.mercury.repository.api.MetadataProcessingException;
 import org.apache.maven.mercury.repository.api.RepositoryException;
 import org.apache.maven.mercury.repository.api.RepositoryReader;
 import org.apache.maven.mercury.repository.metadata.io.xpp3.MetadataXpp3Reader;
@@ -88,30 +91,17 @@ extends TestCase
   }
   //-------------------------------------------------------------------------
   public void testReadRemoteMdViaRepositoryReader()
-  throws FileNotFoundException, IOException, XmlPullParserException, RepositoryException
+  throws FileNotFoundException, IOException, XmlPullParserException, RepositoryException, MetadataProcessingException
   {
-    File temp = File.createTempFile("maven", "metadata" );
-    RemoteRepositoryReaderM2Factory rf = new RemoteRepositoryReaderM2Factory();
-    
     Server server = new Server( "test", new URL("http://localhost:"+_port+"/repo") );
+
     RemoteRepositoryM2 rrm2 = new RemoteRepositoryM2( "testRepo", server );
     
-    RepositoryReader reader = rf.getReader( rrm2, new MetadataProcessorMock() );
+    RepositoryReader reader = rrm2.getReader( new MetadataProcessorMock() );
     
-    HashSet<Binding> bindings = new HashSet<Binding>();
+    byte [] mmBuf = reader.readRawData( "a/a/maven-metadata.xml" );
     
-    Binding aaMdBinding = new Binding( new URL("http://localhost:"+_port+"/repo/a/a/maven-metadata.xml"), temp);
-    bindings.add( aaMdBinding );
-    
-    _request.setBindings(bindings);
-    
-    RetrievalResponse response = _retriever.retrieve(_request);
-    
-    if( response.hasExceptions() )
-      fail("retrieval exceptions: "+response.getExceptions()+"\nReading from "+aaMdBinding.getRemoteResource() );
-    
-    Metadata mmd = _reader.read( new FileInputStream( temp ) );
-    temp.delete();
+    Metadata mmd = _reader.read( new ByteArrayInputStream( mmBuf ) );
     
     validateMmd( mmd );
     

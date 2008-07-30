@@ -67,4 +67,15 @@ extends RepositoryOperator, MetadataReader
    */
   public void setMetadataProcessor( MetadataProcessor mdProcessor );
   public MetadataProcessor getMetadataProcessor();
+  
+  /**
+   * read content pointed by relative path. It will return content bytes
+   * 
+   * @param path - realative resource path in this repository
+   * @return byte [] of the resource content, pointed by the path
+   * @throws MetadataProcessingException
+   */
+  public byte [] readRawData( String path )
+  throws MetadataProcessingException;
+
 }

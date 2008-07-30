@@ -235,14 +235,22 @@ implements RepositoryReader, MetadataReader
     return readRawData( bmdPath );
   }
   //---------------------------------------------------------------------------------------------------------------
-  private byte[] readRawData( String path )
+  public byte[] readRawData( String path )
   throws MetadataProcessingException
   {
+    if( path == null || path.length() < 1 )
+      return null;
+    
     FileInputStream fis = null;
     try
     {
       File tempFile = File.createTempFile( "mercury", "readraw" );
-      Binding binding = new Binding( new URL(_repo.getServer().getURL().toString()+'/'+path) , tempFile);
+      
+      String separator = "/";
+      if( path.startsWith( separator ))
+        separator = "";
+      
+      Binding binding = new Binding( new URL(_repo.getServer().getURL().toString() + separator + path) , tempFile );
       DefaultRetrievalRequest request = new DefaultRetrievalRequest();
       request.addBinding( binding );
       

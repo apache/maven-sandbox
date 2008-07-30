@@ -179,17 +179,25 @@ implements RepositoryReader, MetadataReader
   {
     String bmdPath = bmd.getGroupId().replace( '.', '/' )+"/"+bmd.getArtifactId()+"/"+bmd.getVersion();
     
-    File pomFile = new File( _repoDir, bmdPath+"/"+bmd.getBaseName(classifier)+'.' + (type == null ? bmd.getType() : type ) );
+    String path = bmdPath+"/"+bmd.getBaseName(classifier)+'.' + (type == null ? bmd.getType() : type );
     
-    if( ! pomFile.exists() )
+    return readRawData( path );
+  }
+  //---------------------------------------------------------------------------------------------------------------
+  public byte[] readRawData( String path )
+  throws MetadataProcessingException
+  {
+    File file = new File( _repoDir, path );
+    
+    if( ! file.exists() )
       return null;
     
     FileInputStream fis = null;
     
     try
     {
-      fis = new FileInputStream( pomFile );
-      int len = (int)pomFile.length();
+      fis = new FileInputStream( file );
+      int len = (int)file.length();
       byte [] pom = new byte [ len ];
       fis.read( pom );
       return pom;
