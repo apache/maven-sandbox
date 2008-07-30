@@ -26,16 +26,23 @@ implements MetadataReader
 
   private LocalRepository       _localRepository;
   
+  private MetadataProcessor     _processor;
+  
   private boolean _initialized = false;
   //----------------------------------------------------------------------------------------------------------------------------
   public VirtualRepositoryReader(
                   LocalRepository localRepository
                 , List<RemoteRepository> remoteRepositories
+                , MetadataProcessor processor
                           )
   throws RepositoryException
   {
     if( _localRepository == null )
       throw new RepositoryException( "null local repo" );
+    
+    if( processor == null )
+      throw new RepositoryException( "null metadata processor" );
+    this._processor = processor;
     
     this._localRepository = localRepository;
 
@@ -45,11 +52,13 @@ implements MetadataReader
       this._repositories.addAll( remoteRepositories );
   }
   //----------------------------------------------------------------------------------------------------------------------------
-  public VirtualRepositoryReader(
-                  List<Repository> repositories
-                          )
+  public VirtualRepositoryReader( List<Repository> repositories, MetadataProcessor processor  )
   throws RepositoryException
   {
+    if( processor == null )
+      throw new RepositoryException( "null metadata processor" );
+    this._processor = processor;
+
     if( repositories != null && repositories.size() > 0 )
       this._repositories.addAll( repositories );
   }
@@ -72,6 +81,7 @@ implements MetadataReader
   }
   //----------------------------------------------------------------------------------------------------------------------------
   public void init()
+  throws RepositoryException
   {
     if( _initialized )
       return;
@@ -87,16 +97,16 @@ implements MetadataReader
       if( ! r.isLocal() )
         continue;
       
-      _repositoryReaders[ i++ ] = r.getReader();
+      _repositoryReaders[ i++ ] = r.getReader(_processor);
       if( ! r.isReadOnly() )
-        _localRepository = (LocalRepository)r.getReader().getRepository();
+        _localRepository = (LocalRepository)r.getReader(_processor).getRepository();
     }
     for( Repository r : _repositories )
     {
       if( r.isLocal() )
         continue;
 
-      _repositoryReaders[ i++ ] = r.getReader();
+      _repositoryReaders[ i++ ] = r.getReader(_processor);
     }
     _initialized = true;
   }
@@ -182,7 +192,14 @@ implements MetadataReader
     if( bmd == null )
       throw new IllegalArgumentException("null bmd supplied");
     
-    init();
+    try
+    {
+      init();
+    }
+    catch( RepositoryException e )
+    {
+      throw new MetadataProcessingException(e);
+    }
     
     byte [] res = null;
     

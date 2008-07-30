@@ -10,12 +10,19 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.maven.mercury.repository.MetadataProcessorMock;
+import org.apache.maven.mercury.repository.api.RepositoryException;
+import org.apache.maven.mercury.repository.api.RepositoryReader;
 import org.apache.maven.mercury.repository.metadata.io.xpp3.MetadataXpp3Reader;
+import org.apache.maven.mercury.repository.remote.m2.RemoteRepositoryM2;
+import org.apache.maven.mercury.repository.remote.m2.RemoteRepositoryReaderM2;
+import org.apache.maven.mercury.repository.remote.m2.RemoteRepositoryReaderM2Factory;
 import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetrievalRequest;
 import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetriever;
 import org.apache.maven.mercury.spi.http.client.retrieve.RetrievalResponse;
 import org.apache.maven.mercury.spi.http.server.HttpTestServer;
 import org.apache.maven.mercury.transport.api.Binding;
+import org.apache.maven.mercury.transport.api.Server;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 public class MetadataReaderTest
@@ -57,10 +64,40 @@ extends TestCase
      validateMmd( mmd );
   }
   //-------------------------------------------------------------------------
-  public void testReadRemoteMd()
+  public void testReadRemoteMdViaHttpClient()
   throws FileNotFoundException, IOException, XmlPullParserException
   {
     File temp = File.createTempFile("maven", "metadata" );
+    HashSet<Binding> bindings = new HashSet<Binding>();
+    
+    Binding aaMdBinding = new Binding( new URL("http://localhost:"+_port+"/repo/a/a/maven-metadata.xml"), temp);
+    bindings.add( aaMdBinding );
+    
+    _request.setBindings(bindings);
+    
+    RetrievalResponse response = _retriever.retrieve(_request);
+    
+    if( response.hasExceptions() )
+      fail("retrieval exceptions: "+response.getExceptions()+"\nReading from "+aaMdBinding.getRemoteResource() );
+    
+    Metadata mmd = _reader.read( new FileInputStream( temp ) );
+    temp.delete();
+    
+    validateMmd( mmd );
+    
+  }
+  //-------------------------------------------------------------------------
+  public void testReadRemoteMdViaRepositoryReader()
+  throws FileNotFoundException, IOException, XmlPullParserException, RepositoryException
+  {
+    File temp = File.createTempFile("maven", "metadata" );
+    RemoteRepositoryReaderM2Factory rf = new RemoteRepositoryReaderM2Factory();
+    
+    Server server = new Server( "test", new URL("http://localhost:"+_port+"/repo") );
+    RemoteRepositoryM2 rrm2 = new RemoteRepositoryM2( "testRepo", server, new MetadataProcessorMock() );
+    
+    RepositoryReader reader = rf.getReader( rrm2, new MetadataProcessorMock() );
+    
     HashSet<Binding> bindings = new HashSet<Binding>();
     
     Binding aaMdBinding = new Binding( new URL("http://localhost:"+_port+"/repo/a/a/maven-metadata.xml"), temp);

@@ -4,6 +4,7 @@ import org.apache.maven.mercury.repository.api.AbstractRepository;
 import org.apache.maven.mercury.repository.api.MetadataProcessor;
 import org.apache.maven.mercury.repository.api.NonExistentProtocolException;
 import org.apache.maven.mercury.repository.api.RemoteRepository;
+import org.apache.maven.mercury.repository.api.RepositoryException;
 import org.apache.maven.mercury.repository.api.RepositoryReader;
 import org.apache.maven.mercury.repository.api.RepositoryWriter;
 import org.apache.maven.mercury.transport.api.Server;
@@ -15,9 +16,9 @@ implements RemoteRepository
 {
     private Server _server;
     //----------------------------------------------------------------------------------
-    public RemoteRepositoryM2( String id, Server server, MetadataProcessor processor  )
+    public RemoteRepositoryM2( String id, Server server  )
     {
-        super( id, DEFAULT_REPOSITORY_TYPE, processor );
+        super( id, DEFAULT_REPOSITORY_TYPE );
         this._server = server;
     }
     //----------------------------------------------------------------------------------
@@ -26,15 +27,16 @@ implements RemoteRepository
         return _server;
     }
     //----------------------------------------------------------------------------------
-    public RepositoryReader getReader()
+    public RepositoryReader getReader( MetadataProcessor processor )
+    throws RepositoryException
     {
-      return null;
+      return new RemoteRepositoryReaderM2( this, processor );
     }
     //----------------------------------------------------------------------------------
-    public RepositoryReader getReader( String protocol )
+    public RepositoryReader getReader( MetadataProcessor processor, String protocol )
+    throws RepositoryException
     {
-      // TODO Auto-generated method stub
-      return null;
+      return getReader(processor);
     }
     //----------------------------------------------------------------------------------
     public RepositoryWriter getWriter()

@@ -6,8 +6,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.apache.maven.mercury.artifact.ArtifactMetadata;
 import org.apache.maven.mercury.artifact.ArtifactScopeEnum;
 import org.apache.maven.mercury.repository.MetadataProcessorMock;
@@ -24,7 +22,7 @@ import org.apache.maven.mercury.repository.local.m2.LocalRepositoryM2;
 public class MetadataTreeTest
 extends TestCase
 {
-  private static final Log log = LogFactoryImpl.getLog( MetadataTreeTest.class );
+  private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger( MetadataTreeTest.class ); 
   
 //  ArtifactMetadata md = new ArtifactMetadata( "pmd:pmd:3.9" );
 //  File repo = new File("./target/test-classes/localRepo");
@@ -42,12 +40,12 @@ extends TestCase
   {
 System.out.println("Current dir is "+ new File(".").getCanonicalPath() );
     processor = new MetadataProcessorMock();
-    localRepo = new LocalRepositoryM2( "local", repoDir, processor );
+    localRepo = new LocalRepositoryM2( "local", repoDir );
     
     reps = new ArrayList<Repository>(4);
     reps.add(  localRepo );
 
-    mt = new MetadataTree( null, null, reps );
+    mt = new MetadataTree( null, null, reps, processor );
   }
   //----------------------------------------------------------------------------------------------
   @Override

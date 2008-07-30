@@ -15,15 +15,15 @@ implements LocalRepository
 {
     private File directory;
     //----------------------------------------------------------------------------------
-    public LocalRepositoryM2( String id, File directory, MetadataProcessor processor )
+    public LocalRepositoryM2( String id, File directory )
     {
-        super( id, DEFAULT_REPOSITORY_TYPE, processor );
+        super( id, DEFAULT_REPOSITORY_TYPE );
         this.directory = directory;
     }
     //----------------------------------------------------------------------------------
-    public LocalRepositoryM2( String id, File directory, MetadataProcessor processor, String type )
+    public LocalRepositoryM2( String id, File directory, String type )
     {
-        super( id, type, processor );
+        super( id, type );
         this.directory = directory;
     }
     //----------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ implements LocalRepository
         return directory;
     }
     //----------------------------------------------------------------------------------
-    public RepositoryReader getReader()
+    public RepositoryReader getReader( MetadataProcessor processor ) 
     {
       if( reader == null )
         reader = new LocalRepositoryReaderM2( this, processor );
@@ -40,9 +40,9 @@ implements LocalRepository
       return reader;
     }
     //----------------------------------------------------------------------------------
-    public RepositoryReader getReader( String protocol )
+    public RepositoryReader getReader( MetadataProcessor processor, String protocol )
     {
-       return getReader();
+       return getReader(processor);
     }
     //----------------------------------------------------------------------------------
     public RepositoryWriter getWriter()

@@ -52,29 +52,18 @@ implements Repository
   //---------------------------------------------------------------------------
   protected String             type = DEFAULT_REPOSITORY_TYPE;
   
-  protected MetadataProcessor  processor;
   protected RepositoryReader   reader;
   protected RepositoryWriter   writer;
   //---------------------------------------------------------------------------
-  public AbstractRepository( String id, String type, MetadataProcessor processor )
+  public AbstractRepository( String id, String type )
   {
     this.id = id;
-    this.processor = processor;
+    this.type = type;
   }
   //---------------------------------------------------------------------------
   public String getId()
   {
     return id;
-  }
-  //---------------------------------------------------------------------------
-  public MetadataProcessor getMetadataProcessor()
-  {
-    return processor;
-  }
-  //---------------------------------------------------------------------------
-  public void setMetadataProcessor( MetadataProcessor processor )
-  {
-    this.processor = processor;
   }
   //---------------------------------------------------------------------------
   public String getDefaultReadProtocol()

@@ -11,6 +11,7 @@ import org.apache.maven.mercury.artifact.ArtifactMetadata;
 import org.apache.maven.mercury.artifact.ArtifactScopeEnum;
 import org.apache.maven.mercury.metadata.sat.DefaultSatSolver;
 import org.apache.maven.mercury.metadata.sat.SatException;
+import org.apache.maven.mercury.repository.api.MetadataProcessor;
 import org.apache.maven.mercury.repository.api.Repository;
 import org.apache.maven.mercury.repository.api.RepositoryException;
 import org.apache.maven.mercury.repository.api.VirtualRepositoryReader;
@@ -51,6 +52,7 @@ public class MetadataTree
         Set<MetadataTreeArtifactFilter> filters
       , List<Comparator<MetadataTreeNode>> comparators
       , List<Repository> repositories
+      , MetadataProcessor processor
                      )
   throws RepositoryException
   {
@@ -66,7 +68,7 @@ public class MetadataTree
       _comparators.add( new ClassicVersionComparator() );
     }
     
-    this._reader = new VirtualRepositoryReader( repositories );
+    this._reader = new VirtualRepositoryReader( repositories, processor );
   }
   //-----------------------------------------------------
   public MetadataTreeNode buildTree( ArtifactMetadata startMD )
@@ -75,7 +77,14 @@ public class MetadataTree
     if( startMD == null )
       throw new MetadataTreeException( "null start point" );
     
-    _reader.init();
+    try
+    {
+      _reader.init();
+    }
+    catch( RepositoryException e )
+    {
+      throw new MetadataTreeException(e);
+    }
     
     _root = createNode( startMD, null, startMD );
     return _root;

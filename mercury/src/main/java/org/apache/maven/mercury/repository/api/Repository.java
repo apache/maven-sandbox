@@ -50,8 +50,10 @@ public interface Repository
      * get default reader, if any
      * 
      * @return default reader or null, if none exists
+     * @throws RepositoryException 
      */
-    RepositoryReader getReader();
+    RepositoryReader getReader( MetadataProcessor processor )
+    throws RepositoryException;
     
     /**
      * 
@@ -59,7 +61,8 @@ public interface Repository
      * @return reader instance for the specified protocol
      * @throws NonExistentProtocolException if protocol not supported
      */
-    RepositoryReader getReader( String protocol );
+    RepositoryReader getReader( MetadataProcessor processor, String protocol )
+    throws RepositoryException;
 
     
     /**
