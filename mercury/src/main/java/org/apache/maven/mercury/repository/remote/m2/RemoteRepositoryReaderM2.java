@@ -26,7 +26,7 @@ import org.apache.maven.mercury.repository.api.RepositoryOperationResult;
 import org.apache.maven.mercury.repository.api.RepositoryReader;
 import org.apache.maven.mercury.repository.metadata.Metadata;
 import org.apache.maven.mercury.repository.metadata.io.xpp3.MetadataXpp3Reader;
-import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.HttpClientException;
 import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetrievalRequest;
 import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetriever;
 import org.apache.maven.mercury.spi.http.client.retrieve.RetrievalResponse;
@@ -85,7 +85,7 @@ implements RepositoryReader, MetadataReader
       //                     and come with appropriate Transport implementation 
       _transport = new DefaultRetriever();
     }
-    catch( MercuryException e )
+    catch( HttpClientException e )
     {
       throw new RepositoryException(e);
     }

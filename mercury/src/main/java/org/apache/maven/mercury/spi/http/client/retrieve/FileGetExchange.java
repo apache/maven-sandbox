@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import org.apache.maven.mercury.spi.http.client.FileExchange;
-import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.HttpClientException;
 import org.apache.maven.mercury.spi.http.client.ObservableOutputStream;
 import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.StreamObserver;
@@ -98,7 +98,7 @@ public abstract class FileGetExchange extends FileExchange
         }
         catch ( Exception e )
         {
-            onFileError( _url, new MercuryException( _binding, e.getLocalizedMessage() ) );
+            onFileError( _url, new HttpClientException( _binding, e.getLocalizedMessage() ) );
         }
     }
 

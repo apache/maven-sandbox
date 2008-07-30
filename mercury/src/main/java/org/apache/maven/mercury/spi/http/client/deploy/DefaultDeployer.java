@@ -22,7 +22,7 @@ package org.apache.maven.mercury.spi.http.client.deploy;
 
 import org.apache.maven.mercury.spi.http.client.FileExchange;
 import org.apache.maven.mercury.spi.http.client.HandshakeExchange;
-import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.HttpClientException;
 import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.Server;
 import org.apache.maven.mercury.transport.api.StreamObserver;
@@ -53,7 +53,7 @@ public class DefaultDeployer implements Deployer
     private Set<Server> _servers = new HashSet<Server>();
 
     public DefaultDeployer()
-        throws MercuryException
+        throws HttpClientException
     {
         _idGenerator = new RandomBatchIdGenerator();
         _httpClient = new HttpClient();
@@ -65,17 +65,17 @@ public class DefaultDeployer implements Deployer
         }
         catch ( Exception e )
         {
-            throw new MercuryException( null, "unable to start http client", e );
+            throw new HttpClientException( null, "unable to start http client", e );
         }
     }
 
     public DefaultDeployer( HttpClient client, BatchIdGenerator idGenerator )
-        throws MercuryException
+        throws HttpClientException
     {
         _idGenerator = idGenerator;
         if ( _idGenerator == null )
         {
-            throw new MercuryException( null, "no id generator supplied" );
+            throw new HttpClientException( null, "no id generator supplied" );
         }
 
         _httpClient = client;
@@ -88,7 +88,7 @@ public class DefaultDeployer implements Deployer
         }
         catch ( Exception e )
         {
-            throw new MercuryException( null, "unable to start http client", e );
+            throw new HttpClientException( null, "unable to start http client", e );
         }
     }
 
@@ -200,7 +200,7 @@ public class DefaultDeployer implements Deployer
                         checkComplete( callback, batchId, count, request, response, remoteHandshakeUrls );
                     }
 
-                    public void onError( MercuryException exception )
+                    public void onError( HttpClientException exception )
                     {
                         if ( getRemoteJettyUrl() != null )
                         {
@@ -214,7 +214,7 @@ public class DefaultDeployer implements Deployer
             }
             catch ( Exception e )
             {
-                response.add( new MercuryException( binding, e ) );
+                response.add( new HttpClientException( binding, e ) );
                 checkComplete( callback, batchId, count, request, response, remoteHandshakeUrls );
             }
         }
@@ -285,7 +285,7 @@ public class DefaultDeployer implements Deployer
 
                     public void onHandshakeError( String url, Exception e )
                     {
-                        response.getExceptions().add( new MercuryException( null, e ) );
+                        response.getExceptions().add( new HttpClientException( null, e ) );
                         checkHandshakeComplete( callback, response, count );
                     }
                 };

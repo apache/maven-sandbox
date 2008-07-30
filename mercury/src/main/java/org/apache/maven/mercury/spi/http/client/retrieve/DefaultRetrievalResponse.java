@@ -23,22 +23,22 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.HttpClientException;
 
 public class DefaultRetrievalResponse implements RetrievalResponse
 {
-    private Set<MercuryException> _exceptions = Collections.synchronizedSet( new HashSet<MercuryException>() );
+    private Set<HttpClientException> _exceptions = Collections.synchronizedSet( new HashSet<HttpClientException>() );
 
     public DefaultRetrievalResponse()
     {
     }
 
-    protected void add( MercuryException exception )
+    protected void add( HttpClientException exception )
     {
         _exceptions.add( exception );
     }
 
-    public Set<MercuryException> getExceptions()
+    public Set<HttpClientException> getExceptions()
     {
         return _exceptions;
     }

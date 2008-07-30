@@ -19,7 +19,7 @@
 
 package org.apache.maven.mercury.spi.http.client.deploy;
 
-import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.HttpClientException;
 import org.apache.maven.mercury.spi.http.validate.Validator;
 import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.StreamObserver;
@@ -47,7 +47,7 @@ public abstract class DeploymentTarget
     protected Set<Validator> _validators;
     protected TargetState _targetState;
     protected TargetState _checksumState;
-    protected MercuryException _exception;
+    protected HttpClientException _exception;
     protected String _remoteJettyUrl;
     protected Set<StreamObserver> _observers = new HashSet<StreamObserver>();
     protected List<Verifier> _verifiers = new ArrayList<Verifier>();
@@ -55,7 +55,7 @@ public abstract class DeploymentTarget
     
     public abstract void onComplete();
 
-    public abstract void onError( MercuryException exception );
+    public abstract void onError( HttpClientException exception );
 
 
     public class TargetState
@@ -156,7 +156,7 @@ public abstract class DeploymentTarget
     {
         if ( t != null && _exception == null )
         {
-            _exception = ( t instanceof MercuryException ? (MercuryException) t : new MercuryException( _binding, t ) );
+            _exception = ( t instanceof HttpClientException ? (HttpClientException) t : new HttpClientException( _binding, t ) );
         }
 
         if (_exception != null)

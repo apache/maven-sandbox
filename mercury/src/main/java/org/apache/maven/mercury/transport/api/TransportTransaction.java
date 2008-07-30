@@ -101,6 +101,14 @@ public class TransportTransaction
     this._bindings = bindings;
   }
   //------------------------------------------------------------------------------------------------
+  public boolean isEmpty()
+  {
+    if( _bindings == null || _bindings.size() < 1 )
+      return true;
+    
+    return false;
+  }
+  //------------------------------------------------------------------------------------------------
   public boolean hasErrors()
   {
     if( _bindings == null )

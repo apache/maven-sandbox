@@ -40,24 +40,24 @@ import org.apache.maven.mercury.transport.api.Binding;
  * Exception that occurs whilst deploying or retrieving files
  * asynchronously.
  */
-public class MercuryException
+public class HttpClientException
     extends Exception
 {
     private Binding binding;
 
-    public MercuryException( Binding b, String s )
+    public HttpClientException( Binding b, String s )
     {
         super( s );
         binding = b;
     }
 
-    public MercuryException( Binding b, String s, Throwable throwable )
+    public HttpClientException( Binding b, String s, Throwable throwable )
     {
         super( s, throwable );
         binding = b;
     }
 
-    public MercuryException( Binding b, Throwable throwable )
+    public HttpClientException( Binding b, Throwable throwable )
     {
         super( throwable );
         binding = b;

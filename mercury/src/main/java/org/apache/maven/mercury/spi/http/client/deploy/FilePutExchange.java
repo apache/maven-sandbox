@@ -21,7 +21,7 @@ package org.apache.maven.mercury.spi.http.client.deploy;
 
 
 import org.apache.maven.mercury.spi.http.client.FileExchange;
-import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.HttpClientException;
 import org.apache.maven.mercury.spi.http.client.ObservableInputStream;
 import org.apache.maven.mercury.transport.ChecksumCalculator;
 import org.apache.maven.mercury.transport.api.Binding;
@@ -119,13 +119,13 @@ public abstract class FilePutExchange extends FileExchange
         {
             if ( _status != HttpServletResponse.SC_OK && _status != HttpServletResponse.SC_CREATED && _status != HttpServletResponse.SC_NO_CONTENT )
             {
-                onFileError( _url, new MercuryException( _binding, "Http status code=" + _status ) );
+                onFileError( _url, new HttpClientException( _binding, "Http status code=" + _status ) );
                 return;
             }
 
             if ( _remoteBatchId != null && !_batchId.equals( _remoteBatchId ) )
             {
-                onFileError( _url, new MercuryException( _binding,
+                onFileError( _url, new HttpClientException( _binding,
                     "Non matching mercury ids. Sent=" + _batchId + " received=" + _remoteBatchId ) );
                 return;
             }
@@ -135,7 +135,7 @@ public abstract class FilePutExchange extends FileExchange
         }
         catch ( Exception e )
         {
-            onFileError( _url, new MercuryException( _binding, e.getLocalizedMessage() ) );
+            onFileError( _url, new HttpClientException( _binding, e.getLocalizedMessage() ) );
         }
     }
 

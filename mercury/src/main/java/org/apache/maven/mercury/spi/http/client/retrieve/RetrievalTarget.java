@@ -33,7 +33,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.maven.mercury.spi.http.client.FileExchange;
-import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.HttpClientException;
 import org.apache.maven.mercury.spi.http.validate.Validator;
 import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.StreamObserver;
@@ -60,7 +60,7 @@ public abstract class RetrievalTarget
     protected int _checksumState;
     protected int _targetState;
     
-    protected MercuryException _exception;
+    protected HttpClientException _exception;
     protected Binding _binding;
     protected File _tempFile;
     protected DefaultRetriever _retriever;
@@ -74,7 +74,7 @@ public abstract class RetrievalTarget
     
     public abstract void onComplete();
 
-    public abstract void onError( MercuryException exception );
+    public abstract void onError( HttpClientException exception );
 
     /**
      * Constructor
@@ -113,11 +113,11 @@ public abstract class RetrievalTarget
         
         if ( _tempFile.exists() )
         {
-            onError( new MercuryException( binding, "File exists " + _tempFile.getAbsolutePath() ) );
+            onError( new HttpClientException( binding, "File exists " + _tempFile.getAbsolutePath() ) );
         }
         else if ( !_tempFile.getParentFile().canWrite() )
         {
-            onError( new MercuryException( binding,
+            onError( new HttpClientException( binding,
                 "Unable to write to dir " + _tempFile.getParentFile().getAbsolutePath() ) );
         }
     }
@@ -182,13 +182,13 @@ public abstract class RetrievalTarget
     {
         if ( _exception == null && ex != null )
         {
-            if ( ex instanceof MercuryException )
+            if ( ex instanceof HttpClientException )
             {
-                _exception = (MercuryException) ex;
+                _exception = (HttpClientException) ex;
             }
             else
             {
-                _exception = new MercuryException( _binding, ex );
+                _exception = new HttpClientException( _binding, ex );
             }
         }
         
@@ -296,13 +296,13 @@ public abstract class RetrievalTarget
         _targetState = state;
         if ( _exception == null && ex != null )
         {
-            if ( ex instanceof MercuryException )
+            if ( ex instanceof HttpClientException )
             {
-                _exception = (MercuryException) ex;
+                _exception = (HttpClientException) ex;
             }
             else
             {
-                _exception = new MercuryException( _binding, ex );
+                _exception = new HttpClientException( _binding, ex );
             }
         }
 

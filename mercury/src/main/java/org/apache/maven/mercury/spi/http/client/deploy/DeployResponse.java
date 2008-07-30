@@ -21,7 +21,7 @@ package org.apache.maven.mercury.spi.http.client.deploy;
 
 import java.util.Set;
 
-import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.HttpClientException;
 
 /**
  * DeployResponse
@@ -38,5 +38,5 @@ public interface DeployResponse
      *
      * @return
      */
-    public Set<MercuryException> getExceptions();
+    public Set<HttpClientException> getExceptions();
 }

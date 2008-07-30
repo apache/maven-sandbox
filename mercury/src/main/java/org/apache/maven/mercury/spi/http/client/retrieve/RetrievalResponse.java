@@ -21,7 +21,7 @@ package org.apache.maven.mercury.spi.http.client.retrieve;
 
 import java.util.Set;
 
-import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.HttpClientException;
 
 
 /**
@@ -38,7 +38,7 @@ public interface RetrievalResponse
      *
      * @return
      */
-    Set<MercuryException> getExceptions();
+    Set<HttpClientException> getExceptions();
     
     boolean hasExceptions();
 }

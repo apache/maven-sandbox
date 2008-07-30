@@ -20,7 +20,7 @@
 package org.apache.maven.mercury.spi.http.client.retrieve;
 
 
-import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.client.HttpClientException;
 import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.Server;
 import org.apache.maven.mercury.transport.api.StreamObserver;
@@ -43,7 +43,7 @@ public class DefaultRetriever implements Retriever
     
 
     public DefaultRetriever()
-        throws MercuryException
+        throws HttpClientException
     {
         // TODO take the default settings for now
         _httpClient = new HttpClient();
@@ -56,12 +56,12 @@ public class DefaultRetriever implements Retriever
         }
         catch ( Exception e )
         {
-            throw new MercuryException( null, "Unable to start http client.", e );
+            throw new HttpClientException( null, "Unable to start http client.", e );
         }
     }
 
     public DefaultRetriever( HttpClient client )
-        throws MercuryException
+        throws HttpClientException
     {
         // TODO take the default settings for now
         _httpClient = client;
@@ -74,7 +74,7 @@ public class DefaultRetriever implements Retriever
         }
         catch ( Exception e )
         {
-            throw new MercuryException( null, "unable to start http client", e );
+            throw new HttpClientException( null, "unable to start http client", e );
         }
     }
                            
@@ -178,7 +178,7 @@ public class DefaultRetriever implements Retriever
                         boolean checksumOK = verifyChecksum();
                         if ( !checksumOK )
                         {
-                            response.add( new MercuryException( binding, "Checksum failed") );
+                            response.add( new HttpClientException( binding, "Checksum failed") );
                         }
 
                         //if the file checksum is ok, then apply the validators
@@ -189,7 +189,7 @@ public class DefaultRetriever implements Retriever
                             {
                                 for ( String s : validateErrors )
                                 {
-                                    response.add( new MercuryException( binding, s ) );
+                                    response.add( new HttpClientException( binding, s ) );
                                 }
                             }
                         }
@@ -200,7 +200,7 @@ public class DefaultRetriever implements Retriever
                         }
                     }
 
-                    public void onError( MercuryException exception )
+                    public void onError( HttpClientException exception )
                     {
                         response.add( exception );
                         if ( DefaultRetriever.this.isComplete( count, request, response, targets ) )
@@ -214,7 +214,7 @@ public class DefaultRetriever implements Retriever
             }
             catch ( Exception e )
             {
-                response.add( new MercuryException( binding, e ) );
+                response.add( new HttpClientException( binding, e ) );
                 if ( isComplete( count, request, response, targets ) )
                 {
                     callback.onComplete( response );

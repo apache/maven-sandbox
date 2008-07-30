@@ -161,7 +161,7 @@ public class JettyDeployerTest extends TestCase
         
         DeployResponse response = _deployer.deploy(request);
 
-        for (MercuryException t:response.getExceptions())
+        for (HttpClientException t:response.getExceptions())
             t.printStackTrace();
         
         assertEquals(0, response.getExceptions().size());
