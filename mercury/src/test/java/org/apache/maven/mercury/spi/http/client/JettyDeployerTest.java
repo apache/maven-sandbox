@@ -121,7 +121,7 @@ public class JettyDeployerTest extends TestCase
     protected void setUpVerifiers () throws Exception
     {
         HashSet<org.apache.maven.mercury.transport.api.Server> remoteServerTypes = new HashSet<org.apache.maven.mercury.transport.api.Server>();
-        remoteServerType = new org.apache.maven.mercury.transport.api.Server(new URL(_HOST_FRAGMENT+_port));
+        remoteServerType = new org.apache.maven.mercury.transport.api.Server( "test", new URL(_HOST_FRAGMENT+_port));
         factories = new HashSet<StreamObserverFactory>();       
         remoteServerTypes.add(remoteServerType);
         _deployer.setServers(remoteServerTypes);

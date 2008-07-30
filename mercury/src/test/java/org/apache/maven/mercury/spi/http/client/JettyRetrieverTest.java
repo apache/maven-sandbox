@@ -107,7 +107,7 @@ public class JettyRetrieverTest extends TestCase
         _port=String.valueOf(server.getPort()); 
         
         HashSet<Server> remoteServerTypes = new HashSet<Server>();
-        remoteServerType = new Server(new URL(__HOST_FRAGMENT+_port));
+        remoteServerType = new Server( "test", new URL(__HOST_FRAGMENT+_port));
         factories = new HashSet<StreamObserverFactory>();
             
         remoteServerTypes.add(remoteServerType);

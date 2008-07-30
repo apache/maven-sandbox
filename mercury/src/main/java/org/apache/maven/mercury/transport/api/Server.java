@@ -23,27 +23,34 @@ import java.util.Set;
 
 public class Server
 {
-    private Set<StreamObserverFactory> streamObserverFactories;
-    private URL url;
- 
-    public Server (URL url)
-    {
-        this.url = url;
-    }
-    
-    public URL getURL()
-    {
-        return this.url;
-    }
-    
-    public Set<StreamObserverFactory> getStreamObserverFactories()
-    {
-        return streamObserverFactories;
-    }
-    
-    public void setStreamObserverFactories(Set<StreamObserverFactory> factories)
-    {
-        streamObserverFactories = factories;
-    }
+  private String                     id;
+  private Set<StreamObserverFactory> streamObserverFactories;
+  private URL                        url;
+
+  public Server( String id, URL url )
+  {
+    this.url = url;
+    this.id = id;
+  }
+
+  public URL getURL()
+  {
+    return this.url;
+  }
+
+  public Set<StreamObserverFactory> getStreamObserverFactories()
+  {
+    return streamObserverFactories;
+  }
+
+  public void setStreamObserverFactories( Set<StreamObserverFactory> factories )
+  {
+    streamObserverFactories = factories;
+  }
+
+  public String getId()
+  {
+    return id;
+  }
 
 }
