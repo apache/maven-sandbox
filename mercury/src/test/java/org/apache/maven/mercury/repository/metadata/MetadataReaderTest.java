@@ -94,7 +94,7 @@ extends TestCase
     RemoteRepositoryReaderM2Factory rf = new RemoteRepositoryReaderM2Factory();
     
     Server server = new Server( "test", new URL("http://localhost:"+_port+"/repo") );
-    RemoteRepositoryM2 rrm2 = new RemoteRepositoryM2( "testRepo", server, new MetadataProcessorMock() );
+    RemoteRepositoryM2 rrm2 = new RemoteRepositoryM2( "testRepo", server );
     
     RepositoryReader reader = rf.getReader( rrm2, new MetadataProcessorMock() );
     
