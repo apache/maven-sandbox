@@ -22,7 +22,7 @@ package org.apache.maven.mercury.transport.api;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.net.URI;
+import java.net.URL;
 
 import org.apache.maven.mercury.repository.api.RepositoryException;
 
@@ -35,7 +35,7 @@ public class Binding
 {
   private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger( Binding.class );
   
-  protected URI                 remoteResource;
+  protected URL                 remoteResource;
   protected File                localFile;
   /** 
    * inbound in-memory binding for reading remote content.
@@ -47,7 +47,6 @@ public class Binding
    */
   protected InputStream         localIS;
 
-  protected boolean             lenientChecksum = true;
 
   protected RepositoryException error;
 
@@ -56,13 +55,12 @@ public class Binding
   }
 
   public Binding(
-      URI remoteUrl,
-      File localFile,
-      boolean lenientChecksum )
+      URL remoteUrl,
+      File localFile)
   {
     this.remoteResource = remoteUrl;
     this.localFile = localFile;
-    this.lenientChecksum = lenientChecksum;
+
   }
 
   /** 
@@ -71,38 +69,26 @@ public class Binding
    * @param remoteUrl
    * @param lenientChecksum
    */
-  public Binding( URI remoteUrl, boolean lenientChecksum )
+  public Binding( URL remoteUrl )
   {
     this.remoteResource = remoteUrl;
     // let's assume 4k on average
     this.localOS = new ByteArrayOutputStream( 4*1024 );
-    this.lenientChecksum = lenientChecksum;
   }
 
-  public Binding( URI remoteUrl, InputStream is, boolean lenientChecksum )
+  public Binding( URL remoteUrl, InputStream is )
   {
     this.remoteResource = remoteUrl;
     this.localIS = is;
-    this.lenientChecksum = lenientChecksum;
   }
 
-  public boolean isLenientChecksum()
-  {
-    return lenientChecksum;
-  }
-
-  public void setLenientChecksum( boolean leniantChecksum )
-  {
-    this.lenientChecksum = leniantChecksum;
-  }
-
-  public URI getRemoteResource()
+  public URL getRemoteResource()
   {
     return remoteResource;
   }
 
   public void setRemoteResource(
-      URI remoteResource )
+      URL remoteResource )
   {
     this.remoteResource = remoteResource;
   }
@@ -120,7 +106,7 @@ public class Binding
   
   public boolean isInMemory()
   {
-    return localIS != null || localOS != null;
+    return (!isFile() && (localIS != null || localOS != null));
   }
   
   public boolean isFile()
@@ -134,6 +120,11 @@ public class Binding
       return localOS.toByteArray();
     
     return null;
+  }
+  
+  public File getLocalFile ()
+  {
+      return localFile;
   }
 
 }

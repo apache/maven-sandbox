@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +26,11 @@ import org.apache.maven.mercury.repository.api.RepositoryOperationResult;
 import org.apache.maven.mercury.repository.api.RepositoryReader;
 import org.apache.maven.mercury.repository.metadata.Metadata;
 import org.apache.maven.mercury.repository.metadata.io.xpp3.MetadataXpp3Reader;
-import org.apache.maven.mercury.spi.http.client.Binding;
 import org.apache.maven.mercury.spi.http.client.MercuryException;
 import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetrievalRequest;
 import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetriever;
 import org.apache.maven.mercury.spi.http.client.retrieve.RetrievalResponse;
+import org.apache.maven.mercury.transport.api.Binding;
 import org.codehaus.plexus.i18n.DefaultLanguage;
 import org.codehaus.plexus.i18n.Language;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -241,7 +242,7 @@ implements RepositoryReader, MetadataReader
     try
     {
       File tempFile = File.createTempFile( "mercury", "readraw" );
-      Binding binding = new Binding( _repo.getServer().getURL().toString()+'/'+path , tempFile, false );
+      Binding binding = new Binding( new URL(_repo.getServer().getURL().toString()+'/'+path) , tempFile);
       DefaultRetrievalRequest request = new DefaultRetrievalRequest();
       request.addBinding( binding );
       

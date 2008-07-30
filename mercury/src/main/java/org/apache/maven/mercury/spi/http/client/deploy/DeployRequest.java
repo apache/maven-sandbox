@@ -21,8 +21,9 @@ package org.apache.maven.mercury.spi.http.client.deploy;
 
 import java.util.Set;
 
-import org.apache.maven.mercury.spi.http.client.Binding;
+
 import org.apache.maven.mercury.spi.http.validate.Validator;
+import org.apache.maven.mercury.transport.api.Binding;
 
 
 /**

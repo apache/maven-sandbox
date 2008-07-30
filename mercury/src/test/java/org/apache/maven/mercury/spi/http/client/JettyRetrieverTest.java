@@ -32,6 +32,7 @@ import org.apache.maven.mercury.spi.http.client.retrieve.RetrievalResponse;
 import org.apache.maven.mercury.spi.http.server.SimpleTestServer;
 import org.apache.maven.mercury.spi.http.validate.Validator;
 import org.apache.maven.mercury.transport.SHA1VerifierFactory;
+import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.Server;
 import org.apache.maven.mercury.transport.api.StreamObserverFactory;
 
@@ -155,28 +156,22 @@ public class JettyRetrieverTest extends TestCase
         file3 = new File(dir, "file3.jar");
         file4 = new File(dir, "file4.so");
         file5 = new File(dir, "file5.jpg");
-        binding0.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt");
-        binding0.setLocalFile(file0);
+        Binding binding0 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt"), file0);
         bindings.add(binding0);
         
-        binding1.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"); //has no sha file
-        binding1.setLocalFile(file1);
+        Binding binding1 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"),file1); //has no sha file
         bindings.add(binding1);
        
-        binding2.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file2.txt"); //has wrong sha file
-        binding2.setLocalFile(file2);
+        Binding binding2 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file2.txt"), file2); //has wrong sha file
         bindings.add(binding2);
       
-        binding3.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar");
-        binding3.setLocalFile(file3);
+        Binding binding3 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar"), file3);
         bindings.add(binding3);
         
-        binding4.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so");
-        binding4.setLocalFile(file4);
+        Binding binding4 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so"), file4);
         bindings.add(binding4);
        
-        binding5.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg");
-        binding5.setLocalFile(file5);
+        Binding binding5 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg"), file5);
         bindings.add(binding5);
           
         request.setBindings(bindings);
@@ -214,28 +209,23 @@ public class JettyRetrieverTest extends TestCase
         file3 = new File(dir, "file3.jar");
         file4 = new File(dir, "file4.so");
         file5 = new File(dir, "file5.jpg");
-        binding0.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt");
-        binding0.setLocalFile(file0);
+        
+        Binding binding0 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt"), file0);
         bindings.add(binding0);
 
-        binding1.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"); //has no sha file
-        binding1.setLocalFile(file1);
+        Binding binding1 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"), file1); //has no sha file
         bindings.add(binding1);
 
-        binding2.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file2.txt"); //has wrong sha file
-        binding2.setLocalFile(file2);
+        Binding binding2 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file2.txt"), file2); //has wrong sha file
         bindings.add(binding2);
 
-        binding3.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar");
-        binding3.setLocalFile(file3);
+        Binding binding3 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar"), file3);
         bindings.add(binding3);
 
-        binding4.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so");
-        binding4.setLocalFile(file4);
+        Binding binding4 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so"), file4);
         bindings.add(binding4);
 
-        binding5.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg");
-        binding5.setLocalFile(file5);
+        Binding binding5 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg"), file5);
         bindings.add(binding5);
 
 
@@ -277,28 +267,22 @@ public class JettyRetrieverTest extends TestCase
         file3 = new File(dir, "file3.jar");
         file4 = new File(dir, "file4.so");
         file5 = new File(dir, "file5.jpg");
-        binding0.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt");
-        binding0.setLocalFile(file0);
+        Binding binding0 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt"), file0);
         bindings.add(binding0);
 
-        binding1.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"); //has no sha file
-        binding1.setLocalFile(file1);
+        Binding binding1 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"), file1); //has no sha file
         bindings.add(binding1);
 
-        binding2.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file2.txt"); //has wrong sha file
-        binding2.setLocalFile(file2);
+        Binding binding2 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file2.txt"), file2); //has wrong sha file
         bindings.add(binding2);
 
-        binding3.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar");
-        binding3.setLocalFile(file3);
+        Binding binding3 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar"),file3 );
         bindings.add(binding3);
 
-        binding4.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so");
-        binding4.setLocalFile(file4);
+        Binding binding4 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so"), file4);
         bindings.add(binding4);
 
-        binding5.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg");
-        binding5.setLocalFile(file5);
+        Binding binding5 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg"), file5);
         bindings.add(binding5);
 
         request.setBindings(bindings);
@@ -331,24 +315,19 @@ public class JettyRetrieverTest extends TestCase
         file3 = new File(dir, "file3.jar");
         file4 = new File(dir, "file4.so");
         file5 = new File(dir, "file5.jpg");
-        binding0.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt");
-        binding0.setLocalFile(file0);
+        Binding binding0 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt"), file0);
         bindings.add(binding0);
 
-        binding1.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"); //has no sha file
-        binding1.setLocalFile(file1);
+        Binding binding1 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"), file1); //has no sha file
         bindings.add(binding1);
 
-        binding3.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar");
-        binding3.setLocalFile(file3);
+        Binding binding3 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar"), file3);
         bindings.add(binding3);
 
-        binding4.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so");
-        binding4.setLocalFile(file4);
+        Binding binding4 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so"), file4);
         bindings.add(binding4);
 
-        binding5.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg");
-        binding5.setLocalFile(file5);
+        Binding binding5 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg"), file5);
         bindings.add(binding5);
 
         request.setBindings(bindings);
@@ -387,24 +366,20 @@ public class JettyRetrieverTest extends TestCase
         file3 = new File(dir, "file3.jar");
         file4 = new File(dir, "file4.so");
         file5 = new File(dir, "file5.jpg");
-        binding0.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt");
-        binding0.setLocalFile(file0);
+        
+        Binding binding0 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt"), file0);
         bindings.add(binding0);
 
-        binding1.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"); //has no sha file
-        binding1.setLocalFile(file1);
+        Binding binding1 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"), file1); //has no sha file
         bindings.add(binding1);
 
-        binding3.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar");
-        binding3.setLocalFile(file3);
+        Binding binding3 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar"), file3);
         bindings.add(binding3);
 
-        binding4.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so");
-        binding4.setLocalFile(file4);
+        Binding binding4 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so"), file4);
         bindings.add(binding4);
 
-        binding5.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg");
-        binding5.setLocalFile(file5);
+        Binding binding5 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg"), file5);
         bindings.add(binding5);
 
         request.setFailFast(false);
@@ -443,24 +418,20 @@ public class JettyRetrieverTest extends TestCase
         file3 = new File(dir, "file3.jar");
         file4 = new File(dir, "file4.so");
         file5 = new File(dir, "file5.jpg");
-        binding0.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt");
-        binding0.setLocalFile(file0);
+        
+        Binding binding0 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt"), file0);
         bindings.add(binding0);
 
-        binding1.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"); //has no sha file
-        binding1.setLocalFile(file1);
+        Binding binding1 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file1.txt"), file1); //has no sha file
         bindings.add(binding1);
 
-        binding3.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar");
-        binding3.setLocalFile(file3);
+        Binding binding3 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file3.jar"), file3);
         bindings.add(binding3);
 
-        binding4.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so");
-        binding4.setLocalFile(file4);
+        Binding binding4 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file4.so"), file4);
         bindings.add(binding4);
 
-        binding5.setRemoteUrl(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg");
-        binding5.setLocalFile(file5);
+        Binding binding5 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg"), file5);
         bindings.add(binding5);
 
         request.setFailFast(false);

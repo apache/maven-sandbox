@@ -19,11 +19,12 @@
 
 package org.apache.maven.mercury.spi.http.client.deploy;
 
-import org.apache.maven.mercury.spi.http.client.Binding;
+
 import org.apache.maven.mercury.spi.http.client.FileExchange;
 import org.apache.maven.mercury.spi.http.client.MercuryException;
 import org.apache.maven.mercury.spi.http.client.ObservableInputStream;
 import org.apache.maven.mercury.transport.ChecksumCalculator;
+import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.StreamObserver;
 import org.mortbay.io.Buffer;
 import org.mortbay.jetty.HttpMethods;

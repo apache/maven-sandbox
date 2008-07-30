@@ -30,10 +30,11 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.maven.mercury.spi.http.client.Binding;
+
 import org.apache.maven.mercury.spi.http.client.FileExchange;
 import org.apache.maven.mercury.spi.http.client.MercuryException;
 import org.apache.maven.mercury.spi.http.client.ObservableOutputStream;
+import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.StreamObserver;
 import org.mortbay.io.Buffer;
 import org.mortbay.jetty.HttpMethods;

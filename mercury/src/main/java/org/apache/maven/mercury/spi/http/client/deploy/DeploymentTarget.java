@@ -19,9 +19,9 @@
 
 package org.apache.maven.mercury.spi.http.client.deploy;
 
-import org.apache.maven.mercury.spi.http.client.Binding;
 import org.apache.maven.mercury.spi.http.client.MercuryException;
 import org.apache.maven.mercury.spi.http.validate.Validator;
+import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.StreamObserver;
 import org.apache.maven.mercury.transport.api.Verifier;
 import org.mortbay.jetty.client.HttpClient;
@@ -29,6 +29,7 @@ import org.mortbay.jetty.client.HttpClient;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -216,14 +217,17 @@ public abstract class DeploymentTarget
         //calculated as we uploaded the file
         try
         {
-
-            binding = new Binding();
-            binding.setRemoteUrl( _binding.getRemoteUrl() + v.getExtension() );
+            URL url = _binding.getRemoteResource();
+            if (url != null)
+            {
+                url = new URL( url.toString() + v.getExtension());
+            }
+      
             file = File.createTempFile( _binding.getLocalFile().getName() + v.getExtension(), ".tmp" );
             OutputStreamWriter fw = new OutputStreamWriter( new FileOutputStream( file ), "UTF-8" );
             fw.write( v.getSignature() );
             fw.close();
-            binding.setLocalFile( file );
+            binding = new Binding(url, file);
         }
         catch ( Exception e )
         {
@@ -272,6 +276,6 @@ public abstract class DeploymentTarget
 
     public String toString()
     {
-        return "DeploymentTarget:" + _binding.getRemoteUrl() + ":" + _targetState + ":" + _checksumState + ":" + isComplete();
+        return "DeploymentTarget:" + _binding.getRemoteResource() + ":" + _targetState + ":" + _checksumState + ":" + isComplete();
     }
 }

@@ -4,17 +4,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.apache.maven.mercury.repository.metadata.io.xpp3.MetadataXpp3Reader;
-import org.apache.maven.mercury.spi.http.client.Binding;
 import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetrievalRequest;
 import org.apache.maven.mercury.spi.http.client.retrieve.DefaultRetriever;
 import org.apache.maven.mercury.spi.http.client.retrieve.RetrievalResponse;
 import org.apache.maven.mercury.spi.http.server.HttpTestServer;
+import org.apache.maven.mercury.transport.api.Binding;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 public class MetadataReaderTest
@@ -62,7 +63,7 @@ extends TestCase
     File temp = File.createTempFile("maven", "metadata" );
     HashSet<Binding> bindings = new HashSet<Binding>();
     
-    Binding aaMdBinding = new Binding( "http://localhost:"+_port+"/repo/a/a/maven-metadata.xml", temp, true );
+    Binding aaMdBinding = new Binding( new URL("http://localhost:"+_port+"/repo/a/a/maven-metadata.xml"), temp);
     bindings.add( aaMdBinding );
     
     _request.setBindings(bindings);
@@ -70,7 +71,7 @@ extends TestCase
     RetrievalResponse response = _retriever.retrieve(_request);
     
     if( response.hasExceptions() )
-      fail("retrieval exceptions: "+response.getExceptions()+"\nReading from "+aaMdBinding.getRemoteUrl() );
+      fail("retrieval exceptions: "+response.getExceptions()+"\nReading from "+aaMdBinding.getRemoteResource() );
     
     Metadata mmd = _reader.read( new FileInputStream( temp ) );
     temp.delete();

@@ -32,6 +32,7 @@
 //========================================================================
 
 package org.apache.maven.mercury.spi.http.client;
+import org.apache.maven.mercury.transport.api.Binding;
 
 /**
  * BatchException

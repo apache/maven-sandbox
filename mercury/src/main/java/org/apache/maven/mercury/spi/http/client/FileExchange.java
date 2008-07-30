@@ -19,11 +19,13 @@
 
 package org.apache.maven.mercury.spi.http.client;
 
+import org.apache.maven.mercury.transport.api.Binding;
 import org.mortbay.io.Buffer;
 import org.mortbay.jetty.client.HttpClient;
 import org.mortbay.jetty.client.HttpExchange;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * FileExchange
@@ -52,7 +54,13 @@ public abstract class FileExchange extends HttpExchange
     public FileExchange( Binding binding, File localFile, HttpClient client )
     {
         _binding = binding;
-        _url = binding.getRemoteUrl();
+        if (_binding != null)
+        {
+            URL url = binding.getRemoteResource();
+            if (url != null)
+                _url = url.toString();
+        }
+
         _localFile = localFile;
         _httpClient = client;
         setURL( _url );

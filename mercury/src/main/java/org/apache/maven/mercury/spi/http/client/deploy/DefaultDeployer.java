@@ -19,10 +19,11 @@
 
 package org.apache.maven.mercury.spi.http.client.deploy;
 
-import org.apache.maven.mercury.spi.http.client.Binding;
+
 import org.apache.maven.mercury.spi.http.client.FileExchange;
 import org.apache.maven.mercury.spi.http.client.HandshakeExchange;
 import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.Server;
 import org.apache.maven.mercury.transport.api.StreamObserver;
 import org.apache.maven.mercury.transport.api.StreamObserverFactory;
@@ -307,10 +308,10 @@ public class DefaultDeployer implements Deployer
     private Server resolveServer (Binding binding)
     throws MalformedURLException
     {
-        if (binding.getRemoteUrl() == null)
+        if (binding.getRemoteResource() == null)
         return null;
         
-        URL bindingURL = new URL(binding.getRemoteUrl());
+        URL bindingURL = binding.getRemoteResource();
         Iterator<Server> itor = _servers.iterator();
         Server server = null;
         while(itor.hasNext() && server==null)

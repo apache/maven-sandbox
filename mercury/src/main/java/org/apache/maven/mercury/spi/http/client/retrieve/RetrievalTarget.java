@@ -19,15 +19,7 @@
 
 package org.apache.maven.mercury.spi.http.client.retrieve;
 
-import org.apache.maven.mercury.spi.http.client.Binding;
-import org.apache.maven.mercury.spi.http.client.FileExchange;
-import org.apache.maven.mercury.spi.http.client.MercuryException;
-import org.apache.maven.mercury.spi.http.validate.Validator;
-import org.apache.maven.mercury.transport.api.StreamObserver;
-import org.apache.maven.mercury.transport.api.Verifier;
-import org.mortbay.jetty.client.HttpExchange;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,9 +27,18 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.maven.mercury.spi.http.client.FileExchange;
+import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.spi.http.validate.Validator;
+import org.apache.maven.mercury.transport.api.Binding;
+import org.apache.maven.mercury.transport.api.StreamObserver;
+import org.apache.maven.mercury.transport.api.Verifier;
+import org.mortbay.jetty.client.HttpExchange;
 
 
 /**
@@ -83,7 +84,7 @@ public abstract class RetrievalTarget
      */
     public RetrievalTarget( DefaultRetriever retriever, Binding binding, Set<Validator> validators, Set<StreamObserver> observers )
     {
-        if ( binding == null || binding.getRemoteUrl() == null || binding.getLocalFile() == null )
+        if ( binding == null || binding.getRemoteResource() == null || binding.getLocalFile() == null )
         {
             throw new IllegalArgumentException( "No file to retrieve" );
         }
@@ -130,7 +131,7 @@ public abstract class RetrievalTarget
 
     public String getUrl()
     {
-        return _binding.getRemoteUrl();
+        return _binding.getRemoteResource().toExternalForm();
     }
 
 
@@ -174,7 +175,7 @@ public abstract class RetrievalTarget
 
     public String toString()
     {
-        return "T:" + _binding.getRemoteUrl() + ":" + _targetState + ":" + _checksumState + ":" + _complete;
+        return "T:" + _binding.getRemoteResource() + ":" + _targetState + ":" + _checksumState + ":" + _complete;
     }
 
     private void updateChecksumState (int index, Throwable ex)
@@ -416,7 +417,7 @@ public abstract class RetrievalTarget
         String extension = verifier.getExtension();
         if (extension.charAt(0) != '.')
             extension = "."+extension;
-        return _binding.getRemoteUrl() + extension;
+        return _binding.getRemoteResource().toString() + extension;
     }
 
     private boolean deleteTempFile()

@@ -19,8 +19,9 @@
 
 package org.apache.maven.mercury.spi.http.client.retrieve;
 
-import org.apache.maven.mercury.spi.http.client.Binding;
+
 import org.apache.maven.mercury.spi.http.client.MercuryException;
+import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.Server;
 import org.apache.maven.mercury.transport.api.StreamObserver;
 import org.apache.maven.mercury.transport.api.StreamObserverFactory;
@@ -276,10 +277,10 @@ public class DefaultRetriever implements Retriever
     private Server resolveServer (Binding binding)
     throws MalformedURLException
     {
-        if (binding.getRemoteUrl() == null)
+        if (binding.getRemoteResource() == null)
         return null;
         
-        URL bindingURL = new URL(binding.getRemoteUrl());
+        URL bindingURL = binding.getRemoteResource();
         if (_servers == null)
             return null;
         

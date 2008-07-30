@@ -3,7 +3,7 @@ package org.apache.maven.mercury.transport.api;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,47 +53,39 @@ public class TransportTransaction
     return this;
   }
   //------------------------------------------------------------------------------------------------
-  public TransportTransaction add( URI remoteResource, File localResource, boolean lenientChecksum )
+  public TransportTransaction add( URL remoteResource, File localResource )
   {
     init();
     
-    _bindings.add( new Binding( remoteResource, localResource, lenientChecksum ) );
+    _bindings.add( new Binding( remoteResource, localResource ) );
     
     return this;
   }
   //------------------------------------------------------------------------------------------------
-  public TransportTransaction add( URI remoteResource, boolean lenientChecksum )
+  public TransportTransaction add( URL remoteResource )
   {
     init();
     
-    _bindings.add( new Binding( remoteResource, lenientChecksum ) );
+    _bindings.add( new Binding( remoteResource ) );
     
     return this;
   }
   //------------------------------------------------------------------------------------------------
-  public TransportTransaction add( URI remoteResource, InputStream is, boolean lenientChecksum )
+  public TransportTransaction add( URL remoteResource, InputStream is )
   {
     init();
     
-    _bindings.add( new Binding( remoteResource, is, lenientChecksum ) );
+    _bindings.add( new Binding( remoteResource, is ) );
     
     return this;
   }
+
   //------------------------------------------------------------------------------------------------
-  public TransportTransaction add( URI remoteResource, File localResource )
+  public TransportTransaction add( URL remoteResource, byte [] localResource )
   {
     init();
     
-    _bindings.add( new Binding( remoteResource, localResource, true ) );
-    
-    return this;
-  }
-  //------------------------------------------------------------------------------------------------
-  public TransportTransaction add( URI remoteResource, byte [] localResource )
-  {
-    init();
-    
-    _bindings.add( new Binding( remoteResource, new ByteArrayInputStream(localResource), true ) );
+    _bindings.add( new Binding( remoteResource, new ByteArrayInputStream(localResource)) );
     
     return this;
   }
