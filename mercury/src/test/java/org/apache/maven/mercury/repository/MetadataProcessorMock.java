@@ -24,10 +24,7 @@ public class MetadataProcessorMock
 implements MetadataProcessor
 {
 
-  public List<ArtifactBasicMetadata> getDependencies(
-                                      ArtifactBasicMetadata bmd
-                                      , MetadataReader mdReader
-                                                )
+  public List<ArtifactBasicMetadata> getDependencies( ArtifactBasicMetadata bmd, MetadataReader mdReader )
   throws MetadataProcessingException
   {
     List<ArtifactBasicMetadata> deps = null;
@@ -35,6 +32,10 @@ implements MetadataProcessor
     try
     {
       byte [] pomBytes = mdReader.readMetadata( bmd );
+      if( pomBytes == null )
+      {
+        throw new MetadataProcessingException("no metadata found for "+bmd);
+      }
       deps = getDeps(  pomBytes );
       
       return deps;
@@ -48,6 +49,9 @@ implements MetadataProcessor
   private static final List<ArtifactBasicMetadata> getDeps( byte [] pom )
   throws IOException, SAXException
   {
+    if( pom == null )
+      return null;
+    
     DependencyCreator dc = new DependencyCreator();
     Digester digester = new Digester();
     digester.push( dc );

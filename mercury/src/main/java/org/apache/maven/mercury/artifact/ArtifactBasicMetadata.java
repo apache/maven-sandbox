@@ -149,7 +149,7 @@ public class ArtifactBasicMetadata
   
   public String getBaseName( String classifier )
   {
-    return artifactId + "-" + version + (classifier == null ? "" :"-"+classifier);
+    return artifactId + "-" + version + ((classifier == null||classifier.length()<1) ? "" :"-"+classifier);
   }
 
   public String getCheckedType()
