@@ -22,6 +22,7 @@ package org.apache.maven.mercury.transport.api;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 import org.apache.maven.mercury.repository.api.RepositoryException;
@@ -123,6 +124,16 @@ public class Binding
       return localOS.toByteArray();
     
     return null;
+  }
+  
+  public OutputStream getLocalOutputStream()
+  {
+      return localOS;
+  }
+  
+  public InputStream getLocalInputStream()
+  {
+      return localIS;
   }
   
   public File getLocalFile ()

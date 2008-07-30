@@ -19,8 +19,13 @@
 
 package org.apache.maven.mercury.spi.http.client;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
@@ -390,6 +395,51 @@ public class JettyDeployerTest extends TestCase
         
         
         Thread.sleep(500);
+    }
+    
+    public void testMemoryDeployment () throws Exception
+    {
+        factories.add(new SHA1VerifierFactory(false, true)); //!lenient, sufficient
+        remoteServerType.setStreamObserverFactories(factories);
+        HashSet<Binding> bindings = new HashSet<Binding>();
+        DeployRequestImpl request = new DeployRequestImpl();
+
+        String s0 = "memory contents0";
+        InputStream is0 = new ByteArrayInputStream(s0.getBytes());
+        Binding binding0 = new Binding(new URL(_HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt"), is0);
+        bindings.add(binding0);
+
+        String s5 = "memory contents5";
+        InputStream is5 = new ByteArrayInputStream(s5.getBytes());
+        Binding binding5 = new Binding(new URL(_HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg"), is5);
+        bindings.add(binding5);
+
+        request.setBindings(bindings);     
+        request.setFailFast(true);
+        DeployResponse response = _deployer.deploy(request);
+
+        //for (MercuryException t:response.getExceptions())
+        //    t.printStackTrace();
+        
+  
+        assertEquals(0, response.getExceptions().size());
+
+        
+        File f0 = new File(_putServer.getPutDir(), "file0.txt");
+        File f0cs = new File (_putServer.getPutDir(), "file0.txt.sha1");
+        assertTrue (f0.exists());
+        BufferedReader reader = new BufferedReader(new FileReader(f0));
+        String s = reader.readLine();
+        assertEquals(s0, s.trim());
+        assertTrue (f0cs.exists()); 
+        
+        File f5 = new File(_putServer.getPutDir(), "file5.jpg");
+        File f5cs = new File (_putServer.getPutDir(), "file5.jpg.sha1");
+        assertTrue (f5.exists());
+        reader = new BufferedReader(new FileReader(f5));
+        s = reader.readLine();
+        assertEquals(s5, s.trim());
+        assertTrue (f5cs.exists());  
     }
     
 }

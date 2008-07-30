@@ -84,9 +84,12 @@ public abstract class RetrievalTarget
      */
     public RetrievalTarget( DefaultRetriever retriever, Binding binding, Set<Validator> validators, Set<StreamObserver> observers )
     {
-        if ( binding == null || binding.getRemoteResource() == null || binding.getLocalFile() == null )
+        if ( binding == null || 
+                (binding.getRemoteResource() == null) || 
+                (binding.isFile() && (binding.getLocalFile() == null)) ||
+                (binding.isInMemory() && (binding.getLocalOutputStream() == null)))
         {
-            throw new IllegalArgumentException( "No file to retrieve" );
+            throw new IllegalArgumentException( "Nothing to retrieve" );
         }
         _retriever = retriever;
         _binding = binding;
@@ -101,24 +104,25 @@ public abstract class RetrievalTarget
                 _observers.add(o);
         }
         
-        _tempFile = new File( _binding.getLocalFile().getParentFile(),
-                              __PREFIX + _binding.getLocalFile().getName() + __TEMP_SUFFIX );        
-        _tempFile.deleteOnExit();
-        
-        // Create the directory if it doesn't exist
-        if ( !_tempFile.getParentFile().exists() )
+        if (_binding.isFile())
         {
-            _tempFile.getParentFile().mkdirs();
-        }
-        
-        if ( _tempFile.exists() )
-        {
-            onError( new HttpClientException( binding, "File exists " + _tempFile.getAbsolutePath() ) );
-        }
-        else if ( !_tempFile.getParentFile().canWrite() )
-        {
-            onError( new HttpClientException( binding,
-                "Unable to write to dir " + _tempFile.getParentFile().getAbsolutePath() ) );
+            _tempFile = new File( _binding.getLocalFile().getParentFile(),
+                                  __PREFIX + _binding.getLocalFile().getName() + __TEMP_SUFFIX );        
+            _tempFile.deleteOnExit();
+            if ( !_tempFile.getParentFile().exists() )
+            {
+                _tempFile.getParentFile().mkdirs();
+            }
+
+            if ( _tempFile.exists() )
+            {
+                onError( new HttpClientException( binding, "File exists " + _tempFile.getAbsolutePath() ) );
+            }
+            else if ( !_tempFile.getParentFile().canWrite() )
+            {
+                onError( new HttpClientException( binding,
+                        "Unable to write to dir " + _tempFile.getParentFile().getAbsolutePath() ) );
+            }
         }
     }
 
@@ -155,7 +159,10 @@ public abstract class RetrievalTarget
     /** Move the temporary file to its final location */
     public boolean move()
     {
-        return _tempFile.renameTo( _binding.getLocalFile() );
+        if (_binding.isFile())
+            return _tempFile.renameTo( _binding.getLocalFile() );
+        else
+            return true;
     }
 
     /** Cleanup temp files */
@@ -263,7 +270,10 @@ public abstract class RetrievalTarget
             return true;
         }
 
-        String ext = ( _binding.getLocalFile() == null ? null : _binding.getLocalFile().getName() );
+        String ext =  _binding.getRemoteResource().toString();
+        if (ext.endsWith("/"))
+            ext = ext.substring(0, ext.length()-1);
+        
         int i = ext.lastIndexOf( "." );
         ext = ( i > 0 ? ext.substring( i + 1 ) : "" );
 
@@ -274,9 +284,17 @@ public abstract class RetrievalTarget
             {
                 try
                 {
-                    if ( !v.validate( _tempFile.getCanonicalPath(), errors ) )
+                    if (_binding.isFile())
                     {
-                        return false;
+                        if ( !v.validate( _tempFile.getCanonicalPath(), errors ) )
+                        {
+                            return false;
+                        }
+                    }
+                    else if (_binding.isInMemory())
+                    {
+                        //TODO ????
+                        //v.validate(_binding.getInboundContent()) 
                     }
                 }
                 catch ( IOException e )

@@ -52,6 +52,7 @@ public abstract class DeploymentTarget
     protected Set<StreamObserver> _observers = new HashSet<StreamObserver>();
     protected List<Verifier> _verifiers = new ArrayList<Verifier>();
     protected int _index = -1; 
+
     
     public abstract void onComplete();
 
@@ -138,9 +139,11 @@ public abstract class DeploymentTarget
             _observers.add(o);
         }
       
-        if ( _binding == null || _binding.getLocalFile() == null || !_binding.getLocalFile().exists() )
+        if ( _binding == null || 
+                (_binding.isFile() && (_binding.getLocalFile() == null || !_binding.getLocalFile().exists())) ||
+                (_binding.isInMemory() && _binding.getLocalInputStream() == null))
         {
-            throw new IllegalArgumentException( "No local file to deploy" );
+            throw new IllegalArgumentException( "Nothing to deploy" );
         }
         _targetState = new TargetState();
         _checksumState = new TargetState();
@@ -223,7 +226,10 @@ public abstract class DeploymentTarget
                 url = new URL( url.toString() + v.getExtension());
             }
       
-            file = File.createTempFile( _binding.getLocalFile().getName() + v.getExtension(), ".tmp" );
+            String localFileName = getFileName(url);
+            
+            file = File.createTempFile( localFileName, ".tmp" );
+            file.deleteOnExit();
             OutputStreamWriter fw = new OutputStreamWriter( new FileOutputStream( file ), "UTF-8" );
             fw.write( v.getSignature() );
             fw.close();
@@ -272,6 +278,22 @@ public abstract class DeploymentTarget
     public synchronized boolean isComplete()
     {
         return ( _checksumState.isReady() && _targetState.isReady() );
+    }
+    
+    public String getFileName (URL url)
+    {
+        if (url==null)
+            return "";
+        String localFileName = url.getFile();
+        int i = localFileName.indexOf('?');
+        if (i > 0)
+            localFileName = localFileName.substring(0, i);
+        if (localFileName.endsWith("/"))
+            localFileName = localFileName.substring(0, localFileName.length()-1);
+        i = localFileName.lastIndexOf('/');
+        if (i >= 0)
+            localFileName = localFileName.substring(i+1);
+        return localFileName;
     }
 
     public String toString()

@@ -79,7 +79,9 @@ public abstract class FilePutExchange extends FileExchange
         {
             setMethod( HttpMethods.PUT );
             setRequestHeader( "Content-Type", "application/octet-stream" );
-            setRequestHeader( "Content-Length", String.valueOf( _localFile.length() ) );
+            if (_binding.isFile())
+                setRequestHeader( "Content-Length", String.valueOf( _localFile.length() ) );
+            
             setRequestContentSource( getInputStream() );
             setRequestHeader( __BATCH_HEADER, _batchId );            
             super.send();
@@ -145,7 +147,12 @@ public abstract class FilePutExchange extends FileExchange
     {
         if ( _inputStream == null )
         {
-            ObservableInputStream ois = new ObservableInputStream( new FileInputStream( _localFile ));
+            InputStream is = null;
+            if (_binding.isFile())
+                is = new FileInputStream( _localFile );
+            else if (_binding.isInMemory())
+                is = _binding.getLocalInputStream();
+            ObservableInputStream ois = new ObservableInputStream( is );
             _inputStream = ois;
             ois.addObservers(_observers);
         }    

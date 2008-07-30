@@ -136,11 +136,16 @@ public abstract class FileGetExchange extends FileExchange
     {
         if ( _outputStream == null )
         {
-            ObservableOutputStream oos = new ObservableOutputStream( new FileOutputStream( _localFile ));
+            OutputStream os = null;
+            if (_binding.isFile())
+                os = new FileOutputStream( _localFile );
+            else if (_binding.isInMemory())
+                os = _binding.getLocalOutputStream();
+            
+            ObservableOutputStream oos = new ObservableOutputStream( os );
             oos.addObservers(_observers);
             _outputStream = oos;
         }
-         
         return _outputStream;
     }
 }

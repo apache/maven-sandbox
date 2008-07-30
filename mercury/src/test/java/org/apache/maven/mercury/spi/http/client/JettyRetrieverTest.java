@@ -19,7 +19,9 @@
 
 package org.apache.maven.mercury.spi.http.client;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
@@ -35,6 +37,7 @@ import org.apache.maven.mercury.transport.SHA1VerifierFactory;
 import org.apache.maven.mercury.transport.api.Binding;
 import org.apache.maven.mercury.transport.api.Server;
 import org.apache.maven.mercury.transport.api.StreamObserverFactory;
+import org.mortbay.util.IO;
 
 public class JettyRetrieverTest extends TestCase
 {
@@ -47,12 +50,6 @@ public class JettyRetrieverTest extends TestCase
     File file3;
     File file4;
     File file5;
-    Binding binding0 = new Binding();
-    Binding binding1 = new Binding();
-    Binding binding2 = new Binding();
-    Binding binding3 = new Binding();
-    Binding binding4 = new Binding();
-    Binding binding5 = new Binding();
     DefaultRetriever retriever;
     SimpleTestServer server;
     Server remoteServerType;
@@ -449,5 +446,47 @@ public class JettyRetrieverTest extends TestCase
         assertTrue(!file3.exists());
         assertTrue(!file4.exists());
         assertTrue(!file5.exists());
+    }
+    
+
+    public void testMemoryRetrieval () throws Exception
+    {
+        factories.add(new SHA1VerifierFactory(true, true)); //lenient, sufficient
+        remoteServerType.setStreamObserverFactories(factories);
+
+        //make local dir to put stuff in
+        final File dir = mkTempDir();
+        DefaultRetrievalRequest request = new DefaultRetrievalRequest();
+        HashSet<Binding> bindings = new HashSet<Binding>();
+        HashSet<Validator> validators = new HashSet<Validator>();
+        validators.add(new TxtValidator());
+        request.setValidators(validators);
+        
+        Binding binding0 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file0.txt"));
+        bindings.add(binding0);
+
+        Binding binding5 = new Binding(new URL(__HOST_FRAGMENT+_port+__PATH_FRAGMENT+"file5.jpg"));
+        bindings.add(binding5);
+
+        request.setFailFast(false);
+
+        request.setBindings(bindings);
+        RetrievalResponse response = retriever.retrieve(request);
+
+        //for (MercuryException t:response.getExceptions())
+        //    t.printStackTrace();
+
+        assertEquals(0,response.getExceptions().size());
+        
+        
+        InputStream is = this.getClass().getResourceAsStream("/testRepo/file0.txt");
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        IO.copy(is, os);
+        assertEquals(os.toByteArray().length, binding0.getInboundContent().length);
+
+        is = this.getClass().getResourceAsStream("/testRepo/file5.jpg");
+        os.reset();
+        IO.copy(is,os);
+        assertEquals(os.toByteArray().length, binding5.getInboundContent().length);
     }
 }
