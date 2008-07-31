@@ -9,14 +9,14 @@ import org.apache.maven.mercury.repository.api.RepositoryException;
  * @version $Id$
  *
  */
-public class RemoteRepositoryReaderException
+public class RemoteRepositoryM2OperationException
 extends RepositoryException
 {
 
   /**
    * 
    */
-  public RemoteRepositoryReaderException()
+  public RemoteRepositoryM2OperationException()
   {
     // TODO Auto-generated constructor stub
   }
@@ -24,7 +24,7 @@ extends RepositoryException
   /**
    * @param message
    */
-  public RemoteRepositoryReaderException(
+  public RemoteRepositoryM2OperationException(
       String message )
   {
     super( message );
@@ -34,7 +34,7 @@ extends RepositoryException
   /**
    * @param cause
    */
-  public RemoteRepositoryReaderException(
+  public RemoteRepositoryM2OperationException(
       Throwable cause )
   {
     super( cause );
@@ -45,7 +45,7 @@ extends RepositoryException
    * @param message
    * @param cause
    */
-  public RemoteRepositoryReaderException(
+  public RemoteRepositoryM2OperationException(
       String message,
       Throwable cause )
   {

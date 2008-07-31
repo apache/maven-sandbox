@@ -26,6 +26,9 @@ public class Server
   private String                     id;
   private Set<StreamObserverFactory> streamObserverFactories;
   private URL                        url;
+  private Credentials          serverCredentials;
+  private URL                        proxy;
+  private Credentials          proxyCredentials;
 
   public Server( String id, URL url )
   {
@@ -33,9 +36,47 @@ public class Server
     this.id = id;
   }
 
+  public Server( String id, URL url, Credentials serverCredentials )
+  {
+    this( id, url );
+    this.serverCredentials = serverCredentials;
+  }
+
+  public Server( String id, URL url, Credentials serverCredentials, URL proxy )
+  {
+    this( id, url, serverCredentials );
+    this.proxy = proxy;
+  }
+
+  public Server( String id, URL url, Credentials serverCredentials, URL proxy, Credentials proxyCredentials )
+  {
+    this( id, url, serverCredentials, proxy );
+    this.proxyCredentials = proxyCredentials;
+  }
+
+  public String getId()
+  {
+    return id;
+  }
+
   public URL getURL()
   {
     return this.url;
+  }
+
+  public Credentials getServerCredentials()
+  {
+    return this.serverCredentials;
+  }
+
+  public URL getProxy()
+  {
+    return this.proxy;
+  }
+
+  public Credentials getProxyCredentials()
+  {
+    return this.serverCredentials;
   }
 
   public Set<StreamObserverFactory> getStreamObserverFactories()
@@ -46,11 +87,6 @@ public class Server
   public void setStreamObserverFactories( Set<StreamObserverFactory> factories )
   {
     streamObserverFactories = factories;
-  }
-
-  public String getId()
-  {
-    return id;
   }
 
 }

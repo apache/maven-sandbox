@@ -1,10 +1,12 @@
 package org.apache.maven.mercury.repository.api;
 
+import java.util.Collection;
+
 import org.apache.maven.mercury.artifact.Artifact;
 
 
 /**
- * Repository wruter API to be implemented by any repo implementation that wishes 
+ * Repository writer API to be implemented by any repo implementation that wishes 
  * to store artifacts for Maven. All operations are asynchronous and can generate
  * callback events
  *
@@ -22,6 +24,6 @@ extends RepositoryOperator
    * @param artifact to upload
    * @throws RepositoryException
    */
-  public void writeArtifact( Artifact artifact, RepositoryCallback callback )
+  public void writeArtifact( Collection<Artifact> artifact )
   throws RepositoryException;
 }

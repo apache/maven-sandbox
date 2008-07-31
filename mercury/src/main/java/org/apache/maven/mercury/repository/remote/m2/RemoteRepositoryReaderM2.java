@@ -38,7 +38,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * implementation of M2 remote repository reader. Actual Transport used comes from RemoteRepository Server' URL
  * 
  *  Current implementation does not do the check and uses jetty-client directly. 
- *  TODO - re-implements after jetty-client implements Transport 
+ *  TODO - re-implements after jetty-client implements ReaderTransport 
  *
  *
  * @author Oleg Gusakov
@@ -242,9 +242,11 @@ implements RepositoryReader, MetadataReader
       return null;
     
     FileInputStream fis = null;
+    File tempFile = null;
     try
     {
-      File tempFile = File.createTempFile( "mercury", "readraw" );
+      // transport workaround - until it can do in-memory Bindings
+      tempFile = File.createTempFile( "mercury", "readraw" );
       
       String separator = "/";
       if( path.startsWith( separator ))
@@ -274,11 +276,11 @@ implements RepositoryReader, MetadataReader
     finally
     {
       if( fis != null ) try { fis.close(); } catch( Exception any ) {}
+      if( tempFile != null ) try { if(tempFile.exists()) tempFile.delete(); } catch( Exception any ) {}
     }
   }
   //---------------------------------------------------------------------------------------------------------------
-  public boolean canHandle(
-      String protocol )
+  public boolean canHandle( String protocol )
   {
     return AbstractRepository.DEFAULT_REMOTE_READ_PROTOCOL.equals( protocol );
   }
