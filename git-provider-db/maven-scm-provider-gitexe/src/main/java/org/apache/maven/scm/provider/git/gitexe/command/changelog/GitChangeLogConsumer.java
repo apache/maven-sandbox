@@ -256,7 +256,7 @@ public class GitChangeLogConsumer
         }
         
         String datestring = dateRegexp.getParen( 1 );
-        
+       
         Date date = parseDate( datestring.trim() , userDateFormat, GIT_TIMESTAMP_PATTERN );
         
         currentChange.setDate( date );
