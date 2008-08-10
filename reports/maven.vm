@@ -1,0 +1,14 @@
+#set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
+#set( $project = $jira.getProject( "MNG" ) )
+
+        
+#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?reset=true&mode=hide&&pid=10500&resolution=-1&sorter/field=updated&sorter/order=DESC" ) 
+#set( $jirarss = $rss.fetch( $url ) )
+#set( $issues = $jirarss.issues )
+
+Issue sorted by votes
+
+#foreach ( $issue in $issues.descending("votes") )
+ $issue.votes votes -- $issue.summary  ($issue.key)
+#end
+
