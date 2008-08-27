@@ -33,6 +33,7 @@ import org.apache.maven.artifact.resolver.AbstractArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -76,19 +77,16 @@ public class GetMojo
 
     /**
      * @parameter expression="${groupId}"
-     * @required
      */
     private String groupId;
 
     /**
      * @parameter expression="${artifactId}"
-     * @required
      */
     private String artifactId;
 
     /**
      * @parameter expression="${version}"
-     * @required
      */
     private String version;
 
@@ -114,6 +112,11 @@ public class GetMojo
     private String remoteRepositories;
     
     /**
+     * @parameter expression="${artifact}"
+     */
+    private String artifact;
+    
+    /**
      * The remote repositories available for discovering dependencies and extensions as indicated
      * by the POM.
      * 
@@ -123,9 +126,19 @@ public class GetMojo
     private List pomRemoteRepositories;
     
     public void execute()
-        throws MojoExecutionException
+        throws MojoExecutionException, MojoFailureException
     {        
-        
+
+        if ( artifactId == null && artifact == null ) throw new MojoFailureException("You must specify an artifact, e.g. -Dartifact=org.apache.maven.plugins:maven-downloader-plugin:1.0");
+        if ( artifactId == null )
+        {
+            String[] tokens = StringUtils.split( artifact, ":" );
+            if (tokens.length != 3 && tokens.length != 4) throw new MojoFailureException( "Invalid artifact, you must specify groupId:artifactId:version[:packaging] " + artifact );
+            groupId = tokens[0];
+            artifactId = tokens[1];
+            version = tokens[2];
+            if (tokens.length == 4) packaging = tokens[3];
+        }
         Artifact toDownload = artifactFactory.createBuildArtifact( groupId, artifactId, version, packaging );
         Artifact dummyOriginatingArtifact =
             artifactFactory.createBuildArtifact( "org.apache.maven.plugins", "maven-downloader-plugin", "1.0", "jar" );
