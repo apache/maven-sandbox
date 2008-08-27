@@ -30,6 +30,7 @@
     <module>maven-shade-plugin</module>
     <module>maven-swizzle-plugin</module>
     <module>maven-xcode-plugin</module>
+    <module>maven-downloader-plugin</module>
   </modules>
 
 </project>
