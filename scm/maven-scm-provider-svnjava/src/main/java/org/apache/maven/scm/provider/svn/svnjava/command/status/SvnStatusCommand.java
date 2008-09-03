@@ -43,7 +43,10 @@ public class SvnStatusCommand
     protected StatusScmResult executeStatusCommand( ScmProviderRepository repo, ScmFileSet fileSet )
         throws ScmException
     {
-        getLogger().info( "SVN status directory: " + fileSet.getBasedir().getAbsolutePath() );
+        if ( getLogger().isInfoEnabled() )
+        {
+            getLogger().info( "SVN status directory: " + fileSet.getBasedir().getAbsolutePath() );
+        }
 
         SvnJavaScmProviderRepository javaRepo = (SvnJavaScmProviderRepository) repo;
 

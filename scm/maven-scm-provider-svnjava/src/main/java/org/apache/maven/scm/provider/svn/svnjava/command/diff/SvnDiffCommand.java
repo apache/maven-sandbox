@@ -53,7 +53,10 @@ public class SvnDiffCommand
                                                 ScmVersion startRevision, ScmVersion endRevision )
         throws ScmException
     {
-        getLogger().info( "SVN diff directory: " + fileSet.getBasedir().getAbsolutePath() );
+        if ( getLogger().isInfoEnabled() )
+        {
+            getLogger().info( "SVN diff directory: " + fileSet.getBasedir().getAbsolutePath() );
+        }
 
         SvnJavaScmProviderRepository javaRepo = (SvnJavaScmProviderRepository) repo;
 

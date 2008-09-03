@@ -91,7 +91,10 @@ public class SvnAddCommand
             {
                 File fileToAdd = new File( fileSet.getBasedir(), files[i].toString() );
 
-                getLogger().debug( "SVN adding file: " + fileToAdd.getAbsolutePath() );
+                if ( getLogger().isDebugEnabled() )
+                {
+                    getLogger().debug( "SVN adding file: " + fileToAdd.getAbsolutePath() );
+                }
 
                 SvnJavaUtil.add( clientManager, fileToAdd, false );
             }

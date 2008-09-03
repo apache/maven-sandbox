@@ -50,7 +50,10 @@ public class SvnCheckOutCommand
                                                         ScmVersion tag, boolean recursive )
         throws ScmException
     {
-        getLogger().info( "SVN checkout directory: " + fileSet.getBasedir().getAbsolutePath() );
+        if ( getLogger().isInfoEnabled() )
+        {
+            getLogger().info( "SVN checkout directory: " + fileSet.getBasedir().getAbsolutePath() );
+        }
 
         SvnScmProviderRepository repository = (SvnScmProviderRepository) repo;
 

@@ -49,7 +49,10 @@ public class SvnRemoveCommand
             throw new ScmException( "You must provide at least one file/directory to remove" );
         }
 
-        getLogger().info( "SVN remove working directory: " + fileSet.getBasedir().getAbsolutePath() );
+        if ( getLogger().isInfoEnabled() )
+        {
+            getLogger().info( "SVN remove working directory: " + fileSet.getBasedir().getAbsolutePath() );
+        }
 
         SvnJavaScmProviderRepository javaRepo = (SvnJavaScmProviderRepository) repo;
 
