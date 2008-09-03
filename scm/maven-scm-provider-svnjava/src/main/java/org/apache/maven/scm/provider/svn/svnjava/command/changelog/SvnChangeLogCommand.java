@@ -60,7 +60,9 @@ public class SvnChangeLogCommand
         throws ScmException
     {
         // TODO Auto-generated method stub
-        return super.executeChangeLogCommand( repository, fileSet, startVersion, endVersion, datePattern );
+        throw new UnsupportedOperationException( "executeChangeLogCommand( ScmProviderRepository repository, "
+            + "ScmFileSet fileSet, ScmVersion startVersion, ScmVersion endVersion, String datePattern ) is not "
+            + "implemented" );
     }
 
     /** {@inheritDoc} */

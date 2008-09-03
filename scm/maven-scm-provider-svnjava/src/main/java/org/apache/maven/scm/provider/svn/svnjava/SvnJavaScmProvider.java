@@ -167,28 +167,28 @@ public class SvnJavaScmProvider
     protected SvnCommand getBranchCommand()
     {
         // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException( "getBranchCommand() is not implemented" );
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getExportCommand()
     {
         // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException( "getExportCommand() is not implemented" );
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getInfoCommand()
     {
         // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException( "getInfoCommand() is not implemented" );
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getListCommand()
     {
         // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException( "getListCommand() is not implemented" );
     }
 
     /** {@inheritDoc} */
