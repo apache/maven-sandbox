@@ -46,6 +46,7 @@ public class SvnAddCommand
     extends AbstractAddCommand
     implements SvnCommand
 {
+    /** {@inheritDoc} */
     protected ScmResult executeAddCommand( ScmProviderRepository repository, ScmFileSet fileSet, String message,
                                            boolean binary )
         throws ScmException
@@ -104,6 +105,4 @@ public class SvnAddCommand
 
         return new AddScmResult( null, filesAdded );
     }
-
-
 }

@@ -18,6 +18,8 @@ package org.apache.maven.scm.provider.svn.svnjava.command.update;
 
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileSet;
+import org.apache.maven.scm.ScmTag;
+import org.apache.maven.scm.ScmVersion;
 import org.apache.maven.scm.command.changelog.ChangeLogCommand;
 import org.apache.maven.scm.command.update.AbstractUpdateCommand;
 import org.apache.maven.scm.command.update.UpdateScmResult;
@@ -42,8 +44,8 @@ public class SvnUpdateCommand
     extends AbstractUpdateCommand
     implements SvnCommand
 {
-
-    protected UpdateScmResult executeUpdateCommand( ScmProviderRepository repo, ScmFileSet fileSet, String tag )
+    /** {@inheritDoc} */
+    protected UpdateScmResult executeUpdateCommand( ScmProviderRepository repo, ScmFileSet fileSet, ScmVersion tag )
         throws ScmException
     {
         SvnScmProviderRepository repository = (SvnScmProviderRepository) repo;
@@ -60,14 +62,14 @@ public class SvnUpdateCommand
 
             if ( tag == null || SvnTagBranchUtils.isRevisionSpecifier( tag ) )
             {
-                SvnJavaUtil.update( javaRepo.getClientManager(), fileSet.getBasedir(), getSVNRevision( tag ), true );
+                SvnJavaUtil.update( javaRepo.getClientManager(), fileSet.getBasedir(), SVNRevision.parse( tag.getName() ), true );
             }
             else
             {
-                // The tag specified does not appear to be numeric, so assume it refers 
+                // The tag specified does not appear to be numeric, so assume it refers
                 // to a branch/tag url and perform a switch operation rather than update
                 SvnJavaUtil.switchToURL( javaRepo.getClientManager(), fileSet.getBasedir(),
-                                         SVNURL.parseURIEncoded( SvnTagBranchUtils.resolveTagUrl( repository, tag ) ),
+                                         SVNURL.parseURIEncoded( SvnTagBranchUtils.resolveTagUrl( repository, new ScmTag( tag.getName() ) ) ),
                                          SVNRevision.HEAD, true );
             }
 
@@ -83,21 +85,7 @@ public class SvnUpdateCommand
         }
     }
 
-    private static SVNRevision getSVNRevision( String revision )
-    {
-        if ( revision == null || !SvnTagBranchUtils.isRevisionSpecifier( revision ) )
-        {
-            return SVNRevision.HEAD;
-        }
-        else
-        {
-            return SVNRevision.parse( revision );
-        }
-    }
-
-    /**
-     * @see org.apache.maven.scm.command.update.AbstractUpdateCommand#getChangeLogCommand()
-     */
+    /** {@inheritDoc} */
     protected ChangeLogCommand getChangeLogCommand()
     {
         SvnChangeLogCommand command = new SvnChangeLogCommand();
@@ -106,6 +94,4 @@ public class SvnUpdateCommand
 
         return command;
     }
-
-
 }

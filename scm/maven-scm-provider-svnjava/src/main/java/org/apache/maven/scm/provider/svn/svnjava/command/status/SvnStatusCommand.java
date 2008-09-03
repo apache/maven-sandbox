@@ -36,6 +36,7 @@ public class SvnStatusCommand
     extends AbstractStatusCommand
     implements SvnCommand
 {
+    /** {@inheritDoc} */
     protected StatusScmResult executeStatusCommand( ScmProviderRepository repo, ScmFileSet fileSet )
         throws ScmException
     {
@@ -48,7 +49,7 @@ public class SvnStatusCommand
         try
         {
             SvnJavaUtil.status( javaRepo.getClientManager(), fileSet.getBasedir(), true, // isRecursive
-                                true, // isRemote                                 
+                                true, // isRemote
                                 handler );
 
             return new StatusScmResult( SvnJavaScmProvider.COMMAND_LINE, handler.getFiles() );

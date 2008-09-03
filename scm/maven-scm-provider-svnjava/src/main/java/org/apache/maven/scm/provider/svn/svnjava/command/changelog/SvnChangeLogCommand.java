@@ -17,8 +17,10 @@ package org.apache.maven.scm.provider.svn.svnjava.command.changelog;
  */
 
 import org.apache.maven.scm.ChangeFile;
+import org.apache.maven.scm.ScmBranch;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileSet;
+import org.apache.maven.scm.ScmVersion;
 import org.apache.maven.scm.command.changelog.AbstractChangeLogCommand;
 import org.apache.maven.scm.command.changelog.ChangeLogScmResult;
 import org.apache.maven.scm.command.changelog.ChangeLogSet;
@@ -48,8 +50,19 @@ public class SvnChangeLogCommand
     extends AbstractChangeLogCommand
     implements SvnCommand
 {
+    /** {@inheritDoc} */
+    protected ChangeLogScmResult executeChangeLogCommand( ScmProviderRepository repository, ScmFileSet fileSet,
+                                                          ScmVersion startVersion, ScmVersion endVersion,
+                                                          String datePattern )
+        throws ScmException
+    {
+        // TODO Auto-generated method stub
+        return super.executeChangeLogCommand( repository, fileSet, startVersion, endVersion, datePattern );
+    }
+
+    /** {@inheritDoc} */
     protected ChangeLogScmResult executeChangeLogCommand( ScmProviderRepository repo, ScmFileSet fileSet,
-                                                          Date startDate, Date endDate, String branch,
+                                                          Date startDate, Date endDate, ScmBranch branch,
                                                           String datePattern )
         throws ScmException
     {
@@ -64,7 +77,7 @@ public class SvnChangeLogCommand
 
             if ( branch != null )
             {
-                url = SVNURL.parseURIEncoded( SvnTagBranchUtils.resolveBranchUrl( javaRepo, url.toString() ) );
+                url = SVNURL.parseURIEncoded( SvnTagBranchUtils.resolveBranchUrl( javaRepo, branch ) );
             }
 
             ChangeLogHandler handler = new ChangeLogHandler( startDate, endDate );

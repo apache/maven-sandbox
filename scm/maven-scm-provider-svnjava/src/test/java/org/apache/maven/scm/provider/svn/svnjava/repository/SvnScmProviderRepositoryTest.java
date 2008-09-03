@@ -18,6 +18,7 @@ package org.apache.maven.scm.provider.svn.svnjava.repository;
 
 import org.apache.maven.scm.ScmTestCase;
 import org.apache.maven.scm.manager.ScmManager;
+import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.svn.repository.SvnScmProviderRepository;
 import org.apache.maven.scm.provider.svn.svnjava.SvnJavaScmProvider;
 import org.apache.maven.scm.repository.ScmRepository;
@@ -50,49 +51,49 @@ public class SvnScmProviderRepositoryTest
     public void testFileURLNotSupported()
         throws Exception
     {
-        testUrl( "scm:svn:file:///tmp/repo", "file:///tmp/repo", null );
+        testUrl( "scm:javasvn:file:///tmp/repo", "file:///tmp/repo", null );
     }
 
     public void testLocalhostFileURLNotSupported()
         throws Exception
     {
-        testUrl( "scm:svn:file://localhost/tmp/repo", "file://localhost/tmp/repo", null );
+        testUrl( "scm:javasvn:file://localhost/tmp/repo", "file://localhost/tmp/repo", null );
     }
 
     public void testLocalhostFileURLNotSupportedBis()
         throws Exception
     {
-        testUrl( "scm:svn:file://toto/tmp/repo", "file://toto/tmp/repo", null );
+        testUrl( "scm:javasvn:file://toto/tmp/repo", "file://toto/tmp/repo", null );
     }
 
     public void testLegalHttpURL()
         throws Exception
     {
-        testUrl( "scm:svn:http://subversion.tigris.org", "http://subversion.tigris.org", null );
+        testUrl( "scm:javasvn:http://subversion.tigris.org", "http://subversion.tigris.org", null );
     }
 
     public void testLegalHttpsURL()
         throws Exception
     {
-        testUrl( "scm:svn:https://subversion.tigris.org", "https://subversion.tigris.org", null );
+        testUrl( "scm:javasvn:https://subversion.tigris.org", "https://subversion.tigris.org", null );
     }
 
     public void testLegalSvnURL()
         throws Exception
     {
-        testUrl( "scm:svn:svn://subversion.tigris.org", "svn://subversion.tigris.org", null );
+        testUrl( "scm:javasvn:svn://subversion.tigris.org", "svn://subversion.tigris.org", null );
     }
 
     public void testLegalSvnPlusUsernameURL()
         throws Exception
     {
-        testUrl( "scm:svn:svn://username@subversion.tigris.org", "svn://subversion.tigris.org", "username" );
+        testUrl( "scm:javasvn:svn://username@subversion.tigris.org", "svn://subversion.tigris.org", "username" );
     }
 
     public void testLegalSvnPlusSshURL()
         throws Exception
     {
-        testUrl( "scm:svn:svn+ssh://subversion.tigris.org", "svn+ssh://subversion.tigris.org", null );
+        testUrl( "scm:javasvn:svn+ssh://subversion.tigris.org", "svn+ssh://subversion.tigris.org", null );
     }
 
     public void testLegalSvnPlusSshPlusUsernameURL()
@@ -100,7 +101,7 @@ public class SvnScmProviderRepositoryTest
     {
         // This is a change from the command line svn implementation. JavaSVN will strip the username
         // from the url because it is not needed.
-        testUrl( "scm:svn:svn+ssh://username@subversion.tigris.org", "svn+ssh://subversion.tigris.org", "username" );
+        testUrl( "scm:javasvn:svn+ssh://username@subversion.tigris.org", "svn+ssh://subversion.tigris.org", "username" );
     }
 
     // ----------------------------------------------------------------------
@@ -153,7 +154,7 @@ public class SvnScmProviderRepositoryTest
     {
         try
         {
-            scmManager.makeScmRepository( "scm:svn:" + url );
+            scmManager.makeScmRepository( "scm:javasvn:" + url );
 
             fail( "Expected a ScmRepositoryException while testing the url '" + url + "'." );
         }

@@ -20,6 +20,7 @@ import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.ScmFileStatus;
+import org.apache.maven.scm.ScmVersion;
 import org.apache.maven.scm.command.checkin.AbstractCheckInCommand;
 import org.apache.maven.scm.command.checkin.CheckInScmResult;
 import org.apache.maven.scm.provider.ScmProviderRepository;
@@ -46,15 +47,11 @@ public class SvnCheckInCommand
     extends AbstractCheckInCommand
     implements SvnCommand
 {
+    /** {@inheritDoc} */
     protected CheckInScmResult executeCheckInCommand( ScmProviderRepository repo, ScmFileSet fileSet, String message,
-                                                      String tag )
+                                                      ScmVersion tag )
         throws ScmException
     {
-        if ( StringUtils.isNotEmpty( tag ) )
-        {
-            throw new ScmException( "This provider can't handle tags." );
-        }
-
         getLogger().info( "SVN commit directory: " + fileSet.getBasedir().getAbsolutePath() );
 
         SvnJavaScmProviderRepository javaRepo = (SvnJavaScmProviderRepository) repo;

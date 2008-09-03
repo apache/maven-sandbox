@@ -18,6 +18,8 @@ package org.apache.maven.scm.provider.svn.svnjava.command.checkout;
 
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileSet;
+import org.apache.maven.scm.ScmTag;
+import org.apache.maven.scm.ScmVersion;
 import org.apache.maven.scm.command.checkout.AbstractCheckOutCommand;
 import org.apache.maven.scm.command.checkout.CheckOutScmResult;
 import org.apache.maven.scm.provider.ScmProviderRepository;
@@ -40,7 +42,8 @@ public class SvnCheckOutCommand
     extends AbstractCheckOutCommand
     implements SvnCommand
 {
-    protected CheckOutScmResult executeCheckOutCommand( ScmProviderRepository repo, ScmFileSet fileSet, String tag )
+    /** {@inheritDoc} */
+    protected CheckOutScmResult executeCheckOutCommand( ScmProviderRepository repo, ScmFileSet fileSet, ScmVersion tag, boolean recursive )
         throws ScmException
     {
         getLogger().info( "SVN checkout directory: " + fileSet.getBasedir().getAbsolutePath() );
@@ -50,7 +53,7 @@ public class SvnCheckOutCommand
         String url = repository.getUrl();
         if ( tag != null )
         {
-            url = SvnTagBranchUtils.resolveTagUrl( repository, tag );
+            url = SvnTagBranchUtils.resolveTagUrl( repository, new ScmTag( tag.getName() ) );
         }
 
         SvnJavaScmProviderRepository javaRepo = (SvnJavaScmProviderRepository) repo;
@@ -76,6 +79,4 @@ public class SvnCheckOutCommand
             javaRepo.getClientManager().getUpdateClient().setEventHandler( null );
         }
     }
-
-
 }

@@ -18,6 +18,7 @@ package org.apache.maven.scm.provider.svn.svnjava.command.diff;
 
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileSet;
+import org.apache.maven.scm.ScmVersion;
 import org.apache.maven.scm.command.diff.AbstractDiffCommand;
 import org.apache.maven.scm.command.diff.DiffScmResult;
 import org.apache.maven.scm.provider.ScmProviderRepository;
@@ -44,8 +45,9 @@ public class SvnDiffCommand
     extends AbstractDiffCommand
     implements SvnCommand
 {
-    protected DiffScmResult executeDiffCommand( ScmProviderRepository repo, ScmFileSet fileSet, String startRevision,
-                                                String endRevision )
+    /** {@inheritDoc} */
+    protected DiffScmResult executeDiffCommand( ScmProviderRepository repo, ScmFileSet fileSet,
+                                                ScmVersion startRevision, ScmVersion endRevision )
         throws ScmException
     {
         getLogger().info( "SVN diff directory: " + fileSet.getBasedir().getAbsolutePath() );
@@ -58,8 +60,8 @@ public class SvnDiffCommand
         {
             javaRepo.getClientManager().getDiffClient().setEventHandler( handler );
 
-            SVNRevision start = ( startRevision == null ) ? SVNRevision.COMMITTED : SVNRevision.parse( startRevision );
-            SVNRevision end = ( endRevision == null ) ? SVNRevision.WORKING : SVNRevision.parse( endRevision );
+            SVNRevision start = ( startRevision == null ) ? SVNRevision.COMMITTED : SVNRevision.parse( startRevision.getName() );
+            SVNRevision end = ( endRevision == null ) ? SVNRevision.WORKING : SVNRevision.parse( endRevision.getName() );
 
             ByteArrayOutputStream out =
                 SvnJavaUtil.diff( javaRepo.getClientManager(), fileSet.getBasedir(), start, end );

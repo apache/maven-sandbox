@@ -21,6 +21,7 @@ import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.ScmFileStatus;
 import org.apache.maven.scm.ScmResult;
+import org.apache.maven.scm.ScmTag;
 import org.apache.maven.scm.command.tag.AbstractTagCommand;
 import org.apache.maven.scm.command.tag.TagScmResult;
 import org.apache.maven.scm.provider.ScmProviderRepository;
@@ -50,7 +51,9 @@ public class SvnTagCommand
     extends AbstractTagCommand
     implements SvnCommand
 {
-    public ScmResult executeTagCommand( ScmProviderRepository repo, ScmFileSet fileSet, String tag )
+    /** {@inheritDoc} */
+    protected ScmResult executeTagCommand( ScmProviderRepository repo, ScmFileSet fileSet, String tag,
+                                           String message )
         throws ScmException
     {
         if ( tag == null )
@@ -71,7 +74,7 @@ public class SvnTagCommand
 
         try
         {
-            SVNURL destURL = SVNURL.parseURIEncoded( SvnTagBranchUtils.resolveTagUrl( repository, tag ) );
+            SVNURL destURL = SVNURL.parseURIEncoded( SvnTagBranchUtils.resolveTagUrl( repository, new ScmTag( tag ) ) );
 
             SVNCommitInfo info = SvnJavaUtil.copy( javaRepo.getClientManager(), javaRepo.getSvnUrl(), destURL, false,
                                                    "[maven-scm] copy for tag " + tag );
@@ -82,7 +85,7 @@ public class SvnTagCommand
                                          info.getError().getMessage(), false );
             }
 
-            // The copy command doesn't return a list of files that were tagged, 
+            // The copy command doesn't return a list of files that were tagged,
             // so manually build the list from the contents of the fileSet.getBaseDir.
             List fileList = new ArrayList();
             List files = null;
