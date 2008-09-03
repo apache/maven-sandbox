@@ -30,7 +30,6 @@ import org.apache.maven.scm.provider.svn.command.SvnCommand;
 import org.apache.maven.scm.provider.svn.svnjava.SvnJavaScmProvider;
 import org.apache.maven.scm.provider.svn.svnjava.repository.SvnJavaScmProviderRepository;
 import org.apache.maven.scm.provider.svn.svnjava.util.SvnJavaUtil;
-import org.codehaus.plexus.util.StringUtils;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNNodeKind;
 import org.tmatesoft.svn.core.wc.SVNEvent;
