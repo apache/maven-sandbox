@@ -79,8 +79,11 @@ public class ScmFileEventHandler
 
         if ( status == null )
         {
-            logger.info( "Unknown SVN file status: '" + event.getExpectedAction() + "' for file: "
-                + event.getFile().getAbsolutePath() );
+            if ( logger.isInfoEnabled() )
+            {
+                logger.info( "Unknown SVN file status: '" + event.getExpectedAction() + "' for file: "
+                    + event.getFile().getAbsolutePath() );
+            }
 
             status = ScmFileStatus.UNKNOWN;
         }
