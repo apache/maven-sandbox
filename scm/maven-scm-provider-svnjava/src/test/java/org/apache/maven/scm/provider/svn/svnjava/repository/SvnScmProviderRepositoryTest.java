@@ -1,24 +1,26 @@
 package org.apache.maven.scm.provider.svn.svnjava.repository;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import org.apache.maven.scm.ScmTestCase;
 import org.apache.maven.scm.manager.ScmManager;
-import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.svn.repository.SvnScmProviderRepository;
 import org.apache.maven.scm.provider.svn.svnjava.SvnJavaScmProvider;
 import org.apache.maven.scm.repository.ScmRepository;
@@ -101,7 +103,8 @@ public class SvnScmProviderRepositoryTest
     {
         // This is a change from the command line svn implementation. JavaSVN will strip the username
         // from the url because it is not needed.
-        testUrl( "scm:javasvn:svn+ssh://username@subversion.tigris.org", "svn+ssh://subversion.tigris.org", "username" );
+        testUrl( "scm:javasvn:svn+ssh://username@subversion.tigris.org", "svn+ssh://subversion.tigris.org",
+                 "username" );
     }
 
     // ----------------------------------------------------------------------
@@ -142,7 +145,8 @@ public class SvnScmProviderRepositoryTest
         assertTrue( "The SCM Repository isn't a " + SvnScmProviderRepository.class.getName() + ".",
                     repository.getProviderRepository() instanceof SvnScmProviderRepository );
 
-        SvnScmProviderRepository providerRepository = (SvnScmProviderRepository) repository.getProviderRepository();
+        SvnScmProviderRepository providerRepository =
+            (SvnScmProviderRepository) repository.getProviderRepository();
 
         assertEquals( "url is incorrect", expectedUrl, providerRepository.getUrl() );
 

@@ -1,19 +1,22 @@
 package org.apache.maven.scm.provider.svn.svnjava.util;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import org.apache.maven.scm.ScmFile;
@@ -56,9 +59,9 @@ public class SvnStatusHandler
      */
     public void handleStatus( SVNStatus status )
     {
-        /* Gets  the  status  of  file/directory/symbolic link  text  contents. 
-         * It is  SVNStatusType  who  contains  information on the state of  an 
-         * item. 
+        /* Gets  the  status  of  file/directory/symbolic link  text  contents.
+         * It is  SVNStatusType  who  contains  information on the state of  an
+         * item.
          */
         SVNStatusType contentsStatus = status.getContentsStatus();
 
@@ -74,7 +77,7 @@ public class SvnStatusHandler
         }
         else if ( contentsStatus == SVNStatusType.STATUS_MERGED )
         {
-            /* The file item was merGed (changes that came from the  repository 
+            /* The file item was merGed (changes that came from the  repository
              * did not overlap local changes and were merged into the file).
              * "G"
              */
@@ -82,7 +85,7 @@ public class SvnStatusHandler
         }
         else if ( contentsStatus == SVNStatusType.STATUS_DELETED )
         {
-            /* The file, directory or symbolic link item has been scheduled for 
+            /* The file, directory or symbolic link item has been scheduled for
              * Deletion from the repository.
              * "D"
              */
@@ -90,7 +93,7 @@ public class SvnStatusHandler
         }
         else if ( contentsStatus == SVNStatusType.STATUS_ADDED )
         {
-            /* The file, directory or symbolic link item has been scheduled for 
+            /* The file, directory or symbolic link item has been scheduled for
              * Addition to the repository.
              * "A"
              */
@@ -98,7 +101,7 @@ public class SvnStatusHandler
         }
         else if ( contentsStatus == SVNStatusType.STATUS_UNVERSIONED )
         {
-            /* The file, directory or symbolic link item is not  under  version 
+            /* The file, directory or symbolic link item is not  under  version
              * control.
              * "?"
              */
@@ -113,47 +116,48 @@ public class SvnStatusHandler
         }
         else if ( contentsStatus == SVNStatusType.STATUS_IGNORED )
         {
-            /* The file, directory or symbolic link item is not  under  version 
-             * control, and is configured to be Ignored during 'add',  'import' 
-             * and 'status' operations. 
+            /* The file, directory or symbolic link item is not  under  version
+             * control, and is configured to be Ignored during 'add',  'import'
+             * and 'status' operations.
              * "I"
              */
             // We don't care about files that are ignored.
             scmStatus = null;
         }
-        else if ( contentsStatus == SVNStatusType.STATUS_MISSING || contentsStatus == SVNStatusType.STATUS_INCOMPLETE )
+        else if ( contentsStatus == SVNStatusType.STATUS_MISSING
+            || contentsStatus == SVNStatusType.STATUS_INCOMPLETE )
         {
-            /* The file, directory or  symbolic  link  item  is  under  version 
-             * control but is missing or somehow incomplete. The  item  can  be 
-             * missing if it is removed using a command incompatible  with  the 
-             * native Subversion command line client (for example, just removed 
-             * from the filesystem). In the case the item is  a  directory,  it 
-             * can  be  incomplete if the user happened to interrupt a checkout 
+            /* The file, directory or  symbolic  link  item  is  under  version
+             * control but is missing or somehow incomplete. The  item  can  be
+             * missing if it is removed using a command incompatible  with  the
+             * native Subversion command line client (for example, just removed
+             * from the filesystem). In the case the item is  a  directory,  it
+             * can  be  incomplete if the user happened to interrupt a checkout
              * or update.
              * "!"
              */
-            // TODO: This isn't the right status here.  ScmFileStatus doesn't have an error.
+            // TODO: This isn't the right status here. ScmFileStatus doesn't have an error.
             scmStatus = ScmFileStatus.UNKNOWN;
         }
         else if ( contentsStatus == SVNStatusType.STATUS_OBSTRUCTED )
         {
-            /* The file, directory or symbolic link item is in  the  repository 
-             * as one kind of object, but what's actually in the user's working 
-             * copy is some other kind. For example, Subversion  might  have  a 
-             * file in the repository,  but  the  user  removed  the  file  and 
-             * created a directory in its place, without using the 'svn delete' 
+            /* The file, directory or symbolic link item is in  the  repository
+             * as one kind of object, but what's actually in the user's working
+             * copy is some other kind. For example, Subversion  might  have  a
+             * file in the repository,  but  the  user  removed  the  file  and
+             * created a directory in its place, without using the 'svn delete'
              * or 'svn add' command (or JavaSVN analogues for them).
              * "~"
              */
-            // TODO: This isn't the right status here.  ScmFileStatus doesn't have an error.
+            // TODO: This isn't the right status here. ScmFileStatus doesn't have an error.
             scmStatus = ScmFileStatus.CONFLICT;
         }
         else if ( contentsStatus == SVNStatusType.STATUS_REPLACED )
         {
-            /* The file, directory or symbolic link item was  Replaced  in  the 
-             * user's working copy; that is, the item was deleted,  and  a  new 
-             * item with the same name was added (within  a  single  revision). 
-             * While they may have the same name, the repository considers them 
+            /* The file, directory or symbolic link item was  Replaced  in  the
+             * user's working copy; that is, the item was deleted,  and  a  new
+             * item with the same name was added (within  a  single  revision).
+             * While they may have the same name, the repository considers them
              * to be distinct objects with distinct histories.
              * "R"
              */
@@ -170,7 +174,7 @@ public class SvnStatusHandler
         }
 
         /*
-         * Now getting the status of properties of an item. SVNStatusType  also 
+         * Now getting the status of properties of an item. SVNStatusType  also
          * contains information on the properties state.
          */
         SVNStatusType propertiesStatus = status.getPropertiesStatus();
@@ -202,7 +206,7 @@ public class SvnStatusHandler
     }
 
     /*
-     * This is an implementation for 
+     * This is an implementation for
      * ISVNEventHandler.handleEvent(SVNEvent event, double progress)
      */
     public void handleEvent( SVNEvent event, double progress )
@@ -211,8 +215,8 @@ public class SvnStatusHandler
     }
 
     /*
-     * Should be implemented to check if the current operation is cancelled. If 
-     * it is, this method should throw an SVNCancelException. 
+     * Should be implemented to check if the current operation is cancelled. If
+     * it is, this method should throw an SVNCancelException.
      */
     public void checkCancelled()
         throws SVNCancelException

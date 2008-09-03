@@ -1,21 +1,23 @@
 package org.apache.maven.scm.provider.svn.svnjava.command.checkin;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
-
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
@@ -48,8 +50,8 @@ public class SvnCheckInCommand
     implements SvnCommand
 {
     /** {@inheritDoc} */
-    protected CheckInScmResult executeCheckInCommand( ScmProviderRepository repo, ScmFileSet fileSet, String message,
-                                                      ScmVersion tag )
+    protected CheckInScmResult executeCheckInCommand( ScmProviderRepository repo, ScmFileSet fileSet,
+                                                      String message, ScmVersion tag )
         throws ScmException
     {
         getLogger().info( "SVN commit directory: " + fileSet.getBasedir().getAbsolutePath() );
@@ -66,7 +68,7 @@ public class SvnCheckInCommand
             File[] paths;
             if ( tmpPaths == null || tmpPaths.length == 0 )
             {
-                paths = new File[]{fileSet.getBasedir()};
+                paths = new File[] { fileSet.getBasedir() };
             }
             else
             {
@@ -90,9 +92,9 @@ public class SvnCheckInCommand
             for ( Iterator iter = handler.getEvents().iterator(); iter.hasNext(); )
             {
                 SVNEvent event = (SVNEvent) iter.next();
-                if ( event.getExpectedAction() != SVNEventAction.COMMIT_COMPLETED &&
-                    event.getExpectedAction() != SVNEventAction.COMMIT_DELTA_SENT &&
-                    event.getNodeKind() == SVNNodeKind.FILE )
+                if ( event.getExpectedAction() != SVNEventAction.COMMIT_COMPLETED
+                    && event.getExpectedAction() != SVNEventAction.COMMIT_DELTA_SENT
+                    && event.getNodeKind() == SVNNodeKind.FILE )
                 {
                     files.add( new ScmFile( event.getFile().toString(), ScmFileStatus.CHECKED_IN ) );
                 }
@@ -102,7 +104,8 @@ public class SvnCheckInCommand
         }
         catch ( SVNException e )
         {
-            return new CheckInScmResult( SvnJavaScmProvider.COMMAND_LINE, "SVN commit failed.", e.getMessage(), false );
+            return new CheckInScmResult( SvnJavaScmProvider.COMMAND_LINE, "SVN commit failed.", e.getMessage(),
+                                         false );
         }
         finally
         {
