@@ -33,6 +33,7 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
+import org.codehaus.plexus.util.IOUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -975,15 +976,10 @@ public class XMLDoclet
 
         FileOutputStream w = new FileOutputStream( outputFile );
 
-        final byte[] buffer = new byte[1024 * 4];
-        int n = 0;
-        while ( -1 != ( n = is.read( buffer ) ) )
-        {
-            w.write( buffer, 0, n );
-        }
+        IOUtil.copy( is, w );
 
-        is.close();
+        IOUtil.close( is );
 
-        w.close();
+        IOUtil.close( w );
     }
 }

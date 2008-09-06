@@ -464,6 +464,10 @@ public class GenerateHTMLJavaSrc
             {
                 // nop
             }
+            finally
+            {
+                IOUtil.close( is );
+            }
         }
 
         return "";

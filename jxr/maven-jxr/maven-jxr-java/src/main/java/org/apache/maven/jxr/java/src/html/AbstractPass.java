@@ -87,7 +87,7 @@ abstract class AbstractPass
 
     /**
      * Returns the path to the top level of the source hierarchy from the files
-     * og\f a given class.
+     * of a given class.
      *
      * @param packageName the package to get the backup path for
      * @return

@@ -615,17 +615,7 @@ public class GenerateUMLDoc
         }
         finally
         {
-            try
-            {
-                if ( osw != null )
-                {
-                    osw.close();
-                }
-            }
-            catch ( IOException exc )
-            {
-                //nop
-            }
+            IOUtil.close( osw );
         }
         return true;
     }
