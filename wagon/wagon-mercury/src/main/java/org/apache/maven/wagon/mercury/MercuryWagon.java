@@ -39,6 +39,7 @@ import org.apache.maven.wagon.events.TransferEvent;
 import org.apache.maven.wagon.events.TransferEventSupport;
 import org.apache.maven.wagon.events.TransferListener;
 import org.apache.maven.wagon.observers.ChecksumObserver;
+import org.apache.maven.wagon.proxy.ProxyInfo;
 import org.apache.maven.wagon.proxy.ProxyInfoProvider;
 import org.apache.maven.wagon.repository.Repository;
 import org.apache.maven.wagon.resource.Resource;
@@ -81,7 +82,7 @@ implements Wagon
    */
   public MercuryWagon()
   {
-    _log.debug( "\n===============> MercuryWagon instantiated, repository "+repository);
+    _log.debug( "MercuryWagon instantiated, repository "+repository);
   }
   
   public MercuryWagon( Server server )
@@ -108,7 +109,6 @@ implements Wagon
       pgpFac = readPgpConfig();
       this.server.setReaderStreamVerifierFactories( pgpFac[0] );
       this.server.setWriterStreamVerifierFactories( pgpFac[1] );
-//_log.info( "ReaderFacs="+this.server.getReaderStreamVerifierFactories()+"\nWriterFacs="+this.server.getWriterStreamVerifierFactories() );
     }
     catch( Exception ex )
     {
@@ -210,7 +210,9 @@ implements Wagon
   public void put( File source, String destination )
   throws TransferFailedException, ResourceDoesNotExistException, AuthorizationException
   {
-    
+    if( _log.isDebugEnabled() )
+      _log.debug( "===============> put request for: "+source+" => "+destination );
+
     Resource resource = new Resource( destination );
     
     firePutInitiated( resource, source );
@@ -222,7 +224,7 @@ implements Wagon
     Binding binding = null;
     try
     {
-      binding = new Binding( new URL(repository.getUrl()+'/'+destination), source );
+      binding = new Binding( new URL( this.server.getURL().toString()+'/'+destination), source );
     }
     catch( MalformedURLException e )
     {
@@ -234,7 +236,7 @@ implements Wagon
     
     DefaultDeployRequest request = new DefaultDeployRequest();
     request.setBindings( bindings );
-    
+
     firePutStarted( resource, source );
     
     pushEvent( new TransferEvent(this, resource, TransferEvent.TRANSFER_PROGRESS, TransferEvent.REQUEST_PUT) );
@@ -250,9 +252,6 @@ implements Wagon
   protected void closeConnection()
   throws ConnectionException
   {
-    fireSessionLoggedOff();
-    fireSessionDisconnecting();
-    fireSessionDisconnected();
   }
   
   @Override
@@ -266,18 +265,41 @@ implements Wagon
   throws ConnectionException, AuthenticationException
   {
     if(_log.isDebugEnabled())
-      _log.debug( "Opening connection to repository "+repository );
+      _log.debug( "opening connection to repository "+repository );
 
     try
     {
       String url = 'h'+repository.getUrl().substring( 1 );
-      boolean requireEncryption = url.startsWith( "https" ) ? true : false;
-      Credentials user = null;
 
-      if( repository.getUsername() != null )
-        user = new Credentials( repository.getUsername(), repository.getPassword() );
+      Server server = new Server( repository.getId(), new URL( url ) );
       
-      Server server = new Server( repository.getId(), new URL( url ), requireEncryption, false, user );
+      if( authenticationInfo != null )
+      {
+        Credentials user = new Credentials( authenticationInfo.getUserName(), authenticationInfo.getPassword() );
+        
+        server.setServerCredentials( user );
+        
+        if( _log.isDebugEnabled() )
+          _log.debug( "user ceredentials: "+user.getUser()+"/......." );
+      }
+      
+//      ProxyInfo pi = getProxyInfo();
+//      if( pi != null && pi.getHost() != null )
+//      {
+//        if( !ProxyInfo.PROXY_HTTP.equals( pi.getType() ) )
+//        {
+//          throw new ConnectionException( "Mercury wagon does not support "+pi.getType()+" proxies at this point. Only "+ProxyInfo.PROXY_HTTP+" proxy is supported" );
+//        }
+//
+//        server.setProxy( new URL("http://"+pi.getHost()+":"+pi.getPort()) );
+//        
+//        if( pi.getUserName() != null )
+//        {
+//          Credentials proxyUser = new Credentials( pi.getUserName(), pi.getPassword() );
+//          
+//          server.setProxyCredentials( proxyUser );
+//        }
+//      }
       
       init( server );
       
@@ -288,12 +310,6 @@ implements Wagon
     {
       throw new ConnectionException( e.getMessage() );
     }
-  }
-  
-  @Override
-  public void addTransferListener( TransferListener listener )
-  {
-    super.addTransferListener( listener );
   }
 
   void bytesReady( TransferEvent transferEvent, byte [] buf, int len )
@@ -328,40 +344,47 @@ implements Wagon
     if( pgpConfig == null )
       return res;
     
-    _log.info( "PGP signature configuration will be read from "+pgpConfig );
+    if( _log.isDebugEnabled() )
+      _log.debug( "PGP signature configuration will be read from "+pgpConfig );
     
     Properties pgpProps = new Properties();
     pgpProps.load( new FileInputStream(pgpConfig) );
 
-    StreamVerifierAttributes readerAttr = new StreamVerifierAttributes( PgpStreamVerifierFactory.DEFAULT_EXTENSION
-        , Boolean.parseBoolean( pgpProps.getProperty( "reader.lenient", "true" ) )
-        , false
-                                                      );
     String readerKeyring = pgpProps.getProperty( "reader.keyring" );
     
     if( readerKeyring != null )
     {
+      StreamVerifierAttributes readerAttr = new StreamVerifierAttributes(
+          PgpStreamVerifierFactory.DEFAULT_EXTENSION
+        , Boolean.parseBoolean( pgpProps.getProperty( "reader.lenient", "true" ) )
+        , false
+                                                                      );
+
       StreamVerifierFactory rf = new PgpStreamVerifierFactory( readerAttr, new FileInputStream(readerKeyring) );
-if( _log.isDebugEnabled() )
-  _log.debug( "public key file: "+new File(readerKeyring).getAbsolutePath() );
+
+      if( _log.isDebugEnabled() )
+        _log.debug( "public key file: "+new File(readerKeyring).getAbsolutePath() );
       
       Set<StreamVerifierFactory> rs = new HashSet<StreamVerifierFactory>(1);
       rs.add( rf );
       res[0] = rs;
     }
 
-    StreamVerifierAttributes writerAttr = new StreamVerifierAttributes( PgpStreamVerifierFactory.DEFAULT_EXTENSION
-        , Boolean.parseBoolean( pgpProps.getProperty( "writer.lenient", "true" ) )
-        , false
-                                                      );
     String writerKeyring = pgpProps.getProperty( "writer.keyring" );
     String writerKeyId = pgpProps.getProperty( "writer.key.id" );
     String writerKeyringPass = pgpProps.getProperty( "writer.key.pass" );
 
     if( writerKeyring != null && writerKeyId != null && writerKeyringPass != null )
     {
-if( _log.isDebugEnabled() )
-  _log.debug( "secret key file: "+new File(writerKeyring).getAbsolutePath() );
+      if( _log.isDebugEnabled() )
+        _log.debug( "secret key file: "+new File(writerKeyring).getAbsolutePath() );
+
+      StreamVerifierAttributes writerAttr = new StreamVerifierAttributes(
+          PgpStreamVerifierFactory.DEFAULT_EXTENSION
+        , Boolean.parseBoolean( pgpProps.getProperty( "writer.lenient", "true" ) )
+        , false
+                                                                      );
+
       StreamVerifierFactory wf = new PgpStreamVerifierFactory( writerAttr, new FileInputStream(writerKeyring)
                                                               , writerKeyId, writerKeyringPass );
       
