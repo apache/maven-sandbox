@@ -26,6 +26,7 @@ implements StreamObserver
   TransferEvent event;
   
   long length = -1L;
+  String lastModified;
   
   public StupidWagonObserverAdapter( MercuryWagon wagon, TransferEvent event )
   {
@@ -60,6 +61,16 @@ implements StreamObserver
   {
     this.length = length;
 _log.info( "|=-> length is "+length );
+  }
+
+  public void setLastModified(String time)
+  {
+    lastModified = time;
+  }
+
+  public String getLastModified()
+  {
+    return lastModified;
   }
 
 }
