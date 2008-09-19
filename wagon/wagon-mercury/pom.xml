@@ -15,7 +15,7 @@
     <plexus.appbooter.version>1.4</plexus.appbooter.version>
     <plexus.container.version>1.0-alpha-47</plexus.container.version>
     <plexus.utils.version>1.5.1</plexus.utils.version>
-    <nexus.version>1.0.0</nexus.version>
+    <nexus.version>1.0.1</nexus.version>
 
     <nexus-security-enabled>false</nexus-security-enabled>
 

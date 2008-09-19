@@ -20,46 +20,26 @@ implements TransferListener
 
   private static final Logger _log = LoggerFactory.getLogger(TransferEventDebugger.class);
 
-  /* (non-Javadoc)
-   * @see org.apache.maven.wagon.events.TransferListener#debug(java.lang.String)
-   */
-  public void debug(
-      String message )
+  public void debug( String message )
   {
-    // TODO Auto-generated method stub
-    
   }
 
-  /* (non-Javadoc)
-   * @see org.apache.maven.wagon.events.TransferListener#transferCompleted(org.apache.maven.wagon.events.TransferEvent)
-   */
   public void transferCompleted(
       TransferEvent transferEvent )
   {
     _log.info("|=============>   completed: "+transferEvent.getResource().getName() );
   }
 
-  /* (non-Javadoc)
-   * @see org.apache.maven.wagon.events.TransferListener#transferError(org.apache.maven.wagon.events.TransferEvent)
-   */
-  public void transferError(
-      TransferEvent transferEvent )
+  public void transferError( TransferEvent transferEvent )
   {
     _log.info("|=============>   error: "+transferEvent.getResource().getName() );
   }
 
-  /* (non-Javadoc)
-   * @see org.apache.maven.wagon.events.TransferListener#transferInitiated(org.apache.maven.wagon.events.TransferEvent)
-   */
-  public void transferInitiated(
-      TransferEvent transferEvent )
+  public void transferInitiated( TransferEvent transferEvent )
   {
     _log.info("|=============>   initialized: "+transferEvent.getResource().getName() );
   }
 
-  /* (non-Javadoc)
-   * @see org.apache.maven.wagon.events.TransferListener#transferProgress(org.apache.maven.wagon.events.TransferEvent, byte[], int)
-   */
   public void transferProgress(
       TransferEvent transferEvent,
       byte[] buffer,
@@ -69,9 +49,6 @@ implements TransferListener
       _log.info("|=============>   ready "+length+" bytes : "+transferEvent.getResource().getName() );
   }
 
-  /* (non-Javadoc)
-   * @see org.apache.maven.wagon.events.TransferListener#transferStarted(org.apache.maven.wagon.events.TransferEvent)
-   */
   public void transferStarted(
       TransferEvent transferEvent )
   {

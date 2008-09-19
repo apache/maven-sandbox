@@ -49,7 +49,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *    plexus.component
+ *  plexus.component
  *    role-hint="http"
  *    instantiation-strategy="per-lookup"
  *    description="Mercury based wagon implementation"
@@ -82,7 +82,8 @@ implements Wagon
    */
   public MercuryWagon()
   {
-    _log.debug( "MercuryWagon instantiated, repository "+repository);
+    if(debugTransfer)
+      _log.debug( "MercuryWagon instantiated, repository "+repository);
   }
   
   public MercuryWagon( Server server )
@@ -158,8 +159,8 @@ implements Wagon
   public void get( String resourceName, File destination )
   throws TransferFailedException, ResourceDoesNotExistException, AuthorizationException
   {
-    if( _log.isDebugEnabled())
-      _log.debug("\n------------\nMercuryWagon getting "+resourceName+" into "+destination);
+    if( _log.isDebugEnabled() )
+      _log.debug("MercuryWagon getting "+resourceName+" into "+destination);
 
     Binding binding = null;
     
@@ -195,8 +196,8 @@ implements Wagon
       throw new ResourceDoesNotExistException( response.getExceptions().toString() );
     }
 
-    if( _log.isDebugEnabled())
-      _log.debug("\n------------\nMercuryWagon got "+resourceName+" into "+destination);
+    if( _log.isDebugEnabled() )
+      _log.debug("MercuryWagon got "+resourceName+" into "+destination);
     
   }
 
@@ -211,7 +212,7 @@ implements Wagon
   throws TransferFailedException, ResourceDoesNotExistException, AuthorizationException
   {
     if( _log.isDebugEnabled() )
-      _log.debug( "===============> put request for: "+source+" => "+destination );
+      _log.debug( "put request for: "+source+" => "+destination );
 
     Resource resource = new Resource( destination );
     
@@ -246,7 +247,9 @@ implements Wagon
     firePutCompleted( resource, source );
 
     if( response.hasExceptions() )
+    {
       throw new TransferFailedException( response.getExceptions().toString() );
+    }
   }
 
   protected void closeConnection()
@@ -264,7 +267,7 @@ implements Wagon
   protected void openConnectionInternal()
   throws ConnectionException, AuthenticationException
   {
-    if(_log.isDebugEnabled())
+    if(debugTransfer)
       _log.debug( "opening connection to repository "+repository );
 
     try
@@ -280,7 +283,7 @@ implements Wagon
         server.setServerCredentials( user );
         
         if( _log.isDebugEnabled() )
-          _log.debug( "user ceredentials: "+user.getUser()+"/......." );
+          _log.debug( "user ceredentials: "+user.getUser()+"/..." );
       }
       
 //      ProxyInfo pi = getProxyInfo();
@@ -303,7 +306,7 @@ implements Wagon
       
       init( server );
       
-      if( debugTransfer )
+      if( _log.isDebugEnabled() )
         transferEventSupport.addTransferListener( new TransferEventDebugger() );
     }
     catch( MalformedURLException e )
@@ -320,7 +323,7 @@ implements Wagon
   /**
    * @return
    */
-  public TransferEvent popEvent()
+  public final TransferEvent popEvent()
   {
     if( events.isEmpty() )
       return null;
@@ -331,7 +334,7 @@ implements Wagon
     return event;
   }
 
-  public void pushEvent( TransferEvent event)
+  public final void pushEvent( final TransferEvent event)
   {
     events.add( 0, event );
   }
