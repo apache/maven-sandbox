@@ -19,6 +19,9 @@
 
     <nexus-security-enabled>false</nexus-security-enabled>
 
+    <distMgmtSnapshotsName>CI Snapshot Repository</distMgmtSnapshotsName>
+    <distMgmtSnapshotsUrl>http://repository.sonatype.org/content/repositories/maven.snapshots</distMgmtSnapshotsUrl>
+
     <bundle-expanded-dir>target</bundle-expanded-dir>
     <config-expanded-dir>target/test-nexus-config</config-expanded-dir>
 
@@ -39,6 +42,15 @@
 
     <nexus-control-port>33002</nexus-control-port>
   </properties>
+
+  
+  <distributionManagement>
+    <snapshotRepository>
+      <id>sona-maven-snapshots</id>
+      <name>${distMgmtSnapshotsName}</name>
+      <url>${distMgmtSnapshotsUrl}</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <build>
 
@@ -97,10 +109,6 @@
         <configuration>
           <source>1.5</source>
           <target>1.5</target>
-          <includes>
-            <include>**/*.java</include>
-            <include>**/*.properties</include>
-          </includes>
         </configuration>
       </plugin>
       
@@ -222,10 +230,12 @@
       
   
   <dependencies>
+    
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-provider-api</artifactId>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-provider-test</artifactId>
