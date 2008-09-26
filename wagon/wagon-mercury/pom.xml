@@ -195,7 +195,7 @@
                   <include>org.mortbay.jetty:jetty-util</include>
                   <include>org.mortbay.jetty:servlet-api</include>
 
-                  <include>org.codehaus.plexus:plexus-i18n</include>
+                  <include>org.codehaus.plexus:plexus-lang</include>
 
                   <include>org.slf4j:slf4j-api</include>
                   <include>org.slf4j:slf4j-jdk14</include>
