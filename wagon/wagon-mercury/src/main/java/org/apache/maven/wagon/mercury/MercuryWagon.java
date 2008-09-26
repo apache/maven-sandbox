@@ -69,6 +69,7 @@ implements Wagon
   private DefaultDeployer deployer;
   
   private List<TransferEvent> events = new ArrayList<TransferEvent>(8);
+  private String userAgent;
   
   /**
    * 
@@ -177,8 +178,10 @@ implements Wagon
 
     fireGetStarted( resource, destination );
     
+    server.setUserAgent( userAgent );
+    
     pushEvent( new TransferEvent(this, resource, TransferEvent.TRANSFER_PROGRESS, TransferEvent.REQUEST_GET) );
-
+    
     RetrievalResponse response = retriever.retrieve( request );
     
     fireGetCompleted( resource, destination );
@@ -232,6 +235,8 @@ implements Wagon
     request.setBindings( bindings );
 
     firePutStarted( resource, source );
+    
+    server.setUserAgent( userAgent );
     
     pushEvent( new TransferEvent(this, resource, TransferEvent.TRANSFER_PROGRESS, TransferEvent.REQUEST_PUT) );
 
@@ -390,6 +395,11 @@ implements Wagon
     }
     
     return res;
+  }
+  
+  public void setHttpHeaders( Properties httpHeaders )
+  {
+      this.userAgent = httpHeaders.getProperty( "User-Agent", null );
   }
 
 }
