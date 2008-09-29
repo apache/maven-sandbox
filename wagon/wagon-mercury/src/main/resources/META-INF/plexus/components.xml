@@ -43,6 +43,7 @@
         <implementation>org.apache.maven.wagon.mercury.MercuryWagon</implementation>
         <instantiation-strategy>per-lookup</instantiation-strategy>
       </component>
+<!-- 
       <component>
         <role>org.apache.maven.wagon.Wagon</role>
         <role-hint>dav:http</role-hint>
@@ -52,6 +53,19 @@
       <component>
         <role>org.apache.maven.wagon.Wagon</role>
         <role-hint>dav:https</role-hint>
+        <implementation>org.apache.maven.wagon.mercury.MercuryWagon</implementation>
+        <instantiation-strategy>per-lookup</instantiation-strategy>
+      </component>
+ -->
+      <component>
+        <role>org.apache.maven.wagon.Wagon</role>
+        <role-hint>mttp</role-hint>
+        <implementation>org.apache.maven.wagon.mercury.MercuryWagon</implementation>
+        <instantiation-strategy>per-lookup</instantiation-strategy>
+      </component>
+      <component>
+        <role>org.apache.maven.wagon.Wagon</role>
+        <role-hint>mttps</role-hint>
         <implementation>org.apache.maven.wagon.mercury.MercuryWagon</implementation>
         <instantiation-strategy>per-lookup</instantiation-strategy>
       </component>

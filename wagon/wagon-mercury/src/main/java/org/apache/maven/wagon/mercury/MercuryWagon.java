@@ -35,6 +35,8 @@ import org.apache.maven.wagon.Wagon;
 import org.apache.maven.wagon.authentication.AuthenticationException;
 import org.apache.maven.wagon.authorization.AuthorizationException;
 import org.apache.maven.wagon.events.TransferEvent;
+import org.apache.maven.wagon.proxy.ProxyInfo;
+import org.apache.maven.wagon.proxy.ProxyUtils;
 import org.apache.maven.wagon.resource.Resource;
 import org.codehaus.plexus.lang.DefaultLanguage;
 import org.codehaus.plexus.lang.Language;
@@ -60,6 +62,19 @@ implements Wagon
 
   public static final String SYSTEM_PARAMETER_PGP_CONGIG = "maven.mercury.wagon.pgp.config";
   private String pgpConfig = System.getProperty( SYSTEM_PARAMETER_PGP_CONGIG, null );
+  
+  // TODO: Oleg, 2008-09-26: move to mercury-transport-api 
+  public static final String [][] protocolConversions = new String [][]
+                                                                      {
+      {"http:",      "http:"}
+    , {"https:",     "https:"}
+    , {"dav:",       "http:"}
+    , {"davs:",      "https:"}
+    , {"dav:http:",  "http:"}
+    , {"dav:https:", "https:"}
+    , {"mttp:",      "http:"}
+    , {"mttps:",     "https:"}
+                                                                      };
 
   private static final Logger _log = LoggerFactory.getLogger(MercuryWagon.class);
   private static final Language _lang = new DefaultLanguage( MercuryWagon.class );
@@ -76,8 +91,8 @@ implements Wagon
    */
   public MercuryWagon()
   {
-    if(debugTransfer)
-      _log.debug( "MercuryWagon instantiated, repository "+repository);
+    if( _log.isDebugEnabled() )
+      _log.debug( "MercuryWagon instantiated" );
   }
   
   public MercuryWagon( Server server )
@@ -176,9 +191,9 @@ implements Wagon
 
     resource.setLastModified( 0l );
 
-    fireGetStarted( resource, destination );
-    
     server.setUserAgent( userAgent );
+
+    fireGetStarted( resource, destination );
     
     pushEvent( new TransferEvent(this, resource, TransferEvent.TRANSFER_PROGRESS, TransferEvent.REQUEST_GET) );
     
@@ -237,7 +252,7 @@ implements Wagon
     firePutStarted( resource, source );
     
     server.setUserAgent( userAgent );
-    
+
     pushEvent( new TransferEvent(this, resource, TransferEvent.TRANSFER_PROGRESS, TransferEvent.REQUEST_PUT) );
 
     DeployResponse response = deployer.deploy( request );
@@ -262,19 +277,43 @@ implements Wagon
     openConnectionInternal();
   }
   
+  private final String convertProtocol( String pin )
+  throws ConnectionException
+  {
+    for( String [] pc : protocolConversions )
+    {
+      if( pc[0].equals( pin ) )
+        return pc[1];
+    }
+    
+    throw new ConnectionException("bad protocol: "+pin);
+  }
+  
+  @Override
   protected void openConnectionInternal()
   throws ConnectionException, AuthenticationException
   {
-    if(debugTransfer)
+    if( _log.isDebugEnabled() )
       _log.debug( "opening connection to repository "+repository );
 
     try
     {
-      String url = 'h'+repository.getUrl().substring( 1 );
+      String repUrl = repository.getUrl();
+      int index = repUrl.indexOf( '/' );
+      String protocol =  convertProtocol( repUrl.substring( 0, index  ) );
+
+      String theRest = repUrl.substring( index );
+      if( theRest.endsWith( "/" ) )
+        theRest = theRest.substring( 0, theRest.length()-1 );
+
+      String url = protocol + theRest;
+
+      if(_log.isDebugEnabled())
+        _log.debug( "converted url "+repository.getUrl()+" ==> "+url );
 
       Server server = new Server( repository.getId(), new URL( url ) );
-      
-      if( authenticationInfo != null )
+
+      if( authenticationInfo != null && authenticationInfo.getUserName() != null )
       {
         Credentials user = new Credentials( authenticationInfo.getUserName(), authenticationInfo.getPassword() );
         
@@ -284,31 +323,49 @@ implements Wagon
           _log.debug( "user ceredentials: "+user.getUser()+"/..." );
       }
       
-//      ProxyInfo pi = getProxyInfo();
-//      if( pi != null && pi.getHost() != null )
-//      {
-//        if( !ProxyInfo.PROXY_HTTP.equals( pi.getType() ) )
-//        {
-//          throw new ConnectionException( "Mercury wagon does not support "+pi.getType()+" proxies at this point. Only "+ProxyInfo.PROXY_HTTP+" proxy is supported" );
-//        }
-//
-//        server.setProxy( new URL("http://"+pi.getHost()+":"+pi.getPort()) );
-//        
-//        if( pi.getUserName() != null )
-//        {
-//          Credentials proxyUser = new Credentials( pi.getUserName(), pi.getPassword() );
-//          
-//          server.setProxyCredentials( proxyUser );
-//        }
-//      }
       
+      ProxyInfo pi = getProxyInfo("http", getRepository().getHost());
+
+      String httpProxyType = ProxyInfo.PROXY_HTTP.toLowerCase(); 
+
+      if( pi != null && pi.getHost() != null )
+      {
+        String proxyType = pi.getType().toLowerCase();
+        
+        if( !httpProxyType.equals( proxyType ) )
+        {
+          throw new ConnectionException( "Mercury wagon does not support "+proxyType+" proxies at this point. Only "+httpProxyType+" proxy is supported" );
+        }
+
+        server.setProxy( new URL("http://"+pi.getHost()+":" + (pi.getPort()>0 ? pi.getPort() : 80) ) );
+
+        if( pi.getUserName() != null )
+        {
+          Credentials proxyUser = new Credentials( pi.getUserName(), pi.getPassword() );
+          
+          server.setProxyCredentials( proxyUser );
+
+          if(_log.isDebugEnabled())
+            _log.debug( "proxy credentials set to : " + proxyUser.getUser()+"/..." );
+        }
+      }
+
+      if(_log.isDebugEnabled())
+        _log.debug( "proxy url set to : " + server.getProxy() );
+
       init( server );
       
-      if( _log.isDebugEnabled() )
+      if( debugTransfer )
         transferEventSupport.addTransferListener( new TransferEventDebugger() );
     }
-    catch( MalformedURLException e )
+//    catch( MalformedURLException e )
+//    {
+//      throw new ConnectionException( e.getMessage() );
+//    }
+    catch( Throwable e )
     {
+      e.printStackTrace();
+      _log.error( e.getMessage() );
       throw new ConnectionException( e.getMessage() );
     }
   }
@@ -400,6 +457,58 @@ implements Wagon
   public void setHttpHeaders( Properties httpHeaders )
   {
       this.userAgent = httpHeaders.getProperty( "User-Agent", null );
+      
+      if( _log.isDebugEnabled() )
+        _log.debug( "userAgent set to : "+this.userAgent );
+      
   }
+
+  @Override
+  public boolean resourceExists( String resourceName )
+  throws TransferFailedException, AuthorizationException
+  {
+    if( _log.isDebugEnabled() )
+      _log.debug( "check if resourceExists: "+resourceName+" on server "+(server == null ? "null" : server.getURL() ) );
+
+    File temp;
+    try
+    {
+      temp = File.createTempFile( "mercury-", ".temp" );
+    }
+    catch( IOException e )
+    {
+      throw new TransferFailedException( e.getMessage() );
+    }
+    temp.delete();
+    
+    Binding binding = null;
+    
+    try
+    {
+      binding = new Binding( new URL(server.getURL().toString()+'/'+resourceName), temp );
+    }
+    catch( MalformedURLException e )
+    {
+      throw new TransferFailedException( e.getMessage() );
+    }
+    
+    DefaultRetrievalRequest request = new DefaultRetrievalRequest();
+    request.addBinding( binding );
+    
+    server.setUserAgent( userAgent );
+
+    RetrievalResponse response = retriever.retrieve( request );
+    
+    temp.delete();
+    
+    if( response.hasExceptions() )
+    {
+      _log.error( response.getExceptions().toString() );
+      return false;
+    }
+    return true;
+  }
+  
+  
 
 }
