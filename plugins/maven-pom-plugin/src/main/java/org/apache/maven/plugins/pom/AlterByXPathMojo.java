@@ -42,14 +42,16 @@ public class AlterByXPathMojo extends AbstractSingleAlterationMojo
 {
 
 	/**
-	 * @parameter
+	 * @parameter expression="${xpath}"
 	 * @required
+	 * 
 	 */
     private String xpath;
 
     /**
-     * @parameter
+     * @parameter expression="${newValue}"
      * @required
+     * 
      */
     private String newValue;
     
