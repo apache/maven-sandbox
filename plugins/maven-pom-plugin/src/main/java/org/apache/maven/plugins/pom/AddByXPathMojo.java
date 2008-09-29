@@ -42,19 +42,19 @@ public class AddByXPathMojo extends AbstractSingleAlterationMojo
 {
 
 	/**
-	 * @parameter
+	 * @parameter expression="${xpath}"
 	 * @required
 	 */
     private String xpath;
 
     /**
-     * @parameter
+     * @parameter expression="${newElement}"
      * @required
      */
     private String newElement;
     
     /**
-     * @parameter
+     * @parameter expression="${newValue}"
      */
     private String newValue;
     
@@ -62,14 +62,14 @@ public class AddByXPathMojo extends AbstractSingleAlterationMojo
      * setting this boolean to false will allow the mojo to skip altering a field that might not exist in the 
      * target project file.
      * 
-     * @parameter default-value="true"
+     * @parameter expression="${failFast}" default-value="true"
      */
     private boolean failFast;
     
     /**
      * xpath statement that is tested for existance, if it does exist, then skip the execution of this mojo
      * 
-     * @parameter
+     * @parameter expression="${skipXPath}"
      */
     private String skipXPath;
     

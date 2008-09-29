@@ -40,31 +40,30 @@ import org.dom4j.Element;
 public class AlterParentMojo extends AbstractSingleAlterationMojo
 {
     /**
-     * @parameter
+     * @parameter expression="${newParentGroupId}"
      * @required
      */
     String newParentGroupId;
 
     /**
-     * @parameter
+     * @parameter expression="${newParentArtifactId}"
      * @required
      */
     String newParentArtifactId;
 
     /**
-     * @parameter
+     * @parameter expression="${newParentVersion}"
      * @required
      */
     String newParentVersion;
 
     /**
-     * @parameter
-     * @parameter
+     * @parameter expression="${relativePath}"
      */
     String relativePath;
 
     /**
-     * @parameter default-value="false"
+     * @parameter expression="${suppressRelativePath}" default-value="false"
      */
     boolean suppressRelativePath;
 
