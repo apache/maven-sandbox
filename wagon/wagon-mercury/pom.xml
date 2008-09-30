@@ -19,8 +19,9 @@
 
     <nexus-security-enabled>false</nexus-security-enabled>
 
-    <distMgmtSnapshotsName>CI Snapshot Repository</distMgmtSnapshotsName>
-    <distMgmtSnapshotsUrl>http://repository.sonatype.org/content/repositories/maven.snapshots</distMgmtSnapshotsUrl>
+    <distMgmtSnapshotsId>apache.snapshots</distMgmtSnapshotsId>
+    <distMgmtSnapshotsName>Apache Development Snapshot Repository</distMgmtSnapshotsName>
+    <distMgmtSnapshotsUrl>scp://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</distMgmtSnapshotsUrl>
 
     <bundle-expanded-dir>target</bundle-expanded-dir>
     <config-expanded-dir>target/test-nexus-config</config-expanded-dir>
@@ -46,7 +47,7 @@
   
   <distributionManagement>
     <snapshotRepository>
-      <id>sona-maven-snapshots</id>
+      <id>${distMgmtSnapshotsId}</id>
       <name>${distMgmtSnapshotsName}</name>
       <url>${distMgmtSnapshotsUrl}</url>
     </snapshotRepository>
