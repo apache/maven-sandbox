@@ -197,6 +197,8 @@ implements Wagon
     
     pushEvent( new TransferEvent(this, resource, TransferEvent.TRANSFER_PROGRESS, TransferEvent.REQUEST_GET) );
     
+    long start = System.currentTimeMillis();
+    
     RetrievalResponse response = retriever.retrieve( request );
     
     fireGetCompleted( resource, destination );
@@ -208,7 +210,7 @@ implements Wagon
     }
 
     if( _log.isDebugEnabled() )
-      _log.debug("MercuryWagon got "+resourceName+" into "+destination);
+      _log.debug("MercuryWagon got ["+resourceName+" ==> "+destination + "], time " + (System.currentTimeMillis()-start) + " millis");
     
   }
 
@@ -254,6 +256,8 @@ implements Wagon
     server.setUserAgent( userAgent );
 
     pushEvent( new TransferEvent(this, resource, TransferEvent.TRANSFER_PROGRESS, TransferEvent.REQUEST_PUT) );
+    
+    long start = System.currentTimeMillis();
 
     DeployResponse response = deployer.deploy( request );
 
@@ -263,6 +267,9 @@ implements Wagon
     {
       throw new TransferFailedException( response.getExceptions().toString() );
     }
+
+    if( _log.isDebugEnabled() )
+      _log.debug("MercuryWagon put ["+source+" ==> "+destination + "], time " + (System.currentTimeMillis()-start) + " millis");
   }
 
   protected void closeConnection()
