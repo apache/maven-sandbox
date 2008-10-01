@@ -19,11 +19,11 @@ package org.apache.maven.plugins.pom.util;
  * under the License.
  */
 
-import org.apache.commons.collections.Closure;
-import org.dom4j.Element;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.collections.Closure;
+import org.dom4j.Element;
 
 /**
  * Gather the text from a collection of {@link Element}'s into a {@link List}

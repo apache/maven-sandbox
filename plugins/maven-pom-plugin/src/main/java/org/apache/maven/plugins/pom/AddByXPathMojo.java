@@ -20,8 +20,6 @@ package org.apache.maven.plugins.pom;
  */
 
 import java.io.File;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -67,7 +65,7 @@ public class AddByXPathMojo extends AbstractSingleAlterationMojo
     private boolean failFast;
     
     /**
-     * xpath statement that is tested for existance, if it does exist, then skip the execution of this mojo
+     * xpath statement that is tested for existence, if it does exist, then skip the execution of this mojo
      * 
      * @parameter expression="${skipXPath}"
      */

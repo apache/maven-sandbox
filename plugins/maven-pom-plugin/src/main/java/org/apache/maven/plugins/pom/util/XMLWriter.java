@@ -19,11 +19,11 @@ package org.apache.maven.plugins.pom.util;
  * under the License.
  */
 
-import org.dom4j.Document;
-import org.dom4j.io.OutputFormat;
-
 import java.io.IOException;
 import java.io.Writer;
+
+import org.dom4j.Document;
+import org.dom4j.io.OutputFormat;
 
 /**
  * XMLWriter 

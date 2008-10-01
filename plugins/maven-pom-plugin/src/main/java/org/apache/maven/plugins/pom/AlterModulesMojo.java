@@ -22,7 +22,6 @@ package org.apache.maven.plugins.pom;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

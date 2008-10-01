@@ -19,17 +19,6 @@ package org.apache.maven.plugins.pom.util;
  * under the License.
  */
 
-import org.apache.commons.lang.StringUtils;
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.Namespace;
-import org.dom4j.Node;
-import org.dom4j.QName;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,6 +31,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.Node;
+import org.dom4j.QName;
+import org.dom4j.XPath;
+import org.dom4j.io.SAXReader;
 
 /**
  * XMLReader - a set of common xml utility methods for reading content out of an xml file. 
