@@ -63,7 +63,7 @@ public class AlterByXPathMojo extends AbstractSingleAlterationMojo
     
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        if ( xpath == null || newValue == null )
+        if ( xpath == null || newValue == null || projectFile == null )
         {
             getLog().info( "missing required information" );
             return;
