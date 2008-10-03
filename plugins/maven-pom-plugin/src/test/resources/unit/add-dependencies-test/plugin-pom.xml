@@ -23,10 +23,19 @@
       <plugin>
         <artifactId>maven-pom-plugin</artifactId>
         <configuration>
-          <xpath>/project/dependencies/dependency[artifactId[.='commons-collections']]/version</xpath>
-          <newValue>1.1-SNAPSHOT</newValue>
-          <projectFile>${basedir}/target/test-files/unit/alter-by-xpath-test/test-pom.xml</projectFile>
-          <failFast>true</failFast>
+          <dependencies>
+            <dependency>
+              <groupId>foo</groupId>
+              <artifactId>bar</artifactId>
+              <version>1</version>
+            </dependency>
+            <dependency>
+              <groupId>foo</groupId>
+              <artifactId>bar-two</artifactId>
+              <version>1</version>
+            </dependency>
+          </dependencies>
+          <projectFile>${basedir}/target/test-files/unit/add-dependencies-test/test-pom.xml</projectFile>
         </configuration>
       </plugin>
     </plugins>

@@ -29,7 +29,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * Alter a Mojo by the specified elements
  * @author eredmond
  * 
- * @goal alter
+ * @goal alter-mojo
  * @phase process-resources
  */
 public class AlterMojo extends AbstractMultipleAlterationMojo

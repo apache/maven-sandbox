@@ -1,0 +1,23 @@
+<project>
+  <dependencies>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2</version>
+    </dependency>
+    <dependency>
+      <groupId>foo</groupId>
+      <artifactId>bar</artifactId>
+      <version>3.2</version>
+    </dependency>
+  </dependencies>
+  <dependencyManagement>
+    <dependencies>
+    <dependency>
+      <groupId>foo</groupId>
+      <artifactId>bar-two</artifactId>
+      <version>3.2</version>
+    </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>
