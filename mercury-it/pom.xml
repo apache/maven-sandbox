@@ -3,10 +3,10 @@
   <parent>
     <groupId>org.apache.maven.mercury</groupId>
     <artifactId>mercury-pom</artifactId>
-    <version>1-alpha-1-SNAPSHOT</version>
+    <version>1-alpha-1</version>
   </parent>
   <artifactId>mercury-it</artifactId>
-  <version>1.0.0-alpha-1-SNAPSHOT</version>
+  <version>1.0.0-alpha-1</version>
   <name>Mercury Integration Tests:      ${project.version}</name>
   <description>Mercury Integration Tests</description>
 
@@ -14,7 +14,7 @@
     <plexus.appbooter.version>1.4</plexus.appbooter.version>
     <plexus.container.version>1.0-alpha-47</plexus.container.version>
     <nexus.version>1.0.1</nexus.version>
-    <nexus.client.version>1.1.0-SNAPSHOT</nexus.client.version>
+    <nexus.client.version>1.1-M1</nexus.client.version>
     <jetty.version>6.1.12.rc2</jetty.version>
 
     <nexus-security-enabled>true</nexus-security-enabled>
