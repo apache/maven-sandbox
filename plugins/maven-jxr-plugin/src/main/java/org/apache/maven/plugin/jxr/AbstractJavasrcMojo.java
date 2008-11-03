@@ -81,9 +81,10 @@ public abstract class AbstractJavasrcMojo
     private String bottom;
 
     /**
-     * Specifies the encoding of the generated HTML files.
+     * Specifies the encoding of the generated HTML files. If not specificed, the docencoding value will be
+     * <code>UTF-8</code>.
      *
-     * @parameter expression="${docencoding}" default-value="ISO-8859-1"
+     * @parameter expression="${docencoding}" default-value="${project.reporting.outputEncoding}"
      */
     private String docencoding;
 
@@ -158,6 +159,14 @@ public abstract class AbstractJavasrcMojo
     private String windowTitle;
 
     /**
+     * @return the docencoding attribute or <code>UTF-8</code> if <code>null</code>.
+     */
+    private String getDocencoding()
+    {
+        return ( StringUtils.isEmpty( docencoding ) ) ? ReaderFactory.UTF_8 : docencoding;
+    }
+
+    /**
      * Execute the <code>JavaSrc</code>.
      *
      * @throws IOException if any
@@ -172,10 +181,7 @@ public abstract class AbstractJavasrcMojo
         {
             options.setBottom( getBottomText() );
         }
-        if ( StringUtils.isNotEmpty( this.docencoding ) )
-        {
-            options.setDocencoding( this.docencoding );
-        }
+        options.setDocencoding( getDocencoding() );
         if ( StringUtils.isNotEmpty( this.doctitle ) )
         {
             options.setDoctitle( this.doctitle );
