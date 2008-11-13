@@ -26,16 +26,19 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.interpolation.EnvarBasedValueSource;
+import org.codehaus.plexus.util.interpolation.PropertiesBasedValueSource;
 import org.codehaus.plexus.util.interpolation.RegexBasedInterpolator;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author jdcasey
@@ -104,6 +107,8 @@ public class DefaultMavenSettingsBuilder
                 try
                 {
                     RegexBasedInterpolator interpolator = new RegexBasedInterpolator();
+            
+                    interpolator.addValueSource( new PropertiesBasedValueSource(loadSettingsProperties(settingsFile.getParentFile())));
                     interpolator.addValueSource( new EnvarBasedValueSource() );
 
                     rawInput = interpolator.interpolate( rawInput, "settings" );
@@ -134,6 +139,32 @@ public class DefaultMavenSettingsBuilder
         }
 
         return settings;
+    }
+
+    private Properties loadSettingsProperties(File parent)
+    {
+        Properties props = new Properties();
+        File settings = new File(parent, "settings.properties");
+        if (settings.exists())
+        {
+            getLogger().debug("Loading settings properties from "+settings.getAbsolutePath());
+            FileInputStream fin = null;
+            try
+            {
+                fin = new FileInputStream(settings);
+                props.load(fin);
+            }
+            catch (IOException ex)
+            {
+                getLogger().warn("Error reading settings.properties: "+ex.getMessage());
+                getLogger().debug("Exception when loading settings properties", ex);
+            }
+            finally
+            {
+                IOUtil.close(fin);
+            }
+        }
+        return props;
     }
 
     public Settings buildSettings()
