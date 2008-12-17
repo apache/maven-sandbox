@@ -18,8 +18,8 @@
 	<script type="text/javascript">_uacct = "UA-140879-1";urchinTracker();</script>
   </head>
   <body>
-h1.Issues sorted by votes
-    <table>
+    <h1>Issues sorted by votes</h1>
+    <table width="90%">
 	  <tr>
 		<th>Votes</th>
 		<th>Key</th>
@@ -27,8 +27,8 @@ h1.Issues sorted by votes
 	  </tr>
       #foreach ( $issue in $issues.descending("votes") )
 	  <tr>
-		<td><a href="http://jira.codehaus.org/browse/$issue.votes">$issue.votes</a></td>
-		<td>$issue.key</td>
+		<td>$issue.votes</td>
+		<td><a href="http://jira.codehaus.org/browse/$issue.key">$issue.key</a></td>
 		<td>$issue.summary</td>
 	  </tr>
       #end
