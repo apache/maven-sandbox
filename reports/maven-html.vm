@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+#set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
+#set( $project = $jira.getProject( "MNG" ) )        
+#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&reset=true&mode=hide&pid=${project.id}&resolution=-1&sorter/field=updated&sorter/order=DESC" ) 
+#set( $jirarss = $rss.fetch( $url ) )
+#set( $issues = $jirarss.issues )
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Maven Votes Report</title>
+    <style type="text/css" media="all">
+      @import url("http://maven.apache.org/css/maven-base.css");
+      @import url("http://maven.apache.org/css/maven-theme.css");
+      @import url("http://maven.apache.org/css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />                                                
+    <script type="text/javascript" src="http://www.google-analytics.com/urchin.js"></script>
+	<script type="text/javascript">_uacct = "UA-140879-1";urchinTracker();</script>
+  </head>
+  <body>
+h1.Issues sorted by votes
+    <table>
+	  <tr>
+		<th>Votes</th>
+		<th>Key</th>
+		<th>Summary</th>
+	  </tr>
+      #foreach ( $issue in $issues.descending("votes") )
+	  <tr>
+		<td><a href="http://jira.codehaus.org/browse/$issue.votes">$issue.votes</a></td>
+		<td>$issue.key</td>
+		<td>$issue.summary</td>
+	  </tr>
+      #end
+	</table>
+  </body>
+</html>
