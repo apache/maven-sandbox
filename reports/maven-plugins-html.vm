@@ -1,12 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 #set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
-#set( $project = $jira.getProject( "MNG" ) )        
-#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&reset=true&mode=hide&pid=${project.id}&resolution=-1&sorter/field=updated&sorter/order=DESC" ) 
-#set( $jirarss = $rss.fetch( $url ) )
-#set( $issues = $jirarss.issues )
+#set( $projects = $jira.getProjects().matches("name", "Maven 2.*Plugin") )
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Maven Votes Report</title>
+    <title>Maven Plugins Votes Report</title>
     <style type="text/css" media="all">
       @import url("http://maven.apache.org/css/maven-base.css");
       @import url("http://maven.apache.org/css/maven-theme.css");
@@ -16,20 +13,31 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />                                                
   </head>
   <body>
-    <h1>Issues sorted by votes</h1>
+
+	#foreach( $project in $projects )
+	#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&&pid=${project.id}&status=1&sorter/field=issuekey&sorter/order=DESC&tempMax=100&reset=true&decorator=none" )
+	#set( $jirarss = $rss.fetch( $url ) )
+	#set( $project.attributes.totalVotes = $jirarss.issues.sum("votes") )
+	## keep the issues in case you want them later
+	#set( $project.attributes.issues = $jirarss.issues )
+	#end
+
+	#foreach( $project in $projects.descending("@totalVotes") )
+    <h1>$project.attributes.totalVotes  $project.name</h1>
     <table width="90%">
-	  <tr>
+      <tr>
 		<th>Votes</th>
 		<th>Key</th>
 		<th>Summary</th>
 	  </tr>
-      #foreach ( $issue in $issues.descending("votes") )
-	  <tr>
+	  #foreach( $issue in $project.attributes.issues.descending("votes") )
+  	  <tr>
 		<td>$issue.votes</td>
 		<td><a href="http://jira.codehaus.org/browse/$issue.key">$issue.key</a></td>
 		<td>$issue.summary</td>
 	  </tr>
-      #end
-	</table>
+	  #end
+    </table>
+	#end
   </body>
 </html>

@@ -6,3 +6,4 @@ export JAVA_OPTS="-ms32m -mx256m"
 export JAVA="$JAVA_CMD $JAVA_OPTS"           
 
 $JAVA -jar swizzle-jirareport-1.2.3-SNAPSHOT-dep.jar maven-plugins.vm > $1/plugin-votes.txt
+$JAVA -jar swizzle-jirareport-1.2.3-SNAPSHOT-dep.jar maven-plugins-html.vm > $1/plugin-votes.html
