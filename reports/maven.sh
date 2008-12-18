@@ -23,9 +23,9 @@ fi
 
 export JAVA_CMD=$JAVA_HOME/bin/java
 export JAVA_OPTS="-ms32m -mx256m"
-export JAVA="$JAVA_CMD $JAVA_OPTS"
+export CMD="$JAVA_CMD $JAVA_OPTS -jar swizzle-jirareport-1.2.3-SNAPSHOT-dep.jar"
 
-$JAVA -jar swizzle-jirareport-1.2.3-SNAPSHOT-dep.jar maven.vm -DentityExpansionLimit=500000 > $OUTPUTDIR/maven-votes.txt
-$JAVA -jar swizzle-jirareport-1.2.3-SNAPSHOT-dep.jar maven-html.vm -DentityExpansionLimit=500000 > $OUTPUTDIR/maven-votes.html
+$CMD maven.vm -DentityExpansionLimit=500000 > $OUTPUTDIR/maven-votes.txt
+$CMD maven-html.vm -DentityExpansionLimit=500000 > $OUTPUTDIR/maven-votes.html
 
 exit 0
