@@ -13,7 +13,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />                                                
   </head>
   <body>
-
 	#foreach( $project in $projects )
 	#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&&pid=${project.id}&status=1&sorter/field=issuekey&sorter/order=DESC&tempMax=100&reset=true&decorator=none" )
 	#set( $jirarss = $rss.fetch( $url ) )
@@ -21,10 +20,24 @@
 	## keep the issues in case you want them later
 	#set( $project.attributes.issues = $jirarss.issues )
 	#end
-
+	<h1>Plugins overview</h1>
+	<p>Maven plugins opened issues on Jira sorted by descending vote count</p>
+    <table width="90%" align="center">
+      <tr>
+		<th>Plugin</th>
+		<th>Number of votes</th>
+	  </tr>
 	#foreach( $project in $projects.descending("@totalVotes") )
-    <h1>$project.attributes.totalVotes  $project.name</h1>
-    <table width="90%">
+	  <tr>
+		<td><a href="#$project.name">$project.name</a></td>
+		<td>$project.attributes.totalVotes</td>
+	  </tr>
+	#end
+    </table>
+    <h1>Plugins details</h1>
+	#foreach( $project in $projects.descending("@totalVotes") ) 
+    <a name="$project.name"/><h2>$project.attributes.totalVotes  $project.name</h2>
+    <table width="90%" align="center">
       <tr>
 		<th>Votes</th>
 		<th>Key</th>

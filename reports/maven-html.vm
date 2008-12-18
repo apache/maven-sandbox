@@ -6,7 +6,7 @@
 #set( $issues = $jirarss.issues )
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Maven Votes Report</title>
+    <title>MNG Votes on Jira Report</title>
     <style type="text/css" media="all">
       @import url("http://maven.apache.org/css/maven-base.css");
       @import url("http://maven.apache.org/css/maven-theme.css");
@@ -16,8 +16,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />                                                
   </head>
   <body>
-    <h1>Issues sorted by votes</h1>
-    <table width="90%">
+    <h1><a href="http://jira.codehaus.org/browse/MNG">Maven 2 Issues on Jira</a> sorted by descending vote count</h1>
+    <table width="90%" align="center">
 	  <tr>
 		<th>Votes</th>
 		<th>Key</th>

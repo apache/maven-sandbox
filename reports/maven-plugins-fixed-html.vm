@@ -23,7 +23,7 @@
     #end
     #foreach( $project in $projects.descending("@totalVotes") )
     <h1>$project.attributes.totalVotes  $project.name</h1>
-    <table width="90%">
+    <table width="90%" align="center">
       <tr>
 		<th>Votes</th>
 		<th>Key</th>
