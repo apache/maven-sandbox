@@ -3,7 +3,7 @@
 #set( $projects = $jira.getProjects().matches("name", "Maven 2.*Plugin") )
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Maven Plugins Votes Report</title>
+    <title>Number of votes on opened issues for Maven plugins</title>
     <style type="text/css" media="all">
       @import url("http://maven.apache.org/css/maven-base.css");
       @import url("http://maven.apache.org/css/maven-theme.css");
@@ -21,7 +21,7 @@
 	#set( $project.attributes.issues = $jirarss.issues )
 	#end
 	<h1>Plugins overview</h1>
-	<p>Maven plugins opened issues on Jira sorted by descending vote count</p>
+	<p>Number of votes on opened issues for Maven plugins sorted by descending votes count</p>
     <table width="90%" align="center">
       <tr>
 		<th>Plugin</th>
