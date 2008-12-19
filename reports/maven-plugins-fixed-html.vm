@@ -3,8 +3,40 @@
 #set( $projects = $jira.getProjects().matches("name", "Maven 2.*Plugin") )
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Maven Plugins Votes Report</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />                                                
+    <title>Maven plugins - report on fixed issues</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<style type="text/css">
+	<!--
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+	}
+	th {
+		color: #FFFFFF;
+		background-color: #333333;
+		padding: 5px;
+	}
+	td {
+		background-color: #CCCCCC;
+		padding: 3px;
+	}
+	table {
+	}
+	a:link {
+		color: #003333;
+		text-decoration: none;
+	}
+	a:visited {
+		color: #003333;
+		text-decoration: none;
+	}
+	a:hover {
+		color: #0033CC;
+	}
+	a:active {
+		color: #0033CC;
+	}
+	-->
+	</style>                                                                                           
   </head>
   <body>
     #foreach( $project in $projects )
@@ -14,12 +46,11 @@
     ## keep the issues in case you want them later
     #set( $project.attributes.issues = $jirarss.issues )
     #end
-	<h1>Plugins overview</h1>
-	<p>Plugins with issues that are fixed but unreleased, by descending vote count</p>
-    <table align="center">
+	<h1>Report on fixed issues for unreleased Maven plugins</h1>
+    <table>
       <tr>
 		<th>Plugin</th>
-		<th>Number of votes</th>
+		<th>Number of votes on fixed issues</th>
 	  </tr>
 	#foreach( $project in $projects.descending("@totalVotes") )
 	  <tr>
@@ -28,11 +59,10 @@
 	  </tr>
 	#end
     </table>
-    <h1>Plugins details</h1>
     #foreach( $project in $projects.descending("@totalVotes") )
-    <a name="$project.name"/><h2>$project.name</h2>
-    <p>$project.attributes.totalVotes votes</p>
-    <table align="center">
+    <a name="$project.name"/><h1><a href="http://jira.codehaus.org/browse/$project.key">$project.name</a></h1>
+    <p>$project.attributes.totalVotes votes for $project.attributes.issues.size() fixed issues</p>
+    <table>
       <tr>
 		<th>Votes</th>
 		<th>Key</th>

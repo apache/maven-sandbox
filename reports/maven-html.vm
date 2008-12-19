@@ -6,12 +6,44 @@
 #set( $issues = $jirarss.issues )
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>MNG Votes on Jira Report</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />                                                
+    <title>Votes on MNG issues in Jira</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<style type="text/css">
+	<!--
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+	}
+	th {
+		color: #FFFFFF;
+		background-color: #333333;
+		padding: 5px;
+	}
+	td {
+		background-color: #CCCCCC;
+		padding: 3px;
+	}
+	table {
+	}
+	a:link {
+		color: #003333;
+		text-decoration: none;
+	}
+	a:visited {
+		color: #003333;
+		text-decoration: none;
+	}
+	a:hover {
+		color: #0033CC;
+	}
+	a:active {
+		color: #0033CC;
+	}
+	-->
+	</style>                                                                                          
   </head>
   <body>
-    <h1><a href="http://jira.codehaus.org/browse/MNG">Maven 2 Issues on Jira</a> sorted by descending vote count</h1>
-    <table align="center">
+    <h1><a href="http://jira.codehaus.org/browse/MNG">Votes on MNG issues in Jira</a> sorted by descending vote count</h1>
+    <table>
 	  <tr>
 		<th>Votes</th>
 		<th>Key</th>
