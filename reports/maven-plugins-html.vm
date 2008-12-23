@@ -1,6 +1,4 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-#set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
-#set( $projects = $jira.getProjects().matches("name", "Maven 2.*Plugin") )
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>Maven plugins - report on open issues</title>
@@ -39,23 +37,28 @@
 	</style>                                           
   </head>
   <body>
+	#set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
+	#set( $projects = $jira.getProjects().matches("name", "Maven 2.*Plugin") )
 	#foreach( $project in $projects )
-	#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&&pid=${project.id}&status=1&sorter/field=issuekey&sorter/order=DESC&tempMax=100&reset=true&decorator=none" )
-	#set( $jirarss = $rss.fetch( $url ) )
-	#set( $project.attributes.totalVotes = $jirarss.issues.sum("votes") )
-	## keep the issues in case you want them later
-	#set( $project.attributes.issues = $jirarss.issues )
+      #set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&&pid=${project.id}&status=1&sorter/field=issuekey&sorter/order=DESC&tempMax=300&reset=true&decorator=none&type=-2" )
+	  #set( $jirarss = $rss.fetch( $url ) )
+	  #set( $project.attributes.totalVotes = $jirarss.issues.sum("votes") )
+	  ## keep the issues in case you want them later
+	  #set( $project.attributes.issues = $jirarss.issues )
 	#end
 	<h1>Report on open issues for Maven plugins</h1>
+	<p>Last Published : $date.format("EEE MMM dd HH:mm:ss z yyyy")</p>
     <table>
       <tr>
 		<th>Plugin</th>
+		<th>Number of open issues</th>		
 		<th>Number of votes on open issues</th>
 	  </tr>
 	#foreach( $project in $projects.descending("@totalVotes") )
 	  <tr>
 		<td><a href="#$project.name">$project.name</a></td>
-		<td>$project.attributes.totalVotes</td>
+		<td>$project.attributes.issues.size()</td>
+		<td>$project.attributes.totalVotes</td>		
 	  </tr>
 	#end
     </table>
@@ -64,15 +67,32 @@
     <p>$project.attributes.totalVotes votes for $project.attributes.issues.size() open issues.</p>
     <table>
       <tr>
-		<th>Votes</th>
+	    <th>&nbsp;</th>
 		<th>Key</th>
 		<th>Summary</th>
+		<th>Votes</th>
+		<th>Patch ?</th>
+		<th>Testcase ?</th>
 	  </tr>
 	  #foreach( $issue in $project.attributes.issues.descending("votes") )
+	  #set ( $fullIssue = $jira.getIssue($issue.key) )
   	  <tr>
-		<td>$issue.votes</td>
+	    <td><img src="$jira.getIssueType($issue.type.id).icon" alt="$issue.type.name"/></td>
 		<td><a href="http://jira.codehaus.org/browse/$issue.key">$issue.key</a></td>
 		<td>$issue.summary</td>
+		<td>$issue.votes</td>
+		<td>#if ($fullIssue.customFieldValues.matches("customfieldId","customfield_10170").size()>0) 
+			X
+			#else
+			&nbsp;
+			#end
+		</td>
+		<td>#if ($fullIssue.customFieldValues.matches("customfieldId","customfield_10110").size()>0)
+			X
+			#else
+			&nbsp;
+			#end
+		</td>
 	  </tr>
 	  #end
     </table>

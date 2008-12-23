@@ -1,9 +1,4 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-#set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
-#set( $project = $jira.getProject( "MNG" ) )        
-#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&reset=true&mode=hide&pid=${project.id}&resolution=-1&sorter/field=updated&sorter/order=DESC" ) 
-#set( $jirarss = $rss.fetch( $url ) )
-#set( $issues = $jirarss.issues )
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>Votes on MNG issues in Jira</title>
@@ -42,18 +37,42 @@
 	</style>                                                                                          
   </head>
   <body>
+	#set( $jira = $xmlrpc.connect("swizzletester:swizzle","http://jira.codehaus.org/rpc/xmlrpc") )
+	#set( $project = $jira.getProject( "MNG" ) )        
+	#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&reset=true&mode=hide&pid=${project.id}&resolution=-1&sorter/field=updated&sorter/order=DESC&type=-2" ) 
+	#set( $jirarss = $rss.fetch( $url ) )
+	#set( $issues = $jirarss.issues )	
     <h1><a href="http://jira.codehaus.org/browse/MNG">Votes on MNG issues in Jira</a> sorted by descending vote count</h1>
+	<p>Last Published : $date.format("EEE MMM dd HH:mm:ss z yyyy")</p>
+    <p>$jirarss.issues.sum("votes") votes for $jirarss.issues.size() open issues.</p>	
     <table>
 	  <tr>
-		<th>Votes</th>
+	    <th>&nbsp;</th>
 		<th>Key</th>
 		<th>Summary</th>
+		<th>Votes</th>
+		<th>Patch ?</th>
+		<th>Testcase ?</th>
 	  </tr>
       #foreach ( $issue in $issues.descending("votes") )
+	  #set ( $fullIssue = $jira.getIssue($issue.key) )
 	  <tr>
-		<td>$issue.votes</td>
+	    <td><img src="$jira.getIssueType($issue.type.id).icon" alt="$issue.type.name"/></td>
 		<td><a href="http://jira.codehaus.org/browse/$issue.key">$issue.key</a></td>
 		<td>$issue.summary</td>
+		<td>$issue.votes</td>
+		<td>#if ($fullIssue.customFieldValues.matches("customfieldId","customfield_10170").size()>0) 
+			X
+			#else
+			&nbsp;
+			#end
+		</td>
+		<td>#if ($fullIssue.customFieldValues.matches("customfieldId","customfield_10110").size()>0)
+			X
+			#else
+			&nbsp;
+			#end
+		</td>
 	  </tr>
       #end
 	</table>
