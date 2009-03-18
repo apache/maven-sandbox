@@ -19,6 +19,7 @@ package org.apache.maven.scm.provider.svn.svnjava.command.tag;
  * under the License.
  */
 
+import org.apache.maven.scm.ScmBranch;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
@@ -89,7 +90,7 @@ public class SvnTagCommand
         try
         {
             SVNURL destURL = SVNURL.parseURIEncoded( SvnTagBranchUtils.resolveTagUrl( repository, new ScmTag( tag ) ) );
-
+            
             SVNCommitInfo info = SvnJavaUtil
                 .copy( javaRepo.getClientManager(), javaRepo.getSvnUrl(), destURL, false, "[maven-scm] copy for tag "
                     + tag, scmTagParameters.getScmRevision() );
