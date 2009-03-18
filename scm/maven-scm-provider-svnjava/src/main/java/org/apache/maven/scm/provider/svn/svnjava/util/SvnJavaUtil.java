@@ -355,51 +355,65 @@ public final class SvnJavaUtil
                                                   isCollectParentExternals, handler );
     }
 
+
     /*
-    * Duplicates srcURL to dstURL (URL->URL)in a repository remembering history.
-    * Like 'svn copy srcURL dstURL -m "some comment"' command. It's done by
-    * invoking
-    *
-    * doCopy(SVNURL srcURL, SVNRevision srcRevision, SVNURL dstURL,
-    * boolean isMove, String commitMessage)
-    *
-    * which takes the following parameters:
-    *
-    * srcURL - a source URL that is to be copied;
-    *
-    * srcRevision - a definite revision of srcURL
-    *
-    * dstURL - a URL where srcURL will be copied; if srcURL & dstURL are both
-    * directories then there are two cases:
-    * a) dstURL already exists - then doCopy(..) will duplicate the entire source
-    * directory and put it inside dstURL (for example,
-    * consider srcURL = svn://localhost/rep/MyRepos,
-    * dstURL = svn://localhost/rep/MyReposCopy, in this case if doCopy(..) succeeds
-    * MyRepos will be in MyReposCopy - svn://localhost/rep/MyReposCopy/MyRepos);
-    * b) dstURL doesn't exist yet - then doCopy(..) will create a directory and
-    * recursively copy entries from srcURL into dstURL (for example, consider the same
-    * srcURL = svn://localhost/rep/MyRepos, dstURL = svn://localhost/rep/MyReposCopy,
-    * in this case if doCopy(..) succeeds MyRepos entries will be in MyReposCopy, like:
-    * svn://localhost/rep/MyRepos/Dir1 -> svn://localhost/rep/MyReposCopy/Dir1...);
-    *
-    * isMove - if false then srcURL is only copied to dstURL what
-    * corresponds to 'svn copy srcURL dstURL -m "some comment"'; but if it's true then
-    * srcURL will be copied and deleted - 'svn move srcURL dstURL -m "some comment"';
-    *
-    * commitMessage - a commit log message since URL->URL copying is immediately
-    * committed to a repository.
-    */
-    public static SVNCommitInfo copy( SVNClientManager clientManager, SVNURL srcURL, SVNURL dstURL,
-                                      boolean isMove, String commitMessage )
+     * Duplicates srcURL to dstURL (URL->URL)in a repository remembering history.
+     * Like 'svn copy srcURL dstURL -m "some comment"' command. It's done by
+     * invoking
+     *
+     * doCopy(SVNURL srcURL, SVNRevision srcRevision, SVNURL dstURL,
+     * boolean isMove, String commitMessage)
+     *
+     * which takes the following parameters:
+     *
+     * srcURL - a source URL that is to be copied;
+     *
+     * srcRevision - a definite revision of srcURL
+     *
+     * dstURL - a URL where srcURL will be copied; if srcURL & dstURL are both
+     * directories then there are two cases:
+     * a) dstURL already exists - then doCopy(..) will duplicate the entire source
+     * directory and put it inside dstURL (for example,
+     * consider srcURL = svn://localhost/rep/MyRepos,
+     * dstURL = svn://localhost/rep/MyReposCopy, in this case if doCopy(..) succeeds
+     * MyRepos will be in MyReposCopy - svn://localhost/rep/MyReposCopy/MyRepos);
+     * b) dstURL doesn't exist yet - then doCopy(..) will create a directory and
+     * recursively copy entries from srcURL into dstURL (for example, consider the same
+     * srcURL = svn://localhost/rep/MyRepos, dstURL = svn://localhost/rep/MyReposCopy,
+     * in this case if doCopy(..) succeeds MyRepos entries will be in MyReposCopy, like:
+     * svn://localhost/rep/MyRepos/Dir1 -> svn://localhost/rep/MyReposCopy/Dir1...);
+     *
+     * isMove - if false then srcURL is only copied to dstURL what
+     * corresponds to 'svn copy srcURL dstURL -m "some comment"'; but if it's true then
+     * srcURL will be copied and deleted - 'svn move srcURL dstURL -m "some comment"';
+     *
+     * commitMessage - a commit log message since URL->URL copying is immediately
+     * committed to a repository.
+     * 
+     * revision the revision to use if null SVNRevision.HEAD will be used
+     * 
+     */
+    public static SVNCommitInfo copy( SVNClientManager clientManager, SVNURL srcURL, SVNURL dstURL, boolean isMove,
+                                      String commitMessage, String revision )
         throws SVNException
     {
+
+        SVNRevision svnRevision = null;
+        if ( revision == null )
+        {
+            svnRevision = SVNRevision.HEAD;
+        }
+        else
+        {
+            svnRevision = SVNRevision.create( Long.parseLong( revision ) );
+        }
         /*
          * SVNRevision.HEAD means the latest revision.
          * Returns SVNCommitInfo containing information on the new revision committed
          * (revision number, etc.)
          */
-        return clientManager.getCopyClient().doCopy( srcURL, SVNRevision.HEAD, dstURL, isMove, commitMessage );
-    }
+        return clientManager.getCopyClient().doCopy( srcURL, svnRevision, dstURL, isMove, commitMessage );
+    }    
 
     public static ByteArrayOutputStream diff( SVNClientManager clientManager, File baseDir,
                                               SVNRevision startRevision, SVNRevision endRevision )

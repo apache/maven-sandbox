@@ -25,6 +25,7 @@ import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.ScmFileStatus;
 import org.apache.maven.scm.ScmResult;
 import org.apache.maven.scm.ScmTag;
+import org.apache.maven.scm.ScmTagParameters;
 import org.apache.maven.scm.command.tag.AbstractTagCommand;
 import org.apache.maven.scm.command.tag.TagScmResult;
 import org.apache.maven.scm.provider.ScmProviderRepository;
@@ -59,6 +60,13 @@ public class SvnTagCommand
                                            String message )
         throws ScmException
     {
+        return executeTagCommand( repo, fileSet, tag, new ScmTagParameters(message) );
+    }
+
+    protected ScmResult executeTagCommand( ScmProviderRepository repo, ScmFileSet fileSet, String tag,
+                                           ScmTagParameters scmTagParameters )
+        throws ScmException
+    {
         if ( tag == null )
         {
             throw new ScmException( "tag must be specified" );
@@ -80,17 +88,16 @@ public class SvnTagCommand
 
         try
         {
-            SVNURL destURL =
-                SVNURL.parseURIEncoded( SvnTagBranchUtils.resolveTagUrl( repository, new ScmTag( tag ) ) );
+            SVNURL destURL = SVNURL.parseURIEncoded( SvnTagBranchUtils.resolveTagUrl( repository, new ScmTag( tag ) ) );
 
-            SVNCommitInfo info =
-                SvnJavaUtil.copy( javaRepo.getClientManager(), javaRepo.getSvnUrl(), destURL, false,
-                                  "[maven-scm] copy for tag " + tag );
+            SVNCommitInfo info = SvnJavaUtil
+                .copy( javaRepo.getClientManager(), javaRepo.getSvnUrl(), destURL, false, "[maven-scm] copy for tag "
+                    + tag, scmTagParameters.getScmRevision() );
 
             if ( info.getError() != null )
             {
-                return new TagScmResult( SvnJavaScmProvider.COMMAND_LINE, "SVN tag failed.",
-                                         info.getError().getMessage(), false );
+                return new TagScmResult( SvnJavaScmProvider.COMMAND_LINE, "SVN tag failed.", info.getError()
+                    .getMessage(), false );
             }
 
             // The copy command doesn't return a list of files that were tagged,
@@ -119,4 +126,5 @@ public class SvnTagCommand
             return new TagScmResult( SvnJavaScmProvider.COMMAND_LINE, "SVN tag failed.", e.getMessage(), false );
         }
     }
+   
 }

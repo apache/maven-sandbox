@@ -23,9 +23,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>maven-scm-providers-svn</artifactId>
     <groupId>org.apache.maven.scm</groupId>
-    <version>1.1.1-SNAPSHOT</version>
+    <artifactId>maven-scm-providers-svn</artifactId>
+    <version>1.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>maven-scm-provider-svnjava</artifactId>
