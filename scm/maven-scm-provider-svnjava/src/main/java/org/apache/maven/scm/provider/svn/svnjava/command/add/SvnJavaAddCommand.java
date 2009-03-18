@@ -45,7 +45,7 @@ import java.util.List;
  * @author <a href="mailto:dh-maven@famhq.com">David Hawkins</a>
  * @version $Id$
  */
-public class SvnAddCommand
+public class SvnJavaAddCommand
     extends AbstractAddCommand
     implements SvnCommand
 {

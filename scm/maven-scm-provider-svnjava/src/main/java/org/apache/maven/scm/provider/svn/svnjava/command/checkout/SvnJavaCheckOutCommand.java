@@ -41,7 +41,7 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
  * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public class SvnCheckOutCommand
+public class SvnJavaCheckOutCommand
     extends AbstractCheckOutCommand
     implements SvnCommand
 {

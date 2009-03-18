@@ -31,7 +31,7 @@ import org.apache.maven.scm.provider.svn.SvnTagBranchUtils;
 import org.apache.maven.scm.provider.svn.command.SvnCommand;
 import org.apache.maven.scm.provider.svn.repository.SvnScmProviderRepository;
 import org.apache.maven.scm.provider.svn.svnjava.SvnJavaScmProvider;
-import org.apache.maven.scm.provider.svn.svnjava.command.changelog.SvnChangeLogCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.changelog.SvnJavaChangeLogCommand;
 import org.apache.maven.scm.provider.svn.svnjava.repository.SvnJavaScmProviderRepository;
 import org.apache.maven.scm.provider.svn.svnjava.util.ScmFileEventHandler;
 import org.apache.maven.scm.provider.svn.svnjava.util.SvnJavaUtil;
@@ -43,7 +43,7 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
  * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public class SvnUpdateCommand
+public class SvnJavaUpdateCommand
     extends AbstractUpdateCommand
     implements SvnCommand
 {
@@ -101,7 +101,7 @@ public class SvnUpdateCommand
     /** {@inheritDoc} */
     protected ChangeLogCommand getChangeLogCommand()
     {
-        SvnChangeLogCommand command = new SvnChangeLogCommand();
+        SvnJavaChangeLogCommand command = new SvnJavaChangeLogCommand();
 
         command.setLogger( getLogger() );
 

@@ -49,7 +49,7 @@ import java.util.List;
  * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public class SvnChangeLogCommand
+public class SvnJavaChangeLogCommand
     extends AbstractChangeLogCommand
     implements SvnCommand
 {

@@ -19,19 +19,25 @@ package org.apache.maven.scm.provider.svn.svnjava;
  * under the License.
  */
 
+import java.io.File;
+import java.net.URI;
+import java.util.Collections;
+
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.provider.ScmProviderRepository;
 import org.apache.maven.scm.provider.svn.AbstractSvnScmProvider;
 import org.apache.maven.scm.provider.svn.command.SvnCommand;
-import org.apache.maven.scm.provider.svn.svnjava.command.add.SvnAddCommand;
-import org.apache.maven.scm.provider.svn.svnjava.command.changelog.SvnChangeLogCommand;
-import org.apache.maven.scm.provider.svn.svnjava.command.checkin.SvnCheckInCommand;
-import org.apache.maven.scm.provider.svn.svnjava.command.checkout.SvnCheckOutCommand;
-import org.apache.maven.scm.provider.svn.svnjava.command.diff.SvnDiffCommand;
-import org.apache.maven.scm.provider.svn.svnjava.command.remove.SvnRemoveCommand;
-import org.apache.maven.scm.provider.svn.svnjava.command.status.SvnStatusCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.add.SvnJavaAddCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.branch.SvnJavaBranchCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.changelog.SvnJavaChangeLogCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.checkin.SvnJavaCheckInCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.checkout.SvnJavaCheckOutCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.diff.SvnJavaDiffCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.export.SvnJavaExportCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.remove.SvnJavaRemoveCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.status.SvnJavaStatusCommand;
 import org.apache.maven.scm.provider.svn.svnjava.command.tag.SvnTagCommand;
-import org.apache.maven.scm.provider.svn.svnjava.command.update.SvnUpdateCommand;
+import org.apache.maven.scm.provider.svn.svnjava.command.update.SvnJavaUpdateCommand;
 import org.apache.maven.scm.provider.svn.svnjava.repository.SvnJavaScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
 import org.codehaus.plexus.util.StringUtils;
@@ -39,10 +45,6 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
-
-import java.io.File;
-import java.net.URI;
-import java.util.Collections;
 
 /**
  * @author <a href="mailto:dh-maven@famhq.com">David Hawkins</a>
@@ -112,43 +114,43 @@ public class SvnJavaScmProvider
     /** {@inheritDoc} */
     protected SvnCommand getAddCommand()
     {
-        return new SvnAddCommand();
+        return new SvnJavaAddCommand();
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getChangeLogCommand()
     {
-        return new SvnChangeLogCommand();
+        return new SvnJavaChangeLogCommand();
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getCheckInCommand()
     {
-        return new SvnCheckInCommand();
+        return new SvnJavaCheckInCommand();
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getCheckOutCommand()
     {
-        return new SvnCheckOutCommand();
+        return new SvnJavaCheckOutCommand();
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getDiffCommand()
     {
-        return new SvnDiffCommand();
+        return new SvnJavaDiffCommand();
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getRemoveCommand()
     {
-        return new SvnRemoveCommand();
+        return new SvnJavaRemoveCommand();
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getStatusCommand()
     {
-        return new SvnStatusCommand();
+        return new SvnJavaStatusCommand();
     }
 
     /** {@inheritDoc} */
@@ -160,21 +162,19 @@ public class SvnJavaScmProvider
     /** {@inheritDoc} */
     protected SvnCommand getUpdateCommand()
     {
-        return new SvnUpdateCommand();
+        return new SvnJavaUpdateCommand();
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getBranchCommand()
     {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException( "getBranchCommand() is not implemented" );
+        return new SvnJavaBranchCommand();
     }
 
     /** {@inheritDoc} */
     protected SvnCommand getExportCommand()
     {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException( "getExportCommand() is not implemented" );
+        return new SvnJavaExportCommand();
     }
 
     /** {@inheritDoc} */

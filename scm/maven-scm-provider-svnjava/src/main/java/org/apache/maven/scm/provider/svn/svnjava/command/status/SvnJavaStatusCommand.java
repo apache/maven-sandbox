@@ -1,4 +1,4 @@
-package org.apache.maven.scm.provider.svn.svnjava.command.remove;
+package org.apache.maven.scm.provider.svn.svnjava.command.status;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,59 +21,49 @@ package org.apache.maven.scm.provider.svn.svnjava.command.remove;
 
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileSet;
-import org.apache.maven.scm.ScmResult;
-import org.apache.maven.scm.command.remove.AbstractRemoveCommand;
-import org.apache.maven.scm.command.remove.RemoveScmResult;
+import org.apache.maven.scm.command.status.AbstractStatusCommand;
+import org.apache.maven.scm.command.status.StatusScmResult;
 import org.apache.maven.scm.provider.ScmProviderRepository;
 import org.apache.maven.scm.provider.svn.command.SvnCommand;
 import org.apache.maven.scm.provider.svn.svnjava.SvnJavaScmProvider;
 import org.apache.maven.scm.provider.svn.svnjava.repository.SvnJavaScmProviderRepository;
-import org.apache.maven.scm.provider.svn.svnjava.util.ScmFileEventHandler;
 import org.apache.maven.scm.provider.svn.svnjava.util.SvnJavaUtil;
+import org.apache.maven.scm.provider.svn.svnjava.util.SvnStatusHandler;
 import org.tmatesoft.svn.core.SVNException;
 
 /**
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @version $Id$
  */
-public class SvnRemoveCommand
-    extends AbstractRemoveCommand
+public class SvnJavaStatusCommand
+    extends AbstractStatusCommand
     implements SvnCommand
 {
     /** {@inheritDoc} */
-    protected ScmResult executeRemoveCommand( ScmProviderRepository repo, ScmFileSet fileSet, String message )
+    protected StatusScmResult executeStatusCommand( ScmProviderRepository repo, ScmFileSet fileSet )
         throws ScmException
     {
-        if ( fileSet.getFiles().length == 0 )
-        {
-            throw new ScmException( "You must provide at least one file/directory to remove" );
-        }
-
         if ( getLogger().isInfoEnabled() )
         {
-            getLogger().info( "SVN remove working directory: " + fileSet.getBasedir().getAbsolutePath() );
+            getLogger().info( "SVN status directory: " + fileSet.getBasedir().getAbsolutePath() );
         }
 
         SvnJavaScmProviderRepository javaRepo = (SvnJavaScmProviderRepository) repo;
 
-        ScmFileEventHandler handler = new ScmFileEventHandler( getLogger(), fileSet.getBasedir() );
-
-        javaRepo.getClientManager().getWCClient().setEventHandler( handler );
+        SvnStatusHandler handler = new SvnStatusHandler();
 
         try
         {
-            SvnJavaUtil.delete( javaRepo.getClientManager(), fileSet.getFiles(), true );
+            SvnJavaUtil.status( javaRepo.getClientManager(), fileSet.getBasedir(), true, // isRecursive
+                                true, // isRemote
+                                handler );
 
-            return new RemoveScmResult( SvnJavaScmProvider.COMMAND_LINE, handler.getFiles() );
+            return new StatusScmResult( SvnJavaScmProvider.COMMAND_LINE, handler.getFiles() );
         }
         catch ( SVNException e )
         {
-            return new RemoveScmResult( SvnJavaScmProvider.COMMAND_LINE, "SVN remove failed.", e.getMessage(),
+            return new StatusScmResult( SvnJavaScmProvider.COMMAND_LINE, "SVN status failed.", e.getMessage(),
                                         false );
-        }
-        finally
-        {
-            javaRepo.getClientManager().getWCClient().setEventHandler( null );
         }
     }
 }

@@ -49,7 +49,7 @@ import org.tmatesoft.svn.core.SVNURL;
 /**
  * @author <a href="mailto:olamy@apache.org">olamy</a>
  */
-public class SvnBranchCommand
+public class SvnJavaBranchCommand
     extends AbstractBranchCommand
     implements SvnCommand
 {

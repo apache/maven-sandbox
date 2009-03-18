@@ -44,7 +44,7 @@ import java.io.InputStreamReader;
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @version $Id$
  */
-public class SvnDiffCommand
+public class SvnJavaDiffCommand
     extends AbstractDiffCommand
     implements SvnCommand
 {
