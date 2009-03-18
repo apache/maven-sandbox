@@ -181,6 +181,21 @@ public final class SvnJavaUtil
         return updateClient.doCheckout( url, destPath, revision, revision, isRecursive );
     }
 
+    public static long export( SVNClientManager clientManager, SVNURL url, SVNRevision revision, File destPath,
+                                 boolean isRecursive )
+        throws SVNException
+    {
+        SVNUpdateClient updateClient = clientManager.getUpdateClient();
+        /*
+         * sets externals not to be ignored during the checkout
+         */
+        updateClient.setIgnoreExternals( false );
+        /*
+         * returns the number of the revision at which the working copy is
+         */
+        return updateClient.doExport( url, destPath, revision, revision, "native", true, isRecursive );
+    }    
+    
     /**
      * Updates a working copy to a different URL. Like 'svn switch URL' command.
      * It's done by invoking
@@ -414,6 +429,8 @@ public final class SvnJavaUtil
          */
         return clientManager.getCopyClient().doCopy( srcURL, svnRevision, dstURL, isMove, commitMessage );
     }    
+    
+    
 
     public static ByteArrayOutputStream diff( SVNClientManager clientManager, File baseDir,
                                               SVNRevision startRevision, SVNRevision endRevision )
