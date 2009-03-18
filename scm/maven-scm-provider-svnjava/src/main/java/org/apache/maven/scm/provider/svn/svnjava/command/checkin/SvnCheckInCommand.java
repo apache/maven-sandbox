@@ -30,6 +30,7 @@ import org.apache.maven.scm.provider.svn.command.SvnCommand;
 import org.apache.maven.scm.provider.svn.svnjava.SvnJavaScmProvider;
 import org.apache.maven.scm.provider.svn.svnjava.repository.SvnJavaScmProviderRepository;
 import org.apache.maven.scm.provider.svn.svnjava.util.SvnJavaUtil;
+import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNNodeKind;
 import org.tmatesoft.svn.core.wc.SVNEvent;
@@ -88,8 +89,8 @@ public class SvnCheckInCommand
                 }
             }
 
-            SvnJavaUtil.commit( javaRepo.getClientManager(), paths, false, message, true );
-
+            SVNCommitInfo svnCommitInfo = SvnJavaUtil.commit( javaRepo.getClientManager(), paths, false, message, true );
+            
             List files = new ArrayList();
             for ( Iterator iter = handler.getEvents().iterator(); iter.hasNext(); )
             {
@@ -102,7 +103,8 @@ public class SvnCheckInCommand
                 }
             }
 
-            return new CheckInScmResult( SvnJavaScmProvider.COMMAND_LINE, files );
+            return new CheckInScmResult( SvnJavaScmProvider.COMMAND_LINE, files, Long.toString( svnCommitInfo
+                .getNewRevision() ) );
         }
         catch ( SVNException e )
         {
