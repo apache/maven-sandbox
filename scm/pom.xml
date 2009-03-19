@@ -32,7 +32,6 @@
   <name>Maven SCM Sandbox</name>
   <version>1.0-SNAPSHOT</version>
   <modules>
-    <module>maven-scm-provider-svnjava</module>
     <module>maven-scm-provider-starteamtest</module>
   </modules>
 </project>
