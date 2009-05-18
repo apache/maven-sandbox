@@ -12,7 +12,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.plugin.classloader.ProjectClassLoader;
+import org.apache.maven.shared.plugin.classloader.ProjectClassLoaderUtil;
 import org.codehaus.plexus.util.Os;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
@@ -115,7 +115,7 @@ public class JavaCommandBuilder
             }
         }
 
-        List artifacts = ProjectClassLoader.getArtifactsByScope( project, scope );
+        List artifacts = ProjectClassLoaderUtil.getArtifactsByScope( project, scope );
         for ( Iterator iterator = artifacts.iterator(); iterator.hasNext(); )
         {
             Artifact artifact = (Artifact) iterator.next();
