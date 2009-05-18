@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.return Collections.singletonList( artifact );n;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
@@ -124,6 +125,10 @@ public final class ProjectClassLoaderUtil
         {
             throw new MojoExecutionException( "Failed to resolve project dependencies as URL", e );
         }
+        catch ( DependencyResolutionRequiredException e )
+        {
+            throw new MojoExecutionException( "Failed to resolve project dependencies", e );
+        }
         return urls;
     }
 
@@ -132,7 +137,7 @@ public final class ProjectClassLoaderUtil
      * @throws MalformedURLException
      */
     private static List buildProjectClasspath( MavenProject project, String scope, boolean includeSources )
-        throws MalformedURLException
+        throws MalformedURLException, DependencyResolutionRequiredException
     {
         List urls = new ArrayList();
 
@@ -169,8 +174,7 @@ public final class ProjectClassLoaderUtil
             Artifact artifact = (Artifact) iterator.next();
             if ( !artifact.isResolved() )
             {
-                throw new IllegalStateException( "Artifact is not resolved. \n"
-                    + "Plugin must declare @requiresDependencyResolution " + scope );
+                throw new DependencyResolutionRequiredException( artifact );
             }
             urls.add( artifact.getFile().toURI().toURL() );
         }
