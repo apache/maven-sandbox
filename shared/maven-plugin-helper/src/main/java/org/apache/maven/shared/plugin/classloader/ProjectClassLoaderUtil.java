@@ -61,6 +61,7 @@ public final class ProjectClassLoaderUtil
      * Create a ClassLoader for the project with the specified scope, optionnaly including sources, and include the
      * specified artifacts (typically from <code>${plugin.artifacts}</code>)
      * 
+     * @param additionalClassPathArtifacts List&tl;Artifact&gt;
      * @throws MalformedURLException
      */
     public static ClassLoader buildProjectClassLoaderWithArtifacts( MavenProject project, String scope,
@@ -89,6 +90,7 @@ public final class ProjectClassLoaderUtil
      * Create a ClassLoader for the project with the specified scope, optionnaly including sources, and include the
      * specified classpath elements.
      * 
+     * @param additionalClassPathElements List&tl;String&gt;
      * @throws MalformedURLException
      */
     public static ClassLoader buildProjectClassLoaderWithElements( MavenProject project, String scope,
