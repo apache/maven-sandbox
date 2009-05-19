@@ -1,13 +1,5 @@
 package org.apache.maven.shared.plugin.scanner;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import org.codehaus.plexus.util.DirectoryScanner;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -26,6 +18,14 @@ import org.codehaus.plexus.util.DirectoryScanner;
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import org.codehaus.plexus.util.DirectoryScanner;
 
 /**
  * Use the builder pattern to configure and execute a DirectoryScanner. <code>iterateOn*</code> methods allow to iterate
