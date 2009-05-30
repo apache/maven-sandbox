@@ -51,5 +51,6 @@ under the License.
     <module>maven-swizzle-plugin</module>
     <module>maven-xcode-plugin</module>
     <module>maven-downloader-plugin</module>
+    <module>maven-zip-plugin</module>
   </modules>
 </project>
