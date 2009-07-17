@@ -36,18 +36,13 @@ under the License.
     <module>maven-jdee-plugin</module>
     <module>maven-jdeveloper-plugin</module>
     <module>maven-jxr-plugin</module>
-    <module>maven-license-plugin</module>
     <!-- requires Maven 2.1-SNAPSHOT -->
     <!--<module>maven-lifecycle-plugin</module>-->
-    <module>maven-linkcheck-plugin</module>
     <module>maven-maven1-plugin</module>
     <module>maven-par-plugin</module>
-    <module>maven-pdf-plugin</module>
     <module>maven-plugin-management-plugin</module>
     <module>maven-pom-plugin</module>
     <module>maven-property-setting-plugin</module>
-    <module>maven-reactor-plugin</module>
-    <module>maven-shade-plugin</module>
     <module>maven-swizzle-plugin</module>
     <module>maven-xcode-plugin</module>
     <module>maven-downloader-plugin</module>
