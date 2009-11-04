@@ -108,21 +108,6 @@ public class PluginEnforcingMavenLifecycleParticipant
                         plugin.setVersion( version );
                     }
                 }
-                // AFAIK this should be unnecessary, but just to be safe
-                for ( ReportPlugin plugin : project.getReportPlugins() )
-                {
-                    if ( StringUtils.equals( groupId, plugin.getGroupId() ) && StringUtils.equals( artifactId,
-                                                                                                   plugin.getArtifactId() ) )
-                    {
-                        if ( !projectIdentified )
-                        {
-                            logger.info( "Project: " + name );
-                            projectIdentified = true;
-                        }
-                        logger.info( "Report Plugins: replacing version " + plugin.getVersion() + " with " + version );
-                        plugin.setVersion( version );
-                    }
-                }
                 if ( projectIdentified )
                 {
                     logger.info( "" );
