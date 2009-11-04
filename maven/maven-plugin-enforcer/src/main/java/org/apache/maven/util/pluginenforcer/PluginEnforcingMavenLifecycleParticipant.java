@@ -20,10 +20,15 @@ package org.apache.maven.util.pluginenforcer;
 
 import org.apache.maven.AbstractMavenLifecycleParticipant;
 import org.apache.maven.MavenExecutionException;
+import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.model.ReportPlugin;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Enforces that a specific version of a plugin is used throughout a build.
@@ -38,10 +43,98 @@ public class PluginEnforcingMavenLifecycleParticipant
 
     @Requirement
     private Logger logger;
-    
-    public void afterProjectsRead( MavenSession mavenSession )
+
+    public void afterProjectsRead( MavenSession session )
         throws MavenExecutionException
     {
-        logger.info( "Hello " + mavenSession.getUserProperties().getProperty("name", "world!!!" ));
+        String config = session.getUserProperties().getProperty( "force.plugins" );
+        if ( StringUtils.isEmpty( config ) )
+        {
+            logger.info( "Plugin Enforcer: Nothing to do (i.e. -Dforce.plugins undefined)" );
+            return;
+        }
+        logger.info( StringUtils.repeat( "-", 72 ) );
+        logger.info( "Plugin Enforcer" );
+        logger.info( StringUtils.repeat( "-", 72 ) );
+        for ( String forcePlugin : config.split( "," ) )
+        {
+            if ( forcePlugin.isEmpty() )
+            {
+                continue;
+            }
+            String[] parts = forcePlugin.split( ":" );
+            if ( parts.length < 2 || parts.length > 3 )
+            {
+                logger.warn( "\"" + forcePlugin + "\" does not match the format [groupId:]artifactId:version" );
+                continue;
+            }
+            String groupId = parts.length == 3 ? parts[0] : "org.apache.maven.plugins";
+            String artifactId = parts[parts.length - 2];
+            String version = parts[parts.length - 1];
+            logger.info( "Forcing " + ArtifactUtils.versionlessKey( groupId, artifactId ) + " to " + version );
+            logger.info( "" );
+            for ( MavenProject project : session.getProjects() )
+            {
+                String name = StringUtils.isEmpty( project.getName() ) ?
+                    ArtifactUtils.versionlessKey( project.getGroupId(), project.getArtifactId() ) + ":"
+                        + project.getVersion() : project.getName();
+                boolean projectIdentified = false;
+                for ( Plugin plugin : project.getPluginManagement().getPlugins() )
+                {
+                    if ( StringUtils.equals( groupId, plugin.getGroupId() ) && StringUtils.equals( artifactId,
+                                                                                                   plugin.getArtifactId() ) )
+                    {
+                        if ( !projectIdentified )
+                        {
+                            logger.info( "Project: " + name );
+                            projectIdentified = true;
+                        }
+                        logger.info(
+                            "Plugin Management: replacing version " + plugin.getVersion() + " with " + version );
+                        plugin.setVersion( version );
+                    }
+                }
+                for ( Plugin plugin : project.getBuildPlugins() )
+                {
+                    if ( StringUtils.equals( groupId, plugin.getGroupId() ) && StringUtils.equals( artifactId,
+                                                                                                   plugin.getArtifactId() ) )
+                    {
+                        if ( !projectIdentified )
+                        {
+                            logger.info( "Project: " + name );
+                            projectIdentified = true;
+                        }
+                        logger.info( "Build Plugins: replacing version " + plugin.getVersion() + " with " + version );
+                        plugin.setVersion( version );
+                    }
+                }
+                // AFAIK this should be unnecessary, but just to be safe
+                for ( ReportPlugin plugin : project.getReportPlugins() )
+                {
+                    if ( StringUtils.equals( groupId, plugin.getGroupId() ) && StringUtils.equals( artifactId,
+                                                                                                   plugin.getArtifactId() ) )
+                    {
+                        if ( !projectIdentified )
+                        {
+                            logger.info( "Project: " + name );
+                            projectIdentified = true;
+                        }
+                        logger.info( "Report Plugins: replacing version " + plugin.getVersion() + " with " + version );
+                        plugin.setVersion( version );
+                    }
+                }
+                if ( projectIdentified )
+                {
+                    logger.info( "" );
+                }
+                else
+                {
+                    logger.warn( "No replacements Project: " + name );
+
+                    logger.info( "" );
+                }
+            }
+        }
+
     }
 }
