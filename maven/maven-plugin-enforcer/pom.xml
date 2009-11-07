@@ -25,7 +25,11 @@
   <version>3.0-SNAPSHOT</version>
 
   <name>Apache Maven 3.x Plugin Enforcer</name>
-  <inceptionYear>2001</inceptionYear>
+  <description>
+    A build extension that allows to enforce specific versions for build plugins. The primary purpose is to easily
+    test new plugin versions without actually changing the POMs.
+  </description>
+  <inceptionYear>2009</inceptionYear>
 
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/trunk/maven/maven-plugin-enforcer</connection>
@@ -43,15 +47,6 @@
       </releases>
     </repository>
   </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>sonatype.public</id>
-      <url>http://repository.sonatype.org/content/repositories/plexus-oss-snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
 
   <dependencies>
     <dependency>
@@ -66,14 +61,13 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <!--bootstrap-end-comment-->
 
   <build>
     <plugins>
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-metadata</artifactId>
-        <version>1.4.1</version>
+        <version>1.5.0</version>
         <executions>
           <execution>
             <goals>
