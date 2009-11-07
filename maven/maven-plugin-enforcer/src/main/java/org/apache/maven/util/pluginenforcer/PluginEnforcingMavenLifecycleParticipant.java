@@ -58,7 +58,7 @@ public class PluginEnforcingMavenLifecycleParticipant
         logger.info( StringUtils.repeat( "-", 72 ) );
         for ( String forcePlugin : config.split( "," ) )
         {
-            if ( forcePlugin.isEmpty() )
+            if ( StringUtils.isEmpty( forcePlugin ) )
             {
                 continue;
             }
