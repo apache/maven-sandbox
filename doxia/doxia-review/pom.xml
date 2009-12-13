@@ -4,11 +4,11 @@
   <parent>
     <groupId>org.apache.maven.doxia</groupId>
     <artifactId>doxia</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.2</version>
   </parent>
 
   <artifactId>doxia-review</artifactId>
-  <name>doxia-review</name>
+  <name>Doxia :: Code to review</name>
   <description>Code to review before including it on trunk.</description>
 
   <dependencies>
@@ -38,7 +38,7 @@
   </dependencies>
 
   <properties>
-    <doxiaVersion>1.1.1-SNAPSHOT</doxiaVersion>
+    <doxiaVersion>1.1.2</doxiaVersion>
   </properties>
 
 </project>

@@ -22,19 +22,16 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>doxia</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
+    <artifactId>doxia-sandbox</artifactId>
     <version>1.0</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>doxia-sandbox</artifactId>
-  <name>Doxia :: Sandbox</name>
-  <description>Doxia Sandbox components</description>
+  <artifactId>doxia-ide</artifactId>
+  <name>Doxia :: IDE</name>
+  <description>Doxia IDE integration</description>
   <packaging>pom</packaging>
   <modules>
-    <module>doxia-editor</module>
-    <module>doxia-ide</module>
-    <module>doxia-module-mediawiki</module>
-    <module>doxia-module-xwiki</module>
-    <module>doxia-review</module>
+    <module>netbeans</module>
   </modules>
 </project>

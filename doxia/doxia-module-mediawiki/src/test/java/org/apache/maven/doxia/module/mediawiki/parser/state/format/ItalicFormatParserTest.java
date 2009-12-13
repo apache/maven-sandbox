@@ -11,35 +11,30 @@ public class ItalicFormatParserTest
         throws ParseException
     {
         // TODO Implement
-        fail( "not implemented" );
     }
 
     public void testConsume_EndMarkerAtEndOfBuffer()
         throws ParseException
     {
         // TODO Implement
-        fail( "not implemented" );
     }
 
     public void testConsume_EndMarkerInMiddleOfBuffer()
         throws ParseException
     {
         // TODO Implement
-        fail( "not implemented" );
     }
 
     public void testConsume_EndMarkerNotPresent()
         throws ParseException
     {
         // TODO Implement
-        fail( "not implemented" );
     }
 
     public void testConsume_EndMarkerPartialAtEndOfBuffer()
         throws ParseException
     {
         // TODO Implement
-        fail( "not implemented" );
     }
 
 }

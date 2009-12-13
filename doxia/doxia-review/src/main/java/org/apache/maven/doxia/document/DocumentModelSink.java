@@ -188,7 +188,8 @@ public class DocumentModelSink
             }
             catch ( ParseException ex )
             {
-                getLog().warn( "Could not parse date: " + this.buffer.toString(), ex );
+                getLog().warn( "Could not parse date: " + this.buffer.toString() );
+                getLog().debug( ex );
             }
         }
 

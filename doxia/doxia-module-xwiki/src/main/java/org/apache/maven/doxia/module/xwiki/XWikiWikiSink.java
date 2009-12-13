@@ -790,7 +790,7 @@ public class XWikiWikiSink
      */
     public void lineBreak()
     {
-        write( EOL );
+        write( "\\\\" );
     }
 
     /**
