@@ -19,10 +19,11 @@ package org.apache.maven.scm.provider.accurev.command.checkout;
  * under the License.
  */
 
-import static org.apache.maven.scm.ScmFileMatcher.*;
-import static org.apache.maven.scm.provider.accurev.AddElementsAction.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.apache.maven.scm.ScmFileMatcher.assertHasScmFile;
+import static org.apache.maven.scm.provider.accurev.AddElementsAction.addElementsTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.List;
@@ -71,7 +72,7 @@ public class AccuRevCheckOutCommandTest
 
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testCheckout()
         throws Exception
@@ -111,7 +112,7 @@ public class AccuRevCheckOutCommandTest
 
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testCheckoutFailure()
         throws Exception
@@ -148,7 +149,7 @@ public class AccuRevCheckOutCommandTest
 
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testReCheckoutExistingWorkspaceSameBasis()
         throws Exception
@@ -188,7 +189,7 @@ public class AccuRevCheckOutCommandTest
 
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testReCheckoutExistingWorkspaceDifferentBasis()
         throws Exception

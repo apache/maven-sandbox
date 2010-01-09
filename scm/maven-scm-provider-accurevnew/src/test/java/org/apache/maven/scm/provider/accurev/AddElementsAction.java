@@ -44,7 +44,7 @@ public class AddElementsAction<T>
         description.appendText( "adds " ).appendValueList( "", ", ", "", elements ).appendText( " to a collection" );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Object invoke( Invocation invocation )
         throws Throwable
     {

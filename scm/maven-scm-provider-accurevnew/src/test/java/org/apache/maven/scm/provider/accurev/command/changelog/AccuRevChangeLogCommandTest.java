@@ -19,9 +19,10 @@ package org.apache.maven.scm.provider.accurev.command.changelog;
  * under the License.
  */
 
-import static org.apache.maven.scm.provider.accurev.AddElementsAction.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.apache.maven.scm.provider.accurev.AddElementsAction.addElementsTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.Date;
@@ -72,7 +73,7 @@ public class AccuRevChangeLogCommandTest
         }
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testSimpleCase()
         throws Exception
@@ -135,7 +136,7 @@ public class AccuRevChangeLogCommandTest
 
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testChangeLogFailed()
         throws Exception

@@ -19,10 +19,12 @@ package org.apache.maven.scm.provider.accurev.command.export;
  * under the License.
  */
 
-import static org.apache.maven.scm.ScmFileMatcher.*;
-import static org.apache.maven.scm.provider.accurev.AddElementsAction.*;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
+import static org.apache.maven.scm.ScmFileMatcher.assertHasScmFile;
+import static org.apache.maven.scm.provider.accurev.AddElementsAction.addElementsTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.Collection;
@@ -48,7 +50,7 @@ public class AccuRevExportCommandTest
     extends AbstractAccuRevCommandTest
 {
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testExportVersionOutSideWorkspace()
         throws Exception
@@ -91,7 +93,7 @@ public class AccuRevExportCommandTest
 
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testExportFailure()
         throws Exception
@@ -133,7 +135,7 @@ public class AccuRevExportCommandTest
         assertThat( result.getProviderMessage(), notNullValue() );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testNonPersistentWithinExistingWorkspace()
         throws Exception
@@ -193,7 +195,7 @@ public class AccuRevExportCommandTest
 
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testNonPersistentCheckoutUsesExport()
         // This is same expectations as above, but using checkout method with setPersist = false.

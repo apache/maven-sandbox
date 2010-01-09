@@ -51,7 +51,7 @@ public class PutMapEntryAction<K, V>
         description.appendText( "] into a map" );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Object invoke( Invocation invocation )
         throws Throwable
     {

@@ -19,9 +19,9 @@ package org.apache.maven.scm.provider.accurev;
  * under the License.
  */
 
-import static org.apache.maven.scm.provider.accurev.AccuRevScmProviderRepositoryMatcher.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.apache.maven.scm.provider.accurev.AccuRevScmProviderRepositoryMatcher.isRepo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.apache.maven.scm.provider.ScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
@@ -48,8 +48,8 @@ public class AccurevScmProviderTest
     {
         AccuRevScmProvider provider = new AccuRevScmProvider();
 
-        AccuRevScmProviderRepository repository =
-            (AccuRevScmProviderRepository) provider.makeProviderScmRepository( url, ':' );
+        AccuRevScmProviderRepository repository = (AccuRevScmProviderRepository) provider
+            .makeProviderScmRepository( url, ':' );
 
         assertThat( repository,
                     isRepo( null, null, null, AccuRevScmProviderRepository.DEFAULT_PORT, expStream, expPath ) );

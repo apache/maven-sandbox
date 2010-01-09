@@ -39,8 +39,8 @@ public class AccuRevJUnitUtil
     public static void consume( String resource, StreamConsumer consumer )
         throws IOException
     {
-        BufferedReader reader =
-            new BufferedReader( new InputStreamReader( consumer.getClass().getResourceAsStream( resource ) ) );
+        BufferedReader reader = new BufferedReader( new InputStreamReader( consumer.getClass()
+            .getResourceAsStream( resource ) ) );
 
         String line = reader.readLine();
         while ( line != null )

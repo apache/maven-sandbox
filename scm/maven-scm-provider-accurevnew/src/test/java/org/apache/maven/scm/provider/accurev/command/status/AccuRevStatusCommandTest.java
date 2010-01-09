@@ -19,10 +19,16 @@ package org.apache.maven.scm.provider.accurev.command.status;
  * under the License.
  */
 
-import static org.apache.maven.scm.ScmFileMatcher.*;
-import static org.apache.maven.scm.provider.accurev.AddElementsAction.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.apache.maven.scm.ScmFileMatcher.assertHasScmFile;
+import static org.apache.maven.scm.ScmFileMatcher.scmFile;
+import static org.apache.maven.scm.provider.accurev.AddElementsAction.addElementsTo;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.Collection;
@@ -43,7 +49,7 @@ public class AccuRevStatusCommandTest
     extends AbstractAccuRevCommandTest
 {
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testStatus()
         throws Exception
@@ -124,7 +130,7 @@ public class AccuRevStatusCommandTest
 
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testFailure()
         throws Exception

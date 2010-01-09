@@ -19,10 +19,11 @@ package org.apache.maven.scm.provider.accurev.command.checkin;
  * under the License.
  */
 
-import static org.apache.maven.scm.ScmFileMatcher.*;
-import static org.apache.maven.scm.provider.accurev.AddElementsAction.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.apache.maven.scm.ScmFileMatcher.assertHasScmFile;
+import static org.apache.maven.scm.provider.accurev.AddElementsAction.addElementsTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class AccuRevCheckInCommandTest
     extends AbstractAccuRevCommandTest
 {
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testCheckInRecursive()
         throws Exception
@@ -91,7 +92,7 @@ public class AccuRevCheckInCommandTest
         assertHasScmFile( result.getCheckedInFiles(), "promoted/file", ScmFileStatus.CHECKED_IN );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testCheckInFailure()
         throws Exception
@@ -174,7 +175,7 @@ public class AccuRevCheckInCommandTest
         context.assertIsSatisfied();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public void testCheckinExplicitFiles()
         throws Exception
     {

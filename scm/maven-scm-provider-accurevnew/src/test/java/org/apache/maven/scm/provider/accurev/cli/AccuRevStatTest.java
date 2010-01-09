@@ -19,8 +19,9 @@ package org.apache.maven.scm.provider.accurev.cli;
  * under the License.
  */
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isOneOf;
+import static org.junit.Assert.assertThat;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

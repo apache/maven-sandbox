@@ -19,8 +19,9 @@ package org.apache.maven.scm.provider.accurev.cli;
  * under the License.
  */
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,7 +68,8 @@ public class HistoryConsumerTest
 
         public void describeTo( Description desc )
         {
-            desc.appendText( "version with id=" + elementId + " virtual=" + virtual + " real=" + real + " path=" + path );
+            desc
+                .appendText( "version with id=" + elementId + " virtual=" + virtual + " real=" + real + " path=" + path );
 
         }
     }

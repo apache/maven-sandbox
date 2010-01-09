@@ -13,7 +13,7 @@ package org.apache.maven.scm;
  * governing permissions and limitations under the License.
  */
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasItem;
 
 import java.io.File;
 import java.util.List;
@@ -22,38 +22,45 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-public class ScmFileMatcher extends TypeSafeMatcher<ScmFile> {
+public class ScmFileMatcher
+    extends TypeSafeMatcher<ScmFile>
+{
 
-    public static Matcher<ScmFile> scmFile(String fileName, ScmFileStatus status) {
-	return new ScmFileMatcher(fileName, status);
+    public static Matcher<ScmFile> scmFile( String fileName, ScmFileStatus status )
+    {
+        return new ScmFileMatcher( fileName, status );
     }
 
     @SuppressWarnings("unchecked")
-    public static void assertHasScmFile(List<?> actualFiles, String fileName, ScmFileStatus status) {
-	org.junit.Assert.assertThat((List<ScmFile>) actualFiles, hasItem(scmFile(fileName, status)));
+    public static void assertHasScmFile( List<?> actualFiles, String fileName, ScmFileStatus status )
+    {
+        org.junit.Assert.assertThat( (List<ScmFile>) actualFiles, hasItem( scmFile( fileName, status ) ) );
     }
 
     private ScmFileStatus status;
 
     private String filePath;
 
-    public ScmFileMatcher(String filePath, ScmFileStatus status) {
-	// Convert to OS specific path...
-	this.filePath = new File(filePath).getPath();
-	this.status = status;
+    public ScmFileMatcher( String filePath, ScmFileStatus status )
+    {
+        // Convert to OS specific path...
+        this.filePath = new File( filePath ).getPath();
+        this.status = status;
     }
 
-    public void describeTo(Description desc) {
-	desc.appendValue("ScmFile [");
-	desc.appendValue(filePath);
-	desc.appendText(",");
-	desc.appendValue(status);
-	desc.appendValue("]");
+    public void describeTo( Description desc )
+    {
+        desc.appendValue( "ScmFile [" );
+        desc.appendValue( filePath );
+        desc.appendText( "," );
+        desc.appendValue( status );
+        desc.appendValue( "]" );
     }
 
     @Override
-    public boolean matchesSafely(ScmFile scmFile) {
-	return scmFile.getPath().equals(filePath) && scmFile.getStatus().equals(status);
+    public boolean matchesSafely( ScmFile scmFile )
+    {
+        return scmFile.getPath().equals( filePath ) && scmFile.getStatus().equals( status );
     }
 
 }

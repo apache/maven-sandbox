@@ -19,8 +19,9 @@ package org.apache.maven.scm.provider.accurev.cli;
  * under the License.
  */
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.apache.maven.scm.provider.accurev.AccuRevInfo;
-import org.apache.maven.scm.provider.accurev.cli.InfoConsumer;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.junit.Test;
 
@@ -68,8 +68,8 @@ public class InfoConsumerTest
         AccuRevInfo info = new AccuRevInfo( new File( "/my/project/dir" ) );
         StreamConsumer consumer = new InfoConsumer( info );
 
-        BufferedReader reader =
-            new BufferedReader( new InputStreamReader( this.getClass().getResourceAsStream( resource ) ) );
+        BufferedReader reader = new BufferedReader( new InputStreamReader( this.getClass()
+            .getResourceAsStream( resource ) ) );
 
         String line = reader.readLine();
         while ( line != null )

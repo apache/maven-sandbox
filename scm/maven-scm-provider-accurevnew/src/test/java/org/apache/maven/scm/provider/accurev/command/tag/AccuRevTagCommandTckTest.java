@@ -82,21 +82,23 @@ public class AccuRevTagCommandTckTest
 
         addToWorkingTree( getWorkingCopy(), new File( ".acignore" ), scmRepository );
 
-        CheckInScmResult checkinResult =
-            getScmManager().checkIn( scmRepository, new ScmFileSet( getWorkingCopy() ), "add acignore" );
+        CheckInScmResult checkinResult = getScmManager().checkIn( scmRepository, new ScmFileSet( getWorkingCopy() ),
+                                                                  "add acignore" );
 
         assertResultIsSuccess( checkinResult );
 
-        TagScmResult tagResult =
-            getScmManager().getProviderByUrl( getScmUrl() ).tag( scmRepository, new ScmFileSet( getWorkingCopy() ), tag );
+        TagScmResult tagResult = getScmManager().getProviderByUrl( getScmUrl() )
+            .tag( scmRepository, new ScmFileSet( getWorkingCopy() ), tag );
 
         assertResultIsSuccess( tagResult );
 
         scmRepository.getProviderRepository().setPersistCheckout( false );
 
-        CheckOutScmResult checkoutResult =
-            getScmManager().checkOut( scmRepository, new ScmFileSet( new File( getWorkingCopy(), "target/checkout" ) ),
-                                      new ScmTag( tag ) );
+        CheckOutScmResult checkoutResult = getScmManager().checkOut(
+                                                                     scmRepository,
+                                                                     new ScmFileSet( new File( getWorkingCopy(),
+                                                                                               "target/checkout" ) ),
+                                                                     new ScmTag( tag ) );
 
         assertResultIsSuccess( checkoutResult );
 

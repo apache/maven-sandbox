@@ -13,8 +13,9 @@ package org.apache.maven.scm.provider.accurev.cli;
  * governing permissions and limitations under the License.
  */
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,64 +24,69 @@ import java.util.List;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.junit.Test;
 
-public class FileConsumerTest {
+public class FileConsumerTest
+{
 
     @Test
-    public void testConsumeAdd() {
-	List<File> extractedFiles = new ArrayList<File>();
+    public void testConsumeAdd()
+    {
+        List<File> extractedFiles = new ArrayList<File>();
 
-	StreamConsumer consumer = new FileConsumer(extractedFiles, FileConsumer.ADD_PATTERN);
+        StreamConsumer consumer = new FileConsumer( extractedFiles, FileConsumer.ADD_PATTERN );
 
-	consumer.consumeLine("Added and kept element /./src/main/java/Application.java");
-	consumer.consumeLine("Added and kept element \\.\\src\\main\\java\\Windows.java");
+        consumer.consumeLine( "Added and kept element /./src/main/java/Application.java" );
+        consumer.consumeLine( "Added and kept element \\.\\src\\main\\java\\Windows.java" );
 
-	assertThat(extractedFiles.size(), is(2));
-	assertThat(extractedFiles, hasItem(new File("src/main/java/Application.java")));
-	assertThat(extractedFiles, hasItem(new File("src\\main\\java\\Windows.java")));
+        assertThat( extractedFiles.size(), is( 2 ) );
+        assertThat( extractedFiles, hasItem( new File( "src/main/java/Application.java" ) ) );
+        assertThat( extractedFiles, hasItem( new File( "src\\main\\java\\Windows.java" ) ) );
     }
 
     @Test
-    public void testConsumeUpdate() {
-	List<File> extractedFiles = new ArrayList<File>();
-	StreamConsumer consumer = new FileConsumer(extractedFiles, FileConsumer.UPDATE_PATTERN);
+    public void testConsumeUpdate()
+    {
+        List<File> extractedFiles = new ArrayList<File>();
+        StreamConsumer consumer = new FileConsumer( extractedFiles, FileConsumer.UPDATE_PATTERN );
 
-	consumer.consumeLine("Content (1 K) of \"readme.txt\" - ok");
-	consumer.consumeLine("Creating dir \"src/main/java/org\" .");
-	consumer.consumeLine("Updating (creating) dir /./src/test/java");
-	consumer.consumeLine("Updating element \\.\\src\\main\\java\\Application.java");
+        consumer.consumeLine( "Content (1 K) of \"readme.txt\" - ok" );
+        consumer.consumeLine( "Creating dir \"src/main/java/org\" ." );
+        consumer.consumeLine( "Updating (creating) dir /./src/test/java" );
+        consumer.consumeLine( "Updating element \\.\\src\\main\\java\\Application.java" );
 
-	assertThat(extractedFiles.size(), is(2));
-	assertThat(extractedFiles, hasItem(new File("readme.txt")));
-	assertThat(extractedFiles, hasItem(new File("src\\main\\java\\Application.java")));
+        assertThat( extractedFiles.size(), is( 2 ) );
+        assertThat( extractedFiles, hasItem( new File( "readme.txt" ) ) );
+        assertThat( extractedFiles, hasItem( new File( "src\\main\\java\\Application.java" ) ) );
     }
 
     @Test
-    public void testConsumePromoted() {
-	List<File> extractedFiles = new ArrayList<File>();
+    public void testConsumePromoted()
+    {
+        List<File> extractedFiles = new ArrayList<File>();
 
-	StreamConsumer consumer = new FileConsumer(extractedFiles, FileConsumer.PROMOTE_PATTERN);
+        StreamConsumer consumer = new FileConsumer( extractedFiles, FileConsumer.PROMOTE_PATTERN );
 
-	consumer.consumeLine("Promoted element /./src/main/java/Application.java");
-	consumer.consumeLine("Promoted element \\.\\src\\main\\java\\Windows.java");
+        consumer.consumeLine( "Promoted element /./src/main/java/Application.java" );
+        consumer.consumeLine( "Promoted element \\.\\src\\main\\java\\Windows.java" );
 
-	assertThat(extractedFiles.size(), is(2));
-	assertThat(extractedFiles, hasItem(new File("src/main/java/Application.java")));
-	assertThat(extractedFiles, hasItem(new File("src\\main\\java\\Windows.java")));
+        assertThat( extractedFiles.size(), is( 2 ) );
+        assertThat( extractedFiles, hasItem( new File( "src/main/java/Application.java" ) ) );
+        assertThat( extractedFiles, hasItem( new File( "src\\main\\java\\Windows.java" ) ) );
     }
 
     @Test
-    public void testConsumeRemoved() {
-	List<File> extractedFiles = new ArrayList<File>();
-	StreamConsumer consumer = new FileConsumer(extractedFiles, FileConsumer.DEFUNCT_PATTERN);
+    public void testConsumeRemoved()
+    {
+        List<File> extractedFiles = new ArrayList<File>();
+        StreamConsumer consumer = new FileConsumer( extractedFiles, FileConsumer.DEFUNCT_PATTERN );
 
-	consumer.consumeLine("Recursively removing \"tcktests/src\" .");
-	consumer.consumeLine("Removing \"tcktests/src/main/java/Application.java\" .");
-	consumer.consumeLine("Removing \"tcktests/src/main/java\" .");
-	consumer.consumeLine("Removing \"tcktests/src/main\" .");
-	consumer.consumeLine("Removing \"tcktests/src\" .");
+        consumer.consumeLine( "Recursively removing \"tcktests/src\" ." );
+        consumer.consumeLine( "Removing \"tcktests/src/main/java/Application.java\" ." );
+        consumer.consumeLine( "Removing \"tcktests/src/main/java\" ." );
+        consumer.consumeLine( "Removing \"tcktests/src/main\" ." );
+        consumer.consumeLine( "Removing \"tcktests/src\" ." );
 
-	assertThat(extractedFiles.size(), is(4));
-	assertThat(extractedFiles, hasItem(new File("tcktests/src")));
-	assertThat(extractedFiles, hasItem(new File("tcktests/src/main/java/Application.java")));
+        assertThat( extractedFiles.size(), is( 4 ) );
+        assertThat( extractedFiles, hasItem( new File( "tcktests/src" ) ) );
+        assertThat( extractedFiles, hasItem( new File( "tcktests/src/main/java/Application.java" ) ) );
     }
 }

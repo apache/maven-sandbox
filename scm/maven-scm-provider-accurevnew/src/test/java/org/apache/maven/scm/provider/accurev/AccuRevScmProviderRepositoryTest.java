@@ -19,8 +19,8 @@ package org.apache.maven.scm.provider.accurev;
  * under the License.
  */
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 

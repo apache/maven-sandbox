@@ -19,10 +19,11 @@ package org.apache.maven.scm.provider.accurev.command.remove;
  * under the License.
  */
 
-import static org.apache.maven.scm.ScmFileMatcher.*;
-import static org.apache.maven.scm.provider.accurev.AddElementsAction.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.apache.maven.scm.ScmFileMatcher.assertHasScmFile;
+import static org.apache.maven.scm.provider.accurev.AddElementsAction.addElementsTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.List;
@@ -41,7 +42,7 @@ public class AccuRevRemoveCommandTest
     extends AbstractAccuRevCommandTest
 {
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testRemove()
         throws Exception
@@ -77,7 +78,7 @@ public class AccuRevRemoveCommandTest
         assertHasScmFile( result.getRemovedFiles(), "removed/file", ScmFileStatus.DELETED );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Test
     public void testAddFailed()
         throws Exception
@@ -89,7 +90,7 @@ public class AccuRevRemoveCommandTest
             {
                 one( accurev ).defunct( with( basedir ), with( testFileSet.getFileList() ), with( "A deleted file" ),
                                         with( any( List.class ) ) );
-                will( returnValue( false )  );
+                will( returnValue( false ) );
                 inSequence( sequence );
 
             }
