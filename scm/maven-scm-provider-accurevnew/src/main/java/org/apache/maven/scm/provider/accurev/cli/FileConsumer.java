@@ -42,8 +42,8 @@ class FileConsumer
     // TODO make these an enum
     public static final Pattern ADD_PATTERN = Pattern.compile( "Added and kept element [/\\\\]\\.[/\\\\](\\S+)\\s*" );
 
-    public static final Pattern UPDATE_PATTERN =
-        Pattern.compile( "Updating element [/\\\\]\\.[/\\\\](\\S+)\\s*|Content.*of \"(.*)\".*" );
+    public static final Pattern UPDATE_PATTERN = Pattern
+        .compile( "Updating element [/\\\\]\\.[/\\\\](\\S+)\\s*|Content.*of \"(.*)\".*" );
 
     public static final Pattern POPULATE_PATTERN = Pattern.compile( "Populating element [/\\\\]\\.[/\\\\](\\S+)\\s*" );
 
@@ -51,7 +51,7 @@ class FileConsumer
 
     public static final Pattern STAT_PATTERN = Pattern.compile( "[/\\\\]\\.[/\\\\](.*)" );
 
-    /** 
+    /**
      * TODO - The removed files are relative to the workspace top, not the basedir of the fileset
      */
     public static final Pattern DEFUNCT_PATTERN = Pattern.compile( "Removing \"(\\S+)\".*" );

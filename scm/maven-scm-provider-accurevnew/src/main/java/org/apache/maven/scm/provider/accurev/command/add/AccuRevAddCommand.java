@@ -52,7 +52,7 @@ public class AccuRevAddCommand
      * 
      * @todo handle the "binary" parameter. AccuRev does a reasonable job of detecting this itself.
      */
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     protected ScmResult executeAccurevCommand( AccuRevScmProviderRepository repository, ScmFileSet fileSet,
                                                CommandParameters parameters )
         throws ScmException, AccuRevException

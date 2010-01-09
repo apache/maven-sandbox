@@ -75,11 +75,9 @@ public class AccuRevExportCommand
 
             if ( stat != null )
             {
-                throw new AccuRevException(
-                                            String.format(
-                                                           "Cannot populate %s, as it is a non-ignored subdirectory of workspace %s rooted at %s.",
-                                                           basedir.getAbsolutePath(), info.getWorkSpace(),
-                                                           info.getTop() ) );
+                throw new AccuRevException( String
+                    .format( "Cannot populate %s, as it is a non-ignored subdirectory of workspace %s rooted at %s.",
+                             basedir.getAbsolutePath(), info.getWorkSpace(), info.getTop() ) );
             }
 
             // ok, the subdirectory must be ignored. temporarily remove the workspace.
@@ -89,10 +87,8 @@ public class AccuRevExportCommand
 
         try
         {
-            success =
-                accuRev.pop( basedir, basisStream,
-                             Collections.singletonList( new File( repository.getDepotRelativeProjectPath() ) ),
-                             checkedOutFiles );
+            success = accuRev.pop( basedir, basisStream, Collections.singletonList( new File( repository
+                .getDepotRelativeProjectPath() ) ), checkedOutFiles );
 
         }
         finally

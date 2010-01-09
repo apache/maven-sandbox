@@ -58,7 +58,7 @@ public class AccuRevStatusCommand
         AccuRev accuRev = repository.getAccuRev();
 
         File basedir = fileSet.getBasedir();
-        @SuppressWarnings( "unchecked" )
+        @SuppressWarnings("unchecked")
         List<File> elements = fileSet.getFileList();
 
         List<File> defunctElements = new ArrayList<File>();

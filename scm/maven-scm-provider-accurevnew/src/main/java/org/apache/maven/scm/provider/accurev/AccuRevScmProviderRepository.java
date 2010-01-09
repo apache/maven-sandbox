@@ -110,13 +110,14 @@ public class AccuRevScmProviderRepository
     public static final int DEFAULT_PORT = 5050;
 
     /**
-     * The relative path of the directory of the checked out project in comparison to the checkout directory, or an
-     * empty String in case the checkout directory equals the project directory.
+     * The relative path of the directory of the checked out project in comparison to the checkout
+     * directory, or an empty String in case the checkout directory equals the project directory.
      * <p/>
-     * With most SCMs, this is just an empty String, meaning that the checkout directory equals the project directory.
-     * But there are cases (e.g. ClearCase) where within the checkout directory, the directory structure of the SCM
-     * system is repeated. E.g. if you check out the project "my/project" to "/some/dir", the project sources are
-     * actually checked out to "some/dir/my/project". In this example, relativePathProjectDirectory would contain
+     * With most SCMs, this is just an empty String, meaning that the checkout directory equals the
+     * project directory. But there are cases (e.g. ClearCase) where within the checkout directory,
+     * the directory structure of the SCM system is repeated. E.g. if you check out the project
+     * "my/project" to "/some/dir", the project sources are actually checked out to
+     * "some/dir/my/project". In this example, relativePathProjectDirectory would contain
      * "my/project".
      */
     public String getCheckoutRelativePath()
@@ -144,12 +145,13 @@ public class AccuRevScmProviderRepository
     }
 
     /**
-     * When checkout is not expected to be refreshed or committed, should export be used instead? Perforce, Clearcase
-     * and AccuRev store their meta-data about file status within the server rather than files in the source tree. This
-     * makes checkouts within checkouts (eg release:perform) difficult. Typically there is a way to do a lightweight
-     * export instead which can be implemented as the "export" command. This is a hint to downstream applications that
-     * "export" is available and should be used in preference to "checkout" in cases where "update" and "commit" are not
-     * intended to be used. (ie release:perform)
+     * When checkout is not expected to be refreshed or committed, should export be used instead?
+     * Perforce, Clearcase and AccuRev store their meta-data about file status within the server
+     * rather than files in the source tree. This makes checkouts within checkouts (eg
+     * release:perform) difficult. Typically there is a way to do a lightweight export instead which
+     * can be implemented as the "export" command. This is a hint to downstream applications that
+     * "export" is available and should be used in preference to "checkout" in cases where "update"
+     * and "commit" are not intended to be used. (ie release:perform)
      * 
      * @return false by default
      */

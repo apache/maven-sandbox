@@ -74,7 +74,7 @@ public abstract class XppStreamConsumer
         {
             logger.error( "Exception initialising pipe", e );
         }
-        
+
         this.start();
 
     }

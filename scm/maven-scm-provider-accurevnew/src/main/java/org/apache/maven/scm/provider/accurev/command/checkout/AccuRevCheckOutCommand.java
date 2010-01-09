@@ -68,10 +68,9 @@ public class AccuRevCheckOutCommand
 
             if ( !repository.isWorkSpaceTop( info ) )
             {
-                throw new AccuRevException(
-                                            String.format(
-                                                           "Can't checkout to %s, a subdirectory of existing workspace %s",
-                                                           basedir, info.getWorkSpace() ) );
+                throw new AccuRevException( String
+                    .format( "Can't checkout to %s, a subdirectory of existing workspace %s", basedir, info
+                        .getWorkSpace() ) );
             }
             // workspace exists at this basedir already.
             if ( !basisStream.equals( info.getBasis() ) )

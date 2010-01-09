@@ -21,13 +21,9 @@ package org.apache.maven.scm.provider.accurev;
 
 import java.util.regex.Pattern;
 
-public enum AccuRevStat
-{
-    DEFUNCT( "-D", "defunct" ),
-    MODIFIED( "-m", "modified" ),
-    KEPT( "-k", "kept" ),
-    MISSING( "-M", "missing" ),
-    EXTERNAL( "-x", "external" )
+public enum AccuRevStat {
+    DEFUNCT("-D", "defunct"), MODIFIED("-m", "modified"), KEPT("-k", "kept"), MISSING("-M", "missing"), EXTERNAL("-x",
+        "external")
     // TODO Test KEPT pattern skips items that are both (kept) and (defunct).
     ;
 

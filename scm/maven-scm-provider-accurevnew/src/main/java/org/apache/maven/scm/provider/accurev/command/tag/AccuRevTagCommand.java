@@ -64,8 +64,6 @@ public class AccuRevTagCommand
         boolean success = true;
 
         AccuRevInfo info = accuRev.info( basedir );
-        
-        
 
         success = accuRev.mksnap( tagName, info.getBasis() );
         if ( success )

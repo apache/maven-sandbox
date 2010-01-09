@@ -61,7 +61,7 @@ public class AccuRevRemoveCommand
 
         File basedir = fileSet.getBasedir();
 
-        @SuppressWarnings( "unchecked" )
+        @SuppressWarnings("unchecked")
         List<File> relativeFiles = fileSet.getFileList();
 
         success = accuRev.defunct( basedir, relativeFiles, message, removedFiles );

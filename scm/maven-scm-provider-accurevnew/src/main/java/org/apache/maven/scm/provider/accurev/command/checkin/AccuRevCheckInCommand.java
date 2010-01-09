@@ -62,7 +62,7 @@ public class AccuRevCheckInCommand
         boolean success = false;
 
         File basedir = fileSet.getBasedir();
-        @SuppressWarnings( "unchecked" )
+        @SuppressWarnings("unchecked")
         List<File> fileList = fileSet.getFileList();
 
         if ( fileList.isEmpty() )

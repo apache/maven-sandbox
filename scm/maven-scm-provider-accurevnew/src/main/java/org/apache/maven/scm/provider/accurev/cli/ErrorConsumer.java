@@ -28,9 +28,11 @@ final class ErrorConsumer
     implements StreamConsumer
 {
 
-    private static final Pattern[] SKIPPED_WARNINGS =
-        { Pattern.compile( "No elements selected.*" ), Pattern.compile( "You are not in a directory.*" ),
-            Pattern.compile( "Note.*" ), Pattern.compile( "\\s+(members,|conjunction).*" ) };
+    private static final Pattern[] SKIPPED_WARNINGS = {
+        Pattern.compile( "No elements selected.*" ),
+        Pattern.compile( "You are not in a directory.*" ),
+        Pattern.compile( "Note.*" ),
+        Pattern.compile( "\\s+(members,|conjunction).*" ) };
 
     private final ScmLogger logger;
 

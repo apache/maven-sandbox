@@ -99,9 +99,9 @@ public class AccuRevUpdateCommand
     }
 
     /*
-     * If we are not capturing info for a changelog, return null. If start date is supplied then start version is the
-     * current workspace basis stream / start_date Otherwise get the current high water mark for the workspace as the
-     * start version.
+     * If we are not capturing info for a changelog, return null. If start date is supplied then
+     * start version is the current workspace basis stream / start_date Otherwise get the current
+     * high water mark for the workspace as the start version.
      */
     private AccuRevVersion getStartVersion( AccuRevScmProviderRepository repository, CommandParameters parameters,
                                             AccuRevInfo info )
@@ -119,8 +119,8 @@ public class AccuRevUpdateCommand
             if ( startDate == null )
             {
                 // Get tran id before the update, and add one.
-                startVersion =
-                    new AccuRevVersion( info.getBasis(), 1 + getCurrentTransactionId( info.getWorkSpace(), accuRev ) );
+                startVersion = new AccuRevVersion( info.getBasis(), 1 + getCurrentTransactionId( info.getWorkSpace(),
+                                                                                                 accuRev ) );
             }
             else
             {
@@ -132,10 +132,11 @@ public class AccuRevUpdateCommand
     }
 
     /*
-     * End version timespec is used as the -t parameter to update. If a version is specified in parameters then we use
-     * that. If "now" or "highest" is specified as the timespec it is replaced with the "now" as a date, so that we can
-     * be 100% accurate in terms of the changelog. If no version is specified then we use the current workspace basis
-     * stream and "now" as a date.
+     * End version timespec is used as the -t parameter to update. If a version is specified in
+     * parameters then we use that. If "now" or "highest" is specified as the timespec it is
+     * replaced with the "now" as a date, so that we can be 100% accurate in terms of the changelog.
+     * If no version is specified then we use the current workspace basis stream and "now" as a
+     * date.
      */
     private AccuRevVersion getEndVersion( AccuRevScmProviderRepository repository, CommandParameters parameters,
                                           AccuRevInfo info )
