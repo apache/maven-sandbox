@@ -37,17 +37,6 @@
     <url>http://svn.apache.org/viewcvs.cgi/maven/sandbox/trunk/maven/maven-plugin-enforcer</url>
   </scm>
 
-  <!-- FIXME: Remove once snapshots have been released -->
-  <repositories>
-    <repository>
-      <id>sonatype.public</id>
-      <url>http://repository.sonatype.org/content/repositories/plexus-oss-snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
