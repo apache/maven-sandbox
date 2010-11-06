@@ -1,5 +1,25 @@
 package org.apache.maven.shared.scmchanges;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
@@ -38,6 +58,7 @@ public class MakeScmChangesTest
     public void setUp()
     {
         msc = new MakeScmChanges();
+        msc.baseDir = new File("").getAbsoluteFile();
         msc.logger = mock(Logger.class);
     }
 
@@ -64,8 +85,9 @@ public class MakeScmChangesTest
         String scmConnection = "foo";
         when( scm.getConnection() ).thenReturn( scmConnection );
 
-        MavenProject project = mock( MavenProject.class );
-        when( project.getScm() ).thenReturn( scm );
+        MavenProject project = new MavenProject();
+        project.setScm( scm );
+        project.setFile( new File("").getAbsoluteFile() );
 
         when( session.getTopLevelProject() ).thenReturn( project );
 
@@ -267,6 +289,34 @@ public class MakeScmChangesTest
         PowerMockito.doNothing().when( msc ).readParameters( (MavenSession) any() );
         
         ScmFile changedFile = new ScmFile("pom.xml", ScmFileStatus.MISSING);
+        
+        List<ScmFile> changedFiles = Arrays.asList( changedFile );
+        
+        PowerMockito.doReturn( changedFiles ).when( msc ).getChangedFilesFromScm( (File) any() );
+        
+        MavenProject project = new MavenProject();
+        
+        project.setFile( new File("pom.xml").getAbsoluteFile() );
+        
+        when ( session.getTopLevelProject() ).thenReturn( project);
+        
+        when ( session.getProjects() ).thenReturn( Arrays.asList( project ));
+        
+        msc.afterProjectsRead( session );
+        
+    }
+    
+    @Test(expected = MavenExecutionException.class)
+    public void nothingToDoBecauseIgnoringRandomSubdirectory() throws MavenExecutionException {
+        MavenSession session = mock(MavenSession.class);
+        
+        msc.enabled = true;
+        
+        msc = PowerMockito.spy( msc );
+        
+        PowerMockito.doNothing().when( msc ).readParameters( (MavenSession) any() );
+        
+        ScmFile changedFile = new ScmFile("foo/pom.xml", ScmFileStatus.MODIFIED);
         
         List<ScmFile> changedFiles = Arrays.asList( changedFile );
         
