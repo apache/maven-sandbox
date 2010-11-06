@@ -29,7 +29,6 @@ import org.apache.maven.AbstractMavenLifecycleParticipant;
 import org.apache.maven.MavenExecutionException;
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenSession;
-import org.apache.maven.execution.RuntimeInformation;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
@@ -51,7 +50,7 @@ public class MakeScmChanges
     extends AbstractMavenLifecycleParticipant
 {
     @Requirement
-    private Logger logger;
+    Logger logger;
 
     @Requirement
     ScmManager scmManager;
@@ -68,6 +67,9 @@ public class MakeScmChanges
     /** Disabled by default; activate via -Dmake.scmChanges=true */
     boolean enabled = false;
 
+    // TODO configurable baseDir
+    // TODO Don't just build from the root because we can't figure out what to do
+    
     public void afterProjectsRead( MavenSession session )
         throws MavenExecutionException
     {
@@ -147,7 +149,7 @@ public class MakeScmChanges
 
     }
 
-    private void readParameters( MavenSession session )
+    void readParameters( MavenSession session )
         throws MavenExecutionException
     {
         Properties sessionProps = session.getUserProperties();
@@ -172,7 +174,7 @@ public class MakeScmChanges
     }
 
     @SuppressWarnings( "unchecked" )
-    private List<ScmFile> getChangedFilesFromScm( File baseDir )
+    List<ScmFile> getChangedFilesFromScm( File baseDir )
         throws MavenExecutionException
     {
         StatusScmResult result = null;
