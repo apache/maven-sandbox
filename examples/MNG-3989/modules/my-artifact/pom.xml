@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>modules</artifactId>
+    <groupId>test</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>my-artifact</artifactId>
+  <name>my-artifact</name>
+  <dependencies>
+    <dependency>
+      <groupId>ancient-artifact</groupId>
+      <artifactId>ancient-artifact</artifactId>
+      <version>3.1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
