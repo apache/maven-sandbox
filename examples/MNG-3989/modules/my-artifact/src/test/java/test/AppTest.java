@@ -33,6 +33,6 @@ public class AppTest
      */
     public void testApp()
     {
-        assertTrue( true );
+        assertTrue( com.example.ancient.AncientClass.isAncient );
     }
 }
