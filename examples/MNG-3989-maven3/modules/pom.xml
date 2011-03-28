@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>MNG-3989</artifactId>
+    <groupId>test.MNG3989</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>modules</artifactId>
+  <name>modules</name>
+  <packaging>pom</packaging>
+  <modules>
+    <module>my-artifact</module>
+  </modules>
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.examples</groupId>
+        <artifactId>bundled-repository-extension</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </extension>
+    </extensions>
+  </build>
+</project>
