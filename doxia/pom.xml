@@ -24,7 +24,7 @@ under the License.
   <parent>
     <artifactId>doxia</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
-    <version>1.0</version>
+    <version>1.2</version>
   </parent>
   <artifactId>doxia-sandbox</artifactId>
   <name>Doxia :: Sandbox</name>
@@ -32,7 +32,7 @@ under the License.
   <packaging>pom</packaging>
   <modules>
     <module>doxia-editor</module>
-    <module>doxia-ide</module>
+    <!--<module>doxia-ide</module>-->
     <module>doxia-module-mediawiki</module>
     <module>doxia-module-xwiki</module>
     <module>doxia-review</module>
