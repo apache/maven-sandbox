@@ -23,7 +23,7 @@ import org.apache.maven.Maven;
 import org.apache.maven.cli.MavenLoggerManager;
 import org.apache.maven.cli.PrintStreamLogger;
 import org.apache.maven.execution.MavenExecutionRequestPopulator;
-import org.apache.maven.mae.boot.services.EMBServiceManager;
+import org.apache.maven.mae.boot.services.MAEServiceManager;
 import org.apache.maven.mae.conf.CoreLibrary;
 import org.apache.maven.mae.conf.MAEConfiguration;
 import org.apache.maven.mae.conf.MAELibrary;
@@ -62,7 +62,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class EMBEmbedderBuilder
+public class MAEEmbedderBuilder
 {
 
     private static final MAELibraryLoader CORE_LOADER = new MAELibraryLoader()
@@ -111,13 +111,13 @@ public class EMBEmbedderBuilder
 
     private DefaultSecDispatcher securityDispatcher;
 
-    private EMBServiceManager serviceManager;
+    private MAEServiceManager serviceManager;
 
     private transient String mavenHome;
 
     private transient boolean loggerAutoCreated = false;
 
-    private EMBEmbedder embedder;
+    private MAEEmbedder embedder;
 
     private String[] debugLogHandles;
 
@@ -143,9 +143,9 @@ public class EMBEmbedderBuilder
 
     private List<MAELibraryLoader> libraryLoaders;
 
-    private final VirtualInstance<EMBEmbedder> embVirtual = new VirtualInstance<EMBEmbedder>( EMBEmbedder.class );
+    private final VirtualInstance<MAEEmbedder> embVirtual = new VirtualInstance<MAEEmbedder>( MAEEmbedder.class );
 
-    public synchronized EMBEmbedderBuilder withSettingsBuilder( final SettingsBuilder settingsBuilder )
+    public synchronized MAEEmbedderBuilder withSettingsBuilder( final SettingsBuilder settingsBuilder )
     {
         this.settingsBuilder = settingsBuilder;
         settingsBuilderProvided = true;
@@ -153,7 +153,7 @@ public class EMBEmbedderBuilder
     }
 
     public synchronized SettingsBuilder settingsBuilder()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         if ( settingsBuilder == null )
         {
@@ -163,7 +163,7 @@ public class EMBEmbedderBuilder
         return settingsBuilder;
     }
 
-    public synchronized EMBEmbedderBuilder withSecurityDispatcher( final DefaultSecDispatcher securityDispatcher )
+    public synchronized MAEEmbedderBuilder withSecurityDispatcher( final DefaultSecDispatcher securityDispatcher )
     {
         this.securityDispatcher = securityDispatcher;
         securityDispatcherProvided = true;
@@ -171,7 +171,7 @@ public class EMBEmbedderBuilder
     }
 
     public synchronized DefaultSecDispatcher securityDispatcher()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         if ( securityDispatcher == null )
         {
@@ -181,25 +181,25 @@ public class EMBEmbedderBuilder
         return securityDispatcher;
     }
 
-    public synchronized EMBEmbedderBuilder withServiceManager( final EMBServiceManager serviceManager )
+    public synchronized MAEEmbedderBuilder withServiceManager( final MAEServiceManager serviceManager )
     {
         this.serviceManager = serviceManager;
         serviceManagerProvided = true;
         return this;
     }
 
-    public synchronized EMBServiceManager serviceManager()
-        throws EMBEmbeddingException
+    public synchronized MAEServiceManager serviceManager()
+        throws MAEEmbeddingException
     {
         if ( serviceManager == null )
         {
-            serviceManager = lookup( EMBServiceManager.class );
+            serviceManager = lookup( MAEServiceManager.class );
             serviceManagerProvided = true;
         }
         return serviceManager;
     }
 
-    public synchronized EMBEmbedderBuilder withExecutionRequestPopulator( final MavenExecutionRequestPopulator executionRequestPopulator )
+    public synchronized MAEEmbedderBuilder withExecutionRequestPopulator( final MavenExecutionRequestPopulator executionRequestPopulator )
     {
         this.executionRequestPopulator = executionRequestPopulator;
         executionRequestPopulatorProvided = true;
@@ -207,7 +207,7 @@ public class EMBEmbedderBuilder
     }
 
     public synchronized MavenExecutionRequestPopulator executionRequestPopulator()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         if ( executionRequestPopulator == null )
         {
@@ -218,13 +218,13 @@ public class EMBEmbedderBuilder
         return executionRequestPopulator;
     }
 
-    public synchronized EMBEmbedderBuilder withCoreClassLoader( final ClassLoader classLoader )
+    public synchronized MAEEmbedderBuilder withCoreClassLoader( final ClassLoader classLoader )
     {
         coreClassLoader = classLoader;
         return this;
     }
 
-    public synchronized EMBEmbedderBuilder withCoreClassLoader( final ClassLoader root, final Object... constituents )
+    public synchronized MAEEmbedderBuilder withCoreClassLoader( final ClassLoader root, final Object... constituents )
         throws MalformedURLException
     {
         if ( constituents != null && constituents.length > 0 )
@@ -294,7 +294,7 @@ public class EMBEmbedderBuilder
         return this;
     }
 
-    public synchronized EMBEmbedderBuilder withClassWorld( final ClassWorld classWorld )
+    public synchronized MAEEmbedderBuilder withClassWorld( final ClassWorld classWorld )
     {
         this.classWorld = classWorld;
         return this;
@@ -320,7 +320,7 @@ public class EMBEmbedderBuilder
         return classWorld;
     }
 
-    public synchronized EMBEmbedderBuilder withContainerConfiguration( final ContainerConfiguration containerConfiguration )
+    public synchronized MAEEmbedderBuilder withContainerConfiguration( final ContainerConfiguration containerConfiguration )
     {
         this.containerConfiguration = containerConfiguration;
         return this;
@@ -339,7 +339,7 @@ public class EMBEmbedderBuilder
         return containerConfiguration;
     }
 
-    public synchronized EMBEmbedderBuilder withClassScanningEnabled( final boolean classScanningEnabled )
+    public synchronized MAEEmbedderBuilder withClassScanningEnabled( final boolean classScanningEnabled )
     {
         this.classScanningEnabled = classScanningEnabled;
         return this;
@@ -350,7 +350,7 @@ public class EMBEmbedderBuilder
         return classScanningEnabled;
     }
 
-    public synchronized EMBEmbedderBuilder withMaven( final Maven maven )
+    public synchronized MAEEmbedderBuilder withMaven( final Maven maven )
     {
         this.maven = maven;
         mavenProvided = true;
@@ -358,7 +358,7 @@ public class EMBEmbedderBuilder
     }
 
     public synchronized Maven maven()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         if ( maven == null )
         {
@@ -368,7 +368,7 @@ public class EMBEmbedderBuilder
         return maven;
     }
 
-    public synchronized EMBEmbedderBuilder withModelProcessor( final ModelProcessor modelProcessor )
+    public synchronized MAEEmbedderBuilder withModelProcessor( final ModelProcessor modelProcessor )
     {
         this.modelProcessor = modelProcessor;
         modelProcessorProvided = true;
@@ -376,7 +376,7 @@ public class EMBEmbedderBuilder
     }
 
     public synchronized ModelProcessor modelProcessor()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         if ( modelProcessor == null )
         {
@@ -388,7 +388,7 @@ public class EMBEmbedderBuilder
     }
 
     private <T> T lookup( final Class<T> cls )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         try
         {
@@ -396,13 +396,13 @@ public class EMBEmbedderBuilder
         }
         catch ( final ComponentLookupException e )
         {
-            throw new EMBEmbeddingException( "Failed to lookup component: %s. Reason: %s", e, cls.getName(),
+            throw new MAEEmbeddingException( "Failed to lookup component: %s. Reason: %s", e, cls.getName(),
                                              e.getMessage() );
         }
     }
 
     private <T> T lookup( final Class<T> cls, final String hint )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         try
         {
@@ -410,12 +410,12 @@ public class EMBEmbedderBuilder
         }
         catch ( final ComponentLookupException e )
         {
-            throw new EMBEmbeddingException( "Failed to lookup component: {0} with hint: {1}. Reason: {2}", e,
+            throw new MAEEmbeddingException( "Failed to lookup component: {0} with hint: {1}. Reason: {2}", e,
                                              cls.getName(), hint, e.getMessage() );
         }
     }
 
-    public synchronized EMBEmbedderBuilder withContainer( final ExtrudablePlexusContainer container )
+    public synchronized MAEEmbedderBuilder withContainer( final ExtrudablePlexusContainer container )
     {
         this.container = container;
         resetContainer();
@@ -460,7 +460,7 @@ public class EMBEmbedderBuilder
     }
 
     public synchronized ExtrudablePlexusContainer container()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         // Need to switch to using: org.codehaus.plexus.MutablePlexusContainer.addPlexusInjector(List<PlexusBeanModule>,
         // Module...)
@@ -469,7 +469,7 @@ public class EMBEmbedderBuilder
             final ContainerConfiguration cc = containerConfiguration();
 
             final InstanceRegistry reg = new InstanceRegistry( instanceRegistry() );
-            reg.addVirtual( new ComponentKey<EMBEmbedder>( EMBEmbedder.class ), embVirtual );
+            reg.addVirtual( new ComponentKey<MAEEmbedder>( MAEEmbedder.class ), embVirtual );
 
             MAEContainer c;
             try
@@ -478,7 +478,7 @@ public class EMBEmbedderBuilder
             }
             catch ( final PlexusContainerException e )
             {
-                throw new EMBEmbeddingException( "Failed to initialize component container: {0}", e, e.getMessage() );
+                throw new MAEEmbeddingException( "Failed to initialize component container: {0}", e, e.getMessage() );
             }
 
             c.setLoggerManager( new MavenLoggerManager( logger ) );
@@ -499,7 +499,7 @@ public class EMBEmbedderBuilder
         return embConfiguration().getInstanceRegistry();
     }
 
-    public EMBEmbedderBuilder withEMBConfiguration( final MAEConfiguration config )
+    public MAEEmbedderBuilder withEMBConfiguration( final MAEConfiguration config )
     {
         embConfiguration = config;
         embConfigurationProvided = true;
@@ -542,7 +542,7 @@ public class EMBEmbedderBuilder
                 if ( debugLogHandles != null
                                 && Arrays.binarySearch( debugLogHandles, MAEConfiguration.STANDARD_LOG_HANDLE_CORE ) > -1 )
                 {
-                    EMBEmbedder.showEMBInfo( embConfiguration, loaders, standardOut() );
+                    MAEEmbedder.showEMBInfo( embConfiguration, loaders, standardOut() );
                 }
             }
             catch ( final IOException e )
@@ -557,7 +557,7 @@ public class EMBEmbedderBuilder
         return embConfiguration;
     }
 
-    public EMBEmbedderBuilder withServiceLibraryLoader( final boolean enabled )
+    public MAEEmbedderBuilder withServiceLibraryLoader( final boolean enabled )
     {
         boolean found = false;
         final Collection<? extends MAELibraryLoader> loaders = libraryLoadersInternal();
@@ -598,13 +598,13 @@ public class EMBEmbedderBuilder
         return false;
     }
 
-    public EMBEmbedderBuilder withLibraryLoader( final MAELibraryLoader loader )
+    public MAEEmbedderBuilder withLibraryLoader( final MAELibraryLoader loader )
     {
         libraryLoadersInternal().add( loader );
         return this;
     }
 
-    public EMBEmbedderBuilder withLibraryLoader( final MAELibraryLoader loader, final int offset )
+    public MAEEmbedderBuilder withLibraryLoader( final MAELibraryLoader loader, final int offset )
     {
         final List<MAELibraryLoader> loaders = libraryLoadersInternal();
         if ( offset < 0 )
@@ -644,7 +644,7 @@ public class EMBEmbedderBuilder
         return loaders;
     }
 
-    public EMBEmbedderBuilder withVersion( final boolean showVersion )
+    public MAEEmbedderBuilder withVersion( final boolean showVersion )
     {
         this.showVersion = showVersion;
         return this;
@@ -655,7 +655,7 @@ public class EMBEmbedderBuilder
         return showVersion;
     }
 
-    public EMBEmbedderBuilder withLogFile( final File logFile )
+    public MAEEmbedderBuilder withLogFile( final File logFile )
     {
         this.logFile = logFile;
         return this;
@@ -666,7 +666,7 @@ public class EMBEmbedderBuilder
         return logFile;
     }
 
-    public EMBEmbedderBuilder withQuietMode( final boolean quiet )
+    public MAEEmbedderBuilder withQuietMode( final boolean quiet )
     {
         this.quiet = quiet;
         return this;
@@ -677,7 +677,7 @@ public class EMBEmbedderBuilder
         return quiet;
     }
 
-    public EMBEmbedderBuilder withDebugMode( final boolean debug )
+    public MAEEmbedderBuilder withDebugMode( final boolean debug )
     {
         this.debug = debug;
         return this;
@@ -688,7 +688,7 @@ public class EMBEmbedderBuilder
         return debug;
     }
 
-    public EMBEmbedderBuilder withErrorMode( final boolean showErrors )
+    public MAEEmbedderBuilder withErrorMode( final boolean showErrors )
     {
         this.showErrors = showErrors;
         return this;
@@ -699,7 +699,7 @@ public class EMBEmbedderBuilder
         return showErrors;
     }
 
-    public synchronized EMBEmbedderBuilder withStandardOut( final PrintStream stdout )
+    public synchronized MAEEmbedderBuilder withStandardOut( final PrintStream stdout )
     {
         this.stdout = stdout;
 
@@ -716,7 +716,7 @@ public class EMBEmbedderBuilder
         return stdout;
     }
 
-    public EMBEmbedderBuilder withStandardErr( final PrintStream stderr )
+    public MAEEmbedderBuilder withStandardErr( final PrintStream stderr )
     {
         this.stderr = stderr;
         return this;
@@ -727,7 +727,7 @@ public class EMBEmbedderBuilder
         return stderr;
     }
 
-    public EMBEmbedderBuilder withStandardIn( final InputStream stdin )
+    public MAEEmbedderBuilder withStandardIn( final InputStream stdin )
     {
         this.stdin = stdin;
         return this;
@@ -738,7 +738,7 @@ public class EMBEmbedderBuilder
         return stdin;
     }
 
-    public EMBEmbedderBuilder withLogger( final Logger logger )
+    public MAEEmbedderBuilder withLogger( final Logger logger )
     {
         this.logger = logger;
         return this;
@@ -797,11 +797,11 @@ public class EMBEmbedderBuilder
         logger();
     }
 
-    protected synchronized EMBEmbedder createEmbedder()
-        throws EMBEmbeddingException
+    protected synchronized MAEEmbedder createEmbedder()
+        throws MAEEmbeddingException
     {
-        final EMBEmbedder embedder =
-            new EMBEmbedder( maven(), embConfiguration(), container(), settingsBuilder(), executionRequestPopulator(),
+        final MAEEmbedder embedder =
+            new MAEEmbedder( maven(), embConfiguration(), container(), settingsBuilder(), executionRequestPopulator(),
                              securityDispatcher(), serviceManager(), libraryLoaders(), standardOut(), logger(),
                              shouldShowErrors(), showVersion() );
 
@@ -810,8 +810,8 @@ public class EMBEmbedderBuilder
         return embedder;
     }
 
-    public synchronized EMBEmbedder build()
-        throws EMBEmbeddingException
+    public synchronized MAEEmbedder build()
+        throws MAEEmbeddingException
     {
         if ( embedder == null )
         {
@@ -826,7 +826,7 @@ public class EMBEmbedderBuilder
         return embedder;
     }
 
-    public EMBEmbedderBuilder withDebugLogHandles( final String[] debugLogHandles )
+    public MAEEmbedderBuilder withDebugLogHandles( final String[] debugLogHandles )
     {
         this.debugLogHandles = debugLogHandles;
         logHandlesConfigured = false;

@@ -16,10 +16,10 @@
 
 package org.apache.maven.mae.boot.services;
 
-import org.apache.maven.mae.boot.embed.EMBEmbeddingException;
+import org.apache.maven.mae.boot.embed.MAEEmbeddingException;
 
 public class UnauthorizedServiceException
-    extends EMBEmbeddingException
+    extends MAEEmbeddingException
 {
 
     private static final long serialVersionUID = 1L;

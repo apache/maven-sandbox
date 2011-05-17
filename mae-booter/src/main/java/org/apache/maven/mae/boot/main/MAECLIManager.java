@@ -30,7 +30,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EMBCLIManager
+public class MAECLIManager
 {
 
     public static final String XAVEN_DEBUG_LOG_HANDLES = "ZX";
@@ -38,7 +38,7 @@ public class EMBCLIManager
     private final Options options;
 
     @SuppressWarnings( "static-access" )
-    public EMBCLIManager()
+    public MAECLIManager()
     {
         options = new Options();
 

@@ -18,7 +18,7 @@ package org.commonjava.emb.app;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.mae.MAEException;
-import org.apache.maven.mae.boot.embed.EMBEmbedderBuilder;
+import org.apache.maven.mae.boot.embed.MAEEmbedderBuilder;
 import org.apache.maven.mae.conf.MAEConfiguration;
 import org.apache.maven.mae.conf.MAELibrary;
 import org.apache.maven.mae.conf.VersionProvider;
@@ -74,7 +74,7 @@ public abstract class AbstractEMBApplication
             return this;
         }
 
-        final EMBEmbedderBuilder builder = new EMBEmbedderBuilder().withLibraryLoader( new InstanceLibraryLoader( additionalLibraries ) );
+        final MAEEmbedderBuilder builder = new MAEEmbedderBuilder().withLibraryLoader( new InstanceLibraryLoader( additionalLibraries ) );
 
         beforeLoading();
         configureBuilder( builder );
@@ -131,7 +131,7 @@ public abstract class AbstractEMBApplication
         getInstanceRegistry().setVirtualInstance( virtualKey, instance );
     }
 
-    protected void configureBuilder( final EMBEmbedderBuilder builder )
+    protected void configureBuilder( final MAEEmbedderBuilder builder )
         throws MAEException
     {
     }
