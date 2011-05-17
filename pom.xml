@@ -57,10 +57,6 @@
     <module>mae-api</module>
     <module>mae-container</module>
     <module>mae-booter</module>
-    <!-- <module>components</module>
-    <module>events</module>
-    <module>integration</module>
-    <module>distro</module> -->
     <module>mae-app</module>
   </modules>
   
