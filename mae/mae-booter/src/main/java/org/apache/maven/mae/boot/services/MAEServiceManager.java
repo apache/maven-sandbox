@@ -18,36 +18,36 @@ package org.apache.maven.mae.boot.services;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.execution.MavenExecutionRequest;
-import org.apache.maven.mae.boot.embed.EMBEmbeddingException;
+import org.apache.maven.mae.boot.embed.MAEEmbeddingException;
 import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.ProjectBuilder;
 import org.apache.maven.repository.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
 
-public interface EMBServiceManager
+public interface MAEServiceManager
 {
 
     ProjectBuilder projectBuilder();
 
     DefaultProjectBuildingRequest createProjectBuildingRequest()
-        throws EMBEmbeddingException;
+        throws MAEEmbeddingException;
 
     RepositorySystem mavenRepositorySystem();
 
     org.sonatype.aether.RepositorySystem aetherRepositorySystem();
 
     RepositorySystemSession createAetherRepositorySystemSession()
-        throws EMBEmbeddingException;
+        throws MAEEmbeddingException;
 
     RepositorySystemSession createAetherRepositorySystemSession( MavenExecutionRequest request );
 
     <T> T service( Class<T> type )
-        throws EMBEmbeddingException;
+        throws MAEEmbeddingException;
 
     <T> T service( Class<T> type, String hint )
-        throws EMBEmbeddingException;
+        throws MAEEmbeddingException;
 
     ArtifactRepository defaultLocalRepository()
-        throws EMBEmbeddingException;
+        throws MAEEmbeddingException;
 
 }

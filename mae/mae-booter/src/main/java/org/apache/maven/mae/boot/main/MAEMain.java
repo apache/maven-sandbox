@@ -24,8 +24,8 @@ import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenExecutionResult;
 import org.apache.maven.lifecycle.internal.LifecycleWeaveBuilder;
 import org.apache.maven.mae.MAEExecutionRequest;
-import org.apache.maven.mae.boot.embed.EMBEmbedder;
-import org.apache.maven.mae.boot.embed.EMBEmbeddingException;
+import org.apache.maven.mae.boot.embed.MAEEmbedder;
+import org.apache.maven.mae.boot.embed.MAEEmbeddingException;
 import org.apache.maven.mae.boot.log.BatchTransferListener;
 import org.apache.maven.mae.boot.log.InteractiveTransferListener;
 import org.apache.maven.model.building.ModelProcessor;
@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-public class EMBMain
+public class MAEMain
 {
     public static final String LOCAL_REPO_PROPERTY = "maven.repo.local";
 
@@ -67,13 +67,13 @@ public class EMBMain
 
     private final ClassWorld classWorld;
 
-    public EMBMain()
+    public MAEMain()
     {
         this( null );
     }
 
     // This supports painless invocation by the Verifier during embedded execution of the core ITs
-    public EMBMain( final ClassWorld classWorld )
+    public MAEMain( final ClassWorld classWorld )
     {
         this.classWorld = classWorld;
     }
@@ -88,13 +88,13 @@ public class EMBMain
     /** @noinspection ConfusingMainMethod */
     public static int main( final String[] args, final ClassWorld classWorld )
     {
-        final EMBMain cli = new EMBMain();
+        final MAEMain cli = new MAEMain();
         return cli.doMain( new CliRequest( args, classWorld ) );
     }
 
     public static int doMain( final String[] args, final ClassWorld classWorld )
     {
-        final EMBMain cli = new EMBMain();
+        final MAEMain cli = new MAEMain();
         return cli.doMain( new CliRequest( args, classWorld ) );
     }
 
@@ -157,7 +157,7 @@ public class EMBMain
     protected void cli( final CliRequest cliRequest )
         throws Exception
     {
-        final EMBCLIManager cliManager = new EMBCLIManager();
+        final MAECLIManager cliManager = new MAECLIManager();
 
         try
         {
@@ -175,9 +175,9 @@ public class EMBMain
         cliRequest.builder.withDebugMode( cliRequest.commandLine.hasOption( CLIManager.DEBUG ) );
         cliRequest.builder.withQuietMode( cliRequest.commandLine.hasOption( CLIManager.QUIET ) );
         cliRequest.builder.withVersion( cliRequest.commandLine.hasOption( CLIManager.SHOW_VERSION ) );
-        if ( cliRequest.commandLine.hasOption( EMBCLIManager.XAVEN_DEBUG_LOG_HANDLES ) )
+        if ( cliRequest.commandLine.hasOption( MAECLIManager.XAVEN_DEBUG_LOG_HANDLES ) )
         {
-            cliRequest.builder.withDebugLogHandles( cliRequest.commandLine.getOptionValue( EMBCLIManager.XAVEN_DEBUG_LOG_HANDLES )
+            cliRequest.builder.withDebugLogHandles( cliRequest.commandLine.getOptionValue( MAECLIManager.XAVEN_DEBUG_LOG_HANDLES )
                                                                           .split( "\\s*,\\s*" ) );
         }
 
@@ -198,7 +198,7 @@ public class EMBMain
         {
             try
             {
-                EMBEmbedder.showVersion( cliRequest.builder.embConfiguration(), cliRequest.builder.libraryLoaders(),
+                MAEEmbedder.showVersion( cliRequest.builder.embConfiguration(), cliRequest.builder.libraryLoaders(),
                                          cliRequest.builder.standardOut() );
             }
             catch ( final IOException e )
@@ -243,9 +243,9 @@ public class EMBMain
     }
 
     protected int execute( final CliRequest cliRequest )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
-        final EMBEmbedder embedder = cliRequest.builder.build();
+        final MAEEmbedder embedder = cliRequest.builder.build();
         final MavenExecutionResult result = embedder.execute( cliRequest.request );
 
         return embedder.formatErrorOutput( cliRequest.request, result );
@@ -304,7 +304,7 @@ public class EMBMain
     }
 
     protected MAEExecutionRequest populateRequest( final CliRequest cliRequest )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         // cliRequest.builder.build();
 
@@ -471,7 +471,7 @@ public class EMBMain
         }
         else
         {
-            userToolchainsFile = EMBMain.DEFAULT_USER_TOOLCHAINS_FILE;
+            userToolchainsFile = MAEMain.DEFAULT_USER_TOOLCHAINS_FILE;
         }
 
         request.setBaseDirectory( baseDirectory )
@@ -546,11 +546,11 @@ public class EMBMain
             request.setMakeBehavior( MavenExecutionRequest.REACTOR_MAKE_BOTH );
         }
 
-        String localRepoProperty = request.getUserProperties().getProperty( EMBMain.LOCAL_REPO_PROPERTY );
+        String localRepoProperty = request.getUserProperties().getProperty( MAEMain.LOCAL_REPO_PROPERTY );
 
         if ( localRepoProperty == null )
         {
-            localRepoProperty = request.getSystemProperties().getProperty( EMBMain.LOCAL_REPO_PROPERTY );
+            localRepoProperty = request.getSystemProperties().getProperty( MAEMain.LOCAL_REPO_PROPERTY );
         }
 
         if ( localRepoProperty != null )
@@ -560,7 +560,7 @@ public class EMBMain
 
         final String threadConfiguration =
             commandLine.hasOption( CLIManager.THREADS ) ? commandLine.getOptionValue( CLIManager.THREADS )
-                            : request.getSystemProperties().getProperty( EMBMain.THREADS_DEPRECATED ); // TODO: Remove
+                            : request.getSystemProperties().getProperty( MAEMain.THREADS_DEPRECATED ); // TODO: Remove
                                                                                                        // this setting.
                                                                                                        // Note that the
                                                                                                        // int-tests use

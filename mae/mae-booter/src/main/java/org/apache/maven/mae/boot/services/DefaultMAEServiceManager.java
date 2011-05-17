@@ -24,7 +24,7 @@ import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenExecutionRequestPopulationException;
 import org.apache.maven.execution.MavenExecutionRequestPopulator;
 import org.apache.maven.mae.DefaultMAEExecutionRequest;
-import org.apache.maven.mae.boot.embed.EMBEmbeddingException;
+import org.apache.maven.mae.boot.embed.MAEEmbeddingException;
 import org.apache.maven.mae.internal.container.ServiceAuthorizer;
 import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.project.DefaultProjectBuildingRequest;
@@ -36,9 +36,9 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.sonatype.aether.RepositorySystemSession;
 
-@Component( role = EMBServiceManager.class )
-public class DefaultEMBServiceManager
-    implements EMBServiceManager/* , Contextualizable */
+@Component( role = MAEServiceManager.class )
+public class DefaultMAEServiceManager
+    implements MAEServiceManager/* , Contextualizable */
 {
 
     // private final Logger logger = Logger.getLogger( EMBConfiguration.STANDARD_LOG_HANDLE_CORE );
@@ -89,7 +89,7 @@ public class DefaultEMBServiceManager
     }
 
     public DefaultProjectBuildingRequest createProjectBuildingRequest()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         final DefaultProjectBuildingRequest req = new DefaultProjectBuildingRequest();
         req.setLocalRepository( defaultLocalRepository() );
@@ -114,7 +114,7 @@ public class DefaultEMBServiceManager
     }
 
     public RepositorySystemSession createAetherRepositorySystemSession()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         try
         {
@@ -125,7 +125,7 @@ public class DefaultEMBServiceManager
         }
         catch ( final MavenExecutionRequestPopulationException e )
         {
-            throw new EMBEmbeddingException( "Failed to populate default Maven execution request, "
+            throw new MAEEmbeddingException( "Failed to populate default Maven execution request, "
                             + " for use in constructing a repository system session." + "\nReason: %s", e,
                                              e.getMessage() );
         }
@@ -137,7 +137,7 @@ public class DefaultEMBServiceManager
     }
 
     public synchronized ArtifactRepository defaultLocalRepository()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         if ( defaultLocalRepo == null )
         {
@@ -147,7 +147,7 @@ public class DefaultEMBServiceManager
             }
             catch ( final InvalidRepositoryException e )
             {
-                throw new EMBEmbeddingException( "Failed to create default local-repository instance: {0}", e,
+                throw new MAEEmbeddingException( "Failed to create default local-repository instance: {0}", e,
                                                  e.getMessage() );
             }
         }
@@ -157,11 +157,11 @@ public class DefaultEMBServiceManager
 
     @Override
     public <T> T service( final Class<T> type )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         if ( type == null )
         {
-            throw new EMBEmbeddingException( "Invalid service: null" );
+            throw new MAEEmbeddingException( "Invalid service: null" );
         }
 
         if ( !authorizer.isAvailable( type ) )
@@ -175,18 +175,18 @@ public class DefaultEMBServiceManager
         }
         catch ( final ComponentLookupException e )
         {
-            throw new EMBEmbeddingException( "Failed to retrieve service: %s. Reason: %s", e, type.getName(),
+            throw new MAEEmbeddingException( "Failed to retrieve service: %s. Reason: %s", e, type.getName(),
                                              e.getMessage() );
         }
     }
 
     @Override
     public <T> T service( final Class<T> type, final String hint )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         if ( type == null )
         {
-            throw new EMBEmbeddingException( "Invalid service: null" );
+            throw new MAEEmbeddingException( "Invalid service: null" );
         }
 
         if ( !authorizer.isAvailable( type, hint ) )
@@ -200,7 +200,7 @@ public class DefaultEMBServiceManager
         }
         catch ( final ComponentLookupException e )
         {
-            throw new EMBEmbeddingException( "Failed to retrieve service: %s with hint: %s. Reason: %s", e,
+            throw new MAEEmbeddingException( "Failed to retrieve service: %s with hint: %s. Reason: %s", e,
                                              type.getName(), hint, e.getMessage() );
         }
     }

@@ -18,28 +18,28 @@ package org.apache.maven.mae.boot.embed;
 
 import org.apache.maven.mae.MAEException;
 
-public class EMBEmbeddingException
+public class MAEEmbeddingException
     extends MAEException
 {
 
     private static final long serialVersionUID = 2L;
 
-    public EMBEmbeddingException( final String message, final Throwable cause )
+    public MAEEmbeddingException( final String message, final Throwable cause )
     {
         super( message, cause );
     }
 
-    public EMBEmbeddingException( final String message )
+    public MAEEmbeddingException( final String message )
     {
         super( message );
     }
 
-    public EMBEmbeddingException( final String message, final Throwable cause, final Object... params )
+    public MAEEmbeddingException( final String message, final Throwable cause, final Object... params )
     {
         super( message, cause, params );
     }
 
-    public EMBEmbeddingException( final String message, final Object... params )
+    public MAEEmbeddingException( final String message, final Object... params )
     {
         super( message, params );
     }

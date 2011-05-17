@@ -19,7 +19,7 @@ package org.apache.maven.mae.boot.main;
 import org.apache.commons.cli.CommandLine;
 import org.apache.maven.mae.DefaultMAEExecutionRequest;
 import org.apache.maven.mae.MAEExecutionRequest;
-import org.apache.maven.mae.boot.embed.EMBEmbedderBuilder;
+import org.apache.maven.mae.boot.embed.MAEEmbedderBuilder;
 import org.codehaus.plexus.classworlds.ClassWorld;
 
 import java.io.PrintStream;
@@ -41,12 +41,12 @@ public final class CliRequest
 
     public MAEExecutionRequest request;
 
-    public EMBEmbedderBuilder builder;
+    public MAEEmbedderBuilder builder;
 
     public CliRequest( final String[] args, final ClassWorld classWorld )
     {
         this.args = args;
-        builder = new EMBEmbedderBuilder().withClassWorld( classWorld );
+        builder = new MAEEmbedderBuilder().withClassWorld( classWorld );
         request = new DefaultMAEExecutionRequest();
     }
 

@@ -30,8 +30,8 @@ import org.apache.maven.execution.MavenExecutionResult;
 import org.apache.maven.lifecycle.LifecycleExecutionException;
 import org.apache.maven.mae.MAEExecutionRequest;
 import org.apache.maven.mae.boot.log.EventLogger;
-import org.apache.maven.mae.boot.main.EMBMain;
-import org.apache.maven.mae.boot.services.EMBServiceManager;
+import org.apache.maven.mae.boot.main.MAEMain;
+import org.apache.maven.mae.boot.services.MAEServiceManager;
 import org.apache.maven.mae.conf.MAEConfiguration;
 import org.apache.maven.mae.conf.MAELibrary;
 import org.apache.maven.mae.conf.loader.MAELibraryLoader;
@@ -74,8 +74,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-@Component( role = EMBEmbedder.class )
-public class EMBEmbedder
+@Component( role = MAEEmbedder.class )
+public class MAEEmbedder
 {
 
     private static boolean embInfoShown;
@@ -100,15 +100,15 @@ public class EMBEmbedder
 
     private final DefaultSecDispatcher securityDispatcher;
 
-    private transient final EMBServiceManager serviceManager;
+    private transient final MAEServiceManager serviceManager;
 
     private final List<MAELibraryLoader> libraryLoaders;
 
     private boolean infoPrinted = false;
 
-    EMBEmbedder( final Maven maven, final MAEConfiguration embConfiguration, final ExtrudablePlexusContainer container,
+    MAEEmbedder( final Maven maven, final MAEConfiguration embConfiguration, final ExtrudablePlexusContainer container,
                  final SettingsBuilder settingsBuilder, final MavenExecutionRequestPopulator executionRequestPopulator,
-                 final DefaultSecDispatcher securityDispatcher, final EMBServiceManager serviceManager,
+                 final DefaultSecDispatcher securityDispatcher, final MAEServiceManager serviceManager,
                  final List<MAELibraryLoader> libraryLoaders, final PrintStream standardOut, final Logger logger,
                  final boolean shouldShowErrors, final boolean showVersion )
     {
@@ -128,28 +128,28 @@ public class EMBEmbedder
     }
 
     public synchronized Injector injector()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         printInfo( null );
         return container.getInjector();
     }
 
     public synchronized Map<Object, Throwable> wire( final Object... instances )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         printInfo( null );
         return container.extrudeDependencies( instances );
     }
 
-    public synchronized EMBServiceManager serviceManager()
-        throws EMBEmbeddingException
+    public synchronized MAEServiceManager serviceManager()
+        throws MAEEmbeddingException
     {
         printInfo( null );
         return serviceManager;
     }
 
     public MavenExecutionResult execute( final MAEExecutionRequest request )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         final PrintStream oldOut = System.out;
         try
@@ -173,7 +173,7 @@ public class EMBEmbedder
     }
 
     public String encryptMasterPassword( final MAEExecutionRequest request )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         printInfo( null );
 
@@ -194,12 +194,12 @@ public class EMBEmbedder
         }
         catch ( final PlexusCipherException e )
         {
-            throw new EMBEmbeddingException( "Failed to encrypt master password: {0}", e, e.getMessage() );
+            throw new MAEEmbeddingException( "Failed to encrypt master password: {0}", e, e.getMessage() );
         }
     }
 
     public String encryptPassword( final MAEExecutionRequest request )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         printInfo( null );
 
@@ -240,16 +240,16 @@ public class EMBEmbedder
         }
         catch ( final PlexusCipherException e )
         {
-            throw new EMBEmbeddingException( "Failed to encrypt password: {0}", e, e.getMessage() );
+            throw new MAEEmbeddingException( "Failed to encrypt password: {0}", e, e.getMessage() );
         }
         catch ( final SecDispatcherException e )
         {
-            throw new EMBEmbeddingException( "Failed to encrypt password: {0}", e, e.getMessage() );
+            throw new MAEEmbeddingException( "Failed to encrypt password: {0}", e, e.getMessage() );
         }
     }
 
     protected void doExecutionStarting()
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         for ( final MAELibrary library : embConfiguration.getLibraries() )
         {
@@ -266,7 +266,7 @@ public class EMBEmbedder
                     }
                     catch ( final ComponentLookupException e )
                     {
-                        throw new EMBEmbeddingException(
+                        throw new MAEEmbeddingException(
                                                          "Failed to lookup load-on-start component for initialization: %s.\nReason: %s",
                                                          e, key, e.getMessage() );
                     }
@@ -301,7 +301,7 @@ public class EMBEmbedder
     }
 
     protected synchronized void injectEnvironment( final MAEExecutionRequest request )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         injectLogSettings( request );
 
@@ -338,11 +338,11 @@ public class EMBEmbedder
 
     protected void injectFromProperties( final MAEExecutionRequest request )
     {
-        String localRepoProperty = request.getUserProperties().getProperty( EMBMain.LOCAL_REPO_PROPERTY );
+        String localRepoProperty = request.getUserProperties().getProperty( MAEMain.LOCAL_REPO_PROPERTY );
 
         if ( localRepoProperty == null )
         {
-            localRepoProperty = request.getSystemProperties().getProperty( EMBMain.LOCAL_REPO_PROPERTY );
+            localRepoProperty = request.getSystemProperties().getProperty( MAEMain.LOCAL_REPO_PROPERTY );
         }
 
         if ( localRepoProperty != null )
@@ -409,7 +409,7 @@ public class EMBEmbedder
     }
 
     protected void injectSettings( final MAEExecutionRequest request )
-        throws EMBEmbeddingException
+        throws MAEEmbeddingException
     {
         Settings settings = request.getSettings();
         SettingsBuildingResult settingsResult = null;
@@ -428,7 +428,7 @@ public class EMBEmbedder
             }
             catch ( final SettingsBuildingException e )
             {
-                throw new EMBEmbeddingException(
+                throw new MAEEmbeddingException(
                                                  "Failed to build settings; {0}\nGlobal settings: {1}\nUser settings: {2}",
                                                  e, e.getMessage(), request.getGlobalSettingsFile(),
                                                  request.getUserSettingsFile() );
@@ -443,7 +443,7 @@ public class EMBEmbedder
         }
         catch ( final MavenExecutionRequestPopulationException e )
         {
-            throw new EMBEmbeddingException( "Failed to populate request from settings; {0}", e, e.getMessage() );
+            throw new MAEEmbeddingException( "Failed to populate request from settings; {0}", e, e.getMessage() );
         }
 
         if ( !settingsResult.getProblems().isEmpty() && logger.isWarnEnabled() )
