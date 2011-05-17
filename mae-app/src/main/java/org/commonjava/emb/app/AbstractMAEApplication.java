@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractEMBApplication
-    implements EMBApplication
+public abstract class AbstractMAEApplication
+    implements MAEApplication
 {
 
     private final List<MAELibrary> additionalLibraries = new ArrayList<MAELibrary>();
@@ -47,26 +47,26 @@ public abstract class AbstractEMBApplication
     private transient boolean loaded = false;
 
     @SuppressWarnings( { "rawtypes", "unchecked" } )
-    protected AbstractEMBApplication()
+    protected AbstractMAEApplication()
     {
         withLibrary( this );
         withComponentInstance( new ComponentKey( getClass() ), this );
     }
 
-    protected final AbstractEMBApplication withLibrary( final MAELibrary library )
+    protected final AbstractMAEApplication withLibrary( final MAELibrary library )
     {
         additionalLibraries.add( library );
         return this;
     }
 
     @Override
-    public EMBApplication load()
+    public MAEApplication load()
         throws MAEException
     {
         return doLoad();
     }
 
-    private synchronized EMBApplication doLoad()
+    private synchronized MAEApplication doLoad()
         throws MAEException
     {
         if ( loaded )

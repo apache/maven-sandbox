@@ -19,9 +19,9 @@ package org.commonjava.emb.app;
 import org.apache.maven.mae.MAEException;
 import org.apache.maven.mae.conf.MAELibrary;
 
-public interface EMBApplication
+public interface MAEApplication
     extends MAELibrary
 {
-    EMBApplication load()
+    MAEApplication load()
         throws MAEException;
 }
