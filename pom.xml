@@ -48,9 +48,8 @@
   </dependencyManagement>
   
   <properties>
-  	<mavenVersion>3.0.4-SNAPSHOT</mavenVersion>
-  	<plexusVersion>1.5.4</plexusVersion>
-  	<sisuVersion>2.1.1</sisuVersion>
+  	<mavenVersion>3.0.3</mavenVersion>
+  	<plexusVersion>1.5.5</plexusVersion>
   </properties>
   
   <modules>
