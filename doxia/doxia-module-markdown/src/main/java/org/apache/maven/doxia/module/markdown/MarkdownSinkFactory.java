@@ -19,10 +19,10 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
+import java.io.Writer;
+
 import org.apache.maven.doxia.sink.AbstractTextSinkFactory;
 import org.apache.maven.doxia.sink.Sink;
-
-import java.io.Writer;
 
 /**
  * {@link org.apache.maven.doxia.sink.SinkFactory} for {@link MarkdownSink}.
@@ -31,14 +31,15 @@ import java.io.Writer;
  * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="markdown"
  * @since 1.3
  */
-public class MarkdownSinkFactory extends AbstractTextSinkFactory
+public class MarkdownSinkFactory
+    extends AbstractTextSinkFactory
 {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Sink createSink(Writer writer, String encoding)
+    protected Sink createSink( Writer writer, String encoding )
     {
         return new MarkdownSink();
     }

@@ -28,7 +28,8 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
  * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="markdown"
  * @since 1.3
  */
-public class MarkdownSiteModule extends AbstractSiteModule
+public class MarkdownSiteModule
+    extends AbstractSiteModule
 {
 
     /**
@@ -46,6 +47,6 @@ public class MarkdownSiteModule extends AbstractSiteModule
      */
     public MarkdownSiteModule()
     {
-        super(SOURCE_DIRECTORY, FILE_EXTENSION, MarkdownParser.ROLE_HINT);
+        super( SOURCE_DIRECTORY, FILE_EXTENSION, MarkdownParser.ROLE_HINT );
     }
 }

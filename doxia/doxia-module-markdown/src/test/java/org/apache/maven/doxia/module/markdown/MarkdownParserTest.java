@@ -28,7 +28,8 @@ import org.apache.maven.doxia.parser.Parser;
  * @author Julien Nicoulaud <julien.nicoulaud@gmail.com>
  * @since 1.3
  */
-public class MarkdownParserTest extends AbstractParserTest
+public class MarkdownParserTest
+    extends AbstractParserTest
 {
 
     /**
@@ -43,7 +44,7 @@ public class MarkdownParserTest extends AbstractParserTest
     protected void setUp() throws Exception
     {
         super.setUp();
-        parser = (MarkdownParser) lookup(Parser.ROLE, MarkdownParser.ROLE_HINT);
+        parser = (MarkdownParser) lookup( Parser.ROLE, MarkdownParser.ROLE_HINT );
     }
 
     /**

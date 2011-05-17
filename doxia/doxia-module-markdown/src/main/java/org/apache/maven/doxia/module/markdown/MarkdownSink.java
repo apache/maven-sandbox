@@ -27,6 +27,7 @@ import org.apache.maven.doxia.sink.AbstractTextSink;
  * @author Julien Nicoulaud <julien.nicoulaud@gmail.com>
  * @since 1.3
  */
-public class MarkdownSink extends AbstractTextSink
+public class MarkdownSink
+    extends AbstractTextSink
 {
 }

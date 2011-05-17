@@ -27,8 +27,11 @@ import org.apache.maven.doxia.parser.ParseException;
  * @author Julien Nicoulaud <julien.nicoulaud@gmail.com>
  * @since 1.3
  */
-public class MarkdownParseException extends ParseException
+public class MarkdownParseException
+    extends ParseException
 {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Build a new instance of {@link MarkdownParseException} with the specified detail message and cause.
@@ -40,8 +43,8 @@ public class MarkdownParseException extends ParseException
      * @param e       the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
      *                (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
-    public MarkdownParseException(String message, Exception e)
+    public MarkdownParseException( String message, Exception e )
     {
-        super(message, e);
+        super( message, e );
     }
 }

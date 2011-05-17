@@ -19,14 +19,16 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.AbstractTextParser;
-import org.apache.maven.doxia.sink.Sink;
-import org.codehaus.plexus.util.IOUtil;
-import org.pegdown.Extensions;
-import org.pegdown.PegDownProcessor;
-
 import java.io.IOException;
 import java.io.Reader;
+
+import org.apache.maven.doxia.parser.AbstractTextParser;
+import org.apache.maven.doxia.sink.Sink;
+
+import org.codehaus.plexus.util.IOUtil;
+
+import org.pegdown.Extensions;
+import org.pegdown.PegDownProcessor;
 
 /**
  * Implementation of {@link org.apache.maven.doxia.parser.Parser} for Markdown documents.
@@ -37,7 +39,8 @@ import java.io.Reader;
  * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="markdown"
  * @since 1.3
  */
-public class MarkdownParser extends AbstractTextParser
+public class MarkdownParser
+    extends AbstractTextParser
 {
 
     /**
@@ -48,20 +51,22 @@ public class MarkdownParser extends AbstractTextParser
     /**
      * The {@link PegDownProcessor} used to convert Pegdown documents to HTML.
      */
-    protected static final PegDownProcessor PEGDOWN_PROCESSOR = new PegDownProcessor(Extensions.ALL & ~Extensions.HARDWRAPS);
+    protected static final PegDownProcessor PEGDOWN_PROCESSOR =
+        new PegDownProcessor( Extensions.ALL & ~Extensions.HARDWRAPS );
 
     /**
      * {@inheritDoc}
      */
-    public void parse(Reader reader, Sink sink) throws MarkdownParseException
+    public void parse( Reader reader, Sink sink )
+        throws MarkdownParseException
     {
         try
         {
-            sink.rawText(PEGDOWN_PROCESSOR.markdownToHtml(IOUtil.toString(reader)));
+            sink.rawText( PEGDOWN_PROCESSOR.markdownToHtml( IOUtil.toString( reader ) ) );
         }
-        catch (IOException e)
+        catch ( IOException e )
         {
-            throw new MarkdownParseException("Failed reading Markdown source document", e);
+            throw new MarkdownParseException( "Failed reading Markdown source document", e );
         }
     }
 }
