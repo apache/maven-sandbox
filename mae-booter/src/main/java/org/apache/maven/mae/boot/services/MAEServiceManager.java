@@ -27,19 +27,23 @@ import org.sonatype.aether.RepositorySystemSession;
 public interface MAEServiceManager
 {
 
-    ProjectBuilder projectBuilder();
+    ProjectBuilder projectBuilder()
+        throws MAEEmbeddingException;
 
     DefaultProjectBuildingRequest createProjectBuildingRequest()
         throws MAEEmbeddingException;
 
-    RepositorySystem mavenRepositorySystem();
+    RepositorySystem mavenRepositorySystem()
+        throws MAEEmbeddingException;
 
-    org.sonatype.aether.RepositorySystem aetherRepositorySystem();
+    org.sonatype.aether.RepositorySystem aetherRepositorySystem()
+        throws MAEEmbeddingException;
 
     RepositorySystemSession createAetherRepositorySystemSession()
         throws MAEEmbeddingException;
 
-    RepositorySystemSession createAetherRepositorySystemSession( MavenExecutionRequest request );
+    RepositorySystemSession createAetherRepositorySystemSession( MavenExecutionRequest request )
+        throws MAEEmbeddingException;
 
     <T> T service( Class<T> type )
         throws MAEEmbeddingException;
