@@ -35,6 +35,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.sonatype.aether.RepositorySystemSession;
+import org.sonatype.aether.util.DefaultRepositoryCache;
 
 @Component( role = MAEServiceManager.class )
 public class DefaultMAEServiceManager
@@ -131,9 +132,32 @@ public class DefaultMAEServiceManager
         }
     }
 
-    public RepositorySystemSession createAetherRepositorySystemSession( final MavenExecutionRequest request )
+    public RepositorySystemSession createAetherRepositorySystemSession( MavenExecutionRequest request )
+        throws MAEEmbeddingException
     {
-        return defaultMaven.newRepositorySession( request );
+        if ( request == null )
+        {
+            return createAetherRepositorySystemSession();
+        }
+        else
+        {
+            try
+            {
+                request = requestPopulator.populateDefaults( request );
+                if ( request.getRepositoryCache() == null )
+                {
+                    request.setRepositoryCache( new DefaultRepositoryCache() );
+                }
+            }
+            catch ( MavenExecutionRequestPopulationException e )
+            {
+                throw new MAEEmbeddingException( "Failed to populate default Maven execution request, "
+                                                 + " for use in constructing a repository system session." + "\nReason: %s", e,
+                                                                  e.getMessage() );
+            }
+            
+            return defaultMaven.newRepositorySession( request );
+        }
     }
 
     public synchronized ArtifactRepository defaultLocalRepository()

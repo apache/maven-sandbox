@@ -41,6 +41,10 @@ public class DefaultMAEExecutionRequest
     private String password;
 
     private final DefaultMavenExecutionRequest embedded = new DefaultMavenExecutionRequest();
+    
+//    public DefautMAEExecutionRequest()
+//    {
+//    }
 
     public DefaultMAEExecutionRequest copyOf()
     {
