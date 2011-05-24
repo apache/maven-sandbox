@@ -19,6 +19,8 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
+import org.apache.commons.io.IOUtils;
+
 public final class IOUtil
 {
     private static final int DEFAULT_BUFFER_SIZE = 4096;
@@ -256,21 +258,21 @@ public final class IOUtil
 
     public static void close( java.io.InputStream inputStream )
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        IOUtils.closeQuietly( inputStream );
     }
 
     public static void close( java.io.OutputStream outputStream )
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        IOUtils.closeQuietly( outputStream);
     }
 
     public static void close( java.io.Reader reader )
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        IOUtils.closeQuietly( reader );
     }
 
     public static void close( java.io.Writer writer )
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        IOUtils.closeQuietly( writer );
     }
 }
