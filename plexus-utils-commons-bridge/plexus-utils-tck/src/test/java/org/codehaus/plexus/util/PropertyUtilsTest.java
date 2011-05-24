@@ -21,17 +21,20 @@ package org.codehaus.plexus.util;
 
 import org.junit.Test;
 
-import static org.codehaus.plexus.util.TckMatchers.isUtilityClass;
+import static org.codehaus.plexus.util.TckMatchers.hasDefaultConstructor;
+import static org.codehaus.plexus.util.TckMatchers.isFinalClass;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
-public class IOUtilTest
+public class PropertyUtilsTest
 {
 
     @Test
-    public void isAUtilityClass()
+    public void isNotUtilityClass()
         throws Exception
     {
-        assertThat( IOUtil.class, isUtilityClass() );
+        assertThat( PropertyUtils.class, allOf( hasDefaultConstructor(), not( isFinalClass() ) ) );
     }
 
 }

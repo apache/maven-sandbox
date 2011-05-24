@@ -19,19 +19,27 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
-import org.junit.Test;
-
-import static org.codehaus.plexus.util.TckMatchers.isUtilityClass;
-import static org.junit.Assert.assertThat;
-
-public class IOUtilTest
+public class PropertyUtils
 {
 
-    @Test
-    public void isAUtilityClass()
-        throws Exception
+    public PropertyUtils()
     {
-        assertThat( IOUtil.class, isUtilityClass() );
+        // should throw new IllegalAccessError( "Utility class" );
+    }
+
+    public static java.util.Properties loadProperties( java.net.URL url )
+    {
+        throw new UnsupportedOperationException( "Not implemented yet" );
+    }
+
+    public static java.util.Properties loadProperties( java.io.File file )
+    {
+        throw new UnsupportedOperationException( "Not implemented yet" );
+    }
+
+    public static java.util.Properties loadProperties( java.io.InputStream is )
+    {
+        throw new UnsupportedOperationException( "Not implemented yet" );
     }
 
 }
