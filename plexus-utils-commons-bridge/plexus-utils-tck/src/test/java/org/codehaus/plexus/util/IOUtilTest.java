@@ -21,7 +21,7 @@ package org.codehaus.plexus.util;
 
 import org.junit.Test;
 
-import static org.codehaus.plexus.util.TckMatchers.isUtilityClass;
+import static org.apache.maven.tck.TckMatchers.isUtilityClass;
 import static org.junit.Assert.assertThat;
 
 public class IOUtilTest

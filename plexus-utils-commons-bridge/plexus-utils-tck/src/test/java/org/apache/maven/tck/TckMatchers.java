@@ -1,4 +1,4 @@
-package org.codehaus.plexus.util;
+package org.apache.maven.tck;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
