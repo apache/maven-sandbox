@@ -21,6 +21,12 @@ package org.codehaus.plexus.util;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
+
 public final class IOUtil
 {
     private IOUtil()
@@ -31,13 +37,22 @@ public final class IOUtil
     public static void copy( java.io.InputStream input, java.io.OutputStream output )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        IOUtils.copy( input, output );
     }
 
     public static void copy( java.io.InputStream input, java.io.OutputStream output, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        if ( bufferSize < 0 )
+        {
+            throw new NegativeArraySizeException();
+        }
+        input.getClass();
+        if ( IOUtils.copy( input, output ) > 0 )
+        {
+            // don't you just love recreating buggy behaviour for compatibility's sake
+            fakeBufferSizeHandler( bufferSize );
+        }
     }
 
     public static void copy( java.io.Reader input, java.io.Writer output )
@@ -215,37 +230,54 @@ public final class IOUtil
     public static java.lang.String toString( byte[] input )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return IOUtils.toString( input );
     }
 
     public static java.lang.String toString( byte[] input, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass(); // throw NPE if null
+        fakeBufferSizeHandler( bufferSize );
+        return IOUtils.toString( input );
     }
 
     public static java.lang.String toString( byte[] input, java.lang.String encoding )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass(); // throw NPE if null
+        encoding.getClass(); // throw NPE if null
+        return IOUtils.toString( input, encoding );
     }
 
     public static java.lang.String toString( byte[] input, java.lang.String encoding, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass(); // throw NPE if null
+        encoding.getClass(); // throw NPE if null
+        try
+        {
+            Charset.forName( encoding ); // validate charset before checking buffer size.
+        }
+        catch ( UnsupportedCharsetException e )
+        {
+            throw new UnsupportedEncodingException( e.getLocalizedMessage() );
+        }
+        fakeBufferSizeHandler( bufferSize );
+        return IOUtils.toString( input, encoding );
     }
 
     public static void copy( byte[] input, java.io.OutputStream output )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        output.getClass(); // throw NPE if null
+        IOUtils.copy( new ByteArrayInputStream( input ), output );
     }
 
     public static void copy( byte[] input, java.io.OutputStream output, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        output.getClass(); // throw NPE if null
+        IOUtils.copy( new ByteArrayInputStream( input ), output );
     }
 
     public static boolean contentEquals( java.io.InputStream input1, java.io.InputStream input2 )
@@ -261,7 +293,7 @@ public final class IOUtil
 
     public static void close( java.io.OutputStream outputStream )
     {
-        IOUtils.closeQuietly( outputStream);
+        IOUtils.closeQuietly( outputStream );
     }
 
     public static void close( java.io.Reader reader )
@@ -273,4 +305,35 @@ public final class IOUtil
     {
         IOUtils.closeQuietly( writer );
     }
+
+    /**
+     * Throws a NegativeArraySizeException if bufferSize is negative, infinite-loops if bufferSize is zero,
+     * otherwise no-op as Commons IO handles buffering for us.
+     *
+     * @param bufferSize the buffer size.
+     * @throws IOException                if interrupted in infinite loop.
+     * @throws NegativeArraySizeException if buffer size less than zero.
+     */
+    private static void fakeBufferSizeHandler( int bufferSize )
+        throws IOException
+    {
+        if ( bufferSize < 0 )
+        {
+            throw new NegativeArraySizeException();
+        }
+        while ( bufferSize == 0 )
+        {
+            try
+            {
+                Thread.sleep( 1 );
+            }
+            catch ( InterruptedException e )
+            {
+                IOException ex = new IOException( e.getLocalizedMessage() );
+                ex.initCause( e );
+                throw ex;
+            }
+        }
+    }
+
 }
