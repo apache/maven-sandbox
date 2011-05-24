@@ -36,10 +36,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.apache.maven.tck.TckMatchers.isClassWithOnlyPrivateConstructors;
-import static org.apache.maven.tck.TckMatchers.isUtilityClass;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.apache.maven.tck.TckMatchers.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 public class IOUtilTest
 {
@@ -52,28 +51,39 @@ public class IOUtilTest
     }
 
     @Test
-    public void closeReaderWithNull() throws Exception {
-        IOUtil.close( (Reader)null );
+    public void closeReaderWithNull()
+        throws Exception
+    {
+        IOUtil.close( (Reader) null );
     }
 
     @Test
-    public void closeWriterWithNull() throws Exception {
-        IOUtil.close( (Writer)null );
+    public void closeWriterWithNull()
+        throws Exception
+    {
+        IOUtil.close( (Writer) null );
     }
 
     @Test
-    public void closeInputStreamWithNull() throws Exception {
-        IOUtil.close( (InputStream)null );
+    public void closeInputStreamWithNull()
+        throws Exception
+    {
+        IOUtil.close( (InputStream) null );
     }
 
     @Test
-    public void closeOutputStreamWithNull() throws Exception {
+    public void closeOutputStreamWithNull()
+        throws Exception
+    {
         IOUtil.close( (OutputStream) null );
     }
 
     @Test
-    public void closeReaderWithIOE() throws Exception {
-        IOUtil.close( new BufferedReader( new StringReader( "" ) ) {
+    public void closeReaderWithIOE()
+        throws Exception
+    {
+        IOUtil.close( new BufferedReader( new StringReader( "" ) )
+        {
             @Override
             public void close()
                 throws IOException
@@ -81,12 +91,15 @@ public class IOUtilTest
                 super.close();
                 throw new IOException( "don't bomb out" );
             }
-        });
+        } );
     }
 
     @Test
-    public void closeWriterWithIOE() throws Exception {
-        IOUtil.close( new BufferedWriter( new StringWriter(  ) ) {
+    public void closeWriterWithIOE()
+        throws Exception
+    {
+        IOUtil.close( new BufferedWriter( new StringWriter() )
+        {
             @Override
             public void close()
                 throws IOException
@@ -94,12 +107,15 @@ public class IOUtilTest
                 super.close();
                 throw new IOException( "don't bomb out" );
             }
-        });
+        } );
     }
 
     @Test
-    public void closeInputStreamWithIOE() throws Exception {
-        IOUtil.close( new BufferedInputStream( new ByteArrayInputStream( new byte[0] ) ){
+    public void closeInputStreamWithIOE()
+        throws Exception
+    {
+        IOUtil.close( new BufferedInputStream( new ByteArrayInputStream( new byte[0] ) )
+        {
             @Override
             public void close()
                 throws IOException
@@ -107,12 +123,15 @@ public class IOUtilTest
                 super.close();
                 throw new IOException( "don't bomb out" );
             }
-        });
+        } );
     }
 
     @Test
-    public void closeOutputStreamWithIOE() throws Exception {
-        IOUtil.close( new BufferedOutputStream( new ByteArrayOutputStream(  ) ){
+    public void closeOutputStreamWithIOE()
+        throws Exception
+    {
+        IOUtil.close( new BufferedOutputStream( new ByteArrayOutputStream() )
+        {
             @Override
             public void close()
                 throws IOException
@@ -120,13 +139,16 @@ public class IOUtilTest
                 super.close();
                 throw new IOException( "don't bomb out" );
             }
-        });
+        } );
     }
 
     @Test
-    public void closeReaderCloses() throws Exception {
+    public void closeReaderCloses()
+        throws Exception
+    {
         final AtomicBoolean closed = new AtomicBoolean( false );
-        IOUtil.close( new BufferedReader( new StringReader( "" ) ) {
+        IOUtil.close( new BufferedReader( new StringReader( "" ) )
+        {
             @Override
             public void close()
                 throws IOException
@@ -134,14 +156,17 @@ public class IOUtilTest
                 closed.set( true );
                 super.close();
             }
-        });
+        } );
         assertThat( closed.get(), is( true ) );
     }
 
     @Test
-    public void closeWriterCloses() throws Exception {
+    public void closeWriterCloses()
+        throws Exception
+    {
         final AtomicBoolean closed = new AtomicBoolean( false );
-        IOUtil.close( new BufferedWriter( new StringWriter(  ) ) {
+        IOUtil.close( new BufferedWriter( new StringWriter() )
+        {
             @Override
             public void close()
                 throws IOException
@@ -149,14 +174,17 @@ public class IOUtilTest
                 closed.set( true );
                 super.close();
             }
-        });
+        } );
         assertThat( closed.get(), is( true ) );
     }
 
     @Test
-    public void closeInputStreamCloses() throws Exception {
+    public void closeInputStreamCloses()
+        throws Exception
+    {
         final AtomicBoolean closed = new AtomicBoolean( false );
-        IOUtil.close( new BufferedInputStream( new ByteArrayInputStream( new byte[0] ) ){
+        IOUtil.close( new BufferedInputStream( new ByteArrayInputStream( new byte[0] ) )
+        {
             @Override
             public void close()
                 throws IOException
@@ -164,14 +192,17 @@ public class IOUtilTest
                 closed.set( true );
                 super.close();
             }
-        });
+        } );
         assertThat( closed.get(), is( true ) );
     }
 
     @Test
-    public void closeOutputStreamCloses() throws Exception {
+    public void closeOutputStreamCloses()
+        throws Exception
+    {
         final AtomicBoolean closed = new AtomicBoolean( false );
-        IOUtil.close( new BufferedOutputStream( new ByteArrayOutputStream(  ) ){
+        IOUtil.close( new BufferedOutputStream( new ByteArrayOutputStream() )
+        {
             @Override
             public void close()
                 throws IOException
@@ -179,8 +210,41 @@ public class IOUtilTest
                 closed.set( true );
                 super.close();
             }
-        });
+        } );
         assertThat( closed.get(), is( true ) );
+    }
+
+    @Test
+    public void toByteArrayFromString() throws Exception {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toByteArray( probe ), is( probe.getBytes() ));
+    }
+
+    @Test
+    public void toByteArrayFromReader() throws Exception {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toByteArray( new StringReader( probe ) ), is( probe.getBytes() ));
+    }
+
+    @Test
+    public void toByteArrayFromInputStream() throws Exception {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toByteArray( new ByteArrayInputStream( IOUtil.toByteArray( probe ) ) ), is( probe.getBytes() ));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void toByteArrayNullString() throws Exception {
+        IOUtil.toByteArray( (String)null );
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void toByteArrayNullReader() throws Exception {
+        IOUtil.toByteArray( (Reader)null );
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void toByteArrayNullInputStream() throws Exception {
+        IOUtil.toByteArray( (InputStream)null );
     }
 
 }

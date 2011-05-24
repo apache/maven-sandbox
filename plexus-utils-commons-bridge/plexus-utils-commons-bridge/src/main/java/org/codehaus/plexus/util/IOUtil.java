@@ -106,7 +106,7 @@ public final class IOUtil
     public static byte[] toByteArray( java.io.InputStream input )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return IOUtils.toByteArray( input );
     }
 
     public static byte[] toByteArray( java.io.InputStream input, int bufferSize )
@@ -142,7 +142,7 @@ public final class IOUtil
     public static byte[] toByteArray( java.io.Reader input )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return IOUtils.toByteArray( input );
     }
 
     public static byte[] toByteArray( java.io.Reader input, int bufferSize )
@@ -181,7 +181,7 @@ public final class IOUtil
     public static byte[] toByteArray( java.lang.String input )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return IOUtils.toByteArray( input );
     }
 
     public static byte[] toByteArray( java.lang.String input, int bufferSize )
