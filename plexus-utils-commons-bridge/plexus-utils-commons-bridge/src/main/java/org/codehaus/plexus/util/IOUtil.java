@@ -23,8 +23,6 @@ import org.apache.commons.io.IOUtils;
 
 public final class IOUtil
 {
-    private static final int DEFAULT_BUFFER_SIZE = 4096;
-
     private IOUtil()
     {
         throw new IllegalAccessError( "Utility class" );
@@ -253,7 +251,7 @@ public final class IOUtil
     public static boolean contentEquals( java.io.InputStream input1, java.io.InputStream input2 )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return IOUtils.contentEquals( input1, input2 );
     }
 
     public static void close( java.io.InputStream inputStream )

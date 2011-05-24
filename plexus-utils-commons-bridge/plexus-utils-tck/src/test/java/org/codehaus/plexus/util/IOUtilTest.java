@@ -217,34 +217,98 @@ public class IOUtilTest
     @Test
     public void toByteArrayFromString() throws Exception {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toByteArray( probe ), is( probe.getBytes() ));
+        assertThat( IOUtil.toByteArray( probe ), is( probe.getBytes() ) );
     }
 
     @Test
     public void toByteArrayFromReader() throws Exception {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toByteArray( new StringReader( probe ) ), is( probe.getBytes() ));
+        assertThat( IOUtil.toByteArray( new StringReader( probe ) ), is( probe.getBytes() ) );
     }
 
     @Test
     public void toByteArrayFromInputStream() throws Exception {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toByteArray( new ByteArrayInputStream( IOUtil.toByteArray( probe ) ) ), is( probe.getBytes() ));
+        assertThat( IOUtil.toByteArray( new ByteArrayInputStream( IOUtil.toByteArray( probe ) ) ),
+                    is( probe.getBytes() ) );
     }
 
     @Test(expected = NullPointerException.class)
     public void toByteArrayNullString() throws Exception {
-        IOUtil.toByteArray( (String)null );
+        IOUtil.toByteArray( (String) null );
     }
 
     @Test(expected = NullPointerException.class)
     public void toByteArrayNullReader() throws Exception {
-        IOUtil.toByteArray( (Reader)null );
+        IOUtil.toByteArray( (Reader) null );
     }
 
     @Test(expected = NullPointerException.class)
     public void toByteArrayNullInputStream() throws Exception {
-        IOUtil.toByteArray( (InputStream)null );
+        IOUtil.toByteArray( (InputStream) null );
+    }
+
+    @Test(expected = IOException.class)
+    public void contentEqualNullNull() throws Exception {
+        IOUtil.contentEquals( null, null );
+    }
+
+    @Test(expected = IOException.class)
+    public void contentEqualNonNullNull() throws Exception {
+        IOUtil.contentEquals( new ByteArrayInputStream( new byte[0] ), null );
+    }
+
+    @Test(expected = IOException.class)
+    public void contentEqualNullNonNull() throws Exception {
+        IOUtil.contentEquals( new ByteArrayInputStream( new byte[0] ), null );
+    }
+
+    @Test
+    public void contentEqualEmptyEmpty() throws Exception {
+        assertThat(
+            IOUtil.contentEquals( new ByteArrayInputStream( new byte[0] ), new ByteArrayInputStream( new byte[0] ) ),
+            is( true ) );
+    }
+
+    @Test
+    public void contentEqualNonEmptyEmpty() throws Exception {
+        assertThat(
+            IOUtil.contentEquals( new ByteArrayInputStream( new byte[1] ), new ByteArrayInputStream( new byte[0] ) ),
+            is( false ) );
+    }
+
+    @Test
+    public void contentEqualEmptyNonEmpty() throws Exception {
+        assertThat(
+            IOUtil.contentEquals( new ByteArrayInputStream( new byte[0] ), new ByteArrayInputStream( new byte[1] ) ),
+            is( false ) );
+    }
+
+    @Test
+    public void contentEqualNonEmptyNonEmpty() throws Exception {
+        assertThat(
+            IOUtil.contentEquals( new ByteArrayInputStream( new byte[1] ), new ByteArrayInputStream( new byte[1] ) ),
+            is( true ) );
+    }
+
+    @Test
+    public void contentEqualMostlySame() throws Exception {
+        assertThat( IOUtil.contentEquals( new ByteArrayInputStream( new byte[]{ 1, 2, 3, 4, 5, 6 } ),
+                                          new ByteArrayInputStream( new byte[]{ 1, 2, 3, 4, 5, 7 } ) ), is( false ) );
+    }
+
+    @Test
+    public void contentEqualLargeSame() throws Exception {
+        assertThat( IOUtil.contentEquals( new ByteArrayInputStream( new byte[8192] ),
+                                          new ByteArrayInputStream( new byte[8192] ) ), is( true ) );
+    }
+
+    @Test
+    public void contentEqualLargeDifferent() throws Exception {
+        byte[] buf = new byte[8192];
+        buf[8191] = 1;
+        assertThat( IOUtil.contentEquals( new ByteArrayInputStream( new byte[8192] ), new ByteArrayInputStream( buf ) ),
+                    is( false ) );
     }
 
 }
