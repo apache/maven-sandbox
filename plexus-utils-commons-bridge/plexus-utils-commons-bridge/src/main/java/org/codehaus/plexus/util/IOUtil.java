@@ -72,26 +72,62 @@ public final class IOUtil
     public static void copy( java.io.InputStream input, java.io.Writer output )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass();
+        output.getClass();
+        IOUtils.copy( input, output );
     }
 
     public static void copy( java.io.InputStream input, java.io.Writer output, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass();
+        if ( bufferSize < 0 )
+        {
+            throw new NegativeArraySizeException();
+        }
+        output.getClass();
+        fakeBufferSizeHandler( bufferSize );
+        IOUtils.copy( input, output );
     }
 
     public static void copy( java.io.InputStream input, java.io.Writer output, java.lang.String encoding )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass();
+        encoding.getClass(); // throw NPE if null
+        try
+        {
+            Charset.forName( encoding ); // validate charset before checking buffer size.
+        }
+        catch ( UnsupportedCharsetException e )
+        {
+            throw new UnsupportedEncodingException( e.getLocalizedMessage() );
+        }
+        output.getClass();
+        IOUtils.copy( input, output, encoding );
     }
 
     public static void copy( java.io.InputStream input, java.io.Writer output, java.lang.String encoding,
                              int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass();
+        encoding.getClass(); // throw NPE if null
+        try
+        {
+            Charset.forName( encoding ); // validate charset before checking buffer size.
+        }
+        catch ( UnsupportedCharsetException e )
+        {
+            throw new UnsupportedEncodingException( e.getLocalizedMessage() );
+        }
+        if ( bufferSize < 0 )
+        {
+            throw new NegativeArraySizeException();
+        }
+        output.getClass();
+        fakeBufferSizeHandler( bufferSize );
+        IOUtils.copy( input, output, encoding );
     }
 
     public static java.lang.String toString( java.io.InputStream input )

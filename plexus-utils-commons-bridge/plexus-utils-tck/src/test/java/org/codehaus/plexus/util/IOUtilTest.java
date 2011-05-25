@@ -1321,7 +1321,7 @@ public class IOUtilTest
     public void toStringEmptyInputStreamNullEncodingZeroBufSz()
         throws Exception
     {
-        assertThat( IOUtil.toString( emptyByteArray(), null, 0 ), is( "" ) );
+        assertThat( IOUtil.toString( emptyInputStream(), null, 0 ), is( "" ) );
     }
 
     @Test( expected = NullPointerException.class, timeout = 150 )
@@ -1459,6 +1459,652 @@ public class IOUtilTest
         assertThat( outputStream.toByteArray(), is( input ) );
     }
 
+    // TODO start
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamNullWriter()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter() );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyInputStreamNullWriter()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter() );
+    }
+
+    @Test
+    public void copyEmptyInputStreamValidWriter()
+        throws Exception
+    {
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( emptyInputStream(), writer );
+        assertThat( writer.toString(), is( "" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyInputStreamNullWriter()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), nullWriter() );
+    }
+
+    @Test
+    public void copyInputStreamValidWriter()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamNullWriterNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyEmptyInputStreamNullWriterNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyEmptyInputStreamValidWriterNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), new StringWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyInputStreamNullWriterNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), nullWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyInputStreamValidWriterNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, -1 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullInputStreamNullWriterZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullInputStreamValidWriterZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(), 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyEmptyInputStreamNullWriterZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), 0 );
+    }
+
+    @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyEmptyInputStreamValidWriterZeroBufSz()
+        throws Exception
+    {
+        final AtomicBoolean finished = new AtomicBoolean( false );
+        Thread worker = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    IOUtil.copy( emptyInputStream(), new StringWriter(), 0 );
+                }
+                catch ( IOException e )
+                {
+                    // ignore
+                }
+                finished.set( true );
+            }
+        };
+        worker.start();
+        worker.join( 100 );
+        worker.interrupt();
+        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+    }
+
+    @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyInputStreamZeroBufSz()
+        throws Exception
+    {
+        final AtomicBoolean finished = new AtomicBoolean( false );
+        Thread worker = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    String probe = "A string \u2345\u00ef";
+                    StringWriter writer = new StringWriter();
+                    IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, 0 );
+                }
+                catch ( IOException e )
+                {
+                    // ignore
+                }
+                finished.set( true );
+            }
+        };
+        worker.start();
+        worker.join( 100 );
+        worker.interrupt();
+        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamNullWriterPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), 1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamValidWriterPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(), 1 );
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void copyEmptyInputStreamNullWriterPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), 1 );
+    }
+
+    @Test
+    public void copyEmptyInputStreamValidWriterPosBufSz()
+        throws Exception
+    {
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( emptyInputStream(), writer, 1 );
+        assertThat( writer.toString(), is( "" ) );
+    }
+
+    @Test
+    public void copyInputStreamValidWriterPosBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, 1 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamNullWriterNullEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamValidWriterNullEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(), null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyInputStreamNullWriterNullEncoding()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyInputStreamValidWriterNullEncoding()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), new StringWriter(), null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyInputStreamNullEncoding()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, null );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamNullWriterJunkEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), "junk" );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamValidWriterJunkEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(), "junk" );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyEmptyInputStreamNullWriterJunkEncoding()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), "junk" );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyEmptyInputStreamValidWriterJunkEncoding()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), new StringWriter(), "junk" );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyInputStreamNullWriterJunkEncoding()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), nullWriter(), "junk" );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyInputStreamValidWriterJunkEncoding()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, "junk" );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamNullWriterValidEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), "utf-16" );
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void copyEmptyInputStreamNullWriterValidEncoding()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), "utf-16" );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamValidWriterValidEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(), "utf-16" );
+    }
+
+    @Test
+    public void copyEmptyInputStreamValidWriterValidEncoding()
+        throws Exception
+    {
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( emptyInputStream(), writer,"utf-16" );
+        assertThat( writer.toString(), is( "" ) );
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void copyInputStreamNullWriterValidEncoding()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes( "utf-16" ) ), nullWriter(), "utf-16" );
+    }
+
+    @Test
+    public void copyInputStreamValidWriterValidEncoding()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes( "utf-16" ) ), writer, "utf-16" );
+        assertThat( writer.toString().getBytes( "utf-8" ), is( probe.getBytes( "utf-8" ) ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamNullWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), null, -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamValidWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(), null, -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyInputStreamNullWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), null, -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyInputStreamValidWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        StringWriter writer = new StringWriter(  );
+        IOUtil.copy( emptyInputStream(), writer, null, -1 );
+        assertThat( writer.toString(), is( "" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyInputStreamNullWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), nullWriter(), null, -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyInputStreamValidWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, null, -1 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamNullWriterJunkEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), "junk", -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamValidWriterJunkEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(), "junk", -1 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyEmptyInputStreamNullWriterJunkEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), "junk", -1 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyEmptyInputStreamJunkEncodingNegBufSz()
+        throws Exception
+    {
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( emptyInputStream(), writer, "junk", -1 );
+        assertThat( writer.toString(), is( "" ) );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyInputStreamNullWriterJunkEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), nullWriter(), "junk", -1 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyInputStreamValidWriterJunkEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, "junk", -1 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamNullWriterValidEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), "utf-16", -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullInputStreamValidWriterValidEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(), "utf-16", -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyEmptyInputStreamNullWriterValidEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), "utf-16", -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyEmptyInputStreamValidWriterValidEncodingNegBufSz()
+        throws Exception
+    {
+        StringWriter writer = new StringWriter(  );
+        IOUtil.copy( emptyInputStream(), writer, "utf-16", -1 );
+        assertThat( writer.toString(), is( "" ) );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyInputStreamNullWriterValidEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes( "utf-16" ) ), nullWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyInputStreamValidEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes( "utf-16" ) ), writer, "utf-16", -1 );
+        assertThat( writer.toString().getBytes( "utf-8" ), is( probe.getBytes( "utf-8" ) ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullInputStreamNullWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), null, 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullInputStreamValidWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(), null, 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyEmptyInputStreamNullWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), null, 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyEmptyInputStreamValidWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        StringWriter writer = new StringWriter(  );
+        IOUtil.copy( emptyInputStream(), writer, null, 0 );
+        assertThat( writer.toString(), is( "" ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyInputStreamNullWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), nullWriter(), null, 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyInputStreamValidWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, null, 0 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullInputStreamNullWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), "junk", 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullInputStreamValidWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(), "junk", 0 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    public void copyEmptyInputStreamNullWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyInputStream(), nullWriter(), "junk", 0 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    public void copyEmptyInputStreamValidWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        StringWriter writer = new StringWriter(  );
+        IOUtil.copy( emptyInputStream(), writer, "junk", 0 );
+        assertThat( writer.toString(), is( "" ) );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    public void copyInputStreamNullWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), nullWriter(), "junk", 0 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    public void copyInputStreamValidWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new StringWriter();
+        IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, "junk", 0 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullInputStreamNullWriterValidEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), nullWriter(), "utf-16", 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullInputStreamValidWriterValidEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullInputStream(), new StringWriter(  ),
+                     "utf-16", 0 );
+    }
+
+    @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyEmptyInputStreamValidEncodingZeroBufSz()
+        throws Exception
+    {
+        final AtomicBoolean finished = new AtomicBoolean( false );
+        Thread worker = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    IOUtil.copy( emptyInputStream(), new StringWriter(), "utf-16", 0 );
+                }
+                catch ( IOException e )
+                {
+                    // ignore
+                }
+                finished.set( true );
+            }
+        };
+        worker.start();
+        worker.join( 100 );
+        worker.interrupt();
+        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+    }
+
+    @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyInputStreamValidEncodingZeroBufSz()
+        throws Exception
+    {
+        final AtomicBoolean finished = new AtomicBoolean( false );
+        Thread worker = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    String probe = "A string \u2345\u00ef";
+                    IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), new StringWriter(), "utf-16", 0 );
+                }
+                catch ( IOException e )
+                {
+                    // ignore
+                }
+                finished.set( true );
+            }
+        };
+        worker.start();
+        worker.join( 100 );
+        worker.interrupt();
+        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+    }
+    // TODO end
+
     private static byte[] nullByteArray()
     {
         return null;
@@ -1474,9 +2120,24 @@ public class IOUtilTest
         return null;
     }
 
+    private static Writer nullWriter()
+    {
+        return null;
+    }
+
+    private static Reader nullReader()
+    {
+        return null;
+    }
+
     private static ByteArrayInputStream emptyInputStream()
     {
         return new ByteArrayInputStream( emptyByteArray() );
+    }
+
+    private static Reader emptyReader()
+    {
+        return new StringReader( "" );
     }
 
     private static byte[] emptyByteArray()
