@@ -95,25 +95,40 @@ public final class IOUtil
     public static java.lang.String toString( java.io.InputStream input )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return IOUtils.toString( input );
     }
 
     public static java.lang.String toString( java.io.InputStream input, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass(); // throw NPE if null
+        fakeBufferSizeHandler( bufferSize );
+        return IOUtils.toString( input );
     }
 
     public static java.lang.String toString( java.io.InputStream input, java.lang.String encoding )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass(); // throw NPE if null
+        encoding.getClass(); // throw NPE if null
+        return IOUtils.toString( input, encoding );
     }
 
     public static java.lang.String toString( java.io.InputStream input, java.lang.String encoding, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass(); // throw NPE if null
+        encoding.getClass(); // throw NPE if null
+        try
+        {
+            Charset.forName( encoding ); // validate charset before checking buffer size.
+        }
+        catch ( UnsupportedCharsetException e )
+        {
+            throw new UnsupportedEncodingException( e.getLocalizedMessage() );
+        }
+        fakeBufferSizeHandler( bufferSize );
+        return IOUtils.toString( input, encoding );
     }
 
     public static byte[] toByteArray( java.io.InputStream input )
