@@ -35,7 +35,7 @@ public class Base64Test {
     public void isNotUtilityClass()
         throws Exception
     {
-        assertThat( PropertyUtils.class, allOf( hasDefaultConstructor(), not( isFinalClass() ) ) );
+        assertThat( Base64.class, allOf( hasDefaultConstructor(), not( isFinalClass() ) ) );
     }
 
     @Test

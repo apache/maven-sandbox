@@ -21,6 +21,8 @@ package org.codehaus.plexus.util;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -203,7 +205,9 @@ public final class IOUtil
     public static void bufferedCopy( java.io.InputStream input, java.io.OutputStream output )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        if (input == null) throw new IOException( "stream closed" );
+        output.getClass();
+        IOUtils.copy( new BufferedInputStream( input ), output );
     }
 
     public static byte[] toByteArray( java.lang.String input )
