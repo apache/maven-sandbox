@@ -19,6 +19,7 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
+import org.apache.maven.tck.ReproducesPlexusBug;
 import org.junit.Test;
 
 import java.io.BufferedInputStream;
@@ -393,6 +394,7 @@ public class IOUtilTest
     }
 
     @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringEmptyByteArrayZeroBufSz()
         throws Exception
     {
@@ -420,6 +422,7 @@ public class IOUtilTest
     }
 
     @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringByteArrayZeroBufSz()
         throws Exception
     {
@@ -655,6 +658,7 @@ public class IOUtilTest
     }
 
     @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringEmptyByteArrayValidEncodingZeroBufSz()
         throws Exception
     {
@@ -682,6 +686,7 @@ public class IOUtilTest
     }
 
     @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringByteArrayValidEncodingZeroBufSz()
         throws Exception
     {
@@ -966,6 +971,7 @@ public class IOUtilTest
     }
 
     @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyInputStreamValidOutputStreamZeroBufSz()
         throws Exception
     {
@@ -1085,6 +1091,7 @@ public class IOUtilTest
     }
 
     @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringEmptyInputStreamZeroBufSz()
         throws Exception
     {
@@ -1112,6 +1119,7 @@ public class IOUtilTest
     }
 
     @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringInputStreamZeroBufSz()
         throws Exception
     {
@@ -1356,6 +1364,7 @@ public class IOUtilTest
     }
 
     @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringEmptyInputStreamValidEncodingZeroBufSz()
         throws Exception
     {
@@ -1383,6 +1392,7 @@ public class IOUtilTest
     }
 
     @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringInputStreamValidEncodingZeroBufSz()
         throws Exception
     {
