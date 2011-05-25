@@ -286,38 +286,32 @@ public class IOUtilTest
     public void contentEqualEmptyEmpty()
         throws Exception
     {
-        assertThat(
-            IOUtil.contentEquals( new DontCloseByteArrayInputStream( emptyByteArray() ), new DontCloseByteArrayInputStream(
-                emptyByteArray() ) ),
-            is( true ) );
+        assertThat( IOUtil.contentEquals( new DontCloseByteArrayInputStream( emptyByteArray() ),
+                                          new DontCloseByteArrayInputStream( emptyByteArray() ) ), is( true ) );
     }
 
     @Test
     public void contentEqualNonEmptyEmpty()
         throws Exception
     {
-        assertThat(
-            IOUtil.contentEquals( new DontCloseByteArrayInputStream( new byte[1] ), new DontCloseByteArrayInputStream(
-                emptyByteArray() ) ),
-            is( false ) );
+        assertThat( IOUtil.contentEquals( new DontCloseByteArrayInputStream( new byte[1] ),
+                                          new DontCloseByteArrayInputStream( emptyByteArray() ) ), is( false ) );
     }
 
     @Test
     public void contentEqualEmptyNonEmpty()
         throws Exception
     {
-        assertThat(
-            IOUtil.contentEquals( new DontCloseByteArrayInputStream( emptyByteArray() ), new DontCloseByteArrayInputStream( new byte[1] ) ),
-            is( false ) );
+        assertThat( IOUtil.contentEquals( new DontCloseByteArrayInputStream( emptyByteArray() ),
+                                          new DontCloseByteArrayInputStream( new byte[1] ) ), is( false ) );
     }
 
     @Test
     public void contentEqualNonEmptyNonEmpty()
         throws Exception
     {
-        assertThat(
-            IOUtil.contentEquals( new DontCloseByteArrayInputStream( new byte[1] ), new DontCloseByteArrayInputStream( new byte[1] ) ),
-            is( true ) );
+        assertThat( IOUtil.contentEquals( new DontCloseByteArrayInputStream( new byte[1] ),
+                                          new DontCloseByteArrayInputStream( new byte[1] ) ), is( true ) );
     }
 
     @Test
@@ -325,7 +319,8 @@ public class IOUtilTest
         throws Exception
     {
         assertThat( IOUtil.contentEquals( new DontCloseByteArrayInputStream( new byte[]{ 1, 2, 3, 4, 5, 6 } ),
-                                          new DontCloseByteArrayInputStream( new byte[]{ 1, 2, 3, 4, 5, 7 } ) ), is( false ) );
+                                          new DontCloseByteArrayInputStream( new byte[]{ 1, 2, 3, 4, 5, 7 } ) ),
+                    is( false ) );
     }
 
     @Test
@@ -342,8 +337,8 @@ public class IOUtilTest
     {
         byte[] buf = new byte[8192];
         buf[8191] = 1;
-        assertThat( IOUtil.contentEquals( new DontCloseByteArrayInputStream( new byte[8192] ), new DontCloseByteArrayInputStream( buf ) ),
-                    is( false ) );
+        assertThat( IOUtil.contentEquals( new DontCloseByteArrayInputStream( new byte[8192] ),
+                                          new DontCloseByteArrayInputStream( buf ) ), is( false ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -739,7 +734,7 @@ public class IOUtilTest
     public void copyEmptyByteArrayValidOutputStream()
         throws Exception
     {
-        IOUtil.copy( emptyByteArray(), new DontCloseByteArrayOutputStream());
+        IOUtil.copy( emptyByteArray(), new DontCloseByteArrayOutputStream() );
     }
 
     @Test
@@ -865,6 +860,7 @@ public class IOUtilTest
         IOUtil.copy( input, outputStream, 1 );
         assertThat( outputStream.toByteArray(), is( input ) );
     }
+
     @Test( expected = NullPointerException.class )
     public void copyNullInputStreamNullOutputStream()
         throws Exception
@@ -924,14 +920,14 @@ public class IOUtilTest
         IOUtil.copy( new DontCloseByteArrayInputStream( emptyByteArray() ), nullOutputStream(), -1 );
     }
 
-    @Test(expected = NegativeArraySizeException.class)
+    @Test( expected = NegativeArraySizeException.class )
     public void copyEmptyInputStreamValidOutputStreamNegBufSz()
         throws Exception
     {
         IOUtil.copy( new DontCloseByteArrayInputStream( emptyByteArray() ), new DontCloseByteArrayOutputStream(), -1 );
     }
 
-    @Test(expected = NegativeArraySizeException.class)
+    @Test( expected = NegativeArraySizeException.class )
     public void copyInputStreamValidOutputStreamNegBufSz()
         throws Exception
     {
@@ -983,7 +979,7 @@ public class IOUtilTest
                 {
                     ByteArrayOutputStream outputStream = new DontCloseByteArrayOutputStream();
                     byte[] input = { 1, 2, 3, 4, 5, 6 };
-                    IOUtil.copy( new DontCloseByteArrayInputStream( input), outputStream, 0 );
+                    IOUtil.copy( new DontCloseByteArrayInputStream( input ), outputStream, 0 );
                 }
                 catch ( IOException e )
                 {
@@ -1055,7 +1051,8 @@ public class IOUtilTest
         throws Exception
     {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ) ).getBytes(), is( probe.getBytes() ) );
+        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ) ).getBytes(),
+                    is( probe.getBytes() ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -1127,7 +1124,7 @@ public class IOUtilTest
                 try
                 {
                     String probe = "A string \u2345\u00ef";
-                    IOUtil.toString( new ByteArrayInputStream( probe.getBytes()) , 0 );
+                    IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), 0 );
                 }
                 catch ( IOException e )
                 {
@@ -1161,7 +1158,8 @@ public class IOUtilTest
         throws Exception
     {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes()), 1 ).getBytes(), is( probe.getBytes() ) );
+        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), 1 ).getBytes(),
+                    is( probe.getBytes() ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -1183,7 +1181,8 @@ public class IOUtilTest
         throws Exception
     {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), null ).getBytes(), is( probe.getBytes() ) );
+        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), null ).getBytes(),
+                    is( probe.getBytes() ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -1205,7 +1204,8 @@ public class IOUtilTest
         throws Exception
     {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes()), "junk" ).getBytes(), is( probe.getBytes() ) );
+        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), "junk" ).getBytes(),
+                    is( probe.getBytes() ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -1227,9 +1227,9 @@ public class IOUtilTest
         throws Exception
     {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes( "utf-16" )), "utf-16" ).getBytes(
-            "utf-8" ),
-                    is( probe.getBytes( "utf-8" ) ) );
+        assertThat(
+            IOUtil.toString( new ByteArrayInputStream( probe.getBytes( "utf-16" ) ), "utf-16" ).getBytes( "utf-8" ),
+            is( probe.getBytes( "utf-8" ) ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -1251,7 +1251,8 @@ public class IOUtilTest
         throws Exception
     {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes()), null, -1 ).getBytes(), is( probe.getBytes() ) );
+        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), null, -1 ).getBytes(),
+                    is( probe.getBytes() ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -1273,7 +1274,8 @@ public class IOUtilTest
         throws Exception
     {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), "junk", -1 ).getBytes(), is( probe.getBytes() ) );
+        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), "junk", -1 ).getBytes(),
+                    is( probe.getBytes() ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -1295,9 +1297,9 @@ public class IOUtilTest
         throws Exception
     {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes( "utf-16" ) ), "utf-16", -1 ).getBytes(
-            "utf-8" ),
-                    is( probe.getBytes( "utf-8" ) ) );
+        assertThat(
+            IOUtil.toString( new ByteArrayInputStream( probe.getBytes( "utf-16" ) ), "utf-16", -1 ).getBytes( "utf-8" ),
+            is( probe.getBytes( "utf-8" ) ) );
     }
 
     @Test( expected = NullPointerException.class, timeout = 150 )
@@ -1319,7 +1321,8 @@ public class IOUtilTest
         throws Exception
     {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), null, 0 ).getBytes(), is( probe.getBytes() ) );
+        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), null, 0 ).getBytes(),
+                    is( probe.getBytes() ) );
     }
 
     @Test( expected = NullPointerException.class, timeout = 150 )
@@ -1341,7 +1344,8 @@ public class IOUtilTest
         throws Exception
     {
         String probe = "A string \u2345\u00ef";
-        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), "junk", 0 ).getBytes(), is( probe.getBytes() ) );
+        assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), "junk", 0 ).getBytes(),
+                    is( probe.getBytes() ) );
     }
 
     @Test( expected = NullPointerException.class, timeout = 150 )
@@ -1431,7 +1435,8 @@ public class IOUtilTest
     public void bufferedCopyEmptyInputStreamValidOutputStream()
         throws Exception
     {
-        IOUtil.bufferedCopy( new DontCloseByteArrayInputStream( emptyByteArray() ), new DontCloseByteArrayOutputStream() );
+        IOUtil.bufferedCopy( new DontCloseByteArrayInputStream( emptyByteArray() ),
+                             new DontCloseByteArrayOutputStream() );
     }
 
     @Test

@@ -19,17 +19,16 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
-import static org.apache.maven.tck.TckMatchers.hasDefaultConstructor;
-import static org.apache.maven.tck.TckMatchers.isFinalClass;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.*;
-
-import org.junit.Assert;
 import org.junit.Test;
 
-public class Base64Test {
+import static org.apache.maven.tck.TckMatchers.hasDefaultConstructor;
+import static org.apache.maven.tck.TckMatchers.isFinalClass;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+public class Base64Test
+{
 
 
     @Test
@@ -55,7 +54,7 @@ public class Base64Test {
 
     @Test
     public void encodeBase64()
-            throws Exception
+        throws Exception
     {
         assertThat( new String( Base64.encodeBase64( "test".getBytes() ) ), is( "dGVzdA==" ) );
         assertThat( new String( Base64.encodeBase64( "test".getBytes(), false ) ), is( "dGVzdA==" ) );
@@ -63,7 +62,7 @@ public class Base64Test {
 
     @Test
     public void encodeBase64Chunked()
-            throws Exception
+        throws Exception
     {
         assertThat( new String( Base64.encodeBase64(
             "some long long long long long long long long long long long long long long text".getBytes(), true ) ),
@@ -83,7 +82,7 @@ public class Base64Test {
         throws Exception
     {
         String valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-        assertTrue( Base64.isArrayByteBase64( valid.getBytes() ) );
+        assertThat( Base64.isArrayByteBase64( valid.getBytes() ), is( true ) );
     }
 
 }
