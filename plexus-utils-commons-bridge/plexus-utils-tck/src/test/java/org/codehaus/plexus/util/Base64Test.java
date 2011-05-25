@@ -22,6 +22,7 @@ package org.codehaus.plexus.util;
 import static org.apache.maven.tck.TckMatchers.hasDefaultConstructor;
 import static org.apache.maven.tck.TckMatchers.isFinalClass;
 import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
@@ -42,41 +43,39 @@ public class Base64Test {
     public void encode()
         throws Exception
     {
-        assertEquals("dGVzdA==", new Base64().encode("test".getBytes()));
+        assertThat( new String( new Base64().encode( "test".getBytes() ) ), is( "dGVzdA==" ) );
     }
 
     @Test
     public void decode()
         throws Exception
     {
-        assertEquals( "test", new Base64().decode("dGVzdA==".getBytes()) );
+        assertThat( new String( new Base64().decode( "dGVzdA==".getBytes() ) ), is( "test" ) );
     }
 
     @Test
     public void encodeBase64()
             throws Exception
     {
-        assertEquals( "dGVzdA==", Base64.encodeBase64( "test".getBytes() ) );
-        assertEquals( "dGVzdA==", Base64.encodeBase64( "test".getBytes(), false ) );
+        assertThat( new String( Base64.encodeBase64( "test".getBytes() ) ), is( "dGVzdA==" ) );
+        assertThat( new String( Base64.encodeBase64( "test".getBytes(), false ) ), is( "dGVzdA==" ) );
     }
 
     @Test
     public void encodeBase64Chunked()
             throws Exception
     {
-        assertEquals(
-                "c29tZSBsb25nIGxvbmcgbG9uZyBsb25nIGxvbmcgbG9uZyBsb25nIGxvbmcgbG9uZyBsb25nIGxv\r\n" +
-                "bmcgbG9uZyBsb25nIGxvbmcgdGV4dA==\r\n",
-                Base64.encodeBase64(
-                "some long long long long long long long long long long long long long long text"
-                        .getBytes(), true ) );
+        assertThat( new String( Base64.encodeBase64(
+            "some long long long long long long long long long long long long long long text".getBytes(), true ) ),
+                    is( "c29tZSBsb25nIGxvbmcgbG9uZyBsb25nIGxvbmcgbG9uZyBsb25nIGxvbmcgbG9uZyBsb25nIGxv\r\n"
+                            + "bmcgbG9uZyBsb25nIGxvbmcgdGV4dA==\r\n" ) );
     }
 
     @Test
     public void decodeBase64()
         throws Exception
     {
-        assertEquals( "test", Base64.decodeBase64( "dGVzdA==".getBytes() ) );
+        assertThat( new String( Base64.decodeBase64( "dGVzdA==".getBytes() ) ), is( "test" ) );
     }
 
     @Test
@@ -87,8 +86,4 @@ public class Base64Test {
         assertTrue( Base64.isArrayByteBase64( valid.getBytes() ) );
     }
 
-    private static void assertEquals( String expected , byte[] actual )
-    {
-        Assert.assertEquals(expected, new String(actual));
-    }
 }
