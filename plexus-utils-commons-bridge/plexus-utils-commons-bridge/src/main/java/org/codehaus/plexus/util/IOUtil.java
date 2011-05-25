@@ -220,7 +220,8 @@ public final class IOUtil
     public static void copy( java.lang.String input, java.io.OutputStream output )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass();
+        IOUtils.write( input, output );
     }
 
     public static void copy( java.lang.String input, java.io.OutputStream output, int bufferSize )

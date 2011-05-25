@@ -2150,6 +2150,54 @@ public class IOUtilTest
         assertThat( writer.toString(), is( probe ) );
     }
 
+    @Test( expected = NullPointerException.class )
+    public void copyNullStringNullOutputStream()
+        throws Exception
+    {
+        IOUtil.copy( nullString(), nullOutputStream() );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyStringNullOutputStream()
+        throws Exception
+    {
+        IOUtil.copy( "", nullOutputStream() );
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void copyNullStringValidOutputStream()
+        throws Exception
+    {
+        IOUtil.copy( nullString(), new DontCloseByteArrayOutputStream() );
+    }
+
+    @Test
+    public void copyEmptyStringValidOutputStream()
+        throws Exception
+    {
+        ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
+        IOUtil.copy( "", OutputStream );
+        assertThat( OutputStream.toByteArray(), is( "".getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyStringNullOutputStream()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe, nullOutputStream() );
+    }
+
+    @Test
+    public void copyStringValidOutputStream()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
+        IOUtil.copy( probe, OutputStream );
+        assertThat( OutputStream.toByteArray(), is( probe.getBytes() ) );
+    }
+
     private static byte[] nullByteArray()
     {
         return null;
