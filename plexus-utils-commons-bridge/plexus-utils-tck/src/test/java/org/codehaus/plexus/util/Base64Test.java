@@ -25,7 +25,6 @@ import static org.apache.maven.tck.TckMatchers.hasDefaultConstructor;
 import static org.apache.maven.tck.TckMatchers.isFinalClass;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class Base64Test
 {
@@ -42,22 +41,22 @@ public class Base64Test
     public void encode()
         throws Exception
     {
-        assertThat( new String( new Base64().encode( "test".getBytes() ) ), is( "dGVzdA==" ) );
+        assertThat( new String( new Base64().encode( "test".getBytes( "utf-8" ) ), "utf-8" ), is( "dGVzdA==" ) );
     }
 
     @Test
     public void decode()
         throws Exception
     {
-        assertThat( new String( new Base64().decode( "dGVzdA==".getBytes() ) ), is( "test" ) );
+        assertThat( new String( new Base64().decode( "dGVzdA==".getBytes( "utf-8" ) ), "utf-8" ), is( "test" ) );
     }
 
     @Test
     public void encodeBase64()
         throws Exception
     {
-        assertThat( new String( Base64.encodeBase64( "test".getBytes() ) ), is( "dGVzdA==" ) );
-        assertThat( new String( Base64.encodeBase64( "test".getBytes(), false ) ), is( "dGVzdA==" ) );
+        assertThat( new String( Base64.encodeBase64( "test".getBytes( "utf-8" ) ), "utf-8" ), is( "dGVzdA==" ) );
+        assertThat( new String( Base64.encodeBase64( "test".getBytes( "utf-8" ), false ), "utf-8" ), is( "dGVzdA==" ) );
     }
 
     @Test
@@ -65,16 +64,16 @@ public class Base64Test
         throws Exception
     {
         assertThat( new String( Base64.encodeBase64(
-            "some long long long long long long long long long long long long long long text".getBytes(), true ) ),
-                    is( "c29tZSBsb25nIGxvbmcgbG9uZyBsb25nIGxvbmcgbG9uZyBsb25nIGxvbmcgbG9uZyBsb25nIGxv\r\n"
-                            + "bmcgbG9uZyBsb25nIGxvbmcgdGV4dA==\r\n" ) );
+            "some long long long long long long long long long long long long long long text".getBytes( "utf-8" ),
+            true ), "utf-8" ), is( "c29tZSBsb25nIGxvbmcgbG9uZyBsb25nIGxvbmcgbG9uZyBsb25nIGxvbmcgbG9uZyBsb25nIGxv\r\n"
+                                       + "bmcgbG9uZyBsb25nIGxvbmcgdGV4dA==\r\n" ) );
     }
 
     @Test
     public void decodeBase64()
         throws Exception
     {
-        assertThat( new String( Base64.decodeBase64( "dGVzdA==".getBytes() ) ), is( "test" ) );
+        assertThat( new String( Base64.decodeBase64( "dGVzdA==".getBytes( "utf-8" ) ), "utf-8" ), is( "test" ) );
     }
 
     @Test
@@ -82,7 +81,7 @@ public class Base64Test
         throws Exception
     {
         String valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-        assertThat( Base64.isArrayByteBase64( valid.getBytes() ), is( true ) );
+        assertThat( Base64.isArrayByteBase64( valid.getBytes( "utf-8" ) ), is( true ) );
     }
 
 }
