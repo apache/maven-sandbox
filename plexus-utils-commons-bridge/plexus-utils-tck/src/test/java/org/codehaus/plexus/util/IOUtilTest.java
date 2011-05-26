@@ -2164,7 +2164,7 @@ public class IOUtilTest
         IOUtil.copy( "", nullOutputStream() );
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test( expected = NullPointerException.class )
     public void copyNullStringValidOutputStream()
         throws Exception
     {
@@ -2195,6 +2195,192 @@ public class IOUtilTest
         String probe = "A string \u2345\u00ef";
         ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
         IOUtil.copy( probe, OutputStream );
+        assertThat( OutputStream.toByteArray(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullStringNullOutputStreamNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullString(), nullOutputStream(), -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyStringNullOutputStreamNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( "", nullOutputStream(), -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullStringValidOutputStreamNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullString(), new DontCloseByteArrayOutputStream(), -1 );
+    }
+
+    @Test(expected = NegativeArraySizeException.class)
+    public void copyEmptyStringValidOutputStreamNegBufSz()
+        throws Exception
+    {
+        ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
+        IOUtil.copy( "", OutputStream, -1 );
+        assertThat( OutputStream.toByteArray(), is( "".getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyStringNullOutputStreamNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe, nullOutputStream(), -1 );
+    }
+
+    @Test(expected = NegativeArraySizeException.class)
+    public void copyStringValidOutputStreamNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
+        IOUtil.copy( probe, OutputStream, -1 );
+        assertThat( OutputStream.toByteArray(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullStringNullOutputStreamZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullString(), nullOutputStream(), 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyEmptyStringNullOutputStreamZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( "", nullOutputStream(), 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullStringValidOutputStreamZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullString(), new DontCloseByteArrayOutputStream(), 0 );
+    }
+
+    @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyEmptyStringValidOutputStreamZeroBufSz()
+        throws Exception
+    {
+        final AtomicBoolean finished = new AtomicBoolean( false );
+        Thread worker = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
+                    IOUtil.copy( "", OutputStream, 0 );
+                    assertThat( OutputStream.toByteArray(), is( "".getBytes() ) );
+                }
+                catch ( IOException e )
+                {
+                    // ignore
+                }
+                finished.set( true );
+            }
+        };
+        worker.start();
+        worker.join( 100 );
+        worker.interrupt();
+        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyStringNullOutputStreamZeroBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe, nullOutputStream(), 0 );
+    }
+
+    @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyStringValidOutputStreamZeroBufSz()
+        throws Exception
+    {
+        final AtomicBoolean finished = new AtomicBoolean( false );
+        Thread worker = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    String probe = "A string \u2345\u00ef";
+                    ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
+                    IOUtil.copy( probe, OutputStream, 0 );
+                    assertThat( OutputStream.toByteArray(), is( probe.getBytes() ) );
+                }
+                catch ( IOException e )
+                {
+                    // ignore
+                }
+                finished.set( true );
+            }
+        };
+        worker.start();
+        worker.join( 100 );
+        worker.interrupt();
+        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullStringNullOutputStreamPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullString(), nullOutputStream(), 1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyStringNullOutputStreamPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( "", nullOutputStream(), 1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullStringValidOutputStreamPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullString(), new DontCloseByteArrayOutputStream(), 1 );
+    }
+
+    @Test
+    public void copyEmptyStringValidOutputStreamPosBufSz()
+        throws Exception
+    {
+        ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
+        IOUtil.copy( "", OutputStream, 1 );
+        assertThat( OutputStream.toByteArray(), is( "".getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyStringNullOutputStreamPosBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe, nullOutputStream(), 1 );
+    }
+
+    @Test
+    public void copyStringValidOutputStreamPosBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
+        IOUtil.copy( probe, OutputStream, 1 );
         assertThat( OutputStream.toByteArray(), is( probe.getBytes() ) );
     }
 
