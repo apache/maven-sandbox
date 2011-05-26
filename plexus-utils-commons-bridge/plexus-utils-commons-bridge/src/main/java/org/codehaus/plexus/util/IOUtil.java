@@ -60,7 +60,9 @@ public final class IOUtil
     public static void copy( java.io.Reader input, java.io.Writer output )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass();
+        output.getClass();
+        IOUtils.copy( input, output );
     }
 
     public static void copy( java.io.Reader input, java.io.Writer output, int bufferSize )
