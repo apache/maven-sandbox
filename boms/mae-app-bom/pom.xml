@@ -19,7 +19,7 @@
   <parent>
     <artifactId>mae-boms</artifactId>
     <groupId>org.apache.maven.mae</groupId>
-    <version>3.0.3-SNAPSHOT</version>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
   
   <artifactId>mae-app-bom</artifactId>
