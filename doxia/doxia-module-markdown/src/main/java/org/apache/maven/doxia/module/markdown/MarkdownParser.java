@@ -21,8 +21,10 @@ package org.apache.maven.doxia.module.markdown;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 
-import org.apache.maven.doxia.parser.AbstractTextParser;
+import org.apache.maven.doxia.module.xhtml.XhtmlParser;
+import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 
 import org.codehaus.plexus.util.IOUtil;
@@ -40,7 +42,7 @@ import org.pegdown.PegDownProcessor;
  * @since 1.3
  */
 public class MarkdownParser
-    extends AbstractTextParser
+    extends XhtmlParser
 {
 
     /**
@@ -57,16 +59,17 @@ public class MarkdownParser
     /**
      * {@inheritDoc}
      */
+    @Override
     public void parse( Reader reader, Sink sink )
-        throws MarkdownParseException
+        throws ParseException
     {
         try
         {
-            sink.rawText( PEGDOWN_PROCESSOR.markdownToHtml( IOUtil.toString( reader ) ) );
+            super.parse( new StringReader( "<html><body>" + PEGDOWN_PROCESSOR.markdownToHtml( IOUtil.toString( reader ) ) + "</body></html>" ), sink );
         }
         catch ( IOException e )
         {
-            throw new MarkdownParseException( "Failed reading Markdown source document", e );
+            throw new ParseException( "Failed reading Markdown source document", e );
         }
     }
 }
