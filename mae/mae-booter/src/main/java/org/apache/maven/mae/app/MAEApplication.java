@@ -22,9 +22,16 @@ package org.apache.maven.mae.app;
 import org.apache.maven.mae.MAEException;
 import org.apache.maven.mae.conf.MAELibrary;
 
+/**
+ * Interface providing basic support for loading a Maven component environment. 
+ */
 public interface MAEApplication
     extends MAELibrary
 {
+    /**
+     * Assemble the component environment, based on the information given in implementors of this
+     * abstract class and auto-detected libraries.
+     */
     MAEApplication load()
         throws MAEException;
 }

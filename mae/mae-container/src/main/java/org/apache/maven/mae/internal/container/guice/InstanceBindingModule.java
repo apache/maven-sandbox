@@ -32,10 +32,15 @@ import org.sonatype.guice.plexus.config.Roles;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.google.inject.Provider;
 
 import java.util.Map;
 
+/**
+ * {@link PlexusBeanModule} (variant of Guice {@link Module}), which allows injection of externally
+ * managed object instances into plexus-managed components.
+ */
 public class InstanceBindingModule
     implements PlexusBeanModule
 {

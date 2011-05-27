@@ -42,10 +42,8 @@ import org.sonatype.aether.util.DefaultRepositoryCache;
 
 @Component( role = MAEServiceManager.class )
 public class DefaultMAEServiceManager
-    implements MAEServiceManager/* , Contextualizable */
+    implements MAEServiceManager
 {
-
-    // private final Logger logger = Logger.getLogger( EMBConfiguration.STANDARD_LOG_HANDLE_CORE );
 
     @Requirement
     private ProjectBuilder projectBuilder;
@@ -87,11 +85,19 @@ public class DefaultMAEServiceManager
     // this.container = container;
     // }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ProjectBuilder projectBuilder()
     {
         return projectBuilder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DefaultProjectBuildingRequest createProjectBuildingRequest()
         throws MAEEmbeddingException
     {
@@ -106,17 +112,28 @@ public class DefaultMAEServiceManager
         return req;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public RepositorySystem mavenRepositorySystem()
     {
         return repositorySystem;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public org.sonatype.aether.RepositorySystem aetherRepositorySystem()
     {
         return aetherRepositorySystem;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public RepositorySystemSession createAetherRepositorySystemSession()
         throws MAEEmbeddingException
     {
@@ -135,6 +152,10 @@ public class DefaultMAEServiceManager
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public RepositorySystemSession createAetherRepositorySystemSession( MavenExecutionRequest request )
         throws MAEEmbeddingException
     {
@@ -163,6 +184,10 @@ public class DefaultMAEServiceManager
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public synchronized ArtifactRepository defaultLocalRepository()
         throws MAEEmbeddingException
     {
@@ -182,6 +207,9 @@ public class DefaultMAEServiceManager
         return defaultLocalRepo;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T service( final Class<T> type )
         throws MAEEmbeddingException
@@ -207,6 +235,9 @@ public class DefaultMAEServiceManager
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T service( final Class<T> type, final String hint )
         throws MAEEmbeddingException
@@ -231,12 +262,5 @@ public class DefaultMAEServiceManager
                                              type.getName(), hint, e.getMessage() );
         }
     }
-
-    // @Override
-    // public void contextualize( final Context ctx )
-    // throws ContextException
-    // {
-    // container = (PlexusContainer) ctx.get( PlexusConstants.PLEXUS_KEY );
-    // }
 
 }
