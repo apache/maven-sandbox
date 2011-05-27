@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.maven.mae.io;
+package org.apache.maven.mae.prompt;
 
 import org.apache.maven.mae.conf.MAEConfiguration;
 import org.codehaus.plexus.component.annotations.Component;
@@ -37,17 +37,20 @@ import java.util.List;
 
 import jline.ConsoleReader;
 
-@Component( role = Prompter.class, hint = "emb" )
+@Component( role = Prompter.class, hint = MAEPrompter.NAME )
 public class MAEPrompter
     implements Prompter
 {
+    
+    public static final String NAME = "mae";
+    
     @Requirement
-    private final MAEConfiguration embConfig;
+    private final MAEConfiguration config;
 
     @Inject
-    public MAEPrompter( final MAEConfiguration embConfig )
+    public MAEPrompter( final MAEConfiguration config )
     {
-        this.embConfig = embConfig;
+        this.config = config;
     }
 
     public String prompt( final String message )
@@ -75,7 +78,7 @@ public class MAEPrompter
     private String readLine()
         throws IOException
     {
-        return new BufferedReader( new InputStreamReader( embConfig.getStandardIn() ) ).readLine();
+        return new BufferedReader( new InputStreamReader( config.getStandardIn() ) ).readLine();
     }
 
     public String prompt( final String message, final String defaultReply )
@@ -152,7 +155,7 @@ public class MAEPrompter
 
     private void writeLine( final String message )
     {
-        embConfig.getStandardOut().println( message );
+        config.getStandardOut().println( message );
     }
 
     @SuppressWarnings( "rawtypes" )
@@ -176,7 +179,7 @@ public class MAEPrompter
 
         try
         {
-            return new ConsoleReader( embConfig.getStandardIn(), new OutputStreamWriter( embConfig.getStandardOut() ) ).readLine( new Character(
+            return new ConsoleReader( config.getStandardIn(), new OutputStreamWriter( config.getStandardOut() ) ).readLine( new Character(
                                                                                                                                                  '*' ) );
         }
         catch ( final IOException e )
@@ -222,7 +225,7 @@ public class MAEPrompter
     private void writePrompt( final String message )
         throws IOException
     {
-        embConfig.getStandardOut().print( message + ": " );
+        config.getStandardOut().print( message + ": " );
     }
 
     public void showMessage( final String message )
