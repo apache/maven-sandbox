@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.commonjava.emb.app;
+package org.apache.maven.mae.app;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.mae.MAEException;
