@@ -80,11 +80,6 @@
       </exclusions>
     </dependency>
     <dependency>
-        <groupId>jline</groupId>
-        <artifactId>jline</artifactId>
-        <version>0.9.94</version>
-    </dependency>
-    <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-annotations</artifactId>
     </dependency>
