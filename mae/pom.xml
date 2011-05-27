@@ -45,6 +45,26 @@
     </dependencies>
   </dependencyManagement>
   
+  <dependencies>
+    <dependency>
+      <groupId>org.commonjava.atservice</groupId>
+      <artifactId>atservice-annotation</artifactId>
+      <version>0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.commonjava.atservice</groupId>
+      <artifactId>atservice-processor</artifactId>
+      <version>0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
   <properties>
   	<mavenVersion>3.0.3</mavenVersion>
   	<plexusVersion>1.5.5</plexusVersion>
@@ -64,20 +84,6 @@
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/mae</developerConnection>
     <url>http://svn.apache.org/viewvc/maven/sandbox/trunk/mae</url>
   </scm>
-  
-  <dependencies>
-    <dependency>
-      <groupId>org.commonjava.atservice</groupId>
-      <artifactId>atservice-annotation</artifactId>
-      <version>0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.commonjava.atservice</groupId>
-      <artifactId>atservice-processor</artifactId>
-      <version>0.1</version>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
   
   <build>
     <resources>
