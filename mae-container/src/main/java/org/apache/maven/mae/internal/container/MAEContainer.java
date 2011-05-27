@@ -93,6 +93,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * {@link PlexusContainer} shim that delegates to a Plexus-aware Guice {@link Injector}.
+ * <br/>
+ * This variant provides supports for {@link ComponentSelector} and {@link InstanceRegistry}, giving 
+ * the application developer more control over the component environment.
+ * 
+ * @author John Casey
  */
 @SuppressWarnings( { "unchecked", "rawtypes" } )
 public final class MAEContainer

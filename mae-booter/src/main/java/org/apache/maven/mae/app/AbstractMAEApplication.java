@@ -21,6 +21,7 @@ package org.apache.maven.mae.app;
 
 import org.apache.log4j.Logger;
 import org.apache.maven.mae.MAEException;
+import org.apache.maven.mae.boot.embed.MAEEmbedder;
 import org.apache.maven.mae.boot.embed.MAEEmbedderBuilder;
 import org.apache.maven.mae.conf.MAEConfiguration;
 import org.apache.maven.mae.conf.MAELibrary;
@@ -39,6 +40,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * {@link MAEApplication} implementation that provides support for loading a full Maven component
+ * environment, complete with {@link MAELibrary}'s, {@link ComponentSelector} and {@link InstanceRegistry}.
+ * This class supervises the assembly of the environment, giving the application developer an easy
+ * way to inject the behavior he needs.
+ * 
+ * @author John Casey
+ */
 public abstract class AbstractMAEApplication
     implements MAEApplication
 {
@@ -56,12 +65,21 @@ public abstract class AbstractMAEApplication
         withComponentInstance( new ComponentKey( getClass() ), this );
     }
 
+    /**
+     * Programmatically add a new {@link MAELibrary} instance, beyond those that are automatically
+     * detected via the /META-INF/services/org.apache.maven.mae.conf.MAELibrary files on the
+     * classpath.
+     */
     protected final AbstractMAEApplication withLibrary( final MAELibrary library )
     {
         additionalLibraries.add( library );
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see org.apache.maven.mae.app.MAEApplication#load()
+     */
     @Override
     public MAEApplication load()
         throws MAEException
@@ -69,7 +87,25 @@ public abstract class AbstractMAEApplication
         return doLoad();
     }
 
-    private synchronized MAEApplication doLoad()
+    /**
+     * Carry out the application loading process. This means:
+     * <br/>
+     * <ul>
+     *   <li>Create a new {@link MAEEmbedderBuilder}</li>
+     *   <li>Add to that an {@link InstanceLibraryLoader} to handle libraries that were 
+     *       programmatically added here</li>
+     *   <li>Call {@link AbstractMAEApplication#beforeLoading()}</li>
+     *   <li>Call {@link AbstractMAEApplication#configureBuilder(MAEEmbedderBuilder)} to allow 
+     *       fine-tuning of the {@link MAEEmbedderBuilder} instance</li>
+     *   <li>Call {@link MAEEmbedderBuilder#build} to create an instance of {@link MAEEmbedder}</li>
+     *   <li>For each instance in the {@link InstanceRegistry}, lookup via {@link MAEEmbedder#container()}
+     *       to ensure injectable component dependencies are filled</li>
+     *   <li>Call {@link AbstractMAEApplication#afterLoading()}</li>
+     *   <li>Set the loaded flag, which will prevent this process from repeating for an application
+     *       that has already been loaded</li>
+     * </ul>
+     */
+    private synchronized final MAEApplication doLoad()
         throws MAEException
     {
         if ( loaded )
@@ -79,10 +115,9 @@ public abstract class AbstractMAEApplication
 
         final MAEEmbedderBuilder builder = new MAEEmbedderBuilder().withLibraryLoader( new InstanceLibraryLoader( additionalLibraries ) );
 
-        beforeLoading();
         configureBuilder( builder );
 
-        builder.build();
+        MAEEmbedder embedder = builder.build();
         for ( final ComponentKey<?> key : getInstanceRegistry().getInstances().keySet() )
         {
             try
@@ -96,55 +131,82 @@ public abstract class AbstractMAEApplication
             }
         }
 
-        afterLoading();
+        afterLoading( embedder );
 
         loaded = true;
 
         return this;
     }
 
+    /**
+     * Register a new, external component instance for injection into other components, or to
+     * have components injected into it.
+     */
     @SuppressWarnings( { "unchecked", "rawtypes" } )
     protected final void withComponentInstance( final Object instance )
     {
         getInstanceRegistry().add( new ComponentKey( instance.getClass() ), instance );
     }
 
+    /**
+     * Register a new {@link VirtualInstance}, which allows the component environment to bind its
+     * requirements without actually having access to the component instance. The instance itself
+     * will be injected into the {@link VirtualInstance} later.
+     */
     protected final <C> void withVirtualComponent( final Class<C> virtualClass )
     {
         getInstanceRegistry().addVirtual( new VirtualInstance<C>( virtualClass ) );
     }
 
+    /**
+     * Set the actual instance on a {@link VirtualInstance} that was registered previously.
+     */
     protected final <C, T extends C> void setVirtualInstance( final Class<C> virtualKey, final T instance )
     {
         getInstanceRegistry().setVirtualInstance( virtualKey, instance );
     }
 
+    /**
+     * Register a new, external component instance to make it available for injection, or to allow
+     * other components to be injected into it.
+     */
     protected final <C> void withComponentInstance( final ComponentKey<C> componentKey, final C instance )
     {
         getInstanceRegistry().add( componentKey, instance );
     }
 
+    /**
+     * Register a new {@link VirtualInstance}, which allows the component environment to bind its
+     * requirements without actually having access to the component instance. The instance itself
+     * will be injected into the {@link VirtualInstance} later.
+     */
     protected final <C> void withVirtualComponent( final ComponentKey<C> virtualKey )
     {
         getInstanceRegistry().addVirtual( virtualKey, new VirtualInstance<C>( virtualKey.getRoleClass() ) );
     }
 
+    /**
+     * Set the actual instance on a {@link VirtualInstance} that was registered previously.
+     */
     protected final <C, T extends C> void setVirtualInstance( final ComponentKey<C> virtualKey, final T instance )
     {
         getInstanceRegistry().setVirtualInstance( virtualKey, instance );
     }
 
+    /**
+     * Fine-tune the {@link MAEEmbedderBuilder} instance before it is used to create the 
+     * {@link MAEEmbedder} that will be used to load the application components.
+     */
     protected void configureBuilder( final MAEEmbedderBuilder builder )
         throws MAEException
     {
     }
 
-    protected void beforeLoading()
-        throws MAEException
-    {
-    }
-
-    protected void afterLoading()
+    /**
+     * Hook allowing application developers access to the {@link MAEEmbedder} just after the registered
+     * external component instances have been injected, but before loading is considered complete.
+     */
+    protected void afterLoading(MAEEmbedder embedder)
         throws MAEException
     {
     }

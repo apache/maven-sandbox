@@ -201,7 +201,7 @@ public class MAEMain
         {
             try
             {
-                MAEEmbedder.showVersion( cliRequest.builder.embConfiguration(), cliRequest.builder.libraryLoaders(),
+                MAEEmbedder.showVersion( cliRequest.builder.configuration(), cliRequest.builder.libraryLoaders(),
                                          cliRequest.builder.standardOut() );
             }
             catch ( final IOException e )
@@ -326,7 +326,7 @@ public class MAEMain
         if ( commandLine.hasOption( CLIManager.BATCH_MODE ) )
         {
             request.setInteractiveMode( false );
-            cliRequest.builder.embConfiguration().nonInteractive();
+            cliRequest.builder.configuration().nonInteractive();
         }
 
         boolean noSnapshotUpdates = false;

@@ -494,22 +494,22 @@ public class MAEEmbedderBuilder
 
     public synchronized ComponentSelector selector()
     {
-        return embConfiguration().getComponentSelector();
+        return configuration().getComponentSelector();
     }
 
     public synchronized InstanceRegistry instanceRegistry()
     {
-        return embConfiguration().getInstanceRegistry();
+        return configuration().getInstanceRegistry();
     }
 
-    public MAEEmbedderBuilder withEMBConfiguration( final MAEConfiguration config )
+    public MAEEmbedderBuilder withConfiguration( final MAEConfiguration config )
     {
         embConfiguration = config;
         embConfigurationProvided = true;
         return this;
     }
 
-    public synchronized MAEConfiguration embConfiguration()
+    public synchronized MAEConfiguration configuration()
     {
         final String[] debugLogHandles = debugLogHandles();
         if ( !logHandlesConfigured && debugLogHandles != null )
@@ -545,7 +545,7 @@ public class MAEEmbedderBuilder
                 if ( debugLogHandles != null
                                 && Arrays.binarySearch( debugLogHandles, MAEConfiguration.STANDARD_LOG_HANDLE_CORE ) > -1 )
                 {
-                    MAEEmbedder.showEMBInfo( embConfiguration, loaders, standardOut() );
+                    MAEEmbedder.showInfo( embConfiguration, loaders, standardOut() );
                 }
             }
             catch ( final IOException e )
@@ -804,7 +804,7 @@ public class MAEEmbedderBuilder
         throws MAEEmbeddingException
     {
         final MAEEmbedder embedder =
-            new MAEEmbedder( maven(), embConfiguration(), container(), settingsBuilder(), executionRequestPopulator(),
+            new MAEEmbedder( maven(), configuration(), container(), settingsBuilder(), executionRequestPopulator(),
                              securityDispatcher(), serviceManager(), libraryLoaders(), standardOut(), logger(),
                              shouldShowErrors(), showVersion() );
 
@@ -819,7 +819,7 @@ public class MAEEmbedderBuilder
         if ( embedder == null )
         {
             logger();
-            embConfiguration();
+            configuration();
             mavenHome();
 
             wireLogging();

@@ -25,6 +25,13 @@ import com.google.inject.Injector;
 
 import java.util.Map;
 
+/**
+ * Extension to the {@link MutablePlexusContainer} interface, which allows injection of components
+ * into existing objects. Also, retrieving the Guice {@link Injector} instance used in the container,
+ * for binding into an outer Guice context...
+ * 
+ * @author John Casey
+ */
 public interface ExtrudablePlexusContainer
     extends MutablePlexusContainer
 {

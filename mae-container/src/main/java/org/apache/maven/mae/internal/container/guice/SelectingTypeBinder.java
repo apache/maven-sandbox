@@ -53,6 +53,11 @@ import java.util.Set;
  * 
  * - PluginManager.class/"default_" =>  DefaultPluginManager.class
  */
+/**
+ * {@link PlexusTypeListener} implementation that uses a {@link ComponentSelector} to selectively
+ * redirect one component requirement to another component, which was configured by the developer
+ * who's embedding the container/Maven apis.
+ */
 public final class SelectingTypeBinder
     implements PlexusTypeListener
 {

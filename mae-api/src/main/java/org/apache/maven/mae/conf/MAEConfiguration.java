@@ -68,7 +68,7 @@ public class MAEConfiguration
     {
     }
 
-    public MAEConfiguration withEMBExecutionRequest( final MAEExecutionRequest request )
+    public MAEConfiguration withExecutionRequest( final MAEExecutionRequest request )
     {
         executionRequest = request;
         return this;
