@@ -82,6 +82,44 @@ under the License.
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.8.1</version>
+          <executions>
+            <execution>
+              <id>utf-8</id>
+              <goals>
+                <goal>test</goal>
+              </goals>
+              <configuration>
+                <systemPropertyVariables>
+                  <file.encoding>utf-8</file.encoding>
+                </systemPropertyVariables>
+                <reportsDirectory>${project.build.directory}/surefire-reports/utf-8</reportsDirectory>
+              </configuration>
+            </execution>
+            <execution>
+              <id>Cp500</id>
+              <goals>
+                <goal>test</goal>
+              </goals>
+              <configuration>
+                <systemPropertyVariables>
+                  <file.encoding>Cp500</file.encoding>
+                </systemPropertyVariables>
+                <reportsDirectory>${project.build.directory}/surefire-reports/Cp500</reportsDirectory>
+              </configuration>
+            </execution>
+            <execution>
+              <id>Cp1254</id>
+              <goals>
+                <goal>test</goal>
+              </goals>
+              <configuration>
+                <systemPropertyVariables>
+                  <file.encoding>Cp1254</file.encoding>
+                </systemPropertyVariables>
+                <reportsDirectory>${project.build.directory}/surefire-reports/Cp1254</reportsDirectory>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
