@@ -38,15 +38,14 @@ under the License.
     </description>
     <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-markdown/</url>
 
-    <developers>
-        <developer>
-            <id>nicoulaj</id>
+    <contributors>
+        <contributor>
             <name>Julien Nicoulaud</name>
             <email>julien.nicoulaud@gmail.com</email>
             <timezone>+1</timezone>
             <url>http://www.twitter.com/nicoulaj</url>
-        </developer>
-    </developers>
+        </contributor>
+    </contributors>
 
     <dependencies>
         <dependency>
