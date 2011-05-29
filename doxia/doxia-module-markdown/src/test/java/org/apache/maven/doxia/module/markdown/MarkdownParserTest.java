@@ -83,11 +83,11 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "paragraph" ).getEventList().iterator();
 
-        assertEquals( "body", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "body_", ( it.next() ).getName() );
+        assertEquals( "body", it.next().getName() );
+        assertEquals( "paragraph", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "paragraph_", it.next().getName() );
+        assertEquals( "body_", it.next().getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -101,13 +101,13 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "bold" ).getEventList().iterator();
 
-        assertEquals( "body", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "bold", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "bold_", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "body_", ( it.next() ).getName() );
+        assertEquals( "body", it.next().getName() );
+        assertEquals( "paragraph", it.next().getName() );
+        assertEquals( "bold", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "bold_", it.next().getName() );
+        assertEquals( "paragraph_", it.next().getName() );
+        assertEquals( "body_", it.next().getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -121,13 +121,13 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "italic" ).getEventList().iterator();
 
-        assertEquals( "body", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "italic", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "italic_", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "body_", ( it.next() ).getName() );
+        assertEquals( "body", it.next().getName() );
+        assertEquals( "paragraph", it.next().getName() );
+        assertEquals( "italic", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "italic_", it.next().getName() );
+        assertEquals( "paragraph_", it.next().getName() );
+        assertEquals( "body_", it.next().getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -141,17 +141,17 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "code" ).getEventList().iterator();
 
-        assertEquals( "body", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "verbatim", ( it.next() ).getName() );
-        assertEquals( "monospaced", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "monospaced_", ( it.next() ).getName() );
-        assertEquals( "verbatim_", ( it.next() ).getName() );
-        assertEquals( "body_", ( it.next() ).getName() );
+        assertEquals( "body", it.next().getName() );
+        assertEquals( "paragraph", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "paragraph_", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "verbatim", it.next().getName() );
+        assertEquals( "monospaced", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "monospaced_", it.next().getName() );
+        assertEquals( "verbatim_", it.next().getName() );
+        assertEquals( "body_", it.next().getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -165,13 +165,13 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "image" ).getEventList().iterator();
 
-        assertEquals( "body", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "figureGraphics", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "body_", ( it.next() ).getName() );
+        assertEquals( "body", it.next().getName() );
+        assertEquals( "paragraph", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "figureGraphics", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "paragraph_", it.next().getName() );
+        assertEquals( "body_", it.next().getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -185,15 +185,41 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "link" ).getEventList().iterator();
 
-        assertEquals( "body", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "link", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "link_", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "body_", ( it.next() ).getName() );
+        assertEquals( "body", it.next().getName() );
+        assertEquals( "paragraph", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "link", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "link_", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "paragraph_", it.next().getName() );
+        assertEquals( "body_", it.next().getName() );
+
+        assertFalse( it.hasNext() );
+    }
+
+    /**
+     * Assert the list sink event is fired when parsing "list.md".
+     *
+     * @throws Exception if the event list is not correct when parsing the document.
+     */
+    public void testListSinkEvent() throws Exception
+    {
+        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "list" ).getEventList().iterator();
+
+        assertEquals( "body", it.next().getName() );
+        assertEquals( "list", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "listItem", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "listItem_", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "listItem", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "listItem_", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "list_", it.next().getName() );
+        assertEquals( "body_", it.next().getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -207,19 +233,19 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "numbered-list" ).getEventList().iterator();
 
-        assertEquals( "body", ( it.next() ).getName() );
-        assertEquals( "numberedList", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "numberedListItem", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "numberedListItem_", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "numberedListItem", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "numberedListItem_", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "numberedList_", ( it.next() ).getName() );
-        assertEquals( "body_", ( it.next() ).getName() );
+        assertEquals( "body", it.next().getName() );
+        assertEquals( "numberedList", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "numberedListItem", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "numberedListItem_", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "numberedListItem", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "numberedListItem_", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "numberedList_", it.next().getName() );
+        assertEquals( "body_", it.next().getName() );
 
         assertFalse( it.hasNext() );
     }
