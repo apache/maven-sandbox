@@ -140,15 +140,15 @@ public class MAEPrompt
             }
             else
             {
-                line = line.trim();
+                int idx = Integer.parseInt( line.trim() ) - 1;
                 
-                if ( !possibleValues.contains( line ) )
+                if ( idx < 0 || idx > possibleValues.size() )
                 {
                     writeLine( "Invalid selection." );
                 }
                 else
                 {
-                    result = possibleValues.indexOf( line ) - 1;
+                    result = idx;
                 }
             }
         }
