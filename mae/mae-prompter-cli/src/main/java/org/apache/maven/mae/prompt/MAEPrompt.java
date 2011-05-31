@@ -19,12 +19,10 @@
 
 package org.apache.maven.mae.prompt;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.mae.conf.MAEConfiguration;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.components.interactivity.Prompter;
-import org.codehaus.plexus.components.interactivity.PrompterException;
-import org.codehaus.plexus.util.StringUtils;
 
 import javax.inject.Inject;
 
@@ -32,14 +30,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.Iterator;
 import java.util.List;
 
 import jline.ConsoleReader;
 
-@Component( role = Prompter.class, hint = MAEPrompter.NAME )
-public class MAEPrompter
-    implements Prompter
+@Component( role = Prompt.class, hint = MAEPrompt.NAME )
+public class MAEPrompt
+    implements Prompt
 {
     
     public static final String NAME = "mae";
@@ -48,13 +45,13 @@ public class MAEPrompter
     private final MAEConfiguration config;
 
     @Inject
-    public MAEPrompter( final MAEConfiguration config )
+    public MAEPrompt( final MAEConfiguration config )
     {
         this.config = config;
     }
 
-    public String prompt( final String message )
-        throws PrompterException
+    public String getInput( final String message )
+        throws PromptException
     {
         try
         {
@@ -62,7 +59,7 @@ public class MAEPrompter
         }
         catch ( final IOException e )
         {
-            throw new PrompterException( "Failed to present prompt", e );
+            throw new PromptException( "Failed to present prompt", e );
         }
 
         try
@@ -71,7 +68,7 @@ public class MAEPrompter
         }
         catch ( final IOException e )
         {
-            throw new PrompterException( "Failed to read user response", e );
+            throw new PromptException( "Failed to read user response", e );
         }
     }
 
@@ -81,23 +78,23 @@ public class MAEPrompter
         return new BufferedReader( new InputStreamReader( config.getStandardIn() ) ).readLine();
     }
 
-    public String prompt( final String message, final String defaultReply )
-        throws PrompterException
+    public String getInput( final String message, final String defaultReply )
+        throws PromptException
     {
         try
         {
-            writePrompt( formatMessage( message, null, defaultReply ) );
+            writePrompt( formatMessage( message, defaultReply ) );
         }
         catch ( final IOException e )
         {
-            throw new PrompterException( "Failed to present prompt", e );
+            throw new PromptException( "Failed to present prompt", e );
         }
 
         try
         {
             String line = readLine();
 
-            if ( StringUtils.isEmpty( line ) )
+            if ( isEmpty( line ) )
             {
                 line = defaultReply;
             }
@@ -106,18 +103,17 @@ public class MAEPrompter
         }
         catch ( final IOException e )
         {
-            throw new PrompterException( "Failed to read user response", e );
+            throw new PromptException( "Failed to read user response", e );
         }
     }
 
-    @SuppressWarnings( "rawtypes" )
-    public String prompt( final String message, final List possibleValues, final String defaultReply )
-        throws PrompterException
+    public int getSelection( final String message, final List<?> possibleValues, final int defaultSelection )
+        throws PromptException
     {
-        final String formattedMessage = formatMessage( message, possibleValues, defaultReply );
+        final String formattedMessage = formatMessage( message, possibleValues, defaultSelection );
 
+        int result = -1;
         String line;
-
         do
         {
             try
@@ -126,7 +122,7 @@ public class MAEPrompter
             }
             catch ( final IOException e )
             {
-                throw new PrompterException( "Failed to present prompt", e );
+                throw new PromptException( "Failed to present prompt", e );
             }
 
             try
@@ -135,22 +131,35 @@ public class MAEPrompter
             }
             catch ( final IOException e )
             {
-                throw new PrompterException( "Failed to read user response", e );
+                throw new PromptException( "Failed to read user response", e );
             }
 
-            if ( StringUtils.isEmpty( line ) )
+            if ( isEmpty( line ) )
             {
-                line = defaultReply;
+                result = defaultSelection;
             }
-
-            if ( line != null && !possibleValues.contains( line ) )
+            else
             {
-                writeLine( "Invalid selection." );
+                line = line.trim();
+                
+                if ( !possibleValues.contains( line ) )
+                {
+                    writeLine( "Invalid selection." );
+                }
+                else
+                {
+                    result = possibleValues.indexOf( line ) - 1;
+                }
             }
         }
-        while ( line == null || !possibleValues.contains( line ) );
+        while ( result < 0 );
 
-        return line;
+        return result;
+    }
+
+    private boolean isEmpty( String line )
+    {
+        return ( StringUtils.isEmpty( line ) || StringUtils.isEmpty( line.trim() ) );
     }
 
     private void writeLine( final String message )
@@ -158,15 +167,14 @@ public class MAEPrompter
         config.getStandardOut().println( message );
     }
 
-    @SuppressWarnings( "rawtypes" )
-    public String prompt( final String message, final List possibleValues )
-        throws PrompterException
+    public int getSelection( final String message, final List<?> possibleValues )
+        throws PromptException
     {
-        return prompt( message, possibleValues, null );
+        return getSelection( message, possibleValues, -1 );
     }
 
-    public String promptForPassword( final String message )
-        throws PrompterException
+    public String getPassword( final String message )
+        throws PromptException
     {
         try
         {
@@ -174,7 +182,7 @@ public class MAEPrompter
         }
         catch ( final IOException e )
         {
-            throw new PrompterException( "Failed to present prompt", e );
+            throw new PromptException( "Failed to present prompt", e );
         }
 
         try
@@ -184,37 +192,48 @@ public class MAEPrompter
         }
         catch ( final IOException e )
         {
-            throw new PrompterException( "Failed to read user response", e );
+            throw new PromptException( "Failed to read user response", e );
         }
     }
 
-    @SuppressWarnings( "rawtypes" )
-    private String formatMessage( final String message, final List possibleValues, final String defaultReply )
+    private String formatMessage( final String message, final String defaultReply )
     {
-        final StringBuffer formatted = new StringBuffer( message.length() * 2 );
+        final StringBuilder formatted = new StringBuilder();
 
         formatted.append( message );
 
+        if ( defaultReply != null )
+        {
+            formatted.append( ' ' ).append( defaultReply ).append( ": " );
+        }
+
+        return formatted.toString();
+    }
+    
+    private String formatMessage( final String message, final List<?> possibleValues, final int defaultReply )
+    {
+        final StringBuilder formatted = new StringBuilder();
+
         if ( possibleValues != null && !possibleValues.isEmpty() )
         {
-            formatted.append( " (" );
-
-            for ( final Iterator it = possibleValues.iterator(); it.hasNext(); )
+            for( int i =0; i< possibleValues.size(); i++ )
             {
-                final String possibleValue = (String) it.next();
+                Object possibleValue = possibleValues.get( i );
 
-                formatted.append( possibleValue );
+                formatted.append( i+1 ).append( ". " ).append( possibleValue );
 
-                if ( it.hasNext() )
+                if ( i+1 < possibleValues.size() )
                 {
-                    formatted.append( '/' );
+                    formatted.append( '\n' );
                 }
             }
 
-            formatted.append( ')' );
+            formatted.append( "\n\n" );
         }
 
-        if ( defaultReply != null )
+        formatted.append( message );
+
+        if ( defaultReply > -1 )
         {
             formatted.append( ' ' ).append( defaultReply ).append( ": " );
         }
@@ -226,20 +245,6 @@ public class MAEPrompter
         throws IOException
     {
         config.getStandardOut().print( message + ": " );
-    }
-
-    public void showMessage( final String message )
-        throws PrompterException
-    {
-        try
-        {
-            writePrompt( message );
-        }
-        catch ( final IOException e )
-        {
-            throw new PrompterException( "Failed to present prompt", e );
-        }
-
     }
 
 }
