@@ -47,6 +47,8 @@ import static org.junit.Assert.assertThat;
 public class IOUtilTest
 {
 
+    private static final long INFINITE_LOOP_TIMEOUT = 500;
+
     @Test
     public void isAUtilityClass()
         throws Exception
@@ -388,14 +390,14 @@ public class IOUtilTest
         assertThat( IOUtil.toString( probe.getBytes(), -1 ), is( probe ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringNullByteArrayZeroBufSz()
         throws Exception
     {
         IOUtil.toString( nullByteArray(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringEmptyByteArrayZeroBufSz()
         throws Exception
@@ -410,7 +412,7 @@ public class IOUtilTest
                     }, runsForLongerThan( 100 ) );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringByteArrayZeroBufSz()
         throws Exception
@@ -582,21 +584,21 @@ public class IOUtilTest
                     is( probe.getBytes( "utf-8" ) ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringNullByteArrayNullEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.toString( nullByteArray(), null, 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringEmptyByteArrayNullEncodingZeroBufSz()
         throws Exception
     {
         assertThat( IOUtil.toString( emptyByteArray(), null, 0 ), is( emptyString() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringByteArrayNullEncodingZeroBufSz()
         throws Exception
     {
@@ -604,21 +606,21 @@ public class IOUtilTest
         assertThat( IOUtil.toString( probe.getBytes(), null, 0 ).getBytes(), is( probe.getBytes() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringNullByteArrayJunkEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.toString( nullByteArray(), "junk", 0 );
     }
 
-    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringEmptyByteArrayJunkEncodingZeroBufSz()
         throws Exception
     {
         assertThat( IOUtil.toString( emptyByteArray(), "junk", 0 ), is( emptyString() ) );
     }
 
-    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringByteArrayJunkEncodingZeroBufSz()
         throws Exception
     {
@@ -626,14 +628,14 @@ public class IOUtilTest
         assertThat( IOUtil.toString( probe.getBytes(), "junk", 0 ).getBytes(), is( probe.getBytes() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringNullByteArrayValidEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.toString( nullByteArray(), "utf-16", 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringEmptyByteArrayValidEncodingZeroBufSz()
         throws Exception
@@ -648,7 +650,7 @@ public class IOUtilTest
                     }, runsForLongerThan( 100 ) );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringByteArrayValidEncodingZeroBufSz()
         throws Exception
@@ -663,6 +665,10 @@ public class IOUtilTest
                         }
                     }, runsForLongerThan( 100 ) );
     }
+
+    /*
+     * copy(byte[],OutputStream)
+     */
 
     @Test( expected = NullPointerException.class )
     public void copyNullByteArrayNullOutputStream()
@@ -702,6 +708,10 @@ public class IOUtilTest
         assertThat( outputStream.toByteArray(), is( input ) );
     }
 
+    /*
+     * copy(byte[],OutputStream,int)
+     */
+
     @Test( expected = NullPointerException.class )
     public void copyNullByteArrayNullOutputStreamNegBufSz()
         throws Exception
@@ -740,35 +750,35 @@ public class IOUtilTest
         assertThat( outputStream.toByteArray(), is( input ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullByteArrayNullOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullByteArray(), nullOutputStream(), 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullByteArrayValidOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullByteArray(), new DontCloseByteArrayOutputStream(), 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyByteArrayNullOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( emptyByteArray(), nullOutputStream(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyByteArrayValidOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( emptyByteArray(), new DontCloseByteArrayOutputStream(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     public void copyByteArrayValidOutputStreamZeroBufSz()
         throws Exception
     {
@@ -778,35 +788,35 @@ public class IOUtilTest
         assertThat( outputStream.toByteArray(), is( input ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullByteArrayNullOutputStreamPosBufSz()
         throws Exception
     {
         IOUtil.copy( nullByteArray(), nullOutputStream(), 1 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullByteArrayValidOutputStreamPosBufSz()
         throws Exception
     {
         IOUtil.copy( nullByteArray(), new DontCloseByteArrayOutputStream(), 1 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyByteArrayNullOutputStreamPosBufSz()
         throws Exception
     {
         IOUtil.copy( emptyByteArray(), nullOutputStream(), 1 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyByteArrayValidOutputStreamPosBufSz()
         throws Exception
     {
         IOUtil.copy( emptyByteArray(), new DontCloseByteArrayOutputStream(), 1 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     public void copyByteArrayValidOutputStreamPosBufSz()
         throws Exception
     {
@@ -892,35 +902,35 @@ public class IOUtilTest
         assertThat( outputStream.toByteArray(), is( input ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamNullOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), nullOutputStream(), 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamValidOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), new ByteArrayOutputStream(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyInputStreamNullOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( new DontCloseByteArrayInputStream( emptyByteArray() ), nullOutputStream(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyInputStreamValidOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( new DontCloseByteArrayInputStream( emptyByteArray() ), new DontCloseByteArrayOutputStream(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyInputStreamValidOutputStreamZeroBufSz()
         throws Exception
@@ -937,35 +947,35 @@ public class IOUtilTest
                     }, runsForLongerThan( 100 ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamNullOutputStreamPosBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), nullOutputStream(), 1 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamValidOutputStreamPosBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), new ByteArrayOutputStream(), 1 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyInputStreamNullOutputStreamPosBufSz()
         throws Exception
     {
         IOUtil.copy( new DontCloseByteArrayInputStream( emptyByteArray() ), nullOutputStream(), 1 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyInputStreamValidOutputStreamPosBufSz()
         throws Exception
     {
         IOUtil.copy( new DontCloseByteArrayInputStream( emptyByteArray() ), new DontCloseByteArrayOutputStream(), 1 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     public void copyInputStreamValidOutputStreamPosBufSz()
         throws Exception
     {
@@ -1020,14 +1030,14 @@ public class IOUtilTest
         assertThat( IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), -1 ), is( probe ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringNullInputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.toString( nullInputStream(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringEmptyInputStreamZeroBufSz()
         throws Exception
@@ -1042,7 +1052,7 @@ public class IOUtilTest
                     }, runsForLongerThan( 100 ) );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringInputStreamZeroBufSz()
         throws Exception
@@ -1221,21 +1231,21 @@ public class IOUtilTest
             is( probe.getBytes( "utf-8" ) ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringNullInputStreamNullEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.toString( nullInputStream(), null, 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringEmptyInputStreamNullEncodingZeroBufSz()
         throws Exception
     {
         assertThat( IOUtil.toString( emptyInputStream(), null, 0 ), is( emptyString() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringInputStreamNullEncodingZeroBufSz()
         throws Exception
     {
@@ -1244,21 +1254,21 @@ public class IOUtilTest
                     is( probe.getBytes() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringNullInputStreamJunkEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.toString( nullInputStream(), "junk", 0 );
     }
 
-    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringEmptyInputStreamJunkEncodingZeroBufSz()
         throws Exception
     {
         assertThat( IOUtil.toString( emptyInputStream(), "junk", 0 ), is( emptyString() ) );
     }
 
-    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringInputStreamJunkEncodingZeroBufSz()
         throws Exception
     {
@@ -1267,14 +1277,14 @@ public class IOUtilTest
                     is( probe.getBytes() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void toStringNullInputStreamValidEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.toString( nullInputStream(), "utf-16", 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringEmptyInputStreamValidEncodingZeroBufSz()
         throws Exception
@@ -1289,7 +1299,7 @@ public class IOUtilTest
                     }, runsForLongerThan( 100 ) );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void toStringInputStreamValidEncodingZeroBufSz()
         throws Exception
@@ -1344,6 +1354,10 @@ public class IOUtilTest
         assertThat( outputStream.toByteArray(), is( input ) );
     }
 
+    /*
+     * copy(InputStream,Writer)
+     */
+
     @Test( expected = NullPointerException.class )
     public void copyNullInputStreamNullWriter()
         throws Exception
@@ -1385,6 +1399,10 @@ public class IOUtilTest
         assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
     }
 
+    /*
+     * copy(InputStream,Writer,int)
+     */
+
     @Test( expected = NullPointerException.class )
     public void copyNullInputStreamNullWriterNegBufSz()
         throws Exception
@@ -1424,28 +1442,28 @@ public class IOUtilTest
         assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamNullWriterZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), nullWriter(), 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamValidWriterZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), new DontCloseStringWriter(), 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyInputStreamNullWriterZeroBufSz()
         throws Exception
     {
         IOUtil.copy( emptyInputStream(), nullWriter(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyEmptyInputStreamValidWriterZeroBufSz()
         throws Exception
@@ -1460,7 +1478,7 @@ public class IOUtilTest
                     }, runsForLongerThan( 100 ) );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyInputStreamZeroBufSz()
         throws Exception
@@ -1516,6 +1534,10 @@ public class IOUtilTest
         IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, 1 );
         assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
     }
+
+    /*
+     * copy(InputStream,Writer,String)
+     */
 
     @Test( expected = NullPointerException.class )
     public void copyNullInputStreamNullWriterNullEncoding()
@@ -1648,6 +1670,10 @@ public class IOUtilTest
         IOUtil.copy( new ByteArrayInputStream( probe.getBytes( "utf-16" ) ), writer, "utf-16" );
         assertThat( writer.toString().getBytes( "utf-8" ), is( probe.getBytes( "utf-8" ) ) );
     }
+
+    /*
+     * copy(InputStream,Writer,String,int)
+     */
 
     @Test( expected = NullPointerException.class )
     public void copyNullInputStreamNullWriterNullEncodingNegBufSz()
@@ -1793,28 +1819,28 @@ public class IOUtilTest
         assertThat( writer.toString().getBytes( "utf-8" ), is( probe.getBytes( "utf-8" ) ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamNullWriterNullEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), nullWriter(), null, 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamValidWriterNullEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), new DontCloseStringWriter(), null, 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyInputStreamNullWriterNullEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.copy( emptyInputStream(), nullWriter(), null, 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyInputStreamValidWriterNullEncodingZeroBufSz()
         throws Exception
     {
@@ -1823,7 +1849,7 @@ public class IOUtilTest
         assertThat( writer.toString(), is( emptyString() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyInputStreamNullWriterNullEncodingZeroBufSz()
         throws Exception
     {
@@ -1831,7 +1857,7 @@ public class IOUtilTest
         IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), nullWriter(), null, 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyInputStreamValidWriterNullEncodingZeroBufSz()
         throws Exception
     {
@@ -1841,28 +1867,28 @@ public class IOUtilTest
         assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamNullWriterJunkEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), nullWriter(), "junk", 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamValidWriterJunkEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), new DontCloseStringWriter(), "junk", 0 );
     }
 
-    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyInputStreamNullWriterJunkEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.copy( emptyInputStream(), nullWriter(), "junk", 0 );
     }
 
-    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyInputStreamValidWriterJunkEncodingZeroBufSz()
         throws Exception
     {
@@ -1871,7 +1897,7 @@ public class IOUtilTest
         assertThat( writer.toString(), is( emptyString() ) );
     }
 
-    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyInputStreamNullWriterJunkEncodingZeroBufSz()
         throws Exception
     {
@@ -1879,7 +1905,7 @@ public class IOUtilTest
         IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), nullWriter(), "junk", 0 );
     }
 
-    @Test( expected = UnsupportedEncodingException.class, timeout = 150 )
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyInputStreamValidWriterJunkEncodingZeroBufSz()
         throws Exception
     {
@@ -1889,21 +1915,21 @@ public class IOUtilTest
         assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamNullWriterValidEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), nullWriter(), "utf-16", 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullInputStreamValidWriterValidEncodingZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullInputStream(), new DontCloseStringWriter(), "utf-16", 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyEmptyInputStreamValidEncodingZeroBufSz()
         throws Exception
@@ -1918,7 +1944,7 @@ public class IOUtilTest
                     }, runsForLongerThan( 100 ) );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyInputStreamValidEncodingZeroBufSz()
         throws Exception
@@ -1929,11 +1955,15 @@ public class IOUtilTest
                             throws Exception
                         {
                             String probe = "A string \u2345\u00ef";
-                            IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), new DontCloseStringWriter(), "utf-16",
-                                         0 );
+                            IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), new DontCloseStringWriter(),
+                                         "utf-16", 0 );
                         }
                     }, runsForLongerThan( 100 ) );
     }
+
+    /*
+     * copy(String,Writer)
+     */
 
     @Test( expected = NullPointerException.class )
     public void copyNullStringNullWriter()
@@ -2079,28 +2109,28 @@ public class IOUtilTest
         assertThat( OutputStream.toByteArray(), is( probe.getBytes() ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullStringNullOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullString(), nullOutputStream(), 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyStringNullOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( emptyString(), nullOutputStream(), 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullStringValidOutputStreamZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullString(), new DontCloseByteArrayOutputStream(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyEmptyStringValidOutputStreamZeroBufSz()
         throws Exception
@@ -2117,7 +2147,7 @@ public class IOUtilTest
                     }, runsForLongerThan( 100 ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyStringNullOutputStreamZeroBufSz()
         throws Exception
     {
@@ -2125,7 +2155,7 @@ public class IOUtilTest
         IOUtil.copy( probe, nullOutputStream(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyStringValidOutputStreamZeroBufSz()
         throws Exception
@@ -2291,28 +2321,28 @@ public class IOUtilTest
         assertThat( writer.toString(), is( probe ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullReaderNullWriterZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullReader(), nullWriter(), 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyEmptyReaderNullWriterZeroBufSz()
         throws Exception
     {
         IOUtil.copy( emptyReader(), nullWriter(), 0 );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyNullReaderValidWriterZeroBufSz()
         throws Exception
     {
         IOUtil.copy( nullReader(), new DontCloseStringWriter(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyEmptyReaderValidWriterZeroBufSz()
         throws Exception
@@ -2328,7 +2358,7 @@ public class IOUtilTest
                     }, runsForLongerThan( 100 ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150 )
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
     public void copyReaderNullWriterZeroBufSz()
         throws Exception
     {
@@ -2336,7 +2366,7 @@ public class IOUtilTest
         IOUtil.copy( new StringReader( probe ), nullWriter(), 0 );
     }
 
-    @Test( timeout = 150 )
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyReaderValidWriterZeroBufSz()
         throws Exception
@@ -2421,7 +2451,7 @@ public class IOUtilTest
         IOUtil.toByteArray( nullInputStream(), -1 );
     }
 
-    @Test(timeout = 150)
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void toByteArrayFromInputStreamZeroBufSz()
         throws Exception
@@ -2438,7 +2468,7 @@ public class IOUtilTest
 
     }
 
-    @Test( timeout = 150)
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
     @ReproducesPlexusBug( "Should not infinite loop" )
     public void toByteArrayNullInputStreamZeroBufSz()
         throws Exception
@@ -2469,6 +2499,1004 @@ public class IOUtilTest
         IOUtil.toByteArray( nullInputStream(), +1 );
     }
 
+    /*
+     * toByteArray(Reader,int)
+     */
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void toByteArrayFromReaderNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toByteArray( new DontCloseStringReader( probe ), -1 ),
+                    is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void toByteArrayNullReaderNegBufSz()
+        throws Exception
+    {
+        IOUtil.toByteArray( nullReader(), -1 );
+    }
+
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void toByteArrayFromReaderZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.toByteArray( new DontCloseStringReader( probe ), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+
+    }
+
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void toByteArrayNullReaderZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.toByteArray( nullReader(), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+    }
+
+    @Test
+    public void toByteArrayFromReaderPosBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toByteArray( new DontCloseStringReader( probe ), +1 ),
+                    is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void toByteArrayNullReaderPosBufSz()
+        throws Exception
+    {
+        IOUtil.toByteArray( nullReader(), +1 );
+    }
+
+    /*
+     * toByteArray(String,int)
+     */
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void toByteArrayFromStringNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toByteArray( probe, -1 ), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void toByteArrayNullStringNegBufSz()
+        throws Exception
+    {
+        IOUtil.toByteArray( nullString(), -1 );
+    }
+
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void toByteArrayFromStringZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.toByteArray( probe, 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+
+    }
+
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void toByteArrayNullStringZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.toByteArray( nullString(), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+    }
+
+    @Test
+    public void toByteArrayFromStringPosBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toByteArray( probe, +1 ), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void toByteArrayNullStringPosBufSz()
+        throws Exception
+    {
+        IOUtil.toByteArray( nullString(), +1 );
+    }
+
+    /*
+     * toString(Reader,int)
+     */
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void toStringFromReaderNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toString( new DontCloseStringReader( probe ), -1 ),
+                    is( probe) );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void toStringNullReaderNegBufSz()
+        throws Exception
+    {
+        IOUtil.toString( nullReader(), -1 );
+    }
+
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void toStringFromReaderZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.toString( new DontCloseStringReader( probe ), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+
+    }
+
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void toStringNullReaderZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.toString( nullReader(), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+    }
+
+    @Test
+    public void toStringFromReaderPosBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toString( new DontCloseStringReader( probe ), +1 ),
+                    is( probe) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void toStringNullReaderPosBufSz()
+        throws Exception
+    {
+        IOUtil.toString( nullReader(), +1 );
+    }
+
+    /*
+     * copy(Reader,OutputStream)
+     */
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullReaderNullOutputStream()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), nullOutputStream() );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullReaderValidOutputStream()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), new DontCloseByteArrayOutputStream() );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyReaderNullOutputStream()
+        throws Exception
+    {
+        IOUtil.copy( emptyReader(), nullOutputStream() );
+    }
+
+    @Test
+    public void copyEmptyReaderValidOutputStream()
+        throws Exception
+    {
+        IOUtil.copy( emptyReader(), new DontCloseByteArrayOutputStream() );
+    }
+
+    @Test
+    public void copyReaderValidOutputStream()
+        throws Exception
+    {
+        ByteArrayOutputStream outputStream = new DontCloseByteArrayOutputStream();
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new DontCloseStringReader( probe ), outputStream );
+        assertThat( outputStream.toByteArray(), is( probe.getBytes()) );
+    }
+
+    /*
+     * copy(Reader,OutputStream,int)
+     */
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullReaderNullOutputStreamNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), nullOutputStream(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyNullReaderValidOutputStreamNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), new DontCloseByteArrayOutputStream(), -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyReaderNullOutputStreamNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyReader(), nullOutputStream(), -1 );
+    }
+
+    @Test(expected = NegativeArraySizeException.class)
+    public void copyEmptyReaderValidOutputStreamNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyReader(), new DontCloseByteArrayOutputStream(), -1 );
+    }
+
+    @Test(expected = NegativeArraySizeException.class)
+    public void copyReaderValidOutputStreamNegBufSz()
+        throws Exception
+    {
+        ByteArrayOutputStream outputStream = new DontCloseByteArrayOutputStream();
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new DontCloseStringReader( probe ), outputStream, -1 );
+        assertThat( outputStream.toByteArray(), is( probe.getBytes()) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyNullReaderNullOutputStreamZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), nullOutputStream(), 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyNullReaderValidOutputStreamZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), new DontCloseByteArrayOutputStream(), 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyEmptyReaderNullOutputStreamZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyReader(), nullOutputStream(), 0 );
+    }
+
+    @Test(timeout = INFINITE_LOOP_TIMEOUT)
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyEmptyReaderValidOutputStreamZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.copy( emptyReader(), new DontCloseByteArrayOutputStream(), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+    }
+
+    @Test(timeout = INFINITE_LOOP_TIMEOUT)
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyReaderValidOutputStreamZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            ByteArrayOutputStream outputStream = new DontCloseByteArrayOutputStream();
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.copy( new DontCloseStringReader( probe ), outputStream, 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullReaderNullOutputStreamPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), nullOutputStream(), 1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullReaderValidOutputStreamPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), new DontCloseByteArrayOutputStream(), 1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyReaderNullOutputStreamPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyReader(), nullOutputStream(), 1 );
+    }
+
+    @Test
+    public void copyEmptyReaderValidOutputStreamPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyReader(), new DontCloseByteArrayOutputStream(), 1 );
+    }
+
+    @Test
+    public void copyReaderValidOutputStreamPosBufSz()
+        throws Exception
+    {
+        ByteArrayOutputStream outputStream = new DontCloseByteArrayOutputStream();
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new DontCloseStringReader( probe ), outputStream, 1 );
+        assertThat( outputStream.toByteArray(), is( probe.getBytes()) );
+    }
+
+    /*
+     * copy(byte[],Writer)
+     */
+
+    /*
+     * copy(byte[],Writer,int)
+     */
+
+    /*
+     * copy(byte[],Writer,String)
+     */
+
+    /*
+     * copy(byte[],Writer,String,int)
+     */
+    /*
+     * copy(byte[],Writer)
+     */
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayNullWriter()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter() );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyByteArrayNullWriter()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter() );
+    }
+
+    @Test
+    public void copyEmptyByteArrayValidWriter()
+        throws Exception
+    {
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( emptyByteArray(), writer );
+        assertThat( writer.toString(), is( emptyString() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyByteArrayNullWriter()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe.getBytes(), nullWriter() );
+    }
+
+    @Test
+    public void copyByteArrayValidWriter()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes(), writer );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    /*
+     * copy(byte[],Writer,int)
+     */
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayNullWriterNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyEmptyByteArrayNullWriterNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyEmptyByteArrayValidWriterNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), new DontCloseStringWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyByteArrayNullWriterNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe.getBytes(), nullWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyByteArrayValidWriterNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes(), writer, -1 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyNullByteArrayNullWriterZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyNullByteArrayValidWriterZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyEmptyByteArrayNullWriterZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), 0 );
+    }
+
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyEmptyByteArrayValidWriterZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.copy( emptyByteArray(), new DontCloseStringWriter(), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+    }
+
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyByteArrayZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            StringWriter writer = new DontCloseStringWriter();
+                            IOUtil.copy( probe.getBytes(), writer, 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayNullWriterPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), 1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayValidWriterPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), 1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyByteArrayNullWriterPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), 1 );
+    }
+
+    @Test
+    public void copyEmptyByteArrayValidWriterPosBufSz()
+        throws Exception
+    {
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( emptyByteArray(), writer, 1 );
+        assertThat( writer.toString(), is( emptyString() ) );
+    }
+
+    @Test
+    public void copyByteArrayValidWriterPosBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes(), writer, 1 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    /*
+     * copy(byte[],Writer,String)
+     */
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayNullWriterNullEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayValidWriterNullEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyByteArrayNullWriterNullEncoding()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyByteArrayValidWriterNullEncoding()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), new DontCloseStringWriter(), null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyByteArrayNullEncoding()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes(), writer, null );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayNullWriterJunkEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), "junk" );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayValidWriterJunkEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), "junk" );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyEmptyByteArrayNullWriterJunkEncoding()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), "junk" );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyEmptyByteArrayValidWriterJunkEncoding()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), new DontCloseStringWriter(), "junk" );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyByteArrayNullWriterJunkEncoding()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe.getBytes(), nullWriter(), "junk" );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyByteArrayValidWriterJunkEncoding()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes(), writer, "junk" );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayNullWriterValidEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), "utf-16" );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyByteArrayNullWriterValidEncoding()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), "utf-16" );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayValidWriterValidEncoding()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), "utf-16" );
+    }
+
+    @Test
+    public void copyEmptyByteArrayValidWriterValidEncoding()
+        throws Exception
+    {
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( emptyByteArray(), writer, "utf-16" );
+        assertThat( writer.toString(), is( emptyString() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyByteArrayNullWriterValidEncoding()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe.getBytes( "utf-16" ), nullWriter(), "utf-16" );
+    }
+
+    @Test
+    public void copyByteArrayValidWriterValidEncoding()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes( "utf-16" ), writer, "utf-16" );
+        assertThat( writer.toString().getBytes( "utf-8" ), is( probe.getBytes( "utf-8" ) ) );
+    }
+
+    /*
+     * copy(byte[],Writer,String,int)
+     */
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayNullWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), null, -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayValidWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), null, -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyByteArrayNullWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), null, -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyByteArrayValidWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( emptyByteArray(), writer, null, -1 );
+        assertThat( writer.toString(), is( emptyString() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyByteArrayNullWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe.getBytes(), nullWriter(), null, -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyByteArrayValidWriterNullEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes(), writer, null, -1 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayNullWriterJunkEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), "junk", -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayValidWriterJunkEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), "junk", -1 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyEmptyByteArrayNullWriterJunkEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), "junk", -1 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyEmptyByteArrayJunkEncodingNegBufSz()
+        throws Exception
+    {
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( emptyByteArray(), writer, "junk", -1 );
+        assertThat( writer.toString(), is( emptyString() ) );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyByteArrayNullWriterJunkEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe.getBytes(), nullWriter(), "junk", -1 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class )
+    public void copyByteArrayValidWriterJunkEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes(), writer, "junk", -1 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayNullWriterValidEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), "utf-16", -1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullByteArrayValidWriterValidEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), "utf-16", -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyEmptyByteArrayNullWriterValidEncodingNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), "utf-16", -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyEmptyByteArrayValidWriterValidEncodingNegBufSz()
+        throws Exception
+    {
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( emptyByteArray(), writer, "utf-16", -1 );
+        assertThat( writer.toString(), is( emptyString() ) );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyByteArrayNullWriterValidEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe.getBytes( "utf-16" ), nullWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyByteArrayValidEncodingNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes( "utf-16" ), writer, "utf-16", -1 );
+        assertThat( writer.toString().getBytes( "utf-8" ), is( probe.getBytes( "utf-8" ) ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyNullByteArrayNullWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), null, 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyNullByteArrayValidWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), null, 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyEmptyByteArrayNullWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), null, 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyEmptyByteArrayValidWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( emptyByteArray(), writer, null, 0 );
+        assertThat( writer.toString(), is( emptyString() ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyByteArrayNullWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe.getBytes(), nullWriter(), null, 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyByteArrayValidWriterNullEncodingZeroBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes(), writer, null, 0 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyNullByteArrayNullWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), "junk", 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyNullByteArrayValidWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), "junk", 0 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyEmptyByteArrayNullWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyByteArray(), nullWriter(), "junk", 0 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyEmptyByteArrayValidWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( emptyByteArray(), writer, "junk", 0 );
+        assertThat( writer.toString(), is( emptyString() ) );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyByteArrayNullWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( probe.getBytes(), nullWriter(), "junk", 0 );
+    }
+
+    @Test( expected = UnsupportedEncodingException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyByteArrayValidWriterJunkEncodingZeroBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( probe.getBytes(), writer, "junk", 0 );
+        assertThat( writer.toString().getBytes(), is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyNullByteArrayNullWriterValidEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), nullWriter(), "utf-16", 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = INFINITE_LOOP_TIMEOUT )
+    public void copyNullByteArrayValidWriterValidEncodingZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullByteArray(), new DontCloseStringWriter(), "utf-16", 0 );
+    }
+
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyEmptyByteArrayValidEncodingZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.copy( emptyByteArray(), new DontCloseStringWriter(), "utf-16", 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+    }
+
+    @Test( timeout = INFINITE_LOOP_TIMEOUT )
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void copyByteArrayValidEncodingZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.copy( probe.getBytes(), new DontCloseStringWriter(),
+                                         "utf-16", 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+    }
 
     /*
      * Utility methods
@@ -2529,6 +3557,22 @@ public class IOUtilTest
         @Override
         public void close()
             throws IOException
+        {
+            throw new UnsupportedOperationException( "should not be called" );
+        }
+    }
+
+    private static class DontCloseStringReader
+        extends StringReader
+    {
+
+        public DontCloseStringReader( String s )
+        {
+            super( s );
+        }
+
+        @Override
+        public void close()
         {
             throw new UnsupportedOperationException( "should not be called" );
         }

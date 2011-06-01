@@ -45,10 +45,7 @@ public final class IOUtil
     public static void copy( java.io.InputStream input, java.io.OutputStream output, int bufferSize )
         throws java.io.IOException
     {
-        if ( bufferSize < 0 )
-        {
-            throw new NegativeArraySizeException();
-        }
+        checkBufferSizePositive( bufferSize );
         input.getClass();
         if ( IOUtils.copy( input, output ) > 0 )
         {
@@ -68,10 +65,7 @@ public final class IOUtil
     public static void copy( java.io.Reader input, java.io.Writer output, int bufferSize )
         throws java.io.IOException
     {
-        if ( bufferSize < 0 )
-        {
-            throw new NegativeArraySizeException();
-        }
+        checkBufferSizePositive( bufferSize );
         input.getClass();
         output.getClass();
         fakeBufferSizeHandler( bufferSize );
@@ -90,10 +84,7 @@ public final class IOUtil
         throws java.io.IOException
     {
         input.getClass();
-        if ( bufferSize < 0 )
-        {
-            throw new NegativeArraySizeException();
-        }
+        checkBufferSizePositive( bufferSize );
         output.getClass();
         fakeBufferSizeHandler( bufferSize );
         IOUtils.copy( input, output );
@@ -130,10 +121,7 @@ public final class IOUtil
         {
             throw new UnsupportedEncodingException( e.getLocalizedMessage() );
         }
-        if ( bufferSize < 0 )
-        {
-            throw new NegativeArraySizeException();
-        }
+        checkBufferSizePositive( bufferSize );
         output.getClass();
         fakeBufferSizeHandler( bufferSize );
         IOUtils.copy( input, output, encoding );
@@ -194,25 +182,30 @@ public final class IOUtil
     public static void copy( java.io.Reader input, java.io.OutputStream output )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        IOUtils.copy( input, output );
     }
 
     public static void copy( java.io.Reader input, java.io.OutputStream output, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        output.getClass();
+        checkBufferSizePositive( bufferSize );
+        input.getClass();
+        fakeBufferSizeHandler( bufferSize );
+        IOUtils.copy( input, output );
     }
 
     public static java.lang.String toString( java.io.Reader input )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return IOUtils.toString( input );
     }
 
     public static java.lang.String toString( java.io.Reader input, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        fakeBufferSizeHandler( bufferSize );
+        return IOUtils.toString( input );
     }
 
     public static byte[] toByteArray( java.io.Reader input )
@@ -224,7 +217,8 @@ public final class IOUtil
     public static byte[] toByteArray( java.io.Reader input, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        fakeBufferSizeHandler( bufferSize );
+        return IOUtils.toByteArray( input );
     }
 
     public static void copy( java.lang.String input, java.io.OutputStream output )
@@ -270,31 +264,60 @@ public final class IOUtil
     public static byte[] toByteArray( java.lang.String input, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass();
+        fakeBufferSizeHandler(bufferSize);
+        return IOUtils.toByteArray( input );
     }
 
     public static void copy( byte[] input, java.io.Writer output )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        output.getClass(); // throw NPE if null
+        IOUtils.copy( new ByteArrayInputStream( input ), output );
     }
 
     public static void copy( byte[] input, java.io.Writer output, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass();
+        checkBufferSizePositive( bufferSize );
+        output.getClass(); // throw NPE if null
+        fakeBufferSizeHandler( bufferSize );
+        IOUtils.copy( new ByteArrayInputStream( input ), output );
     }
 
     public static void copy( byte[] input, java.io.Writer output, java.lang.String encoding )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass(); // throw NPE if null
+        encoding.getClass(); // throw NPE if null
+        try
+        {
+            Charset.forName( encoding ); // validate charset before checking buffer size.
+        }
+        catch ( UnsupportedCharsetException e )
+        {
+            throw new UnsupportedEncodingException( e.getLocalizedMessage() );
+        }
+        output.getClass(); // throw NPE if null
+        IOUtils.copy( new ByteArrayInputStream( input ), output, encoding );
     }
 
     public static void copy( byte[] input, java.io.Writer output, java.lang.String encoding, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        input.getClass(); // throw NPE if null
+        encoding.getClass(); // throw NPE if null
+        try
+        {
+            Charset.forName( encoding ); // validate charset before checking buffer size.
+        }
+        catch ( UnsupportedCharsetException e )
+        {
+            throw new UnsupportedEncodingException( e.getLocalizedMessage() );
+        }
+        fakeBufferSizeHandler( bufferSize );
+        IOUtils.copy( new ByteArrayInputStream( input ), output, encoding );
     }
 
     public static java.lang.String toString( byte[] input )
@@ -387,10 +410,7 @@ public final class IOUtil
     private static void fakeBufferSizeHandler( int bufferSize )
         throws IOException
     {
-        if ( bufferSize < 0 )
-        {
-            throw new NegativeArraySizeException();
-        }
+        checkBufferSizePositive( bufferSize );
         while ( bufferSize == 0 )
         {
             try
@@ -403,6 +423,14 @@ public final class IOUtil
                 ex.initCause( e );
                 throw ex;
             }
+        }
+    }
+
+    private static void checkBufferSizePositive( int bufferSize )
+    {
+        if ( bufferSize < 0 )
+        {
+            throw new NegativeArraySizeException();
         }
     }
 
