@@ -2432,6 +2432,196 @@ public class IOUtilTest
         assertThat( writer.toString(), is( probe ) );
     }
 
+    /*
+     * copy(Reader,Writer,int)
+     */
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyNullReaderNullWriterNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), nullWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyEmptyReaderNullWriterNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyReader(), nullWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyNullReaderValidWriterNegBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), new DontCloseStringWriter(), -1 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyEmptyReaderValidWriterNegBufSz()
+        throws Exception
+    {
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( emptyReader(), writer, -1 );
+        assertThat( writer.toString(), is( emptyString() ) );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void copyReaderNullWriterNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new StringReader( probe ), nullWriter(), -1 );
+    }
+
+    @Test(expected = NegativeArraySizeException.class )
+    public void copyReaderValidWriterNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( new StringReader( probe ), writer, -1 );
+        assertThat( writer.toString(), is( probe ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150)
+    public void copyNullReaderNullWriterZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), nullWriter(), 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyEmptyReaderNullWriterZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyReader(), nullWriter(), 0 );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyNullReaderValidWriterZeroBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), new DontCloseStringWriter(), 0 );
+    }
+
+    @Test(timeout = 150) // TODO
+    public void copyEmptyReaderValidWriterZeroBufSz()
+        throws Exception
+    {
+        final AtomicBoolean finished = new AtomicBoolean( false );
+        Thread worker = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    StringWriter writer = new DontCloseStringWriter();
+                    IOUtil.copy( emptyReader(), writer, 0 );
+                }
+                catch ( IOException e )
+                {
+                    // ignore
+                }
+                finished.set( true );
+            }
+        };
+        worker.start();
+        worker.join( 100 );
+        worker.interrupt();
+        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+    }
+
+    @Test( expected = NullPointerException.class, timeout = 150 )
+    public void copyReaderNullWriterZeroBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new StringReader( probe ), nullWriter(), 0 );
+    }
+
+    @Test(timeout = 150)  // TODO
+    public void copyReaderValidWriterZeroBufSz()
+        throws Exception
+    {
+        final AtomicBoolean finished = new AtomicBoolean( false );
+        Thread worker = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    String probe = "A string \u2345\u00ef";
+                    StringWriter writer = new DontCloseStringWriter();
+                    IOUtil.copy( new StringReader( probe ), writer, 0 );
+                }
+                catch ( IOException e )
+                {
+                    // ignore
+                }
+                finished.set( true );
+            }
+        };
+        worker.start();
+        worker.join( 100 );
+        worker.interrupt();
+        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullReaderNullWriterPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), nullWriter(), 1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyEmptyReaderNullWriterPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( emptyReader(), nullWriter(), 1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyNullReaderValidWriterPosBufSz()
+        throws Exception
+    {
+        IOUtil.copy( nullReader(), new DontCloseStringWriter(), 1 );
+    }
+
+    @Test
+    public void copyEmptyReaderValidWriterPosBufSz()
+        throws Exception
+    {
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( emptyReader(), writer, 1 );
+        assertThat( writer.toString(), is( emptyString() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void copyReaderNullWriterPosBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        IOUtil.copy( new StringReader( probe ), nullWriter(), 1 );
+    }
+
+    @Test
+    public void copyReaderValidWriterPosBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        StringWriter writer = new DontCloseStringWriter();
+        IOUtil.copy( new StringReader( probe ), writer, 1 );
+        assertThat( writer.toString(), is( probe ) );
+    }
+
+
+    /*
+     * Utility methods
+     */
     private static byte[] nullByteArray()
     {
         return null;
