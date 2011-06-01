@@ -235,7 +235,7 @@ public class MAEPrompt
 
         if ( defaultReply > -1 )
         {
-            formatted.append( ' ' ).append( defaultReply ).append( ": " );
+            formatted.append( " [" ).append( defaultReply + 1 ).append( "]: " );
         }
 
         return formatted.toString();
@@ -244,7 +244,7 @@ public class MAEPrompt
     private void writePrompt( final String message )
         throws IOException
     {
-        config.getStandardOut().print( message + ": " );
+        config.getStandardOut().print( message );
     }
 
 }
