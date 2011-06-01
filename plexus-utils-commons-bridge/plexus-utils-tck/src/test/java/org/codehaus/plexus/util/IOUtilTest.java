@@ -20,6 +20,7 @@ package org.codehaus.plexus.util;
  */
 
 import org.apache.maven.tck.ReproducesPlexusBug;
+import org.apache.maven.tck.Task;
 import org.junit.Test;
 
 import java.io.BufferedInputStream;
@@ -39,6 +40,7 @@ import java.io.Writer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.apache.maven.tck.TckMatchers.isUtilityClass;
+import static org.apache.maven.tck.TckMatchers.runsForLongerThan;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -398,27 +400,14 @@ public class IOUtilTest
     public void toStringEmptyByteArrayZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    IOUtil.toString( emptyByteArray(), 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.toString( emptyByteArray(), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( timeout = 150 )
@@ -426,28 +415,15 @@ public class IOUtilTest
     public void toStringByteArrayZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    String probe = "A string \u2345\u00ef";
-                    IOUtil.toString( probe.getBytes(), 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.toString( probe.getBytes(), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -662,27 +638,14 @@ public class IOUtilTest
     public void toStringEmptyByteArrayValidEncodingZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    IOUtil.toString( emptyByteArray(), "utf-16", 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.toString( emptyByteArray(), "utf-16", 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( timeout = 150 )
@@ -690,28 +653,15 @@ public class IOUtilTest
     public void toStringByteArrayValidEncodingZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    String probe = "A string \u2345\u00ef";
-                    IOUtil.toString( probe.getBytes(), "utf-16", 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.toString( probe.getBytes(), "utf-16", 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -975,29 +925,16 @@ public class IOUtilTest
     public void copyInputStreamValidOutputStreamZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    ByteArrayOutputStream outputStream = new DontCloseByteArrayOutputStream();
-                    byte[] input = { 1, 2, 3, 4, 5, 6 };
-                    IOUtil.copy( new DontCloseByteArrayInputStream( input ), outputStream, 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            ByteArrayOutputStream outputStream = new DontCloseByteArrayOutputStream();
+                            byte[] input = { 1, 2, 3, 4, 5, 6 };
+                            IOUtil.copy( new DontCloseByteArrayInputStream( input ), outputStream, 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = NullPointerException.class, timeout = 150 )
@@ -1095,27 +1032,14 @@ public class IOUtilTest
     public void toStringEmptyInputStreamZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    IOUtil.toString( emptyInputStream(), 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.toString( emptyInputStream(), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( timeout = 150 )
@@ -1123,28 +1047,15 @@ public class IOUtilTest
     public void toStringInputStreamZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    String probe = "A string \u2345\u00ef";
-                    IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -1368,27 +1279,14 @@ public class IOUtilTest
     public void toStringEmptyInputStreamValidEncodingZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    IOUtil.toString( emptyInputStream(), "utf-16", 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.toString( emptyInputStream(), "utf-16", 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( timeout = 150 )
@@ -1396,28 +1294,15 @@ public class IOUtilTest
     public void toStringInputStreamValidEncodingZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    String probe = "A string \u2345\u00ef";
-                    IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), "utf-16", 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.toString( new ByteArrayInputStream( probe.getBytes() ), "utf-16", 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = IOException.class )
@@ -1565,27 +1450,14 @@ public class IOUtilTest
     public void copyEmptyInputStreamValidWriterZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    IOUtil.copy( emptyInputStream(), new DontCloseStringWriter(), 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.copy( emptyInputStream(), new DontCloseStringWriter(), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( timeout = 150 )
@@ -1593,29 +1465,16 @@ public class IOUtilTest
     public void copyInputStreamZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    String probe = "A string \u2345\u00ef";
-                    StringWriter writer = new DontCloseStringWriter();
-                    IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            StringWriter writer = new DontCloseStringWriter();
+                            IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), writer, 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -2049,27 +1908,14 @@ public class IOUtilTest
     public void copyEmptyInputStreamValidEncodingZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    IOUtil.copy( emptyInputStream(), new DontCloseStringWriter(), "utf-16", 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.copy( emptyInputStream(), new DontCloseStringWriter(), "utf-16", 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( timeout = 150 )
@@ -2077,29 +1923,16 @@ public class IOUtilTest
     public void copyInputStreamValidEncodingZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    String probe = "A string \u2345\u00ef";
-                    IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), new DontCloseStringWriter(), "utf-16",
-                                 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.copy( new ByteArrayInputStream( probe.getBytes() ), new DontCloseStringWriter(), "utf-16",
+                                         0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -2272,29 +2105,16 @@ public class IOUtilTest
     public void copyEmptyStringValidOutputStreamZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
-                    IOUtil.copy( emptyString(), OutputStream, 0 );
-                    assertThat( OutputStream.toByteArray(), is( emptyString().getBytes() ) );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
+                            IOUtil.copy( emptyString(), OutputStream, 0 );
+                            assertThat( OutputStream.toByteArray(), is( emptyString().getBytes() ) );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = NullPointerException.class, timeout = 150 )
@@ -2310,30 +2130,17 @@ public class IOUtilTest
     public void copyStringValidOutputStreamZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    String probe = "A string \u2345\u00ef";
-                    ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
-                    IOUtil.copy( probe, OutputStream, 0 );
-                    assertThat( OutputStream.toByteArray(), is( probe.getBytes() ) );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            ByteArrayOutputStream OutputStream = new DontCloseByteArrayOutputStream();
+                            IOUtil.copy( probe, OutputStream, 0 );
+                            assertThat( OutputStream.toByteArray(), is( probe.getBytes() ) );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -2474,7 +2281,7 @@ public class IOUtilTest
         IOUtil.copy( new StringReader( probe ), nullWriter(), -1 );
     }
 
-    @Test(expected = NegativeArraySizeException.class )
+    @Test( expected = NegativeArraySizeException.class )
     public void copyReaderValidWriterNegBufSz()
         throws Exception
     {
@@ -2484,7 +2291,7 @@ public class IOUtilTest
         assertThat( writer.toString(), is( probe ) );
     }
 
-    @Test( expected = NullPointerException.class, timeout = 150)
+    @Test( expected = NullPointerException.class, timeout = 150 )
     public void copyNullReaderNullWriterZeroBufSz()
         throws Exception
     {
@@ -2505,32 +2312,20 @@ public class IOUtilTest
         IOUtil.copy( nullReader(), new DontCloseStringWriter(), 0 );
     }
 
-    @Test(timeout = 150) // TODO
+    @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyEmptyReaderValidWriterZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    StringWriter writer = new DontCloseStringWriter();
-                    IOUtil.copy( emptyReader(), writer, 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            StringWriter writer = new DontCloseStringWriter();
+                            IOUtil.copy( emptyReader(), writer, 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = NullPointerException.class, timeout = 150 )
@@ -2541,33 +2336,21 @@ public class IOUtilTest
         IOUtil.copy( new StringReader( probe ), nullWriter(), 0 );
     }
 
-    @Test(timeout = 150)  // TODO
+    @Test( timeout = 150 )
+    @ReproducesPlexusBug( "Should not infinite loop" )
     public void copyReaderValidWriterZeroBufSz()
         throws Exception
     {
-        final AtomicBoolean finished = new AtomicBoolean( false );
-        Thread worker = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    String probe = "A string \u2345\u00ef";
-                    StringWriter writer = new DontCloseStringWriter();
-                    IOUtil.copy( new StringReader( probe ), writer, 0 );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-                finished.set( true );
-            }
-        };
-        worker.start();
-        worker.join( 100 );
-        worker.interrupt();
-        assertThat( "We have an infinite loop", finished.get(), is( false ) );
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            StringWriter writer = new DontCloseStringWriter();
+                            IOUtil.copy( new StringReader( probe ), writer, 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
     }
 
     @Test( expected = NullPointerException.class )
@@ -2616,6 +2399,74 @@ public class IOUtilTest
         StringWriter writer = new DontCloseStringWriter();
         IOUtil.copy( new StringReader( probe ), writer, 1 );
         assertThat( writer.toString(), is( probe ) );
+    }
+
+    /*
+     * toByteArray(InputStream,int)
+     */
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void toByteArrayFromInputStreamNegBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toByteArray( new DontCloseByteArrayInputStream( IOUtil.toByteArray( probe ) ), -1 ),
+                    is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void toByteArrayNullInputStreamNegBufSz()
+        throws Exception
+    {
+        IOUtil.toByteArray( nullInputStream(), -1 );
+    }
+
+    @Test(timeout = 150)
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void toByteArrayFromInputStreamZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            String probe = "A string \u2345\u00ef";
+                            IOUtil.toByteArray( new DontCloseByteArrayInputStream( IOUtil.toByteArray( probe ) ), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+
+    }
+
+    @Test( timeout = 150)
+    @ReproducesPlexusBug( "Should not infinite loop" )
+    public void toByteArrayNullInputStreamZeroBufSz()
+        throws Exception
+    {
+        assertThat( "We have an infinite loop", new Task()
+                    {
+                        public void task()
+                            throws Exception
+                        {
+                            IOUtil.toByteArray( nullInputStream(), 0 );
+                        }
+                    }, runsForLongerThan( 100 ) );
+    }
+
+    @Test
+    public void toByteArrayFromInputStreamPosBufSz()
+        throws Exception
+    {
+        String probe = "A string \u2345\u00ef";
+        assertThat( IOUtil.toByteArray( new DontCloseByteArrayInputStream( IOUtil.toByteArray( probe ) ), +1 ),
+                    is( probe.getBytes() ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void toByteArrayNullInputStreamPosBufSz()
+        throws Exception
+    {
+        IOUtil.toByteArray( nullInputStream(), +1 );
     }
 
 

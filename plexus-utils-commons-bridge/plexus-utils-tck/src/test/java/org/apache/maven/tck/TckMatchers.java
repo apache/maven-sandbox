@@ -25,6 +25,7 @@ import org.hamcrest.Matcher;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.hamcrest.CoreMatchers.allOf;
 
@@ -71,6 +72,18 @@ public class TckMatchers
     public static Matcher<Class<?>> hasDefaultConstructor()
     {
         return new HasDefaultConstructor();
+    }
+
+    /**
+     * A matcher which checks that a {@link Task} will take longer than the supplied number of ms to complete.
+     *
+     * @param ms the duration to complete within.
+     * @return A matcher which checks that a {@link Task} will take longer than the supplied number of ms to
+     *         complete.
+     */
+    public static Matcher<Task> runsForLongerThan( long ms )
+    {
+        return new RunsForLongerThan( ms );
     }
 
     private static class HasDefaultConstructor
@@ -130,6 +143,59 @@ public class TckMatchers
         public void describeTo( Description description )
         {
             description.appendText( "a final class" );
+        }
+    }
+
+    private static class RunsForLongerThan
+        extends BaseMatcher<Task>
+    {
+
+        private final long duration;
+
+        public RunsForLongerThan( long duration )
+        {
+            this.duration = duration;
+        }
+
+        public boolean matches( Object item )
+        {
+            final Task task = Task.class.cast( item );
+            final AtomicBoolean didNotFinish = new AtomicBoolean( true );
+            final Thread worker = new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        task.task();
+                        didNotFinish.set( false );
+                    }
+                    catch ( Exception t )
+                    {
+                        // ignore
+                    }
+                }
+            };
+            try
+            {
+                worker.start();
+                worker.join( 100 );
+            }
+            catch ( InterruptedException e )
+            {
+                // ignore
+            }
+            finally
+            {
+                worker.interrupt();
+            }
+            return didNotFinish.get();
+        }
+
+        public void describeTo( Description description )
+        {
+            description.appendText( "takes longer than " ).appendValue( duration ).appendText( "ms to complete" );
         }
     }
 }

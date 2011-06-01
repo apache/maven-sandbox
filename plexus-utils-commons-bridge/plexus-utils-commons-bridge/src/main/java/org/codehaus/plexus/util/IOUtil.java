@@ -187,7 +187,8 @@ public final class IOUtil
     public static byte[] toByteArray( java.io.InputStream input, int bufferSize )
         throws java.io.IOException
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        fakeBufferSizeHandler( bufferSize );
+        return IOUtils.toByteArray( input );
     }
 
     public static void copy( java.io.Reader input, java.io.OutputStream output )
