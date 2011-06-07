@@ -29,36 +29,36 @@ public class Base64
 
     public static boolean isArrayByteBase64(byte[] arrayOctect)
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return org.apache.commons.codec.binary.Base64.isArrayByteBase64( arrayOctect );
     }
 
     public static byte[] encodeBase64(byte[] binaryData)
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return org.apache.commons.codec.binary.Base64.encodeBase64( binaryData );
     }
 
     public static byte[] encodeBase64Chunked(byte[] binaryData)
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return org.apache.commons.codec.binary.Base64.encodeBase64Chunked( binaryData );
     }
 
     public static byte[] encodeBase64(byte[] binaryData, boolean isChunked)
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return org.apache.commons.codec.binary.Base64.encodeBase64( binaryData, isChunked );
     }
 
     public static byte[] decodeBase64(byte[] base64Data)
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return org.apache.commons.codec.binary.Base64.decodeBase64( base64Data );
     }
 
     public byte[] encode(byte[] pArray)
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return org.apache.commons.codec.binary.Base64.encodeBase64( pArray );
     }
 
     public byte[] decode(byte[] pArray)
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        return org.apache.commons.codec.binary.Base64.decodeBase64( pArray );
     }
 }
