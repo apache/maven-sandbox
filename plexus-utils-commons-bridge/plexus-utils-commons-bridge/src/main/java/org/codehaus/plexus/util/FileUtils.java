@@ -19,13 +19,11 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
-import org.apache.commons.io.FilenameUtils;
 import org.codehaus.plexus.util.io.InputStreamFacade;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.String;
 import java.util.List;
 
 /**
@@ -103,25 +101,25 @@ public class FileUtils
     public static String fileRead( String file )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return org.apache.commons.io.FileUtils.readFileToString( new File( file ) );
     }
 
     public static String fileRead( String file, String encoding )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return org.apache.commons.io.FileUtils.readFileToString( new File( file ), encoding );
     }
 
     public static String fileRead( File file )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return org.apache.commons.io.FileUtils.readFileToString( file );
     }
 
     public static String fileRead( File file, String encoding )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return org.apache.commons.io.FileUtils.readFileToString( file, encoding );
     }
 
     public static void fileAppend( String file, String content )
@@ -130,7 +128,7 @@ public class FileUtils
         throw new UnsupportedOperationException( "TODO: Implement" );
     }
 
-    public static void fileAppend( String file, String content, String encoding )
+    public static void fileAppend( String file, String encoding, String content )
         throws IOException
     {
         throw new UnsupportedOperationException( "TODO: Implement" );
@@ -139,25 +137,25 @@ public class FileUtils
     public static void fileWrite( String file, String content )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        org.apache.commons.io.FileUtils.writeStringToFile( new File( file ), content );
     }
 
-    public static void fileWrite( String file, String content, String encoding )
+    public static void fileWrite( String file, String encoding, String content )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        org.apache.commons.io.FileUtils.writeStringToFile( new File( file ), content, encoding );
     }
 
     public static void fileWrite( File file, String content )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        org.apache.commons.io.FileUtils.writeStringToFile( file, content );
     }
 
-    public static void fileWrite( File file, String content, String encoding )
+    public static void fileWrite( File file, String encoding, String content )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        org.apache.commons.io.FileUtils.writeStringToFile( file, content, encoding );
     }
 
     public static void fileDelete( String file )
@@ -167,12 +165,12 @@ public class FileUtils
 
     public static boolean waitFor( String file, int duration )
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return org.apache.commons.io.FileUtils.waitFor( new File( file ), duration );
     }
 
     public static boolean waitFor( File file, int duration )
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return org.apache.commons.io.FileUtils.waitFor( file, duration );
     }
 
     public static File getFile( String file )
@@ -193,7 +191,7 @@ public class FileUtils
     public static boolean contentEquals( File file1, File file2 )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return org.apache.commons.io.FileUtils.contentEquals( file1, file2 );
     }
 
     public static File toFile( java.net.URL url )
@@ -252,7 +250,7 @@ public class FileUtils
     public static void copyFileToDirectory( File sourceFile, File destDir )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        org.apache.commons.io.FileUtils.copyFileToDirectory( sourceFile, destDir );
     }
 
     public static void copyFileToDirectoryIfModified( File sourceFile, File destDir )
@@ -264,7 +262,7 @@ public class FileUtils
     public static void copyFile( File sourceFile, File destFile )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        org.apache.commons.io.FileUtils.copyFile( sourceFile, destFile );
     }
 
     public static boolean copyFileIfModified( File sourceFile, File destFile )
@@ -273,16 +271,16 @@ public class FileUtils
         throw new UnsupportedOperationException( "TODO: Implement" );
     }
 
-    public static void copyURLToFile( java.net.URL url, File file )
+    public static void copyURLToFile( java.net.URL source, File destination )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        org.apache.commons.io.FileUtils.copyURLToFile( source, destination );
     }
 
-    public static void copyStreamToFile( InputStreamFacade stream, File file )
+    public static void copyStreamToFile( InputStreamFacade source, File destination )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        org.apache.commons.io.FileUtils.copyInputStreamToFile( source.getInputStream(), destination );
     }
 
     public static String normalize( String filename )
@@ -350,7 +348,7 @@ public class FileUtils
 
     public static long sizeOfDirectory( String directory )
     {
-        return org.apache.commons.io.FileUtils.sizeOfDirectory( new File(directory) );
+        return org.apache.commons.io.FileUtils.sizeOfDirectory( new File( directory ) );
     }
 
     public static long sizeOfDirectory( File directory )
@@ -376,7 +374,8 @@ public class FileUtils
         throw new UnsupportedOperationException( "TODO: Implement" );
     }
 
-    public static List getFileNames( File file, String include, String exclude, boolean includeDirs, boolean includeFiles )
+    public static List getFileNames( File file, String include, String exclude, boolean includeDirs,
+                                     boolean includeFiles )
         throws IOException
     {
         throw new UnsupportedOperationException( "TODO: Implement" );
@@ -394,8 +393,8 @@ public class FileUtils
         throw new UnsupportedOperationException( "TODO: Implement" );
     }
 
-    public static List getFileAndDirectoryNames( File f, String i, String e, boolean b1,
-                                                           boolean b2, boolean b3, boolean b4 )
+    public static List getFileAndDirectoryNames( File f, String i, String e, boolean b1, boolean b2, boolean b3,
+                                                 boolean b4 )
         throws IOException
     {
         throw new UnsupportedOperationException( "TODO: Implement" );
@@ -442,15 +441,13 @@ public class FileUtils
         throw new UnsupportedOperationException( "TODO: Implement" );
     }
 
-    public static void copyFile( File source, File dest, String s,
-                                 FilterWrapper[] wrappers)
+    public static void copyFile( File source, File dest, String s, FilterWrapper[] wrappers )
         throws IOException
     {
         throw new UnsupportedOperationException( "TODO: Implement" );
     }
 
-    public static void copyFile( File source, File dest, String s,
-                                 FilterWrapper[] wrappers, boolean b)
+    public static void copyFile( File source, File dest, String s, FilterWrapper[] wrappers, boolean b )
         throws IOException
     {
         throw new UnsupportedOperationException( "TODO: Implement" );
@@ -467,8 +464,12 @@ public class FileUtils
         throw new UnsupportedOperationException( "TODO: Implement" );
     }
 
-    public abstract class FilterWrapper {
-        public FilterWrapper(){}
-        public abstract Reader getReader(Reader reader);
+    public abstract class FilterWrapper
+    {
+        public FilterWrapper()
+        {
+        }
+
+        public abstract Reader getReader( Reader reader );
     }
 }
