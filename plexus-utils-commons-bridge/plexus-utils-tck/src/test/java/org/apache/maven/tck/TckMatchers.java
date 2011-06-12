@@ -115,7 +115,7 @@ public class TckMatchers
         public boolean matches( Object item )
         {
             Class<?> clazz = (Class<?>) item;
-            for ( Constructor c : clazz.getConstructors() )
+            for ( Constructor<?> c : clazz.getConstructors() )
             {
                 if ( !Modifier.isPrivate( c.getModifiers() ) )
                 {

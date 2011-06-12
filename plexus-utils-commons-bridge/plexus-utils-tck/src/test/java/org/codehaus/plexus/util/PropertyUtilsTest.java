@@ -56,7 +56,10 @@ public class PropertyUtilsTest
         // keep the tests fast and only interface with the filesystem if needed
         public Statement apply( Statement base, FrameworkMethod method, Object target )
         {
-            if (method.getAnnotation( NeedsTemporaryFolder.class ) == null) return base;
+            if ( method.getAnnotation( NeedsTemporaryFolder.class ) == null )
+            {
+                return base;
+            }
             folder = new TemporaryFolder();
             return folder.apply( base, method, target );
         }
@@ -96,7 +99,7 @@ public class PropertyUtilsTest
     public void loadEmptyInputStream()
         throws Exception
     {
-        assertThat( PropertyUtils.loadProperties( new ByteArrayInputStream( new byte[0] )), is( new Properties() ) );
+        assertThat( PropertyUtils.loadProperties( new ByteArrayInputStream( new byte[0] ) ), is( new Properties() ) );
     }
 
     @Test
@@ -104,7 +107,7 @@ public class PropertyUtilsTest
     public void loadEmptyFile()
         throws Exception
     {
-        assertThat( PropertyUtils.loadProperties( folder.newFile( "empty" )), is( new Properties() ) );
+        assertThat( PropertyUtils.loadProperties( folder.newFile( "empty" ) ), is( new Properties() ) );
     }
 
     @Test

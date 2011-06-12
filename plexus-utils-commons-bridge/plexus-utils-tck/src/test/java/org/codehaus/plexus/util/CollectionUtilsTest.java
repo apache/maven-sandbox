@@ -195,7 +195,8 @@ public class CollectionUtilsTest
     }
     
     @Test
-    public void testIteratorToList() throws Exception
+    public void testIteratorToList()
+        throws Exception
     {
         Collection<String> c1 = new ArrayList<String>();
 

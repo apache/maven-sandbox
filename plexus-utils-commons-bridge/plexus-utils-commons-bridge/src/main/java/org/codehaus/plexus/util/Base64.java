@@ -27,37 +27,37 @@ public class Base64
         super();
     }
 
-    public static boolean isArrayByteBase64(byte[] arrayOctect)
+    public static boolean isArrayByteBase64( byte[] arrayOctet )
     {
-        return org.apache.commons.codec.binary.Base64.isArrayByteBase64( arrayOctect );
+        return org.apache.commons.codec.binary.Base64.isArrayByteBase64( arrayOctet );
     }
 
-    public static byte[] encodeBase64(byte[] binaryData)
+    public static byte[] encodeBase64( byte[] binaryData )
     {
         return org.apache.commons.codec.binary.Base64.encodeBase64( binaryData );
     }
 
-    public static byte[] encodeBase64Chunked(byte[] binaryData)
+    public static byte[] encodeBase64Chunked( byte[] binaryData )
     {
         return org.apache.commons.codec.binary.Base64.encodeBase64Chunked( binaryData );
     }
 
-    public static byte[] encodeBase64(byte[] binaryData, boolean isChunked)
+    public static byte[] encodeBase64( byte[] binaryData, boolean isChunked )
     {
         return org.apache.commons.codec.binary.Base64.encodeBase64( binaryData, isChunked );
     }
 
-    public static byte[] decodeBase64(byte[] base64Data)
+    public static byte[] decodeBase64( byte[] base64Data )
     {
         return org.apache.commons.codec.binary.Base64.decodeBase64( base64Data );
     }
 
-    public byte[] encode(byte[] pArray)
+    public byte[] encode( byte[] pArray )
     {
         return org.apache.commons.codec.binary.Base64.encodeBase64( pArray );
     }
 
-    public byte[] decode(byte[] pArray)
+    public byte[] decode( byte[] pArray )
     {
         return org.apache.commons.codec.binary.Base64.decodeBase64( pArray );
     }
