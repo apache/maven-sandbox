@@ -43,6 +43,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.apache.maven.tck.TckMatchers.hasDefaultConstructor;
@@ -50,6 +51,7 @@ import static org.apache.maven.tck.TckMatchers.isFinalClass;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 
@@ -1250,7 +1252,7 @@ public class FileUtilsTest
     public void getDefaultExcludesAsList()
         throws Exception
     {
-        assertThat( (List<String>)FileUtils.getDefaultExcludesAsList(), hasItems( MINIMUM_DEFAULT_EXCLUDES ) );
+        assertThat( (List<String>) FileUtils.getDefaultExcludesAsList(), hasItems( MINIMUM_DEFAULT_EXCLUDES ) );
     }
 
     @Test
@@ -1259,8 +1261,121 @@ public class FileUtilsTest
     public void getDefaultExcludesAsListComplete()
         throws Exception
     {
-        assertThat( (List<String>)FileUtils.getDefaultExcludesAsList(), is( Arrays.asList( MINIMUM_DEFAULT_EXCLUDES ) ) );
+        assertThat( (List<String>) FileUtils.getDefaultExcludesAsList(),
+                    is( Arrays.asList( MINIMUM_DEFAULT_EXCLUDES ) ) );
     }
+
+    //// getDefaultExcludesAsString
+
+    @Test
+    public void getDefaultExcludesAsString()
+        throws Exception
+    {
+        assertThat( new HashSet<String>( Arrays.asList( FileUtils.getDefaultExcludesAsString().split( "," ) ) ),
+                    hasItems( MINIMUM_DEFAULT_EXCLUDES ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "Thinking that the list is complete" )
+    public void getDefaultExcludesAsStringComplete()
+        throws Exception
+    {
+        assertThat( new HashSet<String>( Arrays.asList( FileUtils.getDefaultExcludesAsString().split( "," ) ) ),
+                    is( new HashSet<String>( Arrays.asList( MINIMUM_DEFAULT_EXCLUDES ) ) ) );
+    }
+
+    //// dirname(String)
+
+    @Test( expected = NullPointerException.class )
+    public void dirnameNull()
+        throws Exception
+    {
+        FileUtils.dirname( null );
+    }
+
+    @Test
+    public void dirnameEmpty()
+        throws Exception
+    {
+        assertThat( FileUtils.dirname( "" ), is( "" ) );
+    }
+
+    @Test
+    public void dirnameFilename()
+        throws Exception
+    {
+        assertThat( FileUtils.dirname( "foo.bar.txt" ), is( "" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void dirnameWindowsRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is('/') );
+        assertThat( FileUtils.dirname( "C:\\foo.bar.txt" ), is( "" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void dirnameWindowsNonRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is('/') );
+        assertThat( FileUtils.dirname( "C:\\test\\foo.bar.txt" ), is( "" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void dirnameUnixRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is('\\') );
+        assertThat( FileUtils.dirname( "/foo.bar.txt" ), is( "" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void dirnameUnixNonRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is('\\') );
+        assertThat( FileUtils.dirname( "/test/foo.bar.txt" ), is( "" ) );
+    }
+
+    @Test
+    public void dirnameWindowsRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is('\\') );
+        assertThat( FileUtils.dirname( "C:\\foo.bar.txt" ), is( "C:" ) );
+    }
+
+    @Test
+    public void dirnameWindowsNonRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is('\\') );
+        assertThat( FileUtils.dirname( "C:\\test\\foo.bar.txt" ), is( "C:\\test" ) );
+    }
+
+    @Test
+    public void dirnameUnixRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is('/') );
+        assertThat( FileUtils.dirname( "/foo.bar.txt" ), is( "" ) );
+    }
+
+    @Test
+    public void dirnameUnixNonRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is('/') );
+        assertThat( FileUtils.dirname( "/test/foo.bar.txt" ), is( "/test" ) );
+    }
+
+    //// constants for testing
 
     private static final String[] MINIMUM_DEFAULT_EXCLUDES = {
         // Miscellaneous typical temporary files
