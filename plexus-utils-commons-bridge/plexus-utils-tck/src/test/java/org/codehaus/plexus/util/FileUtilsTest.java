@@ -18,6 +18,7 @@ package org.codehaus.plexus.util;
  */
 
 import junit.framework.AssertionFailedError;
+import org.apache.maven.tck.FixPlexusBugs;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -61,6 +62,8 @@ import static org.junit.matchers.JUnitMatchers.containsString;
  */
 public class FileUtilsTest
 {
+    @Rule
+    public FixPlexusBugs fixPlexusBugs = new FixPlexusBugs();
 
     // Test data
 

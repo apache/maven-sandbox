@@ -19,6 +19,8 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
+import org.apache.maven.tck.FixPlexusBugs;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static org.apache.maven.tck.TckMatchers.hasDefaultConstructor;
@@ -28,7 +30,8 @@ import static org.junit.Assert.assertThat;
 
 public class Base64Test
 {
-
+    @Rule
+    public FixPlexusBugs fixPlexusBugs = new FixPlexusBugs();
 
     @Test
     public void isNotUtilityClass()

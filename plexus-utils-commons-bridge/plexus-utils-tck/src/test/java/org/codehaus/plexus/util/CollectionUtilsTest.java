@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.maven.tck.FixPlexusBugs;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.google.common.collect.HashMultiset;
@@ -16,6 +18,9 @@ import com.google.common.collect.Multiset;
 public class CollectionUtilsTest
     extends Assert
 {
+    @Rule
+    public FixPlexusBugs fixPlexusBugs = new FixPlexusBugs();
+
     @SuppressWarnings( "rawtypes" )
     @Test
     public void testMergeMaps()

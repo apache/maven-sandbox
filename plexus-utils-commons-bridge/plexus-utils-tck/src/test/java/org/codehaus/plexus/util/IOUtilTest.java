@@ -19,8 +19,10 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
+import org.apache.maven.tck.FixPlexusBugs;
 import org.apache.maven.tck.ReproducesPlexusBug;
 import org.apache.maven.tck.Task;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.BufferedInputStream;
@@ -46,6 +48,8 @@ import static org.junit.Assert.assertThat;
 
 public class IOUtilTest
 {
+    @Rule
+    public FixPlexusBugs fixPlexusBugs = new FixPlexusBugs();
 
     private static final long INFINITE_LOOP_TIMEOUT = 500;
 

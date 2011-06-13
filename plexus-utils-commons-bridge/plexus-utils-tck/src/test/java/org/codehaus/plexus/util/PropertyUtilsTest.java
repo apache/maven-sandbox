@@ -19,6 +19,7 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
+import org.apache.maven.tck.FixPlexusBugs;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.MethodRule;
@@ -44,6 +45,9 @@ import static org.junit.Assert.assertThat;
 
 public class PropertyUtilsTest
 {
+    @Rule
+    public FixPlexusBugs fixPlexusBugs = new FixPlexusBugs();
+
     @Retention( RetentionPolicy.RUNTIME )
     @Target( ElementType.METHOD )
     @interface NeedsTemporaryFolder
