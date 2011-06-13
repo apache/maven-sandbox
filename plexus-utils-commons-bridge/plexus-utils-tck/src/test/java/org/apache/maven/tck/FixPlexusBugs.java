@@ -49,10 +49,8 @@ public class FixPlexusBugs
             String name = "/" + method.getMethod().getDeclaringClass().getName().replace( '.', '/' ) + ".enforce";
             if ( getClass().getResource( name ) == null )
             {
-                System.out.println( "Not found " + name );
                 return base;
             }
-            System.out.println( "Found " + name );
         }
         return new Statement()
         {

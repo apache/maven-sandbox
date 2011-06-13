@@ -19,6 +19,7 @@ package org.codehaus.plexus.util;
 
 import junit.framework.AssertionFailedError;
 import org.apache.maven.tck.FixPlexusBugs;
+import org.apache.maven.tck.ReproducesPlexusBug;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -44,11 +45,13 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
+import static org.apache.maven.tck.TckMatchers.hasDefaultConstructor;
+import static org.apache.maven.tck.TckMatchers.isFinalClass;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.junit.matchers.JUnitMatchers.containsString;
+import static org.junit.matchers.JUnitMatchers.hasItems;
 
 /**
  * This is used to test FileUtils for correctness.
@@ -376,7 +379,7 @@ public class FileUtilsTest
         assertThat( FileUtils.toFile( new URL( "http://jakarta.apache.org" ) ), CoreMatchers.<File>nullValue() );
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test( expected = NumberFormatException.class )
     public void toFile4()
         throws Exception
     {
@@ -648,7 +651,7 @@ public class FileUtilsTest
     }
 
     @Test
-    @Ignore("Commons test case that is failing for plexus")
+    @Ignore( "Commons test case that is failing for plexus" )
     public void copyToSelf()
         throws Exception
     {
@@ -660,7 +663,7 @@ public class FileUtilsTest
     }
 
     @Test
-    @Ignore("Commons test case that is failing for plexus")
+    @Ignore( "Commons test case that is failing for plexus" )
     public void copyDirectoryToDirectory_NonExistingDest()
         throws Exception
     {
@@ -686,7 +689,7 @@ public class FileUtilsTest
     }
 
     @Test
-    @Ignore("Commons test case that is failing for plexus")
+    @Ignore( "Commons test case that is failing for plexus" )
     public void copyDirectoryToNonExistingDest()
         throws Exception
     {
@@ -709,7 +712,7 @@ public class FileUtilsTest
     }
 
     @Test
-    @Ignore("Commons test case that is failing for plexus")
+    @Ignore( "Commons test case that is failing for plexus" )
     public void copyDirectoryToExistingDest()
         throws Exception
     {
@@ -734,7 +737,7 @@ public class FileUtilsTest
      * Test for IO-141
      */
     @Test
-    @Ignore("Commons test case that is failing for plexus")
+    @Ignore( "Commons test case that is failing for plexus" )
     public void copyDirectoryToChild()
         throws Exception
     {
@@ -758,7 +761,7 @@ public class FileUtilsTest
      * Test for IO-141
      */
     @Test
-    @Ignore("Commons test case that is failing for plexus")
+    @Ignore( "Commons test case that is failing for plexus" )
     public void copyDirectoryToGrandChild()
         throws Exception
     {
@@ -814,7 +817,7 @@ public class FileUtilsTest
     }
 
     @Test
-    @Ignore("Commons test case that is failing for plexus")
+    @Ignore( "Commons test case that is failing for plexus" )
     public void copyDirectoryErrors()
         throws Exception
     {
@@ -901,7 +904,7 @@ public class FileUtilsTest
     }
 
     @Test
-    @Ignore("Commons test case that is failing for plexus")
+    @Ignore( "Commons test case that is failing for plexus" )
     public void forceDeleteAFile3()
         throws Exception
     {
@@ -920,7 +923,7 @@ public class FileUtilsTest
     // copyFileToDirectory
 
     @Test
-    @Ignore("Commons test case that is failing for plexus")
+    @Ignore( "Commons test case that is failing for plexus" )
     public void copyFile1ToDir()
         throws Exception
     {
@@ -1054,7 +1057,7 @@ public class FileUtilsTest
     }
 
     @Test
-    @Ignore("Commons test case that is failing for plexus")
+    @Ignore( "Commons test case that is failing for plexus" )
     public void readLines()
         throws Exception
     {
@@ -1169,7 +1172,7 @@ public class FileUtilsTest
         assertThat( actual, is( expected ) );
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test( expected = NullPointerException.class )
     public void deleteQuietlyForNull()
         throws IOException
     {
@@ -1192,7 +1195,7 @@ public class FileUtilsTest
         assertThat( "Check No Exist", testFile.exists(), is( false ) );
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test( expected = IllegalArgumentException.class )
     public void deleteQuietlyFile()
         throws IOException
     {
@@ -1208,10 +1211,101 @@ public class FileUtilsTest
     public void deleteQuietlyNonExistent()
         throws IOException
     {
-        File testFile = new File(folder.getRoot(), "testDeleteQuietlyNonExistent" );
+        File testFile = new File( folder.getRoot(), "testDeleteQuietlyNonExistent" );
         assertThat( testFile.exists(), is( false ) );
 
         FileUtils.deleteDirectory( testFile );
     }
+
+    //// constructor
+
+    @Test
+    public void isNotUtilityClass()
+        throws Exception
+    {
+        assertThat( FileUtils.class, allOf( hasDefaultConstructor(), not( isFinalClass() ) ) );
+    }
+
+    ////  getDefaultExcludes
+
+    @Test
+    public void getDefaultExcludes()
+        throws Exception
+    {
+        assertThat( Arrays.asList( FileUtils.getDefaultExcludes() ), hasItems( MINIMUM_DEFAULT_EXCLUDES ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "Thinking that the list is complete" )
+    public void getDefaultExcludesComplete()
+        throws Exception
+    {
+        assertThat( Arrays.asList( FileUtils.getDefaultExcludes() ), is( Arrays.asList( MINIMUM_DEFAULT_EXCLUDES ) ) );
+    }
+
+    //// getDefaultExcludesAsList
+
+    @Test
+    @SuppressWarnings( "unchecked" )
+    public void getDefaultExcludesAsList()
+        throws Exception
+    {
+        assertThat( (List<String>)FileUtils.getDefaultExcludesAsList(), hasItems( MINIMUM_DEFAULT_EXCLUDES ) );
+    }
+
+    @Test
+    @SuppressWarnings( "unchecked" )
+    @ReproducesPlexusBug( "Thinking that the list is complete" )
+    public void getDefaultExcludesAsListComplete()
+        throws Exception
+    {
+        assertThat( (List<String>)FileUtils.getDefaultExcludesAsList(), is( Arrays.asList( MINIMUM_DEFAULT_EXCLUDES ) ) );
+    }
+
+    private static final String[] MINIMUM_DEFAULT_EXCLUDES = {
+        // Miscellaneous typical temporary files
+        "**/*~", "**/#*#", "**/.#*", "**/%*%", "**/._*",
+
+        // CVS
+        "**/CVS", "**/CVS/**", "**/.cvsignore",
+
+        // RCS
+        "**/RCS", "**/RCS/**",
+
+        // SCCS
+        "**/SCCS", "**/SCCS/**",
+
+        // Visual SourceSafe
+        "**/vssver.scc",
+
+        // Subversion
+        "**/.svn", "**/.svn/**",
+
+        // Arch
+        "**/.arch-ids", "**/.arch-ids/**",
+
+        //Bazaar
+        "**/.bzr", "**/.bzr/**",
+
+        //SurroundSCM
+        "**/.MySCMServerInfo",
+
+        // Mac
+        "**/.DS_Store",
+
+        // Serena Dimensions Version 10
+        "**/.metadata", "**/.metadata/**",
+
+        // Mercurial
+        "**/.hg", "**/.hg/**",
+
+        // git
+        "**/.git", "**/.git/**",
+
+        // BitKeeper
+        "**/BitKeeper", "**/BitKeeper/**", "**/ChangeSet", "**/ChangeSet/**",
+
+        // darcs
+        "**/_darcs", "**/_darcs/**", "**/.darcsrepo", "**/.darcsrepo/**", "**/-darcs-backup*", "**/.darcs-temp-mail" };
 
 }
