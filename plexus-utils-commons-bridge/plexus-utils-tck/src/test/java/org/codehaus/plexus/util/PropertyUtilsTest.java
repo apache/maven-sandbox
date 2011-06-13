@@ -20,6 +20,7 @@ package org.codehaus.plexus.util;
  */
 
 import org.apache.maven.tck.FixPlexusBugs;
+import org.apache.maven.tck.ReproducesPlexusBug;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.MethodRule;
@@ -79,6 +80,7 @@ public class PropertyUtilsTest
     }
 
     @Test
+    @ReproducesPlexusBug( "Should return null on error like url and file do" )
     public void loadNullInputStream()
         throws Exception
     {

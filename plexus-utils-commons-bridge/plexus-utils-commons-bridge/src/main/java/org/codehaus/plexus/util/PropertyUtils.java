@@ -19,6 +19,12 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class PropertyUtils
 {
 
@@ -29,17 +35,58 @@ public class PropertyUtils
 
     public static java.util.Properties loadProperties( java.net.URL url )
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        try
+        {
+            return loadProperties( url.openStream() );
+        }
+        catch ( Exception e )
+        {
+            // ignore
+        }
+        return null;
     }
 
     public static java.util.Properties loadProperties( java.io.File file )
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        try
+        {
+            return loadProperties( new FileInputStream( file ) );
+        }
+        catch ( Exception e )
+        {
+            // ignore
+        }
+        return null;
     }
 
     public static java.util.Properties loadProperties( java.io.InputStream is )
     {
-        throw new UnsupportedOperationException( "Not implemented yet" );
+        try
+        {
+            // to make this the same behaviour as the others we should really return null on any error
+            Properties result = new Properties();
+            if ( is != null )
+            {
+                try
+                {
+                    result.load( is );
+                }
+                catch ( IOException e )
+                {
+                    // ignore
+                }
+            }
+            return result;
+        }
+        catch ( Exception e )
+        {
+            // ignore
+        }
+        finally
+        {
+            IOUtils.closeQuietly( is );
+        }
+        return null;
     }
 
 }
