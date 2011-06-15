@@ -1466,6 +1466,202 @@ public class FileUtilsTest
         assertThat( FileUtils.filename( "/test/foo.bar.txt" ), is( "foo.bar.txt" ) );
     }
 
+    //// basename(String)
+
+    @Test( expected = NullPointerException.class )
+    public void basenameNull()
+        throws Exception
+    {
+        FileUtils.basename( null );
+    }
+
+    @Test
+    public void basenameEmpty()
+        throws Exception
+    {
+        assertThat( FileUtils.basename( "" ), is( "" ) );
+    }
+
+    @Test
+    public void basenameFilename()
+        throws Exception
+    {
+        assertThat( FileUtils.basename( "foo.bar.txt" ), is( "foo.bar." ) );
+    }
+
+    @Test
+    public void basenameFilenameNoExtension()
+        throws Exception
+    {
+        assertThat( FileUtils.basename( "foo_bar_txt" ), is( "foo_bar_txt" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void basenameWindowsRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.basename( "C:\\foo.bar.txt" ), is( "C:\\foo.bar." ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void basenameWindowsNonRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.basename( "C:\\test\\foo.bar.txt" ), is( "C:\\test\\foo.bar." ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void basenameUnixRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.basename( "/foo.bar.txt" ), is( "/foo.bar." ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void basenameUnixNonRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.basename( "/test/foo.bar.txt" ), is( "/test/foo.bar." ) );
+    }
+
+    @Test
+    public void basenameWindowsRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.basename( "C:\\foo.bar.txt" ), is( "foo.bar." ) );
+    }
+
+    @Test
+    public void basenameWindowsNonRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.basename( "C:\\test\\foo.bar.txt" ), is( "foo.bar." ) );
+    }
+
+    @Test
+    public void basenameUnixRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.basename( "/foo.bar.txt" ), is( "foo.bar." ) );
+    }
+
+    @Test
+    public void basenameUnixNonRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.basename( "/test/foo.bar.txt" ), is( "foo.bar." ) );
+    }
+
+    //// extension(String)
+
+    @Test( expected = NullPointerException.class )
+    public void extensionNull()
+        throws Exception
+    {
+        FileUtils.extension( null );
+    }
+
+    @Test
+    public void extensionEmpty()
+        throws Exception
+    {
+        assertThat( FileUtils.extension( "" ), is( "" ) );
+    }
+
+    @Test
+    public void extensionFileName()
+        throws Exception
+    {
+        assertThat( FileUtils.extension( "foo.bar.txt" ), is( "txt" ) );
+    }
+
+    @Test
+    public void extensionFileNameNoExtension()
+        throws Exception
+    {
+        assertThat( FileUtils.extension( "foo_bar_txt" ), is( "" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void extensionWindowsRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.extension( "C:\\foo.bar.txt" ), is( "txt" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void extensionWindowsNonRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.extension( "C:\\test\\foo.bar.txt" ), is( "txt" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void extensionUnixRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.extension( "/foo.bar.txt" ), is( "txt" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void extensionUnixNonRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.extension( "/test/foo.bar.txt" ), is( "txt" ) );
+    }
+
+    @Test
+    public void extensionWindowsRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.extension( "C:\\foo.bar.txt" ), is( "txt" ) );
+    }
+
+    @Test
+    public void extensionWindowsNonRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.extension( "C:\\test\\foo.bar.txt" ), is( "txt" ) );
+    }
+
+    @Test
+    public void extensionUnixRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.extension( "/foo.bar.txt" ), is( "txt" ) );
+    }
+
+    @Test
+    public void extensionUnixNonRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.extension( "/test/foo.bar.txt" ), is( "txt" ) );
+    }
+
     //// constants for testing
 
     private static final String[] MINIMUM_DEFAULT_EXCLUDES = {

@@ -121,7 +121,7 @@ public class FileUtils
     public static String dirname( String name )
     {
         name.getClass();
-        return FilenameUtils.getPathNoEndSeparator( name );
+        return FilenameUtils.getFullPathNoEndSeparator( name );
     }
 
     public static String filename( String name )
@@ -132,7 +132,8 @@ public class FileUtils
 
     public static String basename( String name )
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        name.getClass();
+        return FilenameUtils.getBaseName( name );
     }
 
     public static String basename( String s1, String s2 )
@@ -142,7 +143,8 @@ public class FileUtils
 
     public static String extension( String name )
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        name.getClass();
+        return FilenameUtils.getExtension( name );
     }
 
     public static boolean fileExists( String name )
