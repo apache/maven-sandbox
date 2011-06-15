@@ -214,7 +214,7 @@ public class FileUtils
 
     public static void fileDelete( String file )
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        org.apache.commons.io.FileUtils.deleteQuietly( new File( file ) );
     }
 
     public static boolean waitFor( String file, int duration )
@@ -229,7 +229,7 @@ public class FileUtils
 
     public static File getFile( String file )
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return new File( file );
     }
 
     public static String[] getFilesFromExtension( String file, String[] extensions )
@@ -292,7 +292,7 @@ public class FileUtils
     public static void copyFileToDirectory( String sourceFile, String destDir )
         throws IOException
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        org.apache.commons.io.FileUtils.copyFileToDirectory( new File( sourceFile ), new File( destDir ) );
     }
 
     public static void copyFileToDirectoryIfModified( String sourceFile, String destDir )
