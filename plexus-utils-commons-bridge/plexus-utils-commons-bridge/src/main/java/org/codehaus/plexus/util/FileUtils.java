@@ -26,7 +26,6 @@ import org.codehaus.plexus.util.io.InputStreamFacade;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
-import java.net.FileNameMap;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,6 +50,7 @@ public class FileUtils
     {
         throw new UnsupportedOperationException( "TODO: Implement" );
     }
+
     private static final String[] DEFAULT_EXCLUDES = {
         // Miscellaneous typical temporary files
         "**/*~", "**/#*#", "**/.#*", "**/%*%", "**/._*",
@@ -105,12 +105,12 @@ public class FileUtils
 
     public static List getDefaultExcludesAsList()
     {
-        return Arrays.asList(getDefaultExcludes());
+        return Arrays.asList( getDefaultExcludes() );
     }
 
     public static String getDefaultExcludesAsString()
     {
-        return new StrBuilder().appendWithSeparators(getDefaultExcludes(), ",").toString();
+        return new StrBuilder().appendWithSeparators( getDefaultExcludes(), "," ).toString();
     }
 
     public static String byteCountToDisplaySize( int byteCount )
@@ -121,12 +121,13 @@ public class FileUtils
     public static String dirname( String name )
     {
         name.getClass();
-        return FilenameUtils.getPathNoEndSeparator(name);
+        return FilenameUtils.getPathNoEndSeparator( name );
     }
 
     public static String filename( String name )
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        name.getClass();
+        return FilenameUtils.getName( name );
     }
 
     public static String basename( String name )

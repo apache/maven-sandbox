@@ -1312,7 +1312,7 @@ public class FileUtilsTest
     public void dirnameWindowsRootPathOnUnix()
         throws Exception
     {
-        assumeThat( File.separatorChar, is('/') );
+        assumeThat( File.separatorChar, is( '/' ) );
         assertThat( FileUtils.dirname( "C:\\foo.bar.txt" ), is( "" ) );
     }
 
@@ -1321,7 +1321,7 @@ public class FileUtilsTest
     public void dirnameWindowsNonRootPathOnUnix()
         throws Exception
     {
-        assumeThat( File.separatorChar, is('/') );
+        assumeThat( File.separatorChar, is( '/' ) );
         assertThat( FileUtils.dirname( "C:\\test\\foo.bar.txt" ), is( "" ) );
     }
 
@@ -1330,7 +1330,7 @@ public class FileUtilsTest
     public void dirnameUnixRootPathOnWindows()
         throws Exception
     {
-        assumeThat( File.separatorChar, is('\\') );
+        assumeThat( File.separatorChar, is( '\\' ) );
         assertThat( FileUtils.dirname( "/foo.bar.txt" ), is( "" ) );
     }
 
@@ -1339,7 +1339,7 @@ public class FileUtilsTest
     public void dirnameUnixNonRootPathOnWindows()
         throws Exception
     {
-        assumeThat( File.separatorChar, is('\\') );
+        assumeThat( File.separatorChar, is( '\\' ) );
         assertThat( FileUtils.dirname( "/test/foo.bar.txt" ), is( "" ) );
     }
 
@@ -1347,7 +1347,7 @@ public class FileUtilsTest
     public void dirnameWindowsRootPathOnWindows()
         throws Exception
     {
-        assumeThat( File.separatorChar, is('\\') );
+        assumeThat( File.separatorChar, is( '\\' ) );
         assertThat( FileUtils.dirname( "C:\\foo.bar.txt" ), is( "C:" ) );
     }
 
@@ -1355,7 +1355,7 @@ public class FileUtilsTest
     public void dirnameWindowsNonRootPathOnWindows()
         throws Exception
     {
-        assumeThat( File.separatorChar, is('\\') );
+        assumeThat( File.separatorChar, is( '\\' ) );
         assertThat( FileUtils.dirname( "C:\\test\\foo.bar.txt" ), is( "C:\\test" ) );
     }
 
@@ -1363,7 +1363,7 @@ public class FileUtilsTest
     public void dirnameUnixRootPathOnUnix()
         throws Exception
     {
-        assumeThat( File.separatorChar, is('/') );
+        assumeThat( File.separatorChar, is( '/' ) );
         assertThat( FileUtils.dirname( "/foo.bar.txt" ), is( "" ) );
     }
 
@@ -1371,8 +1371,99 @@ public class FileUtilsTest
     public void dirnameUnixNonRootPathOnUnix()
         throws Exception
     {
-        assumeThat( File.separatorChar, is('/') );
+        assumeThat( File.separatorChar, is( '/' ) );
         assertThat( FileUtils.dirname( "/test/foo.bar.txt" ), is( "/test" ) );
+    }
+
+    //// filename(String)
+
+    @Test( expected = NullPointerException.class )
+    public void filenameNull()
+        throws Exception
+    {
+        FileUtils.filename( null );
+    }
+
+    @Test
+    public void filenameEmpty()
+        throws Exception
+    {
+        assertThat( FileUtils.filename( "" ), is( "" ) );
+    }
+
+    @Test
+    public void filenameFilename()
+        throws Exception
+    {
+        assertThat( FileUtils.filename( "foo.bar.txt" ), is( "foo.bar.txt" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void filenameWindowsRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.filename( "C:\\foo.bar.txt" ), is( "C:\\foo.bar.txt" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void filenameWindowsNonRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.filename( "C:\\test\\foo.bar.txt" ), is( "C:\\test\\foo.bar.txt" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void filenameUnixRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.filename( "/foo.bar.txt" ), is( "/foo.bar.txt" ) );
+    }
+
+    @Test
+    @ReproducesPlexusBug( "assumes that the path is a local path" )
+    public void filenameUnixNonRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.filename( "/test/foo.bar.txt" ), is( "/test/foo.bar.txt" ) );
+    }
+
+    @Test
+    public void filenameWindowsRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.filename( "C:\\foo.bar.txt" ), is( "foo.bar.txt" ) );
+    }
+
+    @Test
+    public void filenameWindowsNonRootPathOnWindows()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '\\' ) );
+        assertThat( FileUtils.filename( "C:\\test\\foo.bar.txt" ), is( "foo.bar.txt" ) );
+    }
+
+    @Test
+    public void filenameUnixRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.filename( "/foo.bar.txt" ), is( "foo.bar.txt" ) );
+    }
+
+    @Test
+    public void filenameUnixNonRootPathOnUnix()
+        throws Exception
+    {
+        assumeThat( File.separatorChar, is( '/' ) );
+        assertThat( FileUtils.filename( "/test/foo.bar.txt" ), is( "foo.bar.txt" ) );
     }
 
     //// constants for testing
