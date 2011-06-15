@@ -19,11 +19,15 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.text.StrBuilder;
 import org.codehaus.plexus.util.io.InputStreamFacade;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.net.FileNameMap;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,20 +51,66 @@ public class FileUtils
     {
         throw new UnsupportedOperationException( "TODO: Implement" );
     }
+    private static final String[] DEFAULT_EXCLUDES = {
+        // Miscellaneous typical temporary files
+        "**/*~", "**/#*#", "**/.#*", "**/%*%", "**/._*",
+
+        // CVS
+        "**/CVS", "**/CVS/**", "**/.cvsignore",
+
+        // RCS
+        "**/RCS", "**/RCS/**",
+
+        // SCCS
+        "**/SCCS", "**/SCCS/**",
+
+        // Visual SourceSafe
+        "**/vssver.scc",
+
+        // Subversion
+        "**/.svn", "**/.svn/**",
+
+        // Arch
+        "**/.arch-ids", "**/.arch-ids/**",
+
+        //Bazaar
+        "**/.bzr", "**/.bzr/**",
+
+        //SurroundSCM
+        "**/.MySCMServerInfo",
+
+        // Mac
+        "**/.DS_Store",
+
+        // Serena Dimensions Version 10
+        "**/.metadata", "**/.metadata/**",
+
+        // Mercurial
+        "**/.hg", "**/.hg/**",
+
+        // git
+        "**/.git", "**/.git/**",
+
+        // BitKeeper
+        "**/BitKeeper", "**/BitKeeper/**", "**/ChangeSet", "**/ChangeSet/**",
+
+        // darcs
+        "**/_darcs", "**/_darcs/**", "**/.darcsrepo", "**/.darcsrepo/**", "**/-darcs-backup*", "**/.darcs-temp-mail" };
+
 
     public static String[] getDefaultExcludes()
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return DEFAULT_EXCLUDES.clone();
     }
 
     public static List getDefaultExcludesAsList()
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return Arrays.asList(getDefaultExcludes());
     }
 
     public static String getDefaultExcludesAsString()
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        return new StrBuilder().appendWithSeparators(getDefaultExcludes(), ",").toString();
     }
 
     public static String byteCountToDisplaySize( int byteCount )
@@ -70,7 +120,8 @@ public class FileUtils
 
     public static String dirname( String name )
     {
-        throw new UnsupportedOperationException( "TODO: Implement" );
+        name.getClass();
+        return FilenameUtils.getPathNoEndSeparator(name);
     }
 
     public static String filename( String name )
