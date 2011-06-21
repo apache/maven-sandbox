@@ -243,7 +243,9 @@ public final class TestFixture
     public ProjectToolsSession newSession( final MavenProject... projects )
         throws IOException
     {
-        final ProjectToolsSession session = new SimpleProjectToolsSession( localRepoDir, rawRemoteRepo );
+        final SimpleProjectToolsSession session = new SimpleProjectToolsSession();
+        session.setLocalRepositoryDirectory( localRepoDir );
+        session.setResolveRepositories( rawRemoteRepo );
 
         session.setRemoteArtifactRepositories( Collections.singletonList( remoteRepository ) );
 
