@@ -26,7 +26,7 @@ import java.util.Set;
 public interface ProjectLoader
 {
 
-    List<MavenProject> buildReactorProjectInstances( final ProjectToolsSession session, final File... rootPoms )
+    List<MavenProject> buildReactorProjectInstances( final ProjectToolsSession session, final boolean recursive, final File... rootPoms )
         throws ProjectToolsException;
 
     MavenProject buildProjectInstance( final File pomFile, final ProjectToolsSession session )

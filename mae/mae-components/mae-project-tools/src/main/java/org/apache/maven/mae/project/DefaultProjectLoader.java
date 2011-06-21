@@ -77,7 +77,7 @@ public class DefaultProjectLoader
     private SessionInjector sessionInjector;
 
     @Override
-    public List<MavenProject> buildReactorProjectInstances( final ProjectToolsSession session, final File... rootPoms )
+    public List<MavenProject> buildReactorProjectInstances( final ProjectToolsSession session, final boolean recursive, final File... rootPoms )
         throws ProjectToolsException
     {
         final ProjectBuildingRequest pbr = sessionInjector.getProjectBuildingRequest( session );
@@ -85,7 +85,7 @@ public class DefaultProjectLoader
         try
         {
             final List<File> pomFiles = Arrays.asList( rootPoms );
-            final List<ProjectBuildingResult> results = projectBuilder.build( pomFiles, true, pbr );
+            final List<ProjectBuildingResult> results = projectBuilder.build( pomFiles, recursive, pbr );
 
             final List<MavenProject> projects = new ArrayList<MavenProject>( results.size() );
             for ( final ProjectBuildingResult result : results )
