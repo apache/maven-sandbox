@@ -103,7 +103,6 @@ public class DefaultSessionInjector
         throws MAEException
     {
         final File localRepo = session.getLocalRepositoryDirectory();
-        localRepo.mkdirs();
 
         RepositorySystemSession sess = session.getRepositorySystemSession();
         if ( sess == null )
@@ -114,7 +113,13 @@ public class DefaultSessionInjector
 
             // session.setWorkspaceReader( new ImportWorkspaceReader( workspace ) );
             rss.setConfigProperty( ProjectToolsSession.SESSION_KEY, session );
-            rss.setLocalRepositoryManager( new EnhancedLocalRepositoryManager( localRepo ) );
+            
+            if ( localRepo != null )
+            {
+                localRepo.mkdirs();
+                rss.setLocalRepositoryManager( new EnhancedLocalRepositoryManager( localRepo ) );
+            }
+            
             rss.setWorkspaceReader( new SessionWorkspaceReader( session ) );
 
             sess = rss;
