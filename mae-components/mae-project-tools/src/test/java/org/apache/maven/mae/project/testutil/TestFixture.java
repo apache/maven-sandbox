@@ -243,11 +243,7 @@ public final class TestFixture
     public ProjectToolsSession newSession( final MavenProject... projects )
         throws IOException
     {
-        final File workdir = File.createTempFile( "test-meadin.", ".work" );
-        workdir.delete();
-        workdir.mkdirs();
-
-        final ProjectToolsSession session = new SimpleProjectToolsSession( workdir, localRepoDir, rawRemoteRepo );
+        final ProjectToolsSession session = new SimpleProjectToolsSession( localRepoDir, rawRemoteRepo );
 
         session.setRemoteArtifactRepositories( Collections.singletonList( remoteRepository ) );
 
