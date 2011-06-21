@@ -43,10 +43,6 @@ public class SimpleProjectToolsSession
     implements ProjectToolsSession
 {
 
-    private final File workdir;
-
-    private final Repository[] resolveRepositories;
-
     private transient List<ArtifactRepository> remoteArtifactRepositories;
 
     private transient List<RemoteRepository> remoteRepositories;
@@ -57,7 +53,9 @@ public class SimpleProjectToolsSession
 
     private transient LinkedHashMap<String, MavenProject> reactorProjects = new LinkedHashMap<String, MavenProject>();
 
-    private final File localRepositoryDirectory;
+    private Repository[] resolveRepositories;
+
+    private File localRepositoryDirectory;
 
     private MavenExecutionRequest executionRequest;
 
@@ -70,18 +68,9 @@ public class SimpleProjectToolsSession
     private DependencyFilter filter;
 
     private transient Map<Class<?>, Object> states = new HashMap<Class<?>, Object>();
-
-    public SimpleProjectToolsSession( final File workdir, final Repository... resolveRepositories )
+    
+    public SimpleProjectToolsSession()
     {
-        this( workdir, new File( workdir, "local-repository" ), resolveRepositories );
-    }
-
-    public SimpleProjectToolsSession( final File workdir, final File localRepositoryDirectory,
-                                      final Repository... resolveRepositories )
-    {
-        this.workdir = workdir;
-        this.localRepositoryDirectory = localRepositoryDirectory;
-        this.resolveRepositories = resolveRepositories;
     }
 
     /**
@@ -174,17 +163,6 @@ public class SimpleProjectToolsSession
     {
         this.projectBuildingRequest = projectBuildingRequest;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.apache.maven.mae.project.session.ProjectToolsSession#getWorkdir()
-     */
-    @Override
-    public File getWorkdir()
-    {
-        return workdir;
     }
 
     /**
@@ -304,7 +282,10 @@ public class SimpleProjectToolsSession
     @Override
     public ProjectToolsSession copy()
     {
-        final SimpleProjectToolsSession copy = new SimpleProjectToolsSession( workdir, resolveRepositories );
+        final SimpleProjectToolsSession copy = new SimpleProjectToolsSession();
+        copy.resolveRepositories = resolveRepositories;
+        
+        copy.localRepositoryDirectory = localRepositoryDirectory;
 
         copy.projectBuildingRequest =
             projectBuildingRequest == null ? null : new DefaultProjectBuildingRequest( projectBuildingRequest );
@@ -481,6 +462,16 @@ public class SimpleProjectToolsSession
     {
         final Object state = states.get( type );
         return state == null ? null : type.cast( state );
+    }
+
+    public void setResolveRepositories( Repository...resolveRepositories )
+    {
+        this.resolveRepositories = resolveRepositories;
+    }
+
+    public void setLocalRepositoryDirectory( File localRepositoryDirectory )
+    {
+        this.localRepositoryDirectory = localRepositoryDirectory;
     }
 
 }

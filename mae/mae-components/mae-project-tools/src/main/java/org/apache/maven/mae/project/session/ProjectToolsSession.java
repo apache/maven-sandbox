@@ -52,8 +52,6 @@ public interface ProjectToolsSession
 
     ProjectToolsSession setProjectBuildingRequest( final ProjectBuildingRequest projectBuildingRequest );
 
-    File getWorkdir();
-
     RepositorySystemSession getRepositorySystemSession();
 
     ProjectToolsSession setRepositorySystemSession( final RepositorySystemSession repositorySystemSession );
