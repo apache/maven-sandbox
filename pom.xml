@@ -66,6 +66,7 @@
   </dependencies>
   
   <properties>
+    <maeVersion>${project.version}</maeVersion>
   	<mavenVersion>3.0.3</mavenVersion>
   	<plexusVersion>1.5.5</plexusVersion>
   </properties>
@@ -77,6 +78,7 @@
     <module>mae-booter</module>
     <module>mae-app</module>
     <module>mae-prompter-cli</module>
+    <module>mae-components</module>
   </modules>
   
   <scm>
