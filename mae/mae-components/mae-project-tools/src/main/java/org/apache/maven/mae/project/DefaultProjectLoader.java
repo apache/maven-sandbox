@@ -77,7 +77,8 @@ public class DefaultProjectLoader
     private SessionInjector sessionInjector;
 
     @Override
-    public List<MavenProject> buildReactorProjectInstances( final ProjectToolsSession session, final boolean recursive, final File... rootPoms )
+    public List<MavenProject> buildReactorProjectInstances( final ProjectToolsSession session, final boolean recursive,
+                                                            final File... rootPoms )
         throws ProjectToolsException
     {
         final ProjectBuildingRequest pbr = sessionInjector.getProjectBuildingRequest( session );
@@ -109,8 +110,6 @@ public class DefaultProjectLoader
         }
         catch ( final ProjectBuildingException e )
         {
-            // logger.error( "Failed to build MavenProject instances from POM files for sorting: " + e.getMessage(), e
-            // );
             final List<ProjectBuildingResult> results = e.getResults();
 
             final StringBuilder sb = new StringBuilder();
@@ -130,13 +129,15 @@ public class DefaultProjectLoader
                 int i = 0;
                 for ( final ProjectBuildingResult result : results )
                 {
+                    StringBuilder builder = new StringBuilder();
                     final List<ModelProblem> problems = result.getProblems();
                     if ( problems != null && !problems.isEmpty() )
                     {
-                        sb.append( "\n" ).append( result.getProjectId() );
+                        builder.append( "\n" ).append( result.getProjectId() );
                         for ( final ModelProblem problem : problems )
                         {
-                            sb.append( "\n\t" )
+                            builder.append( "\n\t" )
+                              .append( ( ++i ) ).append( " " )
                               .append( problem.getMessage() )
                               .append( "\n\t\t" )
                               .append( problem.getSource() )
@@ -150,12 +151,12 @@ public class DefaultProjectLoader
                                 final PrintWriter pWriter = new PrintWriter( sWriter );
 
                                 problem.getException().printStackTrace( pWriter );
-                                sb.append( "\n" ).append( sWriter );
+                                builder.append( "\n" ).append( sWriter );
                             }
-
-                            sb.append( ( ++i ) ).append( " " ).append( sb );
                         }
                     }
+                    
+                    sb.append( builder );
                 }
             }
 
@@ -205,7 +206,7 @@ public class DefaultProjectLoader
                 {
                     LOGGER.debug( "Marking parent POM: " + current + " as dependency of POM: " + next );
                 }
-                
+
                 session.connectProjectHierarchy( next, true, current, true );
 
                 if ( !parentage.isEmpty() )
