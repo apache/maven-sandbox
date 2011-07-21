@@ -31,18 +31,6 @@ public class MAEException
 
     private String formattedMessage;
 
-    public MAEException( final String message, final Throwable cause )
-    {
-        super( message, cause );
-        params = null;
-    }
-
-    public MAEException( final String message )
-    {
-        super( message );
-        params = null;
-    }
-
     public MAEException( final String message, final Throwable cause, final Object... params )
     {
         super( message, cause );

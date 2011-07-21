@@ -92,14 +92,19 @@ public interface ProjectToolsSession
 
     ProjectToolsSession setDependencyFilter( DependencyFilter filter );
 
-    void connectProjectHierarchy( Artifact parent, boolean parentPreResolved, Artifact child, boolean childPreResolved );
-    
+    ProjectToolsSession connectProjectHierarchy( Artifact parent, boolean parentPreResolved, Artifact child,
+                                                 boolean childPreResolved );
+
     <T> T setState( T state );
-    
+
     <T> T getState( Class<T> stateType );
-    
+
     <T> T clearState( Class<T> stateType );
-    
+
     void clearStates();
-    
+
+    int getPomValidationLevel();
+
+    ProjectToolsSession setPomValidationLevel( int pomValidationLevel );
+
 }
