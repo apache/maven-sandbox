@@ -21,6 +21,7 @@ import static org.apache.maven.artifact.ArtifactUtils.key;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.model.Repository;
+import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.ProjectBuildingRequest;
@@ -67,8 +68,10 @@ public class SimpleProjectToolsSession
 
     private DependencyFilter filter;
 
+    private int pomValidationLevel = ModelBuildingRequest.VALIDATION_LEVEL_MAVEN_2_0;
+
     private transient Map<Class<?>, Object> states = new HashMap<Class<?>, Object>();
-    
+
     public SimpleProjectToolsSession()
     {
     }
@@ -284,7 +287,7 @@ public class SimpleProjectToolsSession
     {
         final SimpleProjectToolsSession copy = new SimpleProjectToolsSession();
         copy.resolveRepositories = resolveRepositories;
-        
+
         copy.localRepositoryDirectory = localRepositoryDirectory;
 
         copy.projectBuildingRequest =
@@ -427,13 +430,16 @@ public class SimpleProjectToolsSession
 
     /**
      * {@inheritDoc}
-     * @see org.apache.maven.mae.project.session.ProjectToolsSession#connectProjectHierarchy(org.sonatype.aether.artifact.Artifact, boolean, org.sonatype.aether.artifact.Artifact, boolean)
+     * 
+     * @see org.apache.maven.mae.project.session.ProjectToolsSession#connectProjectHierarchy(org.sonatype.aether.artifact.Artifact,
+     *      boolean, org.sonatype.aether.artifact.Artifact, boolean)
      */
     @Override
-    public void connectProjectHierarchy( Artifact parent, boolean parentPreResolved, Artifact child,
-                                         boolean childPreResolved )
+    public ProjectToolsSession connectProjectHierarchy( final Artifact parent, final boolean parentPreResolved,
+                                                        final Artifact child, final boolean childPreResolved )
     {
         // NOP.
+        return this;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -443,7 +449,7 @@ public class SimpleProjectToolsSession
         {
             return (T) states.put( state.getClass(), state );
         }
-        
+
         return null;
     }
 
@@ -464,14 +470,26 @@ public class SimpleProjectToolsSession
         return state == null ? null : type.cast( state );
     }
 
-    public void setResolveRepositories( Repository...resolveRepositories )
+    public void setResolveRepositories( final Repository... resolveRepositories )
     {
         this.resolveRepositories = resolveRepositories;
     }
 
-    public void setLocalRepositoryDirectory( File localRepositoryDirectory )
+    public void setLocalRepositoryDirectory( final File localRepositoryDirectory )
     {
         this.localRepositoryDirectory = localRepositoryDirectory;
+    }
+
+    @Override
+    public int getPomValidationLevel()
+    {
+        return pomValidationLevel;
+    }
+
+    public ProjectToolsSession setPomValidationLevel( final int pomValidationLevel )
+    {
+        this.pomValidationLevel = pomValidationLevel;
+        return this;
     }
 
 }

@@ -64,6 +64,7 @@ public class DefaultSessionInjector
             {
                 pbr = embedder.serviceManager().createProjectBuildingRequest();
 
+                pbr.setValidationLevel( session.getPomValidationLevel() );
                 pbr.setProcessPlugins( session.isProcessPomPlugins() );
                 pbr.setResolveDependencies( false );
                 pbr.setSystemProperties( System.getProperties() );
@@ -113,13 +114,13 @@ public class DefaultSessionInjector
 
             // session.setWorkspaceReader( new ImportWorkspaceReader( workspace ) );
             rss.setConfigProperty( ProjectToolsSession.SESSION_KEY, session );
-            
+
             if ( localRepo != null )
             {
                 localRepo.mkdirs();
                 rss.setLocalRepositoryManager( new EnhancedLocalRepositoryManager( localRepo ) );
             }
-            
+
             rss.setWorkspaceReader( new SessionWorkspaceReader( session ) );
 
             sess = rss;
