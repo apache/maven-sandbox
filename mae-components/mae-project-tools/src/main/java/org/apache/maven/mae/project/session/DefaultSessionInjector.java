@@ -62,7 +62,9 @@ public class DefaultSessionInjector
         {
             if ( pbr == null )
             {
-                pbr = embedder.serviceManager().createProjectBuildingRequest();
+                pbr =
+                    embedder.serviceManager()
+                            .createProjectBuildingRequest( session.getTemplateProjectBuildingRequest() );
 
                 pbr.setValidationLevel( session.getPomValidationLevel() );
                 pbr.setProcessPlugins( session.isProcessPomPlugins() );

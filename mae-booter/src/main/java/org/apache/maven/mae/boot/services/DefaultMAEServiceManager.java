@@ -27,11 +27,13 @@ import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenExecutionRequestPopulationException;
 import org.apache.maven.execution.MavenExecutionRequestPopulator;
 import org.apache.maven.mae.DefaultMAEExecutionRequest;
+import org.apache.maven.mae.MAEExecutionRequest;
 import org.apache.maven.mae.boot.embed.MAEEmbeddingException;
 import org.apache.maven.mae.internal.container.ServiceAuthorizer;
 import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.ProjectBuilder;
+import org.apache.maven.project.ProjectBuildingRequest;
 import org.apache.maven.repository.RepositorySystem;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
@@ -101,13 +103,61 @@ public class DefaultMAEServiceManager
     public DefaultProjectBuildingRequest createProjectBuildingRequest()
         throws MAEEmbeddingException
     {
-        final DefaultProjectBuildingRequest req = new DefaultProjectBuildingRequest();
-        req.setLocalRepository( defaultLocalRepository() );
+        return createProjectBuildingRequest( (ProjectBuildingRequest) null );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DefaultProjectBuildingRequest createProjectBuildingRequest( final MAEExecutionRequest executionRequest )
+        throws MAEEmbeddingException
+    {
+        return createProjectBuildingRequest( executionRequest == null ? null
+                        : executionRequest.getProjectBuildingRequest() );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DefaultProjectBuildingRequest createProjectBuildingRequest( final MavenExecutionRequest executionRequest )
+        throws MAEEmbeddingException
+    {
+        return createProjectBuildingRequest( executionRequest == null ? null
+                        : executionRequest.getProjectBuildingRequest() );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DefaultProjectBuildingRequest createProjectBuildingRequest( final ProjectBuildingRequest templateProjectBuildingRequest )
+        throws MAEEmbeddingException
+    {
+        final DefaultProjectBuildingRequest req;
+        if ( templateProjectBuildingRequest != null )
+        {
+            req = new DefaultProjectBuildingRequest( templateProjectBuildingRequest );
+        }
+        else
+        {
+            req = new DefaultProjectBuildingRequest();
+        }
+
+        if ( req.getLocalRepository() == null )
+        {
+            req.setLocalRepository( defaultLocalRepository() );
+        }
+
         req.setValidationLevel( ModelBuildingRequest.VALIDATION_LEVEL_MINIMAL );
         req.setProcessPlugins( false );
         req.setResolveDependencies( false );
 
-        req.setRepositorySession( createAetherRepositorySystemSession() );
+        if ( req.getRepositorySession() == null )
+        {
+            req.setRepositorySession( createAetherRepositorySystemSession() );
+        }
 
         return req;
     }
@@ -147,8 +197,7 @@ public class DefaultMAEServiceManager
         catch ( final MavenExecutionRequestPopulationException e )
         {
             throw new MAEEmbeddingException( "Failed to populate default Maven execution request, "
-                            + " for use in constructing a repository system session." + "\nReason: %s", e,
-                                             e.getMessage() );
+                + " for use in constructing a repository system session." + "\nReason: %s", e, e.getMessage() );
         }
     }
 
@@ -173,13 +222,12 @@ public class DefaultMAEServiceManager
                     request.setRepositoryCache( new DefaultRepositoryCache() );
                 }
             }
-            catch ( MavenExecutionRequestPopulationException e )
+            catch ( final MavenExecutionRequestPopulationException e )
             {
                 throw new MAEEmbeddingException( "Failed to populate default Maven execution request, "
-                                                 + " for use in constructing a repository system session." + "\nReason: %s", e,
-                                                                  e.getMessage() );
+                    + " for use in constructing a repository system session." + "\nReason: %s", e, e.getMessage() );
             }
-            
+
             return defaultMaven.newRepositorySession( request );
         }
     }
@@ -199,7 +247,8 @@ public class DefaultMAEServiceManager
             }
             catch ( final InvalidRepositoryException e )
             {
-                throw new MAEEmbeddingException( "Failed to create default local-repository instance: {0}", e,
+                throw new MAEEmbeddingException( "Failed to create default local-repository instance: {0}",
+                                                 e,
                                                  e.getMessage() );
             }
         }
@@ -230,7 +279,9 @@ public class DefaultMAEServiceManager
         }
         catch ( final ComponentLookupException e )
         {
-            throw new MAEEmbeddingException( "Failed to retrieve service: %s. Reason: %s", e, type.getName(),
+            throw new MAEEmbeddingException( "Failed to retrieve service: %s. Reason: %s",
+                                             e,
+                                             type.getName(),
                                              e.getMessage() );
         }
     }
@@ -258,8 +309,11 @@ public class DefaultMAEServiceManager
         }
         catch ( final ComponentLookupException e )
         {
-            throw new MAEEmbeddingException( "Failed to retrieve service: %s with hint: %s. Reason: %s", e,
-                                             type.getName(), hint, e.getMessage() );
+            throw new MAEEmbeddingException( "Failed to retrieve service: %s with hint: %s. Reason: %s",
+                                             e,
+                                             type.getName(),
+                                             hint,
+                                             e.getMessage() );
         }
     }
 
