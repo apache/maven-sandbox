@@ -107,4 +107,6 @@ public interface ProjectToolsSession
 
     ProjectToolsSession setPomValidationLevel( int pomValidationLevel );
 
+    ProjectBuildingRequest getTemplateProjectBuildingRequest();
+
 }

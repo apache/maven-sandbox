@@ -70,6 +70,8 @@ public class SimpleProjectToolsSession
 
     private int pomValidationLevel = ModelBuildingRequest.VALIDATION_LEVEL_MAVEN_2_0;
 
+    private ProjectBuildingRequest templateProjectBuildingRequest;
+
     private transient Map<Class<?>, Object> states = new HashMap<Class<?>, Object>();
 
     public SimpleProjectToolsSession()
@@ -489,6 +491,23 @@ public class SimpleProjectToolsSession
     public ProjectToolsSession setPomValidationLevel( final int pomValidationLevel )
     {
         this.pomValidationLevel = pomValidationLevel;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.apache.maven.mae.project.session.ProjectToolsSession#getTemplateProjectBuildingRequest()
+     */
+    @Override
+    public ProjectBuildingRequest getTemplateProjectBuildingRequest()
+    {
+        return templateProjectBuildingRequest;
+    }
+
+    public ProjectToolsSession setTemplProjectBuildingRequest( final ProjectBuildingRequest templateProjectBuildingRequest )
+    {
+        this.templateProjectBuildingRequest = templateProjectBuildingRequest;
         return this;
     }
 
