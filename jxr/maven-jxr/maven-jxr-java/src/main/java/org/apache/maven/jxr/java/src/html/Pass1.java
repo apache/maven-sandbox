@@ -151,7 +151,7 @@ public class Pass1
             }
             catch ( ANTLRException e )
             {
-                throw new IOException( "ANTLRException: " + e.getMessage() );
+                throw new IOException( "ANTLRException: " + e.getMessage() + " when processing " + file );
             }
         }
 
