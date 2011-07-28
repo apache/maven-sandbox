@@ -27,6 +27,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FileSet;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.PathTool;
 
 /**
@@ -41,24 +42,24 @@ public class UmlDocTaskTest
         throws Exception
     {
         File srcDir = new File( getBasedir(), "target/unit/src" );
-        if ( !srcDir.exists() )
-        {
-            Project antProject = new Project();
-            antProject.setBasedir( getBasedir() );
+        // safety
+        FileUtils.deleteDirectory( srcDir );
 
-            Copy copy = new Copy();
-            copy.setProject( antProject );
-            copy.setTodir( srcDir );
-            FileSet set = new FileSet();
-            set.setDir( new File( getBasedir(), "src/main/java" ) );
-            set.setIncludes( "**/*.java" );
-            copy.addFileset( set );
-            set = new FileSet();
-            set.setDir( new File( getBasedir(), "target/generated-sources/antlr" ) );
-            set.setIncludes( "**/*.java" );
-            copy.addFileset( set );
-            copy.execute();
-        }
+        Project antProject = new Project();
+        antProject.setBasedir( getBasedir() );
+
+        Copy copy = new Copy();
+        copy.setProject( antProject );
+        copy.setTodir( srcDir );
+        FileSet set = new FileSet();
+        set.setDir( new File( getBasedir(), "src/main/java" ) );
+        set.setIncludes( "**/*.java" );
+        copy.addFileset( set );
+        set = new FileSet();
+        set.setDir( new File( getBasedir(), "target/generated-sources/antlr" ) );
+        set.setIncludes( "**/*.java" );
+        copy.addFileset( set );
+        copy.execute();
     }
 
     /**
