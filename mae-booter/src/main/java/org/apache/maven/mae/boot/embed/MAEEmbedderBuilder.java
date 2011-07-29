@@ -32,20 +32,20 @@ import org.apache.maven.mae.conf.MAEConfiguration;
 import org.apache.maven.mae.conf.MAELibrary;
 import org.apache.maven.mae.conf.loader.MAELibraryLoader;
 import org.apache.maven.mae.conf.loader.ServiceLibraryLoader;
-import org.apache.maven.mae.internal.container.ComponentKey;
-import org.apache.maven.mae.internal.container.ComponentSelector;
-import org.apache.maven.mae.internal.container.InstanceRegistry;
-import org.apache.maven.mae.internal.container.MAEContainer;
-import org.apache.maven.mae.internal.container.ExtrudablePlexusContainer;
-import org.apache.maven.mae.internal.container.VirtualInstance;
 import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.settings.building.SettingsBuilder;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.ExtrudablePlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
+import org.sonatype.guice.bean.locators.ComponentKey;
+import org.sonatype.guice.bean.locators.ComponentSelector;
+import org.sonatype.guice.bean.locators.InstanceRegistry;
+import org.sonatype.guice.bean.locators.VirtualInstance;
 import org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 
@@ -474,10 +474,10 @@ public class MAEEmbedderBuilder
             final InstanceRegistry reg = new InstanceRegistry( instanceRegistry() );
             reg.addVirtual( new ComponentKey<MAEEmbedder>( MAEEmbedder.class ), embVirtual );
 
-            MAEContainer c;
+            DefaultPlexusContainer c;
             try
             {
-                c = new MAEContainer( cc, selector(), reg );
+                c = new DefaultPlexusContainer( cc, selector(), reg );
             }
             catch ( final PlexusContainerException e )
             {

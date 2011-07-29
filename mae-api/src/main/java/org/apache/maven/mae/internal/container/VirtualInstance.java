@@ -19,50 +19,17 @@
 
 package org.apache.maven.mae.internal.container;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
-
+/**
+ * Use {@link org.sonatype.guice.bean.locators.VirtualInstance} instead.
+ */
+@Deprecated
 public class VirtualInstance<T>
-    implements Provider<T>
+    extends org.sonatype.guice.bean.locators.VirtualInstance<T>
 {
-
-    @Inject
-    private Injector injector;
-
-    private T instance;
-
-    private final Class<T> virtualClass;
 
     public VirtualInstance( final Class<T> virtualClass )
     {
-        this.virtualClass = virtualClass;
-    }
-
-    public void setInstance( final T instance )
-    {
-        this.instance = instance;
-    }
-
-    public Class<T> getVirtualClass()
-    {
-        return virtualClass;
-    }
-
-    public T getRawInstance()
-    {
-        return instance;
-    }
-
-    @Override
-    public T get()
-    {
-        if ( injector != null && instance != null )
-        {
-            injector.injectMembers( instance );
-        }
-
-        return instance;
+        super( virtualClass );
     }
 
 }

@@ -21,6 +21,8 @@ package org.apache.maven.mae.internal.container;
 
 import java.util.Set;
 
+import org.sonatype.guice.bean.locators.ComponentKey;
+
 public class ServiceAuthorizer
 {
 
