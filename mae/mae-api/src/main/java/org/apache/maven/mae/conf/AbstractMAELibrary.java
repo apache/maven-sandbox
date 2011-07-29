@@ -23,9 +23,9 @@ import org.apache.log4j.Logger;
 import org.apache.maven.mae.conf.ext.ExtensionConfiguration;
 import org.apache.maven.mae.conf.ext.ExtensionConfigurationException;
 import org.apache.maven.mae.conf.ext.ExtensionConfigurationLoader;
-import org.apache.maven.mae.internal.container.ComponentKey;
-import org.apache.maven.mae.internal.container.ComponentSelector;
-import org.apache.maven.mae.internal.container.InstanceRegistry;
+import org.sonatype.guice.bean.locators.ComponentKey;
+import org.sonatype.guice.bean.locators.ComponentSelector;
+import org.sonatype.guice.bean.locators.InstanceRegistry;
 
 import java.util.HashMap;
 import java.util.HashSet;

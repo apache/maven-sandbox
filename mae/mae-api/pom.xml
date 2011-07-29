@@ -78,6 +78,16 @@
     	<version>1</version>
     	<scope>provided</scope>
     </dependency>
+    <!-- <dependency>
+      <groupId>org.sonatype.sisu.inject</groupId>
+      <artifactId>guice-bean-locators</artifactId>
+      <version>2.1.1-selectable-1-SNAPSHOT</version>
+    </dependency> -->
+    <dependency>
+    	<groupId>org.sonatype.sisu</groupId>
+    	<artifactId>sisu-inject-plexus</artifactId>
+    	<version>2.1.1-selectable-1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   
 </project>

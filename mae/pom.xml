@@ -74,7 +74,6 @@
   <modules>
     <module>boms</module>
     <module>mae-api</module>
-    <module>mae-container</module>
     <module>mae-booter</module>
     <module>mae-app</module>
     <module>mae-prompter-cli</module>

@@ -71,5 +71,10 @@
       <artifactId>commons-lang</artifactId>
       <version>2.5</version>
     </dependency>
+    <dependency>
+    	<groupId>org.sonatype.sisu</groupId>
+    	<artifactId>sisu-inject-plexus</artifactId>
+    	<version>2.1.1-selectable-1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>
