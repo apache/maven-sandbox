@@ -35,8 +35,8 @@ under the License.
   <name>Java source code documentation</name>
 
   <properties>
-    <antlrArtifactId>antlrall</antlrArtifactId>
-    <antlrVersion>2.7.4</antlrVersion>
+    <antlrArtifactId>antlr</antlrArtifactId>
+    <antlrVersion>2.7.7</antlrVersion>
   </properties>
 
   <dependencies>
@@ -93,17 +93,17 @@ under the License.
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-antlr-plugin</artifactId>
-          <version>2.0-beta-1</version>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>antlr-maven-plugin</artifactId>
+          <version>2.2</version>
         </plugin>
       </plugins>
     </pluginManagement>
 
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antlr-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>antlr-maven-plugin</artifactId>
         <configuration>
           <grammars>javaG.g</grammars>
         </configuration>
