@@ -28,6 +28,7 @@ import org.junit.matchers.JUnitMatchers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -132,7 +133,7 @@ public class ExceptionUtilsTest extends Assert
             String[] methodNames = new String[]{ "getNonExistingMethod" };
 
             assertThat("getCause for InvocationTargetException"
-                    , ExceptionUtils.getCause(testException, methodNames)
+                    , ExceptionUtils.getCause( testException, methodNames )
                     , nullValue());
         }
     }
@@ -147,7 +148,7 @@ public class ExceptionUtilsTest extends Assert
 
         assertThat( "getFullStackTrace start with"
                   , ExceptionUtils.getFullStackTrace( npe )
-                  , JUnitMatchers.containsString(fullStackTraceStart) );
+                  , JUnitMatchers.containsString( fullStackTraceStart ) );
     }
 
     @Test
@@ -156,7 +157,7 @@ public class ExceptionUtilsTest extends Assert
         NullPointerException npe = new NullPointerException( "dooh just a random, nullpointer" );
         SQLException sqlException = new SQLException( npe );
         TestException testException =  new TestException();
-        testException.setSourceException(sqlException);
+        testException.setSourceException( sqlException );
 
         Throwable[] expectedExceptions = new Throwable[] { testException, sqlException, npe };
 
@@ -172,8 +173,32 @@ public class ExceptionUtilsTest extends Assert
     @Test
     public void testGetRootCause()
     {
-        //X TODO refine test!
-        logger.warning( "TODO implement!" );
+        NullPointerException npe = new NullPointerException( "dooh just a random, nullpointer" );
+        SQLException sqlException = new SQLException( npe );
+        TestException testException =  new TestException();
+        testException.setSourceException( sqlException );
+
+        assertThat( "getRootCause"
+                  , ExceptionUtils.getRootCause(testException)
+                  , equalTo( (Throwable) npe ) );
+
+        assertThat( "getRootCause"
+                  , ExceptionUtils.getRootCause( sqlException )
+                  , equalTo( (Throwable) npe ) );
+
+        assertThat("getRootCause"
+                , ExceptionUtils.getRootCause(npe)
+                , nullValue() );
+
+        try
+        {
+            ExceptionUtils.getRootCause( null );
+            fail( "getRootCause(null) NPE expected" );
+        }
+        catch ( NullPointerException e )
+        {
+            //nothing to do, Exception was expected
+        }
     }
 
     /**
@@ -181,6 +206,33 @@ public class ExceptionUtilsTest extends Assert
      */
     @Test
     public void testGetStackFrameList()
+    {
+        NullPointerException npe = new NullPointerException( "dooh just a random, nullpointer" );
+
+        List<String> exceptionFrames = ExceptionUtils.getStackFrameList( npe );
+        assertNotNull( exceptionFrames );
+        assertTrue( exceptionFrames.size() > 1 );
+        assertThat( "exceptionFrame", exceptionFrames.get( 0 )
+                  , JUnitMatchers.containsString( "at org.codehaus.plexus.util.ExceptionUtilsTest."
+                                                  + "testGetStackFrameList(ExceptionUtilsTest.java" ) );
+
+        // NPE safe test
+        try
+        {
+            ExceptionUtils.getStackFrameList( null );
+            fail( "getStackFrameList(null) NPE expected" );
+        }
+        catch ( NullPointerException e )
+        {
+            //nothing to do, Exception was expected
+        }
+    }
+
+    /**
+     * @see ExceptionUtils#getStackTrace(Throwable)
+     */
+    @Test
+    public void testGetStackTrace()
     {
         //X TODO refine test!
         logger.warning("TODO implement!");
@@ -193,8 +245,18 @@ public class ExceptionUtilsTest extends Assert
     @Test
     public void testGetStackFrames()
     {
-        //X TODO refine test!
-        logger.warning("TODO implement!");
+        NullPointerException npe = new NullPointerException( "dooh just a random, nullpointer" );
+
+        String[] stackFrames = ExceptionUtils.getStackFrames( npe );
+        assertNotNull( stackFrames );
+        assertTrue( stackFrames.length > 3 );
+
+        assertEquals( "java.lang.NullPointerException: " + npe.getMessage(), stackFrames[0] );
+        assertThat( "stackFrames", stackFrames[1]
+                  , JUnitMatchers.containsString( "at org.codehaus.plexus.util.ExceptionUtilsTest."
+                                                  + "testGetStackFrames(ExceptionUtilsTest.java" ) );
+
+
     }
 
     /**
