@@ -234,13 +234,28 @@ public class ExceptionUtilsTest extends Assert
     @Test
     public void testGetStackTrace()
     {
-        //X TODO refine test!
-        logger.warning("TODO implement!");
+        NullPointerException npe = new NullPointerException( "dooh just a random, nullpointer" );
+
+        String stackTrace = ExceptionUtils.getStackTrace( npe );
+        assertNotNull(stackTrace);
+        assertTrue( "wrong stacktrace: " + stackTrace,
+                    stackTrace.startsWith( "java.lang.NullPointerException: dooh just a random, nullpointer\n" +
+                        "\tat org.codehaus.plexus.util.ExceptionUtilsTest.testGetStackTrace(ExceptionUtilsTest.java" ));
+
+        // NPE safe test
+        try
+        {
+            ExceptionUtils.getStackTrace( (Throwable) null );
+            fail( "getStackTrace(null) NPE expected" );
+        }
+        catch ( NullPointerException e )
+        {
+            //nothing to do, Exception was expected
+        }
     }
 
     /**
      * @see ExceptionUtils#getStackFrames(Throwable)
-     * @see ExceptionUtils#getStackFrames(String)
      */
     @Test
     public void testGetStackFrames()
@@ -256,7 +271,66 @@ public class ExceptionUtilsTest extends Assert
                   , JUnitMatchers.containsString( "at org.codehaus.plexus.util.ExceptionUtilsTest."
                                                   + "testGetStackFrames(ExceptionUtilsTest.java" ) );
 
+        // NPE safe test
+        try
+        {
+            ExceptionUtils.getStackFrames( (Throwable) null );
+            fail( "getStackFrames(null) NPE expected" );
+        }
+        catch ( NullPointerException e )
+        {
+            //nothing to do, Exception was expected
+        }
+    }
 
+    /**
+     * @see ExceptionUtils#getStackFrames(String)
+     */
+    @Test
+    public void testGetStackFrames_String()
+    {
+        String stackTrace = "java.lang.NullPointerException: mymessage\n" +
+                "\tat org.codehaus.plexus.util.ExceptionUtilsTest.testGetStackTrace(ExceptionUtilsTest.java:237)\n" +
+                "\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n" +
+                "\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)\n" +
+                "\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)\n" +
+                "\tat java.lang.reflect.Method.invoke(Method.java:597)\n" +
+                "\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)\n" +
+                "\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)\n" +
+                "\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)\n" +
+                "\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)\n" +
+                "\tat org.junit.runners.BlockJUnit4ClassRunner.runNotIgnored(BlockJUnit4ClassRunner.java:79)\n" +
+                "\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:71)\n" +
+                "\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:49)\n" +
+                "\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)\n" +
+                "\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)\n" +
+                "\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)\n" +
+                "\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)\n" +
+                "\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)\n" +
+                "\tat org.junit.runners.ParentRunner.run(ParentRunner.java:236)\n" +
+                "\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\n" +
+                "\tat com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:71)\n" +
+                "\tat com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:199)\n" +
+                "\tat com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:62)";
+
+        String[] stackFrames = ExceptionUtils.getStackFrames( stackTrace );
+        assertNotNull( stackFrames );
+        assertEquals( 23, stackFrames.length );
+
+        assertEquals( "java.lang.NullPointerException: mymessage", stackFrames[0] );
+        assertThat( "stackFrames", stackFrames[1]
+                  , JUnitMatchers.containsString( "at org.codehaus.plexus.util.ExceptionUtilsTest."
+                                                  + "testGetStackTrace(ExceptionUtilsTest.java" ) );
+
+        try
+        {
+            ExceptionUtils.getStackFrames( (String) null );
+            fail( "getStackFrames(null) NPE expected" );
+        }
+        catch ( NullPointerException e )
+        {
+            //nothing to do, Exception was expected
+        }
     }
 
     /**
