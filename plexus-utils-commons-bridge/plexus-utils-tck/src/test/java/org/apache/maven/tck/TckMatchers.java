@@ -86,6 +86,17 @@ public class TckMatchers
         return new RunsForLongerThan( ms );
     }
 
+    /**
+     * A matcher that verifies that the a root cause of an exception is of the specified type.
+     *
+     * @param cause the type of exception that caused this.
+     * @return A matcher that verifies that the a root cause of an exception is of the specified type.
+     */
+    public static Matcher<Throwable> hasCause( Class<? extends Throwable> cause )
+    {
+        return new HasCause( cause );
+    }
+
     private static class HasDefaultConstructor
         extends BaseMatcher<Class<?>>
     {
@@ -196,6 +207,32 @@ public class TckMatchers
         public void describeTo( Description description )
         {
             description.appendText( "takes longer than " ).appendValue( duration ).appendText( "ms to complete" );
+        }
+    }
+
+    private static class HasCause
+        extends BaseMatcher<Throwable>
+    {
+        private final Class<? extends Throwable> cause;
+
+        public HasCause( Class<? extends Throwable> cause )
+        {
+            this.cause = cause;
+        }
+
+        public boolean matches( Object item )
+        {
+            Throwable throwable = (Throwable) item;
+            while ( throwable != null && !cause.isInstance( throwable ) )
+            {
+                throwable = throwable.getCause();
+            }
+            return cause.isInstance( throwable );
+        }
+
+        public void describeTo( Description description )
+        {
+            description.appendText( "was caused by a " ).appendValue( cause ).appendText( " being thrown" );
         }
     }
 }
