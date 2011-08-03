@@ -72,7 +72,7 @@
   </properties>
   
   <modules>
-    <module>mae-bom</module>
+    <module>mae-boms</module>
     <module>mae-api</module>
     <module>mae-booter</module>
     <module>mae-app</module>
