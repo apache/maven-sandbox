@@ -21,11 +21,14 @@ package org.codehaus.plexus.util;
 
 import org.apache.maven.tck.FixPlexusBugs;
 import org.codehaus.plexus.util.exceptionutils.TestException;
+import org.codehaus.plexus.util.exceptionutils.TestExceptionWithDetail;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.matchers.JUnitMatchers;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
@@ -245,7 +248,7 @@ public class ExceptionUtilsTest extends Assert
         // NPE safe test
         try
         {
-            ExceptionUtils.getStackTrace( (Throwable) null );
+            ExceptionUtils.getStackTrace((Throwable) null);
             fail( "getStackTrace(null) NPE expected" );
         }
         catch ( NullPointerException e )
@@ -274,7 +277,7 @@ public class ExceptionUtilsTest extends Assert
         // NPE safe test
         try
         {
-            ExceptionUtils.getStackFrames( (Throwable) null );
+            ExceptionUtils.getStackFrames((Throwable) null);
             fail( "getStackFrames(null) NPE expected" );
         }
         catch ( NullPointerException e )
@@ -315,7 +318,7 @@ public class ExceptionUtilsTest extends Assert
 
         String[] stackFrames = ExceptionUtils.getStackFrames( stackTrace );
         assertNotNull( stackFrames );
-        assertEquals( 23, stackFrames.length );
+        assertEquals(23, stackFrames.length);
 
         assertEquals( "java.lang.NullPointerException: mymessage", stackFrames[0] );
         assertThat( "stackFrames", stackFrames[1]
@@ -339,8 +342,26 @@ public class ExceptionUtilsTest extends Assert
     @Test
     public void testGetThrowableCount()
     {
-        //X TODO refine test!
-        logger.warning("TODO implement!");
+        NullPointerException npe = new NullPointerException( "dooh just a random, nullpointer" );
+        SQLException sqlException = new SQLException( npe );
+        TestException testException =  new TestException();
+        testException.setSourceException( sqlException );
+
+        assertThat( "getThrowableCount"
+                  , ExceptionUtils.getThrowableCount( npe )
+                  , is( 1 ));
+
+        assertThat( "getThrowableCount"
+                  , ExceptionUtils.getThrowableCount( sqlException )
+                  , is( 2 ));
+
+        assertThat( "getThrowableCount"
+                  , ExceptionUtils.getThrowableCount( testException )
+                  , is( 3 ));
+
+        // NPE safe test
+        // this method should NOT throw a NPE on a null argument!
+        ExceptionUtils.getThrowableCount( null );
     }
 
     /**
@@ -350,18 +371,109 @@ public class ExceptionUtilsTest extends Assert
     @Test
     public void testIndexOfThrowable()
     {
-        //X TODO refine test!
-        logger.warning("TODO implement!");
+        NullPointerException npe = new NullPointerException( "dooh just a random, nullpointer" );
+        SQLException sqlException = new SQLException( npe );
+        TestException testException =  new TestException();
+        testException.setSourceException( sqlException );
+
+        assertThat("indexOfThrowable"
+                , ExceptionUtils.indexOfThrowable(npe, NullPointerException.class)
+                , is(0));
+
+        assertThat( "indexOfThrowable for non contained Exception type"
+                  , ExceptionUtils.indexOfThrowable( npe, SQLException.class )
+                  , is( -1 ));
+
+
+        assertThat( "indexOfThrowable"
+                  , ExceptionUtils.indexOfThrowable( testException, NullPointerException.class )
+                  , is( 2 ));
+
+        assertThat( "indexOfThrowable for non contained Exception type"
+                  , ExceptionUtils.indexOfThrowable( testException, SQLException.class )
+                  , is( 1 ));
+
+        assertThat( "indexOfThrowable"
+                  , ExceptionUtils.indexOfThrowable( testException, TestException.class )
+                  , is( 0 ));
+
+
+        // tests for indexOfThrowable with start index param
+        assertThat( "indexOfThrowable"
+                  , ExceptionUtils.indexOfThrowable( testException, NullPointerException.class, 2 )
+                  , is( 2 ));
+
+        assertThat( "indexOfThrowable"
+                  , ExceptionUtils.indexOfThrowable( testException, SQLException.class, 2 )
+                  , is( -1 ));
+
+        try
+        {
+            ExceptionUtils.indexOfThrowable( testException, TestException.class, 3 );
+            fail( "indexOfThrowable with too large inces" );
+        }
+        catch ( IndexOutOfBoundsException e )
+        {
+            //nothing to do, Exception was expected
+        }
+
+        // NPE safe tests
+        try
+        {
+            ExceptionUtils.indexOfThrowable( null, TestException.class );
+            fail( "indexOfThrowable(null, Exception.class) NPE expected" );
+        }
+        catch ( IndexOutOfBoundsException e )
+        {
+            //nothing to do, Exception was expected
+        }
+        assertThat( "indexOfThrowable for null Exception type"
+                  , ExceptionUtils.indexOfThrowable(npe, null)
+                  , is(-1));
     }
 
     /**
+     * Most probably this only ever returns false on null in JDK > 1.4
+     * Because Throwable itself nowadays has a getCause() method which
+     * is in the method list...
+     *
      * @see ExceptionUtils#isNestedThrowable(Throwable)
      */
     @Test
     public void testIsNestedThrowable()
     {
-        //X TODO refine test!
-        logger.warning("TODO implement!");
+        NullPointerException npe = new NullPointerException( "dooh just a random, nullpointer" );
+        SQLException sqlException = new SQLException( npe );
+        TestException testException =  new TestException();
+        testException.setSourceException( sqlException );
+
+        assertThat( "isNestedThrowable"
+                  , ExceptionUtils.isNestedThrowable( null )
+                  , is( false ) );
+
+        assertThat("isNestedThrowable"
+                , ExceptionUtils.isNestedThrowable(npe)
+                , is(true));
+
+        assertThat( "isNestedThrowable"
+                  , ExceptionUtils.isNestedThrowable( sqlException )
+                  , is( true ) );
+
+        assertThat( "isNestedThrowable"
+                  , ExceptionUtils.isNestedThrowable( new InvocationTargetException( npe ) )
+                  , is( true ) );
+
+        assertThat( "isNestedThrowable"
+                  , ExceptionUtils.isNestedThrowable( new TestExceptionWithDetail() )
+                  , is( true ) );
+
+        assertThat( "isNestedThrowable"
+                  , ExceptionUtils.isNestedThrowable( new Exception() )
+                  , is( true ) );
+
+        assertThat( "isNestedThrowable"
+                  , ExceptionUtils.isNestedThrowable( new Throwable() )
+                  , is( true ) );
     }
 
     /**
@@ -372,8 +484,32 @@ public class ExceptionUtilsTest extends Assert
     @Test
     public void testPrintRootCauseStackTrace()
     {
-        //X TODO refine test!
-        logger.warning("TODO implement!");
+        NullPointerException npe = new NullPointerException( "dooh just a random, nullpointer" );
+        SQLException sqlException = new SQLException( npe );
+        TestException testException =  new TestException();
+        testException.setSourceException( sqlException );
+
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        PrintStream outStream = new PrintStream( bao );
+        PrintStream originalErr = System.err;
+
+        try
+        {
+            System.setErr( outStream );
+            ExceptionUtils.printRootCauseStackTrace( npe );
+
+            assertThat( "stackFrames"
+                      , bao.toString()
+                      , JUnitMatchers.containsString( "java.lang.NullPointerException: dooh just a random, nullpointer"
+                                                      + "\n\tat org.codehaus.plexus.util.ExceptionUtilsTest."
+                                                      + "testPrintRootCauseStackTrace(ExceptionUtilsTest.java:" ) );
+        }
+        finally
+        {
+            System.setErr( originalErr );
+        }
+
+        //X TODO A FEW THINGS STILL MISSING! will continue later today...
     }
 
 }
