@@ -29,6 +29,7 @@ import org.junit.matchers.JUnitMatchers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
@@ -495,9 +496,36 @@ public class ExceptionUtilsTest extends Assert
 
         try
         {
-            System.setErr( outStream );
-            ExceptionUtils.printRootCauseStackTrace( npe );
+            System.setErr(outStream);
 
+            ExceptionUtils.printRootCauseStackTrace( npe );
+            assertThat( "stackFrames"
+                      , bao.toString()
+                      , JUnitMatchers.containsString( "java.lang.NullPointerException: dooh just a random, nullpointer"
+                                                      + "\n\tat org.codehaus.plexus.util.ExceptionUtilsTest."
+                                                      + "testPrintRootCauseStackTrace(ExceptionUtilsTest.java:" ) );
+            bao.reset();
+            ExceptionUtils.printRootCauseStackTrace( sqlException );
+            assertThat( "stackFrames"
+                      , bao.toString()
+                      , JUnitMatchers.containsString( "java.lang.NullPointerException: dooh just a random, nullpointer"
+                                                      + "\n\tat org.codehaus.plexus.util.ExceptionUtilsTest."
+                                                      + "testPrintRootCauseStackTrace(ExceptionUtilsTest.java:" ) );
+
+            // moving back to the original stdout and using the PrintStream directly
+            System.setErr( originalErr );
+
+            bao.reset();
+            ExceptionUtils.printRootCauseStackTrace( sqlException, outStream );
+            assertThat("stackFrames"
+                    , bao.toString()
+                    , JUnitMatchers.containsString("java.lang.NullPointerException: dooh just a random, nullpointer"
+                    + "\n\tat org.codehaus.plexus.util.ExceptionUtilsTest."
+                    + "testPrintRootCauseStackTrace(ExceptionUtilsTest.java:"));
+
+            bao.reset();
+            PrintWriter printWriter = new PrintWriter( outStream );
+            ExceptionUtils.printRootCauseStackTrace( sqlException, printWriter );
             assertThat( "stackFrames"
                       , bao.toString()
                       , JUnitMatchers.containsString( "java.lang.NullPointerException: dooh just a random, nullpointer"
@@ -506,10 +534,38 @@ public class ExceptionUtilsTest extends Assert
         }
         finally
         {
-            System.setErr( originalErr );
+            System.setErr(originalErr);
         }
 
-        //X TODO A FEW THINGS STILL MISSING! will continue later today...
+        try
+        {
+            ExceptionUtils.printRootCauseStackTrace( null );
+            fail("printRootCauseStackTrace(null) IndexOutOfBoundsException expected");
+        }
+        catch ( IndexOutOfBoundsException e )
+        {
+            //nothing to do, Exception was expected
+        }
+
+        try
+        {
+            ExceptionUtils.printRootCauseStackTrace( npe, (PrintStream) null );
+            fail("indexOfThrowable with too large inces");
+        }
+        catch ( NullPointerException e )
+        {
+            //nothing to do, Exception was expected
+        }
+
+        try
+        {
+            ExceptionUtils.printRootCauseStackTrace( npe, (PrintWriter) null );
+            fail("indexOfThrowable with too large inces");
+        }
+        catch ( NullPointerException e )
+        {
+            //nothing to do, Exception was expected
+        }
     }
 
 }
