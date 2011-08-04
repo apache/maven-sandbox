@@ -34,7 +34,16 @@
         <artifactId>mae-booter</artifactId>
         <version>${project.version}</version>
       </dependency>
-      
+      <dependency>
+        <groupId>org.apache.maven.mae</groupId>
+        <artifactId>mae-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.mae</groupId>
+        <artifactId>mae-project-tools</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.apache.maven.mae</groupId>
         <artifactId>mae-prompter-cli</artifactId>
@@ -52,12 +61,6 @@
         <artifactId>mae-event-api</artifactId>
         <version>${project.version}</version>
       </dependency> -->
-      
-      <dependency>
-        <groupId>org.apache.maven.mae</groupId>
-        <artifactId>mae-api</artifactId>
-        <version>${project.version}</version>
-      </dependency>
       
       <!-- <dependency>
         <groupId>org.apache.maven.mae.event</groupId>
