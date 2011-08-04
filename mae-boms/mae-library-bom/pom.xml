@@ -62,14 +62,6 @@
       
       <dependency>
         <groupId>org.apache.maven</groupId>
-        <artifactId>maven</artifactId>
-        <version>${mavenVersion}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      
-      <dependency>
-        <groupId>org.apache.maven</groupId>
         <artifactId>maven-artifact</artifactId>
         <version>${mavenVersion}</version>
         <scope>provided</scope>
@@ -137,6 +129,14 @@
         <scope>provided</scope>
       </dependency>
       <!-- /END infra requirements -->
+      
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven</artifactId>
+        <version>${mavenVersion}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 </project>
