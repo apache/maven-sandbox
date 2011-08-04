@@ -31,12 +31,6 @@
     <dependencies>
       <dependency>
         <groupId>org.apache.maven.mae</groupId>
-        <artifactId>mae-app</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      
-      <dependency>
-        <groupId>org.apache.maven.mae</groupId>
         <artifactId>mae-booter</artifactId>
         <version>${project.version}</version>
       </dependency>

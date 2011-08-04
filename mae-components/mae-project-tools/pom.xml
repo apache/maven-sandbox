@@ -41,12 +41,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.mae</groupId>
-      <artifactId>mae-app</artifactId>
-      <version>${maeVersion}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-http-lightweight</artifactId>
       <scope>compile</scope>
