@@ -69,13 +69,13 @@
     <maeVersion>${project.version}</maeVersion>
   	<mavenVersion>3.0.3</mavenVersion>
   	<plexusVersion>1.5.5</plexusVersion>
+  	<sisuVersion>2.1.1-selectable-1</sisuVersion>
   </properties>
   
   <modules>
     <module>mae-boms</module>
     <module>mae-api</module>
     <module>mae-booter</module>
-    <module>mae-app</module>
     <module>mae-prompter-cli</module>
     <module>mae-components</module>
   </modules>
