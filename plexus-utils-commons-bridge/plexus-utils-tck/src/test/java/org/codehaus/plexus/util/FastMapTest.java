@@ -1,11 +1,5 @@
 package org.codehaus.plexus.util;
 
-import java.util.Iterator;
-import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -24,6 +18,14 @@ import org.junit.Test;
  * specific language governing permissions and limitations
  * under the License.
  */
+
+
+import java.util.Iterator;
+import java.util.Map;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 
 /**
  * This is a stub test that demonstrates that something is here. It's not 

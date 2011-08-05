@@ -1,4 +1,4 @@
-package org.codehaus.plexus.util.exceptionutils;
+package org.codehaus.plexus.util;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,29 +19,9 @@ package org.codehaus.plexus.util.exceptionutils;
  * under the License.
  */
 
-
-
 /**
- * This test exception has a 'detail' field.
- *
  * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
  */
-public class TestExceptionWithDetail extends Exception
+public class ExpandTest
 {
-    private Throwable detail;
-
-    public TestExceptionWithDetail()
-    {
-        super();
-    }
-
-    public Throwable getDetail()
-    {
-        return detail;
-    }
-
-    public void setDetail( Throwable detail )
-    {
-        this.detail = detail;
-    }
 }
