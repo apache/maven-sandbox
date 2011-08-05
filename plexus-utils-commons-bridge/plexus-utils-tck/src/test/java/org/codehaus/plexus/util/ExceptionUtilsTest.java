@@ -32,7 +32,6 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -154,9 +153,17 @@ public class ExceptionUtilsTest extends Assert
         String fullStackTraceStart = "java.lang.NullPointerException: dooh just a random, nullpointer\n"
                      + "\tat org.codehaus.plexus.util.ExceptionUtilsTest.testGetFullStackTrace(ExceptionUtilsTest.java";
 
+        String fullStackTrace = ExceptionUtils.getFullStackTrace( npe );
         assertThat( "getFullStackTrace start with"
-                  , ExceptionUtils.getFullStackTrace( npe )
+                  , fullStackTrace
                   , JUnitMatchers.containsString( fullStackTraceStart ) );
+
+        SQLException sqlException = new SQLException( npe );
+        fullStackTrace = ExceptionUtils.getFullStackTrace( sqlException );
+                assertThat( "getFullStackTrace start with"
+                          , fullStackTrace
+                          , JUnitMatchers.containsString( fullStackTraceStart ) );
+
     }
 
     @Test
@@ -222,10 +229,18 @@ public class ExceptionUtilsTest extends Assert
         NullPointerException npe = new NullPointerException( "dooh just a random, nullpointer" );
 
         String stackTrace = ExceptionUtils.getStackTrace( npe );
-        assertNotNull(stackTrace);
+        assertNotNull( stackTrace );
         assertTrue( "wrong stacktrace: " + stackTrace,
                     stackTrace.startsWith( "java.lang.NullPointerException: dooh just a random, nullpointer\n" +
                         "\tat org.codehaus.plexus.util.ExceptionUtilsTest.testGetStackTrace(ExceptionUtilsTest.java" ));
+
+        SQLException sqlException = new SQLException( npe );
+        stackTrace = ExceptionUtils.getStackTrace( sqlException );
+        assertNotNull( stackTrace );
+        assertTrue( "wrong stacktrace: " + stackTrace,
+                    stackTrace.startsWith( "java.sql.SQLException: java.lang.NullPointerException: "
+                      + "dooh just a random, nullpointer\n"
+                      + "\tat org.codehaus.plexus.util.ExceptionUtilsTest.testGetStackTrace(ExceptionUtilsTest.java" ));
 
         // NPE safe test
         try
@@ -453,8 +468,10 @@ public class ExceptionUtilsTest extends Assert
                     , JUnitMatchers.containsString("java.lang.NullPointerException: dooh just a random, nullpointer"
                     + "\n\tat org.codehaus.plexus.util.ExceptionUtilsTest."
                     + "testPrintRootCauseStackTrace(ExceptionUtilsTest.java:"));
+            outStream.close();
 
             bao.reset();
+            outStream = new PrintStream( bao );
             PrintWriter printWriter = new PrintWriter( outStream );
             ExceptionUtils.printRootCauseStackTrace( sqlException, printWriter );
             assertThat( "stackFrames"
@@ -481,7 +498,7 @@ public class ExceptionUtilsTest extends Assert
         try
         {
             ExceptionUtils.printRootCauseStackTrace( npe, (PrintStream) null );
-            fail("indexOfThrowable with too large inces");
+            fail("printRootCauseStackTrace( x, null) NPE expected");
         }
         catch ( NullPointerException e )
         {
@@ -491,7 +508,7 @@ public class ExceptionUtilsTest extends Assert
         try
         {
             ExceptionUtils.printRootCauseStackTrace( npe, (PrintWriter) null );
-            fail("indexOfThrowable with too large inces");
+            fail("printRootCauseStackTrace( x, null) NPE expected");
         }
         catch ( NullPointerException e )
         {

@@ -21,6 +21,7 @@ package org.codehaus.plexus.util;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
@@ -336,43 +337,100 @@ public class ExceptionUtils
         return -1;
     }
 
-    public static void printRootCauseStackTrace( Throwable t, PrintStream stream )
+    /**
+     * Print the stacktrace of root cause of the given Throwable to System.err
+     * @param throwable
+     * @see #getCause(Throwable)
+     */
+    public static void printRootCauseStackTrace( Throwable throwable )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
+        if ( throwable == null )
+        {
+            // weird, but needed for backward compat...
+            throw new IndexOutOfBoundsException( "Throwable param must not be null" );
+        }
+
+        Throwable rootCause = getRootCause( throwable );
+        if ( rootCause == null )
+        {
+            rootCause = throwable;
+        }
+        rootCause.printStackTrace();
     }
 
-    public static void printRootCauseStackTrace( Throwable t )
+    /**
+     * Print the stacktrace of root cause of the given Throwable to the PrintStream
+     * @param throwable
+     * @see #getCause(Throwable)
+     */
+    public static void printRootCauseStackTrace( Throwable throwable, PrintStream stream )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
+        Throwable rootCause = getRootCause( throwable );
+        if ( rootCause == null )
+        {
+            rootCause = throwable;
+        }
+        rootCause.printStackTrace(stream);
     }
 
-    public static void printRootCauseStackTrace( Throwable t, PrintWriter writer )
+    /**
+     * Print the stacktrace of root cause of the given Throwable to the PrintWriter
+     * @param throwable
+     * @see #getCause(Throwable)
+     */
+    public static void printRootCauseStackTrace( Throwable throwable, PrintWriter writer )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
+        Throwable rootCause = getRootCause( throwable );
+        if ( rootCause == null )
+        {
+            rootCause = throwable;
+        }
+        rootCause.printStackTrace( writer );
+        writer.flush();
     }
 
-    public static String[] getRootCauseStackTrace( Throwable t )
+    /**
+     * The stacktrace frames for the root cause of the given Throwable
+     * @param throwable
+     * @return String with the Stacktrace of the Throwable
+     * @see #getCause(Throwable)
+     */
+    public static String[] getRootCauseStackTrace( Throwable throwable )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
-        return null;
+        Throwable rootCause = getRootCause( throwable );
+        if ( rootCause == null )
+        {
+            rootCause = throwable;
+        }
+
+        return getStackFrames( rootCause );
     }
 
-    public static String getStackTrace( Throwable t )
+    /**
+     * The stacktrace for the given Throwable
+     * @param throwable
+     * @return String with the Stacktrace of the Throwable
+     */
+    public static String getStackTrace( Throwable throwable )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
-        return null;
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter( stringWriter, true );
+
+        throwable.printStackTrace( printWriter );
+
+        return stringWriter.getBuffer().toString();
     }
 
-    public static String getFullStackTrace( Throwable t )
+    /**
+     * The stacktrace for the given Throwable
+     * @param throwable
+     * @return String with the Stacktrace of the Throwable
+     */
+    public static String getFullStackTrace( Throwable throwable )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
-        return null;
+        // nowadays this is the same...
+
+        return getStackTrace(throwable);
     }
 
     /**
@@ -392,11 +450,34 @@ public class ExceptionUtils
         return true;
     }
 
-    public static String[] getStackFrames( Throwable t )
+    /**
+     * Get all the separate single lines of the stacktrace for the Throwable
+     * @param throwable
+     * @return the lines of the stack trace for the throwable
+     */
+    public static String[] getStackFrames( Throwable throwable )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
-        return null;
+        StackTraceElement[] stackTraceElements = throwable.getStackTrace();
+
+        String[] retVal = new String[ stackTraceElements.length + 1 ];
+
+        retVal[ 0 ] = throwable.getClass().getName() + ": " + throwable.getMessage();
+
+        int i = 1;
+
+        for ( StackTraceElement stackTraceElement : stackTraceElements )
+        {
+            StringBuilder sb = new StringBuilder( "\tat " );
+            sb.append( stackTraceElement.getClassName() );
+            sb.append( "." );
+            sb.append( stackTraceElement.getMethodName() );
+            sb.append( "(" ).append( stackTraceElement.getFileName() ).append( "):" );
+            sb.append(stackTraceElement.getLineNumber());
+
+            retVal[ i++ ] = sb.toString();
+        }
+
+        return retVal;
     }
 
 }
