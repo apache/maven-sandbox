@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -222,31 +223,116 @@ public class ExceptionUtils
         return rootCause;
     }
 
+    /**
+     * Determine the number of causale Throwables. That is the amount of
+     * all Throwables in the exception chain.
+     * @param throwable
+     * @return the amount of Throwables in the exception chain.
+     */
     public static int getThrowableCount( Throwable throwable )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
-        return -1;
+        Throwable[] throwables = getThrowables( throwable );
+
+        if ( throwables != null )
+        {
+            return throwables.length;
+        }
+        return 0;
     }
 
+    /**
+     * Get an array of all Throwables in the 'cause' chain.
+     * This will also evaluate special cause rools for SQLExceptions and
+     * TargetInvocationExceptions.
+     *
+     * @param throwable
+     * @return array with all causal Throwables
+     */
     public static Throwable[] getThrowables( Throwable throwable )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
-        return null;
+        ArrayList<Throwable> throwables = new ArrayList<Throwable>();
+
+
+        Throwable rootCause = throwable;
+        int depth = 0;
+
+        while ( rootCause != null )
+        {
+            if ( depth >= MAX_ROOT_CAUSE_DEPTH )
+            {
+                // maximum depth level reached!
+                break;
+            }
+
+            throwables.add( rootCause );
+
+            Throwable nextRootCause = getCause( rootCause );
+
+            if ( nextRootCause == null )
+            {
+                break;
+            }
+
+            rootCause = nextRootCause;
+            depth++;
+        }
+
+        return throwables.toArray( new Throwable[ throwables.size() ] );
+
     }
 
-    public static int indexOfThrowable( Throwable throwable, Class type )
+    /**
+     * Determines all the nested Throwables and calculate the index of the
+     * Throwable with the given type
+     * @param throwable
+     * @param type
+     * @return the index of the type in the Throwable chain, or <code>-1</code> if it isn't contained.
+     *
+     * @see #indexOfThrowable(Throwable, Class, int)
+     */
+    public static int indexOfThrowable( Throwable throwable, Class<? extends Throwable> type )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
-        return -1;
+        return indexOfThrowable( throwable, type, 0 );
     }
 
-    public static int indexOfThrowable( Throwable throwable, Class type, int fromIndex )
+    /**
+     * Determines all the nested Throwables and calculate the index of the
+     * Throwable with the given type starting with the given fromIndex
+     * @param throwable
+     * @param type
+     * @param fromIndex the index to start with
+     * @return the index of the type in the Throwable chain, or <code>-1</code> if it isn't contained.
+     *
+     * @see #indexOfThrowable(Throwable, Class)
+     */
+    public static int indexOfThrowable( Throwable throwable, Class<? extends Throwable> type, int fromIndex )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
+        if ( throwable == null )
+        {
+            // this is how the old plexus method failed ...
+            throw new IndexOutOfBoundsException( "Throwable to check must not be null" );
+        }
+
+        if ( type != null)
+        {
+            Throwable[] throwables = getThrowables( throwable );
+
+            if ( fromIndex >= throwables.length )
+            {
+                throw new IndexOutOfBoundsException( "fromIndex is too large" );
+            }
+
+            for ( int i = fromIndex; i < throwables.length; i++ )
+            {
+                Throwable t = throwables[ i ];
+
+                if ( t.getClass().equals( type ) )
+                {
+                    return i;
+                }
+            }
+        }
+
         return -1;
     }
 
@@ -289,10 +375,20 @@ public class ExceptionUtils
         return null;
     }
 
+    /**
+     * Since Throwable itself has a getCause() method since Java-1.4
+     * we can safely assume that all Throwables are nested.
+     *
+     * @param throwable
+     * @return
+     */
     public static boolean isNestedThrowable( Throwable throwable )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
+        if ( throwable == null )
+        {
+            return false;
+        }
+
         return true;
     }
 
