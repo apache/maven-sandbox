@@ -21,6 +21,10 @@ package org.codehaus.plexus.util;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.sql.SQLException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * ExceptionUtils contains helper methods for treating Throwable objects.
@@ -34,6 +38,25 @@ import java.io.PrintWriter;
 public class ExceptionUtils
 {
     /**
+     * The maximum level of nestings evaluated when searching for a root cause.
+     * We do this to prevent stack overflows!
+     *
+     * @see #getRootCause(Throwable)
+     * @see #getRootCauseStackTrace(Throwable)
+     */
+    private static final int MAX_ROOT_CAUSE_DEPTH = 20;
+
+    private static CopyOnWriteArrayList<String> specialCauseMethodNames = new CopyOnWriteArrayList<String>();
+    static
+    {
+        specialCauseMethodNames.add( "getException" );
+        specialCauseMethodNames.add( "getSourceException" );
+        specialCauseMethodNames.add( "getRootCause" );
+        specialCauseMethodNames.add( "getCausedByException" );
+        specialCauseMethodNames.add( "getNested" );
+    }
+
+    /**
      * This method is only here for backward compat reasons.
      * It's original means was to add additional method names
      * which got checked to determine if the Throwable in question
@@ -46,28 +69,157 @@ public class ExceptionUtils
     @Deprecated
     public static void addCauseMethodName( String methodName )
     {
-        // we don't need this anymore!
+        specialCauseMethodNames.add(methodName);
     }
 
+    /**
+     * The {@link Throwable#getCause()} of the given Throwable.
+     *
+     * @param throwable
+     *
+     * @return the cause of the given Throwable, <code>null</code> if no cause exists.
+     */
     public static Throwable getCause( Throwable throwable )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
-        return null;
+        Throwable retVal = throwable.getCause();
+
+        if ( retVal == null)
+        {
+
+            retVal = getCause( throwable
+                             , specialCauseMethodNames.toArray( new String[ specialCauseMethodNames.size() ] ) );
+        }
+
+        return retVal;
     }
 
+    /**
+     * Get the cause of the given throwable if any by using the given methodNames
+     *
+     * @param throwable
+     * @param methodNames
+     * @return
+     */
     public static Throwable getCause( Throwable throwable, String[] methodNames )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
-        return null;
+        Throwable retVal = null;
+
+        // first try a few standard Exception types we already know
+        if ( retVal == null && throwable instanceof SQLException )
+        {
+            retVal = ((SQLException) throwable).getNextException();
+        }
+
+        if ( retVal == null && throwable instanceof InvocationTargetException)
+        {
+            retVal = ((InvocationTargetException) throwable).getTargetException();
+        }
+
+        if ( retVal == null )
+        {
+            for ( String methodName : methodNames )
+            {
+                if ( methodName == null )
+                {
+                    continue;
+                }
+
+                retVal = getCauseByMethodName( throwable, methodName );
+                if ( retVal != null )
+                {
+                    return retVal;
+                }
+            }
+        }
+
+        return retVal;
     }
 
+    /**
+     * Internal method to get the cause of a given Throwable by a specified methods name.
+     *
+     * @param throwable
+     * @param methodName
+     * @return the cause or <code>null</code> if either the method doesn't exist or there is no cause.
+     */
+    private static Throwable getCauseByMethodName( Throwable throwable, String methodName )
+    {
+        Method method;
+        try
+        {
+            method = throwable.getClass().getMethod( methodName, null );
+        }
+        catch (NoSuchMethodException e)
+        {
+            return null;
+        }
+
+        if ( method.getReturnType() == null || !method.getReturnType().isAssignableFrom( Throwable.class ) )
+        {
+            return null;
+        }
+
+        try
+        {
+            return (Throwable) method.invoke( throwable );
+        }
+        catch (IllegalAccessException e)
+        {
+            return null;
+        }
+        catch (InvocationTargetException e)
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Go down the {@link Throwable#getCause()} chain to find the
+     * source of the problem. For nested Throwables, this will return
+     * the recursively deepest Throwable in the chain.
+     *
+     * @param throwable
+     *
+     * @return the original cause of the Throwable
+     */
     public static Throwable getRootCause( Throwable throwable )
     {
-        System.out.println("TODO IMPLEMENT");
-        //X TODO implement
-        return null;
+        if ( throwable == null )
+        {
+            throw new NullPointerException( "Throwable in ExceptionUtils#getRootCause must not be null!" );
+        }
+
+        Throwable rootCause = throwable;
+        int depth = 0;
+
+        while ( rootCause != null )
+        {
+            if ( depth >= MAX_ROOT_CAUSE_DEPTH )
+            {
+                // maximum depth level reached!
+                return rootCause;
+            }
+
+            Throwable nextRootCause = getCause( rootCause );
+
+            if ( nextRootCause == null )
+            {
+                if ( depth == 0 )
+                {
+                    return null;
+                }
+                else
+                {
+                    return rootCause;
+                }
+            }
+
+            rootCause = nextRootCause;
+            depth++;
+        }
+
+        return rootCause;
     }
 
     public static int getThrowableCount( Throwable throwable )

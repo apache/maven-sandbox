@@ -111,6 +111,13 @@ public class ExceptionUtilsTest extends Assert
                       , ExceptionUtils.getCause( testException )
                       , equalTo( (Throwable) npe ) );
         }
+
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testGetCause_Null()
+    {
+        ExceptionUtils.getCause( null );
     }
 
     @Test
