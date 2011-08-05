@@ -69,11 +69,8 @@ public class ExceptionUtilsTest extends Assert
     {
         ExceptionUtils.addCauseMethodName( "getNestedException" );
 
-        //X TODO refine test!
+        ExceptionUtils.addCauseMethodName( null );
     }
-
-
-
 
     @Test
     public void testGetCause()
