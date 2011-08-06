@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.junit.Assert;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
@@ -117,11 +118,58 @@ public class ExpandTest extends Assert
 
         expand.execute();
 
-        verifyExpandedContent( targetDir );
+        verifyExpandedFileAndContent( targetDir,  TEST_UNZIPPED_CONTENT );
     }
 
+    @Test
+    public void testExecuteIntoNonexistingDirectory() throws Exception
+    {
+        Expand expand = new Expand();
 
-    private void verifyExpandedContent( File targetDir )
+        File source = getSourceFile();
+        expand.setSrc( source );
+
+        File nonexisingDir = new File( getTestTargetDir(), "nonexisting_dir" );
+
+        if ( nonexisingDir.exists() )
+        {
+            FileUtils.deleteDirectory( nonexisingDir );
+        }
+
+        expand.setDest( nonexisingDir );
+
+        expand.execute();
+
+        verifyExpandedFileAndContent( nonexisingDir,  TEST_UNZIPPED_CONTENT );
+    }
+
+    @Test
+    public void testExecuteNonexistingSource() throws Exception
+    {
+        Expand expand = new Expand();
+
+        File nonexistingSource = new File( "target/expand_test_target/nonexisting_source_file.nixda" );
+        expand.setSrc( nonexistingSource );
+
+        File targetDir = getTestTargetDir();
+        expand.setDest( targetDir );
+
+        try
+        {
+
+            expand.execute();
+            fail( "expand with notexiting source must throw Exception!" );
+        }
+        catch ( Exception e )
+        {
+            Throwable cause = ExceptionUtils.getCause( e );
+
+            assertTrue( "cause must be a FileNotFoundException", cause instanceof FileNotFoundException );
+        }
+
+    }
+
+    private File verifyExpandedFile( File targetDir )
     {
         assertThat( "target directory must exist"
                   , targetDir.exists()
@@ -132,7 +180,27 @@ public class ExpandTest extends Assert
         assertThat( "expanded file must exist: " + expandedFile.getAbsolutePath()
                   , expandedFile.exists()
                   , is( true) );
+
+        return expandedFile;
     }
+
+    private File verifyExpandedFileAndContent( File targetDir, String expectedContent )
+            throws FileNotFoundException
+    {
+        File expandedFile = verifyExpandedFile( targetDir );
+
+        assertNotNull(expandedFile);
+
+        java.util.Scanner scanner = new java.util.Scanner( expandedFile ).useDelimiter("\n");
+        String text = scanner.next();
+
+        assertThat( "expanded file content must match"
+                  , text
+                  , is( expectedContent) );
+
+        return expandedFile;
+    }
+
 
 
 }
