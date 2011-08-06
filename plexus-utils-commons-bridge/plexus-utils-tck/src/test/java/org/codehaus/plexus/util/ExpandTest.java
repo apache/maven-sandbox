@@ -118,7 +118,7 @@ public class ExpandTest extends Assert
 
         expand.execute();
 
-        verifyExpandedFileAndContent( targetDir,  TEST_UNZIPPED_CONTENT );
+        verifyExpandedFileAndContent(targetDir, TEST_UNZIPPED_CONTENT);
     }
 
     @Test
@@ -140,7 +140,7 @@ public class ExpandTest extends Assert
 
         expand.execute();
 
-        verifyExpandedFileAndContent( nonexisingDir,  TEST_UNZIPPED_CONTENT );
+        verifyExpandedFileAndContent(nonexisingDir, TEST_UNZIPPED_CONTENT);
     }
 
     @Test
@@ -168,6 +168,48 @@ public class ExpandTest extends Assert
         }
 
     }
+
+    @Test( expected = NullPointerException.class )
+    public void testExecute_NullSource()
+            throws Exception
+    {
+        Expand expand = new Expand();
+        expand.setSrc( null );
+
+        File targetDir = getTestTargetDir();
+        expand.setDest( targetDir );
+
+        expand.execute();
+    }
+
+    @Test
+    public void testExecute_NullDest()
+            throws Exception
+    {
+        Expand expand = new Expand();
+        expand.setSrc( getSourceFile() );
+
+        // execute without a dest directory seems to
+        // expand all the archive into the current working directory
+        expand.setDest( null );
+
+        String oldWorkingDirectory = System.getProperty( "user.dir" );
+
+        try
+        {
+            File targetDir = getTestTargetDir();
+            System.setProperty( "user.dir", targetDir.getAbsolutePath() );
+
+            expand.execute();
+
+            verifyExpandedFileAndContent( targetDir, TEST_UNZIPPED_CONTENT );
+        }
+        finally
+        {
+            System.setProperty( "user.dir", oldWorkingDirectory );
+        }
+    }
+
 
     private File verifyExpandedFile( File targetDir )
     {
