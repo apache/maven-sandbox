@@ -155,6 +155,10 @@ public class ExceptionUtils
         {
             return null;
         }
+        catch (SecurityException e)
+        {
+            return null;
+        }
 
         if ( method.getReturnType() == null || !method.getReturnType().isAssignableFrom( Throwable.class ) )
         {
@@ -312,6 +316,11 @@ public class ExceptionUtils
         {
             // this is how the old plexus method failed ...
             throw new IndexOutOfBoundsException( "Throwable to check must not be null" );
+        }
+        if ( fromIndex < 0 )
+        {
+            // this is how the old plexus method failed ...
+            throw new IndexOutOfBoundsException( "fromIndex must be > 0 but was: " + fromIndex );
         }
 
         if ( type != null)

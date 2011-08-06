@@ -364,6 +364,16 @@ public class ExceptionUtilsTest extends Assert
             //nothing to do, Exception was expected
         }
 
+        try
+        {
+            ExceptionUtils.indexOfThrowable( testException, TestException.class, -1 );
+            fail( "indexOfThrowable with too large fromIndex" );
+        }
+        catch ( IndexOutOfBoundsException e )
+        {
+            //nothing to do, Exception was expected
+        }
+
         // NPE safe tests
         try
         {
