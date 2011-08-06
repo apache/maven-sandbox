@@ -19,9 +19,120 @@ package org.codehaus.plexus.util;
  * under the License.
  */
 
+import org.apache.maven.tck.FixPlexusBugs;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.Assert;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.Logger;
+
+import static org.hamcrest.CoreMatchers.*;
+
+
+
 /**
+ * This will test the plexus utility class {@link Expand}.
+ *
+ * Most of this stuff will be obsolete because java-1.4.2
+ * introduced a java.util.zip package which works like a charm.
+ *
+ * We of course need to implement this class due to compatibility
+ * reasons.
+ *
  * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
  */
-public class ExpandTest
+public class ExpandTest extends Assert
 {
+
+    private static Logger logger = Logger.getLogger(ExceptionUtilsTest.class.getName());
+
+    private static final String TEST_ZIP_LOCATION = "/expand/expand_test.zip";
+    private static final String TEST_ZIP_TARGET = "target/expand_test_target/";
+
+    private static final String TEST_UNZIPPED_FILE = "expand_test/test_file.txt";
+    private static final String TEST_UNZIPPED_CONTENT = "TestContent";
+
+    @Rule
+    public FixPlexusBugs fixPlexusBugs = new FixPlexusBugs();
+
+
+    private File getSourceFile()
+    {
+        URL zipFileUrl = getClass().getResource( TEST_ZIP_LOCATION );
+
+        assertNotNull( zipFileUrl );
+
+        return new File( zipFileUrl.getFile() );
+    }
+
+    /**
+     * Create a clean target directory for unzipping.
+     * If it did exist, then clean it first.
+     *
+     * @return
+     */
+    private File getTestTargetDir() throws IOException
+    {
+        File targetDir = new File( TEST_ZIP_TARGET );
+
+        if ( targetDir.exists() )
+        {
+            FileUtils.cleanDirectory( targetDir );
+        }
+        else
+        {
+            targetDir.mkdirs();
+        }
+
+        return targetDir;
+    }
+
+    @Test
+    public void testSetDest_No_NPE()
+    {
+        Expand expand = new Expand();
+        expand.setDest( null );
+    }
+
+    @Test
+    public void testSetSrc_No_NPE()
+    {
+        Expand expand = new Expand();
+        expand.setSrc(null);
+    }
+
+    @Test
+    public void testExecute() throws Exception
+    {
+        Expand expand = new Expand();
+
+        File source = getSourceFile();
+        expand.setSrc( source );
+
+        File targetDir = getTestTargetDir();
+        expand.setDest( targetDir );
+
+        expand.execute();
+
+        verifyExpandedContent( targetDir );
+    }
+
+
+    private void verifyExpandedContent( File targetDir )
+    {
+        assertThat( "target directory must exist"
+                  , targetDir.exists()
+                  , is( true) );
+
+        File expandedFile = new File( targetDir, TEST_UNZIPPED_FILE );
+
+        assertThat( "expanded file must exist: " + expandedFile.getAbsolutePath()
+                  , expandedFile.exists()
+                  , is( true) );
+    }
+
+
 }
