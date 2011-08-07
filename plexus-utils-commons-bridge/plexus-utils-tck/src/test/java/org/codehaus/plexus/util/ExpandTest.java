@@ -228,7 +228,7 @@ public class ExpandTest extends Assert
 
             expand.execute();
 
-            expandedFile = verifyExpandedFileAndContent(targetDir, TEST_UNZIPPED_CONTENT);
+            expandedFile = verifyExpandedFile( targetDir );
         }
 
         // turn the clock back 10 seconds
@@ -253,7 +253,7 @@ public class ExpandTest extends Assert
 
             expand.execute();
 
-            expandedFile = verifyExpandedFileAndContent(targetDir, TEST_UNZIPPED_CONTENT);
+            expandedFile = verifyExpandedFile( targetDir );
 
             assertEquals( "file must still have the old lastModified timestamp"
                         , time, expandedFile.lastModified() );
@@ -273,7 +273,7 @@ public class ExpandTest extends Assert
 
             expand.execute();
 
-            expandedFile = verifyExpandedFileAndContent(targetDir, TEST_UNZIPPED_CONTENT);
+            expandedFile = verifyExpandedFile( targetDir );
 
             // obviously the file will be overwritten anyway
             assertTrue( "file must now have newer lastModified timestamp, but was: time=" + time
@@ -300,7 +300,7 @@ public class ExpandTest extends Assert
 
             expand.execute();
 
-            expandedFile = verifyExpandedFileAndContent(targetDir, TEST_UNZIPPED_CONTENT);
+            expandedFile = verifyExpandedFile( targetDir );
 
             assertTrue( "file must now have newer lastModified timestamp, but was: time=" + time
                         + " expandedFile.lastModified()= " + expandedFile.lastModified()
