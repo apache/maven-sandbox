@@ -202,11 +202,110 @@ public class ExpandTest extends Assert
 
             expand.execute();
 
-            verifyExpandedFileAndContent( targetDir, TEST_UNZIPPED_CONTENT );
+            verifyExpandedFileAndContent(targetDir, TEST_UNZIPPED_CONTENT);
         }
         finally
         {
             System.setProperty( "user.dir", oldWorkingDirectory );
+        }
+    }
+
+    @Test
+    public void testExecute_Overwrite() throws Exception
+    {
+        File targetDir = getTestTargetDir();
+        File expandedFile = null;
+
+        {
+            // part1: expand
+
+            Expand expand = new Expand();
+
+            File source = getSourceFile();
+            expand.setSrc( source );
+
+            expand.setDest( targetDir );
+
+            expand.execute();
+
+            expandedFile = verifyExpandedFileAndContent(targetDir, TEST_UNZIPPED_CONTENT);
+        }
+
+        // turn the clock back 10 seconds
+        long time = System.currentTimeMillis() - 10000L;
+
+        // round down to 1s;
+        time = time - time % 1000L;
+
+        expandedFile.setLastModified( time );
+        assertEquals( time, expandedFile.lastModified() );
+
+        {
+            // part2: expand in non-overwrite mode
+
+            Expand expand = new Expand();
+
+            File source = getSourceFile();
+            expand.setSrc( source );
+            expand.setDest( targetDir );
+
+            expand.setOverwrite( false );
+
+            expand.execute();
+
+            expandedFile = verifyExpandedFileAndContent(targetDir, TEST_UNZIPPED_CONTENT);
+
+            assertEquals( "file must still have the old lastModified timestamp"
+                        , time, expandedFile.lastModified() );
+
+        }
+
+        {
+            // part3: expand in overwrite mode but local file is still newer than the one in the archive
+
+            Expand expand = new Expand();
+
+            File source = getSourceFile();
+            expand.setSrc( source );
+            expand.setDest( targetDir );
+
+            expand.setOverwrite( true );
+
+            expand.execute();
+
+            expandedFile = verifyExpandedFileAndContent(targetDir, TEST_UNZIPPED_CONTENT);
+
+            // obviously the file will be overwritten anyway
+            assertTrue( "file must now have newer lastModified timestamp, but was: time=" + time
+                        + " expandedFile.lastModified()= " + expandedFile.lastModified()
+                        , time > expandedFile.lastModified() );
+        }
+
+        // turn the clock back a loooong time!
+        time = 100000000L;
+
+        expandedFile.setLastModified(time);
+        assertEquals(time, expandedFile.lastModified());
+
+        {
+            // part3: expand in overwrite mode but local file is now older than the one in the archive
+
+            Expand expand = new Expand();
+
+            File source = getSourceFile();
+            expand.setSrc( source );
+            expand.setDest( targetDir );
+
+            expand.setOverwrite( true );
+
+            expand.execute();
+
+            expandedFile = verifyExpandedFileAndContent(targetDir, TEST_UNZIPPED_CONTENT);
+
+            assertTrue( "file must now have newer lastModified timestamp, but was: time=" + time
+                        + " expandedFile.lastModified()= " + expandedFile.lastModified()
+                        , time < expandedFile.lastModified() );
+
         }
     }
 
