@@ -23,6 +23,7 @@ import org.apache.maven.tck.FixPlexusBugs;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.Assert;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,16 +49,19 @@ import static org.hamcrest.CoreMatchers.*;
 public class ExpandTest extends Assert
 {
 
-    private static Logger logger = Logger.getLogger(ExceptionUtilsTest.class.getName());
+    private static Logger logger = Logger.getLogger(ExpandTest.class.getName());
 
     private static final String TEST_ZIP_LOCATION = "/expand/expand_test.zip";
-    private static final String TEST_ZIP_TARGET = "target/expand_test_target/";
+    private static final String TEST_ZIP_TARGET_FOLDER = "expand_test_target/";
 
     private static final String TEST_UNZIPPED_FILE = "expand_test/test_file.txt";
     private static final String TEST_UNZIPPED_CONTENT = "TestContent";
 
     @Rule
     public FixPlexusBugs fixPlexusBugs = new FixPlexusBugs();
+
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
 
     private File getSourceFile()
@@ -77,16 +81,7 @@ public class ExpandTest extends Assert
      */
     private File getTestTargetDir() throws IOException
     {
-        File targetDir = new File( TEST_ZIP_TARGET );
-
-        if ( targetDir.exists() )
-        {
-            FileUtils.cleanDirectory( targetDir );
-        }
-        else
-        {
-            targetDir.mkdirs();
-        }
+        File targetDir = tempFolder.newFolder( TEST_ZIP_TARGET_FOLDER );
 
         return targetDir;
     }
@@ -162,7 +157,11 @@ public class ExpandTest extends Assert
         }
         catch ( Exception e )
         {
-            Throwable cause = ExceptionUtils.getCause( e );
+            Throwable cause = ExceptionUtils.getRootCause( e );
+            if ( cause == null )
+            {
+                cause = e;
+            }
 
             assertTrue( "cause must be a FileNotFoundException", cause instanceof FileNotFoundException );
         }
@@ -232,7 +231,7 @@ public class ExpandTest extends Assert
         }
 
         // turn the clock back 10 seconds
-        long time = System.currentTimeMillis() - 10000L;
+        long time = System.currentTimeMillis() - 120000L;
 
         // round down to 1s;
         time = time - time % 1000L;
@@ -276,7 +275,7 @@ public class ExpandTest extends Assert
             expandedFile = verifyExpandedFile( targetDir );
 
             // obviously the file will be overwritten anyway
-            assertTrue( "file must now have newer lastModified timestamp, but was: time=" + time
+            assertTrue( "file must now have the original old lastModified timestamp, but was: time=" + time
                         + " expandedFile.lastModified()= " + expandedFile.lastModified()
                         , time > expandedFile.lastModified() );
         }

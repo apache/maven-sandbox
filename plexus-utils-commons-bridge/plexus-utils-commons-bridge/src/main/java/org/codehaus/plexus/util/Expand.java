@@ -20,6 +20,13 @@ package org.codehaus.plexus.util;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * Expand will unpack the given zip archive.
@@ -42,6 +49,7 @@ public class Expand
      * if the unpackaging should get performed if the destination already exists.
      */
     private boolean overwrite = false;
+    private static final int BUFFER_SIZE = 2 ^ 16;
 
 
     /**
@@ -68,7 +76,8 @@ public class Expand
 
     /**
      * If the destination directory should get overwritten if the content
-     * already exists.
+     * already exists. If <code>false</code> we will only overwrite if the local
+     * file or directory is older than the one in the archive.
      * @param overwrite
      */
     public void setOverwrite( boolean overwrite )
@@ -82,11 +91,147 @@ public class Expand
      *
      * @throws Exception
      */
-    public void execute() throws Exception
+    public void execute()
+            throws Exception
     {
-        //X TODO implement
-        throw new RuntimeException( "not yet implemented!" );
+        expandFile( source, dest );
     }
 
+    /**
+     * <p>It is intended to be overwritten when implementing an own unarchiver</p>
+     *
+     * <p><b>Note:</b> we kept this protected method for the sake of backward compatibility!</p>
+     *
+     * @param srcFile
+     * @param dest
+     * @throws Exception
+     */
+    protected void expandFile( File srcFile, File dest )
+            throws Exception
+    {
+        if (source == null)
+        {
+            throw new NullPointerException( "Source Archive must not be null!" );
+        }
 
+        File destDir = dest;
+        if ( destDir == null )
+        {
+            destDir = new File( System.getProperty( "user.dir" ) );
+        }
+
+        FileInputStream fileInputStream = new FileInputStream( srcFile );
+        try
+        {
+            ZipInputStream zipInputStream = new ZipInputStream( fileInputStream );
+
+            ZipEntry zipEntry;
+
+            while( (zipEntry = zipInputStream.getNextEntry()) != null )
+            {
+                String zipEntryName = zipEntry.getName();
+                Date zipEntryDate   = new Date( zipEntry.getTime() );
+
+                extractFile( source, destDir, zipInputStream, zipEntryName, zipEntryDate, zipEntry.isDirectory() );
+            }
+        }
+        finally
+        {
+            try
+            {
+                fileInputStream.close();
+            }
+            catch( IOException ioe )
+            {
+                // no worries, all is ok ...
+            }
+        }
+    }
+
+    /**
+     * Extract a single ZipEntry.
+     *
+     * <p><b>Note:</b> we kept this protected method for the sake of backward compatibility!</p>
+     *
+     * @param archive the archive to unpack
+     * @param destDir the destination dirctory
+     * @param compressedInputStream
+     * @param entryName
+     * @param entryDate
+     * @param isDirectory
+     * @throws Exception
+     */
+    protected void extractFile( File archive
+                              , File destDir
+                              , InputStream compressedInputStream
+                              , String entryName
+                              , Date entryDate
+                              , boolean isDirectory )
+            throws Exception
+    {
+        File targetFile = new File( destDir, entryName );
+
+        // if overwrite is specified and the file type
+        // of the existing file does not match, then delete it
+        if ( overwrite && targetFile.exists() && targetFile.isDirectory() != isDirectory )
+        {
+            deleteFileOrDir( targetFile );
+        }
+
+        if ( !targetFile.exists() ||
+             overwrite            ||
+             targetFile.lastModified() <= entryDate.getTime() )
+        {
+            if ( isDirectory )
+            {
+                targetFile.mkdirs();
+            }
+            else
+            {
+                byte[] buffer = new byte[ BUFFER_SIZE ];
+                FileOutputStream fileOutputStream = new FileOutputStream( targetFile );
+                try
+                {
+                    int len;
+                    while( (len = compressedInputStream.read( buffer ) ) > 0)
+                    {
+                        fileOutputStream.write( buffer, 0, len );
+                    }
+
+                    targetFile.setLastModified( entryDate.getTime() );
+                }
+                finally
+                {
+                    try
+                    {
+                        fileOutputStream.close();
+                    }
+                    catch( IOException ioe )
+                    {
+                        // no worries, all is ok ...
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * small helper method who deletes the given directory or file.
+     *
+     * @param targetFile
+     * @throws IOException
+     */
+    private void deleteFileOrDir( File targetFile )
+            throws IOException
+    {
+        if ( targetFile.isDirectory() )
+        {
+            org.apache.commons.io.FileUtils.deleteDirectory( targetFile );
+        }
+        else
+        {
+            targetFile.delete();
+        }
+
+    }
 }
