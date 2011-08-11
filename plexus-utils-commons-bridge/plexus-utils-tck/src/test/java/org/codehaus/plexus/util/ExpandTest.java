@@ -29,10 +29,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.logging.Logger;
 
 import static org.hamcrest.CoreMatchers.*;
-
 
 
 /**
@@ -49,8 +47,6 @@ import static org.hamcrest.CoreMatchers.*;
 public class ExpandTest extends Assert
 {
 
-    private static Logger logger = Logger.getLogger(ExpandTest.class.getName());
-
     private static final String TEST_ZIP_LOCATION = "/expand/expand_test.zip";
     private static final String TEST_ZIP_TARGET_FOLDER = "expand_test_target/";
 
@@ -62,7 +58,6 @@ public class ExpandTest extends Assert
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
-
 
     private File getSourceFile()
     {
