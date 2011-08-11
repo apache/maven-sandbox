@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.After;
 import org.junit.Assert;
 
+import javax.crypto.spec.OAEPParameterSpec;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Set;
@@ -46,6 +47,7 @@ public class OsTest extends Assert
     public FixPlexusBugs fixPlexusBugs = new FixPlexusBugs();
 
     private String origOsName;
+    private String origOsFamily;
     private String origOsArch;
     private String origOsVersion;
 
@@ -57,6 +59,7 @@ public class OsTest extends Assert
         origOsName = System.getProperty( "os.name" );
         origOsArch = System.getProperty( "os.arch" );
         origOsVersion = System.getProperty("os.version");
+        origOsFamily = Os.OS_FAMILY;
 
         // and now set some special settings ;)
         System.setProperty( "os.name"   , "os/2" );
@@ -65,8 +68,9 @@ public class OsTest extends Assert
 
         // blow away the originally loaded values
         setStaticOsField( "OS_NAME", "os/2" );
-        setStaticOsField( "OS_ARCH", "i386" );
-        setStaticOsField( "OS_VERSION", "2.1.32" );
+        setStaticOsField( "OS_FAMILY", "os/2" );
+        setStaticOsField("OS_ARCH", "i386");
+        setStaticOsField("OS_VERSION", "2.1.32");
     }
 
     @After
@@ -82,6 +86,7 @@ public class OsTest extends Assert
         setStaticOsField( "OS_NAME", origOsName );
         setStaticOsField( "OS_ARCH", origOsArch );
         setStaticOsField( "OS_VERSION", origOsVersion );
+        setStaticOsField( "OS_FAMILY", origOsFamily );
     }
 
     private void setStaticOsField( String variableName, Object value )
@@ -162,8 +167,35 @@ public class OsTest extends Assert
 
 
     @Test
-    public void testIsOs()
+    public void testIsArch()
     {
-        Os myOs= new Os( "unix");
+        assertThat( "Arch is i386"
+                  , Os.isArch("i386")
+                  , is( true ) );
+
+        assertThat( "Os is not Mac"
+                  , Os.isArch("x86_64")
+                  , is( false ) );
     }
+
+    @Test
+    public void testIsFamily()
+    {
+        assertThat( "Family is os/2"
+                  , Os.isFamily(Os.FAMILY_OS2)
+                  , is( true ) );
+
+        assertThat( "Family is not mac"
+                  , Os.isFamily( Os.FAMILY_MAC )
+                  , is( false ) );
+    }
+
+    @Test
+    public void testIsName()
+    {
+        assertThat( "Name is os/2"
+                  , Os.isName(Os.FAMILY_OS2)
+                  , is( true ) );
+    }
+
 }
