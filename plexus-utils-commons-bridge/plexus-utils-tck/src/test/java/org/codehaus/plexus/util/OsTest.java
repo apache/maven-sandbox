@@ -170,11 +170,11 @@ public class OsTest extends Assert
     public void testIsArch()
     {
         assertThat( "Arch is i386"
-                  , Os.isArch("i386")
+                  , Os.isArch( "i386" )
                   , is( true ) );
 
         assertThat( "Os is not Mac"
-                  , Os.isArch("x86_64")
+                  , Os.isArch( "x86_64" )
                   , is( false ) );
     }
 
@@ -182,7 +182,7 @@ public class OsTest extends Assert
     public void testIsFamily()
     {
         assertThat( "Family is os/2"
-                  , Os.isFamily(Os.FAMILY_OS2)
+                  , Os.isFamily( Os.FAMILY_OS2 )
                   , is( true ) );
 
         assertThat( "Family is not mac"
@@ -194,8 +194,40 @@ public class OsTest extends Assert
     public void testIsName()
     {
         assertThat( "Name is os/2"
-                  , Os.isName(Os.FAMILY_OS2)
+                  , Os.isName( "os/2" )
                   , is( true ) );
+
+        assertThat( "Name is not Mac OS X"
+                  , Os.isName( "Mac OS X" )
+                  , is( false ) );
     }
 
+    @Test
+    public void testIsValidFamily()
+    {
+        assertThat( "os/2 isValidFamily"
+                  , Os.isValidFamily( Os.FAMILY_OS2 )
+                  , is( true ) );
+
+        assertThat( "iPone != isValidFamily"
+                  , Os.isValidFamily( "iPhone" )
+                  , is( false ) );
+    }
+
+    @Test
+    public void testIsVersion()
+    {
+        assertThat( "isVersion"
+                  , Os.isVersion( "2.1.32" )
+                  , is( true ) );
+
+        assertThat( "isVersion"
+                  , Os.isVersion( "2.1" )
+                  , is( false ) );
+
+        assertThat( "isVersion"
+                  , Os.isVersion( "4.5" )
+                  , is( false ) );
+
+    }
 }
