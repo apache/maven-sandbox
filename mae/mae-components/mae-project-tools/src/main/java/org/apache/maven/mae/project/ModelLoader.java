@@ -21,30 +21,34 @@ package org.apache.maven.mae.project;
 
 import java.io.File;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.maven.mae.project.key.FullProjectKey;
 import org.apache.maven.mae.project.session.ProjectToolsSession;
-import org.apache.maven.project.MavenProject;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.building.ModelSource;
+import org.sonatype.aether.RequestTrace;
 
-public interface ProjectLoader
+public interface ModelLoader
 {
 
-    List<MavenProject> buildReactorProjectInstances( final ProjectToolsSession session, final boolean recursive,
-                                                     final File... rootPoms )
+    List<Model> loadRawModel( File pom, boolean processModules, RequestTrace trace, ProjectToolsSession session )
         throws ProjectToolsException;
 
-    MavenProject buildProjectInstance( final File pomFile, final ProjectToolsSession session )
+    List<Model> loadRawModels( ProjectToolsSession session, boolean processModules, RequestTrace trace, File... poms )
         throws ProjectToolsException;
 
-    MavenProject buildProjectInstance( final String groupId, final String artifactId, final String version,
-                                       final ProjectToolsSession session )
+    Model loadRawModel( FullProjectKey key, RequestTrace trace, ProjectToolsSession session )
         throws ProjectToolsException;
 
-    MavenProject buildProjectInstance( final FullProjectKey key, final ProjectToolsSession session )
+    Model loadRawModel( String groupId, String artifactId, String version, RequestTrace trace,
+                        ProjectToolsSession session )
         throws ProjectToolsException;
 
-    Set<String> retrieveReactorProjectIds( final File rootPom )
+    ModelSource resolveModel( FullProjectKey key, RequestTrace trace, ProjectToolsSession session )
+        throws ProjectToolsException;
+
+    ModelSource resolveModel( String groupId, String artifactId, String version, RequestTrace trace,
+                              ProjectToolsSession session )
         throws ProjectToolsException;
 
 }

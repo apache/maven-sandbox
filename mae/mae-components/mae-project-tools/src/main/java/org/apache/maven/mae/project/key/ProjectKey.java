@@ -17,34 +17,15 @@
  * under the License.
  */
 
-package org.apache.maven.mae.project;
+package org.apache.maven.mae.project.key;
 
-import org.apache.maven.mae.MAEException;
-
-public class ProjectToolsException
-    extends MAEException
+public interface ProjectKey
 {
 
-    private static final long serialVersionUID = 1L;
+    String getGroupId();
 
-    public ProjectToolsException( final String message, final Object... params )
-    {
-        super( message, params );
-    }
+    String getArtifactId();
 
-    public ProjectToolsException( final String message, final Throwable cause, final Object... params )
-    {
-        super( message, cause, params );
-    }
-
-    public ProjectToolsException( final String message, final Throwable cause )
-    {
-        super( message, cause );
-    }
-
-    public ProjectToolsException( final String message )
-    {
-        super( message );
-    }
+    String getId();
 
 }

@@ -1,25 +1,43 @@
 /*
- * Copyright 2011 Red Hat, Inc.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.apache.maven.mae.project;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.maven.RepositoryUtils;
 import org.apache.maven.artifact.ArtifactUtils;
+import org.apache.maven.mae.project.key.FullProjectKey;
 import org.apache.maven.mae.project.session.ProjectToolsSession;
 import org.apache.maven.mae.project.session.SessionInjector;
 import org.apache.maven.model.Model;
@@ -42,20 +60,6 @@ import org.sonatype.aether.artifact.Artifact;
 import org.sonatype.aether.resolution.ArtifactRequest;
 import org.sonatype.aether.resolution.ArtifactResolutionException;
 import org.sonatype.aether.resolution.ArtifactResult;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Component( role = ProjectLoader.class )
 public class DefaultProjectLoader
@@ -136,14 +140,8 @@ public class DefaultProjectLoader
                         builder.append( "\n" ).append( result.getProjectId() );
                         for ( final ModelProblem problem : problems )
                         {
-                            builder.append( "\n\t" )
-                              .append( ( ++i ) ).append( " " )
-                              .append( problem.getMessage() )
-                              .append( "\n\t\t" )
-                              .append( problem.getSource() )
-                              .append( "@" )
-                              .append( problem.getLineNumber() )
-                              .append( ":" + problem.getColumnNumber() );
+                            builder.append( "\n\t" ).append( ( ++i ) ).append( " " ).append( problem.getMessage() ).append( "\n\t\t" ).append( problem.getSource() ).append( "@" ).append( problem.getLineNumber() ).append( ":"
+                                                                                                                                                                                                                                 + problem.getColumnNumber() );
 
                             if ( problem.getException() != null )
                             {
@@ -155,7 +153,7 @@ public class DefaultProjectLoader
                             }
                         }
                     }
-                    
+
                     sb.append( builder );
                 }
             }
@@ -183,10 +181,8 @@ public class DefaultProjectLoader
             while ( parent != null )
             {
                 final org.apache.maven.artifact.Artifact pomArtifact =
-                    mavenRepositorySystem.createArtifact( project.getGroupId(),
-                                                          project.getArtifactId(),
-                                                          project.getVersion(),
-                                                          "pom" );
+                    mavenRepositorySystem.createArtifact( project.getGroupId(), project.getArtifactId(),
+                                                          project.getVersion(), "pom" );
 
                 final Artifact aetherPomArtifact = RepositoryUtils.toArtifact( pomArtifact );
 
@@ -260,12 +256,8 @@ public class DefaultProjectLoader
                     final List<ModelProblem> problems = result.getProblems();
                     for ( final ModelProblem problem : problems )
                     {
-                        sb.append( problem.getMessage() )
-                          .append( "\n\t" )
-                          .append( problem.getSource() )
-                          .append( "@" )
-                          .append( problem.getLineNumber() )
-                          .append( ":" + problem.getColumnNumber() );
+                        sb.append( problem.getMessage() ).append( "\n\t" ).append( problem.getSource() ).append( "@" ).append( problem.getLineNumber() ).append( ":"
+                                                                                                                                                                     + problem.getColumnNumber() );
 
                         if ( problem.getException() != null )
                         {
@@ -283,6 +275,13 @@ public class DefaultProjectLoader
 
             throw new ProjectToolsException( "Failed to build project instance. \n\n%s", e, sb );
         }
+    }
+
+    @Override
+    public MavenProject buildProjectInstance( final FullProjectKey key, final ProjectToolsSession session )
+        throws ProjectToolsException
+    {
+        return buildProjectInstance( key.getGroupId(), key.getArtifactId(), key.getVersion(), session );
     }
 
     @Override
@@ -328,12 +327,7 @@ public class DefaultProjectLoader
             int i = 0;
             if ( results == null )
             {
-                sb.append( "Cannot build project instance for: " )
-                  .append( groupId )
-                  .append( ':' )
-                  .append( artifactId )
-                  .append( ':' )
-                  .append( version );
+                sb.append( "Cannot build project instance for: " ).append( groupId ).append( ':' ).append( artifactId ).append( ':' ).append( version );
 
                 final StringWriter sWriter = new StringWriter();
                 final PrintWriter pWriter = new PrintWriter( sWriter );
@@ -348,12 +342,8 @@ public class DefaultProjectLoader
                     final List<ModelProblem> problems = result.getProblems();
                     for ( final ModelProblem problem : problems )
                     {
-                        sb.append( problem.getMessage() )
-                          .append( "\n\t" )
-                          .append( problem.getSource() )
-                          .append( "@" )
-                          .append( problem.getLineNumber() )
-                          .append( ":" + problem.getColumnNumber() );
+                        sb.append( problem.getMessage() ).append( "\n\t" ).append( problem.getSource() ).append( "@" ).append( problem.getLineNumber() ).append( ":"
+                                                                                                                                                                     + problem.getColumnNumber() );
 
                         if ( problem.getException() != null )
                         {
@@ -373,12 +363,8 @@ public class DefaultProjectLoader
         }
         catch ( final ArtifactResolutionException e )
         {
-            throw new ProjectToolsException( "Failed to resolve POM: %s:%s:%s\nReason: %s",
-                                             e,
-                                             groupId,
-                                             artifactId,
-                                             version,
-                                             e.getMessage() );
+            throw new ProjectToolsException( "Failed to resolve POM: %s:%s:%s\nReason: %s", e, groupId, artifactId,
+                                             version, e.getMessage() );
         }
     }
 
@@ -476,10 +462,8 @@ public class DefaultProjectLoader
 
                 if ( !moduleFile.isFile() )
                 {
-                    LOGGER.warn( String.format( "In reactor of: %s: Child module %s of %s does not exist.",
-                                                topPom,
-                                                moduleFile,
-                                                pom ) );
+                    LOGGER.warn( String.format( "In reactor of: %s: Child module %s of %s does not exist.", topPom,
+                                                moduleFile, pom ) );
                     continue;
                 }
 
@@ -519,17 +503,13 @@ public class DefaultProjectLoader
         catch ( final IOException e )
         {
             LOGGER.error( String.format( "Failed to read POM: %s.\nReason: %s", pom, e.getMessage() ), e );
-            throw new ProjectToolsException( "Failed to read POM: %s. Reason: %s",
-                                             e,
-                                             pom.getAbsolutePath(),
+            throw new ProjectToolsException( "Failed to read POM: %s. Reason: %s", e, pom.getAbsolutePath(),
                                              e.getMessage() );
         }
         catch ( final XmlPullParserException e )
         {
             LOGGER.error( String.format( "Failed to read POM: %s.\nReason: %s", pom, e.getMessage() ), e );
-            throw new ProjectToolsException( "Failed to read POM: %s. Reason: %s",
-                                             e,
-                                             pom.getAbsolutePath(),
+            throw new ProjectToolsException( "Failed to read POM: %s. Reason: %s", e, pom.getAbsolutePath(),
                                              e.getMessage() );
         }
         finally
