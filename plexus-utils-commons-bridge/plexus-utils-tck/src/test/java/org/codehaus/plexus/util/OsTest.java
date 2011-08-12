@@ -26,7 +26,6 @@ import org.junit.Before;
 import org.junit.After;
 import org.junit.Assert;
 
-import javax.crypto.spec.OAEPParameterSpec;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Set;
@@ -147,9 +146,8 @@ public class OsTest extends Assert
     {
         Set<String> osFamilies = Os.getValidFamilies();
 
-        assertThat( "OsFamilies Set size"
-                  , osFamilies.size()
-                  , is(11) );
+        assertTrue( "OsFamilies Set size"
+                  , osFamilies.size() >= 11 );
         
         assert( osFamilies.contains( Os.FAMILY_DOS ) );
         assert( osFamilies.contains( Os.FAMILY_MAC ) );
