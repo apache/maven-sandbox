@@ -17,34 +17,10 @@
  * under the License.
  */
 
-package org.apache.maven.mae.project;
+package org.apache.maven.mae.project.event;
 
-import org.apache.maven.mae.MAEException;
-
-public class ProjectToolsException
-    extends MAEException
+public enum ModelLoaderEventType
 {
-
-    private static final long serialVersionUID = 1L;
-
-    public ProjectToolsException( final String message, final Object... params )
-    {
-        super( message, params );
-    }
-
-    public ProjectToolsException( final String message, final Throwable cause, final Object... params )
-    {
-        super( message, cause, params );
-    }
-
-    public ProjectToolsException( final String message, final Throwable cause )
-    {
-        super( message, cause );
-    }
-
-    public ProjectToolsException( final String message )
-    {
-        super( message );
-    }
+    ERROR, RESOLVED, BUILT;
 
 }
