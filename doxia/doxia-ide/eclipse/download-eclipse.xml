@@ -34,7 +34,7 @@
 
   <property
     name="eclipse.downloads.mirror"
-    value="http://download.eclipse.org" />
+    value="http://archive.eclipse.org" />
 
   <!-- Eclipse SDK download URLs -->
   <!-- @see http://www.eclipse.org/downloads/ -->
@@ -70,7 +70,7 @@
     value="GEF-SDK-3.3.2" />
   <property
     name="eclipse.GEF-SDK.download.url"
-    value="${eclipse.downloads.mirror}/tools/gef/downloads/drops/3.3.2/R200802211602/${eclipse.GEF-SDK.name}.zip" />
+    value="${eclipse.downloads.mirror}/tools/gef/downloads/drops/R-3.3.2-200802211602/${eclipse.GEF-SDK.name}.zip" />
   <!-- Eclipse dtp-sdk -->
   <property
     name="eclipse.dtp-sdk.name"
