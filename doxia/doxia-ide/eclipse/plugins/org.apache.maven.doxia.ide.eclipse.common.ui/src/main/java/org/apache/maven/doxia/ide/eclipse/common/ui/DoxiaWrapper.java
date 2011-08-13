@@ -21,18 +21,20 @@ package org.apache.maven.doxia.ide.eclipse.common.ui;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.maven.doxia.Converter;
 import org.apache.maven.doxia.ConverterException;
 import org.apache.maven.doxia.DefaultConverter;
 import org.apache.maven.doxia.UnsupportedFormatException;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.wrapper.InputReaderWrapper;
-import org.apache.maven.doxia.wrapper.OutputWriterWrapper;
+import org.apache.maven.doxia.wrapper.OutputStreamWrapper;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.core.resources.IFile;
@@ -121,12 +123,12 @@ public class DoxiaWrapper
      */
     private static String convert( Reader reader, IFile file, String format )
     {
-        Writer writer = new StringWriter();
+        OutputStream out = new ByteArrayOutputStream();
         Converter converter = new DefaultConverter();
         try
         {
             InputReaderWrapper input = InputReaderWrapper.valueOf( reader, format, converter.getInputFormats() );
-            OutputWriterWrapper output = OutputWriterWrapper.valueOf( writer, DEFAULT_OUTPUT, converter
+            OutputStreamWrapper output = OutputStreamWrapper.valueOf( out, format, file.getCharset(), converter
                 .getOutputFormats() );
 
             converter.convert( input, output );
@@ -222,7 +224,7 @@ public class DoxiaWrapper
         finally
         {
             IOUtil.close( reader );
-            IOUtil.close( writer );
+            IOUtil.close( out );
         }
 
         try
@@ -237,7 +239,7 @@ public class DoxiaWrapper
             return "CoreException: " + msgCe;
         }
 
-        return writer.toString();
+        return out.toString();
     }
 
     /**

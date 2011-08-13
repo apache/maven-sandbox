@@ -206,32 +206,55 @@ under the License.
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.6</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>2.2</version>
+          <version>2.4.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.0.2</version>
+          <version>2.3.2</version>
           <configuration>
-            <source>1.5</source>
-            <target>1.5</target>
+            <source>1.6</source>
+            <target>1.6</target>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>2.2</version>
+          <version>2.3.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>2.0</version>
+          <version>2.3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
-          <version>2.5.1</version>
+          <version>2.6</version>
+          <configuration>
+            <projectNameTemplate>${project.groupId}-${project.artifactId}</projectNameTemplate>
+            <downloadSources>true</downloadSources>
+            <downloadJavadocs>false</downloadJavadocs>
+            <additionalBuildcommands>
+              <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+              <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
+              <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
+            </additionalBuildcommands>
+            <additionalProjectnatures>
+              <projectnature>org.eclipse.pde.PluginNature</projectnature>
+              <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+            </additionalProjectnatures>
+            <classpathContainers>
+              <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+              <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
+            </classpathContainers>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.felix</groupId>
@@ -387,19 +410,119 @@ under the License.
               <execution>
                 <phase>validate</phase>
                 <configuration>
-                  <tasks>
+                  <target>
                     <subant target="">
                       <property name="download.dir" value="${java.io.tmpdir}"/>
                       <property name="install.dir" value="${java.io.tmpdir}"/>
                       <fileset dir="${basedir}" includes="download-eclipse.xml"/>
                     </subant>
-                  </tasks>
+                  </target>
                 </configuration>
                 <goals>
                   <goal>run</goal>
                 </goals>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>to-eclipse</id>
+      <build>
+        <defaultGoal>validate</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>validate</phase>
+                <configuration>
+                  <target>
+
+                    <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
+                    <!-- Same that download-eclipse profile -->
+                    <available file="${install.dir}/plugins" property="eclipse.present"/>
+
+                    <if>
+                      <equals arg1="${eclipse.present}" arg2="true" />
+                      <then>
+                        <echo level="info">Eclipse home: ${install.dir}</echo>
+                      </then>
+                      <else>
+                        <echo level="info">No custom Eclipse home defined, using default in Tmp dir</echo>
+                        <property name="install.dir" location="${java.io.tmpdir}/eclipse" relative="true" />
+                        <available file="${install.dir}/plugins" property="eclipse.present"/>
+                        <fail unless="eclipse.present">
+The ${install.dir} doesn't exist. Please run the -Pdownload-eclipse first</fail>
+                      </else>
+                    </if>
+
+                    <available file="${basedir}/plugins" type="dir" property="plugins.present" />
+
+                    <if>
+                      <equals arg1="${plugins.present}" arg2="true" />
+                      <then>
+                        <echo message="Copying Doxia IDE to ${install.dir}/plugins..." />
+                        <copy todir="${install.dir}/plugins" verbose="true" overwrite="true">
+                          <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.apt.ui/target">
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                          </fileset>
+                          <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.common.ui/target">
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                          </fileset>
+                          <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.confluence.ui/target">
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                          </fileset>
+                          <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.docbook.ui/target">
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                          </fileset>
+                          <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.fml.ui/target">
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                          </fileset>
+                          <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.help/target">
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                          </fileset>
+                          <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.twiki.ui/target">
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                          </fileset>
+                          <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.xdoc.ui/target">
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                          </fileset>
+                          <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.xhtml.ui/target">
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                          </fileset>
+                        </copy>
+                     </then>
+                    </if>
+
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant-nodeps</artifactId>
+                <version>1.8.1</version>
+              </dependency>
+              <dependency>
+                <groupId>ant-contrib</groupId>
+                <artifactId>ant-contrib</artifactId>
+                <version>1.0b2</version>
+                <exclusions>
+                  <exclusion>
+                  <groupId>ant</groupId>
+                  <artifactId>ant</artifactId>
+                  </exclusion>
+                </exclusions>
+              </dependency>
+            </dependencies>
           </plugin>
         </plugins>
       </build>
