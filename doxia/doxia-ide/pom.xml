@@ -24,7 +24,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.doxia</groupId>
     <artifactId>doxia-sandbox</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>doxia-ide</artifactId>
@@ -32,6 +32,8 @@ under the License.
   <description>Doxia IDE integration</description>
   <packaging>pom</packaging>
   <modules>
-    <module>netbeans</module>
+<!-- TODO -->
+<!--    <module>netbeans</module> -->
+    <module>eclipse</module>
   </modules>
 </project>
