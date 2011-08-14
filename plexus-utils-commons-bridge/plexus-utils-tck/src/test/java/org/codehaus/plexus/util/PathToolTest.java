@@ -107,7 +107,62 @@ public class PathToolTest extends Assert
 
         assertThat( PathTool.getRelativeFilePath( "/bin", "/usr/local/" )
                   , is( "../usr/local/" ) );
+    }
+
+    @Test
+    public void testGetRelativePath_2parm()
+    {
+        assertThat( PathTool.getRelativePath( null, null )
+                  , is( "" ) );
+
+        assertThat( PathTool.getRelativePath( null, "/usr/local/java/bin" )
+                  , is( "" ) );
+
+        assertThat( PathTool.getRelativePath( "/usr/local/", null )
+                  , is( "" ) );
+
+        assertThat( PathTool.getRelativePath( "/usr/local/", "/usr/local/java/bin" )
+                  , is( ".." ) );
+
+        assertThat( PathTool.getRelativePath( "/usr/local/", "/usr/local/java/bin/java.sh" )
+                  , is( "../.." ) );
+
+        assertThat( PathTool.getRelativePath( "/usr/local/java/bin/java.sh", "/usr/local/" )
+                  , is( "" ) );
+    }
+
+    @Test
+    public void testGetRelativePath_1parm()
+    {
+        assertThat( PathTool.getRelativePath( null )
+                  , is( "" ) );
+
+/*X TODO create temp dir structure and set user.dir to it
+        assertThat( PathTool.getRelativePath("/usr/local/java/bin" )
+                  , is( "" ) );
+*/
 
     }
-        
+
+    @Test
+    public void testGetRelativeWebPath()
+    {
+        assertThat( PathTool.getRelativeWebPath( null, null )
+                  , is( "" ) );
+
+        assertThat( PathTool.getRelativeWebPath( null, "http://plexus.codehaus.org/" )
+                  , is( "" ) );
+
+        assertThat( PathTool.getRelativeWebPath( "http://plexus.codehaus.org/", null )
+                  , is( "" ) );
+
+        assertThat( PathTool.getRelativeWebPath( "http://plexus.codehaus.org/"
+                                               , "http://plexus.codehaus.org/plexus-utils/index.html" )
+                  , is( "plexus-utils/index.html" ) );
+
+        assertThat( PathTool.getRelativeWebPath( "http://plexus.codehaus.org/plexus-utils/index.html"
+                                               , "http://plexus.codehaus.org/" )
+                  , is( "../../" ) );
+    }
+
 }
