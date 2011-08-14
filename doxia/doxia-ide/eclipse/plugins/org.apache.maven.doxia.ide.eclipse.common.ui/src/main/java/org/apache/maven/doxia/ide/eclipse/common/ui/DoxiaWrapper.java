@@ -24,8 +24,6 @@ import java.io.FileReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.maven.doxia.Converter;
@@ -259,12 +257,9 @@ public class DoxiaWrapper
             IMarker marker = markers[i];
             owner = marker.getAttribute( CommonPlugin.PLUGIN_ID );
 
-            if ( owner != null && owner instanceof String )
+            if ( CommonPlugin.PLUGIN_ID.equals( owner ) )
             {
-                if ( owner.equals( CommonPlugin.PLUGIN_ID ) )
-                {
-                    deleteMarkers[deleteindex++] = markers[i];
-                }
+                deleteMarkers[deleteindex++] = marker;
             }
         }
 
