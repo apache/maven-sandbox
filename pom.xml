@@ -49,7 +49,7 @@ under the License.
   <properties>
     <libdir>${project.build.outputDirectory}/lib</libdir>
     <manifestdir>${project.build.outputDirectory}/META-INF</manifestdir>
-    <doxiaVersion>1.2</doxiaVersion>
+    <doxiaVersion>1.1.2</doxiaVersion>
     <doxiaConverterVersion>1.2</doxiaConverterVersion>
   </properties>
 
