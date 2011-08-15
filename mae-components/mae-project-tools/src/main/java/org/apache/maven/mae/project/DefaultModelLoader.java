@@ -243,6 +243,13 @@ public class DefaultModelLoader
             for ( String mod : model.getModules() )
             {
                 File modFile = new File( dir, mod );
+                if ( !modFile.isFile() )
+                {
+                    modFile = new File( modFile, "pom.xml" );
+                }
+
+                modFile = modFile.getAbsoluteFile();
+
                 if ( modFile.exists() )
                 {
                     traces.put( modFile, trace.newChild( modFile ) );
