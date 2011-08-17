@@ -40,7 +40,7 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.apache.maven.mae</groupId>
+        <groupId>org.apache.maven.mae.components</groupId>
         <artifactId>mae-project-tools</artifactId>
         <version>${project.version}</version>
       </dependency>
