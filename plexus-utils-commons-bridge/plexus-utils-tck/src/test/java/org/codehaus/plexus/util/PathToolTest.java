@@ -20,10 +20,14 @@ package org.codehaus.plexus.util;
  */
 
 import org.apache.maven.tck.FixPlexusBugs;
+import org.hamcrest.CoreMatchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.Assert;
+import org.junit.rules.TemporaryFolder;
 
+
+import java.io.File;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -39,6 +43,9 @@ public class PathToolTest extends Assert
 
     @Rule
     public FixPlexusBugs fixPlexusBugs = new FixPlexusBugs();
+
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Test
     public void testCalculateLink()
@@ -137,11 +144,15 @@ public class PathToolTest extends Assert
         assertThat( PathTool.getRelativePath( null )
                   , is( "" ) );
 
-/*X TODO create temp dir structure and set user.dir to it
-        assertThat( PathTool.getRelativePath("/usr/local/java/bin" )
-                  , is( "" ) );
-*/
+        File baseFolder = tempFolder.newFolder( "pathtooltest" );
 
+        String folderName = "anotherFolders";
+        File newDir = new File( baseFolder, folderName );
+        newDir.mkdirs();
+
+
+        assertThat( PathTool.getRelativePath( folderName )
+                  , is( "." ) );
     }
 
     @Test
@@ -163,6 +174,22 @@ public class PathToolTest extends Assert
         assertThat( PathTool.getRelativeWebPath( "http://plexus.codehaus.org/plexus-utils/index.html"
                                                , "http://plexus.codehaus.org/" )
                   , is( "../../" ) );
+    }
+
+    @Test
+    public void testUppercaseDrive()
+    {
+        assertThat( PathTool.uppercaseDrive( null )
+                , CoreMatchers.<Object>nullValue() );
+
+        assertThat( PathTool.uppercaseDrive( "d:" )
+                , is( "D:" ) );
+
+        assertThat( PathTool.uppercaseDrive( "D:" )
+                , is( "D:" ) );
+
+        assertThat( PathTool.uppercaseDrive( "/notadrive" )
+                , is( "/notadrive" ) );
     }
 
 }
