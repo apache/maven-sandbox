@@ -72,6 +72,7 @@ public class ComponentSelectionModule
     private static final class ComponentSelectionInjector<T>
         implements MembersInjector<T>
     {
+        // FIXME: This is NOT being injected!!
         @Inject
         private Injector injector;
 
