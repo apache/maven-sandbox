@@ -59,7 +59,8 @@ public class DefaultMAEServiceManager
     @Requirement
     private ServiceAuthorizer authorizer;
 
-    @Requirement( role = Maven.class, hint = "default_" )
+    // @Requirement( role = Maven.class, hint = "default_" )
+    @Requirement( role = Maven.class )
     private DefaultMaven defaultMaven;
 
     @Requirement
@@ -247,8 +248,7 @@ public class DefaultMAEServiceManager
             }
             catch ( final InvalidRepositoryException e )
             {
-                throw new MAEEmbeddingException( "Failed to create default local-repository instance: {0}",
-                                                 e,
+                throw new MAEEmbeddingException( "Failed to create default local-repository instance: {0}", e,
                                                  e.getMessage() );
             }
         }
@@ -279,9 +279,7 @@ public class DefaultMAEServiceManager
         }
         catch ( final ComponentLookupException e )
         {
-            throw new MAEEmbeddingException( "Failed to retrieve service: %s. Reason: %s",
-                                             e,
-                                             type.getName(),
+            throw new MAEEmbeddingException( "Failed to retrieve service: %s. Reason: %s", e, type.getName(),
                                              e.getMessage() );
         }
     }
@@ -309,11 +307,8 @@ public class DefaultMAEServiceManager
         }
         catch ( final ComponentLookupException e )
         {
-            throw new MAEEmbeddingException( "Failed to retrieve service: %s with hint: %s. Reason: %s",
-                                             e,
-                                             type.getName(),
-                                             hint,
-                                             e.getMessage() );
+            throw new MAEEmbeddingException( "Failed to retrieve service: %s with hint: %s. Reason: %s", e,
+                                             type.getName(), hint, e.getMessage() );
         }
     }
 

@@ -19,34 +19,28 @@
 
 package org.apache.maven.mae.conf;
 
-import org.apache.log4j.Logger;
-import org.apache.maven.mae.conf.ext.ExtensionConfigurationException;
-import org.apache.maven.mae.conf.loader.MAELibraryLoader;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+import org.apache.maven.mae.conf.ext.ExtensionConfigurationException;
+import org.apache.maven.mae.conf.loader.MAELibraryLoader;
+
 public final class MAELibraries
 {
 
     private static final Logger logger = Logger.getLogger( MAEConfiguration.STANDARD_LOG_HANDLE_LOADER );
 
-    private static Set<MAELibrary> libraries;
-
     public static Collection<MAELibrary> loadLibraries( final MAEConfiguration embConfig,
                                                         final List<MAELibraryLoader> loaders )
         throws IOException
     {
-        if ( libraries != null )
-        {
-            return libraries;
-        }
-
-        libraries = new LinkedHashSet<MAELibrary>();
+        Set<MAELibrary> libraries = new LinkedHashSet<MAELibrary>();
         for ( final MAELibraryLoader loader : loaders )
         {
             libraries.addAll( loader.loadLibraries( embConfig ) );
@@ -63,13 +57,12 @@ public final class MAELibraries
                 if ( logger.isDebugEnabled() )
                 {
                     logger.debug( "Failed to load library configuration for: '" + library.getId() + "'. Reason: "
-                                                  + e.getMessage(), e );
+                                      + e.getMessage(), e );
                 }
             }
         }
 
-        libraries = Collections.unmodifiableSet( libraries );
-        return libraries;
+        return Collections.unmodifiableList( new ArrayList<MAELibrary>( libraries ) );
     }
 
 }

@@ -21,6 +21,15 @@ package org.apache.maven.mae.boot.embed;
 
 import static org.apache.maven.mae.conf.MAELibraries.loadLibraries;
 
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
 import org.apache.maven.Maven;
 import org.apache.maven.cli.CLIReportingUtils;
 import org.apache.maven.exception.DefaultExceptionHandler;
@@ -43,6 +52,7 @@ import org.apache.maven.mae.conf.mgmt.LoadOnFinish;
 import org.apache.maven.mae.conf.mgmt.LoadOnStart;
 import org.apache.maven.mae.conf.mgmt.MAEManagementException;
 import org.apache.maven.mae.conf.mgmt.MAEManagementView;
+import org.apache.maven.mae.internal.container.ComponentKey;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.properties.internal.EnvironmentUtils;
 import org.apache.maven.settings.Settings;
@@ -52,14 +62,13 @@ import org.apache.maven.settings.building.SettingsBuildingException;
 import org.apache.maven.settings.building.SettingsBuildingRequest;
 import org.apache.maven.settings.building.SettingsBuildingResult;
 import org.apache.maven.settings.building.SettingsProblem;
-import org.codehaus.plexus.ExtrudablePlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.logging.LoggerManager;
 import org.codehaus.plexus.util.StringUtils;
-import org.sonatype.guice.bean.locators.ComponentKey;
 import org.sonatype.plexus.components.cipher.DefaultPlexusCipher;
 import org.sonatype.plexus.components.cipher.PlexusCipherException;
 import org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher;
@@ -67,19 +76,10 @@ import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
 import org.sonatype.plexus.components.sec.dispatcher.SecUtil;
 import org.sonatype.plexus.components.sec.dispatcher.model.SettingsSecurity;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 /**
- * The core of the embeddable Maven environment. This class is used as the main interface to the embedded
- * Maven environment for the application developer. The only other interface is component-instance
- * injection, available through the configuration of {@link AbstractMAEApplication} subclasses.
+ * The core of the embeddable Maven environment. This class is used as the main interface to the embedded Maven
+ * environment for the application developer. The only other interface is component-instance injection, available
+ * through the configuration of {@link AbstractMAEApplication} subclasses.
  * 
  * @author John Casey
  */
@@ -99,7 +99,7 @@ public class MAEEmbedder
 
     private final boolean showVersion;
 
-    private final ExtrudablePlexusContainer container;
+    private final PlexusContainer container;
 
     private final MAEConfiguration embConfiguration;
 
@@ -117,7 +117,7 @@ public class MAEEmbedder
 
     private boolean stopped = false;
 
-    MAEEmbedder( final Maven maven, final MAEConfiguration embConfiguration, final ExtrudablePlexusContainer container,
+    MAEEmbedder( final Maven maven, final MAEConfiguration embConfiguration, final PlexusContainer container,
                  final SettingsBuilder settingsBuilder, final MavenExecutionRequestPopulator executionRequestPopulator,
                  final DefaultSecDispatcher securityDispatcher, final MAEServiceManager serviceManager,
                  final List<MAELibraryLoader> libraryLoaders, final PrintStream standardOut, final Logger logger,
@@ -138,42 +138,42 @@ public class MAEEmbedder
         this.showVersion = showVersion;
     }
 
-//    public synchronized Injector injector()
-//        throws MAEEmbeddingException
-//    {
-//        printInfo( null );
-//        return container.getInjector();
-//    }
+    // public synchronized Injector injector()
+    // throws MAEEmbeddingException
+    // {
+    // printInfo( null );
+    // return container.getInjector();
+    // }
 
-    /**
-     * Wire a series of externally managed objects with components from the Maven environment,
-     * according to component annotations in those instances.
-     */
-    public synchronized Map<Object, Throwable> wire( final Object... instances )
-        throws MAEEmbeddingException
-    {
-        checkStopped();
-        
-        printInfo( null );
-        return container.extrudeDependencies( instances );
-    }
+    // /**
+    // * Wire a series of externally managed objects with components from the Maven environment,
+    // * according to component annotations in those instances.
+    // */
+    // public synchronized Map<Object, Throwable> wire( final Object... instances )
+    // throws MAEEmbeddingException
+    // {
+    // checkStopped();
+    //
+    // printInfo( null );
+    // return container.extrudeDependencies( instances );
+    // }
 
     protected void checkStopped()
     {
         if ( stopped )
         {
-            throw new IllegalStateException( "This MAEEmbedder instance has been shutdown! It is no longer available for use." );
+            throw new IllegalStateException(
+                                             "This MAEEmbedder instance has been shutdown! It is no longer available for use." );
         }
     }
 
     /**
-     * Retrieve the {@link MAEServiceManager} that was initialized to work with this embedded Maven 
-     * environment.
+     * Retrieve the {@link MAEServiceManager} that was initialized to work with this embedded Maven environment.
      */
     public synchronized MAEServiceManager serviceManager()
     {
         checkStopped();
-        
+
         printInfo( null );
         return serviceManager;
     }
@@ -185,7 +185,7 @@ public class MAEEmbedder
         throws MAEEmbeddingException
     {
         checkStopped();
-        
+
         final PrintStream oldOut = System.out;
         try
         {
@@ -206,16 +206,15 @@ public class MAEEmbedder
             System.setOut( oldOut );
         }
     }
-    
+
     /**
-     * Encrypt the master password that's used to decrypt settings information such as server
-     * passwords.
+     * Encrypt the master password that's used to decrypt settings information such as server passwords.
      */
     public String encryptMasterPassword( final MAEExecutionRequest request )
         throws MAEEmbeddingException
     {
         checkStopped();
-        
+
         printInfo( null );
 
         String passwd = request.getPasswordToEncyrpt();
@@ -246,7 +245,7 @@ public class MAEEmbedder
         throws MAEEmbeddingException
     {
         checkStopped();
-        
+
         printInfo( null );
 
         final String passwd = request.getPasswordToEncyrpt();
@@ -298,7 +297,7 @@ public class MAEEmbedder
         throws MAEEmbeddingException
     {
         checkStopped();
-        
+
         for ( final MAELibrary library : embConfiguration.getLibraries() )
         {
             final Set<ComponentKey<?>> components = library.getManagementComponents( LoadOnStart.class );
@@ -324,8 +323,7 @@ public class MAEEmbedder
     }
 
     /**
-     * Perform any shutdown functions associated with this embedder and its component environment.
-     * <br/>
+     * Perform any shutdown functions associated with this embedder and its component environment. <br/>
      * <b>NOTE:</b> After this method is called, this embedder can no longer be used.
      */
     public synchronized void shutdown()
@@ -334,7 +332,7 @@ public class MAEEmbedder
         {
             return;
         }
-        
+
         stopped = true;
         for ( final MAELibrary library : embConfiguration.getLibraries() )
         {
@@ -363,7 +361,7 @@ public class MAEEmbedder
         throws MAEEmbeddingException
     {
         checkStopped();
-        
+
         injectLogSettings( request );
 
         initialize( request );
@@ -400,7 +398,7 @@ public class MAEEmbedder
     protected void injectFromProperties( final MAEExecutionRequest request )
     {
         checkStopped();
-        
+
         String localRepoProperty = request.getUserProperties().getProperty( MAEMain.LOCAL_REPO_PROPERTY );
 
         if ( localRepoProperty == null )
@@ -417,7 +415,7 @@ public class MAEEmbedder
     protected void injectLogSettings( final MAEExecutionRequest request )
     {
         checkStopped();
-        
+
         final int logLevel = request.getLoggingLevel();
 
         if ( Logger.LEVEL_DEBUG == logLevel )
@@ -430,7 +428,15 @@ public class MAEEmbedder
         }
 
         logger.setThreshold( logLevel );
-        container.getLoggerManager().setThresholds( request.getLoggingLevel() );
+
+        // FIXME: Log-level management is completely b0rked
+        try
+        {
+            container.lookup( LoggerManager.class ).setThresholds( request.getLoggingLevel() );
+        }
+        catch ( ComponentLookupException e )
+        {
+        }
 
         // final Configurator log4jConfigurator = new Configurator()
         // {
@@ -526,11 +532,11 @@ public class MAEEmbedder
     }
 
     /**
-     * Print information about the {@link MAELibrary} instances loaded into this environment to 
-     * the {@link PrintStream} parameter.
+     * Print information about the {@link MAELibrary} instances loaded into this environment to the {@link PrintStream}
+     * parameter.
      */
     public static void showInfo( final MAEConfiguration config, final List<MAELibraryLoader> loaders,
-                                    final PrintStream standardOut )
+                                 final PrintStream standardOut )
         throws IOException
     {
         if ( infoShown )
@@ -556,8 +562,8 @@ public class MAEEmbedder
     }
 
     /**
-     * Print the information about {@link MAELibrary} instances loaded, along with version information
-     * about this Maven environment in general, to the provided {@link PrintStream} parameter.
+     * Print the information about {@link MAELibrary} instances loaded, along with version information about this Maven
+     * environment in general, to the provided {@link PrintStream} parameter.
      */
     public static void showVersion( final MAEConfiguration config, final List<MAELibraryLoader> loaders,
                                     final PrintStream standardOut )
@@ -606,8 +612,8 @@ public class MAEEmbedder
     }
 
     /**
-     * Print error output from a Maven execution request, in the familiar format, to the {@link Logger}
-     * instance used by this embedder.
+     * Print error output from a Maven execution request, in the familiar format, to the {@link Logger} instance used by
+     * this embedder.
      */
     public int formatErrorOutput( final MAEExecutionRequest request, final MavenExecutionResult result )
     {
@@ -646,7 +652,7 @@ public class MAEEmbedder
             {
                 logger.error( "" );
                 logger.error( "For more information about the errors and possible solutions"
-                                + ", please read the following articles:" );
+                    + ", please read the following articles:" );
 
                 for ( final Map.Entry<String, String> entry : references.entrySet() )
                 {
@@ -776,6 +782,7 @@ public class MAEEmbedder
             return configuration;
         }
 
+        @Override
         public <T> Map<String, T> lookupMap( final Class<T> role )
             throws MAEManagementException
         {
@@ -791,6 +798,7 @@ public class MAEEmbedder
             }
         }
 
+        @Override
         public <T> List<T> lookupList( final Class<T> role )
             throws MAEManagementException
         {

@@ -30,10 +30,10 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.apache.log4j.spi.Configurator;
 import org.apache.log4j.spi.LoggerRepository;
+import org.apache.maven.mae.internal.container.ComponentKey;
+import org.apache.maven.mae.internal.container.ComponentSelector;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.sonatype.guice.bean.locators.ComponentKey;
-import org.sonatype.guice.bean.locators.ComponentSelector;
 
 import java.net.URL;
 import java.util.Enumeration;
