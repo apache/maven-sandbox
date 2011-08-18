@@ -29,11 +29,11 @@ import org.apache.maven.mae.conf.VersionProvider;
 import org.apache.maven.mae.conf.ext.ExtensionConfiguration;
 import org.apache.maven.mae.conf.ext.ExtensionConfigurationException;
 import org.apache.maven.mae.conf.loader.InstanceLibraryLoader;
+import org.apache.maven.mae.internal.container.ComponentKey;
+import org.apache.maven.mae.internal.container.ComponentSelector;
+import org.apache.maven.mae.internal.container.InstanceRegistry;
+import org.apache.maven.mae.internal.container.VirtualInstance;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.sonatype.guice.bean.locators.ComponentKey;
-import org.sonatype.guice.bean.locators.ComponentSelector;
-import org.sonatype.guice.bean.locators.InstanceRegistry;
-import org.sonatype.guice.bean.locators.VirtualInstance;
 
 import java.util.ArrayList;
 import java.util.List;

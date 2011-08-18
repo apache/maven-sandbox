@@ -69,7 +69,7 @@
     <maeVersion>${project.version}</maeVersion>
   	<mavenVersion>3.0.3</mavenVersion>
   	<plexusVersion>1.5.5</plexusVersion>
-  	<sisuVersion>2.1.1-selectable-1</sisuVersion>
+  	<sisuVersion>2.1.1</sisuVersion>
   </properties>
   
   <modules>

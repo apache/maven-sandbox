@@ -21,34 +21,6 @@ package org.apache.maven.mae.boot.embed;
 
 import static org.apache.maven.mae.conf.MAELibraries.loadLibraries;
 
-import org.apache.log4j.Level;
-import org.apache.maven.Maven;
-import org.apache.maven.cli.MavenLoggerManager;
-import org.apache.maven.cli.PrintStreamLogger;
-import org.apache.maven.execution.MavenExecutionRequestPopulator;
-import org.apache.maven.mae.boot.services.MAEServiceManager;
-import org.apache.maven.mae.conf.CoreLibrary;
-import org.apache.maven.mae.conf.MAEConfiguration;
-import org.apache.maven.mae.conf.MAELibrary;
-import org.apache.maven.mae.conf.loader.MAELibraryLoader;
-import org.apache.maven.mae.conf.loader.ServiceLibraryLoader;
-import org.apache.maven.model.building.ModelProcessor;
-import org.apache.maven.settings.building.SettingsBuilder;
-import org.codehaus.plexus.ContainerConfiguration;
-import org.codehaus.plexus.DefaultContainerConfiguration;
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.ExtrudablePlexusContainer;
-import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.classworlds.ClassWorld;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.logging.Logger;
-import org.sonatype.guice.bean.locators.ComponentKey;
-import org.sonatype.guice.bean.locators.ComponentSelector;
-import org.sonatype.guice.bean.locators.InstanceRegistry;
-import org.sonatype.guice.bean.locators.VirtualInstance;
-import org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher;
-import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -64,6 +36,36 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.log4j.Level;
+import org.apache.maven.Maven;
+import org.apache.maven.cli.MavenLoggerManager;
+import org.apache.maven.cli.PrintStreamLogger;
+import org.apache.maven.execution.MavenExecutionRequestPopulator;
+import org.apache.maven.mae.boot.services.MAEServiceManager;
+import org.apache.maven.mae.conf.CoreLibrary;
+import org.apache.maven.mae.conf.MAEConfiguration;
+import org.apache.maven.mae.conf.MAELibrary;
+import org.apache.maven.mae.conf.loader.MAELibraryLoader;
+import org.apache.maven.mae.conf.loader.ServiceLibraryLoader;
+import org.apache.maven.mae.internal.container.ComponentKey;
+import org.apache.maven.mae.internal.container.ComponentSelector;
+import org.apache.maven.mae.internal.container.InstanceRegistry;
+import org.apache.maven.mae.internal.container.VirtualInstance;
+import org.apache.maven.model.building.ModelProcessor;
+import org.apache.maven.settings.building.SettingsBuilder;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.DefaultContainerConfiguration;
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.logging.Logger;
+import org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher;
+import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
+
+import com.google.inject.Module;
 
 public class MAEEmbedderBuilder
 {
@@ -96,7 +98,7 @@ public class MAEEmbedderBuilder
 
     private File logFile;
 
-    private MAEConfiguration embConfiguration;
+    private MAEConfiguration config;
 
     private ClassWorld classWorld;
 
@@ -106,7 +108,7 @@ public class MAEEmbedderBuilder
 
     private ModelProcessor modelProcessor;
 
-    private ExtrudablePlexusContainer container;
+    private PlexusContainer container;
 
     private MavenExecutionRequestPopulator executionRequestPopulator;
 
@@ -138,7 +140,7 @@ public class MAEEmbedderBuilder
 
     private boolean logHandlesConfigured;
 
-    private boolean embConfigurationProvided;
+    private boolean configProvided;
 
     private ContainerConfiguration containerConfiguration;
 
@@ -146,7 +148,7 @@ public class MAEEmbedderBuilder
 
     private List<MAELibraryLoader> libraryLoaders;
 
-    private final VirtualInstance<MAEEmbedder> embVirtual = new VirtualInstance<MAEEmbedder>( MAEEmbedder.class );
+    private final VirtualInstance<MAEEmbedder> embedderVirtual = new VirtualInstance<MAEEmbedder>( MAEEmbedder.class );
 
     public synchronized MAEEmbedderBuilder withSettingsBuilder( final SettingsBuilder settingsBuilder )
     {
@@ -268,7 +270,7 @@ public class MAEEmbedderBuilder
                     if ( resource == null )
                     {
                         throw new IllegalStateException( "Class doesn't appear in its own classloader! ["
-                                        + object.getClass().getName() + "]" );
+                            + object.getClass().getName() + "]" );
                     }
 
                     String path = resource.toExternalForm();
@@ -334,9 +336,8 @@ public class MAEEmbedderBuilder
         if ( containerConfiguration == null )
         {
             containerConfiguration =
-                new DefaultContainerConfiguration().setClassWorld( classWorld() )
-                                                   .setName( "maven" )
-                                                   .setClassPathScanning( classScanningEnabled ? "ON" : "OFF" );
+                new DefaultContainerConfiguration().setClassWorld( classWorld() ).setName( "maven" ).setClassPathScanning( classScanningEnabled ? "ON"
+                                                                                                                                           : "OFF" );
         }
 
         return containerConfiguration;
@@ -418,7 +419,7 @@ public class MAEEmbedderBuilder
         }
     }
 
-    public synchronized MAEEmbedderBuilder withContainer( final ExtrudablePlexusContainer container )
+    public synchronized MAEEmbedderBuilder withContainer( final PlexusContainer container )
     {
         this.container = container;
         resetContainer();
@@ -452,9 +453,9 @@ public class MAEEmbedderBuilder
         {
             maven = null;
         }
-        if ( !embConfigurationProvided )
+        if ( !configProvided )
         {
-            embConfiguration = null;
+            config = null;
         }
         if ( container != null )
         {
@@ -462,7 +463,7 @@ public class MAEEmbedderBuilder
         }
     }
 
-    public synchronized ExtrudablePlexusContainer container()
+    public synchronized PlexusContainer container()
         throws MAEEmbeddingException
     {
         // Need to switch to using: org.codehaus.plexus.MutablePlexusContainer.addPlexusInjector(List<PlexusBeanModule>,
@@ -472,12 +473,14 @@ public class MAEEmbedderBuilder
             final ContainerConfiguration cc = containerConfiguration();
 
             final InstanceRegistry reg = new InstanceRegistry( instanceRegistry() );
-            reg.addVirtual( new ComponentKey<MAEEmbedder>( MAEEmbedder.class ), embVirtual );
+            reg.addVirtual( new ComponentKey<MAEEmbedder>( MAEEmbedder.class ), embedderVirtual );
+
+            Module[] mods = { new ComponentSelectionModule( selector() ), new InstanceModule( reg ) };
 
             DefaultPlexusContainer c;
             try
             {
-                c = new DefaultPlexusContainer( cc, selector(), reg );
+                c = new DefaultPlexusContainer( cc, mods );
             }
             catch ( final PlexusContainerException e )
             {
@@ -504,8 +507,8 @@ public class MAEEmbedderBuilder
 
     public MAEEmbedderBuilder withConfiguration( final MAEConfiguration config )
     {
-        embConfiguration = config;
-        embConfigurationProvided = true;
+        this.config = config;
+        configProvided = true;
         return this;
     }
 
@@ -523,41 +526,41 @@ public class MAEEmbedderBuilder
             logHandlesConfigured = true;
         }
 
-        if ( embConfiguration == null )
+        if ( config == null )
         {
-            embConfiguration = new MAEConfiguration();
+            config = new MAEConfiguration();
 
             if ( shouldShowDebug() )
             {
-                embConfiguration.withDebug();
+                config.withDebug();
             }
             else
             {
-                embConfiguration.withoutDebug();
+                config.withoutDebug();
             }
 
             try
             {
                 final List<MAELibraryLoader> loaders = libraryLoaders();
-                final Collection<MAELibrary> libraries = loadLibraries( embConfiguration, loaders );
-                embConfiguration.withLibraries( libraries );
+                final Collection<MAELibrary> libraries = loadLibraries( config, loaders );
+                config.withLibraries( libraries );
 
                 if ( debugLogHandles != null
-                                && Arrays.binarySearch( debugLogHandles, MAEConfiguration.STANDARD_LOG_HANDLE_CORE ) > -1 )
+                    && Arrays.binarySearch( debugLogHandles, MAEConfiguration.STANDARD_LOG_HANDLE_CORE ) > -1 )
                 {
-                    MAEEmbedder.showInfo( embConfiguration, loaders, standardOut() );
+                    MAEEmbedder.showInfo( config, loaders, standardOut() );
                 }
             }
             catch ( final IOException e )
             {
                 logger.error( "Failed to query context classloader for component-overrides files. Reason: "
-                                              + e.getMessage(), e );
+                                  + e.getMessage(), e );
             }
 
-            embConfigurationProvided = false;
+            configProvided = false;
         }
 
-        return embConfiguration;
+        return config;
     }
 
     public MAEEmbedderBuilder withServiceLibraryLoader( final boolean enabled )
@@ -642,7 +645,7 @@ public class MAEEmbedderBuilder
             loaders.remove( CORE_LOADER );
         }
 
-        loaders.add( CORE_LOADER );
+        loaders.add( 0, CORE_LOADER );
 
         return loaders;
     }
@@ -808,7 +811,7 @@ public class MAEEmbedderBuilder
                              securityDispatcher(), serviceManager(), libraryLoaders(), standardOut(), logger(),
                              shouldShowErrors(), showVersion() );
 
-        embVirtual.setInstance( embedder );
+        embedderVirtual.setInstance( embedder );
 
         return embedder;
     }

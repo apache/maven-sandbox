@@ -19,11 +19,106 @@
 
 package org.apache.maven.mae.internal.container;
 
-/**
- * Use {@link org.sonatype.guice.bean.locators.ComponentSelector} instead.
- */
-@Deprecated
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 public class ComponentSelector
-    extends org.sonatype.guice.bean.locators.ComponentSelector
+    implements Iterable<Map.Entry<ComponentKey<?>, ComponentKey<?>>>
 {
+
+    private Map<ComponentKey<?>, ComponentKey<?>> remappedComponentHints =
+        new HashMap<ComponentKey<?>, ComponentKey<?>>();
+
+    public ComponentSelector()
+    {
+    }
+
+    public ComponentSelector merge( final ComponentSelector selectorToCopy )
+    {
+        if ( selectorToCopy != null && !selectorToCopy.isEmpty() )
+        {
+            final Map<ComponentKey<?>, ComponentKey<?>> result = new HashMap<ComponentKey<?>, ComponentKey<?>>();
+            result.putAll( selectorToCopy.remappedComponentHints );
+
+            if ( !remappedComponentHints.isEmpty() )
+            {
+                result.putAll( remappedComponentHints );
+            }
+
+            remappedComponentHints = result;
+        }
+
+        return this;
+    }
+
+    public boolean isEmpty()
+    {
+        return remappedComponentHints.isEmpty();
+    }
+
+    public <T> boolean hasOverride( final Class<T> role, final String hint )
+    {
+        final ComponentKey<T> check = new ComponentKey<T>( role, hint );
+        return remappedComponentHints.containsKey( check );
+    }
+
+    public <T> boolean hasOverride( final Class<T> role )
+    {
+        final ComponentKey<T> check = new ComponentKey<T>( role );
+        return remappedComponentHints.containsKey( check );
+    }
+
+    public Set<ComponentKey<?>> getKeysOverriddenBy( final Class<?> role, final String hint )
+    {
+        @SuppressWarnings( { "rawtypes", "unchecked" } )
+        final ComponentKey check = new ComponentKey( role, hint );
+
+        final Set<ComponentKey<?>> result = new HashSet<ComponentKey<?>>();
+        for ( final Map.Entry<ComponentKey<?>, ComponentKey<?>> mapping : remappedComponentHints.entrySet() )
+        {
+            if ( mapping.getValue().equals( check ) )
+            {
+                result.add( mapping.getKey() );
+            }
+        }
+
+        return result;
+    }
+
+    public <T> ComponentSelector setSelection( final ComponentKey<T> originalKey, final String newHint )
+    {
+        remappedComponentHints.put( originalKey, new ComponentKey<T>( originalKey.getRoleClass(), newHint ) );
+        return this;
+    }
+
+    public <T> ComponentSelector setSelection( final Class<T> role, final String oldHint, final String newHint )
+    {
+        final ComponentKey<T> originalKey = new ComponentKey<T>( role, oldHint );
+        remappedComponentHints.put( originalKey, new ComponentKey<T>( role, newHint ) );
+        return this;
+    }
+
+    public <T> ComponentSelector setSelection( final Class<T> role, final String newHint )
+    {
+        final ComponentKey<T> originalKey = new ComponentKey<T>( role );
+        remappedComponentHints.put( originalKey, new ComponentKey<T>( role, newHint ) );
+        return this;
+    }
+
+    @Override
+    public Iterator<Entry<ComponentKey<?>, ComponentKey<?>>> iterator()
+    {
+        return new HashSet<Map.Entry<ComponentKey<?>, ComponentKey<?>>>( remappedComponentHints.entrySet() ).iterator();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public <T> ComponentKey<T> getOverride( final Class<T> role, final String hint )
+    {
+        return (ComponentKey<T>) remappedComponentHints.get( new ComponentKey<T>( role, hint ) );
+    }
+
 }
