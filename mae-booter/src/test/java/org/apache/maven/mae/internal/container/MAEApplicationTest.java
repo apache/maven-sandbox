@@ -27,6 +27,9 @@ import org.apache.maven.mae.MAEException;
 import org.apache.maven.mae.app.AbstractMAEApplication;
 import org.apache.maven.mae.boot.embed.MAEEmbedderBuilder;
 import org.apache.maven.mae.internal.container.fixture.ContainerOwner;
+import org.apache.maven.mae.internal.container.fixture.DefaultSingletonOwner;
+import org.apache.maven.mae.internal.container.fixture.SingletonLiteralOwner;
+import org.apache.maven.mae.internal.container.fixture.SingletonOwner;
 import org.junit.Test;
 
 public class MAEApplicationTest
@@ -82,45 +85,40 @@ public class MAEApplicationTest
     //
     // assertNull( members.get( "simple" + ComponentKey.LITERAL_SUFFIX ) );
     // }
-    //
-    // @Test
-    // public void singletonImpliedRequirementOnComponentWithImpliedHint()
-    // throws Throwable
-    // {
-    // final ContainerConfiguration config = new DefaultContainerConfiguration().setClassPathScanning( "ON" );
-    //
-    // final MAEContainer container = new MAEContainer( config, new ComponentSelector(), new InstanceRegistry() );
-    //
-    // final DefaultSingletonOwner owner = container.lookup( DefaultSingletonOwner.class );
-    //
-    // assertNotNull( owner.singleton() );
-    // }
-    //
-    // @Test
-    // public void singletonNonLiteralRequirement()
-    // throws Throwable
-    // {
-    // final ContainerConfiguration config = new DefaultContainerConfiguration().setClassPathScanning( "ON" );
-    //
-    // final MAEContainer container = new MAEContainer( config, new ComponentSelector(), new InstanceRegistry() );
-    //
-    // final SingletonOwner owner = container.lookup( SingletonOwner.class );
-    //
-    // assertNotNull( owner.singleton() );
-    // }
-    //
-    // @Test
-    // public void singletonLiteralRequirement()
-    // throws Throwable
-    // {
-    // final ContainerConfiguration config = new DefaultContainerConfiguration().setClassPathScanning( "ON" );
-    //
-    // final MAEContainer container = new MAEContainer( config, new ComponentSelector(), new InstanceRegistry() );
-    //
-    // final SingletonLiteralOwner owner = container.lookup( SingletonLiteralOwner.class );
-    //
-    // assertNotNull( owner.singletonLiteral() );
-    // }
+
+    @Test
+    public void singletonImpliedRequirementOnComponentWithImpliedHint()
+        throws Throwable
+    {
+        ContainerOwner owner = new ContainerOwner();
+        new TestApplication().load();
+        final DefaultSingletonOwner single = owner.container.lookup( DefaultSingletonOwner.class );
+
+        assertThat( single.singleton(), notNullValue() );
+    }
+
+    @Test
+    public void singletonNonLiteralRequirement()
+        throws Throwable
+    {
+        ContainerOwner owner = new ContainerOwner();
+        new TestApplication().load();
+        final SingletonOwner single = owner.container.lookup( SingletonOwner.class );
+
+        assertThat( single.singleton(), notNullValue() );
+    }
+
+    @Test
+    public void singletonLiteralRequirement()
+        throws Throwable
+    {
+        ContainerOwner owner = new ContainerOwner();
+        new TestApplication().load();
+        final SingletonLiteralOwner single = owner.container.lookup( SingletonLiteralOwner.class );
+
+        assertThat( single.singletonLiteral(), notNullValue() );
+    }
+
     //
     // @Test
     // public void initializableUsingRequirement()
