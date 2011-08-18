@@ -26,7 +26,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 
@@ -361,22 +360,6 @@ public class StringUtilsTest extends Assert
     }
 
 
-    @Test
-    public void testTrim()
-    {
-        assertThat( StringUtils.trim( null )
-                , nullValue() );
-
-        assertThat( StringUtils.trim( "   " )
-                  , is( "" ) );
-
-        assertThat( StringUtils.trim( "  c " )
-                  , is( "c" ) );
-
-        assertThat( StringUtils.trim( "  dings \n  " )
-                  , is( "dings" ) );
-    }
-
     @Test( expected = NullPointerException.class )
     public void testConcatenate_NPE()
     {
@@ -437,4 +420,688 @@ public class StringUtilsTest extends Assert
                 , is( false ) );
 
     }
+
+    @Test( expected = NullPointerException.class )
+    public void testCountMatches_NPE()
+    {
+         StringUtils.countMatches( null, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testCountMatches_NPE2()
+    {
+         StringUtils.countMatches( "this is it", null );
+    }
+
+    @Test
+    public void testCountMatches()
+    {
+        assertThat( StringUtils.countMatches( null, "is" )
+                  , is( 0 ) );
+
+        assertThat( StringUtils.countMatches( "this is it", "is" )
+                  , is( 2 ) );
+
+        assertThat( StringUtils.countMatches( "this is it", "notincluded" )
+                  , is( 0 ) );
+    }
+
+    @Test
+    public void testDefaultString()
+    {
+         assertThat( StringUtils.defaultString( null )
+                   , is( "" ) );
+
+        assertThat( StringUtils.defaultString( "dings" )
+                  , is( "dings" ) );
+    }
+
+    @Test
+    public void testDefaultString_defaultValue()
+    {
+         assertThat( StringUtils.defaultString( null, "defaultValue" )
+                   , is( "defaultValue" ) );
+
+        assertThat( StringUtils.defaultString( "dings", "defaultValue" )
+                  , is( "dings" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testDeleteWhitespace_NPE()
+    {
+        StringUtils.deleteWhitespace( null );
+    }
+
+    @Test
+    public void testDeleteWhitespace()
+    {
+        assertThat( StringUtils.deleteWhitespace( " \t  \n" )
+                  , is( "" ) );
+
+        assertThat( StringUtils.deleteWhitespace( " \t  \b \n" )
+                  , is( "\b" ) );
+
+        assertThat( StringUtils.deleteWhitespace( "dings" )
+                , is( "dings" ) );
+
+        assertThat( StringUtils.deleteWhitespace( "\n  dings \t " )
+                  , is( "dings" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testDifference_NPE()
+    {
+        StringUtils.difference( null, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testDifference_NPE2()
+    {
+        StringUtils.difference( null, "another" );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testDifference_NPE3()
+    {
+        StringUtils.difference( "this", null );
+    }
+
+    @Test
+    public void testDifference()
+    {
+        assertThat( StringUtils.difference( "this", "another" )
+                , is( "another" ) );
+
+        assertThat( StringUtils.difference( "I am human", "I am a robot" )
+                  , is( "a robot" ) );
+
+        assertThat( StringUtils.difference( "I am human", "I AM a robot" )
+                  , is( "AM a robot" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testDifferenceAt_NPE()
+    {
+        StringUtils.differenceAt( null, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testDifferenceAt_NPE2()
+    {
+        StringUtils.differenceAt( "test", null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testDifferenceAt_NPE3()
+    {
+        StringUtils.differenceAt( null, "test" );
+    }
+
+    @Test
+    public void testDifferenceAt()
+    {
+        assertThat( StringUtils.differenceAt( "this", "another" )
+                  , is( 0 ) );
+
+        assertThat( StringUtils.differenceAt( "I am human", "I am a robot" )
+                  , is( 5 ) );
+
+        assertThat( StringUtils.differenceAt( "I am human", "I AM a robot" )
+                , is( 2 ) );
+    }
+
+    @Test
+    public void testEquals()
+    {
+        assertThat( StringUtils.equals( null, null )
+                  , is( true ) );
+
+        assertThat( StringUtils.equals( "x", null )
+                  , is( false ) );
+
+        assertThat( StringUtils.equals( null, "x" )
+                  , is( false ) );
+
+        assertThat( StringUtils.equals( "X", "x" )
+                  , is( false ) );
+
+        assertThat( StringUtils.equals( "dings", "dings" )
+                  , is( true ) );
+    }
+
+    @Test
+    public void testEqualsIgnoreCase()
+    {
+        assertThat( StringUtils.equalsIgnoreCase( null, null )
+                  , is( true ) );
+
+        assertThat( StringUtils.equalsIgnoreCase( "x", null )
+                  , is( false ) );
+
+        assertThat( StringUtils.equalsIgnoreCase( null, "x" )
+                  , is( false ) );
+
+        assertThat( StringUtils.equalsIgnoreCase( "X", "x" )
+                  , is( true ) );
+
+        assertThat( StringUtils.equalsIgnoreCase( "dings", "dings" )
+                  , is( true ) );
+
+        assertThat( StringUtils.equalsIgnoreCase( "dings", "diNGs" )
+                  , is( true ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testEscape_NPE()
+    {
+        StringUtils.escape( null );
+    }
+
+    @Test
+    public void testEscape()
+    {
+        assertThat( StringUtils.escape( "dings" )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.escape( "dings\tbums" )
+                  , is( "dings\\tbums" ) );
+
+        assertThat( StringUtils.escape( "dings\nbums" )
+                  , is( "dings\\nbums" ) );
+    }
+
+
+    @Test
+    public void testEscape2()
+    {
+        assertThat( StringUtils.escape( null, null, '#' )
+                  , nullValue() );
+
+        assertThat( StringUtils.escape( "dings", new char[]{'\t','\b'}, '+' )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.escape( "dings\tbums", new char[]{'\t','\b'}, '+' )
+                  , is( "dings+\tbums" ) );
+
+        assertThat( StringUtils.escape( "dings\nbums", new char[]{'\t','\b'}, '+' )
+                  , is( "dings\nbums" ) );
+        assertThat( StringUtils.escape( "dings\bbums", new char[]{'\t','\b'}, '+' )
+                  , is( "dings+\bbums" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testGetChomp_NPE1()
+    {
+        StringUtils.getChomp( null, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testGetChomp_NPE2()
+    {
+        StringUtils.getChomp( "dings", null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testGetChomp_NPE3()
+    {
+        StringUtils.getChomp( null, "dings" );
+    }
+
+    @Test
+    public void testGetChomp()
+    {
+        assertThat( StringUtils.getChomp( "dings-bums", "-" )
+                  , is( "-bums" ) );
+
+        assertThat( StringUtils.getChomp( "dings-", "-" )
+                  , is( "-" ) );
+
+        assertThat( StringUtils.getChomp( "dingsbums", "-" )
+                  , is( "" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testGetNestedString_NPE()
+    {
+        assertThat( StringUtils.getNestedString( "  +dings+ ", null )
+                  , nullValue() );
+    }
+
+    @Test
+    public void testGetNestedString()
+    {
+        assertThat( StringUtils.getNestedString( null, null )
+                  , nullValue() );
+
+        assertThat( StringUtils.getNestedString( "  +dings+ ", "+" )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.getNestedString( "  +dings+ ", "not" )
+                  , nullValue() );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testGetNestedString2_NPE1()
+    {
+        assertThat( StringUtils.getNestedString( "  +dings+ ", null, null )
+                  , nullValue() );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testGetNestedString2_NPE2()
+    {
+        assertThat( StringUtils.getNestedString( "  +dings+ ", null, "neither" )
+                  , nullValue() );
+    }
+
+    @Test
+    public void testGetNestedString2()
+    {
+        assertThat( StringUtils.getNestedString( null, null, null )
+                  , nullValue() );
+
+        assertThat( StringUtils.getNestedString( "  +dings+ ", "not", null )
+                  , nullValue() );
+
+        assertThat( StringUtils.getNestedString( "  +dings- ", "+", "-" )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.getNestedString( "  +dings+ ", "not", "neither" )
+                  , nullValue() );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testGetPrechomp_NPE1()
+    {
+        StringUtils.getPrechomp( null, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testGetPrechomp_NPE2()
+    {
+        StringUtils.getPrechomp( null, "bums" );
+    }
+
+    @Test
+    public void testGetPrechomp()
+    {
+        assertThat( StringUtils.getPrechomp( "dings bums dongs", "bums" )
+                  , is( "dings bums" ) );
+
+        assertThat( StringUtils.getPrechomp( "dings bums dongs", "non" )
+                  , is( "" ) );
+    }
+
+    @Test
+    public void testIndexOfAny()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testInterpolate()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testIsAlpha()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testIsAlphaSpace()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testIsAlphanumeric()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testIsAlphanumericSpace()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testIsBlank()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+
+    @Test
+    public void testIsBlank2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testEmpty()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testNotBlank()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testNotEmpty()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testIsNumeric()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testIsWhitespace()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testTrim()
+    {
+        assertThat( StringUtils.trim( null )
+                , nullValue() );
+
+        assertThat( StringUtils.trim( "   " )
+                  , is( "" ) );
+
+        assertThat( StringUtils.trim( "  c " )
+                  , is( "c" ) );
+
+        assertThat( StringUtils.trim( "  dings \n  " )
+                  , is( "dings" ) );
+    }
+
+    @Test
+    public void testJoin1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testJoin2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testLastIndexOfAny()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testLeft()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testLeftPad1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testLeftPad2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testLowerCase()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testLowerCaseFirstLetter()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testMid()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testOverlayString()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testPrechomp()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testQuoteAndEscape1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testQuoteAndEscape2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testQuoteAndEscape3()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testQuoteAndEscape4()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testRemoveAndHump()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testRemoveDuplicateWhitespace()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testRepeat()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testReplace1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testReplace2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testReplace3()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testReplace4()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testReplaceOnce1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testReplaceOnce2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testReverse()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testReverseDelimitedString()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testRight()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testRightPad1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testRightPad2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testSplit1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testSplit2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testSplit3()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testStrip1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testStrip2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testStripAll1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testStripAll2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testStripEnd()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testStripStart()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testSubstring1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testSubstring2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testSwapCase()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testUncapitalise()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testUncapitaliseAllWords()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testUnifyLineSeparators1()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testUnifyLineSeparators2()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testUppercase()
+    {
+        System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+
 }
