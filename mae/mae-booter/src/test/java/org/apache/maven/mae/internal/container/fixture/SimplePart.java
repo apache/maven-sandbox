@@ -20,20 +20,16 @@
 package org.apache.maven.mae.internal.container.fixture;
 
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
-import java.util.Map;
-
-@Component( role = MapOwner.class )
-public class MapOwner
+@Component( role = Part.class, hint = "simple" )
+public class SimplePart
+    implements Part
 {
 
-    @Requirement( role = SimplePart.class )
-    private Map<String, SimplePart> members;
-
-    public Map<String, SimplePart> members()
+    @Override
+    public String getType()
     {
-        return members;
+        return "simple";
     }
 
 }

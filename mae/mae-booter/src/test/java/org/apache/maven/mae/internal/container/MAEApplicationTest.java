@@ -19,6 +19,7 @@
 
 package org.apache.maven.mae.internal.container;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -28,6 +29,9 @@ import org.apache.maven.mae.app.AbstractMAEApplication;
 import org.apache.maven.mae.boot.embed.MAEEmbedderBuilder;
 import org.apache.maven.mae.internal.container.fixture.ContainerOwner;
 import org.apache.maven.mae.internal.container.fixture.DefaultSingletonOwner;
+import org.apache.maven.mae.internal.container.fixture.NonSimplePart;
+import org.apache.maven.mae.internal.container.fixture.Part;
+import org.apache.maven.mae.internal.container.fixture.SimplePart;
 import org.apache.maven.mae.internal.container.fixture.SingletonLiteralOwner;
 import org.apache.maven.mae.internal.container.fixture.SingletonOwner;
 import org.junit.Test;
@@ -91,7 +95,10 @@ public class MAEApplicationTest
         throws Throwable
     {
         ContainerOwner owner = new ContainerOwner();
-        new TestApplication().load();
+        new TestApplication().withInstance( owner ).load();
+
+        assertThat( owner.container, notNullValue() );
+
         final DefaultSingletonOwner single = owner.container.lookup( DefaultSingletonOwner.class );
 
         assertThat( single.singleton(), notNullValue() );
@@ -102,10 +109,30 @@ public class MAEApplicationTest
         throws Throwable
     {
         ContainerOwner owner = new ContainerOwner();
-        new TestApplication().load();
+        new TestApplication().withInstance( owner ).load();
+
+        assertThat( owner.container, notNullValue() );
+
         final SingletonOwner single = owner.container.lookup( SingletonOwner.class );
 
         assertThat( single.singleton(), notNullValue() );
+    }
+
+    @Test
+    public void singletonSelectedRequirement()
+        throws Throwable
+    {
+        ContainerOwner owner = new ContainerOwner();
+        new TestApplication().withInstance( owner ).withComponentSelection( new ComponentKey<Part>( Part.class,
+                                                                                                    "simple" ),
+                                                                            "non-simple" ).load();
+
+        assertThat( owner.container, notNullValue() );
+
+        final SingletonOwner single = owner.container.lookup( SingletonOwner.class );
+
+        assertThat( single.singleton(), notNullValue() );
+        assertThat( single.singleton(), instanceOf( NonSimplePart.class ) );
     }
 
     @Test
@@ -113,10 +140,16 @@ public class MAEApplicationTest
         throws Throwable
     {
         ContainerOwner owner = new ContainerOwner();
-        new TestApplication().load();
+        new TestApplication().withInstance( owner ).withComponentSelection( new ComponentKey<Part>( Part.class,
+                                                                                                    "simple" ),
+                                                                            "non-simple" ).load();
+
+        assertThat( owner.container, notNullValue() );
+
         final SingletonLiteralOwner single = owner.container.lookup( SingletonLiteralOwner.class );
 
         assertThat( single.singletonLiteral(), notNullValue() );
+        assertThat( single.singletonLiteral(), instanceOf( SimplePart.class ) );
     }
 
     //
@@ -136,9 +169,23 @@ public class MAEApplicationTest
     {
         private final String name;
 
+        private ComponentSelector selector;
+
         TestApplication()
         {
             name = new Exception().getStackTrace()[1].getMethodName();
+        }
+
+        public synchronized AbstractMAEApplication withComponentSelection( final ComponentKey<?> intercept,
+                                                                           final String newHint )
+        {
+            if ( selector == null )
+            {
+                selector = new ComponentSelector();
+            }
+
+            selector.setSelection( intercept, newHint );
+            return this;
         }
 
         public final TestApplication withInstance( final Object instance )
@@ -165,6 +212,12 @@ public class MAEApplicationTest
         {
             builder.withClassScanningEnabled( true );
             super.configureBuilder( builder );
+        }
+
+        @Override
+        public ComponentSelector getComponentSelector()
+        {
+            return selector;
         }
 
     }

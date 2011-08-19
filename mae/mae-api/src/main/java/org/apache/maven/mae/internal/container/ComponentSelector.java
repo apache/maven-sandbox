@@ -60,6 +60,11 @@ public class ComponentSelector
         return remappedComponentHints.isEmpty();
     }
 
+    public boolean hasOverride( final ComponentKey<?> key )
+    {
+        return remappedComponentHints.containsKey( key );
+    }
+
     public <T> boolean hasOverride( final Class<T> role, final String hint )
     {
         final ComponentKey<T> check = new ComponentKey<T>( role, hint );
@@ -119,6 +124,12 @@ public class ComponentSelector
     public <T> ComponentKey<T> getOverride( final Class<T> role, final String hint )
     {
         return (ComponentKey<T>) remappedComponentHints.get( new ComponentKey<T>( role, hint ) );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public <T> ComponentKey<T> getOverride( final ComponentKey<T> key )
+    {
+        return (ComponentKey<T>) remappedComponentHints.get( key );
     }
 
 }

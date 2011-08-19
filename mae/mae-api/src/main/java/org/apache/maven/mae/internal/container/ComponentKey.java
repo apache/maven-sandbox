@@ -21,6 +21,14 @@ package org.apache.maven.mae.internal.container;
 
 import static org.codehaus.plexus.util.StringUtils.isBlank;
 
+import java.lang.reflect.Field;
+
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.sonatype.guice.plexus.config.Roles;
+
+import com.google.inject.Key;
+
 public class ComponentKey<T>
 {
 
@@ -44,6 +52,35 @@ public class ComponentKey<T>
         hint = DEFAULT_HINT;
     }
 
+    @SuppressWarnings( "unchecked" )
+    public ComponentKey( final Component comp )
+    {
+        roleClass = (Class<T>) comp.role();
+
+        String h = comp.hint();
+        hint = ( isBlank( h ) || DEFAULT_HINT.equals( h ) ? DEFAULT_HINT : h );
+    }
+
+    @SuppressWarnings( { "unchecked", "rawtypes" } )
+    public ComponentKey( final Requirement req, final Field field )
+    {
+        if ( req.hints() != null && req.hints().length > 0 )
+        {
+            throw new IllegalArgumentException( "Cannot construct ComponentKey for requirement listing multiple hints." );
+        }
+
+        Class role = req.role();
+        if ( role == null || role.equals( Object.class ) )
+        {
+            role = field.getType();
+        }
+
+        roleClass = role;
+
+        String h = req.hint();
+        hint = ( isBlank( h ) || DEFAULT_HINT.equals( h ) ? DEFAULT_HINT : h );
+    }
+
     public String getRole()
     {
         return roleClass.getName();
@@ -56,7 +93,22 @@ public class ComponentKey<T>
 
     public String key()
     {
-        return roleClass + ( DEFAULT_HINT.equals( hint ) ? "" : "#" + hint );
+        return roleClass.getName() + ( DEFAULT_HINT.equals( hint ) ? "" : "#" + hint );
+    }
+
+    public Key<T> componentKey()
+    {
+        return Roles.componentKey( roleClass, hint );
+    }
+
+    public Key<T> literalComponentKey()
+    {
+        return isLiteral() ? componentKey() : Roles.componentKey( roleClass, hint + LITERAL_SUFFIX );
+    }
+
+    public Key<T> rawComponentKey()
+    {
+        return Roles.componentKey( roleClass, getLiteralHint( hint ) );
     }
 
     @Override
@@ -113,6 +165,11 @@ public class ComponentKey<T>
     public T castValue( final Object instance )
     {
         return instance == null ? null : roleClass.cast( instance );
+    }
+
+    public boolean isLiteral()
+    {
+        return isLiteral( hint );
     }
 
     public static boolean isLiteral( final String value )
