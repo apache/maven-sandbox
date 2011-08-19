@@ -26,6 +26,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 
@@ -657,14 +660,14 @@ public class StringUtilsTest extends Assert
                   , is( "-" ) );
 
         assertThat( StringUtils.getChomp( "dingsbums", "-" )
-                  , is( "" ) );
+                , is( "" ) );
     }
 
     @Test( expected = NullPointerException.class )
     public void testGetNestedString_NPE()
     {
         assertThat( StringUtils.getNestedString( "  +dings+ ", null )
-                  , nullValue() );
+                , nullValue() );
     }
 
     @Test
@@ -729,102 +732,299 @@ public class StringUtilsTest extends Assert
                   , is( "dings bums" ) );
 
         assertThat( StringUtils.getPrechomp( "dings bums dongs", "non" )
-                  , is( "" ) );
+                , is( "" ) );
     }
 
     @Test
     public void testIndexOfAny()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.indexOfAny( null, null )
+                  , is( -1 ) );
+
+        assertThat( StringUtils.indexOfAny( "dings", null )
+                  , is( -1 ) );
+
+        assertThat( StringUtils.indexOfAny( null, new String[]{ } )
+                  , is( -1 ) );
+
+        assertThat( StringUtils.indexOfAny( "dings bums dongs", new String[]{ "knuff", "bums" } )
+                , is( 6 ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testInterpolate_NPE()
+    {
+        StringUtils.interpolate( null, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testInterpolate_NPE2()
+    {
+        StringUtils.interpolate( "This ${text} will get replaced", null );
     }
 
     @Test
     public void testInterpolate()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        Map variables = new HashMap<String,String>();
+        assertThat( StringUtils.interpolate( "This ${text} will get replaced", variables )
+                  , is( "This ${text} will get replaced" ) );
+
+        variables.put( "text", "with a special content" );
+
+        assertThat( StringUtils.interpolate( "This ${text} will get replaced", variables )
+                  , is( "This with a special content will get replaced" ) );
     }
 
     @Test
     public void testIsAlpha()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.isAlpha( null )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlpha( "2" )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlpha( "asvsdfSDF" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlpha( "asvsdfSDF \t " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlpha( "435afsafd3!" )
+                  , is( false ) );
     }
 
     @Test
     public void testIsAlphaSpace()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.isAlphaSpace( null )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphaSpace( "2" )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphaSpace( "asvsdfSDF" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlphaSpace( "asvsdfSDF  " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlphaSpace( "asvsdfSDF \t " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphaSpace( "435afsafd3!" )
+                  , is( false ) );
     }
 
     @Test
     public void testIsAlphanumeric()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.isAlphanumeric( null )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphanumeric( "2" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlphanumeric( "asvsdfSDF" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlphanumeric( "asvsdfSDF  " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphanumeric( "asvsdfSDF \t " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphanumeric( "435afsafd3!" )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphanumeric( "435afsafd3" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlphanumeric( "435 " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphanumeric( "435" )
+                  , is( true ) );
     }
 
     @Test
     public void testIsAlphanumericSpace()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.isAlphanumericSpace( null )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphanumericSpace( "2" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlphanumericSpace( "asvsdfSDF" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlphanumericSpace( "asvsdfSDF  " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlphanumericSpace( "asvsdfSDF \t " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphanumericSpace( "435afsafd3!" )
+                  , is( false ) );
+
+        assertThat( StringUtils.isAlphanumericSpace( "435afsafd3" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlphanumericSpace( "435 " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isAlphanumericSpace( "435" )
+                  , is( true ) );
     }
 
     @Test
     public void testIsBlank()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.isBlank( null )
+                  , is( true ) );
+
+        assertThat( StringUtils.isBlank( "xx" )
+                  , is( false ) );
+
+        assertThat( StringUtils.isBlank( "xx " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isBlank( "  " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isBlank( "  \t " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isBlank( "  \n " )
+                  , is( true ) );
     }
 
-
-    @Test
-    public void testIsBlank2()
-    {
-        System.out.println( "TODO IMPLEMENT TEST!" );
-    }
 
     @Test
     public void testEmpty()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.isEmpty( null )
+                  , is( true ) );
+
+        assertThat( StringUtils.isEmpty( "xx" )
+                  , is( false ) );
+
+        assertThat( StringUtils.isEmpty( "xx " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isEmpty( "  " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isEmpty( "  \t " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isEmpty( "  \n " )
+                  , is( true ) );
     }
 
     @Test
     public void testNotBlank()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.isNotBlank( null )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNotBlank( "xx" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isNotBlank( "xx " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isNotBlank( "  " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNotBlank( "  \t " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNotBlank( "  \n " )
+                  , is( false ) );
     }
 
     @Test
     public void testNotEmpty()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.isNotEmpty( null )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNotEmpty( "xx" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isNotEmpty( "xx " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isNotEmpty( "  " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isNotEmpty( "" )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNotEmpty( "  \t " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isNotEmpty( "  \n " )
+                  , is( true ) );
     }
 
     @Test
     public void testIsNumeric()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.isNumeric( null )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNumeric( "2" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isNumeric( "asvsdfSDF" )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNumeric( "asvsdfSDF  " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNumeric( "asvsdfSDF \t " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNumeric( "435afsafd3!" )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNumeric( "435afsafd3" )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNumeric( "435 " )
+                  , is( false ) );
+
+        assertThat( StringUtils.isNumeric( "435" )
+                  , is( true ) );
     }
 
     @Test
     public void testIsWhitespace()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
-    }
+        assertThat( StringUtils.isWhitespace( null )
+                  , is( false ) );
 
-    @Test
-    public void testTrim()
-    {
-        assertThat( StringUtils.trim( null )
-                , nullValue() );
+        assertThat( StringUtils.isWhitespace( "xx" )
+                  , is( false ) );
 
-        assertThat( StringUtils.trim( "   " )
-                  , is( "" ) );
+        assertThat( StringUtils.isWhitespace( "xx " )
+                  , is( false ) );
 
-        assertThat( StringUtils.trim( "  c " )
-                  , is( "c" ) );
+        assertThat( StringUtils.isWhitespace( "  " )
+                  , is( true ) );
 
-        assertThat( StringUtils.trim( "  dings \n  " )
-                  , is( "dings" ) );
+        assertThat( StringUtils.isWhitespace( "" )
+                  , is( true ) );
+
+        assertThat( StringUtils.isWhitespace( "  \t " )
+                  , is( true ) );
+
+        assertThat( StringUtils.isWhitespace( "  \n " )
+                  , is( true ) );
     }
 
     @Test
@@ -1071,6 +1271,22 @@ public class StringUtilsTest extends Assert
     public void testSwapCase()
     {
         System.out.println( "TODO IMPLEMENT TEST!" );
+    }
+
+    @Test
+    public void testTrim()
+    {
+        assertThat( StringUtils.trim( null )
+                , nullValue() );
+
+        assertThat( StringUtils.trim( "   " )
+                  , is( "" ) );
+
+        assertThat( StringUtils.trim( "  c " )
+                  , is( "c" ) );
+
+        assertThat( StringUtils.trim( "  dings \n  " )
+                  , is( "dings" ) );
     }
 
     @Test
