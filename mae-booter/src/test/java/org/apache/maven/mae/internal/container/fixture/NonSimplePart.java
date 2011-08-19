@@ -21,8 +21,15 @@ package org.apache.maven.mae.internal.container.fixture;
 
 import org.codehaus.plexus.component.annotations.Component;
 
-@Component( role = Child.class, hint = "simple" )
-public class Child
+@Component( role = Part.class, hint = "non-simple" )
+public class NonSimplePart
+    implements Part
 {
+
+    @Override
+    public String getType()
+    {
+        return "simple";
+    }
 
 }

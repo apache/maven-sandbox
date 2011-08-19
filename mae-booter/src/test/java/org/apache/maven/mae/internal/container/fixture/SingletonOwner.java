@@ -26,10 +26,10 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class SingletonOwner
 {
 
-    @Requirement( role = Child.class, hint = "simple" )
-    private Child singleton;
+    @Requirement( role = Part.class, hint = "simple" )
+    private Part singleton;
 
-    public Child singleton()
+    public Part singleton()
     {
         return singleton;
     }
