@@ -26,7 +26,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -1027,28 +1029,86 @@ public class StringUtilsTest extends Assert
                   , is( true ) );
     }
 
-    @Test
-    public void testJoin1()
+    @Test( expected = NullPointerException.class )
+    public void testJoin_Array_NPE()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        StringUtils.join( ( Object[] ) null, null );
     }
 
     @Test
-    public void testJoin2()
+    public void testJoin_Array()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.join( new Object[0], null )
+                  , is( "" ) );
+
+        assertThat( StringUtils.join( new Object[]{ "a", "b", "c"}, null )
+                  , is( "abc" ) );
+
+        assertThat( StringUtils.join( new Object[]{ "a", "b", "c"}, "__" )
+                  , is( "a__b__c" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testJoin_Iterator_NPE()
+    {
+        StringUtils.join( (Iterator) null, null );
+    }
+
+    @Test
+    public void testJoin_Iterator()
+    {
+        ArrayList list = new ArrayList();
+
+        assertThat( StringUtils.join( list.iterator(), null )
+                  , is( "" ) );
+
+        list.add( "a" );
+        list.add( "b" );
+        list.add( "c" );
+
+        assertThat( StringUtils.join( list.iterator(), null )
+                  , is( "abc" ) );
+
+        assertThat( StringUtils.join( list.iterator(), "__" )
+                  , is( "a__b__c" ) );
     }
 
     @Test
     public void testLastIndexOfAny()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.lastIndexOfAny( null, null )
+                  , is( -1 ) );
+
+        assertThat( StringUtils.lastIndexOfAny( "dings", null )
+                  , is( -1 ) );
+
+        assertThat( StringUtils.lastIndexOfAny( "dings bums boms", new String[] {"ms", " b"} )
+                  , is( 13 ) );
+
+        assertThat( StringUtils.lastIndexOfAny( "dings bums boms", new String[] {"nix", "da"} )
+                  , is( -1 ) );
+    }
+
+    @Test( expected = IllegalArgumentException.class )
+    public void testLeft_IAE()
+    {
+        StringUtils.left( null, -1 );
     }
 
     @Test
     public void testLeft()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.left( null, 4 )
+                  , nullValue() );
+
+        assertThat( StringUtils.left( "dingsbums", 4 )
+                  , is( "ding" ) );
+
+        assertThat( StringUtils.left( "dingsbums", 40 )
+                  , is( "dingsbums" ) );
+
+        assertThat( StringUtils.left( "dingsbums", 0 )
+                  , is( "" ) );
     }
 
     @Test
