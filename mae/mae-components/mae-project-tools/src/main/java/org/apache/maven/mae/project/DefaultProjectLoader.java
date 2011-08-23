@@ -85,6 +85,7 @@ public class DefaultProjectLoader
                                                             final File... rootPoms )
         throws ProjectToolsException
     {
+        sessionInjector.getRemoteRepositories( session );
         final ProjectBuildingRequest pbr = sessionInjector.getProjectBuildingRequest( session );
 
         try
@@ -217,6 +218,7 @@ public class DefaultProjectLoader
     public MavenProject buildProjectInstance( final File pomFile, final ProjectToolsSession session )
         throws ProjectToolsException
     {
+        sessionInjector.getRemoteRepositories( session );
         final ProjectBuildingRequest pbr = sessionInjector.getProjectBuildingRequest( session );
 
         try
