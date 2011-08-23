@@ -60,6 +60,8 @@ public class DefaultSessionInjector
     public synchronized ProjectBuildingRequest getProjectBuildingRequest( final ProjectToolsSession session )
         throws ProjectToolsException
     {
+        getRemoteRepositories( session );
+
         ProjectBuildingRequest pbr = session.getProjectBuildingRequest();
         try
         {
