@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.execution.MavenExecutionRequest;
+import org.apache.maven.execution.MavenExecutionResult;
 import org.apache.maven.mae.project.event.EventDispatcher;
 import org.apache.maven.model.Repository;
 import org.apache.maven.project.MavenProject;
@@ -40,25 +41,23 @@ public interface ProjectToolsSession
 
     public static final String SESSION_KEY = "dependency-resolver-session";
 
-    List<ArtifactRepository> getRemoteArtifactRepositories();
+    List<ArtifactRepository> getArtifactRepositoriesForResolution();
 
-    ProjectToolsSession setRemoteArtifactRepositories( final List<ArtifactRepository> remoteArtifactRepositories );
+    ProjectToolsSession setArtifactRepositoriesForResolution( final List<ArtifactRepository> remoteArtifactRepositories );
 
-    Repository[] getResolveRepositories();
+    Repository[] getRepositoryDefinitionsForResolution();
 
     File getLocalRepositoryDirectory();
 
-    List<RemoteRepository> getRemoteRepositories();
+    List<RemoteRepository> getRemoteRepositoriesForResolution();
 
-    ProjectToolsSession setRemoteRepositories( final List<RemoteRepository> remoteRepositories );
+    ProjectToolsSession setRemoteRepositoriesForResolution( final List<RemoteRepository> remoteRepositories );
 
     ProjectBuildingRequest getProjectBuildingRequest();
 
-    ProjectToolsSession setProjectBuildingRequest( final ProjectBuildingRequest projectBuildingRequest );
+    ProjectToolsSession setProjectBuildingRequest( final ProjectBuildingRequest pbr );
 
     RepositorySystemSession getRepositorySystemSession();
-
-    ProjectToolsSession setRepositorySystemSession( final RepositorySystemSession repositorySystemSession );
 
     ProjectToolsSession addReactorProject( final MavenProject project );
 
@@ -79,6 +78,10 @@ public interface ProjectToolsSession
     ProjectToolsSession setExecutionRequest( MavenExecutionRequest request );
 
     MavenExecutionRequest getExecutionRequest();
+
+    ProjectToolsSession setExecutionResult( MavenExecutionResult result );
+
+    MavenExecutionResult getExecutionResult();
 
     ProjectToolsSession setResolveThreads( int threads );
 
@@ -117,4 +120,8 @@ public interface ProjectToolsSession
 
     <E> ProjectToolsSession setEventDispatcher( Class<E> eventType, EventDispatcher<E> dispatcher );
 
+    void initialize( RepositorySystemSession rss, ProjectBuildingRequest pbr, List<ArtifactRepository> artifactRepos,
+                     List<RemoteRepository> remoteRepos );
+
+    boolean isInitialized();
 }

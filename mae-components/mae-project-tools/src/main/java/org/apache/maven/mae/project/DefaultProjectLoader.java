@@ -39,7 +39,7 @@ import org.apache.maven.RepositoryUtils;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.mae.project.key.FullProjectKey;
 import org.apache.maven.mae.project.session.ProjectToolsSession;
-import org.apache.maven.mae.project.session.SessionInjector;
+import org.apache.maven.mae.project.session.SessionInitializer;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.building.ModelProblem;
@@ -78,15 +78,15 @@ public class DefaultProjectLoader
     private ProjectBuilder projectBuilder;
 
     @Requirement
-    private SessionInjector sessionInjector;
+    private SessionInitializer sessionInitializer;
 
     @Override
     public List<MavenProject> buildReactorProjectInstances( final ProjectToolsSession session, final boolean recursive,
                                                             final File... rootPoms )
         throws ProjectToolsException
     {
-        sessionInjector.getRemoteRepositories( session );
-        final ProjectBuildingRequest pbr = sessionInjector.getProjectBuildingRequest( session );
+        sessionInitializer.initializeSessionComponents( session );
+        final ProjectBuildingRequest pbr = session.getProjectBuildingRequest();
 
         try
         {
@@ -97,7 +97,7 @@ public class DefaultProjectLoader
             for ( final ProjectBuildingResult result : results )
             {
                 final MavenProject project = result.getProject();
-                project.setRemoteArtifactRepositories( session.getRemoteArtifactRepositories() );
+                project.setRemoteArtifactRepositories( session.getArtifactRepositoriesForResolution() );
 
                 projects.add( project );
             }
@@ -218,15 +218,15 @@ public class DefaultProjectLoader
     public MavenProject buildProjectInstance( final File pomFile, final ProjectToolsSession session )
         throws ProjectToolsException
     {
-        sessionInjector.getRemoteRepositories( session );
-        final ProjectBuildingRequest pbr = sessionInjector.getProjectBuildingRequest( session );
+        sessionInitializer.initializeSessionComponents( session );
+        final ProjectBuildingRequest pbr = session.getProjectBuildingRequest();
 
         try
         {
             final ProjectBuildingResult result = projectBuilder.build( pomFile, pbr );
 
             final MavenProject project = result.getProject();
-            project.setRemoteArtifactRepositories( session.getRemoteArtifactRepositories() );
+            project.setRemoteArtifactRepositories( session.getArtifactRepositoriesForResolution() );
 
             addProjects( session, project );
 
@@ -291,7 +291,8 @@ public class DefaultProjectLoader
                                               final ProjectToolsSession session )
         throws ProjectToolsException
     {
-        final ProjectBuildingRequest req = sessionInjector.getProjectBuildingRequest( session );
+        sessionInitializer.initializeSessionComponents( session );
+        final ProjectBuildingRequest pbr = session.getProjectBuildingRequest();
 
         try
         {
@@ -301,16 +302,16 @@ public class DefaultProjectLoader
             final Artifact aetherPomArtifact = RepositoryUtils.toArtifact( pomArtifact );
 
             final ArtifactRequest artifactRequest =
-                new ArtifactRequest( aetherPomArtifact, sessionInjector.getRemoteRepositories( session ), "project" );
+                new ArtifactRequest( aetherPomArtifact, session.getRemoteRepositoriesForResolution(), "project" );
 
             final ArtifactResult artifactResult =
-                aetherRepositorySystem.resolveArtifact( req.getRepositorySession(), artifactRequest );
+                aetherRepositorySystem.resolveArtifact( pbr.getRepositorySession(), artifactRequest );
 
             final File pomFile = artifactResult.getArtifact().getFile();
-            final ProjectBuildingResult result = projectBuilder.build( pomFile, req );
+            final ProjectBuildingResult result = projectBuilder.build( pomFile, pbr );
 
             final MavenProject project = result.getProject();
-            project.setRemoteArtifactRepositories( session.getRemoteArtifactRepositories() );
+            project.setRemoteArtifactRepositories( session.getArtifactRepositoriesForResolution() );
 
             project.setFile( pomFile );
 
