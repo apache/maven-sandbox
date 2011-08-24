@@ -30,7 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.execution.DefaultMavenExecutionRequest;
+import org.apache.maven.execution.DefaultMavenExecutionResult;
 import org.apache.maven.execution.MavenExecutionRequest;
+import org.apache.maven.execution.MavenExecutionResult;
 import org.apache.maven.mae.project.event.EventDispatcher;
 import org.apache.maven.model.Repository;
 import org.apache.maven.model.building.ModelBuildingRequest;
@@ -78,6 +81,8 @@ public class SimpleProjectToolsSession
 
     private transient Map<Class<?>, Object> states = new HashMap<Class<?>, Object>();
 
+    private MavenExecutionResult executionResult;
+
     public SimpleProjectToolsSession()
     {
     }
@@ -85,10 +90,10 @@ public class SimpleProjectToolsSession
     /**
      * {@inheritDoc}
      * 
-     * @see org.apache.maven.mae.project.session.ProjectToolsSession#getRemoteArtifactRepositories()
+     * @see org.apache.maven.mae.project.session.ProjectToolsSession#getArtifactRepositoriesForResolution()
      */
     @Override
-    public List<ArtifactRepository> getRemoteArtifactRepositories()
+    public List<ArtifactRepository> getArtifactRepositoriesForResolution()
     {
         return remoteArtifactRepositories;
     }
@@ -96,10 +101,10 @@ public class SimpleProjectToolsSession
     /**
      * {@inheritDoc}
      * 
-     * @see org.apache.maven.mae.project.session.ProjectToolsSession#setRemoteArtifactRepositories(java.util.List)
+     * @see org.apache.maven.mae.project.session.ProjectToolsSession#setArtifactRepositoriesForResolution(java.util.List)
      */
     @Override
-    public ProjectToolsSession setRemoteArtifactRepositories( final List<ArtifactRepository> remoteArtifactRepositories )
+    public ProjectToolsSession setArtifactRepositoriesForResolution( final List<ArtifactRepository> remoteArtifactRepositories )
     {
         this.remoteArtifactRepositories = remoteArtifactRepositories;
         return this;
@@ -108,10 +113,10 @@ public class SimpleProjectToolsSession
     /**
      * {@inheritDoc}
      * 
-     * @see org.apache.maven.mae.project.session.ProjectToolsSession#getResolveRepositories()
+     * @see org.apache.maven.mae.project.session.ProjectToolsSession#getRepositoryDefinitionsForResolution()
      */
     @Override
-    public Repository[] getResolveRepositories()
+    public Repository[] getRepositoryDefinitionsForResolution()
     {
         return resolveRepositories;
     }
@@ -119,10 +124,10 @@ public class SimpleProjectToolsSession
     /**
      * {@inheritDoc}
      * 
-     * @see org.apache.maven.mae.project.session.ProjectToolsSession#getRemoteRepositories()
+     * @see org.apache.maven.mae.project.session.ProjectToolsSession#getRemoteRepositoriesForResolution()
      */
     @Override
-    public List<RemoteRepository> getRemoteRepositories()
+    public List<RemoteRepository> getRemoteRepositoriesForResolution()
     {
         return remoteRepositories;
     }
@@ -142,10 +147,10 @@ public class SimpleProjectToolsSession
     /**
      * {@inheritDoc}
      * 
-     * @see org.apache.maven.mae.project.session.ProjectToolsSession#setRemoteRepositories(java.util.List)
+     * @see org.apache.maven.mae.project.session.ProjectToolsSession#setRemoteRepositoriesForResolution(java.util.List)
      */
     @Override
-    public ProjectToolsSession setRemoteRepositories( final List<RemoteRepository> remoteRepositories )
+    public ProjectToolsSession setRemoteRepositoriesForResolution( final List<RemoteRepository> remoteRepositories )
     {
         this.remoteRepositories = remoteRepositories;
         return this;
@@ -162,15 +167,10 @@ public class SimpleProjectToolsSession
         return projectBuildingRequest;
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.apache.maven.mae.project.session.ProjectToolsSession#setProjectBuildingRequest(org.apache.maven.project.ProjectBuildingRequest)
-     */
     @Override
-    public ProjectToolsSession setProjectBuildingRequest( final ProjectBuildingRequest projectBuildingRequest )
+    public ProjectToolsSession setProjectBuildingRequest( final ProjectBuildingRequest pbr )
     {
-        this.projectBuildingRequest = projectBuildingRequest;
+        this.projectBuildingRequest = pbr;
         return this;
     }
 
@@ -183,18 +183,6 @@ public class SimpleProjectToolsSession
     public RepositorySystemSession getRepositorySystemSession()
     {
         return repositorySystemSession;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.apache.maven.mae.project.session.ProjectToolsSession#setRepositorySystemSession(org.sonatype.aether.RepositorySystemSession)
-     */
-    @Override
-    public ProjectToolsSession setRepositorySystemSession( final RepositorySystemSession repositorySystemSession )
-    {
-        this.repositorySystemSession = repositorySystemSession;
-        return this;
     }
 
     /**
@@ -330,9 +318,9 @@ public class SimpleProjectToolsSession
      * @see org.apache.maven.mae.project.session.ProjectToolsSession#setExecutionRequest(org.apache.maven.execution.MavenExecutionRequest)
      */
     @Override
-    public ProjectToolsSession setExecutionRequest( final MavenExecutionRequest request )
+    public ProjectToolsSession setExecutionRequest( final MavenExecutionRequest executionRequest )
     {
-        executionRequest = request;
+        this.executionRequest = executionRequest;
         return this;
     }
 
@@ -342,9 +330,32 @@ public class SimpleProjectToolsSession
      * @see org.apache.maven.mae.project.session.ProjectToolsSession#getExecutionRequest()
      */
     @Override
-    public MavenExecutionRequest getExecutionRequest()
+    public synchronized MavenExecutionRequest getExecutionRequest()
     {
+        if ( executionRequest == null )
+        {
+            executionRequest = new DefaultMavenExecutionRequest();
+        }
+
         return executionRequest;
+    }
+
+    @Override
+    public ProjectToolsSession setExecutionResult( final MavenExecutionResult executionResult )
+    {
+        this.executionResult = executionResult;
+        return this;
+    }
+
+    @Override
+    public synchronized MavenExecutionResult getExecutionResult()
+    {
+        if ( executionResult == null )
+        {
+            this.executionResult = new DefaultMavenExecutionResult();
+        }
+
+        return executionResult;
     }
 
     /**
@@ -522,6 +533,8 @@ public class SimpleProjectToolsSession
 
     private final Map<Class<?>, EventDispatcher<?>> eventDispatchers = new HashMap<Class<?>, EventDispatcher<?>>();
 
+    private boolean initialized;
+
     @SuppressWarnings( "unchecked" )
     @Override
     public <E> EventDispatcher<E> getEventDispatcher( final Class<E> eventType )
@@ -534,6 +547,25 @@ public class SimpleProjectToolsSession
     {
         eventDispatchers.put( eventType, dispatcher );
         return this;
+    }
+
+    @Override
+    public void initialize( final RepositorySystemSession rss, final ProjectBuildingRequest pbr,
+                            final List<ArtifactRepository> artifactRepos, final List<RemoteRepository> remoteRepos )
+    {
+        this.repositorySystemSession = rss;
+        this.projectBuildingRequest = pbr;
+
+        setArtifactRepositoriesForResolution( artifactRepos );
+        setRemoteRepositoriesForResolution( remoteRepos );
+
+        this.initialized = true;
+    }
+
+    @Override
+    public boolean isInitialized()
+    {
+        return initialized;
     }
 
 }

@@ -19,31 +19,12 @@
 
 package org.apache.maven.mae.project.session;
 
-import java.util.List;
-
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.mae.MAEException;
 import org.apache.maven.mae.project.ProjectToolsException;
-import org.apache.maven.project.ProjectBuildingRequest;
-import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.repository.RemoteRepository;
 
-/**
- * 
- */
-public interface SessionInjector
+public interface SessionInitializer
 {
 
-    ProjectBuildingRequest getProjectBuildingRequest( final ProjectToolsSession session )
-        throws ProjectToolsException;
-
-    RepositorySystemSession getRepositorySystemSession( final ProjectToolsSession session )
-        throws MAEException;
-
-    List<RemoteRepository> getRemoteRepositories( final ProjectToolsSession session )
-        throws ProjectToolsException;
-
-    List<ArtifactRepository> getArtifactRepositories( final ProjectToolsSession session )
+    void initializeSessionComponents( final ProjectToolsSession session )
         throws ProjectToolsException;
 
 }

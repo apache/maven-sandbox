@@ -133,13 +133,13 @@ public class DefaultMAEServiceManager
      * {@inheritDoc}
      */
     @Override
-    public DefaultProjectBuildingRequest createProjectBuildingRequest( final ProjectBuildingRequest templateProjectBuildingRequest )
+    public DefaultProjectBuildingRequest createProjectBuildingRequest( final ProjectBuildingRequest template )
         throws MAEEmbeddingException
     {
         final DefaultProjectBuildingRequest req;
-        if ( templateProjectBuildingRequest != null )
+        if ( template != null )
         {
-            req = new DefaultProjectBuildingRequest( templateProjectBuildingRequest );
+            req = new DefaultProjectBuildingRequest( template );
         }
         else
         {

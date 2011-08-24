@@ -39,7 +39,7 @@ import org.apache.maven.mae.project.event.ModelLoaderEvent;
 import org.apache.maven.mae.project.internal.SimpleModelResolver;
 import org.apache.maven.mae.project.key.FullProjectKey;
 import org.apache.maven.mae.project.session.ProjectToolsSession;
-import org.apache.maven.mae.project.session.SessionInjector;
+import org.apache.maven.mae.project.session.SessionInitializer;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.building.FileModelSource;
 import org.apache.maven.model.building.ModelSource;
@@ -70,7 +70,7 @@ public class DefaultModelLoader
     private ModelReader modelReader;
 
     @Requirement
-    private SessionInjector sessionInjector;
+    private SessionInitializer sessionInitializer;
 
     @Override
     public List<Model> loadRawModels( final ProjectToolsSession session, final boolean processModules,
@@ -158,10 +158,12 @@ public class DefaultModelLoader
                                      final ProjectToolsSession session )
         throws ProjectToolsException
     {
+        sessionInitializer.initializeSessionComponents( session );
+
         try
         {
-            RepositorySystemSession rss = sessionInjector.getRepositorySystemSession( session );
-            List<RemoteRepository> repos = sessionInjector.getRemoteRepositories( session );
+            RepositorySystemSession rss = session.getRepositorySystemSession();
+            List<RemoteRepository> repos = session.getRemoteRepositoriesForResolution();
 
             SimpleModelResolver resolver =
                 new SimpleModelResolver( rss, repos, new DefaultRequestTrace( key ), artifactResolver,

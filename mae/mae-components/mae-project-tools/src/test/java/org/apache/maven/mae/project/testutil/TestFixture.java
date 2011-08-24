@@ -250,7 +250,7 @@ public final class TestFixture
         session.setLocalRepositoryDirectory( localRepoDir );
         session.setResolveRepositories( rawRemoteRepo );
 
-        session.setRemoteArtifactRepositories( Collections.singletonList( remoteRepository ) );
+        session.setArtifactRepositoriesForResolution( Collections.singletonList( remoteRepository ) );
 
         if ( projects != null && projects.length > 0 )
         {
