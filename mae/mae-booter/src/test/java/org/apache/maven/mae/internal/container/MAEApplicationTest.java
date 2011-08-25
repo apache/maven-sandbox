@@ -19,21 +19,28 @@
 
 package org.apache.maven.mae.internal.container;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+
+import java.util.Map;
 
 import org.apache.maven.mae.MAEException;
 import org.apache.maven.mae.app.AbstractMAEApplication;
 import org.apache.maven.mae.boot.embed.MAEEmbedderBuilder;
 import org.apache.maven.mae.internal.container.fixture.ContainerOwner;
 import org.apache.maven.mae.internal.container.fixture.DefaultSingletonOwner;
+import org.apache.maven.mae.internal.container.fixture.InitializedUsingRequirement;
+import org.apache.maven.mae.internal.container.fixture.MapOwner;
 import org.apache.maven.mae.internal.container.fixture.NonSimplePart;
 import org.apache.maven.mae.internal.container.fixture.Part;
 import org.apache.maven.mae.internal.container.fixture.SimplePart;
 import org.apache.maven.mae.internal.container.fixture.SingletonLiteralOwner;
 import org.apache.maven.mae.internal.container.fixture.SingletonOwner;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.junit.Test;
 
 public class MAEApplicationTest
@@ -74,21 +81,23 @@ public class MAEApplicationTest
                     owner.container, notNullValue() );
     }
 
-    // @Test
-    // public void mappedRequirementContainsNoLiteralIds()
-    // throws Throwable
-    // {
-    // final ContainerConfiguration config = new DefaultContainerConfiguration().setClassPathScanning( "ON" );
-    //
-    // final MAEContainer container = new MAEContainer( config, new ComponentSelector(), new InstanceRegistry() );
-    //
-    // final MapOwner mapOwner = container.lookup( MapOwner.class );
-    // final Map<String, Child> members = mapOwner.members();
-    //
-    // System.out.println( members );
-    //
-    // assertNull( members.get( "simple" + ComponentKey.LITERAL_SUFFIX ) );
-    // }
+    @Test
+    public void mappedRequirementContainsNoLiteralIds()
+        throws Throwable
+    {
+        final ContainerConfiguration config =
+            new DefaultContainerConfiguration().setClassPathScanning( "ON" );
+
+        final MAEContainer container =
+            new MAEContainer( config, new ComponentSelector(), new InstanceRegistry() );
+
+        final MapOwner mapOwner = container.lookup( MapOwner.class );
+        final Map<String, Part> members = mapOwner.members();
+
+        assertThat( members.size(), equalTo( 2 ) );
+
+        assertThat( members.get( "simple" + ComponentKey.LITERAL_SUFFIX ), nullValue() );
+    }
 
     @Test
     public void singletonImpliedRequirementOnComponentWithImpliedHint()
@@ -123,7 +132,8 @@ public class MAEApplicationTest
         throws Throwable
     {
         ContainerOwner owner = new ContainerOwner();
-        new TestApplication().withInstance( owner ).withComponentSelection( new ComponentKey<Part>( Part.class,
+        new TestApplication().withInstance( owner ).withComponentSelection( new ComponentKey<Part>(
+                                                                                                    Part.class,
                                                                                                     "simple" ),
                                                                             "non-simple" ).load();
 
@@ -140,7 +150,8 @@ public class MAEApplicationTest
         throws Throwable
     {
         ContainerOwner owner = new ContainerOwner();
-        new TestApplication().withInstance( owner ).withComponentSelection( new ComponentKey<Part>( Part.class,
+        new TestApplication().withInstance( owner ).withComponentSelection( new ComponentKey<Part>(
+                                                                                                    Part.class,
                                                                                                     "simple" ),
                                                                             "non-simple" ).load();
 
@@ -152,17 +163,18 @@ public class MAEApplicationTest
         assertThat( single.singletonLiteral(), instanceOf( SimplePart.class ) );
     }
 
-    //
-    // @Test
-    // public void initializableUsingRequirement()
-    // throws Throwable
-    // {
-    // final ContainerConfiguration config = new DefaultContainerConfiguration().setClassPathScanning( "ON" );
-    //
-    // final MAEContainer container = new MAEContainer( config, new ComponentSelector(), new InstanceRegistry() );
-    //
-    // container.lookup( InitializedUsingRequirement.class );
-    // }
+    @Test
+    public void initializableUsingRequirement()
+        throws Throwable
+    {
+        final ContainerConfiguration config =
+            new DefaultContainerConfiguration().setClassPathScanning( "ON" );
+
+        final MAEContainer container =
+            new MAEContainer( config, new ComponentSelector(), new InstanceRegistry() );
+
+        container.lookup( InitializedUsingRequirement.class );
+    }
 
     private static final class TestApplication
         extends AbstractMAEApplication

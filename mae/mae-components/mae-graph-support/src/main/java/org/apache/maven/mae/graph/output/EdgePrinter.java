@@ -17,23 +17,20 @@
  * under the License.
  */
 
-package org.apache.maven.mae.internal.container.fixture;
+package org.apache.maven.mae.graph.output;
 
-import java.util.Map;
-
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-
-@Component( role = MapOwner.class )
-public class MapOwner
+public interface EdgePrinter<E>
 {
-
-    @Requirement( role = Part.class )
-    private Map<String, Part> members;
-
-    public Map<String, Part> members()
+    public static final class ToStringPrinter<T>
+        implements EdgePrinter<T>
     {
-        return members;
-    }
+        @Override
+        public String printEdge( final T edge )
+        {
+            return edge == null ? "-null-" : edge.toString();
+        }
+    };
+
+    String printEdge( E edge );
 
 }

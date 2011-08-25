@@ -51,21 +51,18 @@ import org.apache.maven.mae.conf.loader.ServiceLibraryLoader;
 import org.apache.maven.mae.internal.container.ComponentKey;
 import org.apache.maven.mae.internal.container.ComponentSelector;
 import org.apache.maven.mae.internal.container.InstanceRegistry;
+import org.apache.maven.mae.internal.container.MAEContainer;
 import org.apache.maven.mae.internal.container.VirtualInstance;
 import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.settings.building.SettingsBuilder;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
 import org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
-
-import com.google.inject.Module;
 
 public class MAEEmbedderBuilder
 {
@@ -108,7 +105,7 @@ public class MAEEmbedderBuilder
 
     private ModelProcessor modelProcessor;
 
-    private PlexusContainer container;
+    private MAEContainer container;
 
     private MavenExecutionRequestPopulator executionRequestPopulator;
 
@@ -148,7 +145,8 @@ public class MAEEmbedderBuilder
 
     private List<MAELibraryLoader> libraryLoaders;
 
-    private final VirtualInstance<MAEEmbedder> embedderVirtual = new VirtualInstance<MAEEmbedder>( MAEEmbedder.class );
+    private final VirtualInstance<MAEEmbedder> embedderVirtual =
+        new VirtualInstance<MAEEmbedder>( MAEEmbedder.class );
 
     public synchronized MAEEmbedderBuilder withSettingsBuilder( final SettingsBuilder settingsBuilder )
     {
@@ -229,7 +227,8 @@ public class MAEEmbedderBuilder
         return this;
     }
 
-    public synchronized MAEEmbedderBuilder withCoreClassLoader( final ClassLoader root, final Object... constituents )
+    public synchronized MAEEmbedderBuilder withCoreClassLoader( final ClassLoader root,
+                                                                final Object... constituents )
         throws MalformedURLException
     {
         if ( constituents != null && constituents.length > 0 )
@@ -269,8 +268,9 @@ public class MAEEmbedderBuilder
                     final URL resource = cloader.getResource( fname );
                     if ( resource == null )
                     {
-                        throw new IllegalStateException( "Class doesn't appear in its own classloader! ["
-                            + object.getClass().getName() + "]" );
+                        throw new IllegalStateException(
+                                                         "Class doesn't appear in its own classloader! ["
+                                                             + object.getClass().getName() + "]" );
                     }
 
                     String path = resource.toExternalForm();
@@ -400,8 +400,8 @@ public class MAEEmbedderBuilder
         }
         catch ( final ComponentLookupException e )
         {
-            throw new MAEEmbeddingException( "Failed to lookup component: %s. Reason: %s", e, cls.getName(),
-                                             e.getMessage() );
+            throw new MAEEmbeddingException( "Failed to lookup component: %s. Reason: %s", e,
+                                             cls.getName(), e.getMessage() );
         }
     }
 
@@ -414,12 +414,13 @@ public class MAEEmbedderBuilder
         }
         catch ( final ComponentLookupException e )
         {
-            throw new MAEEmbeddingException( "Failed to lookup component: {0} with hint: {1}. Reason: {2}", e,
-                                             cls.getName(), hint, e.getMessage() );
+            throw new MAEEmbeddingException(
+                                             "Failed to lookup component: {0} with hint: {1}. Reason: {2}",
+                                             e, cls.getName(), hint, e.getMessage() );
         }
     }
 
-    public synchronized MAEEmbedderBuilder withContainer( final PlexusContainer container )
+    public synchronized MAEEmbedderBuilder withContainer( final MAEContainer container )
     {
         this.container = container;
         resetContainer();
@@ -463,7 +464,7 @@ public class MAEEmbedderBuilder
         }
     }
 
-    public synchronized PlexusContainer container()
+    public synchronized MAEContainer container()
         throws MAEEmbeddingException
     {
         // Need to switch to using: org.codehaus.plexus.MutablePlexusContainer.addPlexusInjector(List<PlexusBeanModule>,
@@ -475,16 +476,15 @@ public class MAEEmbedderBuilder
             final InstanceRegistry reg = new InstanceRegistry( instanceRegistry() );
             reg.addVirtual( new ComponentKey<MAEEmbedder>( MAEEmbedder.class ), embedderVirtual );
 
-            Module[] mods = { new ComponentSelectionModule( selector() ), new InstanceModule( reg ) };
-
-            DefaultPlexusContainer c;
+            MAEContainer c;
             try
             {
-                c = new DefaultPlexusContainer( cc, mods );
+                c = new MAEContainer( cc, selector(), reg );
             }
             catch ( final PlexusContainerException e )
             {
-                throw new MAEEmbeddingException( "Failed to initialize component container: {0}", e, e.getMessage() );
+                throw new MAEEmbeddingException( "Failed to initialize component container: {0}",
+                                                 e, e.getMessage() );
             }
 
             c.setLoggerManager( new MavenLoggerManager( logger ) );
@@ -519,7 +519,8 @@ public class MAEEmbedderBuilder
         {
             for ( final String logHandle : debugLogHandles )
             {
-                final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger( logHandle );
+                final org.apache.log4j.Logger logger =
+                    org.apache.log4j.Logger.getLogger( logHandle );
                 logger.setLevel( Level.DEBUG );
             }
 
@@ -546,7 +547,8 @@ public class MAEEmbedderBuilder
                 config.withLibraries( libraries );
 
                 if ( debugLogHandles != null
-                    && Arrays.binarySearch( debugLogHandles, MAEConfiguration.STANDARD_LOG_HANDLE_CORE ) > -1 )
+                    && Arrays.binarySearch( debugLogHandles,
+                                            MAEConfiguration.STANDARD_LOG_HANDLE_CORE ) > -1 )
                 {
                     MAEEmbedder.showInfo( config, loaders, standardOut() );
                 }
@@ -630,7 +632,9 @@ public class MAEEmbedderBuilder
     {
         if ( libraryLoaders == null )
         {
-            libraryLoaders = new ArrayList<MAELibraryLoader>( Collections.singletonList( new ServiceLibraryLoader() ) );
+            libraryLoaders =
+                new ArrayList<MAELibraryLoader>(
+                                                 Collections.singletonList( new ServiceLibraryLoader() ) );
         }
 
         return libraryLoaders;
@@ -796,8 +800,7 @@ public class MAEEmbedderBuilder
                 withStandardOut( newOut );
             }
             catch ( final FileNotFoundException e )
-            {
-            }
+            {}
         }
 
         logger();
@@ -807,9 +810,10 @@ public class MAEEmbedderBuilder
         throws MAEEmbeddingException
     {
         final MAEEmbedder embedder =
-            new MAEEmbedder( maven(), configuration(), container(), settingsBuilder(), executionRequestPopulator(),
-                             securityDispatcher(), serviceManager(), libraryLoaders(), standardOut(), logger(),
-                             shouldShowErrors(), showVersion() );
+            new MAEEmbedder( maven(), configuration(), container(), settingsBuilder(),
+                             executionRequestPopulator(), securityDispatcher(), serviceManager(),
+                             libraryLoaders(), standardOut(), logger(), shouldShowErrors(),
+                             showVersion() );
 
         embedderVirtual.setInstance( embedder );
 

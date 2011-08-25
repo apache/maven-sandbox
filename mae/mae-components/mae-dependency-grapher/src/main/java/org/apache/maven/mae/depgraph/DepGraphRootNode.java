@@ -17,23 +17,28 @@
  * under the License.
  */
 
-package org.apache.maven.mae.internal.container.fixture;
+package org.apache.maven.mae.depgraph;
 
-import java.util.Map;
+import org.apache.maven.artifact.ArtifactUtils;
+import org.apache.maven.project.MavenProject;
+import org.sonatype.aether.graph.DependencyNode;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-
-@Component( role = MapOwner.class )
-public class MapOwner
+public class DepGraphRootNode
+    extends DepGraphNode
 {
 
-    @Requirement( role = Part.class )
-    private Map<String, Part> members;
+    private final MavenProject project;
 
-    public Map<String, Part> members()
+    public DepGraphRootNode( final DependencyNode node, final MavenProject project )
     {
-        return members;
+        super( node, ArtifactUtils.key( project.getGroupId(), project.getArtifactId(),
+                                        project.getVersion() ), true );
+        this.project = project;
+    }
+
+    public MavenProject getProject()
+    {
+        return project;
     }
 
 }

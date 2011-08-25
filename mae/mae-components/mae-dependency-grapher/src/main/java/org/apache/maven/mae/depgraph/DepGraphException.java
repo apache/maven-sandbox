@@ -17,23 +17,34 @@
  * under the License.
  */
 
-package org.apache.maven.mae.internal.container.fixture;
+package org.apache.maven.mae.depgraph;
 
-import java.util.Map;
+import org.apache.maven.mae.MAEException;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-
-@Component( role = MapOwner.class )
-public class MapOwner
+public class DepGraphException
+    extends MAEException
 {
 
-    @Requirement( role = Part.class )
-    private Map<String, Part> members;
+    private static final long serialVersionUID = 1L;
 
-    public Map<String, Part> members()
+    public DepGraphException( final String message, final Object... params )
     {
-        return members;
+        super( message, params );
+    }
+
+    public DepGraphException( final String message, final Throwable cause, final Object... params )
+    {
+        super( message, cause, params );
+    }
+
+    public DepGraphException( final String message, final Throwable cause )
+    {
+        super( message, cause );
+    }
+
+    public DepGraphException( final String message )
+    {
+        super( message );
     }
 
 }
