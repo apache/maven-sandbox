@@ -1111,64 +1111,264 @@ public class StringUtilsTest extends Assert
                   , is( "" ) );
     }
 
+    @Test( expected = NullPointerException.class )
+    public void testLeftPad1_NPE()
+    {
+        StringUtils.leftPad( null, 0 );
+    }
+
     @Test
     public void testLeftPad1()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.leftPad( "dings", 0 )
+                  , is( "dings")  );
+
+        assertThat( StringUtils.leftPad( "dings", 2 )
+                  , is( "dings")  );
+
+        assertThat( StringUtils.leftPad( "dings", 10 )
+                  , is( "     dings")  );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testLeftPad2_NPE1()
+    {
+        StringUtils.leftPad( null, 0, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testLeftPad2_NPE2()
+    {
+        StringUtils.leftPad( "dings", 0, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testLeftPad2_NPE3()
+    {
+        StringUtils.leftPad( null, 0, "*" );
     }
 
     @Test
     public void testLeftPad2()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.leftPad( "dings", 0, "*" )
+                  , is( "dings") );
+
+        assertThat( StringUtils.leftPad( "dings", 2, "*" )
+                  , is( "dings") );
+
+        assertThat( StringUtils.leftPad( "dings", 10, "*" )
+                  , is( "*****dings") );
     }
 
     @Test
     public void testLowerCase()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.lowerCase( null )
+                  , nullValue()  );
+
+        assertThat( StringUtils.lowerCase( "dinGSbuMS" )
+                  , is( "dingsbums" ) );
+
+        assertThat( StringUtils.lowerCase( "" )
+                  , is( "" ) );
+
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testLowerCaseFirstLetter_NPE()
+    {
+        StringUtils.lowercaseFirstLetter( null );
+    }
+
+    @Test( expected = IndexOutOfBoundsException.class )
+    @ReproducesPlexusBug( value = "Ridiculous IndexOutOfBoundsException!" )
+    public void testLowerCaseFirstLetter_buggy()
+    {
+        assertThat( StringUtils.lowercaseFirstLetter( "" )
+                  , is( "" ) );
     }
 
     @Test
     public void testLowerCaseFirstLetter()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.lowercaseFirstLetter( "Dings Bums" )
+                  , is( "dings Bums" ) );
+    }
+
+    @Test( expected = IllegalArgumentException.class )
+    public void testMid_NegativeLen()
+    {
+        StringUtils.mid( null, 0, -2 );
+    }
+
+    @Test( expected = IndexOutOfBoundsException.class )
+    public void testMid_WrongPos()
+    {
+        StringUtils.mid( null, -2, 3 );
     }
 
     @Test
     public void testMid()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.mid( null, 0, 0 )
+                  , nullValue() );
+
+        assertThat( StringUtils.mid( "dings bums", 0, 0 )
+                  , is( "" ) );
+
+        assertThat( StringUtils.mid( "dings bums", 3, 4 )
+                  , is( "gs b" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testOverlayString_NPE1()
+    {
+        StringUtils.overlayString( null, null, 0, 0 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testOverlayString_NPE2()
+    {
+        StringUtils.overlayString( "dings", null, 0, 0 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testOverlayString_NPE3()
+    {
+        StringUtils.overlayString( null, "bums", 0, 0 );
     }
 
     @Test
     public void testOverlayString()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.overlayString( "dings", "bums", 0, 0 )
+                  , is( "bumsdings" ) );
+
+        assertThat( StringUtils.overlayString( "dings", "bums", 2, 4 )
+                  , is( "dibumss" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testPrechomp_NPE1()
+    {
+        StringUtils.prechomp( null, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testPrechomp_NPE2()
+    {
+        StringUtils.prechomp( "dings", null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testPrechomp_NPE3()
+    {
+        StringUtils.prechomp( null, "bums" );
     }
 
     @Test
     public void testPrechomp()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.prechomp( "dings bums", " " )
+                  , is( "bums" ) );
+
+        assertThat( StringUtils.prechomp( "dings bums", "nix" )
+                  , is( "dings bums" ) );
     }
 
     @Test
     public void testQuoteAndEscape1()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.quoteAndEscape( null, '+' )
+                  , nullValue() );
+
+        assertThat( StringUtils.quoteAndEscape( "", '+' )
+                  , is( "" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "abc", '"' )
+                  , is( "abc" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '"' )
+                  , is( "\"a\\\"bc\"" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\'bc", '\'' )
+                  , is( "\'a\\'bc\'" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '\'' )
+                  , is( "a\"bc" ) );
     }
 
     @Test
     public void testQuoteAndEscape2()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.quoteAndEscape( null, '+', new char[]{ '"' } )
+                  , nullValue() );
+
+        assertThat( StringUtils.quoteAndEscape( "", '+', new char[]{ '"' } )
+                  , is( "" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "abc", '"', new char[]{ '"' } )
+                  , is( "abc" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '"', new char[]{ '"' } )
+                  , is( "\"a\\\"bc\"" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\'bc", '\'', new char[]{ '"' } )
+                  , is( "\'a\\'bc\'" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '\'', new char[]{ '\'' } )
+                  , is( "a\"bc" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '\'', new char[]{ '\'', '"' } )
+                  , is( "\'a\"bc\'" ) );
     }
 
     @Test
     public void testQuoteAndEscape3()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.quoteAndEscape( null, '+', new char[]{ '"' }, '\\', false )
+                  , nullValue() );
+
+        assertThat( StringUtils.quoteAndEscape( "", '+', new char[]{ '"' }, '\\', false )
+                  , is( "" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "abc", '"', new char[]{ '"' }, '\\', false )
+                  , is( "abc" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '"', new char[]{ '"' }, '\\', false )
+                  , is( "\"a\\\"bc\"" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\'bc", '\'', new char[]{ '"' }, '\\', false )
+                  , is( "a\'bc" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '\'', new char[]{ '\'' }, '\\', false )
+                  , is( "a\"bc" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '\'', new char[]{ '\'', '"' }, '\\', false )
+                  , is( "\'a\\\"bc\'" ) );
+
+        // with force flag
+        assertThat( StringUtils.quoteAndEscape( null, '+', new char[]{ '"' }, '\\', true )
+                  , nullValue() );
+
+        assertThat( StringUtils.quoteAndEscape( "", '+', new char[]{ '"' }, '\\', true )
+                  , is( "++" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "abc", '"', new char[]{ '"' }, '\\', true )
+                  , is( "\"abc\"" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '"', new char[]{ '"' }, '\\', true )
+                  , is( "\"a\\\"bc\"" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\'bc", '\'', new char[]{ '"' }, '\\', true )
+                  , is( "\'a\'bc\'" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '\'', new char[]{ '\'' }, '\\', true )
+                  , is( "\'a\"bc\'" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '\'', new char[]{ '\'', '"' }, '\\', true )
+                  , is( "\'a\\\"bc\'" ) );
     }
 
     @Test
