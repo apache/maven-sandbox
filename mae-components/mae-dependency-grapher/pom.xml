@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!--
+  Copyright 2010 Red Hat, Inc.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+    http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.maven.mae.components</groupId>
+    <artifactId>mae-components</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>mae-dependency-grapher</artifactId>
+  <name>Maven App Engine: Dependency-Graphing Tools</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <dependencies>
+    <dependency>
+    	<groupId>commons-io</groupId>
+    	<artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.maven.mae</groupId>
+    	<artifactId>mae-booter</artifactId>
+    	<version>${project.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.maven.wagon</groupId>
+    	<artifactId>wagon-http-lightweight</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.maven.wagon</groupId>
+    	<artifactId>wagon-file</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>org.sonatype.aether</groupId>
+    	<artifactId>aether-connector-wagon</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.maven</groupId>
+    	<artifactId>maven-aether-provider</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.maven.mae.components</groupId>
+    	<artifactId>mae-graph-support</artifactId>
+    	<version>${project.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>commons-lang</groupId>
+    	<artifactId>commons-lang</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.maven.mae.components</groupId>
+    	<artifactId>mae-project-tools</artifactId>
+    	<version>${maeVersion}</version>
+    </dependency>
+  </dependencies>
+</project>

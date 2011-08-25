@@ -66,5 +66,7 @@
   
   <modules>
     <module>mae-project-tools</module>
+    <module>mae-graph-support</module>
+    <module>mae-dependency-grapher</module>
   </modules>
 </project>

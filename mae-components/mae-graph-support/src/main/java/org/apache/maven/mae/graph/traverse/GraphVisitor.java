@@ -17,23 +17,20 @@
  * under the License.
  */
 
-package org.apache.maven.mae.internal.container.fixture;
+package org.apache.maven.mae.graph.traverse;
 
-import java.util.Map;
+import edu.uci.ics.jung.graph.Graph;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-
-@Component( role = MapOwner.class )
-public class MapOwner
+public interface GraphVisitor<V, E>
 {
 
-    @Requirement( role = Part.class )
-    private Map<String, Part> members;
+    boolean traversedEdge( Graph<V, E> graph, E edge );
 
-    public Map<String, Part> members()
-    {
-        return members;
-    }
+    boolean startedVertexVisit( Graph<V, E> graph, V vertex );
 
+    boolean finishedVertexVisit( Graph<V, E> graph, V vertex );
+
+    void skippedVertexVisit( Graph<V, E> graph, V vertex );
+
+    void skippedEdgeTraversal( Graph<V, E> graph, E edge );
 }

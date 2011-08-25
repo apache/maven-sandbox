@@ -17,23 +17,13 @@
  * under the License.
  */
 
-package org.apache.maven.mae.internal.container.fixture;
+package org.apache.maven.mae.graph;
 
-import java.util.Map;
+import edu.uci.ics.jung.graph.Graph;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-
-@Component( role = MapOwner.class )
-public class MapOwner
+public interface GraphManager<V, E>
 {
 
-    @Requirement( role = Part.class )
-    private Map<String, Part> members;
-
-    public Map<String, Part> members()
-    {
-        return members;
-    }
+    Graph<V, E> getManagedGraph();
 
 }

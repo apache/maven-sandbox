@@ -17,23 +17,15 @@
  * under the License.
  */
 
-package org.apache.maven.mae.internal.container.fixture;
+package org.apache.maven.mae.graph;
 
-import java.util.Map;
-
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-
-@Component( role = MapOwner.class )
-public class MapOwner
+public class SimpleDirectedGraph<V>
+    extends DirectedGraph<V, DirectionalEdge<V>>
 {
 
-    @Requirement( role = Part.class )
-    private Map<String, Part> members;
-
-    public Map<String, Part> members()
+    public SimpleDirectedGraph()
     {
-        return members;
+        super( new DirectionalEdge.SimpleDirectionalEdgeFactory<V>() );
     }
 
 }

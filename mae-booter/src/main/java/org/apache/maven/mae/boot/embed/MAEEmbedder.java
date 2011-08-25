@@ -53,6 +53,7 @@ import org.apache.maven.mae.conf.mgmt.LoadOnStart;
 import org.apache.maven.mae.conf.mgmt.MAEManagementException;
 import org.apache.maven.mae.conf.mgmt.MAEManagementView;
 import org.apache.maven.mae.internal.container.ComponentKey;
+import org.apache.maven.mae.internal.container.MAEContainer;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.properties.internal.EnvironmentUtils;
 import org.apache.maven.settings.Settings;
@@ -63,7 +64,6 @@ import org.apache.maven.settings.building.SettingsBuildingRequest;
 import org.apache.maven.settings.building.SettingsBuildingResult;
 import org.apache.maven.settings.building.SettingsProblem;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
@@ -75,6 +75,8 @@ import org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
 import org.sonatype.plexus.components.sec.dispatcher.SecUtil;
 import org.sonatype.plexus.components.sec.dispatcher.model.SettingsSecurity;
+
+import com.google.inject.Injector;
 
 /**
  * The core of the embeddable Maven environment. This class is used as the main interface to the embedded Maven
@@ -99,7 +101,7 @@ public class MAEEmbedder
 
     private final boolean showVersion;
 
-    private final PlexusContainer container;
+    private final MAEContainer container;
 
     private final MAEConfiguration embConfiguration;
 
@@ -117,11 +119,13 @@ public class MAEEmbedder
 
     private boolean stopped = false;
 
-    MAEEmbedder( final Maven maven, final MAEConfiguration embConfiguration, final PlexusContainer container,
-                 final SettingsBuilder settingsBuilder, final MavenExecutionRequestPopulator executionRequestPopulator,
-                 final DefaultSecDispatcher securityDispatcher, final MAEServiceManager serviceManager,
-                 final List<MAELibraryLoader> libraryLoaders, final PrintStream standardOut, final Logger logger,
-                 final boolean shouldShowErrors, final boolean showVersion )
+    MAEEmbedder( final Maven maven, final MAEConfiguration embConfiguration,
+                 final MAEContainer container, final SettingsBuilder settingsBuilder,
+                 final MavenExecutionRequestPopulator executionRequestPopulator,
+                 final DefaultSecDispatcher securityDispatcher,
+                 final MAEServiceManager serviceManager,
+                 final List<MAELibraryLoader> libraryLoaders, final PrintStream standardOut,
+                 final Logger logger, final boolean shouldShowErrors, final boolean showVersion )
     {
         this.maven = maven;
         this.embConfiguration = embConfiguration;
@@ -138,25 +142,23 @@ public class MAEEmbedder
         this.showVersion = showVersion;
     }
 
-    // public synchronized Injector injector()
-    // throws MAEEmbeddingException
-    // {
-    // printInfo( null );
-    // return container.getInjector();
-    // }
+    public synchronized Injector injector()
+        throws MAEEmbeddingException
+    {
+        return container.getInjector();
+    }
 
-    // /**
-    // * Wire a series of externally managed objects with components from the Maven environment,
-    // * according to component annotations in those instances.
-    // */
-    // public synchronized Map<Object, Throwable> wire( final Object... instances )
-    // throws MAEEmbeddingException
-    // {
-    // checkStopped();
-    //
-    // printInfo( null );
-    // return container.extrudeDependencies( instances );
-    // }
+    /**
+     * Wire a series of externally managed objects with components from the Maven environment, according to component
+     * annotations in those instances.
+     */
+    public synchronized Map<Object, Throwable> wire( final Object... instances )
+        throws MAEEmbeddingException
+    {
+        checkStopped();
+
+        return container.extrudeDependencies( instances );
+    }
 
     protected void checkStopped()
     {
@@ -227,14 +229,17 @@ public class MAEEmbedder
         {
             final DefaultPlexusCipher cipher = new DefaultPlexusCipher();
 
-            final String result = cipher.encryptAndDecorate( passwd, DefaultSecDispatcher.SYSTEM_PROPERTY_SEC_LOCATION );
+            final String result =
+                cipher.encryptAndDecorate( passwd,
+                                           DefaultSecDispatcher.SYSTEM_PROPERTY_SEC_LOCATION );
             logger.info( result );
 
             return result;
         }
         catch ( final PlexusCipherException e )
         {
-            throw new MAEEmbeddingException( "Failed to encrypt master password: {0}", e, e.getMessage() );
+            throw new MAEEmbeddingException( "Failed to encrypt master password: {0}", e,
+                                             e.getMessage() );
         }
     }
 
@@ -257,7 +262,9 @@ public class MAEEmbedder
             configurationFile = System.getProperty( "user.home" ) + configurationFile.substring( 1 );
         }
 
-        final String file = System.getProperty( DefaultSecDispatcher.SYSTEM_PROPERTY_SEC_LOCATION, configurationFile );
+        final String file =
+            System.getProperty( DefaultSecDispatcher.SYSTEM_PROPERTY_SEC_LOCATION,
+                                configurationFile );
 
         String master = null;
 
@@ -271,7 +278,9 @@ public class MAEEmbedder
 
             if ( master == null )
             {
-                throw new IllegalStateException( "Master password is not set in the setting security file: " + file );
+                throw new IllegalStateException(
+                                                 "Master password is not set in the setting security file: "
+                                                     + file );
             }
 
             final DefaultPlexusCipher cipher = new DefaultPlexusCipher();
@@ -300,15 +309,18 @@ public class MAEEmbedder
 
         for ( final MAELibrary library : embConfiguration.getLibraries() )
         {
-            final Set<ComponentKey<?>> components = library.getManagementComponents( LoadOnStart.class );
+            final Set<ComponentKey<?>> components =
+                library.getManagementComponents( LoadOnStart.class );
             if ( components != null && !components.isEmpty() )
             {
-                final MAEManagementView mgmtView = new EmbedderManagementView( container, embConfiguration );
+                final MAEManagementView mgmtView =
+                    new EmbedderManagementView( container, embConfiguration );
                 for ( final ComponentKey<?> key : components )
                 {
                     try
                     {
-                        final LoadOnStart los = (LoadOnStart) container.lookup( key.getRole(), key.getHint() );
+                        final LoadOnStart los =
+                            (LoadOnStart) container.lookup( key.getRole(), key.getHint() );
                         los.executionStarting( mgmtView );
                     }
                     catch ( final ComponentLookupException e )
@@ -336,15 +348,18 @@ public class MAEEmbedder
         stopped = true;
         for ( final MAELibrary library : embConfiguration.getLibraries() )
         {
-            final Set<ComponentKey<?>> components = library.getManagementComponents( LoadOnFinish.class );
+            final Set<ComponentKey<?>> components =
+                library.getManagementComponents( LoadOnFinish.class );
             if ( components != null && !components.isEmpty() )
             {
-                final MAEManagementView mgmtView = new EmbedderManagementView( container, embConfiguration );
+                final MAEManagementView mgmtView =
+                    new EmbedderManagementView( container, embConfiguration );
                 for ( final ComponentKey<?> key : components )
                 {
                     try
                     {
-                        final LoadOnFinish lof = (LoadOnFinish) container.lookup( key.getRole(), key.getHint() );
+                        final LoadOnFinish lof =
+                            (LoadOnFinish) container.lookup( key.getRole(), key.getHint() );
                         lof.executionFinished( mgmtView );
                     }
                     catch ( final ComponentLookupException e )
@@ -399,11 +414,13 @@ public class MAEEmbedder
     {
         checkStopped();
 
-        String localRepoProperty = request.getUserProperties().getProperty( MAEMain.LOCAL_REPO_PROPERTY );
+        String localRepoProperty =
+            request.getUserProperties().getProperty( MAEMain.LOCAL_REPO_PROPERTY );
 
         if ( localRepoProperty == null )
         {
-            localRepoProperty = request.getSystemProperties().getProperty( MAEMain.LOCAL_REPO_PROPERTY );
+            localRepoProperty =
+                request.getSystemProperties().getProperty( MAEMain.LOCAL_REPO_PROPERTY );
         }
 
         if ( localRepoProperty != null )
@@ -435,8 +452,7 @@ public class MAEEmbedder
             container.lookup( LoggerManager.class ).setThresholds( request.getLoggingLevel() );
         }
         catch ( ComponentLookupException e )
-        {
-        }
+        {}
 
         // final Configurator log4jConfigurator = new Configurator()
         // {
@@ -501,7 +517,8 @@ public class MAEEmbedder
             {
                 throw new MAEEmbeddingException(
                                                  "Failed to build settings; {0}\nGlobal settings: {1}\nUser settings: {2}",
-                                                 e, e.getMessage(), request.getGlobalSettingsFile(),
+                                                 e, e.getMessage(),
+                                                 request.getGlobalSettingsFile(),
                                                  request.getUserSettingsFile() );
             }
 
@@ -510,11 +527,13 @@ public class MAEEmbedder
 
         try
         {
-            executionRequestPopulator.populateFromSettings( request.asMavenExecutionRequest(), settings );
+            executionRequestPopulator.populateFromSettings( request.asMavenExecutionRequest(),
+                                                            settings );
         }
         catch ( final MavenExecutionRequestPopulationException e )
         {
-            throw new MAEEmbeddingException( "Failed to populate request from settings; {0}", e, e.getMessage() );
+            throw new MAEEmbeddingException( "Failed to populate request from settings; {0}", e,
+                                             e.getMessage() );
         }
 
         if ( !settingsResult.getProblems().isEmpty() && logger.isWarnEnabled() )
@@ -535,8 +554,8 @@ public class MAEEmbedder
      * Print information about the {@link MAELibrary} instances loaded into this environment to the {@link PrintStream}
      * parameter.
      */
-    public static void showInfo( final MAEConfiguration config, final List<MAELibraryLoader> loaders,
-                                 final PrintStream standardOut )
+    public static void showInfo( final MAEConfiguration config,
+                                 final List<MAELibraryLoader> loaders, final PrintStream standardOut )
         throws IOException
     {
         if ( infoShown )
@@ -551,7 +570,8 @@ public class MAEEmbedder
         final Collection<MAELibrary> libraries = loadLibraries( config, loaders );
         for ( final MAELibrary ext : libraries )
         {
-            standardOut.println( "+" + ext.getLabel() + " (Log handle: '" + ext.getLogHandle() + "')" );
+            standardOut.println( "+" + ext.getLabel() + " (Log handle: '" + ext.getLogHandle()
+                + "')" );
         }
 
         standardOut.println();
@@ -565,7 +585,8 @@ public class MAEEmbedder
      * Print the information about {@link MAELibrary} instances loaded, along with version information about this Maven
      * environment in general, to the provided {@link PrintStream} parameter.
      */
-    public static void showVersion( final MAEConfiguration config, final List<MAELibraryLoader> loaders,
+    public static void showVersion( final MAEConfiguration config,
+                                    final List<MAELibraryLoader> loaders,
                                     final PrintStream standardOut )
         throws IOException
     {
@@ -615,7 +636,8 @@ public class MAEEmbedder
      * Print error output from a Maven execution request, in the familiar format, to the {@link Logger} instance used by
      * this embedder.
      */
-    public int formatErrorOutput( final MAEExecutionRequest request, final MavenExecutionResult result )
+    public int formatErrorOutput( final MAEExecutionRequest request,
+                                  final MavenExecutionResult result )
     {
         if ( result.hasExceptions() )
         {
@@ -660,7 +682,8 @@ public class MAEEmbedder
                 }
             }
 
-            if ( project != null && !project.equals( result.getTopologicallySortedProjects().get( 0 ) ) )
+            if ( project != null
+                && !project.equals( result.getTopologicallySortedProjects().get( 0 ) ) )
             {
                 logger.error( "" );
                 logger.error( "After correcting the problems, you can resume the build with the command" );
@@ -684,7 +707,8 @@ public class MAEEmbedder
         }
     }
 
-    protected void logSummary( final ExceptionSummary summary, final Map<String, String> references, String indent,
+    protected void logSummary( final ExceptionSummary summary,
+                               final Map<String, String> references, String indent,
                                final boolean showErrors )
     {
         String referenceKey = "";
@@ -734,11 +758,11 @@ public class MAEEmbedder
         implements MAEManagementView
     {
 
-        private final PlexusContainer container;
+        private final MAEContainer container;
 
         private final MAEConfiguration configuration;
 
-        EmbedderManagementView( final PlexusContainer container, final MAEConfiguration configuration )
+        EmbedderManagementView( final MAEContainer container, final MAEConfiguration configuration )
         {
             this.container = container;
             this.configuration = configuration;
@@ -772,7 +796,8 @@ public class MAEEmbedder
             {
                 throw new MAEManagementException(
                                                   "Failed to lookup component for managed component.\nRole: %s\nHint: %s\nReason: %s",
-                                                  e, role, PlexusConstants.PLEXUS_DEFAULT_HINT, e.getMessage() );
+                                                  e, role, PlexusConstants.PLEXUS_DEFAULT_HINT,
+                                                  e.getMessage() );
             }
         }
 

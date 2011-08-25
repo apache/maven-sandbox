@@ -17,23 +17,23 @@
  * under the License.
  */
 
-package org.apache.maven.mae.internal.container.fixture;
+package org.apache.maven.mae.depgraph.lib;
 
-import java.util.Map;
+import org.apache.maven.mae.conf.AbstractMAELibrary;
+import org.apache.maven.mae.conf.MAELibrary;
+import org.apache.maven.mae.conf.MavenPomVersionProvider;
+import org.commonjava.atservice.annotation.Service;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-
-@Component( role = MapOwner.class )
-public class MapOwner
+@Service( MAELibrary.class )
+public class DependencyGrapherLibrary
+    extends AbstractMAELibrary
 {
 
-    @Requirement( role = Part.class )
-    private Map<String, Part> members;
-
-    public Map<String, Part> members()
+    public DependencyGrapherLibrary()
     {
-        return members;
+        super( "depgraph", "Dependency-Grapher",
+               new MavenPomVersionProvider( "org.commonjava.emb.components",
+                                            "emb-dependency-grapher" ) );
     }
 
 }
