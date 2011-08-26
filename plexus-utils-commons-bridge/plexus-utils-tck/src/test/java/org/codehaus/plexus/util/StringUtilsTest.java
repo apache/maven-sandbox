@@ -1374,73 +1374,284 @@ public class StringUtilsTest extends Assert
     @Test
     public void testQuoteAndEscape4()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.quoteAndEscape( null, '+', new char[]{ '"' }, new char[]{ '"' }, '\\', false )
+                  , nullValue() );
+
+        assertThat( StringUtils.quoteAndEscape( "", '+', new char[]{ '"' },  new char[]{ '"' }, '\\', false )
+                  , is( "" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "abc", '"', new char[]{ '"' }, new char[]{ '"' }, '\\', false )
+                  , is( "abc" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '"', new char[]{ '"' }, new char[]{ '"' }, '\\', false )
+                  , is( "\"a\\\"bc\"" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\'bc", '\'', new char[]{ '"' }, new char[]{ '"' }, '\\', false )
+                  , is( "a\'bc" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '\'', new char[]{ '\'' }, new char[]{ '"' }, '\\', false )
+                  , is( "\'a\"bc\'" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "\'a\"bc\'", '\'', new char[]{ '\'', '"' }, new char[]{ '"' }, '\\', false )
+                  , is( "\'a\"bc\'" ) );
+
+        // with force flag
+        assertThat( StringUtils.quoteAndEscape( null, '+', new char[]{ '"' }, new char[]{ '"' }, '\\', true )
+                  , nullValue() );
+
+        assertThat( StringUtils.quoteAndEscape( "", '+', new char[]{ '"' }, new char[]{ '"' }, '\\', true )
+                  , is( "++" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "abc", '"', new char[]{ '"' }, new char[]{ '"' }, '\\', true )
+                  , is( "\"abc\"" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '"', new char[]{ '"' }, new char[]{ '"' }, '\\', true )
+                  , is( "\"a\\\"bc\"" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\'bc", '\'', new char[]{ '"' }, new char[]{ '"' }, '\\', true )
+                  , is( "\'a\'bc\'" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '\'', new char[]{ '\'' }, new char[]{ '"' }, '\\', true )
+                  , is( "\'a\"bc\'" ) );
+
+        assertThat( StringUtils.quoteAndEscape( "a\"bc", '\'', new char[]{ '\'', '"' }, new char[]{ '"' }, '\\', true )
+                  , is( "\'a\\\"bc\'" ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testRemoveAndHump_NPE1()
+    {
+        StringUtils.removeAndHump( null, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testRemoveAndHump_NPE2()
+    {
+        StringUtils.removeAndHump( "dings", null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testRemoveAndHump_NPE3()
+    {
+        StringUtils.removeAndHump( null, "bums" );
     }
 
     @Test
     public void testRemoveAndHump()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.removeAndHump( "dings", "bums" )
+                  , is( "Ding" ) );
+
+        assertThat( StringUtils.removeAndHump( "this-is-it", "-" )
+                  , is( "ThisIsIt" ) );
+
+        assertThat( StringUtils.removeAndHump( "THIS-IS-IT", "-" )
+                  , is( "THISISIT" ) );
+
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testRemoveDuplicateWhitespace_NPE()
+    {
+        StringUtils.removeDuplicateWhitespace( null );
     }
 
     @Test
     public void testRemoveDuplicateWhitespace()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.removeDuplicateWhitespace( "dings" )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.removeDuplicateWhitespace( "dings bums" )
+                  , is( "dings bums" ) );
+
+        assertThat( StringUtils.removeDuplicateWhitespace( "dings  bums" )
+                  , is( "dings bums" ) );
+
+        assertThat( StringUtils.removeDuplicateWhitespace( "dings \t bums" )
+                  , is( "dings bums" ) );
+
     }
+
+    @Test( expected = NullPointerException.class )
+    public void testRepeat_NPE()
+    {
+        StringUtils.repeat( null, 0 );
+    }
+
+    @Test( expected = NegativeArraySizeException.class )
+    public void testRepeat_NegativeAmount()
+    {
+        StringUtils.repeat( "dings", -1 );
+    }
+
 
     @Test
     public void testRepeat()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.repeat( "dings", 0 )
+                  , is( "" ) );
+
+        assertThat( StringUtils.repeat( "dings", 1 )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.repeat( "dings", 3 )
+                  , is( "dingsdingsdings" ) );
+    }
+
+
+    @Test
+    public void testReplace_char()
+    {
+        assertThat( StringUtils.replace(  null, 'i', 'o' )
+                  , nullValue() );
+
+        assertThat( StringUtils.replace(  "dings", 'i', 'o' )
+                  , is( "dongs" ) );
+
+        assertThat( StringUtils.replace(  "dingsbims", 'i', 'o' )
+                  , is( "dongsboms" ) );
+
+        assertThat( StringUtils.replace(  "dings", 'x', 'o' )
+                  , is( "dings" ) );
     }
 
     @Test
-    public void testReplace1()
+    public void testReplace2_char_max()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.replace(  null, 'i', 'o', 0 )
+                  , nullValue() );
+
+        assertThat( StringUtils.replace(  "dingsibumsi", 'i', 'o', 3 )
+                  , is( "dongsobumso" ) );
+
+        assertThat( StringUtils.replace(  "dingsibumsi", 'i', 'o', 2 )
+                  , is( "dongsobumsi" ) );
+
+        assertThat( StringUtils.replace(  "dingsibumsi", 'i', 'o', 0 )
+                  , is( "dongsobumso" ) );
+
+        assertThat( StringUtils.replace(  "dingsibumsi", 'i', 'o', -2 )
+                  , is( "dongsobumso" ) );
+
+        assertThat( StringUtils.replace(  "dings", 'x', 'o', 2 )
+                  , is( "dings" ) );
     }
 
     @Test
-    public void testReplace2()
+    public void testReplace_string()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.replace(  null, "in", "ox" )
+                  , nullValue() );
+
+        assertThat( StringUtils.replace(  "dings", "in", "ox" )
+                  , is( "doxgs" ) );
+
+        assertThat( StringUtils.replace(  "dingsbins", "in", "ox" )
+                  , is( "doxgsboxs" ) );
+
+        assertThat( StringUtils.replace(  "dings", "nin", "ox" )
+                  , is( "dings" ) );
+    }
+
+
+    @Test
+    public void testReplace2_string_max()
+    {
+        assertThat( StringUtils.replace(  null, "in", "ox", 0 )
+                  , nullValue() );
+
+        assertThat( StringUtils.replace(  "dingsibumsi", "si", "xo", 3 )
+                  , is( "dingxobumxo" ) );
+
+        assertThat( StringUtils.replace(  "dingsibumsi", "si", "xo", 2 )
+                  , is( "dingxobumxo" ) );
+
+        assertThat( StringUtils.replace(  "dingsibumsi", "si", "xo", 1 )
+                  , is( "dingxobumsi" ) );
+
+        assertThat( StringUtils.replace(  "dingsibumsi", "si", "xo", 0 )
+                  , is( "dingxobumxo" ) );
+
+        assertThat( StringUtils.replace(  "dingsibumsi", "si", "xo", -2 )
+                  , is( "dingxobumxo" ) );
+
+        assertThat( StringUtils.replace(  "dings", "si", "xo", 2 )
+                  , is( "dings" ) );
     }
 
     @Test
-    public void testReplace3()
+    public void testReplaceOnce_char()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.replaceOnce(  null, 'i', 'o' )
+                  , nullValue() );
+
+        assertThat( StringUtils.replaceOnce(  "dingsibumsi", 'i', 'o' )
+                  , is( "dongsibumsi" ) );
+
+        assertThat( StringUtils.replaceOnce(  "dings", 'x', 'o' )
+                  , is( "dings" ) );
     }
 
     @Test
-    public void testReplace4()
+    public void testReplaceOnce_string()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.replaceOnce(  null, "in", "ox" )
+                  , nullValue() );
+
+        assertThat( StringUtils.replaceOnce(  "dingsibumsi", "si", "xo" )
+                  , is( "dingxobumsi" ) );
+
+        assertThat( StringUtils.replaceOnce(  "dings", "si", "xo" )
+                  , is( "dings" ) );
     }
 
-    @Test
-    public void testReplaceOnce1()
-    {
-        System.out.println( "TODO IMPLEMENT TEST!" );
-    }
-
-    @Test
-    public void testReplaceOnce2()
-    {
-        System.out.println( "TODO IMPLEMENT TEST!" );
-    }
-
+    
     @Test
     public void testReverse()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.reverse( null )
+                  , nullValue() );
+
+        assertThat( StringUtils.reverse( "" )
+                  , is( "" ) );
+
+        assertThat( StringUtils.reverse( "dings" )
+                  , is( "sgnid" ) );
+
+        assertThat( StringUtils.reverse( "  dings " )
+                  , is( " sgnid  " ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testReverseDelimitedString_NPE1()
+    {
+        StringUtils.reverseDelimitedString( null, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testReverseDelimitedString_NPE2()
+    {
+        StringUtils.reverseDelimitedString( null, " " );
     }
 
     @Test
     public void testReverseDelimitedString()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.reverseDelimitedString( "dings", null )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.reverseDelimitedString( "", " " )
+                  , is( "" ) );
+
+        assertThat( StringUtils.reverseDelimitedString( "dings", " " )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.reverseDelimitedString( "  dings ", " " )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.reverseDelimitedString( "dings bums", " " )
+                  , is( "bums dings" ) );
     }
 
     @Test
