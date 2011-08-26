@@ -28,7 +28,7 @@ under the License.
    class="org.apache.maven.doxia.ide.eclipse.common.ui.CommonPlugin">
 
    <runtime>
-      <library name="lib/apache-doxia-1.0-SNAPSHOT-jar-with-dependencies.jar">
+      <library name="lib/doxia-converter-1.2-jar-with-dependencies.jar">
          <export
                name="*">
          </export>
