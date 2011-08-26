@@ -126,7 +126,7 @@ public class DoxiaWrapper
         try
         {
             InputReaderWrapper input = InputReaderWrapper.valueOf( reader, format, converter.getInputFormats() );
-            OutputStreamWrapper output = OutputStreamWrapper.valueOf( out, format, file.getCharset(), converter
+            OutputStreamWrapper output = OutputStreamWrapper.valueOf( out, DEFAULT_OUTPUT, file.getCharset(), converter
                 .getOutputFormats() );
 
             converter.convert( input, output );
