@@ -16,4 +16,5 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5,
  JavaSE-1.6
 Bundle-Vendor: Apache Software Foundation
 Bundle-Activator: org.apache.maven.doxia.ide.eclipse.apt.ui.AptPlugin
+Bundle-Localization: plugin
 
