@@ -40,7 +40,7 @@ under the License.
   </modules>
 
   <scm>
-    <connection>scm:svn:htts://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia</connection>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia</developerConnection>
     <url>http://svn.apache.org/viewcvs.cgi/maven/sandbox/trunk/doxia/</url>
   </scm>
