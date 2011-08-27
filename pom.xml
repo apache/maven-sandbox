@@ -30,11 +30,16 @@ under the License.
 
   <groupId>org.apache.maven.doxia.ide</groupId>
   <artifactId>eclipse</artifactId>
-  <version>1.0-tycho-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Doxia Tools :: Eclipse IDE - Parent POM</name>
   <description>Parent POM for the defacto IDE for Doxia development</description>
+  <scm>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide/eclipse</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide/eclipse</developerConnection>
+    <url>https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide</url>
+  </scm>
 
   <prerequisites>
     <maven>2.0.9</maven>
@@ -273,6 +278,16 @@ under the License.
   <build>
     <pluginManagement>
       <plugins>
+	<plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-release-plugin</artifactId>
+	  <version>2.2.1</version>
+	  <configuration>
+	    <tagBase>https://svn.apache.org/repos/asf/maven/sandbox/tags</tagBase>
+	    <branchBase>https://svn.apache.org/repos/asf/maven/sandbox/branches</branchBase>
+	    <autoVersionSubmodules>true</autoVersionSubmodules>
+	  </configuration>
+	</plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
@@ -598,9 +613,4 @@ The ${install.dir} doesn't exist. Please run the -Pdownload-eclipse first</fail>
     </profile>
   </profiles>
 
-  <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia/eclipse-with-tycho/eclipse</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia/eclipse-with-tycho/eclipse</developerConnection>
-    <url>https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia/eclipse-with-tycho/eclipse</url>
-  </scm>
 </project>
