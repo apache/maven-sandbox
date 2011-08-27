@@ -1848,43 +1848,131 @@ public class StringUtilsTest extends Assert
     @Test
     public void testStripAll1()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.stripAll( null )
+                  , nullValue() );
+
+        assertThat( StringUtils.stripAll( new String[]{} )
+                  , is( new String[]{} ) );
+
+        assertThat( StringUtils.stripAll( new String[]{"dings"} )
+                  , is( new String[]{"dings"} ) );
+
+        assertThat( StringUtils.stripAll( new String[]{" dings ", "  bums \t  "} )
+                  , is( new String[]{"dings", "bums"} ) );
     }
 
     @Test
     public void testStripAll2()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.stripAll( null, " " )
+                  , nullValue() );
+
+        assertThat( StringUtils.stripAll( new String[]{}, " " )
+                  , is( new String[]{} ) );
+
+        assertThat( StringUtils.stripAll( new String[]{"dings"}, " " )
+                  , is( new String[]{"dings"} ) );
+
+        assertThat( StringUtils.stripAll( new String[]{" dings ", "  bums \t  "}, " " )
+                  , is( new String[]{"dings", "bums \t"} ) );
     }
 
     @Test
     public void testStripEnd()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.stripEnd( null, null )
+                  , nullValue() );
+
+        assertThat( StringUtils.stripEnd( "dings", null )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.stripEnd( "  dings \t ", null )
+                  , is( "  dings" ) );
+
+        assertThat( StringUtils.stripEnd( null, " " )
+                  , nullValue() );
+
+        assertThat( StringUtils.stripEnd( "dings", " " )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.stripEnd( "  dings \t ", " " )
+                  , is( "  dings \t" ) );
     }
 
     @Test
     public void testStripStart()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.stripStart( null, null )
+                  , nullValue() );
+
+        assertThat( StringUtils.stripStart( "dings", null )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.stripStart( "  dings \t ", null )
+                  , is( "dings \t " ) );
+
+        assertThat( StringUtils.stripStart( null, " " )
+                  , nullValue() );
+
+        assertThat( StringUtils.stripStart( "dings", " " )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.stripStart( "  \t dings \t ", " " )
+                  , is( "\t dings \t " ) );
     }
 
     @Test
     public void testSubstring1()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.substring( null, 0 )
+                  , nullValue() );
+        assertThat( StringUtils.substring( null, -3 )
+                  , nullValue() );
+
+        assertThat( StringUtils.substring( "dings", 2 )
+                  , is( "ngs" ) );
+
+        assertThat( StringUtils.substring( "dings", -2 )
+                  , is( "gs" ) );
+
+        assertThat( StringUtils.substring( "dings", 20 )
+                  , is( "" ) );
     }
 
     @Test
     public void testSubstring2()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.substring( null, 0, 2)
+                  , nullValue() );
+
+        assertThat( StringUtils.substring( null, -3, 0 )
+                  , nullValue() );
+
+        assertThat( StringUtils.substring( "dings", 2, 4 )
+                  , is( "ng" ) );
+
+        assertThat( StringUtils.substring( "dings", -2, 4 )
+                  , is( "g" ) );
+
+        assertThat( StringUtils.substring( "dings", 20, 23 )
+                  , is( "" ) );
+
+        assertThat( StringUtils.substring( "dings", 4, 2 )
+                  , is( "" ) );
     }
 
     @Test
     public void testSwapCase()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.swapCase( null )
+                  , nullValue() );
+
+        assertThat( StringUtils.swapCase( "dings" )
+                  , is( "DINGS" ) );
+
+        assertThat( StringUtils.swapCase( "DinGs" )
+                  , is( "dINgS" ) );
+
     }
 
     @Test
@@ -1906,31 +1994,87 @@ public class StringUtilsTest extends Assert
     @Test
     public void testUncapitalise()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.uncapitalise( null )
+                , nullValue() );
+
+        assertThat( StringUtils.uncapitalise( "   " )
+                  , is( "   " ) );
+
+        assertThat( StringUtils.uncapitalise( "dings" )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.uncapitalise( "Dings" )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.uncapitalise( "DINGS" )
+                  , is( "dINGS" ) );
     }
 
     @Test
     public void testUncapitaliseAllWords()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.uncapitaliseAllWords( null )
+                , nullValue() );
+
+        assertThat( StringUtils.uncapitaliseAllWords( "   " )
+                  , is( "   " ) );
+
+        assertThat( StringUtils.uncapitaliseAllWords( "dings bums" )
+                  , is( "dings bums" ) );
+
+        assertThat( StringUtils.uncapitaliseAllWords( "Dings Bums" )
+                  , is( "dings bums" ) );
+
+        assertThat( StringUtils.uncapitaliseAllWords( "DINGS Bums" )
+                  , is( "dINGS bums" ) );
     }
 
     @Test
     public void testUnifyLineSeparators1()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        String sls = System.getProperty( "line.separator" );
+
+        assertThat( StringUtils.unifyLineSeparators( null )
+                , nullValue() );
+
+        assertThat( StringUtils.unifyLineSeparators( "   " )
+                  , is( "   " ) );
+
+        assertThat( StringUtils.unifyLineSeparators( "dings\nbums\r\ndongs" )
+                  , is( "dings" + sls + "bums" + sls + "dongs") );
     }
 
     @Test
     public void testUnifyLineSeparators2()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.unifyLineSeparators( null, "\n" )
+                , nullValue() );
+
+        assertThat( StringUtils.unifyLineSeparators( "   ", "\n" )
+                  , is( "   " ) );
+
+        assertThat( StringUtils.unifyLineSeparators( "   ", null )  // takes the sytem line separator
+                  , is( "   " ) );
+
+        assertThat( StringUtils.unifyLineSeparators( "dings\nbums\r\ndongs", "\n" )
+                  , is( "dings\nbums\ndongs") );
     }
 
     @Test
     public void testUppercase()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.upperCase( null )
+                , nullValue() );
+
+        assertThat( StringUtils.upperCase( "   " )
+                  , is( "   " ) );
+
+        assertThat( StringUtils.upperCase( "" )
+                  , is( "" ) );
+
+        assertThat( StringUtils.upperCase( "dings" )
+                  , is( "DINGS" ) );
+
     }
 
 
