@@ -19,6 +19,14 @@ Require-Bundle: org.apache.maven.doxia.ide.dependencies,
  org.eclipse.wst.xml.core,
  org.eclipse.wst.xml.ui,
  org.eclipse.wst.common.ui
+Export-Package: org.apache.maven.doxia.ide.eclipse.common.ui,
+ org.apache.maven.doxia.ide.eclipse.common.ui.editors.text,
+ org.apache.maven.doxia.ide.eclipse.common.ui.rules,
+ org.apache.maven.doxia.ide.eclipse.common.ui.actions,
+ org.apache.maven.doxia.ide.eclipse.common.ui.contentassist,
+ org.apache.maven.doxia.ide.eclipse.common.ui.dialogs,
+ org.apache.maven.doxia.ide.eclipse.common.ui.editors,
+ org.apache.maven.doxia.ide.eclipse.common.ui.wizards
 Bundle-RequiredExecutionEnvironment: J2SE-1.5,
  JavaSE-1.6
 Bundle-Vendor: Apache Software Foundation

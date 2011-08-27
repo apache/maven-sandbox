@@ -42,6 +42,9 @@ under the License.
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
+  <build>
+    <finalName>org.apache.maven.doxia.ide.eclipse.common.ui_${project.version}</finalName>
+  </build>
 </project>
 
 
