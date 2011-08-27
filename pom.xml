@@ -30,15 +30,15 @@ under the License.
 
   <groupId>org.apache.maven.doxia.ide</groupId>
   <artifactId>eclipse</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-tycho-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Doxia Tools :: Eclipse IDE - Parent POM</name>
   <description>Parent POM for the defacto IDE for Doxia development</description>
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide/eclipse</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide/eclipse</developerConnection>
-    <url>https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia-ide-eclipse-with-tycho</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia-ide-eclipse-with-tycho</developerConnection>
+    <url>https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia-ide-eclipse-with-tycho</url>
   </scm>
 
   <prerequisites>
