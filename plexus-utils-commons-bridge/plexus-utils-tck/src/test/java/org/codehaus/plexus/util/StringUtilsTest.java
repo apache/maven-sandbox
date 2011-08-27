@@ -1654,52 +1654,195 @@ public class StringUtilsTest extends Assert
                   , is( "bums dings" ) );
     }
 
+    @Test( expected = IllegalArgumentException.class )
+    public void testRight_IAE1()
+    {
+        StringUtils.right( null, -1 );
+    }
+
+    @Test( expected = IllegalArgumentException.class )
+    public void testRight_IAE2()
+    {
+        StringUtils.right( "dings", -1 );
+    }
+
     @Test
     public void testRight()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.right( null, 0 )
+                  , nullValue() );
+
+        assertThat( StringUtils.right( "dings", 0 )
+                  , is( "" ) );
+
+        assertThat( StringUtils.right( "dings", 3 )
+                  , is( "ngs" ) );
+
+        assertThat( StringUtils.right( "dings ", 3 )
+                  , is( "gs " ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testRightPad1_NPE()
+    {
+        StringUtils.rightPad( null, 0 );
     }
 
     @Test
     public void testRightPad1()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.rightPad( "dings", 0 )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.rightPad( "dings", 3 )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.rightPad( "dings", 10 )
+                  , is( "dings     " ) );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testRightPad2_NPE1()
+    {
+        StringUtils.rightPad( null, 0, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testRightPad2_NPE2()
+    {
+        StringUtils.rightPad( "dings", 0, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testRightPad2_NPE23()
+    {
+        StringUtils.rightPad( null, 0, "+" );
     }
 
     @Test
     public void testRightPad2()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.rightPad( "dings", 0, "+" )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.rightPad( "dings", 3, "+" )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.rightPad( "dings", 10, "+" )
+                  , is( "dings+++++" ) );
+    }
+
+
+    @Test( expected = NullPointerException.class )
+    public void testSplit1_NPE()
+    {
+        StringUtils.split( null );
     }
 
     @Test
     public void testSplit1()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.split( "dings" )
+                  , is( new String[]{"dings"} )  );
+
+        assertThat( StringUtils.split( "dings bums" )
+                  , is( new String[]{"dings", "bums"} )  );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testSplit2_NPE1()
+    {
+        StringUtils.split( null, null );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testSplit2_NPE2()
+    {
+        StringUtils.split( null, " " );
     }
 
     @Test
     public void testSplit2()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.split( "dings", null )
+                  , is( new String[]{"dings"} )  );
+
+        assertThat( StringUtils.split( "dings bums", null )
+                  , is( new String[]{"dings", "bums"} )  );
+
+        assertThat( StringUtils.split( "dings", "+" )
+                  , is( new String[]{"dings"} )  );
+
+        assertThat( StringUtils.split( "dings+bums", "+" )
+                  , is( new String[]{"dings", "bums"} )  );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testSplit3_NPE1()
+    {
+        StringUtils.split( null, null, 1 );
+    }
+
+    @Test( expected = NullPointerException.class )
+    public void testSplit3_NPE2()
+    {
+        StringUtils.split( null, " ", 1 );
     }
 
     @Test
     public void testSplit3()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.split( "dings", null, 3 )
+                  , is( new String[]{"dings"} )  );
+
+        assertThat( StringUtils.split( "dings bums", null, 3 )
+                  , is( new String[]{"dings", "bums"} )  );
+
+        assertThat( StringUtils.split( "dings", "+", 3 )
+                  , is( new String[]{"dings"} )  );
+
+        assertThat( StringUtils.split( "dings+bums", "+", 3 )
+                  , is( new String[]{"dings", "bums"} )  );
+
+        assertThat( StringUtils.split( "dings+bums", "+", 1 )
+                  , is( new String[]{"dings+bums"} )  );
+
+        assertThat( StringUtils.split( "dings+bums", "+", 0 )
+                  , is( new String[]{"dings", "bums"} )  );
+
+        assertThat( StringUtils.split( "dings+bums", "+", -5 )
+                  , is( new String[]{"dings", "bums"} )  );
+
     }
+
 
     @Test
     public void testStrip1()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.strip( null )
+                  , nullValue() );
+
+        assertThat( StringUtils.strip( "dings" )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.strip( "  dings \t " )
+                  , is( "dings" ) );
     }
 
     @Test
     public void testStrip2()
     {
-        System.out.println( "TODO IMPLEMENT TEST!" );
+        assertThat( StringUtils.strip( null, " " )
+                  , nullValue() );
+
+        assertThat( StringUtils.strip( null, null )
+                  , nullValue() );
+
+        assertThat( StringUtils.strip( "dings", " " )
+                  , is( "dings" ) );
+
+        assertThat( StringUtils.strip( "  dings \t ", " " )
+                  , is( "dings \t" ) );
     }
 
     @Test
