@@ -27,21 +27,21 @@ under the License.
     <version>1.2</version>
   </parent>
   <artifactId>doxia-sandbox</artifactId>
-  <version>1-tycho-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <name>Doxia :: Sandbox</name>
   <description>Doxia Sandbox components</description>
   <packaging>pom</packaging>
   <modules>
     <module>doxia-editor</module>
-    <!--<module>doxia-ide</module>-->
+    <module>doxia-ide</module>
     <module>doxia-module-mediawiki</module>
     <module>doxia-module-xwiki</module>
     <module>doxia-review</module>
   </modules>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia/branches/eclipse-with-tycho</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/eclipse-with-tycho</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia/branches/eclipse-with-tycho</url>
+    <connection>scm:svn:htts://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/maven/sandbox/trunk/doxia/</url>
   </scm>
 </project>

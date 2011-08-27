@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>doxia-review</artifactId>
-  <version>1-tycho-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <name>Doxia :: Code to review</name>
   <description>Code to review before including it on trunk.</description>
 
