@@ -36,12 +36,6 @@ under the License.
   <name>Doxia Tools :: Eclipse IDE - Parent Features POM</name>
   <description>Eclipse IDE - Parent Features POM</description>
 
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/features/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/features/</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/features</url>
-  </scm>
-
   <modules>
     <module>org.apache.maven.doxia.ide.eclipse.feature</module>
   </modules>

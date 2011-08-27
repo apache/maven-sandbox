@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -18,22 +17,42 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.apache.maven.doxia</groupId>
-    <artifactId>doxia-sandbox</artifactId>
-    <version>1.0-SANDBOX</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-  <artifactId>doxia-ide</artifactId>
-  <name>Doxia :: IDE</name>
-  <description>Doxia IDE integration</description>
-  <packaging>pom</packaging>
-  <modules>
-<!-- TODO -->
-<!--    <module>netbeans</module> -->
-    <module>eclipse</module>
-  </modules>
+    <modelVersion>4.0.0</modelVersion>
+    <!-- parenting to a global sandbox pom doesn't seem to add anything useful and in fact causes problems -->
+    <parent>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia</artifactId>
+        <version>1.2</version>
+    </parent>
+    <artifactId>doxia-ide</artifactId>
+    <name>Doxia :: IDE</name>
+    <description>Doxia IDE integration</description>
+    <packaging>pom</packaging>
+    <scm>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide</developerConnection>
+        <url>http://svn.apache.org/viewcvs.cgi/maven/sandbox/trunk/doxia/doxia-ide/</url>
+    </scm>
+    <modules>
+        <!-- TODO -->
+        <!--    <module>netbeans</module> -->
+        <module>eclipse</module>
+    </modules>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.2.1</version>
+                    <configuration>
+                        <tagBase>https://svn.apache.org/repos/asf/maven/sandbox/tags/doxia</tagBase>
+                        <branchBase>https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia</branchBase>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
