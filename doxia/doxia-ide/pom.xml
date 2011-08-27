@@ -26,13 +26,14 @@ under the License.
         <version>1.2</version>
     </parent>
     <artifactId>doxia-ide</artifactId>
+  <version>1.0-tycho-SNAPSHOT</version>
     <name>Doxia :: IDE</name>
     <description>Doxia IDE integration</description>
     <packaging>pom</packaging>
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide</developerConnection>
-        <url>http://svn.apache.org/viewcvs.cgi/maven/sandbox/trunk/doxia/doxia-ide/</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia/eclipse-with-tycho</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia/eclipse-with-tycho</developerConnection>
+        <url>https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia/eclipse-with-tycho</url>
     </scm>
     <modules>
         <!-- TODO -->

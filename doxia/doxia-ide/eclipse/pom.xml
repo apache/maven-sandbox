@@ -30,7 +30,7 @@ under the License.
 
   <groupId>org.apache.maven.doxia.ide</groupId>
   <artifactId>eclipse</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-tycho-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Doxia Tools :: Eclipse IDE - Parent POM</name>
@@ -481,9 +481,9 @@ under the License.
                 <configuration>
                   <target>
                     <subant target="">
-                      <property name="download.dir" value="${java.io.tmpdir}"/>
-                      <property name="install.dir" value="${java.io.tmpdir}"/>
-                      <fileset dir="${basedir}" includes="download-eclipse.xml"/>
+                      <property name="download.dir" value="${java.io.tmpdir}" />
+                      <property name="install.dir" value="${java.io.tmpdir}" />
+                      <fileset dir="${basedir}" includes="download-eclipse.xml" />
                     </subant>
                   </target>
                 </configuration>
@@ -513,7 +513,7 @@ under the License.
                     <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 
                     <!-- Same that download-eclipse profile -->
-                    <available file="${install.dir}/plugins" property="eclipse.present"/>
+                    <available file="${install.dir}/plugins" property="eclipse.present" />
 
                     <if>
                       <equals arg1="${eclipse.present}" arg2="true" />
@@ -523,7 +523,7 @@ under the License.
                       <else>
                         <echo level="info">No custom Eclipse home defined, using default in Tmp dir</echo>
                         <property name="install.dir" location="${java.io.tmpdir}/eclipse" relative="true" />
-                        <available file="${install.dir}/plugins" property="eclipse.present"/>
+                        <available file="${install.dir}/plugins" property="eclipse.present" />
                         <fail unless="eclipse.present">
 The ${install.dir} doesn't exist. Please run the -Pdownload-eclipse first</fail>
                       </else>
@@ -537,31 +537,31 @@ The ${install.dir} doesn't exist. Please run the -Pdownload-eclipse first</fail>
                         <echo message="Copying Doxia IDE to ${install.dir}/plugins..." />
                         <copy todir="${install.dir}/plugins" verbose="true" overwrite="true">
                           <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.apt.ui/target">
-                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar" />
                           </fileset>
                           <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.common.ui/target">
-                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar" />
                           </fileset>
                           <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.confluence.ui/target">
-                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar" />
                           </fileset>
                           <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.docbook.ui/target">
-                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar" />
                           </fileset>
                           <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.fml.ui/target">
-                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar" />
                           </fileset>
                           <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.help/target">
-                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar" />
                           </fileset>
                           <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.twiki.ui/target">
-                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar" />
                           </fileset>
                           <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.xdoc.ui/target">
-                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar" />
                           </fileset>
                           <fileset dir="${basedir}/plugins/org.apache.maven.doxia.ide.eclipse.xhtml.ui/target">
-                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar"/>
+                            <include name="org.apache.maven.doxia.ide.eclipse.*.jar" />
                           </fileset>
                         </copy>
                      </then>
@@ -597,4 +597,10 @@ The ${install.dir} doesn't exist. Please run the -Pdownload-eclipse first</fail>
       </build>
     </profile>
   </profiles>
+
+  <scm>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia/eclipse-with-tycho/eclipse</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia/eclipse-with-tycho/eclipse</developerConnection>
+    <url>https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia/eclipse-with-tycho/eclipse</url>
+  </scm>
 </project>
