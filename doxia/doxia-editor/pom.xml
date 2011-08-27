@@ -27,6 +27,7 @@ under the License.
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-editor</artifactId>
+  <version>1-tycho-SNAPSHOT</version>
   <name>Doxia :: Swing Editor</name>
   <dependencies>
     <dependency>
@@ -61,4 +62,10 @@ under the License.
       </plugin>
     </plugins>
   </build>
+
+  <scm>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/eclipse-with-tycho/doxia-editor</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/eclipse-with-tycho/doxia-editor</developerConnection>
+    <url>https://svn.apache.org/viewvc/maven/doxia/doxia/branches/eclipse-with-tycho/doxia-editor</url>
+  </scm>
 </project>

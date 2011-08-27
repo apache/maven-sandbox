@@ -27,6 +27,7 @@ under the License.
     <version>1.2</version>
   </parent>
   <artifactId>doxia-sandbox</artifactId>
+  <version>1-tycho-SNAPSHOT</version>
   <name>Doxia :: Sandbox</name>
   <description>Doxia Sandbox components</description>
   <packaging>pom</packaging>
@@ -37,4 +38,10 @@ under the License.
     <module>doxia-module-xwiki</module>
     <module>doxia-review</module>
   </modules>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia/branches/eclipse-with-tycho</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/eclipse-with-tycho</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia/branches/eclipse-with-tycho</url>
+  </scm>
 </project>

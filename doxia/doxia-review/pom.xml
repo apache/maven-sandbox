@@ -8,6 +8,7 @@
   </parent>
 
   <artifactId>doxia-review</artifactId>
+  <version>1-tycho-SNAPSHOT</version>
   <name>Doxia :: Code to review</name>
   <description>Code to review before including it on trunk.</description>
 
@@ -38,4 +39,10 @@
     <doxiaVersion>1.1.2</doxiaVersion>
   </properties>
 
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia/branches/eclipse-with-tycho/doxia-review</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/eclipse-with-tycho/doxia-review</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia/branches/eclipse-with-tycho/doxia-review</url>
+  </scm>
 </project>
