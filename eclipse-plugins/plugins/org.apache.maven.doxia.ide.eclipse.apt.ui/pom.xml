@@ -37,7 +37,7 @@ under the License.
   <description>Eclipse IDE - APT UI Plugin</description>
 
   <dependencies>
-    <!-- Doxia Eclipse Common UI -->
+    <!-- Doxia pieces as OSGi -->
     <dependency>
       <groupId>org.apache.maven.doxia.ide</groupId>
       <artifactId>dependencies</artifactId>

@@ -36,6 +36,7 @@ under the License.
   <description>Eclipse IDE - Common UI Plugin</description>
 
   <dependencies>
+    <!-- Doxia pieces as OSGi -->
     <dependency>
       <groupId>org.apache.maven.doxia.ide</groupId>
       <artifactId>dependencies</artifactId>

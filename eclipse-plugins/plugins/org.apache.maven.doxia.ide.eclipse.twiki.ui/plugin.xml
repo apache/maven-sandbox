@@ -20,37 +20,7 @@ under the License.
 -->
 
 <?eclipse version="3.2"?>
-<plugin
-   id="org.apache.maven.doxia.ide.eclipse.twiki.ui"
-   name="%plugin.name"
-   version="1.0"
-   provider-name="%plugin.provider.name"
-   class="org.apache.maven.doxia.ide.eclipse.twiki.ui.TWikiPlugin">
-
-   <runtime>
-      <library name="target/classes/">
-         <export
-               name="org.apache.maven.doxia.ide.eclipse.twiki.ui.*">
-         </export>
-         <export
-               name="org.apache.maven.doxia.ide.eclipse.twiki.ui.editor.*">
-         </export>
-         <export
-               name="org.apache.maven.doxia.ide.eclipse.twiki.ui.wizard.*">
-         </export>
-      </library>
-      <library name="."/>
-   </runtime>
-
-   <requires>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.wst.sse.ui"/>
-      <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.apache.maven.doxia.ide.eclipse.common.ui"/>
-   </requires>
-
+<plugin>
    <!-- Doxia Plugin Text Editors -->
    <extension
          point="org.eclipse.ui.editors">

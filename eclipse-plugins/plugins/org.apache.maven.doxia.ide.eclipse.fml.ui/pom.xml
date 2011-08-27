@@ -26,19 +26,20 @@ under the License.
     <groupId>org.apache.maven.doxia.ide</groupId>
     <artifactId>plugins</artifactId>
     <version>1.0-tycho-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>org.apache.maven.doxia.ide.plugins</groupId>
   <artifactId>fml-ui</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>eclipse-plugin</packaging>
   <name>Doxia Tools :: Eclipse IDE - Fml UI Plugin</name>
   <description>Eclipse IDE - Fml UI Plugin</description>
   <dependencies>
-    <!-- Doxia Eclipse Common UI -->
+    <!-- Doxia pieces as OSGi -->
     <dependency>
-      <groupId>org.apache.maven.doxia.ide.plugins</groupId>
-      <artifactId>common-ui</artifactId>
-      <version>${project.version}</version>
+      <groupId>org.apache.maven.doxia.ide</groupId>
+      <artifactId>dependencies</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
 

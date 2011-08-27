@@ -31,14 +31,16 @@ under the License.
 
   <groupId>org.apache.maven.doxia.ide.plugins</groupId>
   <artifactId>help</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>eclipse-plugin</packaging>
   <name>Doxia Tools :: Eclipse IDE - Help Plugin</name>
   <description>Eclipse IDE - Help Plugin</description>
   <dependencies>
-    <!-- Doxia Eclipse Common UI -->
+    <!-- Doxia pieces as OSGi -->
     <dependency>
-      <groupId>org.apache.maven.doxia.ide.plugins</groupId>
-      <artifactId>common-ui</artifactId>
-      <version>${project.version}</version>
+      <groupId>org.apache.maven.doxia.ide</groupId>
+      <artifactId>dependencies</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
