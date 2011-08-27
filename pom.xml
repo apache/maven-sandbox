@@ -36,12 +36,6 @@ under the License.
   <name>Doxia Tools :: Eclipse IDE - Parent POM</name>
   <description>Parent POM for the defacto IDE for Doxia development</description>
 
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide/eclipse/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide/eclipse/</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/sandbox/trunk/doxia/doxia-ide/eclipse</url>
-  </scm>
-
   <prerequisites>
     <maven>2.0.9</maven>
   </prerequisites>

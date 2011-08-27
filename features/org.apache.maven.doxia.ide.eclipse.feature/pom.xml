@@ -35,12 +35,6 @@ under the License.
   <name>Doxia Tools :: Eclipse IDE - Common Feature</name>
   <description>Eclipse IDE - Common Feature</description>
 
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/features/org.apache.maven.doxia.ide.eclipse.feature/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/features/org.apache.maven.doxia.ide.eclipse.feature/</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/features/org.apache.maven.doxia.ide.eclipse.feature</url>
-  </scm>
-
   <build>
     <finalName>org.apache.maven.doxia.ide.eclipse.feature_${project.version}</finalName>
   </build>

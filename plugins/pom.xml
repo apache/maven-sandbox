@@ -36,12 +36,6 @@ under the License.
   <name>Doxia Tools :: Eclipse IDE - Parent Plugins POM</name>
   <description>Eclipse IDE - Parent Plugins POM</description>
 
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/plugins/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/plugins/</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/plugins</url>
-  </scm>
-
   <dependencies>
     <!-- Doxia -->
     <dependency>

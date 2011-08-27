@@ -35,12 +35,6 @@ under the License.
   <name>Doxia Tools :: Eclipse IDE - Xdoc UI Plugin</name>
   <description>Eclipse IDE - Xdoc UI Plugin</description>
 
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/plugins/org.apache.maven.doxia.ide.eclipse.xdoc.ui/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/plugins/org.apache.maven.doxia.ide.eclipse.xdoc.ui/</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia-tools/trunk/doxia-ide/eclipse/plugins/org.apache.maven.doxia.ide.eclipse.xdoc.ui</url>
-  </scm>
-
   <dependencies>
     <!-- Doxia Eclipse Common UI -->
     <dependency>
