@@ -149,9 +149,23 @@ public class StringUtilsTest extends Assert
                 , nullValue() );
     }
 
+    @Test( expected = IndexOutOfBoundsException.class )
+    @ReproducesPlexusBug( value = "Ridiculous IndexOutOfBoundsException!" )
+    public void testCapitalizeFirstLetter_buggy()
+    {
+        assertThat( StringUtils.capitalizeFirstLetter( "" )
+                  , is( "" ) );
+    }
+
     @Test
     public void testCapitalizeFirstLetter()
     {
+        assertThat( StringUtils.capitalizeFirstLetter( "Dings" )
+                , is( "Dings" ) );
+
+        assertThat( StringUtils.capitalizeFirstLetter( "  dings" )
+                , is( "  dings" ) );
+
         assertThat( StringUtils.capitalizeFirstLetter( "start all big" )
                 , is( "Start all big" ) );
     }
