@@ -23,9 +23,10 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.apache.maven.doxia</groupId>
-    <artifactId>doxia</artifactId>
-    <version>1.2</version>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-parent</artifactId>
+      <version>21</version>
+      <relativePath/>
   </parent>
 
   <groupId>org.apache.maven.doxia.ide</groupId>

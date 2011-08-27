@@ -32,9 +32,9 @@ under the License.
     <name>Doxia Tools :: Eclipse IDE - Dependencies as Bundle</name>
     <description>Make an OSGi bundle of the required non-OSGi components</description>
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia-ide-eclipse-with-tycho/dependencies</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia-ide-eclipse-with-tycho/dependencies</developerConnection>
-        <url>https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia-ide-eclipse-with-tycho/dependencies</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia-ide-eclipse-with-tycho/org.apache.maven.doxia.eclipse.dependencies</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia-ide-eclipse-with-tycho/org.apache.maven.doxia.eclipse.dependencies</developerConnection>
+        <url>https://svn.apache.org/repos/asf/maven/sandbox/branches/doxia-ide-eclipse-with-tycho/org.apache.maven.doxia.eclipse.dependencies</url>
     </scm>
     <prerequisites>
         <maven>3.0.3</maven>
