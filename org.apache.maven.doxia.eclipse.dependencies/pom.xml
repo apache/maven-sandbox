@@ -134,7 +134,7 @@ under the License.
                     <instructions>
 		      <unpackBundle>true</unpackBundle> <!-- to assist in debugging -->
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
-                        <_exportcontents>org.apache.maven.*</_exportcontents>
+                        <_exportcontents>org.apache.maven.*,org.codehaus.plexus.util</_exportcontents>
 			<Import-Package>!com.apple.mrj,!com.sun.*,!javax.*,!org.apache.commons.*,!org.apache.log,!org.apache.xmlbeans,!org.apache.tools.*,!org.apache.xml.*,!org.codehaus.*,!sun.*,*</Import-Package>
                         <Bundle-ClassPath>{maven-dependencies}</Bundle-ClassPath>
                         <Embed-Transitive>true</Embed-Transitive>
