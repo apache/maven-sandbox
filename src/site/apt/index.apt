@@ -1,0 +1,15 @@
+ -----
+ Doxia Eclipse IDE plugins
+ -----
+ Benson Margulies
+ -----
+ 25 August 2011
+ -----
+
+Structure
+
+  [org.apache.maven.doxia.eclipse.dependencies] builds an OSGi bundle with all of the dependencies
+  that are not OSGi in their native form. Due to a Tycho limitation, you have to run mvn install
+  on this before building the <<<eclipse>>> subdirectory.
+
+  [eclipse] contains all of the other material, using Tycho to make eclipse plugins.

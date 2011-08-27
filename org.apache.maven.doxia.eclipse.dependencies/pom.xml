@@ -27,7 +27,8 @@ under the License.
     </parent>
     <groupId>org.apache.maven.doxia.ide</groupId>
     <artifactId>dependencies</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <!-- three-digit version to match up with OSGI methodology -->
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Doxia Tools :: Eclipse IDE - Dependencies as Bundle</name>
     <description>Make an OSGi bundle of the required non-OSGi components</description>
