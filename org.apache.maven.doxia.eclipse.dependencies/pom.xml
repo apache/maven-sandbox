@@ -20,10 +20,10 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-parent</artifactId>
-      <version>21</version>
-      <relativePath/>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-parent</artifactId>
+        <version>21</version>
+        <relativePath/>
     </parent>
     <groupId>org.apache.maven.doxia.ide</groupId>
     <artifactId>dependencies</artifactId>
@@ -41,8 +41,7 @@ under the License.
         <maven>3.0.3</maven>
     </prerequisites>
     <properties>
-        <libdir>${project.build.outputDirectory}/lib</libdir>
-        <manifestdir>${project.build.outputDirectory}/META-INF</manifestdir>
+        <libdir>${project.build.directory}/lib</libdir>
         <doxiaVersion>1.2</doxiaVersion>
         <doxiaConverterVersion>1.2</doxiaConverterVersion>
     </properties>
@@ -132,10 +131,11 @@ under the License.
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-		      <unpackBundle>true</unpackBundle> <!-- to assist in debugging -->
+                        <!-- to assist in debugging -->
+                        <Embed-Directory>${libdir}</Embed-Directory>
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
-                        <_exportcontents>org.apache.maven.*,org.codehaus.plexus.util,org.apache.commons.io.*</_exportcontents>
-			<Import-Package>!com.apple.mrj,!com.sun.*,!javax.*,!org.apache.commons.*,!org.apache.log,!org.apache.xmlbeans,!org.apache.tools.*,!org.apache.xml.*,!org.codehaus.*,!sun.*,*</Import-Package>
+                        <_exportcontents>org.apache.maven.*,org.apache.maven.doxia.module.apt,org.codehaus.plexus.util,org.apache.commons.io.*</_exportcontents>
+                        <Import-Package>!com.apple.mrj,!com.sun.*,!javax.*,!org.apache.commons.*,!org.apache.log,!org.apache.xmlbeans,!org.apache.tools.*,!org.apache.xml.*,!org.codehaus.*,!sun.*,*</Import-Package>
                         <Bundle-ClassPath>{maven-dependencies}</Bundle-ClassPath>
                         <Embed-Transitive>true</Embed-Transitive>
                         <Embed-Directory>lib</Embed-Directory>
@@ -199,5 +199,6 @@ under the License.
                 </plugin>
             </plugins>
         </pluginManagement>
+        <finalName>org.apache.maven.doxia.eclipse.dependencies_${project.version}</finalName>
     </build>
 </project>
