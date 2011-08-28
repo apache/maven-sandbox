@@ -41,7 +41,6 @@ under the License.
         <maven>3.0.3</maven>
     </prerequisites>
     <properties>
-        <libdir>${project.build.directory}/lib</libdir>
         <doxiaVersion>1.2</doxiaVersion>
         <doxiaConverterVersion>1.2</doxiaConverterVersion>
     </properties>
@@ -132,7 +131,7 @@ under the License.
                 <configuration>
                     <instructions>
                         <!-- to assist in debugging -->
-                        <Embed-Directory>${libdir}</Embed-Directory>
+                        <Embed-Directory>lib</Embed-Directory>
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
                         <_exportcontents>org.apache.maven.*,org.apache.maven.doxia.module.apt,org.codehaus.plexus.util,org.apache.commons.io.*</_exportcontents>
                         <Import-Package>!com.apple.mrj,!com.sun.*,!javax.*,!org.apache.commons.*,!org.apache.log,!org.apache.xmlbeans,!org.apache.tools.*,!org.apache.xml.*,!org.codehaus.*,!sun.*,*</Import-Package>
@@ -141,6 +140,7 @@ under the License.
                         <Embed-Directory>lib</Embed-Directory>
                         <_failok>false</_failok>
                         <_nouses>true</_nouses>
+                        <_nodefaultversion>true</_nodefaultversion>
                     </instructions>
                 </configuration>
             </plugin>
@@ -164,7 +164,7 @@ under the License.
                                     <pluginExecutionFilter>
                                         <groupId>org.apache.felix</groupId>
                                         <artifactId>maven-bundle-plugin</artifactId>
-                                        <versionRange>2.1.0</versionRange>
+                                        <versionRange>2.3.5</versionRange>
                                         <goals>
                                             <goal>bundle</goal>
                                         </goals>
@@ -179,7 +179,7 @@ under the License.
                                     <pluginExecutionFilter>
                                         <groupId>org.apache.felix</groupId>
                                         <artifactId>maven-bundle-plugin</artifactId>
-                                        <versionRange>2.1.0</versionRange>
+                                        <versionRange>2.3.5</versionRange>
                                         <goals>
                                             <goal>manifest</goal>
                                         </goals>
@@ -195,7 +195,7 @@ under the License.
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>2.1.0</version>
+                    <version>2.3.5</version>
                 </plugin>
             </plugins>
         </pluginManagement>
