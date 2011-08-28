@@ -133,12 +133,14 @@ under the License.
                         <!-- to assist in debugging -->
                         <Embed-Directory>lib</Embed-Directory>
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
-                        <_exportcontents>org.apache.maven.*,org.apache.maven.doxia.module.apt,org.codehaus.plexus.util,org.apache.commons.io.*</_exportcontents>
+                        <_exportcontents>
+ org.apache.maven.doxia.markup,org.apache.maven.doxia.macro,org.apache.maven.doxia.module.itext,org.apache.maven.doxia.macro.manager,org.apache.maven.doxia.macro.snippet,org.apache.maven.doxia.sink,org.apache.maven.doxia.module.twiki,org.apache.maven.doxia.module.latex,org.apache.maven.doxia.parser.manager,org.apache.maven.doxia.module.docbook,org.apache.maven.doxia.sink.render,org.apache.maven.doxia.module.fml,org.apache.maven.doxia.module.twiki.parser,org.apache.maven.doxia.module.confluence,org.apache.maven.doxia.module.site.manager,org.apache.maven.doxia.document.io.xpp3,org.apache.maven.doxia.module.xdoc,org.apache.maven.doxia.module.fo,org.apache.maven.doxia.util,org.apache.maven.doxia.index,org.apache.maven.doxia.wrapper,org.apache.maven.doxia.cli,org.apache.maven.doxia.module.confluence.parser,org.apache.maven.doxia.macro.toc,org.apache.maven.doxia.logging,org.apache.maven.doxia.module.apt,org.apache.maven.doxia.module.confluence.parser.table,org.apache.maven.doxia.module.xhtml,org.apache.maven.doxia.module.fml.model,org.apache.maven.doxia.module.rtf,org.apache.maven.doxia.parser,org.apache.maven.doxia,org.apache.maven.doxia.module.confluence.parser.list,org.apache.maven.doxia.document,org.apache.maven.doxia.module.site,org.codehaus.plexus.util,org.apache.commons.io,org.apache.commons.io.input,org.apache.commons.io.filefilter,org.apache.commons.io.output
+			</_exportcontents>
                         <Import-Package>!com.apple.mrj,!com.sun.*,!javax.*,!org.apache.commons.*,!org.apache.log,!org.apache.xmlbeans,!org.apache.tools.*,!org.apache.xml.*,!org.codehaus.*,!sun.*,*</Import-Package>
-                        <Bundle-ClassPath>{maven-dependencies}</Bundle-ClassPath>
                         <Embed-Transitive>true</Embed-Transitive>
                         <Embed-Directory>lib</Embed-Directory>
-                        <_failok>false</_failok>
+			<!-- get rid of . which we don't want -->
+			<Bundle-ClassPath>{maven-dependencies}</Bundle-ClassPath>
                         <_nouses>true</_nouses>
                         <_nodefaultversion>true</_nodefaultversion>
                     </instructions>
