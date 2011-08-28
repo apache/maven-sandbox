@@ -28,11 +28,4 @@ under the License.
     <packaging>eclipse-feature</packaging>
     <name>Doxia Tools :: Eclipse IDE - Feature containing dependency bundle</name>
     <description>Put the bundle with the dependencies into feature</description>
-    <dependencies>
-      <dependency>
-	<groupId>org.apache.maven.doxia.ide</groupId>
-	<artifactId>dependencies</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-      </dependency>
-    </dependencies>
 </project>
