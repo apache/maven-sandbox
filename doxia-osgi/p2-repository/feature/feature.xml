@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.apache.maven.doxia.ide.dependencies.temp.feature"
+      label="Doxia IDE dependencies"
+      version="1.0.0.qualifier"
+      provider-name="Apache Software Foundation">
+
+   <description>Dummy feature to make a P2 containing the dependencies</description>
+
+   <plugin
+         id="org.apache.maven.doxia.ide.dependencies"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+</feature>
