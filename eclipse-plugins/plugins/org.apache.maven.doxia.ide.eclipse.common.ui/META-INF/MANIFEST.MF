@@ -4,7 +4,7 @@ Bundle-Name: Doxia Eclipse IDE plugins common resources
 Bundle-SymbolicName: org.apache.maven.doxia.ide.eclipse.common.ui
  ;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.apache.maven.doxia.ide.dependencies,
+Require-Bundle: org.apache.maven.doxia.ide.dependencies;bundle-version="[1.0.0,1.1.0)",
  org.eclipse.equinox.common;bundle-version="3.6.0",
  org.eclipse.core.resources;bundle-version="3.6.0",
  org.eclipse.ui.ide,

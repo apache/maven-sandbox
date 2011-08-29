@@ -5,11 +5,14 @@
         <maven>3.0.3</maven>
     </prerequisites>
     <parent>
-        <groupId>org.apache.maven.doxia.ide</groupId>
-        <artifactId>eclipse</artifactId>
-        <version>1.0-tycho-SNAPSHOT</version>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-parent</artifactId>
+      <version>21</version>
+      <relativePath/>
     </parent>
+    <groupId>org.apache.maven.doxia.ide</groupId>
     <artifactId>eclipse-plugins</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>The eclipse plugins, features, and update site are here.
   </description>
@@ -24,6 +27,11 @@
             <id>helios</id>
             <layout>p2</layout>
             <url>http://download.eclipse.org/releases/helios</url>
+        </repository>
+        <repository>
+            <id>doxia-p2</id>
+            <layout>p2</layout>
+            <url>http://svn.apache.org/repos/asf/maven/sandbox/branches/doxia-ide-eclipse-with-tycho/doxia-osgi/interim-p2</url>
         </repository>
     </repositories>
     <build>
@@ -66,8 +74,8 @@
                 <artifactId>target-platform-configuration</artifactId>
                 <version>${tycho-version}</version>
                 <configuration>
-                    <pomDependencies>consider</pomDependencies>
                     <resolver>p2</resolver>
+		    <pomDependencies>consider</pomDependencies>
                     <environments>
                         <environment>
                             <os>linux</os>

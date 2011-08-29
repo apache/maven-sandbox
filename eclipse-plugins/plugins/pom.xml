@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.doxia.ide</groupId>
     <artifactId>eclipse-plugins</artifactId>
-    <version>1.0-tycho-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
 
   <groupId>org.apache.maven.doxia.ide</groupId>
@@ -33,6 +33,16 @@ under the License.
   <packaging>pom</packaging>
   <name>Doxia Tools :: Eclipse IDE - Parent Plugins POM</name>
   <description>Eclipse IDE - Parent Plugins POM</description>
+
+  <!-- dependencies in a parent pom are generally evil, but this 
+       is a stopgap until I sort out a dispute with tycho -->
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.doxia.ide</groupId>
+      <artifactId>dependencies</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 
   <modules>
     <module>org.apache.maven.doxia.ide.eclipse.common.ui</module>
