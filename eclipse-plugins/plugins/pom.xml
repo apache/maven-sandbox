@@ -64,14 +64,6 @@ under the License.
           <artifactId>maven-eclipse-plugin</artifactId>
           <configuration>
             <pde>true</pde>
-            <projectnatures>
-              <projectnature>org.eclipse.pde.PluginNature</projectnature>
-              <projectnature>org.eclipse.jdt.core.javanature</projectnature>
-            </projectnatures>
-            <classpathContainers>
-              <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-              <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
-            </classpathContainers>
           </configuration>
         </plugin>
       </plugins>

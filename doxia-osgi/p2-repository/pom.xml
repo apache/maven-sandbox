@@ -50,6 +50,15 @@ under the License.
                 <configuration>
                     <resolver>p2</resolver>
                     <pomDependencies>consider</pomDependencies>
+		    <target>
+		      <artifact>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>target-definition</artifactId>
+			<version>${project.version}</version>
+			<classifier>helios</classifier>
+		      </artifact>
+		    </target>
+		    <ignoreTychoRepositories>true</ignoreTychoRepositories>
 		</configuration>
 	    </plugin>
       </plugins>
@@ -62,7 +71,7 @@ under the License.
       </dependency>
     </dependencies>
     <modules>
+      <module>target-definition</module>
       <module>feature</module>
-      <module>p2</module>
     </modules>
 </project>
