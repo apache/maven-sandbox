@@ -31,6 +31,13 @@ under the License.
     <name>Doxia Tools :: Eclipse IDE - Common UI Plugin</name>
     <description>Eclipse IDE - Common UI Plugin</description>
     <build>
+    <!--
+     Sadly, the PDE does not understand copying from someplace like
+     src/main/resources to the root of the output. So, for the icons
+     to work from PDE debugging, they have to really be at the top of the
+     project, and thus this exercise to get them into the output jar
+     with Maven. 
+     -->
         <resources>
             <resource>
                 <targetPath>/</targetPath>

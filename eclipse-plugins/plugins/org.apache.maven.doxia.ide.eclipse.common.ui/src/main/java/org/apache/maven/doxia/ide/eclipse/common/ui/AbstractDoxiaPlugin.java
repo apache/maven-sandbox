@@ -132,6 +132,15 @@ public abstract class AbstractDoxiaPlugin
     // Private methods
     // ----------------------------------------------------------------------
 
+    /*
+     * TODO:
+     * This function gets the icons from a bundle path, not the classpath.
+     * This in turn requires them to be in the root of the source of the project
+     * to make the PDE work. It would be better, I think, to put them 
+     * on classpath if Eclipse will let us.
+     */
+    
+    
     private ImageDescriptor registerImage( String path )
     {
         Assert.isNotNull( path, "path is not initialized." );
