@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -18,25 +17,30 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <parent>
-    <groupId>org.apache.maven.doxia.ide</groupId>
-    <artifactId>plugins</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.apache.maven.doxia.ide</groupId>
+        <artifactId>plugins</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <groupId>org.apache.maven.doxia.ide.plugins</groupId>
+    <artifactId>common-ui</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-  </parent>
-
-  <groupId>org.apache.maven.doxia.ide.plugins</groupId>
-  <artifactId>common-ui</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>
-  <name>Doxia Tools :: Eclipse IDE - Common UI Plugin</name>
-  <description>Eclipse IDE - Common UI Plugin</description>
-  <build>
-    <finalName>org.apache.maven.doxia.ide.eclipse.common.ui_${project.version}</finalName>
-  </build>
+    <packaging>eclipse-plugin</packaging>
+    <name>Doxia Tools :: Eclipse IDE - Common UI Plugin</name>
+    <description>Eclipse IDE - Common UI Plugin</description>
+    <build>
+        <resources>
+            <resource>
+                <targetPath>/</targetPath>
+                <filtering>false</filtering>
+                <directory>${basedir}</directory>
+                <includes>
+                    <include>icons/**</include>
+                </includes>
+            </resource>
+        </resources>
+        <finalName>org.apache.maven.doxia.ide.eclipse.common.ui_${project.version}</finalName>
+    </build>
 </project>
-
-
