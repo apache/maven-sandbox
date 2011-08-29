@@ -509,13 +509,25 @@ public abstract class AbstractMultiPageEditorPart
         /** {@inheritDoc} */
         public void documentChanged( DocumentEvent event )
         {
-            DoxiaWrapper.convert( document.get(), getDoxiaFile(), getFormat() );
+            // avoid deadlock with ourselves by spitting this out to run asynchronously.
+            Display.getCurrent().asyncExec( new Runnable () {
+
+                public void run()
+                {
+                    DoxiaWrapper.convert( document.get(), getDoxiaFile(), getFormat() );
+                } 
+                
+            });
+
         }
 
         /** {@inheritDoc} */
         public void documentAboutToBeChanged( DocumentEvent event )
         {
-            DoxiaWrapper.convert( document.get(), getDoxiaFile(), getFormat() );
+            // I (bimargulies) don't believe that we need this and also the above. 
+            // 
+            //DoxiaWrapper.convert( document.get(), getDoxiaFile(), getFormat() );
+            // 
         }
     }
 }
