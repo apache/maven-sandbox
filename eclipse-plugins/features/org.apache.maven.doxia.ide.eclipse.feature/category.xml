@@ -18,23 +18,10 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <parent>
-    <version>1.0.0-SNAPSHOT</version>
-    <groupId>org.apache.maven.doxia.ide</groupId>
-    <artifactId>features</artifactId>
-  </parent>
-
-  <groupId>org.apache.maven.doxia.ide.features</groupId>
-  <artifactId>default-feature</artifactId>
-  <packaging>eclipse-feature</packaging>
-  <name>Doxia Tools :: Eclipse IDE - Common Feature</name>
-  <description>Eclipse IDE - Common Feature</description>
-
-  <build>
-    <finalName>org.apache.maven.doxia.ide.eclipse.feature_${project.version}</finalName>
-  </build>
-</project>
+<site>
+   <category-def name="org.apache.maven.doxia.ide.eclipse" label="Apache Maven Doxia Editors"/>
+   <feature url="features/org.apache.maven.doxia.ide.eclipse.feature_1.0.0.qualifier.jar"
+	    id="org.apache.maven.doxia.ide.eclipse.feature" version="1.0.0.qualifier">
+      <category name="org.apache.maven.doxia.ide.eclipse"/>
+   </feature>
+</site>

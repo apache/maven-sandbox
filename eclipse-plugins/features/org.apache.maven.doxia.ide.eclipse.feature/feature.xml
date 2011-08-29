@@ -21,8 +21,8 @@ under the License.
 
 <feature
       id="org.apache.maven.doxia.ide.eclipse.feature"
-      label="Doxia Feature Feature"
-      version="1.0.0"
+      label="Doxia Editors Feature"
+      version="1.0.0.qualifier"
       provider-name="Apache Maven">
 
    <description url="http://maven.apache.org/doxia/">
@@ -109,6 +109,13 @@ under the License.
 
    <plugin
          id="org.apache.maven.doxia.ide.eclipse.xhtml.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.maven.doxia.ide.dependencies"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -24,9 +24,8 @@ under the License.
 
   <parent>
     <groupId>org.apache.maven.doxia.ide</groupId>
-    <artifactId>eclipse</artifactId>
-    <version>1.0-tycho-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <artifactId>eclipse-plugins</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
 
   <groupId>org.apache.maven.doxia.ide</groupId>
@@ -35,41 +34,48 @@ under the License.
   <name>Doxia Tools :: Eclipse IDE - Parent Features POM</name>
   <description>Eclipse IDE - Parent Features POM</description>
 
+  <!-- dependencies in a parent pom are generally evil, but this 
+       is a stopgap until I sort out a dispute with tycho -->
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.doxia.ide</groupId>
+      <artifactId>dependencies</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
   <modules>
     <module>org.apache.maven.doxia.ide.eclipse.feature</module>
   </modules>
-
-  <build>
-    <resources>
-      <resource>
-        <directory>${basedir}</directory>
-        <includes>
-          <include>feature.xml</include>
-        </includes>
-      </resource>
-    </resources>
-
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <projectnatures>
-            <projectnature>org.eclipse.pde.FeatureNature</projectnature>
-          </projectnatures>
-          <buildcommands>
-            <buildcommand>org.eclipse.pde.FeatureBuilder</buildcommand>
-          </buildcommands>
-        </configuration>
-      </plugin>
-      <!-- No tests to run -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-packaging-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <deployableFeature>true</deployableFeature>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-p2-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <executions>
+                    <execution>
+                        <id>categorization</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>category-p2-metadata</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <metadataRepositoryName>Doxia Editor Plugins</metadataRepositoryName>
+                    <artifactRepositoryName>Doxia Editor plugins</artifactRepositoryName>
+                    <compressRepository>false</compressRepository>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
