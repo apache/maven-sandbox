@@ -26,7 +26,7 @@ under the License.
          point="org.eclipse.ui.editors">
       <editor
             name="%editor.name"
-            extensions="apt"
+            extensions="apt,apt.vm"
             icon="icons/doxia.gif"
             contributorClass="org.apache.maven.doxia.ide.eclipse.apt.ui.editor.AptEditorContributor"
             class="org.apache.maven.doxia.ide.eclipse.apt.ui.editor.AptEditor"
