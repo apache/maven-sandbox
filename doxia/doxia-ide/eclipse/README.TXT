@@ -1,5 +1,13 @@
 Eclipse plugin for Apache Maven Doxia
 
+Structure:
+
+  org.apache.maven.doxia.eclipse.dependencies bundles: up doxia and dependencies as an OSGi plugin.
+    
+
+1162393 is the rev which demos m-e-p editing MANIFEST.MF (!)
+  
+
 Required Prerequisites:
 * Eclipse SDK Platform (http://download.eclipse.org/eclipse/downloads/)
 * Web Tools Platform (http://download.eclipse.org/webtools/downloads/)

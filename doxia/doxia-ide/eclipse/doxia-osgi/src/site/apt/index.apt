@@ -1,0 +1,29 @@
+ -----
+ Doxia Components as an OSGi plugin
+ -----
+ Benson Margulies
+ -----
+ 26 August 2011
+ -----
+
+   To have eclipse plugins that use the insides of Doxia, we need at least one 
+   OSGi bundle containing Doxia itself. This could be arranged by adding OSGi 
+   manifest metadata to them one-at-a-time, but I doubt that anyone has much 
+   enthusiasm for that.
+
+   The initial attempt at this using the maven-bundle-plugin was relatively simple. 
+   By using Embed-Dependencies and _exportcontents, you can instruct it to 
+   grab all the maven dependencies of the current project as jars embedded in the 
+   bundle jar, and set up the manifest to match.
+
+   Unfortunately, both the maven-eclipse-plugin and M2E are poorly behaved 
+   in the face of this. m-e-p responds by trying to edit the MANIFEST.MF of 
+   a project that uses it. M2E, according to Igor, 'does not support 
+   Embed-Dependencies'. Since some of us are not big M2E fans, I'm structuring
+   this in a way which should be palatable to both.
+
+   That requires giving up on Tycho's ability to work with a dependent bundle
+   called out as a Maven dependency. Instead, this project builds an OSGi 
+   bundle which is, essentially, 'shaded', and then sticks it into a P2 repository
+   hiding in the local repository. Then the Tycho build of the editor plugins
+   searches that repository.
