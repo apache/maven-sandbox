@@ -27,7 +27,7 @@ under the License.
          point="org.eclipse.ui.editors">
       <editor
             name="%editor.name"
-            extensions="confluence"
+            extensions="confluence,confluence.vm"
             icon="icons/doxia.gif"
             contributorClass="org.apache.maven.doxia.ide.eclipse.confluence.ui.editor.ConfluenceEditorContributor"
             class="org.apache.maven.doxia.ide.eclipse.confluence.ui.editor.ConfluenceEditor"

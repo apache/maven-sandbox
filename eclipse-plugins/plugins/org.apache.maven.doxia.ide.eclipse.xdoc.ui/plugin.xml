@@ -27,7 +27,7 @@ under the License.
          point="org.eclipse.ui.editors">
       <editor
             name="%editor.name"
-            extensions="xdoc, xml"
+            extensions="xdoc,xml,xdoc.vm,xml.vm"
             icon="icons/doxia.gif"
             contributorClass="org.apache.maven.doxia.ide.eclipse.xdoc.ui.editor.XdocEditorContributor"
             class="org.apache.maven.doxia.ide.eclipse.xdoc.ui.editor.XdocEditor"

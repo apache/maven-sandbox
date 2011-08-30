@@ -26,7 +26,7 @@ under the License.
          point="org.eclipse.ui.editors">
       <editor
             name="%editor.name"
-            extensions="docbook, xml"
+            extensions="docbook,xml,docbook.vm,xml.vm"
             icon="icons/doxia.gif"
             contributorClass="org.apache.maven.doxia.ide.eclipse.docbook.ui.editor.DocbookEditorContributor"
             class="org.apache.maven.doxia.ide.eclipse.docbook.ui.editor.DocbookEditor"
