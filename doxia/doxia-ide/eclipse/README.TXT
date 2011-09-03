@@ -1,12 +1,21 @@
 Eclipse plugin for Apache Maven Doxia
 
-Structure:
+Build with Maven:
+Tycho (http://tycho.sonatype.org) won't resolve through the reactor for the bundle, so you need to build firstly org.apache.maven.doxia.eclipse.dependencies project:
 
-  org.apache.maven.doxia.eclipse.dependencies bundles: up doxia and dependencies as an OSGi plugin.
-    
+mvn clean install -f doxia-osgi/org.apache.maven.doxia.eclipse.dependencies/pom.xml
+|_ Make an OSGi bundle of doxia.
+mvn clean install
+|_ Create a feature and a P2 repository
+|_ Eclipse plugins
 
+Using Eclipse IDE:
+File/import/Existing projects in workspace/${basedir}
+
+Other comments:
 1162393 is the rev which demos m-e-p editing MANIFEST.MF (!)
   
+TO BE REVIEWED:
 
 Required Prerequisites:
 * Eclipse SDK Platform (http://download.eclipse.org/eclipse/downloads/)
@@ -16,21 +25,15 @@ Required Prerequisites:
   - GEF
   - DTP
   - WTP Tool Developers
-* doxia-converter (https://svn.apache.org/repos/asf/maven/doxia/doxia-tools/trunk/doxia-converter)
-  - Need to build it 
-  - Put apache-doxia-1.0-SNAPSHOT-jar-with-dependencies.jar in ./plugins/org.apache.maven.doxia.ide.eclipse.common.ui/lib - unneeded since r650510
-* needs Java 5 to build since Eclipse uses Java 5
-* M2_HOME needs to be set - unneeded since r651102
 
 Known Limitations:
 * Needs to bump to WSTP M6 due to:
   - https://bugs.eclipse.org/bugs/show_bug.cgi?id=212330
   - https://bugs.eclipse.org/bugs/show_bug.cgi?id=224040
 
-TODO:
-* mavenize the plugins - done in r650510
-* Add more PatternRule for text plugin (Apt, confluence, twiki) - done in r650506, r650503, r650502
-* Review editor colors - done in r650501
+Improvements:
+* review POM groupId
+* fixed icons and label
 * add more actions like add list, comment/uncomment in Apt...
 
 References:
