@@ -35,6 +35,7 @@ Improvements:
 * review POM groupId
 * fixed icons and label
 * add more actions like add list, comment/uncomment in Apt...
+* add Maven documentation to build a build site
 
 References:
 * DOXIA-233: Create an Eclipse plugin to edit Doxia files
