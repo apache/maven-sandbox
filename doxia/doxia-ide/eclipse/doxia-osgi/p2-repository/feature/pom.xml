@@ -17,46 +17,51 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.apache.maven.doxia.ide</groupId>
-        <artifactId>p2-repository</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
-    <artifactId>org.apache.maven.doxia.ide.dependencies.temp.feature</artifactId>
-    <packaging>eclipse-feature</packaging>
-    <name>Doxia Tools :: Eclipse IDE - Feature containing dependency bundle</name>
-    <description>Put the bundle with the dependencies into feature</description>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-packaging-plugin</artifactId>
-                <version>${tycho-version}</version>
-                <configuration>
-                    <deployableFeature>true</deployableFeature>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-p2-plugin</artifactId>
-                <version>${tycho-version}</version>
-                <executions>
-                    <execution>
-                        <id>categorization</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>category-p2-metadata</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <metadataRepositoryName>Doxia OSGi bundle for Eclipse plugins</metadataRepositoryName>
-                    <artifactRepositoryName>Doxia OSGi bundle for Eclipse plugins</artifactRepositoryName>
-                    <compressRepository>false</compressRepository>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.apache.maven.doxia.ide</groupId>
+    <artifactId>p2-repository</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>org.apache.maven.doxia.ide.dependencies.temp.feature</artifactId>
+  <packaging>eclipse-feature</packaging>
+
+  <name>Doxia Tools :: Eclipse IDE - Feature containing dependency bundle</name>
+  <description>Put the bundle with the dependencies into feature</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-packaging-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <deployableFeature>true</deployableFeature>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <executions>
+          <execution>
+            <id>categorization</id>
+            <phase>package</phase>
+            <goals>
+              <goal>category-p2-metadata</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <metadataRepositoryName>Doxia OSGi bundle for Eclipse plugins</metadataRepositoryName>
+          <artifactRepositoryName>Doxia OSGi bundle for Eclipse plugins</artifactRepositoryName>
+          <compressRepository>false</compressRepository>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
