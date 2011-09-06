@@ -7,10 +7,10 @@ Requirements:
 Building (with Maven 3):
 Tycho (http://tycho.sonatype.org) won't resolve through the reactor for the bundle, so you need to build org.apache.maven.doxia.eclipse.dependencies project first:
 
-mvn clean install -f doxia-osgi/org.apache.maven.doxia.eclipse.dependencies/pom.xml
+mvn clean install -f doxia-osgi/pom.xml
 |_ Makes an OSGi bundle of doxia.
 
-mvn clean install -f eclipse-plugins
+mvn clean install -f eclipse-plugins/pom.xml
 |_ Creates a feature and a P2 repository
 |_ Builds Eclipse plugins
 

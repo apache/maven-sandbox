@@ -3,7 +3,7 @@
  -----
  Benson Margulies
  -----
- 25 August 2011
+ 2011-08-25
  -----
 
 Overview
@@ -25,6 +25,8 @@ Overview
 
   * XHTML
 
+  []
+
   These are made up of an OSGi bundle containing Doxia itself, plus a
   series of Eclipse plugins that provide the editors.
 
@@ -37,6 +39,18 @@ Tree Structure
   [eclipse-plugins] contains all of the other material, using Tycho to make eclipse plugins.
 
 Build Process
+
+  The build is done in 2 phases:
+
++----+
+mvn clean install -f doxia-osgi/pom.xml
+mvn clean install -f eclipse-plugins/pom.xml
++----+
+
+  The result Eclipse Update Site is available in
+  <<<eclipse-plugins/features/org.apache.maven.doxia.ide.eclipse.feature/target/site>>>.
+
+* Explanations
 
   The goal here is to permit both a relatively normal Maven build
   process and active development inside Eclipse. Due to the unsettled
