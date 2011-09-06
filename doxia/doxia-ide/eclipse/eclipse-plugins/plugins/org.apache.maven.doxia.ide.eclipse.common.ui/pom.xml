@@ -46,7 +46,6 @@ under the License.
    -->
     <resources>
       <resource>
-        <targetPath>/</targetPath>
         <filtering>false</filtering>
         <directory>${basedir}</directory>
         <includes>
