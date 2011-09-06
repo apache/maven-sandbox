@@ -1,7 +1,0 @@
-<site>
-   <category-def name="org.apache.maven.doxia.dummy.category" label="Doxia Dummy Category"/>
-   <feature url="features/org.apache.maven.doxia.ide.dependencies.temp.feature_1.0.0.qualifier.jar"
-	    id="org.apache.maven.doxia.ide.dependencies.temp.feature" version="1.0.0.qualifier">
-      <category name="org.apache.maven.doxia.dummy.category"/>
-   </feature>
-</site>

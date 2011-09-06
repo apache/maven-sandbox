@@ -23,9 +23,10 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.apache.maven.doxia.ide</groupId>
-    <artifactId>eclipse-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>org.apache.maven</groupId>
+    <artifactId>maven-parent</artifactId>
+    <version>21</version>
+    <relativePath/>
   </parent>
 
   <artifactId>doxia-osgi</artifactId>
@@ -45,7 +46,6 @@ under the License.
     Tycho won't resolve through the reactor for the bundle. Set up the invoker at some point
 -->
    <modules>
-<!--     <module>org.apache.maven.doxia.eclipse.dependencies</module> -->
-     <module>p2-repository</module>
+     <module>org.apache.maven.doxia.eclipse.dependencies</module>
    </modules>
 </project>
