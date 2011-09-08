@@ -37,6 +37,7 @@ under the License.
   <properties>
     <doxiaVersion>1.1.2</doxiaVersion>
     <doxiaConverterVersion>1.2</doxiaConverterVersion>
+    <maven-bundle-plugin-version>2.3.5</maven-bundle-plugin-version> 
   </properties>
 
   <dependencies>
@@ -167,6 +168,11 @@ under the License.
               </pluginExecutions>
             </lifecycleMappingMetadata>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>${maven-bundle-plugin-version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
