@@ -32,6 +32,7 @@ Improvements:
 * review POM groupId
 * fixed icons and label
 * add more actions like add list, comment/uncomment in Apt...
+* add autocomplete
 * add Maven documentation for the plugin and how to build an update site.
 * test it with other Eclipse distributions
 
