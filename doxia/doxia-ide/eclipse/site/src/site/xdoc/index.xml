@@ -50,7 +50,7 @@ under the License.
           <li>Supports all Apache Doxia file formats</li>
           <li>Shows the rendering of any Apache Doxia files directly, without running <code>mvn site</code></li>
           <li>Supports color and styles highlighting in the editors</li>
-          <li>Provides helpers to insert commonly used patterns in each format (bold, italic, code, table)</li>
+          <li>Provides helpers to insert commonly used patterns in each format (bold, italic, monospace, link, table)</li>
           <li>Includes wizards for creating new Apache Doxia files</li>
         </ul>
         <p>
