@@ -71,8 +71,9 @@ Development of Apache Doxia Eclipse Plugin
 +-------------------------------+
 mvn clean install -f doxia-osgi/pom.xml
 |_ Makes an OSGi bundle of Doxia.
-
 +-------------------------------+
+
+  Then, and only then, you can build plugins themselves:
 
 +-------------------------------+
 mvn clean install -f eclipse-plugins/pom.xml
