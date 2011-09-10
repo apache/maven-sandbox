@@ -35,7 +35,7 @@ under the License.
   <packaging>pom</packaging>
 
   <description>Website for the Apache Maven Doxia Eclipse plugin.</description>
-  <url>http://maven.apache.org/doxia</url>
+  <url>http://maven.apache.org/doxia</url><!-- TODO -->
 
   <!-- The project basedir  -->
   <scm>
@@ -43,10 +43,9 @@ under the License.
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide/eclipse</developerConnection>
     <url>https://svn.apache.org/repos/asf/maven/sandbox/trunk/doxia/doxia-ide/eclipse</url>
   </scm>
-  <!-- TODO -->
   <issueManagement>
     <system>jira</system>
-    <url>http://jira.codehaus.org/browse/DOXIA</url>
+    <url>http://jira.codehaus.org/browse/DOXIATOOLS/component/14861</url>
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
