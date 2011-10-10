@@ -27,7 +27,7 @@
   <artifactId>fluido-skin</artifactId>
   <version>1-SNAPSHOT</version>
   <name>Apache Maven Fluido Skin</name>
-  <description>Apache Maven Fluido Skin</description>
+  <description>Fluido Skin is a Maven site skin built on top of Twitter's bootstrap.</description>
   <inceptionYear>2011</inceptionYear>
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/trunk/skin/</connection>
