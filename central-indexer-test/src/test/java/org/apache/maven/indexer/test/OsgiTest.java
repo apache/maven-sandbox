@@ -1,6 +1,7 @@
 package org.apache.maven.indexer.test;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpHeaders;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.maven.index.FlatSearchRequest;
@@ -18,6 +19,7 @@ import org.apache.maven.wagon.ResourceDoesNotExistException;
 import org.apache.maven.wagon.TransferFailedException;
 import org.apache.maven.wagon.Wagon;
 import org.apache.maven.wagon.authorization.AuthorizationException;
+import org.apache.maven.wagon.providers.http.HttpWagon;
 import org.apache.maven.wagon.repository.Repository;
 import org.codehaus.plexus.PlexusTestCase;
 
@@ -29,6 +31,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Unit test for simple App.
@@ -62,7 +65,9 @@ public class OsgiTest
             nexusIndexer.addIndexingContext( "id", "id", repo, indexDirectory, repo.toURI( ).toURL( ).toExternalForm( ),
                                              indexDirectory.toURI( ).toURL( ).toString( ), indexCreators );
 
-        final Wagon httpWagon = lookup( Wagon.class, "http" );
+        final HttpWagon httpWagon = (HttpWagon) lookup( Wagon.class, "http" );
+
+        httpWagon.setTimeout( 10000 );
 
         httpWagon.connect( new Repository( "central", "http://repo1.maven.org/maven2/.index" ) );
 
