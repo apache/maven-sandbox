@@ -45,7 +45,7 @@ import java.io.FileWriter;
 @AxisRange( min = 0, max = 1 )
 @BenchmarkMethodChart( filePrefix = "target/benchmark-result" )
 @BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5,filePrefix = "target/history-result")
-@BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 2 )
+@BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 1 )
 public class BenchmarkSuiteTest
     extends PlexusTestCase
 {

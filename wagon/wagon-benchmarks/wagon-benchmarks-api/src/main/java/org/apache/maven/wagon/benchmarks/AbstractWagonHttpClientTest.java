@@ -56,7 +56,7 @@ import java.util.concurrent.TimeUnit;
 @AxisRange( min = 0, max = 1 )
 @BenchmarkMethodChart( filePrefix = "target/benchmark-result" )
 @BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5,filePrefix = "target/history-result")
-@BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 2 )
+@BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 1 )
 public abstract class AbstractWagonHttpClientTest
     extends AbstractWagonClientTest
 {
