@@ -49,9 +49,9 @@ import java.util.concurrent.TimeUnit;
  * @author Olivier Lamy
  */
 @AxisRange( min = 0, max = 1 )
-@BenchmarkMethodChart()
+@BenchmarkMethodChart( filePrefix = "../benchmark-result" )
 @BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5 )
-@BenchmarkOptions( benchmarkRounds = 1, warmupRounds = 1, concurrency = 2 )
+@BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 2 )
 public abstract class AbstractWagonHttpClientTest
     extends AbstractWagonClientTest
 {
@@ -78,6 +78,9 @@ public abstract class AbstractWagonHttpClientTest
         }
 
         resultWriter = new FileWriter( resultFile, true );
+
+        //System.setProperty( "jub.consumers", "CONSOLE,H2" );
+        //System.setProperty( "jub.db.file", new File( "../.benchmarks" ).getAbsolutePath() );
     }
 
 
