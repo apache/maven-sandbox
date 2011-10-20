@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>wagon-benchmarks</artifactId>
+    <groupId>org.apache.maven.wagon.benchmarks</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>wagon-benchmarks-run</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>wagon-benchmarks-run</name>
+  <dependencies>
+
+    <dependency>
+      <groupId>org.apache.maven.wagon.benchmarks</groupId>
+      <artifactId>wagon-benchmarks-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon.benchmarks</groupId>
+      <artifactId>wagon-benchmarks-http</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon.benchmarks</groupId>
+      <artifactId>wagon-benchmarks-http-lightweight</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon.benchmarks</groupId>
+      <artifactId>wagon-benchmarks-ahc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+
+
+    <dependency>
+      <groupId>com.ning</groupId>
+      <artifactId>async-http-client</artifactId>
+      <version>1.6.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-http</artifactId>
+      <version>${wagonVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-http-lightweight</artifactId>
+      <version>${wagonVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>${surefireForkedVmArgs}</argLine>
+          <systemPropertyVariables>
+            <test.keystore.path>${basedir}/src/test/ssl/keystore</test.keystore.path>
+            <wagon.benchmark.rq.number>${wagon.benchmark.rq.number}</wagon.benchmark.rq.number>
+            <wagon.benchmark.rq.parallel>${wagon.benchmark.rq.parallel}</wagon.benchmark.rq.parallel>
+            <java.io.tmpdir>${project.build.directory}</java.io.tmpdir>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

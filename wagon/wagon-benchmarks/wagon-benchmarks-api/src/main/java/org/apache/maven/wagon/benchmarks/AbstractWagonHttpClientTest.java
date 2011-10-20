@@ -49,10 +49,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Olivier Lamy
  */
-@AxisRange( min = 0, max = 1 )
-@BenchmarkMethodChart( filePrefix = "../benchmark-result" )
-@BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5 )
-@BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 2 )
 public abstract class AbstractWagonHttpClientTest
     extends AbstractWagonClientTest
 {
@@ -98,7 +94,6 @@ public abstract class AbstractWagonHttpClientTest
         resultWriter.flush();
     }
 
-    @BenchmarkOptions( benchmarkRounds = 1, warmupRounds = 1, concurrency = 2 )
     @Test
     public void getSmallFilesHttpNotCompressed()
         throws Exception
