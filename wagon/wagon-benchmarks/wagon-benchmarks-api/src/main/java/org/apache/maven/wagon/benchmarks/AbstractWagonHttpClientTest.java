@@ -41,6 +41,10 @@ public abstract class AbstractWagonHttpClientTest
     extends AbstractWagonClientTest
 {
 
+    static int parallelRequestNumber = Integer.parseInt( System.getProperty( "wagon.benchmark.rq.parallel" ) );
+    
+    static int requestNumber = Integer.parseInt( System.getProperty( "wagon.benchmark.rq.number" ) );
+    
     @Test
     public void getSmallFilesHttpNotCompressed()
         throws Exception
@@ -104,8 +108,7 @@ public abstract class AbstractWagonHttpClientTest
 
         testServer.start();
 
-        call( Integer.parseInt( System.getProperty( "getRequestThreadNumber" ) ),
-              Integer.parseInt( System.getProperty( "getRequestNumber" ) ), ssl, testServer.port, true );
+        call( ssl, testServer.port, true );
 
         testServer.stop();
 
@@ -179,8 +182,7 @@ public abstract class AbstractWagonHttpClientTest
 
         testServer.start();
 
-        call( Integer.parseInt( System.getProperty( "getRequestThreadNumber" ) ),
-              Integer.parseInt( System.getProperty( "getRequestNumber" ) ), ssl, testServer.port, false );
+        call( ssl, testServer.port, false );
 
         testServer.stop();
 
@@ -188,7 +190,7 @@ public abstract class AbstractWagonHttpClientTest
     }
 
 
-    protected void call( int poolNumber, int requestNumber, boolean ssl, final int port, final boolean testcontent )
+    protected void call( boolean ssl, final int port, final boolean testcontent )
         throws Exception
     {
         List<Callable<Void>> callables = new ArrayList<Callable<Void>>();
@@ -223,7 +225,7 @@ public abstract class AbstractWagonHttpClientTest
             
         }
 
-        ExecutorService executorService = Executors.newFixedThreadPool( 15 );
+        ExecutorService executorService = Executors.newFixedThreadPool( parallelRequestNumber );
 
         executorService.invokeAll( callables );
 

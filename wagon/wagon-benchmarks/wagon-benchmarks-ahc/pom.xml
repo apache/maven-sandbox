@@ -59,9 +59,8 @@ under the License.
           <argLine>${surefireForkedVmArgs}</argLine>
           <systemPropertyVariables>
             <test.keystore.path>${basedir}/src/test/ssl/keystore</test.keystore.path>
-            <getRequestNumber>${getRequestNumber}</getRequestNumber>
-            <getRequestNumber>${getRequestNumber}</getRequestNumber>
-            <getRequestThreadNumber>${getRequestThreadNumber}</getRequestThreadNumber>
+            <wagon.benchmark.rq.number>${wagon.benchmark.rq.number}</wagon.benchmark.rq.number>
+            <wagon.benchmark.rq.parallel>${wagon.benchmark.rq.parallel}</wagon.benchmark.rq.parallel>
           </systemPropertyVariables>
         </configuration>
       </plugin>

@@ -38,8 +38,10 @@ under the License.
     <jettyVersion>7.4.5.v20110725</jettyVersion>
     <sisuInjectVersion>2.3.0</sisuInjectVersion>
     <slf4jVersion>1.6.1</slf4jVersion>
-    <getRequestNumber>1000</getRequestNumber>
-    <getRequestThreadNumber>8</getRequestThreadNumber>
+    <!-- total number of http request -->
+    <wagon.benchmark.rq.number>1000</wagon.benchmark.rq.number>
+    <!-- parallel request to do -->
+    <wagon.benchmark.rq.parallel>8</wagon.benchmark.rq.parallel>
     <surefireForkedVmArgs>-Xmx512m -Xms512m -client</surefireForkedVmArgs>
   </properties>
 
