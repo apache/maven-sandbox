@@ -42,9 +42,9 @@ public abstract class AbstractWagonHttpClientTest
 {
 
     static int parallelRequestNumber = Integer.parseInt( System.getProperty( "wagon.benchmark.rq.parallel" ) );
-    
+
     static int requestNumber = Integer.parseInt( System.getProperty( "wagon.benchmark.rq.number" ) );
-    
+
     @Test
     public void getSmallFilesHttpNotCompressed()
         throws Exception
@@ -106,7 +106,7 @@ public abstract class AbstractWagonHttpClientTest
 
         testServer.servletsPerPath.put( "/*", GetFileServlet.class );
 
-        testServer.start();
+        testServer.start( parallelRequestNumber );
 
         call( ssl, testServer.port, true );
 
@@ -180,7 +180,7 @@ public abstract class AbstractWagonHttpClientTest
 
         testServer.servletsPerPath.put( "/*", GetFileServlet.class );
 
-        testServer.start();
+        testServer.start( parallelRequestNumber );
 
         call( ssl, testServer.port, false );
 
@@ -211,7 +211,7 @@ public abstract class AbstractWagonHttpClientTest
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         wagon.getToStream( "foo", baos );
                         if ( testcontent )
-                        {                        
+                        {
                             assertTrue( baos.toString().contains( "20110821162420" ) );
                         }
                     }
@@ -222,7 +222,7 @@ public abstract class AbstractWagonHttpClientTest
                     return null;
                 }
             } );
-            
+
         }
 
         ExecutorService executorService = Executors.newFixedThreadPool( parallelRequestNumber );

@@ -25,14 +25,13 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSocketConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.thread.ExecutorThreadPool;
+import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.Servlet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executors;
 
 /**
  * @author Olivier Lamy
@@ -50,7 +49,7 @@ public class TestServer
 
     public SecurityHandler securityHandler;
 
-    public Map<String, Class<? extends  Servlet>> servletsPerPath = new HashMap<String, Class<? extends Servlet>>();
+    public Map<String, Class<? extends Servlet>> servletsPerPath = new HashMap<String, Class<? extends Servlet>>();
 
     public Server server;
 
@@ -59,12 +58,16 @@ public class TestServer
         // no op
     }
 
-    public void start()
+    public void start( int minThreads )
         throws Exception
     {
         server = new Server( 0 );
 
-        server.setThreadPool( new ExecutorThreadPool( Executors.newFixedThreadPool( 15 ) ) );
+        QueuedThreadPool threadpool = new QueuedThreadPool();
+        threadpool.setMinThreads( minThreads );
+        threadpool.setMaxThreads( 2000 );
+
+        server.setThreadPool( threadpool );
 
         ServletContextHandler context = new ServletContextHandler();
 
@@ -74,7 +77,7 @@ public class TestServer
 
         server.setHandler( context );
 
-        for ( Map.Entry<String, Class<? extends  Servlet>> entry : servletsPerPath.entrySet() )
+        for ( Map.Entry<String, Class<? extends Servlet>> entry : servletsPerPath.entrySet() )
         {
             ServletHolder sh = new ServletHolder( entry.getValue() );
             context.addServlet( sh, entry.getKey() );
@@ -82,28 +85,33 @@ public class TestServer
 
         server.setHandler( context );
 
+        Connector connector = null;
+
         if ( ssl )
         {
-            SslSocketConnector connector = new SslSocketConnector();
+            connector = new SslSocketConnector();
             String keystore = System.getProperty( "test.keystore.path" );
 
             log.info( "TCK Keystore path: " + keystore );
             System.setProperty( "javax.net.ssl.keyStore", keystore );
             System.setProperty( "javax.net.ssl.trustStore", keystore );
 
-            // connector.setHost( SERVER_HOST );
-            //connector.setPort( port );
-            connector.setKeystore( keystore );
-            connector.setPassword( SERVER_SSL_KEYSTORE_PASSWORD );
-            connector.setKeyPassword( SERVER_SSL_KEYSTORE_PASSWORD );
+            ( (SslSocketConnector) connector ).setKeystore( keystore );
+            ( (SslSocketConnector) connector ).setPassword( SERVER_SSL_KEYSTORE_PASSWORD );
+            ( (SslSocketConnector) connector ).setKeyPassword( SERVER_SSL_KEYSTORE_PASSWORD );
 
-            server.addConnector( connector );
+
         }
         else
         {
-            Connector connector = new SelectChannelConnector();
-            server.addConnector( connector );
+            connector = new SelectChannelConnector();
+
         }
+
+        connector.setRequestBufferSize( 12 * 1024 );
+        connector.setResponseBufferSize( 12 * 1024 );
+
+        server.addConnector( connector );
 
         server.start();
         port = server.getConnectors()[0].getLocalPort();
