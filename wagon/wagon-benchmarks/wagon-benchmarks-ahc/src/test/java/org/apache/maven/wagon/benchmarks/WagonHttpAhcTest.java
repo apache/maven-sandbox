@@ -24,7 +24,7 @@ import org.apache.maven.wagon.Wagon;
 /**
  * @author Olivier Lamy
  */
-public class WagonHttpClientTest
+public class WagonHttpAhcTest
     extends AbstractWagonHttpClientTest
 {
     @Override

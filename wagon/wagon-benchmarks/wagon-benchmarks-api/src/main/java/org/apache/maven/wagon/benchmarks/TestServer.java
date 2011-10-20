@@ -25,12 +25,14 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSocketConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.thread.ExecutorThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.Servlet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 /**
  * @author Olivier Lamy
@@ -61,6 +63,8 @@ public class TestServer
         throws Exception
     {
         server = new Server( 0 );
+
+        server.setThreadPool( new ExecutorThreadPool( Executors.newFixedThreadPool( 15 ) ) );
 
         ServletContextHandler context = new ServletContextHandler();
 

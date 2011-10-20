@@ -39,7 +39,7 @@ public class GetFileServlet
 
     public static boolean compressResponse;
 
-    public static String responseContent;
+    public static byte[] responseContent;
 
     @Override
     protected void doGet( HttpServletRequest req, HttpServletResponse res )
@@ -52,18 +52,17 @@ public class GetFileServlet
         }
         else
         {
-            res.getOutputStream().write( responseContent.getBytes() );
+            res.getOutputStream().write( responseContent );
             res.getOutputStream().flush();
         }
     }
 
-    public static byte[] compressStringWithGZIP( String str )
+    public static byte[] compressStringWithGZIP( byte[] unCompress )
         throws IOException
     {
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         GZIPOutputStream out = new GZIPOutputStream( buffer );
-        byte[] unCompress = str.getBytes();
         out.write( unCompress );
         out.finish();
         ByteArrayInputStream bais = new ByteArrayInputStream( buffer.toByteArray() );

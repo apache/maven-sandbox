@@ -24,6 +24,8 @@ import org.apache.maven.wagon.repository.Repository;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,11 +91,10 @@ public abstract class AbstractWagonHttpClientTest
     private void smallFileGet( boolean compressResponse, boolean ssl )
         throws Exception
     {
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "maven-metadata.xml" );
-        String content = IOUtils.toString( is );
-
         GetFileServlet.compressResponse = compressResponse;
-        GetFileServlet.responseContent = content;
+
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "maven-metadata.xml" );
+        GetFileServlet.responseContent = IOUtils.toByteArray( is );
 
         final TestServer testServer = new TestServer();
 
@@ -104,7 +105,82 @@ public abstract class AbstractWagonHttpClientTest
         testServer.start();
 
         call( Integer.parseInt( System.getProperty( "getRequestThreadNumber" ) ),
-              Integer.parseInt( System.getProperty( "getRequestNumber" ) ), ssl, testServer.port );
+              Integer.parseInt( System.getProperty( "getRequestNumber" ) ), ssl, testServer.port, true );
+
+        testServer.stop();
+
+    }
+
+    @Test
+    public void getHugeFileHttpNotCompressed()
+        throws Exception
+    {
+        long start = System.currentTimeMillis();
+
+        hugeFileGet( false, false );
+
+        long end = System.currentTimeMillis();
+        log.info( getClass() + " getHugeFilesHttpNotCompressed time " + ( end - start ) );
+    }
+
+    @Test
+    public void getHugeFileHttpsNotCompressed()
+        throws Exception
+    {
+        long start = System.currentTimeMillis();
+
+        hugeFileGet( false, true );
+
+        long end = System.currentTimeMillis();
+        log.info( getClass() + " getHugeFileHttpsNotCompressed time " + ( end - start ) );
+    }
+
+    @Test
+    public void getHugeFileHttpCompressed()
+        throws Exception
+    {
+        long start = System.currentTimeMillis();
+
+        hugeFileGet( true, false );
+
+        long end = System.currentTimeMillis();
+        log.info( getClass() + " getHugeFileHttpCompressed time " + ( end - start ) );
+    }
+
+
+    @Test
+    public void getHugeFileHttpsCompressed()
+        throws Exception
+    {
+        long start = System.currentTimeMillis();
+
+        hugeFileGet( true, true );
+
+        long end = System.currentTimeMillis();
+        log.info( getClass() + " getHugeFileHttpsCompressed time " + ( end - start ) );
+    }
+
+
+    private void hugeFileGet( boolean compressResponse, boolean ssl )
+        throws Exception
+    {
+        GetFileServlet.compressResponse = compressResponse;
+
+        File f = new File( "src/test/apache-maven-3.0.3-bin.zip" );
+        FileInputStream fileInputStream = new FileInputStream( f );
+
+        GetFileServlet.responseContent = IOUtils.toByteArray( fileInputStream );
+
+        final TestServer testServer = new TestServer();
+
+        testServer.ssl = ssl;
+
+        testServer.servletsPerPath.put( "/*", GetFileServlet.class );
+
+        testServer.start();
+
+        call( Integer.parseInt( System.getProperty( "getRequestThreadNumber" ) ),
+              Integer.parseInt( System.getProperty( "getRequestNumber" ) ), ssl, testServer.port, false );
 
         testServer.stop();
 
@@ -112,7 +188,7 @@ public abstract class AbstractWagonHttpClientTest
     }
 
 
-    protected void call( int poolNumber, int requestNumber, boolean ssl, final int port )
+    protected void call( int poolNumber, int requestNumber, boolean ssl, final int port, boolean testcontent )
         throws Exception
     {
         List<Callable<Void>> callables = new ArrayList<Callable<Void>>();
@@ -148,7 +224,10 @@ public abstract class AbstractWagonHttpClientTest
 
             wagon.getToStream( "foo", baos );
 
-            assertTrue( baos.toString().contains( "20110821162420" ) );
+            if ( testcontent )
+            {
+                assertTrue( baos.toString().contains( "20110821162420" ) );
+            }
         }
 
         ExecutorService executorService = Executors.newFixedThreadPool( 15 );
