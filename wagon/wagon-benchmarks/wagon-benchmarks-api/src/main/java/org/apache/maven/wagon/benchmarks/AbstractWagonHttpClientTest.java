@@ -53,7 +53,7 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMethodChart( filePrefix = "../benchmark-result" )
 @BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5 )
 @BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 2 )
-public class AbstractWagonHttpClientTest
+public abstract class AbstractWagonHttpClientTest
     extends AbstractWagonClientTest
 {
 
@@ -67,7 +67,6 @@ public class AbstractWagonHttpClientTest
 
     static FileWriter resultWriter = null;
 
-    protected StreamingWagon httpWagon, httpsWagon;
     
     public AbstractWagonHttpClientTest()
     {
@@ -271,7 +270,7 @@ public class AbstractWagonHttpClientTest
 
         for ( int i = 0; i < requestNumber; i++ )
         {
-            final StreamingWagon wagon = ssl ? this.httpsWagon : this.httpWagon;
+            final StreamingWagon wagon = ssl ? getHttpsWagon() : getHttpWagon();
             wagon.setTimeout( 10000 );
 
             callables.add( new Callable<Void>()
@@ -309,4 +308,8 @@ public class AbstractWagonHttpClientTest
         executorService.shutdown();
         executorService.awaitTermination( 10, TimeUnit.SECONDS );
     }
+
+    abstract StreamingWagon getHttpWagon() throws Exception;
+
+    abstract StreamingWagon getHttpsWagon() throws Exception;
 }

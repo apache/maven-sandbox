@@ -25,12 +25,10 @@ import org.apache.maven.wagon.Wagon;
  * @author Olivier Lamy
  */
 public class WagonHttpClientLigthTest
-    extends AbstractWagonHttpClientTest
+    extends WagonHttpClientLigthRunner
 {
     public WagonHttpClientLigthTest() throws Exception
     {
         super();
-        this.httpWagon = (StreamingWagon) lookup( Wagon.class, "http" );
-        this.httpsWagon = (StreamingWagon) lookup( Wagon.class, "https" );
     }
 }

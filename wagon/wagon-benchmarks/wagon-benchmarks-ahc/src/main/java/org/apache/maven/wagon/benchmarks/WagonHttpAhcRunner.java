@@ -20,18 +20,30 @@ package org.apache.maven.wagon.benchmarks;
 
 import org.apache.maven.wagon.StreamingWagon;
 import org.apache.maven.wagon.Wagon;
+import org.sonatype.maven.wagon.AhcWagon;
 
 /**
  * @author Olivier Lamy
  */
-public class WagonHttpClientTest
-    extends WagonHttpClientRunner
+public class WagonHttpAhcRunner
+    extends AbstractWagonHttpClientTest
 {
-
-    public WagonHttpClientTest() throws Exception
+    public WagonHttpAhcRunner() throws Exception
     {
         super();
     }
 
+    @Override
+    StreamingWagon getHttpWagon()
+        throws Exception
+    {
+        return lookup( AhcWagon.class );
+    }
 
+    @Override
+    StreamingWagon getHttpsWagon()
+        throws Exception
+    {
+        return lookup( AhcWagon.class );
+    }
 }
