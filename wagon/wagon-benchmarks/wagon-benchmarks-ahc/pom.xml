@@ -61,6 +61,7 @@ under the License.
             <test.keystore.path>${basedir}/src/test/ssl/keystore</test.keystore.path>
             <wagon.benchmark.rq.number>${wagon.benchmark.rq.number}</wagon.benchmark.rq.number>
             <wagon.benchmark.rq.parallel>${wagon.benchmark.rq.parallel}</wagon.benchmark.rq.parallel>
+            <java.io.tmpdir>${project.build.directory}</java.io.tmpdir>
           </systemPropertyVariables>
         </configuration>
       </plugin>

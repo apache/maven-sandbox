@@ -19,13 +19,16 @@ package org.apache.maven.wagon.benchmarks;
  */
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.maven.wagon.StreamingWagon;
 import org.apache.maven.wagon.repository.Repository;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,30 @@ public abstract class AbstractWagonHttpClientTest
 
     static int requestNumber = Integer.parseInt( System.getProperty( "wagon.benchmark.rq.number" ) );
 
+    static FileWriter resultWriter = null;
+
+
+    @BeforeClass
+    public static void createResultFile()
+        throws Exception
+    {
+        File resultFile = new File( "../result.txt" );
+        if ( !resultFile.exists() )
+        {
+            resultFile.createNewFile();
+        }
+
+        resultWriter = new FileWriter( resultFile, true );
+    }
+
+
+    @AfterClass
+    public static void close()
+        throws Exception
+    {
+        resultWriter.flush();
+    }
+
     @Test
     public void getSmallFilesHttpNotCompressed()
         throws Exception
@@ -54,7 +81,9 @@ public abstract class AbstractWagonHttpClientTest
         smallFileGet( false, false );
 
         long end = System.currentTimeMillis();
-        log.info( getClass() + " getSmallFilesHttpNotCompressed time " + ( end - start ) );
+        String msg = getClass().getSimpleName() + " getSmallFilesHttpNotCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
     }
 
     @Test
@@ -64,7 +93,9 @@ public abstract class AbstractWagonHttpClientTest
         long start = System.currentTimeMillis();
         smallFileGet( false, true );
         long end = System.currentTimeMillis();
-        log.info( getClass() + "getSmallFilesHttpsNotCompressed time " + ( end - start ) );
+        String msg = getClass().getSimpleName() + " getSmallFilesHttpsNotCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
 
     }
 
@@ -75,7 +106,9 @@ public abstract class AbstractWagonHttpClientTest
         long start = System.currentTimeMillis();
         smallFileGet( true, false );
         long end = System.currentTimeMillis();
-        log.info( getClass() + "getSmallFilesHttpCompressed time " + ( end - start ) );
+        String msg = getClass().getSimpleName() + " getSmallFilesHttpCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
 
     }
 
@@ -88,7 +121,9 @@ public abstract class AbstractWagonHttpClientTest
         smallFileGet( true, true );
 
         long end = System.currentTimeMillis();
-        log.info( getClass() + "getSmallFilesHttpsCompressed time " + ( end - start ) );
+        String msg = getClass().getSimpleName() + " getSmallFilesHttpsCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
 
     }
 
@@ -190,10 +225,12 @@ public abstract class AbstractWagonHttpClientTest
     }
 
 
-    protected void call( boolean ssl, final int port, final boolean testcontent )
+    protected void call( final boolean ssl, final int port, final boolean testcontent )
         throws Exception
     {
         List<Callable<Void>> callables = new ArrayList<Callable<Void>>();
+
+        final String repoUrl = ( ssl ? "https" : "http" ) + "://localhost:" + port + "/";
 
         for ( int i = 0; i < requestNumber; i++ )
         {
@@ -204,16 +241,19 @@ public abstract class AbstractWagonHttpClientTest
             {
                 public Void call()
                 {
+                    File tmpFile = null;
                     try
                     {
-                        wagon.connect( new Repository( "foo", "http://localhost:" + port + "/" ) );
+                        wagon.connect( new Repository( "foo", repoUrl ) );
 
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        wagon.getToStream( "foo", baos );
-                        if ( testcontent )
+                        tmpFile = File.createTempFile( "wagon-test", "benchmark" );
+                        tmpFile.deleteOnExit();
+
+                        wagon.get( "foo", tmpFile );
+                        /*if ( testcontent )
                         {
                             assertTrue( baos.toString().contains( "20110821162420" ) );
-                        }
+                        }*/
                     }
                     catch ( Exception e )
                     {

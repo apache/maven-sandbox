@@ -114,7 +114,7 @@ public class TestServer
         server.addConnector( connector );
 
         server.start();
-        port = server.getConnectors()[0].getLocalPort();
+        port = connector.getLocalPort();
 
     }
 
