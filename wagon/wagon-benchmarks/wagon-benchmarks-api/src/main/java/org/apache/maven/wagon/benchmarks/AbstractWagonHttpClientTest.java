@@ -188,7 +188,7 @@ public abstract class AbstractWagonHttpClientTest
     }
 
 
-    protected void call( int poolNumber, int requestNumber, boolean ssl, final int port, boolean testcontent )
+    protected void call( int poolNumber, int requestNumber, boolean ssl, final int port, final boolean testcontent )
         throws Exception
     {
         List<Callable<Void>> callables = new ArrayList<Callable<Void>>();
@@ -208,7 +208,10 @@ public abstract class AbstractWagonHttpClientTest
 
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         wagon.getToStream( "foo", baos );
-                        assertTrue( baos.toString().contains( "20110821162420" ) );
+                        if ( testcontent )
+                        {                        
+                            assertTrue( baos.toString().contains( "20110821162420" ) );
+                        }
                     }
                     catch ( Exception e )
                     {
@@ -217,17 +220,7 @@ public abstract class AbstractWagonHttpClientTest
                     return null;
                 }
             } );
-
-            wagon.connect( new Repository( "foo", "http://localhost:" + port + "/" ) );
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            wagon.getToStream( "foo", baos );
-
-            if ( testcontent )
-            {
-                assertTrue( baos.toString().contains( "20110821162420" ) );
-            }
+            
         }
 
         ExecutorService executorService = Executors.newFixedThreadPool( 15 );
