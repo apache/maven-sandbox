@@ -35,9 +35,4 @@ public abstract class AbstractWagonClientTest
 {
     final protected Logger log = LoggerFactory.getLogger( getClass() );
 
-    abstract StreamingWagon getHttpWagon()
-        throws Exception;
-
-    abstract StreamingWagon getHttpsWagon()
-        throws Exception;
 }

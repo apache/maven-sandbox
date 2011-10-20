@@ -27,17 +27,10 @@ import org.apache.maven.wagon.Wagon;
 public class WagonHttpClientLigthTest
     extends AbstractWagonHttpClientTest
 {
-    @Override
-    StreamingWagon getHttpWagon()
-        throws Exception
+    public WagonHttpClientLigthTest() throws Exception
     {
-        return (StreamingWagon) lookup( Wagon.class, "http" );
-    }
-
-    @Override
-    StreamingWagon getHttpsWagon()
-        throws Exception
-    {
-        return (StreamingWagon) lookup( Wagon.class, "https" );
+        super();
+        this.httpWagon = (StreamingWagon) lookup( Wagon.class, "http" );
+        this.httpsWagon = (StreamingWagon) lookup( Wagon.class, "https" );
     }
 }

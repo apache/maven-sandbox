@@ -27,6 +27,7 @@ import com.carrotsearch.junitbenchmarks.annotation.LabelType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.maven.wagon.StreamingWagon;
+import org.apache.maven.wagon.Wagon;
 import org.apache.maven.wagon.repository.Repository;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -52,7 +53,7 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMethodChart( filePrefix = "../benchmark-result" )
 @BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5 )
 @BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 2 )
-public abstract class AbstractWagonHttpClientTest
+public class AbstractWagonHttpClientTest
     extends AbstractWagonClientTest
 {
 
@@ -65,6 +66,13 @@ public abstract class AbstractWagonHttpClientTest
     static int requestNumber = Integer.parseInt( System.getProperty( "wagon.benchmark.rq.number" ) );
 
     static FileWriter resultWriter = null;
+
+    protected StreamingWagon httpWagon, httpsWagon;
+    
+    public AbstractWagonHttpClientTest()
+    {
+        //
+    }
 
 
     @BeforeClass
@@ -263,7 +271,7 @@ public abstract class AbstractWagonHttpClientTest
 
         for ( int i = 0; i < requestNumber; i++ )
         {
-            final StreamingWagon wagon = ssl ? getHttpsWagon() : getHttpWagon();
+            final StreamingWagon wagon = ssl ? this.httpsWagon : this.httpWagon;
             wagon.setTimeout( 10000 );
 
             callables.add( new Callable<Void>()

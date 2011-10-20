@@ -27,17 +27,13 @@ import org.apache.maven.wagon.Wagon;
 public class WagonHttpClientTest
     extends AbstractWagonHttpClientTest
 {
-    @Override
-    StreamingWagon getHttpWagon()
-        throws Exception
+
+    public WagonHttpClientTest() throws Exception
     {
-        return (StreamingWagon) lookup( Wagon.class, "http" );
+        super();
+        this.httpWagon = (StreamingWagon) lookup( Wagon.class, "http" );
+        this.httpsWagon = (StreamingWagon) lookup( Wagon.class, "https" );
     }
 
-    @Override
-    StreamingWagon getHttpsWagon()
-        throws Exception
-    {
-        return (StreamingWagon) lookup( Wagon.class, "https" );
-    }
+
 }
