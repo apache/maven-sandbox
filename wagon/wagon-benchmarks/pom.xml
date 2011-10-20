@@ -123,5 +123,34 @@ under the License.
     </dependencies>
   </dependencyManagement>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.6</version>
+        <inherited>false</inherited>
+        <executions>
+          <execution>
+            <id>cleanup-result-file</id>
+            <phase>validate</phase>
+            <inherited>false</inherited>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <delete file="./result.txt"/>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+
+
+  </build>
+
 
 </project>
