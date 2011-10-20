@@ -158,7 +158,9 @@ public abstract class AbstractWagonHttpClientTest
         hugeFileGet( false, false );
 
         long end = System.currentTimeMillis();
-        log.info( getClass() + " getHugeFilesHttpNotCompressed time " + ( end - start ) );
+        String msg = getClass().getSimpleName() + " getHugeFileHttpNotCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
     }
 
     @Test
@@ -170,7 +172,9 @@ public abstract class AbstractWagonHttpClientTest
         hugeFileGet( false, true );
 
         long end = System.currentTimeMillis();
-        log.info( getClass() + " getHugeFileHttpsNotCompressed time " + ( end - start ) );
+        String msg = getClass().getSimpleName() + " getHugeFileHttpsNotCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
     }
 
     @Test
@@ -182,7 +186,9 @@ public abstract class AbstractWagonHttpClientTest
         hugeFileGet( true, false );
 
         long end = System.currentTimeMillis();
-        log.info( getClass() + " getHugeFileHttpCompressed time " + ( end - start ) );
+        String msg = getClass().getSimpleName() + " getHugeFileHttpCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
     }
 
 
@@ -195,7 +201,9 @@ public abstract class AbstractWagonHttpClientTest
         hugeFileGet( true, true );
 
         long end = System.currentTimeMillis();
-        log.info( getClass() + " getHugeFileHttpsCompressed time " + ( end - start ) );
+        String msg = getClass().getSimpleName() + " getHugeFileHttpsCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
     }
 
 
