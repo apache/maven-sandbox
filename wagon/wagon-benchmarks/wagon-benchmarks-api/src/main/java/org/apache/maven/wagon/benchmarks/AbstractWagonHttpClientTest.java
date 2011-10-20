@@ -24,6 +24,7 @@ import com.carrotsearch.junitbenchmarks.annotation.AxisRange;
 import com.carrotsearch.junitbenchmarks.annotation.BenchmarkHistoryChart;
 import com.carrotsearch.junitbenchmarks.annotation.BenchmarkMethodChart;
 import com.carrotsearch.junitbenchmarks.annotation.LabelType;
+import junit.framework.TestSuite;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.maven.wagon.StreamingWagon;
@@ -34,6 +35,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.MethodRule;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,13 +52,17 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Olivier Lamy
  */
+@RunWith( JUnit4.class )
+@AxisRange( min = 0, max = 1 )
+@BenchmarkMethodChart( filePrefix = "target/benchmark-result" )
+@BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5,filePrefix = "target/history-result")
+@BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 2 )
 public abstract class AbstractWagonHttpClientTest
     extends AbstractWagonClientTest
 {
 
     @Rule
     public MethodRule benchmarkRun = new BenchmarkRule();
-
 
     static int parallelRequestNumber = Integer.parseInt( System.getProperty( "wagon.benchmark.rq.parallel" ) );
 
@@ -82,8 +89,8 @@ public abstract class AbstractWagonHttpClientTest
 
         resultWriter = new FileWriter( resultFile, true );
 
-        //System.setProperty( "jub.consumers", "CONSOLE,H2" );
-        //System.setProperty( "jub.db.file", new File( "../.benchmarks" ).getAbsolutePath() );
+        System.setProperty( "jub.consumers", "CONSOLE,H2" );
+        System.setProperty( "jub.db.file", new File( "target/.benchmarks" ).getAbsolutePath() );
     }
 
 
@@ -95,7 +102,7 @@ public abstract class AbstractWagonHttpClientTest
     }
 
     @Test
-    public void getSmallFilesHttpNotCompressed()
+    public void testgetSmallFilesHttpNotCompressed()
         throws Exception
     {
         long start = System.currentTimeMillis();
@@ -110,7 +117,7 @@ public abstract class AbstractWagonHttpClientTest
 
 
     @Test
-    public void getSmallFilesHttpsNotCompressed()
+    public void testgetSmallFilesHttpsNotCompressed()
         throws Exception
     {
         long start = System.currentTimeMillis();
@@ -123,7 +130,7 @@ public abstract class AbstractWagonHttpClientTest
     }
 
     @Test
-    public void getSmallFilesHttpCompressed()
+    public void testgetSmallFilesHttpCompressed()
         throws Exception
     {
         long start = System.currentTimeMillis();
@@ -136,7 +143,7 @@ public abstract class AbstractWagonHttpClientTest
     }
 
     @Test
-    public void getSmallFilesHttpsCompressed()
+    public void testgetSmallFilesHttpsCompressed()
         throws Exception
     {
         long start = System.currentTimeMillis();
@@ -173,7 +180,7 @@ public abstract class AbstractWagonHttpClientTest
     }
 
     @Test
-    public void getHugeFileHttpNotCompressed()
+    public void testgetHugeFileHttpNotCompressed()
         throws Exception
     {
         long start = System.currentTimeMillis();
@@ -187,7 +194,7 @@ public abstract class AbstractWagonHttpClientTest
     }
 
     @Test
-    public void getHugeFileHttpsNotCompressed()
+    public void testgetHugeFileHttpsNotCompressed()
         throws Exception
     {
         long start = System.currentTimeMillis();
@@ -201,7 +208,7 @@ public abstract class AbstractWagonHttpClientTest
     }
 
     @Test
-    public void getHugeFileHttpCompressed()
+    public void testgetHugeFileHttpCompressed()
         throws Exception
     {
         long start = System.currentTimeMillis();
@@ -216,7 +223,7 @@ public abstract class AbstractWagonHttpClientTest
 
 
     @Test
-    public void getHugeFileHttpsCompressed()
+    public void testgetHugeFileHttpsCompressed()
         throws Exception
     {
         long start = System.currentTimeMillis();
@@ -307,4 +314,5 @@ public abstract class AbstractWagonHttpClientTest
     abstract StreamingWagon getHttpWagon() throws Exception;
 
     abstract StreamingWagon getHttpsWagon() throws Exception;
+
 }

@@ -19,23 +19,76 @@ package org.apache.maven.wagon.benchmarks;
  */
 
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import com.carrotsearch.junitbenchmarks.annotation.AxisRange;
 import com.carrotsearch.junitbenchmarks.annotation.BenchmarkHistoryChart;
 import com.carrotsearch.junitbenchmarks.annotation.BenchmarkMethodChart;
 import com.carrotsearch.junitbenchmarks.annotation.LabelType;
+import org.codehaus.plexus.PlexusTestCase;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.MethodRule;
+import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.junit.runners.JUnit4;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.FileWriter;
 
 /**
  * @author Olivier Lamy
  */
-@RunWith( Suite.class )
-@Suite.SuiteClasses( { WagonHttpAhcRunner.class, WagonHttpClientLigthRunner.class, WagonHttpClientRunner.class } )
+@RunWith( JUnit4.class )
 @AxisRange( min = 0, max = 1 )
-@BenchmarkMethodChart( filePrefix = "../benchmark-result" )
-@BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5 )
+@BenchmarkMethodChart( filePrefix = "target/benchmark-result" )
+@BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5,filePrefix = "target/history-result")
 @BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 2 )
 public class BenchmarkSuiteTest
+    extends PlexusTestCase
 {
-    // no op
+
+    @Rule
+    public MethodRule benchmarkRun = new BenchmarkRule();
+
+    final protected Logger log = LoggerFactory.getLogger( getClass() );
+
+    @BeforeClass
+    public static void createResultFile()
+        throws Exception
+    {
+        System.setProperty( "jub.consumers", "CONSOLE,H2" );
+        System.setProperty( "jub.db.file", new File( "target/.benchmarks" ).getAbsolutePath() );
+    }
+
+    @Test
+    public void ahcSuite()
+        throws Throwable
+    {
+        JUnitCore core = new JUnitCore();
+        core.run( WagonHttpAhcRunner.class );
+
+    }
+
+    @Test
+    public void lightSuite()
+        throws Throwable
+    {
+        JUnitCore core = new JUnitCore();
+        core.run( WagonHttpClientLigthRunner.class );
+
+    }
+
+    @Test
+    public void httpSuite()
+        throws Throwable
+    {
+        JUnitCore core = new JUnitCore();
+        core.run( WagonHttpClientRunner.class );
+
+    }
+
+
 }
