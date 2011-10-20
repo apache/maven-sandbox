@@ -18,13 +18,21 @@ package org.apache.maven.wagon.benchmarks;
  * under the License.
  */
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+import com.carrotsearch.junitbenchmarks.annotation.AxisRange;
+import com.carrotsearch.junitbenchmarks.annotation.BenchmarkHistoryChart;
+import com.carrotsearch.junitbenchmarks.annotation.BenchmarkMethodChart;
+import com.carrotsearch.junitbenchmarks.annotation.LabelType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.maven.wagon.StreamingWagon;
 import org.apache.maven.wagon.repository.Repository;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.MethodRule;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,9 +48,17 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Olivier Lamy
  */
+@AxisRange( min = 0, max = 1 )
+@BenchmarkMethodChart()
+@BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5 )
+@BenchmarkOptions( benchmarkRounds = 1, warmupRounds = 1, concurrency = 2 )
 public abstract class AbstractWagonHttpClientTest
     extends AbstractWagonClientTest
 {
+
+    @Rule
+    public MethodRule benchmarkRun = new BenchmarkRule();
+
 
     static int parallelRequestNumber = Integer.parseInt( System.getProperty( "wagon.benchmark.rq.parallel" ) );
 
@@ -72,6 +88,7 @@ public abstract class AbstractWagonHttpClientTest
         resultWriter.flush();
     }
 
+    @BenchmarkOptions( benchmarkRounds = 1, warmupRounds = 1, concurrency = 2 )
     @Test
     public void getSmallFilesHttpNotCompressed()
         throws Exception
@@ -85,6 +102,7 @@ public abstract class AbstractWagonHttpClientTest
         log.info( msg );
         IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
     }
+
 
     @Test
     public void getSmallFilesHttpsNotCompressed()
