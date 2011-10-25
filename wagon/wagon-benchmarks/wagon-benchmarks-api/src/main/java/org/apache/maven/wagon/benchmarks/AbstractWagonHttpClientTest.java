@@ -96,6 +96,10 @@ public abstract class AbstractWagonHttpClientTest
         resultWriter.flush();
     }
 
+    //-------------------------
+    // small size file get
+    //-------------------------
+
     @Test
     public void testgetSmallFilesHttpNotCompressed()
         throws Exception
@@ -160,6 +164,10 @@ public abstract class AbstractWagonHttpClientTest
         IOUtils.closeQuietly( is );
     }
 
+    //-------------------------
+    // huge size file get
+    //-------------------------
+
     @Test
     public void testgetHugeFileHttpNotCompressed()
         throws Exception
@@ -222,6 +230,75 @@ public abstract class AbstractWagonHttpClientTest
         throws Exception
     {
         fileGet( compressResponse, ssl, new FileInputStream( new File( "src/test/apache-maven-3.0.3-bin.zip" ) ) );
+    }
+
+
+    //-------------------------
+    // medium size file get
+    //-------------------------
+
+    @Test
+    public void testgetMediumFileHttpNotCompressed()
+        throws Exception
+    {
+        long start = System.currentTimeMillis();
+
+        mediumFileGet( false, false );
+
+        long end = System.currentTimeMillis();
+        String msg = getClass().getSimpleName() + " testgetMediumFileHttpNotCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
+    }
+
+    @Test
+    public void testgetMediumFileHttpsNotCompressed()
+        throws Exception
+    {
+        long start = System.currentTimeMillis();
+
+        mediumFileGet( false, true );
+
+        long end = System.currentTimeMillis();
+        String msg = getClass().getSimpleName() + " testgetMediumFileHttpsNotCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
+    }
+
+    @Test
+    public void testgetMediumFileHttpCompressed()
+        throws Exception
+    {
+        long start = System.currentTimeMillis();
+
+        mediumFileGet( true, false );
+
+        long end = System.currentTimeMillis();
+        String msg = getClass().getSimpleName() + " testgetMediumFileHttpCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
+    }
+
+
+    @Test
+    public void testgetMediumFileHttpsCompressed()
+        throws Exception
+    {
+        long start = System.currentTimeMillis();
+
+        mediumFileGet( true, true );
+
+        long end = System.currentTimeMillis();
+        String msg = getClass().getSimpleName() + " testgetMediumFileHttpsCompressed time " + ( end - start );
+        log.info( msg );
+        IOUtils.write( msg + SystemUtils.LINE_SEPARATOR, resultWriter );
+    }
+
+
+    private void mediumFileGet( boolean compressResponse, boolean ssl )
+        throws Exception
+    {
+        fileGet( compressResponse, ssl, new FileInputStream( new File( "src/test/httpclient-4.1.2.jar" ) ) );
     }
 
     private void fileGet( boolean compressResponse, boolean ssl, InputStream is )
