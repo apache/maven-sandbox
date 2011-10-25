@@ -40,7 +40,7 @@ under the License.
     <wagon.benchmark.rq.number>1000</wagon.benchmark.rq.number>
     <!-- parallel request to do -->
     <wagon.benchmark.rq.parallel>8</wagon.benchmark.rq.parallel>
-    <surefireForkedVmArgs>-Xmx512m -Xms512m -client</surefireForkedVmArgs>
+    <surefireForkedVmArgs>-Xmx768m -Xms512m -client -Xss128k</surefireForkedVmArgs>
   </properties>
 
   <modules>
