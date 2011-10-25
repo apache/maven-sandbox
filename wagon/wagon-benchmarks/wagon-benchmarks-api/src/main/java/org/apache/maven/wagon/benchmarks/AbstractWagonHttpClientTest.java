@@ -86,9 +86,6 @@ public abstract class AbstractWagonHttpClientTest
         }
 
         resultWriter = new FileWriter( resultFile, true );
-
-        System.setProperty( "jub.consumers", "CONSOLE,H2" );
-        System.setProperty( "jub.db.file", new File( "target/.benchmarks" ).getAbsolutePath() );
     }
 
 
