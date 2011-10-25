@@ -24,11 +24,9 @@ import com.carrotsearch.junitbenchmarks.annotation.AxisRange;
 import com.carrotsearch.junitbenchmarks.annotation.BenchmarkHistoryChart;
 import com.carrotsearch.junitbenchmarks.annotation.BenchmarkMethodChart;
 import com.carrotsearch.junitbenchmarks.annotation.LabelType;
-import junit.framework.TestSuite;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.maven.wagon.StreamingWagon;
-import org.apache.maven.wagon.Wagon;
 import org.apache.maven.wagon.repository.Repository;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -55,7 +53,7 @@ import java.util.concurrent.TimeUnit;
 @RunWith( JUnit4.class )
 @AxisRange( min = 0, max = 1 )
 @BenchmarkMethodChart( filePrefix = "target/benchmark-result" )
-@BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5,filePrefix = "target/history-result")
+@BenchmarkHistoryChart( labelWith = LabelType.CUSTOM_KEY, maxRuns = 5, filePrefix = "target/history-result" )
 @BenchmarkOptions( benchmarkRounds = 2, warmupRounds = 1, concurrency = 1 )
 public abstract class AbstractWagonHttpClientTest
     extends AbstractWagonClientTest
@@ -70,7 +68,7 @@ public abstract class AbstractWagonHttpClientTest
 
     static FileWriter resultWriter = null;
 
-    
+
     public AbstractWagonHttpClientTest()
     {
         //
@@ -160,23 +158,9 @@ public abstract class AbstractWagonHttpClientTest
     private void smallFileGet( boolean compressResponse, boolean ssl )
         throws Exception
     {
-        GetFileServlet.compressResponse = compressResponse;
-
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "maven-metadata.xml" );
-        GetFileServlet.responseContent = IOUtils.toByteArray( is );
-
-        final TestServer testServer = new TestServer();
-
-        testServer.ssl = ssl;
-
-        testServer.servletsPerPath.put( "/*", GetFileServlet.class );
-
-        testServer.start( parallelRequestNumber );
-
-        call( ssl, testServer.port, true );
-
-        testServer.stop();
-
+        fileGet( compressResponse, ssl, is );
+        IOUtils.closeQuietly( is );
     }
 
     @Test
@@ -240,12 +224,15 @@ public abstract class AbstractWagonHttpClientTest
     private void hugeFileGet( boolean compressResponse, boolean ssl )
         throws Exception
     {
+        fileGet( compressResponse, ssl, new FileInputStream( new File( "src/test/apache-maven-3.0.3-bin.zip" ) ) );
+    }
+
+    private void fileGet( boolean compressResponse, boolean ssl, InputStream is )
+        throws Exception
+    {
         GetFileServlet.compressResponse = compressResponse;
 
-        File f = new File( "src/test/apache-maven-3.0.3-bin.zip" );
-        FileInputStream fileInputStream = new FileInputStream( f );
-
-        GetFileServlet.responseContent = IOUtils.toByteArray( fileInputStream );
+        GetFileServlet.responseContent = IOUtils.toByteArray( is );
 
         final TestServer testServer = new TestServer();
 
@@ -259,7 +246,6 @@ public abstract class AbstractWagonHttpClientTest
 
         testServer.stop();
 
-        long end = System.currentTimeMillis();
     }
 
 
@@ -288,10 +274,7 @@ public abstract class AbstractWagonHttpClientTest
                         tmpFile.deleteOnExit();
 
                         wagon.get( "foo", tmpFile );
-                        /*if ( testcontent )
-                        {
-                            assertTrue( baos.toString().contains( "20110821162420" ) );
-                        }*/
+
                     }
                     catch ( Exception e )
                     {
@@ -311,8 +294,10 @@ public abstract class AbstractWagonHttpClientTest
         executorService.awaitTermination( 10, TimeUnit.SECONDS );
     }
 
-    abstract StreamingWagon getHttpWagon() throws Exception;
+    abstract StreamingWagon getHttpWagon()
+        throws Exception;
 
-    abstract StreamingWagon getHttpsWagon() throws Exception;
+    abstract StreamingWagon getHttpsWagon()
+        throws Exception;
 
 }
