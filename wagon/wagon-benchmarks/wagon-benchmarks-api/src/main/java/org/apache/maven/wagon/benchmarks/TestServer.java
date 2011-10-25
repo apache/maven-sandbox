@@ -21,7 +21,9 @@ package org.apache.maven.wagon.benchmarks;
 import org.eclipse.jetty.security.SecurityHandler;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSocketConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -90,6 +92,7 @@ public class TestServer
         if ( ssl )
         {
             connector = new SslSocketConnector();
+            //((SslSocketConnector)connector).setUseDirectBuffers( false );
             String keystore = System.getProperty( "test.keystore.path" );
 
             log.info( "TCK Keystore path: " + keystore );
@@ -104,11 +107,12 @@ public class TestServer
         }
         else
         {
-            connector = new SelectChannelConnector();
+            connector = new SocketConnector();// new SelectChannelConnector();
+            //((SelectChannelConnector)connector).setUseDirectBuffers( false );
 
         }
 
-        connector.setRequestBufferSize( 12 * 1024 );
+        connector.setRequestBufferSize( 2 * 1024 );
         connector.setResponseBufferSize( 12 * 1024 );
 
         server.addConnector( connector );
