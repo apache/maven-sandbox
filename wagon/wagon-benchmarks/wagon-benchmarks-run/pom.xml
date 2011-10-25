@@ -9,7 +9,7 @@
   </parent>
   <artifactId>wagon-benchmarks-run</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>wagon-benchmarks-run</name>
+  <name>Maven Wagon Benchmarks Http Run Suite</name>
   <dependencies>
 
     <dependency>
@@ -31,8 +31,6 @@
       <artifactId>wagon-benchmarks-ahc</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-
 
     <dependency>
       <groupId>com.ning</groupId>
