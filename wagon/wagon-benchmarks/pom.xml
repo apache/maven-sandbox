@@ -16,7 +16,8 @@ software distributed under the License is distributed on an
 KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
---><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -41,6 +42,8 @@ under the License.
     <!-- parallel request to do -->
     <wagon.benchmark.rq.parallel>8</wagon.benchmark.rq.parallel>
     <surefireForkedVmArgs>-Xmx768m -Xms512m -client -Xss128k</surefireForkedVmArgs>
+    <hugeFilePath>${basedir}/target/apache-maven-3.0.3-bin.zip</hugeFilePath>
+    <mediumFilePath>${basedir}/target/httpclient-4.1.2.jar</mediumFilePath>
   </properties>
 
   <modules>
@@ -155,6 +158,46 @@ under the License.
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <id>get-test-files</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.maven</groupId>
+                  <artifactId>apache-maven</artifactId>
+                  <version>3.0.3</version>
+                  <type>zip</type>
+                  <classifier>bin</classifier>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${basedir}/target</outputDirectory>
+                  <destFileName>apache-maven-3.0.3-bin.zip</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.httpcomponents</groupId>
+                  <artifactId>httpclient</artifactId>
+                  <version>4.1.2</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${basedir}/target</outputDirectory>
+                  <destFileName>httpclient-4.1.2.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.directory}/tmp</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -171,6 +214,8 @@ under the License.
               <java.io.tmpdir>${project.build.directory}</java.io.tmpdir>
               <jub.consumers>CONSOLE,H2</jub.consumers>
               <jub.db.file>target/.benchmarks</jub.db.file>
+              <hugeFilePath>${hugeFilePath}</hugeFilePath>
+              <mediumFilePath>${mediumFilePath}</mediumFilePath>
             </systemPropertyVariables>
           </configuration>
         </plugin>

@@ -229,7 +229,7 @@ public abstract class AbstractWagonHttpClientTest
     private void hugeFileGet( boolean compressResponse, boolean ssl )
         throws Exception
     {
-        fileGet( compressResponse, ssl, new FileInputStream( new File( "src/test/apache-maven-3.0.3-bin.zip" ) ) );
+        fileGet( compressResponse, ssl, new FileInputStream( new File( System.getProperty( "hugeFilePath" ) ) ) );
     }
 
 
@@ -298,7 +298,7 @@ public abstract class AbstractWagonHttpClientTest
     private void mediumFileGet( boolean compressResponse, boolean ssl )
         throws Exception
     {
-        fileGet( compressResponse, ssl, new FileInputStream( new File( "src/test/httpclient-4.1.2.jar" ) ) );
+        fileGet( compressResponse, ssl, new FileInputStream( new File( System.getProperty( "mediumFilePath" ) ) ) );
     }
 
     private void fileGet( boolean compressResponse, boolean ssl, InputStream is )
