@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.maven.mae.components</groupId>
     <artifactId>mae-components</artifactId>
-    <version>1.0-alpha-1-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
   </parent>
   
   <artifactId>mae-project-tools</artifactId>
