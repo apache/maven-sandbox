@@ -67,7 +67,7 @@
     <dependency>
     	<groupId>org.apache.maven.mae.components</groupId>
     	<artifactId>mae-project-tools</artifactId>
-    	<version>${maeVersion}</version>
+    	<version>${project.version}</version>
     </dependency>
   </dependencies>
 </project>
