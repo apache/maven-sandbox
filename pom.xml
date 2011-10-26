@@ -149,7 +149,35 @@
             </archive>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <version>0.7</version>
+          <executions>
+            <execution>
+              <id>rat-check</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <configuration>
+                <excludes>
+                  <exclude>**/.plxarc</exclude>
+                  <exclude>*.log</exclude>
+                  <exclude>.gitignore</exclude>
+                  <exclude>**/target/maven-shared-archive-resources/META-INF/*</exclude>
+                </excludes>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
 </project>
