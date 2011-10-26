@@ -161,6 +161,7 @@
                 <goal>check</goal>
               </goals>
               <configuration>
+                <useMavenDefaultExcludes>true</useMavenDefaultExcludes>
                 <excludes>
                   <exclude>**/.plxarc</exclude>
                   <exclude>*.log</exclude>
