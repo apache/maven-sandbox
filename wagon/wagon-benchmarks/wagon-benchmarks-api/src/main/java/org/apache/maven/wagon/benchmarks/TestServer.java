@@ -67,7 +67,7 @@ public class TestServer
 
         QueuedThreadPool threadpool = new QueuedThreadPool();
         threadpool.setMinThreads( minThreads );
-        threadpool.setMaxThreads( 2000 );
+        threadpool.setMaxThreads( minThreads + 2 );
 
         server.setThreadPool( threadpool );
 

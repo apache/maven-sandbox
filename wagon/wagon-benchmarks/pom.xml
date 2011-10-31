@@ -34,7 +34,7 @@ under the License.
 
   <properties>
     <wagonVersion>2.0</wagonVersion>
-    <jettyVersion>7.5.4.v20111024</jettyVersion>
+    <jettyVersion>7.4.5.v20110725</jettyVersion>
     <sisuInjectVersion>2.3.0</sisuInjectVersion>
     <slf4jVersion>1.6.1</slf4jVersion>
     <!-- total number of http request -->
