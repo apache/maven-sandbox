@@ -349,6 +349,8 @@ public abstract class AbstractWagonHttpClientTest
 
                         wagon.get( "foo", tmpFile );
 
+                        assertTrue( tmpFile.length() > 1 );
+
                     }
                     catch ( Exception e )
                     {
