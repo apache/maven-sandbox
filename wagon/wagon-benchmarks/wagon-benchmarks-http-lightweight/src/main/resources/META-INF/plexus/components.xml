@@ -23,11 +23,23 @@ under the License.
       <role>org.apache.maven.wagon.providers.http.LightweightHttpWagon</role>
       <implementation>org.apache.maven.wagon.providers.http.LightweightHttpWagon</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.wagon.providers.http.LightweightHttpWagonAuthenticator</role>
+          <field-name>authenticator</field-name>
+        </requirement>
+      </requirements>
     </component>
     <component>
       <role>org.apache.maven.wagon.providers.http.LightweightHttpsWagon</role>
       <implementation>org.apache.maven.wagon.providers.http.LightweightHttpsWagon</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.wagon.providers.http.LightweightHttpWagonAuthenticator</role>
+          <field-name>authenticator</field-name>
+        </requirement>
+      </requirements>
     </component>
 
   </components>
