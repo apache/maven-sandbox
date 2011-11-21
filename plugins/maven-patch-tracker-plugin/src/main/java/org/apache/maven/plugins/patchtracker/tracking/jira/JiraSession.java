@@ -65,8 +65,9 @@ public class JiraSession
         java.rmi.RemoteException
     {
 
-        return service.addBase64EncodedAttachmentsToIssue( token, issueKey, new String[]{ fileName }, new String[]{
-            Base64.encode( attachmentContent.getBytes() ) } );
+        return service.addBase64EncodedAttachmentsToIssue( token, issueKey, new String[]{ fileName + ".patch" },
+                                                           new String[]{
+                                                               Base64.encode( attachmentContent.getBytes() ) } );
     }
 
     public RemoteIssue findRemoteIssue( String issueKey )
