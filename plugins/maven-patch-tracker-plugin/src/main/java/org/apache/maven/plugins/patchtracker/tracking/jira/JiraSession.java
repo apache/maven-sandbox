@@ -22,10 +22,15 @@ import org.apache.axis.encoding.Base64;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.JiraSoapService;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteAuthenticationException;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteComment;
+import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteComponent;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteException;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteIssue;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemotePermissionException;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteValidationException;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Olivier Lamy
@@ -78,7 +83,13 @@ public class JiraSession
         RemoteComment remoteComment = new RemoteComment();
         remoteComment.setBody( comment );
         service.addComment( token, issueKey, remoteComment );
+    }
 
-
+    public List<RemoteComponent> getRemoteComponents()
+        throws RemotePermissionException, RemoteValidationException, RemoteAuthenticationException, RemoteException,
+        java.rmi.RemoteException
+    {
+        RemoteComponent[] remoteComponents = service.getComponents( token, projectKey );
+        return remoteComponents == null ? Collections.<RemoteComponent>emptyList() : Arrays.asList( remoteComponents );
     }
 }

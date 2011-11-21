@@ -26,12 +26,14 @@ import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerResult;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.JiraSoapServiceService;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.JiraSoapServiceServiceLocator;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteAuthenticationException;
+import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteComponent;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteException;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteIssue;
 
 import javax.xml.rpc.ServiceException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * @author Olivier Lamy
@@ -52,6 +54,23 @@ public class JiraPatchTracker
             remoteIssue.setSummary( patchTrackerRequest.getSummary() );
             remoteIssue.setDescription( patchTrackerRequest.getDescription() );
             remoteIssue.setType( patchTrackerRequest.getPatchType() );
+
+            // do we have a component id ??
+            String componentId =
+                getComponentId( patchTrackerRequest.getUrl(), extractProjectKey( patchTrackerRequest.getUrl() ) );
+
+            if ( StringUtils.isNotEmpty( componentId ) )
+            {
+                List<RemoteComponent> remoteComponents = jiraSession.getRemoteComponents();
+                for ( RemoteComponent remoteComponent : remoteComponents )
+                {
+                    if ( StringUtils.equalsIgnoreCase( componentId, remoteComponent.getId() ) )
+                    {
+                        remoteIssue.setComponents( new RemoteComponent[]{ remoteComponent } );
+                        break;
+                    }
+                }
+            }
 
             remoteIssue = jiraSession.createIssue( remoteIssue );
 
