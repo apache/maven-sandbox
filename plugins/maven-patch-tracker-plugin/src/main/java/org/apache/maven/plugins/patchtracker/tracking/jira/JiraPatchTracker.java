@@ -47,32 +47,22 @@ public class JiraPatchTracker
         JiraSession jiraSession = createSession( patchTrackerRequest );
         try
         {
-            RemoteIssue remoteIssue = null;
-            // is it an update
-            if ( patchTrackerRequest.getPatchId() != null )
-            {
+            RemoteIssue remoteIssue = new RemoteIssue();
+            remoteIssue.setProject( extractProjectKey( patchTrackerRequest.getUrl() ) );
+            remoteIssue.setSummary( patchTrackerRequest.getSummary() );
+            remoteIssue.setDescription( patchTrackerRequest.getDescription() );
+            remoteIssue.setType( patchTrackerRequest.getPatchType() );
 
-            }
-            else
-            {
-                remoteIssue = new RemoteIssue();
-                remoteIssue.setProject( extractProjectKey( patchTrackerRequest.getUrl() ) );
-                remoteIssue.setSummary( patchTrackerRequest.getSummary() );
-                remoteIssue.setDescription( patchTrackerRequest.getDescription() );
-                remoteIssue.setType( patchTrackerRequest.getPatchType() );
+            remoteIssue = jiraSession.createIssue( remoteIssue );
 
-                remoteIssue = jiraSession.createIssue( remoteIssue );
+            // TODO handle of boolean result
+            jiraSession.addBase64EncodedAttachmentsToIssue( remoteIssue.getKey(), remoteIssue.getKey(),
+                                                            patchTrackerRequest.getPatchContent() );
 
-                // TODO handle of boolean result
-                jiraSession.addBase64EncodedAttachmentsToIssue( remoteIssue.getKey(), remoteIssue.getKey(),
-                                                                patchTrackerRequest.getPatchContent() );
-            }
+            // add a comment
 
-            PatchTrackerResult patchTrackerResult = new PatchTrackerResult();
-            patchTrackerResult.setPatchId( remoteIssue.getKey() );
-            patchTrackerResult.setPatchUrl(
+            return new PatchTrackerResult().setPatchId( remoteIssue.getKey() ).setPatchUrl(
                 extractBaseUrl( patchTrackerRequest.getUrl() ) + "/browse/" + remoteIssue.getKey() );
-            return patchTrackerResult;
         }
         catch ( RemoteAuthenticationException e )
         {
@@ -88,6 +78,43 @@ public class JiraPatchTracker
         }
     }
 
+    public PatchTrackerResult updatePatch( PatchTrackerRequest patchTrackerRequest )
+        throws PatchTrackerException
+    {
+
+        JiraSession jiraSession = createSession( patchTrackerRequest );
+        try
+        {
+            RemoteIssue remoteIssue = jiraSession.findRemoteIssue( patchTrackerRequest.getPatchId() );
+
+            if ( patchTrackerRequest.getPatchId() == null )
+            {
+                throw new PatchTrackerException( "patch id is mandatory when updating the patch tracker" );
+            }
+
+            // TODO handle of boolean result
+            jiraSession.addBase64EncodedAttachmentsToIssue( remoteIssue.getKey(), remoteIssue.getKey(),
+                                                            patchTrackerRequest.getPatchContent() );
+
+            jiraSession.addCommentToIssue( remoteIssue.getKey(), patchTrackerRequest.getDescription() );
+
+            return new PatchTrackerResult().setPatchId( remoteIssue.getKey() ).setPatchUrl(
+                extractBaseUrl( patchTrackerRequest.getUrl() ) + "/browse/" + remoteIssue.getKey() );
+
+        }
+        catch ( RemoteAuthenticationException e )
+        {
+            throw new PatchTrackerException( e.getMessage(), e );
+        }
+        catch ( RemoteException e )
+        {
+            throw new PatchTrackerException( e.getMessage(), e );
+        }
+        catch ( java.rmi.RemoteException e )
+        {
+            throw new PatchTrackerException( e.getMessage(), e );
+        }
+    }
 
     public JiraSession createSession( PatchTrackerRequest patchTrackerRequest )
         throws PatchTrackerException

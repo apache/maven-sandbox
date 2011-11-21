@@ -27,7 +27,22 @@ package org.apache.maven.plugins.patchtracker.tracking;
 public interface PatchTracker
 {
 
+    /**
+     * create a new entry in the patch tracker
+     * @param patchTrackerRequest
+     * @return
+     * @throws PatchTrackerException
+     */
     PatchTrackerResult createPatch( PatchTrackerRequest patchTrackerRequest )
         throws PatchTrackerException;
 
+    /**
+     * update a patch entry in the patch tracker
+     * <b>patchTrackerRequest.patchId is mandatory!</b>
+     * @param patchTrackerRequest
+     * @return
+     * @throws PatchTrackerException
+     */
+    PatchTrackerResult updatePatch( PatchTrackerRequest patchTrackerRequest )
+        throws PatchTrackerException;
 }

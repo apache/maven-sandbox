@@ -16,43 +16,51 @@ package org.apache.maven.plugins.patchtracker;
  * limitations under the License.
  */
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTracker;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerException;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerRequest;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerResult;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.components.interactivity.PrompterException;
 
 /**
  * Goal which create a diff/patch file from the current project and create an issue in the project
  * with attaching the created patch file
  *
- * @goal create
+ * @goal update
  * @aggregator
  */
-public class CreatePatchMojo
+public class UpdatePatchMojo
     extends AbstractPatchMojo
 {
+
+    /**
+     * @parameter expression="${patch.patchId}" default-value=""
+     */
+    protected String patchId;
 
 
     public void execute()
         throws MojoExecutionException
     {
-        // TODO do a status before and complains if some files in to be added status ?
-
-        String patchContent = getPatchContent();
-
-        PatchTrackerRequest patchTrackerRequest = buidPatchTrackerRequest( true );
-
-        patchTrackerRequest.setPatchContent( patchContent );
-
-        getLog().debug( patchTrackerRequest.toString() );
 
         try
         {
+            // TODO do a status before and complains if some files in to be added status ?
+
+            String patchContent = getPatchContent();
+
+            PatchTrackerRequest patchTrackerRequest = buidPatchTrackerRequest( false );
+
+            patchTrackerRequest.setPatchId( getPatchId() ).setPatchContent( patchContent ).setDescription(
+                getPatchTrackerDescription() );
+
+            getLog().debug( patchTrackerRequest.toString() );
             PatchTracker patchTracker = getPatchTracker();
-            PatchTrackerResult result = patchTracker.createPatch( patchTrackerRequest );
-            getLog().info( "issue created with id:" + result.getPatchId() + ", url:" + result.getPatchUrl() );
+            PatchTrackerResult result = patchTracker.updatePatch( patchTrackerRequest );
+            getLog().info( "issue updated with id:" + result.getPatchId() + ", url:" + result.getPatchUrl() );
         }
         catch ( ComponentLookupException e )
         {
@@ -62,8 +70,28 @@ public class CreatePatchMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
+        catch ( PrompterException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
 
 
+    }
+
+    protected String getPatchId()
+        throws PrompterException, MojoExecutionException
+    {
+        String value = null;
+
+        // cli must win !
+        if ( StringUtils.isNotEmpty( patchId ) )
+        {
+            value = patchId;
+        }
+
+        return getValue( value, "patch id to update ?", null, true,
+                         "you must configure a patch id when updating an issue or at least use interactive mode", value,
+                         false );
     }
 
 

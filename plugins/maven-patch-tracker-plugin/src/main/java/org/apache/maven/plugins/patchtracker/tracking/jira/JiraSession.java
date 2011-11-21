@@ -21,6 +21,7 @@ package org.apache.maven.plugins.patchtracker.tracking.jira;
 import org.apache.axis.encoding.Base64;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.JiraSoapService;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteAuthenticationException;
+import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteComment;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteException;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteIssue;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemotePermissionException;
@@ -61,5 +62,21 @@ public class JiraSession
 
         return service.addBase64EncodedAttachmentsToIssue( token, issueKey, new String[]{ fileName }, new String[]{
             Base64.encode( attachmentContent.getBytes() ) } );
+    }
+
+    public RemoteIssue findRemoteIssue( String issueKey )
+        throws RemotePermissionException, RemoteValidationException, RemoteAuthenticationException, RemoteException,
+        java.rmi.RemoteException
+    {
+        return service.getIssue( token, issueKey );
+    }
+
+    public void addCommentToIssue( String issueKey, String comment )
+        throws RemotePermissionException, RemoteValidationException, RemoteAuthenticationException, RemoteException,
+        java.rmi.RemoteException
+    {
+        RemoteComment remoteComment = new RemoteComment();
+        remoteComment.setBody( comment );
+        service.addComment( token, issueKey, remoteComment );
     }
 }

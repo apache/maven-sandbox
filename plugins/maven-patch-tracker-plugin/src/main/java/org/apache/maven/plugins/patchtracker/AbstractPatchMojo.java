@@ -181,14 +181,19 @@ public abstract class AbstractPatchMojo
         }
     }
 
-    protected PatchTrackerRequest buidPatchTrackerRequest()
+    protected PatchTrackerRequest buidPatchTrackerRequest( boolean creation )
         throws MojoExecutionException
     {
         try
         {
-            return new PatchTrackerRequest().setUrl( getPatchTrackerUrl() ).setUserName(
-                getPatchTrackerUsername() ).setPassword( getPatchTrackerPassword() ).setSummary(
-                getPatchTrackerSummary() ).setDescription( getPatchTrackerDescription() ).setPatchType( patchType );
+            PatchTrackerRequest patchTrackerRequest =
+                new PatchTrackerRequest().setUrl( getPatchTrackerUrl() ).setUserName(
+                    getPatchTrackerUsername() ).setPassword( getPatchTrackerPassword() ).setPatchType( patchType );
+
+            return creation ? patchTrackerRequest.setSummary( getPatchTrackerSummary() ).setDescription(
+                getPatchTrackerDescription() ) : patchTrackerRequest;
+
+
         }
         catch ( PrompterException e )
         {
