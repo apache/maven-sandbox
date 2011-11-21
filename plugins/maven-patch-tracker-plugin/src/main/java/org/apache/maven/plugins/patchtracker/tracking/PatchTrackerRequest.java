@@ -45,6 +45,11 @@ public class PatchTrackerRequest
      */
     private String patchType = "1";
 
+    /**
+     * mandatory on some jira: 3 for major
+     */
+    private String patchPriority;
+
     public PatchTrackerRequest()
     {
         // no op
@@ -138,6 +143,17 @@ public class PatchTrackerRequest
         return this;
     }
 
+    public String getPatchPriority()
+    {
+        return patchPriority;
+    }
+
+    public PatchTrackerRequest setPatchPriority( String patchPriority )
+    {
+        this.patchPriority = patchPriority;
+        return this;
+    }
+
     @Override
     public String toString()
     {
@@ -150,6 +166,7 @@ public class PatchTrackerRequest
         sb.append( ", summary='" ).append( summary ).append( '\'' );
         sb.append( ", description='" ).append( description ).append( '\'' );
         sb.append( ", patchId='" ).append( patchId ).append( '\'' );
+        sb.append( ", patchPriority='" ).append( patchPriority ).append( '\'' );
         sb.append( '}' );
         return sb.toString();
     }

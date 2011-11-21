@@ -54,6 +54,7 @@ public class JiraPatchTracker
             remoteIssue.setSummary( patchTrackerRequest.getSummary() );
             remoteIssue.setDescription( patchTrackerRequest.getDescription() );
             remoteIssue.setType( patchTrackerRequest.getPatchType() );
+            remoteIssue.setPriority( patchTrackerRequest.getPatchPriority() );
 
             // do we have a component id ??
             String componentId =

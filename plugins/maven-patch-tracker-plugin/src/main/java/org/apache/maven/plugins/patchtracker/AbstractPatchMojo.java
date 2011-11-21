@@ -127,6 +127,13 @@ public abstract class AbstractPatchMojo
      */
     protected String patchType;
 
+    /**
+     * the priority of the patch tracker entry to load: default 3 for jira major
+     *
+     * @parameter expression="${patch.priority}" default-value="3"
+     */
+    protected String patchPriority;
+
 
     /**
      * Component used to prompt for input.
@@ -188,7 +195,8 @@ public abstract class AbstractPatchMojo
         {
             PatchTrackerRequest patchTrackerRequest =
                 new PatchTrackerRequest().setUrl( getPatchTrackerUrl() ).setUserName(
-                    getPatchTrackerUsername() ).setPassword( getPatchTrackerPassword() ).setPatchType( patchType );
+                    getPatchTrackerUsername() ).setPassword( getPatchTrackerPassword() ).setPatchType(
+                    patchType ).setPatchPriority( patchPriority );
 
             return creation ? patchTrackerRequest.setSummary( getPatchTrackerSummary() ).setDescription(
                 getPatchTrackerDescription() ) : patchTrackerRequest;
