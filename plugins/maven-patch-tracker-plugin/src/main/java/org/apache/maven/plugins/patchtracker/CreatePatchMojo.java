@@ -19,7 +19,10 @@ package org.apache.maven.plugins.patchtracker;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.patchtracker.tracking.PatchTracker;
+import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerException;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerRequest;
+import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerResult;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileSet;
@@ -31,6 +34,8 @@ import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
 import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.components.interactivity.PrompterException;
 
@@ -130,6 +135,11 @@ public class CreatePatchMojo
      */
     private Prompter prompter;
 
+    /**
+     * @component
+     */
+    private PlexusContainer plexusContainer;
+
     public void execute()
         throws MojoExecutionException
     {
@@ -142,6 +152,26 @@ public class CreatePatchMojo
         patchTrackerRequest.setPatchContent( patchContent );
 
         getLog().debug( patchTrackerRequest.toString() );
+
+        String system = getPatchTrackerSystem();
+
+        getLog().debug( "patch tracker system:" + system );
+
+        try
+        {
+            PatchTracker patchTracker = (PatchTracker) plexusContainer.lookup( PatchTracker.class.getName(), system );
+            PatchTrackerResult result = patchTracker.createPatch( patchTrackerRequest );
+            getLog().info( "issue created with id:" + result.getPatchId() + ", url:" + result.getPatchUrl() );
+        }
+        catch ( ComponentLookupException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+        catch ( PatchTrackerException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+
 
     }
 
@@ -290,7 +320,7 @@ public class CreatePatchMojo
     }
 
     protected String getPatchTrackerSystem()
-        throws PrompterException, MojoExecutionException
+        throws MojoExecutionException
     {
         String value = project.getIssueManagement() == null ? "" : project.getIssueManagement().getSystem();
 
@@ -300,8 +330,15 @@ public class CreatePatchMojo
             value = system;
         }
 
-        return getValue( value, "path tracker system id ?", Arrays.asList( "jira" ), true,
-                         "you must configure a patch system or at least use interactive mode", "jira" );
+        try
+        {
+            return getValue( value, "path tracker system id ?", Arrays.asList( "jira" ), true,
+                             "you must configure a patch system or at least use interactive mode", "jira" );
+        }
+        catch ( PrompterException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
     }
 
     protected String getValue( String currentValue, String message, List<String> possibleValues, boolean mandatory,

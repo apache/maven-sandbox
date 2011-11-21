@@ -18,6 +18,7 @@ package org.apache.maven.plugins.patchtracker.tracking.jira;
  * under the License.
  */
 
+import org.apache.axis.encoding.Base64;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.JiraSoapService;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteAuthenticationException;
 import org.apache.maven.plugins.patchtracker.tracking.jira.soap.RemoteException;
@@ -57,7 +58,8 @@ public class JiraSession
         throws RemotePermissionException, RemoteValidationException, RemoteAuthenticationException, RemoteException,
         java.rmi.RemoteException
     {
-        return service.addBase64EncodedAttachmentsToIssue( token, issueKey, new String[]{ fileName },
-                                                           new String[]{ attachmentContent } );
+
+        return service.addBase64EncodedAttachmentsToIssue( token, issueKey, new String[]{ fileName }, new String[]{
+            Base64.encode( attachmentContent.getBytes() ) } );
     }
 }
