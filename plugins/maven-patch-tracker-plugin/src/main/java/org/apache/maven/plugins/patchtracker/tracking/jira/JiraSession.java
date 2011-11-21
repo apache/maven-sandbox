@@ -78,5 +78,7 @@ public class JiraSession
         RemoteComment remoteComment = new RemoteComment();
         remoteComment.setBody( comment );
         service.addComment( token, issueKey, remoteComment );
+
+
     }
 }

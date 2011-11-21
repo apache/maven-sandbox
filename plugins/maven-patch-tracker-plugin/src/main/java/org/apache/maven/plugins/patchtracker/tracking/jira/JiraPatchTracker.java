@@ -163,11 +163,15 @@ public class JiraPatchTracker
      */
     protected String extractProjectKey( String url )
     {
+        // case component id in url: https://jira.codehaus.org/browse/MSHARED/component/15255
+        if ( StringUtils.contains( url, "/component/" ) )
+        {
+            url = StringUtils.substringBeforeLast( url, "/component" );
+        }
+
         return ( StringUtils.endsWith( url, "/" ) )
             ? StringUtils.substringAfterLast( StringUtils.removeEnd( url, "/" ), "/" )
             : StringUtils.substringAfterLast( url, "/" );
-
-
     }
 
     /**
@@ -185,5 +189,16 @@ public class JiraPatchTracker
     {
         return new URL( extractBaseUrl( url ) );
 
+    }
+
+    protected String getComponentId( String url, String projectKey )
+    {
+        //https://jira.codehaus.org/browse/MSHARED/component/15255
+        // return 15255
+        if ( StringUtils.contains( url, "/" + projectKey + "/component/" ) )
+        {
+            return StringUtils.substringAfterLast( url, "/" + projectKey + "/component/" );
+        }
+        return null;
     }
 }

@@ -31,6 +31,15 @@ public class JiraPatchTrackerTest
     {
         assertEquals( "MNG", new JiraPatchTracker().extractProjectKey( "http://jira.codehaus.org/browse/MNG" ) );
         assertEquals( "MNG", new JiraPatchTracker().extractProjectKey( "http://jira.codehaus.org/browse/MNG/" ) );
+        assertEquals( "MSHARED", new JiraPatchTracker().extractProjectKey(
+            "https://jira.codehaus.org/browse/MSHARED/component/15255" ) );
+    }
+
+    public void testExtractComponentId()
+    {
+        assertEquals( "15255",
+                      new JiraPatchTracker().getComponentId( "https://jira.codehaus.org/browse/MSHARED/component/15255",
+                                                             "MSHARED" ) );
     }
 
     public void testBaseUrl()
@@ -39,5 +48,7 @@ public class JiraPatchTrackerTest
                       new JiraPatchTracker().extractBaseUrl( "http://jira.codehaus.org/browse/MNG" ) );
         assertEquals( "http://jira.codehaus.org",
                       new JiraPatchTracker().extractBaseUrl( "http://jira.codehaus.org/browse/MNG/" ) );
+        assertEquals( "https://jira.codehaus.org", new JiraPatchTracker().extractBaseUrl(
+            "https://jira.codehaus.org/browse/MSHARED/component/15255" ) );
     }
 }
