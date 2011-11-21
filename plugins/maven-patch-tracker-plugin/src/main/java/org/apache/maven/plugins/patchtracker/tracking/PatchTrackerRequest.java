@@ -145,7 +145,7 @@ public class PatchTrackerRequest
         sb.append( "PatchTrackerRequest" );
         sb.append( "{url='" ).append( url ).append( '\'' );
         sb.append( ", userName='" ).append( userName ).append( '\'' );
-        sb.append( ", password='" ).append( password ).append( '\'' );
+        sb.append( ", password='" ).append( "******" ).append( '\'' );
         sb.append( ", patchContent='" ).append( patchContent ).append( '\'' );
         sb.append( ", summary='" ).append( summary ).append( '\'' );
         sb.append( ", description='" ).append( description ).append( '\'' );
