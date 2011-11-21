@@ -209,7 +209,7 @@ public abstract class AbstractPatchMojo
         }
 
         return getValue( value, "path tracker url ? (http://jira.codehaus.org/browse/MNG)", null, true,
-                         "you must configure a patch system or at least use interactive mode", value );
+                         "you must configure a patch system or at least use interactive mode", value, false );
     }
 
     protected String getPatchTrackerSummary()
@@ -218,7 +218,7 @@ public abstract class AbstractPatchMojo
         String value = summary;
 
         return getValue( value, "patch summary ? (wonderfull patch to fix ....) ", Collections.<String>emptyList(),
-                         true, "you must configure a patch summary or at least use interactive mode", null );
+                         true, "you must configure a patch summary or at least use interactive mode", null, false );
     }
 
     protected String getPatchTrackerDescription()
@@ -227,7 +227,7 @@ public abstract class AbstractPatchMojo
         String value = description;
 
         return getValue( value, "patch description ?(this patch fix this very annoying issue ....) ", null, false,
-                         "you must configure a patch summary or at least use interactive mode", null );
+                         "you must configure a patch summary or at least use interactive mode", null, false );
     }
 
     protected String getPatchTrackerUsername()
@@ -256,7 +256,8 @@ public abstract class AbstractPatchMojo
         }
 
         return getValue( value, "patch tracker username ?", null, true,
-                         "you must configure a user for your patch tracker or at least use interactive mode", value );
+                         "you must configure a user for your patch tracker or at least use interactive mode", value,
+                         false );
     }
 
     protected String getPatchTrackerPassword()
@@ -285,8 +286,8 @@ public abstract class AbstractPatchMojo
         }
 
         return getValue( value, "patch tracker password ?", null, true,
-                         "you must configure a password for your patch tracker or at least use interactive mode",
-                         value );
+                         "you must configure a password for your patch tracker or at least use interactive mode", value,
+                         true );
     }
 
     protected String getPatchTrackerSystem()
@@ -303,7 +304,7 @@ public abstract class AbstractPatchMojo
         try
         {
             return getValue( value, "path tracker system id ?", Arrays.asList( "jira" ), true,
-                             "you must configure a patch system or at least use interactive mode", "jira" );
+                             "you must configure a patch system or at least use interactive mode", "jira", false );
         }
         catch ( PrompterException e )
         {
@@ -312,7 +313,7 @@ public abstract class AbstractPatchMojo
     }
 
     protected String getValue( String currentValue, String message, List<String> possibleValues, boolean mandatory,
-                               String errorMessage, String defaultValue )
+                               String errorMessage, String defaultValue, boolean passwordPrompt )
         throws PrompterException, MojoExecutionException
     {
         boolean loadFromPrompt = false;
@@ -324,31 +325,53 @@ public abstract class AbstractPatchMojo
 
                 getLog().debug( "1st prompt message " + message + ", defaultValue " + defaultValue + ", possibleValues"
                                     + possibleValues );
-                value = ( possibleValues == null || possibleValues.isEmpty() )
-                    ? prompter.prompt( message, defaultValue )
-                    : prompter.prompt( message, possibleValues, defaultValue );
-                loadFromPrompt = true;
+                if ( passwordPrompt )
+                {
+                    value = prompter.promptForPassword( message );
+                }
+                else
+                {
+                    value = ( possibleValues == null || possibleValues.isEmpty() )
+                        ? prompter.prompt( message, defaultValue )
+                        : prompter.prompt( message, possibleValues, defaultValue );
+                }
+                loadFromPrompt = StringUtils.isNotBlank( value );
             }
             else
             {
+                getLog().error( errorMessage );
                 throw new MojoExecutionException( errorMessage );
             }
             if ( StringUtils.isEmpty( value ) )
             {
+                getLog().error( errorMessage );
                 throw new MojoExecutionException( errorMessage );
             }
         }
 
         if ( settings.isInteractiveMode() && !loadFromPrompt )
         {
-            getLog().debug( "1st prompt message " + message + ", defaultValue " + defaultValue + ", possibleValues"
+            getLog().debug( "2nd prompt message " + message + ", defaultValue " + defaultValue + ", possibleValues"
                                 + possibleValues );
-            value = ( possibleValues == null || possibleValues.isEmpty() ) ? ( StringUtils.isEmpty( defaultValue )
-                ? prompter.prompt( message )
-                : prompter.prompt( message, defaultValue ) )
-                : ( StringUtils.isEmpty( defaultValue )
-                    ? prompter.prompt( message, possibleValues )
-                    : prompter.prompt( message, possibleValues, defaultValue ) );
+            if ( passwordPrompt )
+            {
+                value = prompter.promptForPassword( message );
+            }
+            else
+            {
+                value = ( possibleValues == null || possibleValues.isEmpty() ) ? ( StringUtils.isEmpty( defaultValue )
+                    ? prompter.prompt( message )
+                    : prompter.prompt( message, defaultValue ) )
+                    : ( StringUtils.isEmpty( defaultValue )
+                        ? prompter.prompt( message, possibleValues )
+                        : prompter.prompt( message, possibleValues, defaultValue ) );
+            }
+            if ( StringUtils.isEmpty( value ) && mandatory )
+            {
+                getLog().error( errorMessage );
+                throw new MojoExecutionException( errorMessage );
+            }
+
         }
         return value;
     }
