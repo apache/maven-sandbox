@@ -59,7 +59,7 @@ public class JiraPatchTracker
                 remoteIssue.setProject( extractProjectKey( patchTrackerRequest.getUrl() ) );
                 remoteIssue.setSummary( patchTrackerRequest.getSummary() );
                 remoteIssue.setDescription( patchTrackerRequest.getDescription() );
-                remoteIssue.setType( "1" );
+                remoteIssue.setType( patchTrackerRequest.getPatchType() );
 
                 remoteIssue = jiraSession.createIssue( remoteIssue );
 

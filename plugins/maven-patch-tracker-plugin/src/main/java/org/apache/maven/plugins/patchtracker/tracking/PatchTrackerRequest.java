@@ -40,6 +40,11 @@ public class PatchTrackerRequest
      */
     private String patchId;
 
+    /**
+     * mandatory for jira: 1 for bug
+     */
+    private String patchType = "1";
+
     public PatchTrackerRequest()
     {
         // no op
@@ -119,6 +124,17 @@ public class PatchTrackerRequest
     public PatchTrackerRequest setPatchId( String patchId )
     {
         this.patchId = patchId;
+        return this;
+    }
+
+    public String getPatchType()
+    {
+        return patchType;
+    }
+
+    public PatchTrackerRequest setPatchType( String patchType )
+    {
+        this.patchType = patchType;
         return this;
     }
 

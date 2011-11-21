@@ -128,6 +128,15 @@ public class CreatePatchMojo
      */
     protected String description;
 
+
+    /**
+     * the type of the patch tracker entry to load: default 1 for jira bug
+     *
+     * @parameter expression="${patch.patchType}" default-value="1"
+     */
+    protected String patchType;
+
+
     /**
      * Component used to prompt for input.
      *
@@ -218,7 +227,7 @@ public class CreatePatchMojo
         {
             return new PatchTrackerRequest().setUrl( getPatchTrackerUrl() ).setUserName(
                 getPatchTrackerUsername() ).setPassword( getPatchTrackerPassword() ).setSummary(
-                getPatchTrackerSummary() ).setDescription( getPatchTrackerDescription() );
+                getPatchTrackerSummary() ).setDescription( getPatchTrackerDescription() ).setPatchType( patchType );
         }
         catch ( PrompterException e )
         {
