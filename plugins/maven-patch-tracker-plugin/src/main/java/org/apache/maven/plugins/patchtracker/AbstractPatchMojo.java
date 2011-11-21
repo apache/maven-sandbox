@@ -235,17 +235,27 @@ public abstract class AbstractPatchMojo
                          "you must configure a patch summary or at least use interactive mode", null, false );
     }
 
+    protected String getServerId()
+    {
+        String serverIdFromPom = (String) project.getProperties().get( "patch.tracker.serverId" );
+        if ( StringUtils.isNotEmpty( serverIdFromPom ) )
+        {
+            return serverIdFromPom;
+        }
+        return serverId;
+    }
+
     protected String getPatchTrackerUsername()
         throws PrompterException, MojoExecutionException
     {
         String value = null;
 
-        if ( StringUtils.isNotEmpty( serverId ) )
+        if ( StringUtils.isNotEmpty( getServerId() ) )
         {
-            Server server = getServer( serverId );
+            Server server = getServer( getServerId() );
             if ( server == null )
             {
-                getLog().warn( "no server found in your settings.xml with id:" + serverId );
+                getLog().warn( "no server found in your settings.xml with id:" + getServerId() );
             }
             else
             {
@@ -270,12 +280,12 @@ public abstract class AbstractPatchMojo
     {
         String value = null;
 
-        if ( StringUtils.isNotEmpty( serverId ) )
+        if ( StringUtils.isNotEmpty( getServerId() ) )
         {
-            Server server = getServer( serverId );
+            Server server = getServer( getServerId() );
             if ( server == null )
             {
-                getLog().warn( "no server found in your settings.xml with id:" + serverId );
+                getLog().warn( "no server found in your settings.xml with id:" + getServerId() );
             }
             else
             {
