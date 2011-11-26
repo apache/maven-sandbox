@@ -34,10 +34,14 @@ import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
 import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.components.interactivity.PrompterException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
 import java.io.File;
 import java.util.Arrays;
@@ -49,6 +53,7 @@ import java.util.List;
  */
 public abstract class AbstractPatchMojo
     extends AbstractMojo
+    implements Contextualizable
 {
     /**
      * The Maven Project Object.
@@ -142,9 +147,6 @@ public abstract class AbstractPatchMojo
      */
     protected Prompter prompter;
 
-    /**
-     * @component
-     */
     protected PlexusContainer plexusContainer;
 
     /**
@@ -417,5 +419,11 @@ public abstract class AbstractPatchMojo
         getLog().debug( "patch tracker system:" + system );
 
         return (PatchTracker) plexusContainer.lookup( PatchTracker.class.getName(), system );
+    }
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        this.plexusContainer = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
 }
