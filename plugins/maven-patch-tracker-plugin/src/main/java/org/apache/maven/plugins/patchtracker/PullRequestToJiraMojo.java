@@ -39,7 +39,7 @@ import java.io.IOException;
 
 /**
  * @author Olivier Lamy
- * @goal create-issue-from-patch-request
+ * @goal to-issue
  * @aggregator
  */
 public class PullRequestToJiraMojo
