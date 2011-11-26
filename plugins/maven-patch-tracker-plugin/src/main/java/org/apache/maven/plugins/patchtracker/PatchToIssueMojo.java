@@ -37,7 +37,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  * @goal to-issue
  * @aggregator
  */
-public class PullRequestToJiraMojo
+public class PatchToIssueMojo
     extends AbstractPatchMojo
 {
 
