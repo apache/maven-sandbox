@@ -62,3 +62,30 @@ mvn patch-tracker:create -Dpatch.summary="foo summary" -B -Dscm.providerType=git
 
   By default if non using non interactive Maven mode (-B cli option), this plugin will ask you some questions.
 
+  So you can configure some values in your pom:
+
++------------
+<properties>
+...
+// id of server entry in your settings to configure user/passord for your jira instance
+<patch.tracker.serverId>asf-jira</patch.tracker.serverId>
+
+// in your setttings
+<server>
+  <id>asf-jira</id>
+  <username>username</username>
+  <password>password</password>
+</server>
+
+
+// configuration to read github pull requests for the project https://github.com/apache/maven-3
+<patch.request.organisation>apache</patch.request.organisation>
+<patch.request.repository>maven-3</patch.request.repository>
+
+// not mandatory as it's the default value
+<project.patchManagement.url>https://api.github.com</project.patchManagement.url>
+
+...
+</properties>
++------------
+
