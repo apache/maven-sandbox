@@ -18,23 +18,18 @@ package org.apache.maven.plugins.patchtracker;
  * under the License.
  */
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.patchtracker.github.PullRequest;
+import org.apache.maven.plugins.patchtracker.patching.PatchRepository;
+import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryException;
+import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryRequest;
+import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryResult;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTracker;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerException;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerRequest;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerResult;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-
-import java.io.IOException;
 
 
 /**
@@ -47,7 +42,7 @@ public class PullRequestToJiraMojo
 {
 
     /**
-     * github user/organization  : github.com/apache use apache
+     * for github user/organization  : github.com/apache use apache
      *
      * @parameter expression="${patch.pullrequest.user}" default-value=""
      */
@@ -84,49 +79,36 @@ public class PullRequestToJiraMojo
         // format curl -v https://api.github.com/repos/apache/directmemory/pulls/1
         try
         {
+            PatchRepositoryRequest patchRepositoryRequest =
+                new PatchRepositoryRequest().setUrl( githubApiUrl ).setRepository( repo ).setId(
+                    pullRequestId ).setOrganization( user );
 
-            String url = githubApiUrl + "/" + user + "/" + repo + "/pulls/" + pullRequestId;
-            getLog().debug( "url" + url );
+            PatchRepository patchRepository = getPatchRepository();
 
-            HttpGet httpGet = new HttpGet( url );
-
-            HttpResponse httpResponse = defaultHttpClient.execute( httpGet );
-
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            // we don't parse all stuff
-            objectMapper.configure( DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false );
-
-            String response = IOUtils.toString( httpResponse.getEntity().getContent() );
-
-            getLog().debug( "response:" + response );
-
-            PullRequest pullRequest = objectMapper.reader( PullRequest.class ).readValue( response );
-
-            getLog().debug( "pullRequest:" + pullRequest.toString() );
+            PatchRepositoryResult result = patchRepository.getPatch( patchRepositoryRequest, getLog() );
 
             PatchTrackerRequest patchTrackerRequest = buidPatchTrackerRequest( false );
 
-            patchTrackerRequest.setSummary( pullRequest.getTitle() );
+            patchTrackerRequest.setSummary( result.getTitle() );
 
-            patchTrackerRequest.setDescription( pullRequest.getBody() + ". url: " + pullRequest.getPatch_url() );
+            patchTrackerRequest.setDescription( result.getDescription() + ". url: " + result.getPatchUrl() );
 
-            patchTrackerRequest.setPatchContent( getPatchContent( pullRequest ) );
+            patchTrackerRequest.setPatchContent( result.getPatchContent() );
+
+            getLog().debug( "patchTrackerRequest:" + patchTrackerRequest.toString() );
 
             PatchTracker patchTracker = getPatchTracker();
 
-            PatchTrackerResult result = patchTracker.createPatch( patchTrackerRequest );
-            getLog().info( "issue created with id:" + result.getPatchId() + ", url:" + result.getPatchUrl() );
-        }
-        catch ( ClientProtocolException e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
+            PatchTrackerResult patchTrackerResult = patchTracker.createPatch( patchTrackerRequest );
+            getLog().info( "issue created with id:" + patchTrackerResult.getPatchId() + ", url:"
+                               + patchTrackerResult.getPatchUrl() );
+
         }
         catch ( ComponentLookupException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+        catch ( PatchRepositoryException e )
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
@@ -136,13 +118,4 @@ public class PullRequestToJiraMojo
         }
     }
 
-    protected String getPatchContent( PullRequest pullRequest )
-        throws IOException, ClientProtocolException
-    {
-        HttpGet httpGet = new HttpGet( pullRequest.getPatch_url() );
-
-        HttpResponse httpResponse = defaultHttpClient.execute( httpGet );
-
-        return IOUtils.toString( httpResponse.getEntity().getContent() );
-    }
 }

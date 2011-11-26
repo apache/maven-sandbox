@@ -21,6 +21,7 @@ package org.apache.maven.plugins.patchtracker;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.patchtracker.patching.PatchRepository;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTracker;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerRequest;
 import org.apache.maven.project.MavenProject;
@@ -110,9 +111,14 @@ public abstract class AbstractPatchMojo
     protected String password;
 
     /**
-     * @parameter expression="${patch.system}" default-value=""
+     * @parameter expression="${patch.issueSystem}" default-value=""
      */
-    protected String system;
+    protected String issueSystem;
+
+    /**
+     * @parameter expression="${patch.patchSystem}" default-value="${project.patchManagement.system}"
+     */
+    protected String patchSystem;
 
     /**
      * @parameter expression="${patch.summary}" default-value=""
@@ -321,15 +327,37 @@ public abstract class AbstractPatchMojo
         String value = project.getIssueManagement() == null ? "" : project.getIssueManagement().getSystem();
 
         // cli must win !
-        if ( StringUtils.isNotEmpty( system ) )
+        if ( StringUtils.isNotEmpty( issueSystem ) )
         {
-            value = system;
+            value = issueSystem;
         }
 
         try
         {
             return getValue( value, "path tracker system id ?", Arrays.asList( "jira" ), true,
                              "you must configure a patch system or at least use interactive mode", "jira", false );
+        }
+        catch ( PrompterException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+    }
+
+    protected String getPatchRepositorySystem()
+        throws MojoExecutionException
+    {
+        String value = project.getProperties().getProperty( "project.patchManagement.system" );
+
+        // cli must win !
+        if ( StringUtils.isNotEmpty( patchSystem ) )
+        {
+            value = patchSystem;
+        }
+
+        try
+        {
+            return getValue( value, "path repository system id ?", Arrays.asList( "github" ), true,
+                             "you must configure a patch system or at least use interactive mode", "github", false );
         }
         catch ( PrompterException e )
         {
@@ -419,6 +447,16 @@ public abstract class AbstractPatchMojo
         getLog().debug( "patch tracker system:" + system );
 
         return (PatchTracker) plexusContainer.lookup( PatchTracker.class.getName(), system );
+    }
+
+    protected PatchRepository getPatchRepository()
+        throws MojoExecutionException, ComponentLookupException
+    {
+        String system = getPatchRepositorySystem();
+
+        getLog().debug( "patch repository system:" + system );
+
+        return (PatchRepository) plexusContainer.lookup( PatchRepository.class.getName(), system );
     }
 
     public void contextualize( Context context )

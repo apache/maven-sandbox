@@ -1,4 +1,4 @@
-package org.apache.maven.plugins.patchtracker.github;
+package org.apache.maven.plugins.patchtracker.patching.github;
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,14 +18,97 @@ package org.apache.maven.plugins.patchtracker.github;
  * under the License.
  */
 
-import java.io.Serializable;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugins.patchtracker.patching.PatchRepository;
+import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryException;
+import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryRequest;
+import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryResult;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.Version;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.module.SimpleModule;
+
+import java.io.IOException;
 
 /**
  * @author Olivier Lamy
+ * @plexus.component role="org.apache.maven.plugins.patchtracker.patching.PatchRepository" role-hint="github"
  */
-public class PullRequest
-    implements Serializable
+public class GitHubPatchRepository
+    implements PatchRepository
 {
+    DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
+
+    public PatchRepositoryResult getPatch( PatchRepositoryRequest patchRepositoryRequest, Log log )
+        throws PatchRepositoryException
+    {
+        try
+        {
+            String url = patchRepositoryRequest.getUrl() + "/" + patchRepositoryRequest.getOrganization() + "/"
+                + patchRepositoryRequest.getRepository() + "/pulls/" + patchRepositoryRequest.getId();
+            log.debug( "url" + url );
+
+            HttpGet httpGet = new HttpGet( url );
+
+            HttpResponse httpResponse = defaultHttpClient.execute( httpGet );
+
+            String response = IOUtils.toString( httpResponse.getEntity().getContent() );
+
+            log.debug( "response:" + response );
+
+            PatchRepositoryResult patchRepositoryResult = fromJson( response );
+
+            log.debug( "patchRepositoryResult:" + patchRepositoryResult );
+
+            patchRepositoryResult.setPatchContent( getPatchContent( patchRepositoryResult ) );
+
+            log.debug( "pullRequest:" + patchRepositoryResult.toString() );
+            return patchRepositoryResult;
+        }
+        catch ( IOException e )
+        {
+            throw new PatchRepositoryException( e.getMessage(), e );
+        }
+    }
+
+    protected String getPatchContent( PatchRepositoryResult pullRequest )
+        throws IOException, ClientProtocolException
+    {
+        HttpGet httpGet = new HttpGet( pullRequest.getPatchUrl() );
+
+        HttpResponse httpResponse = defaultHttpClient.execute( httpGet );
+
+        return IOUtils.toString( httpResponse.getEntity().getContent() );
+    }
+
+    /**
+     * parse json from gitbut see http://developer.github.com/v3/pulls/
+     *
+     * @param jsonContent
+     * @return
+     * @throws IOException
+     * @throws JsonProcessingException
+     */
+    protected PatchRepositoryResult fromJson( String jsonContent )
+        throws IOException, JsonProcessingException
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // we don't parse all stuff
+        // se json format below or documentation
+        objectMapper.configure( DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+
+        //objectMapper.
+
+        return objectMapper.reader( GithubPatchRepositoryResult.class ).readValue( jsonContent );
+    }
+
     /**
      * json format
      * <p/>
@@ -163,69 +246,4 @@ public class PullRequest
      * }
      */
 
-    private String title;
-
-    private String html_url;
-
-    private String patch_url;
-
-    private String body;
-
-    public PullRequest()
-    {
-        // no op
-    }
-
-    public String getTitle()
-    {
-        return title;
-    }
-
-    public void setTitle( String title )
-    {
-        this.title = title;
-    }
-
-    public String getHtml_url()
-    {
-        return html_url;
-    }
-
-    public void setHtml_url( String html_url )
-    {
-        this.html_url = html_url;
-    }
-
-    public String getPatch_url()
-    {
-        return patch_url;
-    }
-
-    public void setPatch_url( String patch_url )
-    {
-        this.patch_url = patch_url;
-    }
-
-    public String getBody()
-    {
-        return body;
-    }
-
-    public void setBody( String body )
-    {
-        this.body = body;
-    }
-
-    @Override
-    public String toString()
-    {
-        final StringBuilder sb = new StringBuilder();
-        sb.append( "PullRequest" );
-        sb.append( "{title='" ).append( title ).append( '\'' );
-        sb.append( ", html_url='" ).append( html_url ).append( '\'' );
-        sb.append( ", patch_url='" ).append( patch_url ).append( '\'' );
-        sb.append( ", body='" ).append( body ).append( '\'' );
-        sb.append( '}' );
-        return sb.toString();
-    }
 }
