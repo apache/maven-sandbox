@@ -19,6 +19,7 @@ package org.apache.maven.plugins.patchtracker.patching.github;
  */
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -29,10 +30,8 @@ import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryException;
 import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryRequest;
 import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryResult;
 import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.module.SimpleModule;
 
 import java.io.IOException;
 
@@ -50,7 +49,14 @@ public class GitHubPatchRepository
     {
         try
         {
-            String url = patchRepositoryRequest.getUrl() + "/" + patchRepositoryRequest.getOrganization() + "/"
+            //curl -v https://api.github.com/repos/apache/directmemory/pulls/1
+            String baseUrl = patchRepositoryRequest.getUrl();
+            if ( StringUtils.isEmpty( baseUrl ) )
+            {
+                baseUrl = "https://api.github.com";
+                log.info( "github api url is empty use default:" + baseUrl );
+            }
+            String url = patchRepositoryRequest.getUrl() + "/repos/" + patchRepositoryRequest.getOrganization() + "/"
                 + patchRepositoryRequest.getRepository() + "/pulls/" + patchRepositoryRequest.getId();
             log.debug( "url" + url );
 

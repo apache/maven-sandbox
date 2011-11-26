@@ -44,31 +44,31 @@ public class PatchToIssueMojo
     /**
      * for github user/organization  : github.com/apache use apache
      *
-     * @parameter expression="${patch.pullrequest.user}" default-value=""
+     * @parameter expression="${patch.request.organisation}" default-value=""
      */
-    protected String user;
+    protected String organisation;
 
     /**
      * github repo  : github.com/apache/maven-3 use maven-3
      *
-     * @parameter expression="${patch.pullrequest.repo}" default-value=""
+     * @parameter expression="${patch.request.repository}" default-value=""
      */
-    protected String repo;
+    protected String repository;
 
     /**
-     * pull request id
+     * for github: pull request id
      *
-     * @parameter expression="${patch.pullrequest.id}" default-value=""
+     * @parameter expression="${patch.request.id}" default-value=""
      */
-    protected String pullRequestId;
+    protected String id;
 
 
     /**
-     * github api url
+     * for github api url https://api.github.com
      *
-     * @parameter expression="${patch.pullrequest.githubApiUrl}" default-value="https://api.github.com/repos"
+     * @parameter expression="${patch.patchSystem.url}" default-value="${project.patchManagement.url}"
      */
-    protected String githubApiUrl;
+    protected String patchSystemUrl;
 
 
     DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
@@ -76,12 +76,12 @@ public class PatchToIssueMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        // format curl -v https://api.github.com/repos/apache/directmemory/pulls/1
+
         try
         {
             PatchRepositoryRequest patchRepositoryRequest =
-                new PatchRepositoryRequest().setUrl( githubApiUrl ).setRepository( repo ).setId(
-                    pullRequestId ).setOrganization( user );
+                new PatchRepositoryRequest().setUrl( patchSystemUrl ).setRepository( repository ).setId(
+                    id ).setOrganization( organisation );
 
             PatchRepository patchRepository = getPatchRepository();
 
