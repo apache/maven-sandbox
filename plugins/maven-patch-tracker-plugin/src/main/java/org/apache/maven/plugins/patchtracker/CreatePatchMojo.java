@@ -54,7 +54,7 @@ public class CreatePatchMojo
         try
         {
             PatchTracker patchTracker = getPatchTracker();
-            PatchTrackerResult result = patchTracker.createPatch( patchTrackerRequest );
+            PatchTrackerResult result = patchTracker.createPatch( patchTrackerRequest, getLog() );
             getLog().info( "issue created with id:" + result.getPatchId() + ", url:" + result.getPatchUrl() );
         }
         catch ( ComponentLookupException e )

@@ -20,6 +20,7 @@ package org.apache.maven.plugins.patchtracker.tracking.jira;
  */
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTracker;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerException;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerRequest;
@@ -43,11 +44,11 @@ import java.util.List;
 public class JiraPatchTracker
     implements PatchTracker
 {
-    public PatchTrackerResult createPatch( PatchTrackerRequest patchTrackerRequest )
+    public PatchTrackerResult createPatch( PatchTrackerRequest patchTrackerRequest, Log log )
         throws PatchTrackerException
     {
 
-        JiraSession jiraSession = createSession( patchTrackerRequest );
+        JiraSession jiraSession = createSession( patchTrackerRequest, log );
         try
         {
             RemoteIssue remoteIssue = new RemoteIssue();
@@ -99,11 +100,11 @@ public class JiraPatchTracker
         }
     }
 
-    public PatchTrackerResult updatePatch( PatchTrackerRequest patchTrackerRequest )
+    public PatchTrackerResult updatePatch( PatchTrackerRequest patchTrackerRequest, Log log )
         throws PatchTrackerException
     {
 
-        JiraSession jiraSession = createSession( patchTrackerRequest );
+        JiraSession jiraSession = createSession( patchTrackerRequest, log );
         try
         {
             RemoteIssue remoteIssue = jiraSession.findRemoteIssue( patchTrackerRequest.getPatchId() );
@@ -137,7 +138,7 @@ public class JiraPatchTracker
         }
     }
 
-    public JiraSession createSession( PatchTrackerRequest patchTrackerRequest )
+    public JiraSession createSession( PatchTrackerRequest patchTrackerRequest, Log log )
         throws PatchTrackerException
     {
         if ( StringUtils.isEmpty( patchTrackerRequest.getUserName() ) || StringUtils.isEmpty(
@@ -149,9 +150,10 @@ public class JiraPatchTracker
         JiraSoapServiceService jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
         try
         {
+            URL baseUrl = extractBaseUrlAsUrl( patchTrackerRequest.getUrl() );
+            log.debug( "baseUrl:" + baseUrl.toExternalForm() );
             org.apache.maven.plugins.patchtracker.tracking.jira.soap.JiraSoapService service =
-                jiraSoapServiceGetter.getJirasoapserviceV2(
-                    new URL( extractBaseUrlAsUrl( patchTrackerRequest.getUrl() ), "rpc/soap/jirasoapservice-v2" ) );
+                jiraSoapServiceGetter.getJirasoapserviceV2( new URL( baseUrl, "/rpc/soap/jirasoapservice-v2" ) );
             return new JiraSession( service, service.login( patchTrackerRequest.getUserName(),
                                                             patchTrackerRequest.getPassword() ),
                                     extractProjectKey( patchTrackerRequest.getUrl() ) );

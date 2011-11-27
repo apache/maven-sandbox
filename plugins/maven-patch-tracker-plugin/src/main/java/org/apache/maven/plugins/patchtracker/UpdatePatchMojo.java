@@ -62,7 +62,7 @@ public class UpdatePatchMojo
 
             getLog().debug( patchTrackerRequest.toString() );
             PatchTracker patchTracker = getPatchTracker();
-            PatchTrackerResult result = patchTracker.updatePatch( patchTrackerRequest );
+            PatchTrackerResult result = patchTracker.updatePatch( patchTrackerRequest, getLog() );
             getLog().info( "issue updated with id:" + result.getPatchId() + ", url:" + result.getPatchUrl() );
         }
         catch ( ComponentLookupException e )

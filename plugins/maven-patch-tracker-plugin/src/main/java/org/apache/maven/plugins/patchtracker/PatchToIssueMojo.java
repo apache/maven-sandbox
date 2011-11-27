@@ -100,7 +100,7 @@ public class PatchToIssueMojo
 
             PatchTracker patchTracker = getPatchTracker();
 
-            PatchTrackerResult patchTrackerResult = patchTracker.createPatch( patchTrackerRequest );
+            PatchTrackerResult patchTrackerResult = patchTracker.createPatch( patchTrackerRequest, getLog() );
             getLog().info( "issue created with id:" + patchTrackerResult.getPatchId() + ", url:"
                                + patchTrackerResult.getPatchUrl() );
 

@@ -19,6 +19,8 @@ package org.apache.maven.plugins.patchtracker.tracking;
  * under the License.
  */
 
+import org.apache.maven.plugin.logging.Log;
+
 /**
  * provide some services around a patch tracker.
  * A patch tracker can be an issue tracker (jira) or a patch reviewer (reviewboar)
@@ -30,20 +32,22 @@ public interface PatchTracker
 
     /**
      * create a new entry in the patch tracker
+     *
      * @param patchTrackerRequest
      * @return
      * @throws PatchTrackerException
      */
-    PatchTrackerResult createPatch( PatchTrackerRequest patchTrackerRequest )
+    PatchTrackerResult createPatch( PatchTrackerRequest patchTrackerRequest, Log log )
         throws PatchTrackerException;
 
     /**
      * update a patch entry in the patch tracker
      * <b>patchTrackerRequest.patchId is mandatory!</b>
+     *
      * @param patchTrackerRequest
      * @return
      * @throws PatchTrackerException
      */
-    PatchTrackerResult updatePatch( PatchTrackerRequest patchTrackerRequest )
+    PatchTrackerResult updatePatch( PatchTrackerRequest patchTrackerRequest, Log log )
         throws PatchTrackerException;
 }
