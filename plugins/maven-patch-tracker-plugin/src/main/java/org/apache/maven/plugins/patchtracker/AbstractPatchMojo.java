@@ -335,8 +335,9 @@ public abstract class AbstractPatchMojo
 
         try
         {
-            return getValue( value, "path tracker system id ?", Arrays.asList( "jira" ), true,
-                             "you must configure a patch system or at least use interactive mode", "jira", false );
+            return StringUtils.lowerCase( getValue( value, "path tracker system id ?", Arrays.asList( "jira" ), true,
+                                                    "you must configure a patch system or at least use interactive mode",
+                                                    "jira", false ) );
         }
         catch ( PrompterException e )
         {
@@ -357,8 +358,9 @@ public abstract class AbstractPatchMojo
 
         try
         {
-            return getValue( value, "path repository system id ?", Arrays.asList( "github" ), true,
-                             "you must configure a patch system or at least use interactive mode", "github", false );
+            return StringUtils.lowerCase(
+                getValue( value, "path repository system id ?", Arrays.asList( "github" ), true,
+                          "you must configure a patch system or at least use interactive mode", "github", false ) );
         }
         catch ( PrompterException e )
         {
