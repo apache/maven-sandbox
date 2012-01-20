@@ -345,7 +345,6 @@ public abstract class AbstractWagonHttpClientTest
                         wagon.connect( new Repository( "foo", repoUrl ) );
 
                         tmpFile = File.createTempFile( "wagon-test", "benchmark" );
-                        tmpFile.deleteOnExit();
 
                         wagon.get( "foo", tmpFile );
 
@@ -355,6 +354,10 @@ public abstract class AbstractWagonHttpClientTest
                     catch ( Exception e )
                     {
                         throw new RuntimeException( e.getMessage(), e );
+                    }
+                    finally
+                    {
+                        tmpFile.delete();
                     }
                     return null;
                 }
