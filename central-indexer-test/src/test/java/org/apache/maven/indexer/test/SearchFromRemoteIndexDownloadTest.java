@@ -42,36 +42,50 @@ public class SearchFromRemoteIndexDownloadTest
 
     IndexingContext context;
 
-    public void setUp( )
+    public void setUp()
         throws Exception
     {
-        super.setUp( );
+        super.setUp();
+        if ( context != null )
+        {
+            // all already set
+            return;
+        }
         NexusIndexer nexusIndexer = lookup( NexusIndexer.class );
-        final File tempIndexDirectory = new File( getBasedir( ), "target/.tmpIndex" );
-        File repo = new File( getBasedir( ), "target/src/test/foo" );
-        repo.mkdirs( );
-        assertTrue( repo.exists( ) );
+        final File tempIndexDirectory = new File( getBasedir(), "target/.tmpIndex" );
+        File repo = new File( getBasedir(), "target/src/test/foo" );
+        repo.mkdirs();
+        assertTrue( repo.exists() );
         File indexDirectory =
-            new File( getBasedir( ), "target/index/test-" + Long.toString( System.currentTimeMillis( ) ) );
-        indexDirectory.deleteOnExit( );
+            new File( getBasedir(), "target/index/test-" + Long.toString( System.currentTimeMillis() ) );
+        indexDirectory.deleteOnExit();
 
         List<IndexCreator> indexCreators =
-            new ArrayList<IndexCreator>( getContainer( ).lookupList( IndexCreator.class ) );
+            new ArrayList<IndexCreator>( getContainer().lookupList( IndexCreator.class ) );
 
         System.out.println( "indexCreators: " + indexCreators );
 
         FileUtils.deleteDirectory( indexDirectory );
         context =
-            nexusIndexer.addIndexingContext( "id", "id", repo, indexDirectory, repo.toURI( ).toURL( ).toExternalForm( ),
-                                             indexDirectory.toURI( ).toURL( ).toString( ), indexCreators );
+            nexusIndexer.addIndexingContext( "id", "id", repo, indexDirectory, repo.toURI().toURL().toExternalForm(),
+                                             indexDirectory.toURI().toURL().toString(), indexCreators );
 
         final HttpWagon httpWagon = (HttpWagon) lookup( Wagon.class, "http" );
+
+        Properties properties = new Properties();
+        String userAgent = System.getProperty( "userAgent" );
+        if ( userAgent != null )
+        {
+            System.out.println( "use userAgent:" + userAgent );
+            properties.put( HttpHeaders.USER_AGENT, userAgent );
+        }
+        httpWagon.setHttpHeaders( properties );
 
         httpWagon.setTimeout( 10000 );
 
         httpWagon.connect( new Repository( "central", "http://repo.maven.apache.org/maven2/.index" ) );
 
-        ResourceFetcher resourceFetcher = new ResourceFetcher( )
+        ResourceFetcher resourceFetcher = new ResourceFetcher()
         {
             public void connect( String id, String url )
                 throws IOException
@@ -79,7 +93,7 @@ public class SearchFromRemoteIndexDownloadTest
                 //no op
             }
 
-            public void disconnect( )
+            public void disconnect()
                 throws IOException
             {
                 // no op
@@ -92,32 +106,32 @@ public class SearchFromRemoteIndexDownloadTest
                 {
                     System.out.println( "index update retrieve file, name: " + name );
                     File file = new File( tempIndexDirectory, name );
-                    if ( file.exists( ) )
+                    if ( file.exists() )
                     {
-                        file.delete( );
+                        file.delete();
                     }
-                    file.deleteOnExit( );
+                    file.deleteOnExit();
                     httpWagon.get( name, file );
                     return new FileInputStream( file );
                 }
                 catch ( AuthorizationException e )
                 {
-                    throw new IOException( e.getMessage( ) );
+                    throw new IOException( e.getMessage() );
                 }
                 catch ( TransferFailedException e )
                 {
-                    throw new IOException( e.getMessage( ) );
+                    throw new IOException( e.getMessage() );
                 }
                 catch ( ResourceDoesNotExistException e )
                 {
-                    throw new FileNotFoundException( e.getMessage( ) );
+                    throw new FileNotFoundException( e.getMessage() );
                 }
             }
         };
 
         IndexUpdateRequest request = new IndexUpdateRequest( context, resourceFetcher );
-        File indexCacheDir = new File( getBasedir( ), "target/indexCacheDir" );
-        indexCacheDir.mkdirs( );
+        File indexCacheDir = new File( getBasedir(), "target/indexCacheDir" );
+        indexCacheDir.mkdirs();
         request.setLocalIndexCacheDir( indexCacheDir );
         request.setForceFullUpdate( false );
 
@@ -126,12 +140,12 @@ public class SearchFromRemoteIndexDownloadTest
         indexUpdater.fetchAndUpdateIndex( request );
     }
 
-    public void testSearchArtifactId( )
+    public void testSearchArtifactId()
         throws Exception
     {
 
         NexusIndexer indexer = lookup( NexusIndexer.class );
-        BooleanQuery q = new BooleanQuery( );
+        BooleanQuery q = new BooleanQuery();
         q.add( indexer.constructQuery( MAVEN.ARTIFACT_ID, new StringSearchExpression( "commons-lang" ) ),
                BooleanClause.Occur.MUST );
 
@@ -139,19 +153,19 @@ public class SearchFromRemoteIndexDownloadTest
         searchRequest.setContexts( Arrays.asList( context ) );
         FlatSearchResponse response = indexer.searchFlat( searchRequest );
         System.out.println(
-            "artifactId commons-lang response getReturnedHitsCount : " + response.getReturnedHitsCount( ) );
-        assertTrue( response.getReturnedHitsCount( ) > 0 );
+            "artifactId commons-lang response getReturnedHitsCount : " + response.getReturnedHitsCount() );
+        assertTrue( response.getReturnedHitsCount() > 0 );
 
 
     }
 
     // org/apache/karaf/features/org.apache.karaf.features.command/2.2.2/org.apache.karaf.features.command-2.2.2.jar
-    public void testSearchWithSymbolicName( )
+    public void testSearchWithSymbolicName()
         throws Exception
     {
 
         NexusIndexer indexer = lookup( NexusIndexer.class );
-        BooleanQuery q = new BooleanQuery( );
+        BooleanQuery q = new BooleanQuery();
         q.add( indexer.constructQuery( OSGI.SYMBOLIC_NAME,
                                        new StringSearchExpression( "org.apache.karaf.features.command" ) ),
                BooleanClause.Occur.MUST );
@@ -160,16 +174,16 @@ public class SearchFromRemoteIndexDownloadTest
         searchRequest.setContexts( Arrays.asList( context ) );
         FlatSearchResponse response = indexer.searchFlat( searchRequest );
         System.out.println( "symbolic name org.apache.karaf.features.command response getReturnedHitsCount : "
-                                + response.getReturnedHitsCount( ) );
-        assertTrue( response.getReturnedHitsCount( ) > 0 );
+                                + response.getReturnedHitsCount() );
+        assertTrue( response.getReturnedHitsCount() > 0 );
     }
 
-    public void testSearchWithExportService( )
+    public void testSearchWithExportService()
         throws Exception
     {
 
         NexusIndexer indexer = lookup( NexusIndexer.class );
-        BooleanQuery q = new BooleanQuery( );
+        BooleanQuery q = new BooleanQuery();
         q.add( indexer.constructQuery( OSGI.EXPORT_SERVICE, new StringSearchExpression(
             "org.apache.felix.bundlerepository.RepositoryAdmin" ) ), BooleanClause.Occur.MUST );
 
@@ -178,7 +192,7 @@ public class SearchFromRemoteIndexDownloadTest
         FlatSearchResponse response = indexer.searchFlat( searchRequest );
         System.out.println(
             "export service org.apache.felix.bundlerepository.RepositoryAdmin response getReturnedHitsCount : "
-                + response.getReturnedHitsCount( ) );
-        assertTrue( response.getReturnedHitsCount( ) > 0 );
+                + response.getReturnedHitsCount() );
+        assertTrue( response.getReturnedHitsCount() > 0 );
     }
 }
