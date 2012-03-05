@@ -34,9 +34,9 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * setup download remot index from central and do some testing.
+ * setuUp: download remote index from central and do some search on it
  */
-public class OsgiTest
+public class SearchFromRemoteIndexDownloadTest
     extends PlexusTestCase
 {
 
