@@ -18,6 +18,7 @@
 
   <properties>
     <userAgent></userAgent>
+    <remoteIndexUrl>http://repo.maven.apache.org/maven2/.index</remoteIndexUrl>
   </properties>
 
   <dependencies>
@@ -48,6 +49,7 @@
         <configuration>
           <systemPropertyVariables>
             <userAgent>${userAgent}</userAgent>
+            <remoteIndexUrl>${remoteIndexUrl}</remoteIndexUrl>
           </systemPropertyVariables>
         </configuration>
       </plugin>

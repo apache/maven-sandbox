@@ -83,7 +83,11 @@ public class SearchFromRemoteIndexDownloadTest
 
         httpWagon.setTimeout( 10000 );
 
-        httpWagon.connect( new Repository( "central", "http://repo.maven.apache.org/maven2/.index" ) );
+        String remoteIndexUrl = System.getProperty( "remoteIndexUrl" );
+
+        System.out.println( "remoteIndexUrl:" + remoteIndexUrl );
+
+        httpWagon.connect( new Repository( "central", remoteIndexUrl ) );
 
         ResourceFetcher resourceFetcher = new ResourceFetcher()
         {
@@ -204,15 +208,14 @@ public class SearchFromRemoteIndexDownloadTest
 
         NexusIndexer indexer = lookup( NexusIndexer.class );
         BooleanQuery q = new BooleanQuery();
-        q.add( indexer.constructQuery( MAVEN.CLASSNAMES, new StringSearchExpression(
-            "NexusIndexer" ) ), BooleanClause.Occur.MUST );
+        q.add( indexer.constructQuery( MAVEN.CLASSNAMES, new StringSearchExpression( "NexusIndexer" ) ),
+               BooleanClause.Occur.MUST );
 
         FlatSearchRequest searchRequest = new FlatSearchRequest( q );
         searchRequest.setContexts( Arrays.asList( context ) );
         FlatSearchResponse response = indexer.searchFlat( searchRequest );
         System.out.println(
-            "search with className NexusIndexer response getReturnedHitsCount : "
-                + response.getReturnedHitsCount() );
+            "search with className NexusIndexer response getReturnedHitsCount : " + response.getReturnedHitsCount() );
         assertTrue( response.getReturnedHitsCount() > 0 );
     }
 }
