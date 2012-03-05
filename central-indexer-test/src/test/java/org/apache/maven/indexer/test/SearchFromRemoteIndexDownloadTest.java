@@ -40,7 +40,7 @@ public class SearchFromRemoteIndexDownloadTest
     extends PlexusTestCase
 {
 
-    IndexingContext context;
+    static IndexingContext context;
 
     public void setUp()
         throws Exception
@@ -87,16 +87,18 @@ public class SearchFromRemoteIndexDownloadTest
 
         ResourceFetcher resourceFetcher = new ResourceFetcher()
         {
+            long startTime;
+
             public void connect( String id, String url )
                 throws IOException
             {
-                //no op
+                this.startTime = System.currentTimeMillis();
             }
 
             public void disconnect()
                 throws IOException
             {
-                // no op
+                System.out.println( "download time " + ( ( System.currentTimeMillis() - startTime ) / 60 ) + " s" );
             }
 
             public InputStream retrieve( String name )
