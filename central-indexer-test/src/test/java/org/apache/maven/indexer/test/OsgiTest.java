@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Unit test for simple App.
+ * setup download remot index from central and do some testing.
  */
 public class OsgiTest
     extends PlexusTestCase
@@ -69,7 +69,7 @@ public class OsgiTest
 
         httpWagon.setTimeout( 10000 );
 
-        httpWagon.connect( new Repository( "central", "http://repo1.maven.org/maven2/.index" ) );
+        httpWagon.connect( new Repository( "central", "http://repo.maven.apache.org/maven2/.index" ) );
 
         ResourceFetcher resourceFetcher = new ResourceFetcher( )
         {
