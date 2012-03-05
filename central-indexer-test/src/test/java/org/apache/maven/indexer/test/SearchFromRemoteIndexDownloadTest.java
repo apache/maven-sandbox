@@ -197,4 +197,22 @@ public class SearchFromRemoteIndexDownloadTest
                 + response.getReturnedHitsCount() );
         assertTrue( response.getReturnedHitsCount() > 0 );
     }
+
+    public void testSearchWithClassName()
+        throws Exception
+    {
+
+        NexusIndexer indexer = lookup( NexusIndexer.class );
+        BooleanQuery q = new BooleanQuery();
+        q.add( indexer.constructQuery( MAVEN.CLASSNAMES, new StringSearchExpression(
+            "NexusIndexer" ) ), BooleanClause.Occur.MUST );
+
+        FlatSearchRequest searchRequest = new FlatSearchRequest( q );
+        searchRequest.setContexts( Arrays.asList( context ) );
+        FlatSearchResponse response = indexer.searchFlat( searchRequest );
+        System.out.println(
+            "search with className NexusIndexer response getReturnedHitsCount : "
+                + response.getReturnedHitsCount() );
+        assertTrue( response.getReturnedHitsCount() > 0 );
+    }
 }
