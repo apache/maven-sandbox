@@ -43,14 +43,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.8.1</version>
-        <configuration>
-          <stylesheetfile>org/apache/maven/skins/fluido-doc.css</stylesheetfile>
-        </configuration>
         <dependencies>
           <dependency>
-            <groupId>@project.groupId@</groupId>
-            <artifactId>@project.artifactId@</artifactId>
-            <version>@project.version@</version>
+            <groupId>org.apache.maven.skins</groupId>
+            <artifactId>maven-fluido-doc</artifactId>
+            <version>${project.version}</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -63,6 +60,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.8.1</version>
+        <configuration>
+          <stylesheetfile>org/apache/maven/skins/fluido/stylesheet.css</stylesheetfile>
+        </configuration>
       </plugin>
     </plugins>
   </reporting>
