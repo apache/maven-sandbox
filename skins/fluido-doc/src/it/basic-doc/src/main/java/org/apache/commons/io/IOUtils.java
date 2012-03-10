@@ -101,7 +101,7 @@ public class IOUtils {
     /**
      * The system line separator string.
      */
-    public static final String LINE_SEPARATOR;
+    public static final String LINE_SEPARATOR = LINE_SEPARATOR_UNIX;
 
     /**
      * The default buffer size to use for 
