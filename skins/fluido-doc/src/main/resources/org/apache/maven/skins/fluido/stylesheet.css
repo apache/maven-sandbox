@@ -396,7 +396,7 @@ table .span12 {
 /* Table colors */
 .TableHeadingColor     { background: #036; color:#FFFFFF; } /* Dark blue */
 .TableSubHeadingColor  { } /* Dark grey */
-.TableRowColor         { background: #efefef; } /* White */
+.TableRowColor         { background: #FFFFFF; } /* White */
 
 /* Font used in left-hand frame lists */
 .FrameTitleFont   { color:#000000 }
