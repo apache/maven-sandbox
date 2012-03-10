@@ -23,6 +23,16 @@
   <artifactId>basic-doc</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <name>Apache Commons IO</name>
+  <description>The Commons IO library contains utility classes,
+  stream implementations, file filters, file comparators and endian classes.</description>
+  <inceptionYear>2002</inceptionYear>
+
+  <organization>
+    <name>The Apache Software Foundation</name>
+    <url>http://www.apache.org/</url>
+  </organization>
+
   <properties>
     <skinName>@project.name@</skinName>
     <skinDescription>@project.description@</skinDescription>
