@@ -69,7 +69,9 @@ import java.util.List;
  * streams' origin and further use. Thus the caller is still responsible for
  * closing streams after use.
  * <p>
- * Origin of code: Excalibur.
+ * <div class="alert">
+ * Origin of code: <strong>Excalibur</strong>.
+ * </div>
  *
  * @version $Id$
  */
