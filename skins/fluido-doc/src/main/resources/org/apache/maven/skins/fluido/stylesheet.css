@@ -411,7 +411,7 @@ table .span12 {
 .NavBarCell1    { background-color:#FFFFFF; }/* Light mauve */
 .NavBarCell1Rev {  }/* Dark Blue */
 .NavBarFont1    { color:#000000; }
-.NavBarFont1Rev { color:#FFFFFF; }
+.NavBarFont1Rev { color:#999999; }
 
 .NavBarCell2    { background-color:#FFFFFF; }
 .NavBarCell3    { background-color:#FFFFFF; }
