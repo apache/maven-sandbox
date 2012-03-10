@@ -327,9 +327,6 @@ table thead:first-child tr th, table thead:first-child tr td {
 table tbody + tbody {
   border-top: 2px solid #ddd;
 }
-table-condensed th, table-condensed td {
-  padding: 4px 5px;
-}
 
 /* hacks on default javadoc */
 
