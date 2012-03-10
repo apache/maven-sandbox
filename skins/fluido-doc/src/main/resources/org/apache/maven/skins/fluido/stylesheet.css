@@ -229,12 +229,6 @@ code, pre {
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-code {
-  padding: 3px 4px;
-  color: #d14;
-  background-color: #f7f7f9;
-  border: 1px solid #e1e1e8;
-}
 pre {
   display: block;
   padding: 8.5px;
