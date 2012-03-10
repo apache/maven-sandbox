@@ -21,26 +21,26 @@
  * writers and files. The most commonly used classes are described here:
  * </p>
  * <p>
- * <b>IOUtils</b> is the most frequently used class.
+ * <span class="label label-info">IOUtils</span> is the most frequently used class.
  * It provides operations to read, write, copy and close streams.
  * </p>
  * <p>
- * <b>FileUtils</b> provides operations based around the JDK File class.
+ * <span class="label label-info">FileUtils</span> provides operations based around the JDK File class.
  * These include reading, writing, copying, comparing and deleting.
  * </p>
  * <p>
- * <b>FilenameUtils</b> provides utilities based on filenames.
+ * <span class="label label-info">FilenameUtils</span> provides utilities based on filenames.
  * This utility class manipulates filenames without using File objects.
  * It aims to simplify the transition between Windows and Unix.
  * Before using this class however, you should consider whether you should
  * be using File objects.
  * </p>
  * <p>
- * <b>FileSystemUtils</b> allows access to the filing system in ways the JDK
+ * <span class="label label-info">FileSystemUtils</span> allows access to the filing system in ways the JDK
  * does not support. At present this allows you to get the free space on a drive.
  * </p>
  * <p>
- * <b>EndianUtils</b> swaps data between Big-Endian and Little-Endian formats.
+ * <span class="label label-info">EndianUtils</span> swaps data between Big-Endian and Little-Endian formats.
  * </p>
  */
 package org.apache.commons.io;
