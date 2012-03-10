@@ -106,10 +106,10 @@
                 <configuration>
                   <resources>
                     <resource>
-                      <directory>${project.build.directory}/it/basic-doc/target/apidocs/</directory>
+                      <directory>${project.build.directory}/it/basic-doc/target/site/apidocs/</directory>
                     </resource>
                   </resources>
-                  <outputDirectory>${project.build.directory}/site/apidocs/</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/apidocs-samples/</outputDirectory>
                 </configuration>
               </execution>
             </executions>
