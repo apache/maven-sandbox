@@ -43,4 +43,4 @@
  * <span class="label label-info">EndianUtils</span> swaps data between Big-Endian and Little-Endian formats.
  * </p>
  */
-package org.apache.commons.io;
+package org.apache.fluido.io;

@@ -16,6 +16,6 @@
  */
 
 /**
- * This package provides implementations of input classes, such as InputStream and Reader.
+ * This package provides various Comparator implementations for Files.
  */
-package org.apache.commons.io.input;
+package org.apache.fluido.io.comparator;

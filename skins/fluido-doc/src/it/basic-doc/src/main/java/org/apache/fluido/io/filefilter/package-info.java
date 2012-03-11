@@ -16,6 +16,6 @@
  */
 
 /**
- * This package provides implementations of output classes, such as OutputStream and Writer.
+ * This package defines an interface (IOFileFilter) that combines both FileFilter and FilenameFilter
  */
-package org.apache.commons.io.output;
+package org.apache.fluido.io.filefilter;

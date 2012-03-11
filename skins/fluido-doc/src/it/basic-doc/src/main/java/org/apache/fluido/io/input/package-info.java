@@ -16,7 +16,6 @@
  */
 
 /**
- * This package provides a component for monitoring file system events
- * (directory and file create, update and delete events).
+ * This package provides implementations of input classes, such as InputStream and Reader.
  */
-package org.apache.commons.io.monitor;
+package org.apache.fluido.io.input;

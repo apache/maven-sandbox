@@ -16,6 +16,7 @@
  */
 
 /**
- * This package provides various Comparator implementations for Files.
+ * This package provides a component for monitoring file system events
+ * (directory and file create, update and delete events).
  */
-package org.apache.commons.io.comparator;
+package org.apache.fluido.io.monitor;
