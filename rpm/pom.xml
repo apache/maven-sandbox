@@ -128,8 +128,7 @@
           <artifactId>maven-dependency-plugin</artifactId>
           <version>2.4</version>
         </plugin>
-        <!-- NOTE !!!
-        needs $HOME/.rpmmacros with content:
+        <!-- NOTE - some environments may need $HOME/.rpmmacros with content:
           %_tmppath /tmp
         -->
         <plugin>
