@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.apache.maven</groupId>   
+    <artifactId>maven</artifactId>
+    <!-- NOTE: no dashes allowed in version -->
+    <version>3.0.4</version>
+  </parent>
+
+  <groupId>org.apache.maven.rpm</groupId>
+  <artifactId>maven</artifactId>
+  <packaging>rpm</packaging>
+  <name>Maven Distribution RPM</name>
+  <description>Maven distribution</description>
+
+  <properties>
+    <rpm.source.location>${project.build.directory}/rpm-unpack/maven</rpm.source.location>
+    <rpm.username>root</rpm.username>
+    <rpm.groupname>root</rpm.groupname>
+    <!-- where the rpm will be installed -->
+    <installationPath>/usr/local</installationPath>
+    <installationFolder>${project.artifactId}</installationFolder>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>apache-maven</artifactId>
+      <version>${project.version}</version>
+      <type>tar.gz</type>
+      <classifier>bin</classifier>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+          <excludeTransitive>true</excludeTransitive>
+          <includeTypes>tar.gz</includeTypes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>unpack-tarballs</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/rpm-unpack</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>rpm-maven-plugin</artifactId>
+        <configuration>
+          <mappings>
+            <mapping>
+              <directory>${installationPath}/${installationFolder}</directory>
+              <sources>
+                <source>
+                  <location>${rpm.source.location}</location>
+                  <excludes>
+                    <exclude>bin/mvn*</exclude>
+                  </excludes>
+                </source>
+              </sources>
+            </mapping>
+            <!-- bin files -->
+            <mapping>
+              <directory>${installationPath}/${installationFolder}/bin</directory>
+              <filemode>755</filemode>
+              <sources>
+                <source>
+                  <location>${rpm.source.location}/bin</location>
+                  <includes>
+                    <include>mvn*</include>
+                  </includes>
+                </source>
+              </sources>
+            </mapping>
+            <!-- bin files link from /usr/local/bin -->
+            <mapping>
+              <directory>/usr/local/bin</directory>
+              <sources>
+                <softlinkSource>
+                  <location>${installationPath}/${installationFolder}/bin</location>
+                  <includes>
+                    <include>mvn*</include>
+                  </includes>
+                  <excludes>
+                    <exclude>*.bat</exclude>
+                  </excludes>
+                </softlinkSource>
+              </sources>
+            </mapping>
+            <!-- files that will go into root folder -->
+            <mapping>
+              <directory>/</directory>
+              <directoryIncluded>false</directoryIncluded>
+              <sources>
+                <source>
+                  <location>${basedir}/src/main/rpm</location>
+                </source>
+              </sources>
+            </mapping>
+          </mappings>
+<!-- Some users refer openjdk, so leaving out this requirement for now
+          <requires>
+            <require>jdk &gt; 1.5.0</require>
+          </requires>
+-->
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+        <!-- NOTE !!!
+        needs $HOME/.rpmmacros with content:
+          %_tmppath /tmp
+        -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>rpm-maven-plugin</artifactId>
+          <version>2.1-alpha-1</version>
+          <extensions>true</extensions>
+          <configuration>
+            <!-- Hack "BuildArch: noarch" into the spec file to make sure the rpm is noarch
+            command line parameter "target" 'noarch' doesn't work (at least in os x) 
+            See: https://jira.codehaus.org/browse/MRPM-79
+            -->
+            <group>Development/Tools
+BuildArch: noarch
+            </group>
+            <defaultUsername>${rpm.username}</defaultUsername>
+            <defaultGroupname>${rpm.groupname}</defaultGroupname>
+            <defaultFilemode>644</defaultFilemode>
+            <defaultDirmode>755</defaultDirmode>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
