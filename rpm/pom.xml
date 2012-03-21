@@ -17,7 +17,7 @@
   <description>Maven distribution</description>
 
   <properties>
-    <rpm.source.location>${project.build.directory}/rpm-unpack/maven</rpm.source.location>
+    <rpm.source.location>${project.build.directory}/rpm-unpack/apache-maven-3.0.4</rpm.source.location>
     <rpm.username>root</rpm.username>
     <rpm.groupname>root</rpm.groupname>
     <!-- where the rpm will be installed -->
