@@ -21,15 +21,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.apache.maven.plugins</groupId>
-  <artifactId> maven-site-scm-publish-plugin-002-perform</artifactId>
+  <artifactId>maven-scm-publish-plugin-004-publish-scm</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name> maven-site-scm-publish-plugin-002-perform</name>
+  <name>maven-scm-publish-plugin-004-publish-scm</name>
   <url>http://people.apache.org/~bimargulies/site-test</url>
 
   <distributionManagement>
     <site>
-      <id>perform-002</id>
+      <id>publish-scm-004</id>
       <url>file:target/dummy</url>
     </site>
   </distributionManagement>
@@ -41,62 +41,17 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <version>3.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-scm-publish-plugin</artifactId>
+          <version>@pom.version@</version>
           <configuration>
-            <stagingDirectory>target/scmpublish-checkout</stagingDirectory>
+            <pubScmUrl>scm:svn:file://${basedir}/target/svn-root</pubScmUrl>
           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
-
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>stage-for-pub</id>
-            <phase>post-site</phase>
-            <goals>
-              <goal>stage</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-scm-publish-plugin</artifactId>
-        <version>@pom.version@</version>
-        <configuration>
-          <pubScmUrl>scm:svn:file://${basedir}/target/svn-root</pubScmUrl>
-          <!--providerImplementations>
-            <svn>javasvn</svn> TODO: fix this provider because delete doesn't work
-          </providerImplementations-->
-        </configuration>
-        <!--dependencies>
-          <dependency>
-            <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
-            <artifactId>maven-scm-provider-svnjava</artifactId>
-            <version>1.15</version>
-          </dependency>
-        </dependencies-->
-        <executions>
-          <execution>
-            <id>prepare</id>
-            <phase>pre-site</phase>
-            <goals>
-              <goal>prepare</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>perform</id>
-            <phase>post-site</phase>
-            <goals>
-              <goal>publish</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
   </build>
 
   <reporting>

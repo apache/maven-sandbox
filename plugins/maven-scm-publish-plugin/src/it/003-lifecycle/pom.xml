@@ -21,15 +21,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-site-scm-publish-plugin-004-publish-scm</artifactId>
+  <artifactId> maven-scm-publish-pluginn-003-lifecycle</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>maven-site-scm-publish-plugin-004-publish-scm</name>
+  <name> maven-scm-publish-plugin-003-lifecycle</name>
   <url>http://people.apache.org/~bimargulies/site-test</url>
 
   <distributionManagement>
     <site>
-      <id>publish-scm-004</id>
+      <id>perform-002</id>
       <url>file:target/dummy</url>
     </site>
   </distributionManagement>
@@ -41,17 +41,33 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <version>3.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-scm-publish-plugin</artifactId>
-          <version>@pom.version@</version>
           <configuration>
-            <pubScmUrl>scm:svn:file://${basedir}/target/svn-root</pubScmUrl>
+            <stagingDirectory>target/scmpublish-checkout</stagingDirectory>
           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId> maven-scm-publish-plugin</artifactId>
+        <version>@pom.version@</version>
+        <extensions>true</extensions>
+        <configuration>
+          <pubScmUrl>scm:svn:file://${basedir}/target/svn-root</pubScmUrl>
+          <providerImplementations>
+            <svn>javasvn</svn>
+          </providerImplementations>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
+            <artifactId>maven-scm-provider-svnjava</artifactId>
+            <version>1.15</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
   </build>
 
   <reporting>
@@ -72,6 +88,6 @@
         <configuration>
         </configuration>
       </plugin>
-      </plugins>
+    </plugins>
   </reporting>
 </project>
