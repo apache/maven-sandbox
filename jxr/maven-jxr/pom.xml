@@ -31,9 +31,7 @@ under the License.
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>org.apache.maven.jxr</groupId>
   <artifactId>maven-jxr</artifactId>
-  <version>3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Source code documentation system</name>
 
@@ -143,11 +141,11 @@ under the License.
     <plugins>
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-maven-plugin</artifactId>
+        <artifactId>plexus-component-metadata</artifactId>
         <executions>
           <execution>
             <goals>
-              <goal>descriptor</goal>
+              <goal>generate-metadata</goal>
             </goals>
           </execution>
         </executions>
