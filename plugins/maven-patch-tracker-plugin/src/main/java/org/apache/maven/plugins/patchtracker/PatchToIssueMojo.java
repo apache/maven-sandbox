@@ -19,9 +19,10 @@ package org.apache.maven.plugins.patchtracker;
  * under the License.
  */
 
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.patchtracker.patching.PatchRepository;
 import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryException;
 import org.apache.maven.plugins.patchtracker.patching.PatchRepositoryRequest;
@@ -35,40 +36,35 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 
 /**
  * @author Olivier Lamy
- * @goal to-issue
- * @aggregator
  */
+@Mojo ( name = "to-issue", aggregator = true )
 public class PatchToIssueMojo
     extends AbstractPatchMojo
 {
 
     /**
      * for github user/organization  : github.com/apache use apache
-     *
-     * @parameter expression="${patch.request.organisation}" default-value=""
      */
+    @Parameter ( property = "patch.request.organisation", defaultValue = "" )
     protected String organisation;
 
     /**
      * github repo  : github.com/apache/maven-3 use maven-3
-     *
-     * @parameter expression="${patch.request.repository}" default-value=""
      */
+    @Parameter ( property = "patch.request.repository", defaultValue = "" )
     protected String repository;
 
     /**
      * for github: pull request id
-     *
-     * @parameter expression="${patch.request.id}" default-value=""
      */
+    @Parameter ( property = "patch.request.id", defaultValue = "" )
     protected String id;
 
 
     /**
      * for github api url https://api.github.com
-     *
-     * @parameter expression="${patch.patchSystem.url}" default-value="${project.patchManagement.url}"
      */
+    @Parameter ( property = "patch.patchSystem.url", defaultValue = "${project.patchManagement.url}" )
     protected String patchSystemUrl;
 
     public void execute()

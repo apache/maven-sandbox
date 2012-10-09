@@ -22,6 +22,8 @@ package org.apache.maven.plugins.patchtracker;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.patchtracker.patching.PatchRepository;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTracker;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerRequest;
@@ -59,106 +61,74 @@ public abstract class AbstractPatchMojo
 {
     /**
      * The Maven Project Object.
-     *
-     * @parameter default-value="${project}"
-     * @required
-     * @readonly
      */
+    @Component
     protected MavenProject project;
 
-    /**
-     * @parameter default-value="${basedir}"
-     * @required
-     * @readonly
-     */
+    @Parameter ( defaultValue = "basedir", required = true, readonly = true )
     protected File baseDir;
 
-    /**
-     * @parameter expression="${scm.providerType}" default-value=""
-     */
+    @Parameter ( defaultValue = "", property = "scm.providerType" )
     protected String providerType = "";
 
-    /**
-     * @parameter default-value="${settings}"
-     * @required
-     * @readonly
-     */
+    @Parameter ( defaultValue = "${settings", readonly = true, required = true )
     protected Settings settings;
 
 
     /**
      * if user/password are stored in your settings.xml in a server
-     *
-     * @parameter expression="${patch.serverId}" default-value=""
      */
+    @Parameter ( defaultValue = "", property = "patch.serverId" )
     protected String serverId;
 
     /**
      * if path tracker url is not stored in the pom.
      * <b>For jira, url must include project key!: http://jira.codehaus.org/browse/MNG</b>
-     *
-     * @parameter expression="${patch.serverUrl}" default-value=""
      */
+    @Parameter ( defaultValue = "", property = "patch.serverUrl" )
     protected String serverUrl;
 
-    /**
-     * @parameter expression="${patch.user}" default-value=""
-     */
+    @Parameter ( property = "patch.user", defaultValue = "" )
     protected String user;
 
-    /**
-     * @parameter expression="${patch.password}" default-value=""
-     */
+    @Parameter ( property = "patch.password", defaultValue = "" )
     protected String password;
 
-    /**
-     * @parameter expression="${patch.issueSystem}" default-value=""
-     */
+    @Parameter ( property = "patch.issueSystem", defaultValue = "" )
     protected String issueSystem;
 
-    /**
-     * @parameter expression="${patch.patchSystem}" default-value="${project.patchManagement.system}"
-     */
+    @Parameter ( property = "patch.patchSystem", defaultValue = "${project.patchManagement.system}" )
     protected String patchSystem;
 
-    /**
-     * @parameter expression="${patch.summary}" default-value=""
-     */
+    @Parameter ( defaultValue = "", property = "patch.summary" )
     protected String summary;
 
-    /**
-     * @parameter expression="${patch.description}" default-value=""
-     */
+    @Parameter ( defaultValue = "", property = "patch.description" )
     protected String description;
 
 
     /**
      * the type of the patch tracker entry to load: default 1 for jira bug
-     *
-     * @parameter expression="${patch.patchType}" default-value="1"
      */
+    @Parameter ( defaultValue = "1", property = "patch.patchType" )
     protected String patchType;
 
     /**
      * the priority of the patch tracker entry to load: default 3 for jira major
-     *
-     * @parameter expression="${patch.priority}" default-value="3"
      */
+    @Parameter ( defaultValue = "3", property = "patch.priority" )
     protected String patchPriority;
 
 
     /**
      * Component used to prompt for input.
-     *
-     * @component
      */
+    @Component
     protected Prompter prompter;
 
     protected PlexusContainer plexusContainer;
 
-    /**
-     * @component
-     */
+    @Component
     protected ScmManager scmManager;
 
 
@@ -415,7 +385,8 @@ public abstract class AbstractPatchMojo
             }
             else
             {
-                value = ( possibleValues == null || possibleValues.isEmpty() ) ? ( StringUtils.isEmpty( defaultValue )
+                value = ( possibleValues == null || possibleValues.isEmpty() )
+                    ? ( StringUtils.isEmpty( defaultValue )
                     ? prompter.prompt( message )
                     : prompter.prompt( message, defaultValue ) )
                     : ( StringUtils.isEmpty( defaultValue )

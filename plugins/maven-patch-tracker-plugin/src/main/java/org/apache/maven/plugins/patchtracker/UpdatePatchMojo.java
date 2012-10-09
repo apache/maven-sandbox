@@ -21,6 +21,8 @@ package org.apache.maven.plugins.patchtracker;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTracker;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerException;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerRequest;
@@ -31,17 +33,13 @@ import org.codehaus.plexus.components.interactivity.PrompterException;
 /**
  * Goal which create a diff/patch file from the current project and create an issue in the project
  * with attaching the created patch file
- *
- * @goal update
- * @aggregator
  */
+@Mojo ( name = "update", aggregator = true )
 public class UpdatePatchMojo
     extends AbstractPatchMojo
 {
 
-    /**
-     * @parameter expression="${patch.patchId}" default-value=""
-     */
+    @Parameter ( defaultValue = "", property = "patch.patchId" )
     protected String patchId;
 
 

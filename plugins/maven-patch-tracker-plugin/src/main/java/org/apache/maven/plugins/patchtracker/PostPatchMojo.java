@@ -20,6 +20,7 @@ package org.apache.maven.plugins.patchtracker;
  */
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTracker;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerException;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerRequest;
@@ -30,9 +31,8 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  * Goal which create a diff/patch file from the current project and post it in the selected patch tracker
  * (with jira an issue in the project with attaching the created patch file)
  *
- * @goal post
- * @aggregator
  */
+@Mojo (name = "post", aggregator = true)
 public class PostPatchMojo
     extends AbstractPatchMojo
 {
