@@ -65,7 +65,7 @@ public abstract class AbstractPatchMojo
     @Component
     protected MavenProject project;
 
-    @Parameter ( defaultValue = "basedir", required = true, readonly = true )
+    @Parameter ( defaultValue = "${basedir}", required = true, readonly = true )
     protected File baseDir;
 
     @Parameter ( defaultValue = "", property = "scm.providerType" )
