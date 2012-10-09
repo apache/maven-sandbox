@@ -71,9 +71,6 @@ public class PatchToIssueMojo
      */
     protected String patchSystemUrl;
 
-
-    DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
-
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
