@@ -30,7 +30,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  * Goal which create a diff/patch file from the current project and post it in the selected patch tracker
  * (with jira an issue in the project with attaching the created patch file)
  *
- * @goal create
+ * @goal post
  * @aggregator
  */
 public class PostPatchMojo
