@@ -27,13 +27,13 @@ import org.apache.maven.plugins.patchtracker.tracking.PatchTrackerResult;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
- * Goal which create a diff/patch file from the current project and create an issue in the project
- * with attaching the created patch file
+ * Goal which create a diff/patch file from the current project and post it in the selected patch tracker
+ * (with jira an issue in the project with attaching the created patch file)
  *
  * @goal create
  * @aggregator
  */
-public class CreatePatchMojo
+public class PostPatchMojo
     extends AbstractPatchMojo
 {
 
