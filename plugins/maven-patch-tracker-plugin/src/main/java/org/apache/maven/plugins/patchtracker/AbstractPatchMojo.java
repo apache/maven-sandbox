@@ -71,7 +71,7 @@ public abstract class AbstractPatchMojo
     @Parameter ( defaultValue = "", property = "scm.providerType" )
     protected String providerType = "";
 
-    @Parameter ( defaultValue = "${settings", readonly = true, required = true )
+    @Parameter ( defaultValue = "${settings}", readonly = true, required = true )
     protected Settings settings;
 
 
