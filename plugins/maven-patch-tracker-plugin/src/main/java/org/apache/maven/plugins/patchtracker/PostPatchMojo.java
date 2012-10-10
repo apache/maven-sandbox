@@ -19,6 +19,7 @@ package org.apache.maven.plugins.patchtracker;
  * under the License.
  */
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTracker;
@@ -30,7 +31,6 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 /**
  * Goal which create a diff/patch file from the current project and post it in the selected patch tracker
  * (with jira an issue in the project with attaching the created patch file)
- *
  */
 @Mojo (name = "post", aggregator = true)
 public class PostPatchMojo
@@ -44,6 +44,11 @@ public class PostPatchMojo
         // TODO do a status before and complains if some files in to be added status ?
 
         String patchContent = getPatchContent();
+
+        if ( StringUtils.isEmpty( patchContent ) )
+        {
+            getLog().info( "No patch content found so skip posting patch" );
+        }
 
         PatchTrackerRequest patchTrackerRequest = buidPatchTrackerRequest( true );
 
