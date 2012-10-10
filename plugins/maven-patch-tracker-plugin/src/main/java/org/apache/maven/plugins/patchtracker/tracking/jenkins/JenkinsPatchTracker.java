@@ -19,12 +19,21 @@ package org.apache.maven.plugins.patchtracker.tracking.jenkins;
  */
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.patchtracker.tracking.PatchTracker;
@@ -42,11 +51,12 @@ import java.io.IOException;
 public class JenkinsPatchTracker
     implements PatchTracker
 {
-    DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
+
 
     public PatchTrackerResult createPatch( PatchTrackerRequest patchTrackerRequest, Log log )
         throws PatchTrackerException
     {
+        DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
         File tmpPathFile = null;
         try
         {
@@ -62,8 +72,35 @@ public class JenkinsPatchTracker
 
             post.setEntity( entity );
 
-            HttpResponse r = defaultHttpClient.execute( post );
+            BasicHttpContext context = null;
 
+            if ( StringUtils.isNotEmpty( patchTrackerRequest.getUserName() ) )
+            {
+
+                defaultHttpClient.getCredentialsProvider().setCredentials(
+                    new AuthScope( new AuthScope( post.getURI().getHost(), post.getURI().getPort() ) ),
+                    new UsernamePasswordCredentials( patchTrackerRequest.getUserName(),
+                                                     patchTrackerRequest.getPassword() ) );
+
+                // Jenkins doesn't challenge so use a preemptive mode
+                AuthCache authCache = new BasicAuthCache();
+                BasicScheme basicAuth = new BasicScheme();
+                HttpHost targetHost =
+                    new HttpHost( post.getURI().getHost(), post.getURI().getPort(), post.getURI().getScheme() );
+                authCache.put( targetHost, basicAuth );
+
+                context = new BasicHttpContext();
+                context.setAttribute( ClientContext.AUTH_CACHE, authCache );
+            }
+            HttpResponse r;
+            if ( context == null )
+            {
+                r = defaultHttpClient.execute( post );
+            }
+            else
+            {
+                r = defaultHttpClient.execute( post, context );
+            }
             log.debug(
                 "r:" + r.getStatusLine().getStatusCode() + ", status: " + r.getStatusLine().getReasonPhrase() + ","
                     + EntityUtils.toString( r.getEntity() ) );
@@ -94,4 +131,5 @@ public class JenkinsPatchTracker
     {
         throw new RuntimeException( "updatePatch is not implemented with Jenkins" );
     }
+
 }
