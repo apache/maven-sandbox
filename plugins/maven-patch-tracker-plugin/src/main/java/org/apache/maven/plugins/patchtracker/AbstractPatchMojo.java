@@ -197,7 +197,7 @@ public abstract class AbstractPatchMojo
         // cli must win !
         if ( StringUtils.isNotEmpty( serverUrl ) )
         {
-            value = serverUrl;
+            return serverUrl;
         }
 
         return getValue( value, "path tracker url ? (http://jira.codehaus.org/browse/MNG)", null, true,
@@ -209,6 +209,11 @@ public abstract class AbstractPatchMojo
     {
         String value = summary;
 
+        if ( StringUtils.isNotEmpty( summary ) )
+        {
+            return summary;
+        }
+
         return getValue( value, "patch summary ? (wonderfull patch to fix ....) ", Collections.<String>emptyList(),
                          true, "you must configure a patch summary or at least use interactive mode", null, false );
     }
@@ -217,6 +222,11 @@ public abstract class AbstractPatchMojo
         throws PrompterException, MojoExecutionException
     {
         String value = description;
+
+        if ( StringUtils.isNotEmpty( description ) )
+        {
+            return description;
+        }
 
         return getValue( value, "patch description ?(this patch fix this very annoying issue ....) ", null, false,
                          "you must configure a patch summary or at least use interactive mode", null, false );
@@ -254,7 +264,7 @@ public abstract class AbstractPatchMojo
         // cli must win !
         if ( StringUtils.isNotEmpty( user ) )
         {
-            value = user;
+            return user;
         }
 
         return getValue( value, "patch tracker username ?", null, true,
@@ -284,7 +294,7 @@ public abstract class AbstractPatchMojo
         // cli must win !
         if ( StringUtils.isNotEmpty( password ) )
         {
-            value = password;
+            return password;
         }
 
         return getValue( value, "patch tracker password ?", null, true,
@@ -300,7 +310,7 @@ public abstract class AbstractPatchMojo
         // cli must win !
         if ( StringUtils.isNotEmpty( issueSystem ) )
         {
-            value = issueSystem;
+            return issueSystem;
         }
 
         try
@@ -323,7 +333,7 @@ public abstract class AbstractPatchMojo
         // cli must win !
         if ( StringUtils.isNotEmpty( patchSystem ) )
         {
-            value = patchSystem;
+            return patchSystem;
         }
 
         try
