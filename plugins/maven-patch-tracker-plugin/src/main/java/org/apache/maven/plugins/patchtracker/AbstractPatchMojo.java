@@ -94,8 +94,8 @@ public abstract class AbstractPatchMojo
     @Parameter ( property = "patch.password" )
     protected String password;
 
-    @Parameter ( property = "patch.issueSystem" )
-    protected String issueSystem;
+    @Parameter ( property = "patch.patchTrackerSystem" )
+    protected String patchTrackerSystem;
 
     @Parameter ( property = "patch.patchSystem", defaultValue = "${project.patchManagement.system}" )
     protected String patchSystem;
@@ -307,10 +307,10 @@ public abstract class AbstractPatchMojo
     {
         String value = project.getIssueManagement() == null ? "" : project.getIssueManagement().getSystem();
 
-        // cli must win !
-        if ( StringUtils.isNotEmpty( issueSystem ) )
+        // configuration/cli must win !
+        if ( StringUtils.isNotEmpty( patchTrackerSystem ) )
         {
-            return issueSystem;
+            return patchTrackerSystem;
         }
 
         try

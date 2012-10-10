@@ -30,6 +30,7 @@ import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -70,6 +71,23 @@ public class JenkinsPatchTracker
             FileBody fileBody = new FileBody( tmpPathFile );
             entity.addPart( "patch.diff", fileBody );
 
+            // jenkins need this format ?
+            //Content-Disposition: form-data; name="name" patch.summary
+            //Content-Disposition: form-data; name="value" sum
+
+            // charset ?
+            /*  post additionnal parameters with summary and description.
+                fail currently !
+            entity.addPart( "patch.summary", new StringBody( patchTrackerRequest.getSummary() ) );
+            entity.addPart( "patch.description", new StringBody( patchTrackerRequest.getDescription() ) );
+
+
+            entity.addPart( "name", new StringBody( "patch.summary" ) );
+            entity.addPart( "value", new StringBody( patchTrackerRequest.getSummary() ) );
+
+            entity.addPart( "name", new StringBody( "patch.description" ) );
+            entity.addPart( "value", new StringBody( patchTrackerRequest.getDescription() ) );
+            */
             post.setEntity( entity );
 
             BasicHttpContext context = null;
