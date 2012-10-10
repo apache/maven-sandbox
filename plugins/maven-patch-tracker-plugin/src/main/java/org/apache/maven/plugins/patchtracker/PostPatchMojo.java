@@ -62,7 +62,12 @@ public class PostPatchMojo
             getLog().debug( patchTrackerRequest.toString() );
 
             PatchTrackerResult result = patchTracker.createPatch( patchTrackerRequest, getLog() );
-            getLog().info( "issue created with id:" + result.getPatchId() + ", url:" + result.getPatchUrl() );
+            StringBuilder msg = new StringBuilder( "Patch posted to patch tracker" );
+            if ( result.getPatchId() != null )
+            {
+                msg.append( ". Review created with id:" + result.getPatchId() + ", url:" + result.getPatchUrl() );
+            }
+            getLog().info( msg.toString() );
         }
         catch ( ComponentLookupException e )
         {
