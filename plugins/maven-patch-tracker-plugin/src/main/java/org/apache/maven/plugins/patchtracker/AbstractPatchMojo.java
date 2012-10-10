@@ -305,7 +305,7 @@ public abstract class AbstractPatchMojo
 
         try
         {
-            return StringUtils.lowerCase( getValue( value, "path tracker system id ?", Arrays.asList( "jira" ), true,
+            return StringUtils.lowerCase( getValue( value, "path tracker system id ?", Arrays.asList( "jira", "jenkins" ), true,
                                                     "you must configure a patch system or at least use interactive mode",
                                                     "jira", false ) );
         }
