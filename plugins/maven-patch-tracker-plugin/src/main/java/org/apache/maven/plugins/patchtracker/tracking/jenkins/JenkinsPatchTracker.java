@@ -53,7 +53,6 @@ public class JenkinsPatchTracker
             tmpPathFile = File.createTempFile( "jenkins", "patch" );
             FileUtils.write( tmpPathFile, patchTrackerRequest.getPatchContent() );
 
-            foo
             HttpPost post = new HttpPost( patchTrackerRequest.getUrl() + "/buildWithParameters?delay=0sec" );
 
             MultipartEntity entity = new MultipartEntity( HttpMultipartMode.BROWSER_COMPATIBLE );
