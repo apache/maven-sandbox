@@ -64,10 +64,18 @@ public class JenkinsPatchTracker
 
             HttpResponse r = defaultHttpClient.execute( post );
 
-            log.info( "r:" + r.getStatusLine().getStatusCode() + ", status: " + r.getStatusLine().getReasonPhrase()+"," + EntityUtils.toString(  r.getEntity()) );
+            log.debug(
+                "r:" + r.getStatusLine().getStatusCode() + ", status: " + r.getStatusLine().getReasonPhrase() + ","
+                    + EntityUtils.toString( r.getEntity() ) );
 
-            // FIXME verify response code !
+            int statusCode = r.getStatusLine().getStatusCode();
 
+            // Jenkins returns 302
+            if ( statusCode != 200 || statusCode != 302 )
+            {
+                throw new PatchTrackerException(
+                    "Jenkins returned :" + statusCode + " with ReasonPhrase :" + r.getStatusLine().getReasonPhrase() );
+            }
 
             return new PatchTrackerResult();
         }
