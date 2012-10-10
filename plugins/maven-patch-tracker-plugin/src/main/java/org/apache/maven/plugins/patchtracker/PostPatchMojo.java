@@ -48,17 +48,19 @@ public class PostPatchMojo
         if ( StringUtils.isEmpty( patchContent ) )
         {
             getLog().info( "No patch content found so skip posting patch" );
+            return;
         }
-
-        PatchTrackerRequest patchTrackerRequest = buidPatchTrackerRequest( true );
-
-        patchTrackerRequest.setPatchContent( patchContent );
-
-        getLog().debug( patchTrackerRequest.toString() );
 
         try
         {
             PatchTracker patchTracker = getPatchTracker();
+
+            PatchTrackerRequest patchTrackerRequest = buidPatchTrackerRequest( true );
+
+            patchTrackerRequest.setPatchContent( patchContent );
+
+            getLog().debug( patchTrackerRequest.toString() );
+
             PatchTrackerResult result = patchTracker.createPatch( patchTrackerRequest, getLog() );
             getLog().info( "issue created with id:" + result.getPatchId() + ", url:" + result.getPatchUrl() );
         }

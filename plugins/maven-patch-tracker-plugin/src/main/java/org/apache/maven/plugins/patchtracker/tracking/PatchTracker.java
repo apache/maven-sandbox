@@ -23,7 +23,7 @@ import org.apache.maven.plugin.logging.Log;
 
 /**
  * provide some services around a patch tracker.
- * A patch tracker can be an issue tracker (jira) or a patch reviewer (reviewboar)
+ * A patch tracker can be an issue tracker (jira), a patch reviewer (reviewboar) or Jenkins to test the patch
  *
  * @author Olivier Lamy
  */

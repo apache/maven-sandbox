@@ -88,13 +88,13 @@ public abstract class AbstractPatchMojo
     @Parameter ( defaultValue = "", property = "patch.serverUrl" )
     protected String serverUrl;
 
-    @Parameter ( property = "patch.user", defaultValue = "" )
+    @Parameter ( property = "patch.user" )
     protected String user;
 
-    @Parameter ( property = "patch.password", defaultValue = "" )
+    @Parameter ( property = "patch.password" )
     protected String password;
 
-    @Parameter ( property = "patch.issueSystem", defaultValue = "" )
+    @Parameter ( property = "patch.issueSystem" )
     protected String issueSystem;
 
     @Parameter ( property = "patch.patchSystem", defaultValue = "${project.patchManagement.system}" )
@@ -195,7 +195,7 @@ public abstract class AbstractPatchMojo
         String value = project.getIssueManagement() == null ? "" : project.getIssueManagement().getUrl();
 
         // cli must win !
-        if ( StringUtils.isNotEmpty( serverUrl ) )
+        if ( serverUrl != null )
         {
             return serverUrl;
         }
@@ -209,7 +209,7 @@ public abstract class AbstractPatchMojo
     {
         String value = summary;
 
-        if ( StringUtils.isNotEmpty( summary ) )
+        if ( summary != null )
         {
             return summary;
         }
@@ -223,7 +223,7 @@ public abstract class AbstractPatchMojo
     {
         String value = description;
 
-        if ( StringUtils.isNotEmpty( description ) )
+        if ( description != null )
         {
             return description;
         }
@@ -262,7 +262,7 @@ public abstract class AbstractPatchMojo
         }
 
         // cli must win !
-        if ( StringUtils.isNotEmpty( user ) )
+        if ( user != null )
         {
             return user;
         }
@@ -292,7 +292,7 @@ public abstract class AbstractPatchMojo
         }
 
         // cli must win !
-        if ( StringUtils.isNotEmpty( password ) )
+        if ( password != null )
         {
             return password;
         }
