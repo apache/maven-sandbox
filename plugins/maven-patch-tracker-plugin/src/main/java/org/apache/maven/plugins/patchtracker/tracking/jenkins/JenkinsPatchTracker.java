@@ -68,25 +68,13 @@ public class JenkinsPatchTracker
 
             // FIXME verify response code !
 
-            /*AsyncHttpClient c = new AsyncHttpClient();
-            Future<Response> f = c.preparePost( patchTrackerRequest.getUrl() + "/build?delay=0sec" ).addBodyPart(
-                new FilePart( "patch.diff", tmpPathFile, null, null ) ).execute();
-            Response r = f.get();
-            log.info( "r:" + r.getStatusCode() + ", status: " + r.getStatusText() );*/
+
             return new PatchTrackerResult();
         }
         catch ( IOException e )
         {
             throw new PatchTrackerException( e.getMessage(), e );
-        }/*
-        catch ( InterruptedException e )
-        {
-            throw new PatchTrackerException( e.getMessage(), e );
         }
-        catch ( ExecutionException e )
-        {
-            throw new PatchTrackerException( e.getMessage(), e );
-        }*/
         finally
         {
             FileUtils.deleteQuietly( tmpPathFile );
