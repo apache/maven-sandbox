@@ -71,7 +71,7 @@ public class JenkinsPatchTracker
             int statusCode = r.getStatusLine().getStatusCode();
 
             // Jenkins returns 302
-            if ( statusCode != 200 || statusCode != 302 )
+            if ( statusCode != 200 && statusCode != 302 )
             {
                 throw new PatchTrackerException(
                     "Jenkins returned :" + statusCode + " with ReasonPhrase :" + r.getStatusLine().getReasonPhrase() );
