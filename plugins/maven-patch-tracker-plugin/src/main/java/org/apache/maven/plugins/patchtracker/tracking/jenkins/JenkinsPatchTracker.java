@@ -30,7 +30,6 @@ import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -66,6 +65,8 @@ public class JenkinsPatchTracker
 
             HttpPost post = new HttpPost( patchTrackerRequest.getUrl() + "/buildWithParameters?delay=0sec" );
 
+            //defaultHttpClient.setRedirectStrategy( new LaxRedirectStrategy() );
+
             MultipartEntity entity = new MultipartEntity( HttpMultipartMode.BROWSER_COMPATIBLE );
 
             FileBody fileBody = new FileBody( tmpPathFile );
@@ -96,15 +97,25 @@ public class JenkinsPatchTracker
             {
 
                 defaultHttpClient.getCredentialsProvider().setCredentials(
-                    new AuthScope( new AuthScope( post.getURI().getHost(), post.getURI().getPort() ) ),
+                    new AuthScope( new AuthScope( AuthScope.ANY_HOST, AuthScope.ANY_PORT ) ),
                     new UsernamePasswordCredentials( patchTrackerRequest.getUserName(),
                                                      patchTrackerRequest.getPassword() ) );
 
                 // Jenkins doesn't challenge so use a preemptive mode
                 AuthCache authCache = new BasicAuthCache();
                 BasicScheme basicAuth = new BasicScheme();
-                HttpHost targetHost =
-                    new HttpHost( post.getURI().getHost(), post.getURI().getPort(), post.getURI().getScheme() );
+
+                // using https://build.apache.org/blabla http client targetHost with port 443 but cannot find it
+                // so force the port
+                int port = post.getURI().getPort();
+
+                if ( port == -1 && StringUtils.equalsIgnoreCase( "https", post.getURI().getScheme() ) )
+                {
+                    port = 443;
+                }
+
+                HttpHost targetHost = new HttpHost( post.getURI().getHost(), port, post.getURI().getScheme() );
+
                 authCache.put( targetHost, basicAuth );
 
                 context = new BasicHttpContext();
