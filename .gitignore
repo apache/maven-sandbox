@@ -9,3 +9,5 @@ target
 
 result.txt
 .DS_Store
+
+nbactions.xml
