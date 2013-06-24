@@ -1,0 +1,19 @@
+              Apache Commons Gpg Maven Mojo
+                    Version 0.1
+                   RELEASE NOTES
+
+The Apache Commons Gpg Maven Mojo team is pleased to announce the release of Apache Commons Gpg Maven Mojo 0.1
+
+Apache Maven GPG plugin which allows arbitrary files to be signed.
+This is intended as a temporary measure until MGPG-43 is implemented.
+
+This is the initial release of the Commons Gpg Maven Plugin.
+
+No changes defined in this version.
+
+Historical list of changes: http://commons.apache.org/proper/commons-gpg-plugin/changes-report.html
+
+For complete information on Apache Commons Gpg Maven Mojo, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Apache Commons Gpg Maven Mojo website:
+
+http://commons.apache.org/proper/commons-gpg-plugin/
