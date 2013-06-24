@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package org.apache.commons.plugins.digest;
+package org.apache.maven.plugins.digest;
 
 import java.io.FileInputStream;
 import java.io.IOException;

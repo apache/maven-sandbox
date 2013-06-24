@@ -16,7 +16,7 @@
  * 
  */
 
-package org.apache.commons.plugins.digest;
+package org.apache.maven.plugins.digest;
 
 import java.lang.reflect.Field;
 
