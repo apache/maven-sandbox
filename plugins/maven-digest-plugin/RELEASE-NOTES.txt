@@ -1,0 +1,18 @@
+              Apache Commons Digest Maven Mojo
+                    Version 0.1
+                   RELEASE NOTES
+
+The Apache Commons Digest Maven Mojo team is pleased to announce the release of Apache Commons Digest Maven Mojo 0.1
+
+Apache Commons Digest Maven plugin provides digest (hashing) facilities for files
+
+This is the initial release of the Apache Commons Digest Maven Plugin.
+
+No changes defined in this version.
+
+Historical list of changes: http://commons.apache.org/proper/commons-digest-plugin/changes-report.html
+
+For complete information on Apache Commons Digest Maven Mojo, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Apache Commons Digest Maven Mojo website:
+
+http://commons.apache.org/proper/commons-digest-plugin/

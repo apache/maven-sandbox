@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--
+   $HeadURL: https://svn.apache.org/repos/asf/commons/proper/commons-build-plugin/trunk/src/site/xdoc/index.xml $
+   $Revision: 1296463 $ $Date: 2012-03-02 21:08:10 +0000 (Fri, 02 Mar 2012) $
+ -->
+<document>
+
+    <properties>
+        <title>Overview</title>
+        <author email="dev@commons.apache.org">Apache Commons Documentation Team</author>
+    </properties>
+
+    <body>
+
+        <section name="Apache Commons Digest Plugin">
+
+            <p>
+            This is a <a href="http://maven.apache.org/">Maven 2.x</a> Plugin which is designed
+            to be used in release profiles for packages such as source and binary archives. 
+            </p>
+
+        </section>
+
+        <section name="Plugin Goals">
+            <p>
+            Available Goals:
+            <ul>
+                <li>commons-digest:digest - generate digests (MD5 and SHA1) of specified files</li>
+                <li>commons-digest:help - display the plugin help as per help:describe</li>
+            </ul>
+            </p>
+        </section>
+
+        <section name="Trying out the plugin">
+            <p>
+            Configure the plugin in the <code>&lt;build&gt;</code> section of the <code>pom.xml</code>
+<source><![CDATA[
+<plugin>
+  <groupId>org.apache.commons</groupId>
+  <artifactId>commons-digest-plugin</artifactId>
+  <version>1.0</version>
+  <configuration>
+    <includes>
+      <include>target/releases/*.zip</include>
+      <include>target/releases/*.tar.gz</include>
+    </includes>
+    <excludes> <!-- Optional -->
+      <exclude>target/release/README*</exclude>
+    </excludes>
+    <createMD5>false</createMD5>   <!-- Optional -->
+    <createSHA1>false</createSHA1> <!-- Optional -->
+    <appendFilename>true</appendFilename> <!-- append ' *filename' to the digest file contents -->
+  </configuration>
+  <executions>
+    <execution>
+      <goals>
+        <goal>digest</goal>
+      </goals>
+      <!-- must run after assembly and before deploy -->
+      <phase>verify</phase>
+    </execution>
+  </executions>
+</plugin>
+]]></source>
+            </p>
+            <p>
+            The list of files to process can also be specified on the command line:
+<pre>
+mvn commons-digest:digest -Ddigest.files={comma-separated list of files}
+</pre>
+            Note that the configuration items (apart from includes/excludes) are also supported as
+            properties with the prefix "digest.", so for example the MD5 digest can be omitted by
+            using <code>-Ddigest.createMD5=false</code>
+            </p>
+        </section>
+
+    </body>
+</document>
