@@ -30,9 +30,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 /**
- * Copy of org.apache.maven.plugin.gpg.AbstractGpgMojo moved to o.a.c package.
- * Unfortunately, AbstractGpgMojo does not use annotations, so it cannot be extended externally.
- * Also, we need access to the method newSigner() which is package protected.
+ * Copy of org.apache.maven.plugin.gpg.AbstractGpgMojo
+ * We need access to the method newSigner() which is package protected.
  * The hope is that this functionality will eventually be added to the gpg plugin.
  */
 public abstract class AbstractGpgMojo
