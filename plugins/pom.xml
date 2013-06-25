@@ -46,6 +46,7 @@ under the License.
     <module>maven-downloader-plugin</module>
     <module>maven-zip-plugin</module>
     <module>maven-patch-tracker-plugin</module>
-
+    <module>maven-digest-plugin</module>
+    <module>maven-gpgsignfiles-plugin</module>
   </modules>
 </project>
