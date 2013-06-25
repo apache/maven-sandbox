@@ -40,8 +40,8 @@ The <action> type attribute can be add,update,fix,remove.
 
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
     <properties>
-        <title>Commons GpG Maven Plugin: Changes</title>
-        <author email="dev@commons.apache.org">Apache Commons developers</author>
+        <title>Apache Maven GpG Signfiles Mojo: Changes</title>
+        <author email="dev@maven.apache.org">Apache Maven developers</author>
     </properties>
 
     <!-- NOTE: 
@@ -61,7 +61,7 @@ The <action> type attribute can be add,update,fix,remove.
     <body>
 
         <release version="0.1" date="2013-06-25" description="
-This is the initial release of the Commons Gpg Maven Plugin.
+This is the initial release of the Apache Maven Gpg Signfiles Mojo
 ">
             <!-- List each change individually so the changes html report is easier to read -->
         </release>

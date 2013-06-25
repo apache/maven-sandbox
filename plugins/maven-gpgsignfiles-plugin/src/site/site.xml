@@ -16,15 +16,13 @@
  limitations under the License.
 -->
 <!--
-   $HeadURL: https://svn.apache.org/repos/asf/commons/proper/commons-build-plugin/trunk/src/site/site.xml $
    $Revision: 1296548 $ $Date: 2012-03-03 01:35:18 +0000 (Sat, 03 Mar 2012) $
  -->
-<project name="Apache Commons Gpg Plugin">
+<project name="Apache Maven Gpg Signfiles Plugin">
 
     <body>
-        <menu name="Gpg Plugin">
+        <menu name="Gpg Signfiles Plugin">
             <item name="Overview"                href="index.html"/>
-            <item name="Download"                href="download_commons-gpg-plugin.cgi"/>
         </menu>
     </body>
 

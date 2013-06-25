@@ -16,19 +16,18 @@
    limitations under the License.
 -->
 <!--
-   $HeadURL: https://svn.apache.org/repos/asf/commons/proper/commons-build-plugin/trunk/src/site/xdoc/index.xml $
    $Revision: 1296463 $ $Date: 2012-03-02 21:08:10 +0000 (Fri, 02 Mar 2012) $
  -->
 <document>
 
     <properties>
-        <title>Commons Gpg Plugin: Overview</title>
-        <author email="dev@commons.apache.org">Apache Commons Documentation Team</author>
+        <title>Apache Maven Gpg Signfiles Mojo: Overview</title>
+        <author email="dev@maven.apache.org">Apache Maven Documentation Team</author>
     </properties>
 
     <body>
 
-        <section name="Apache Commons Gpg Plugin">
+        <section name="Apache Maven Gpg Signfiles Plugin">
 
             <p>
             This is a <a href="http://maven.apache.org/">Maven 2.x</a> Plugin which is designed
@@ -36,7 +35,7 @@
             </p>
             <p>
             It is an extension of the standard 
-            <a href="http://maven.apache.org/plugins/maven-gpg-plugin/">Maven Gpg Plugin</a> that can generate signatures for
+            <a href="http://maven.apache.org/plugins/maven-gpg-plugin/">Apache Maven Gpg Plugin</a> that can generate signatures for
             any specified files (not just ones that are attached to the project).
             It is hoped that the functionality will eventually be added to the Maven plugin,
             at which point this plugin will become redundant.
@@ -57,8 +56,8 @@
             <p>
             Available Goals:
             <ul>
-                <li>commons-gpg:signfiles - generate gpg signatures of specified files</li>
-                <li>commons-gpg:help - display the plugin help as per help:describe</li>
+                <li>gpgsignfiles:signfiles - generate gpg signatures of specified files</li>
+                <li>gpgsignfiles:help - display the plugin help as per help:describe</li>
             </ul>
             </p>
         </section>
@@ -68,9 +67,9 @@
             Configure the plugin in the <code>&lt;build&gt;</code> section of the <code>pom.xml</code>
 <source><![CDATA[
 <plugin>
-  <groupId>org.apache.commons</groupId>
-  <artifactId>commons-gpg-plugin</artifactId>
-  <version>1.0</version>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-gpgsignfiles-plugin</artifactId>
+  <version>0.1-SNAPSHOT</version>
   <configuration>
     <includes>
       <include>target/releases/*.zip</include>
@@ -95,10 +94,10 @@
             <p>
             The list of files to process can also be specified on the command line:
 <pre>
-mvn commons-gpg:signfiles -Dgpg.files={comma-separated list of files}
+mvn gpgsignfiles:signfiles -Dmaven.gpg.files={comma-separated list of files}
 </pre>
             Note that the configuration items (apart from includes/excludes) are also supported as
-            properties with the prefix "gpg.".
+            properties with the prefix "maven.gpg.".
             </p>
         </section>
 
