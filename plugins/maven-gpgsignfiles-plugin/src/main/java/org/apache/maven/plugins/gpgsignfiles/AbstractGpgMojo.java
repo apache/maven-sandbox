@@ -1,4 +1,4 @@
-package org.apache.commons.plugins.gpg;
+package org.apache.maven.plugins.gpgsignfiles;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

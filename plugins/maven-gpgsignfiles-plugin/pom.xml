@@ -15,64 +15,69 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-parent</artifactId>
-      <version>30</version>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-plugins</artifactId>
+     <version>24</version>
   </parent>
  
-  <groupId>org.apache.commons</groupId>
-  <artifactId>commons-gpg-plugin</artifactId>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-gpgsignfiles-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
-  <name>Apache Commons Gpg Maven Mojo</name>
   <packaging>maven-plugin</packaging>
-  <inceptionYear>2013</inceptionYear>
-  <url>http://commons.apache.org/proper/commons-gpg-plugin/</url>
 
+
+  <name>maven-gpgsignfiles-plugin Apache Maven Mojo</name>
   <description>
-Apache Maven GPG plugin which allows arbitrary files to be signed.
+The Apache Maven GPG signfiles plugin allows arbitrary files to be signed.
 This is intended as a temporary measure until MGPG-43 is implemented. 
   </description>
+  <url>http://maven.apache.org/TODO-FIX_ME</url>
+  <inceptionYear>2013</inceptionYear>
+  <organization>
+    <name>The Apache Software Foundation</name>
+    <url>http://www.apache.org/</url>
+  </organization>
+  <!-- TODO -->
+  <licenses>
+    <license>    
+    </license>
+  </licenses>
 
-  <issueManagement>
-    <system>jira</system>
-    <url>http://issues.apache.org/jira/browse/COMMONSSITE</url>
-  </issueManagement>
+  <developers/>
+  <contributors/>
 
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/commons-gpg-plugin/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/commons-gpg-plugin/trunk/</developerConnection>
-    <url>http://svn.apache.org/viewvc/commons/proper/commons-gpg-plugin/trunk/</url>
-  </scm>
+  <mailingLists/>
 
   <prerequisites>
     <maven>${mavenVersion}</maven>
   </prerequisites>
+
+  <modules/>
+  
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/trunk/plugins/maven-gpgsignfiles-plugin/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/plugins/maven-gpgsignfiles-plugin/</developerConnection>
+    <url>http://svn.apache.org/viewvc/maven/sandbox/trunk/plugins/maven-gpgsignfiles-plugin/</url>
+  </scm>
+
+  <issueManagement>
+    <system>jira</system>
+    <!-- TODO fix -->
+    <url>http://jira.codehaus.org/browse/M-TODO-FIX</url>
+  </issueManagement>
 
    <properties>
     <mavenVersion>2.2.1</mavenVersion>
     <mavenPluginPluginVersion>3.2</mavenPluginPluginVersion>
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>
-    <commons.release.version>0.1</commons.release.version>
-    <commons.componentid>commons-gpg-plugin</commons.componentid>
-    <commons.rc.version>RC1</commons.rc.version>
-    <commons.release.desc>(Requires Maven ${mavenVersion} or later)</commons.release.desc>
-    <!-- Avoid problems with jar & osgi builds in CP -->
-    <commons.manifestfile />
-    <!-- Temporary fix until CP31 is released -->
-    <maven.compile.source>${maven.compiler.source}</maven.compile.source>
-    <maven.compile.target>${maven.compiler.target}</maven.compile.target>
-    <!-- This should move to parent pom -->
-    <commons.packages.directory>target/packages</commons.packages.directory>
   </properties>
 
-  <!-- See http://maven.apache.org/plugin-tools/maven-plugin-plugin/examples/using-annotations.html -->
-
+  <dependencyManagement/>
   <dependencies>
     <!-- We use the Gpg plugin to do the signing -->
     <dependency>
@@ -122,26 +127,15 @@ This is intended as a temporary measure until MGPG-43 is implemented.
     </dependency>
   </dependencies>
 
+  <repositories/>
+  <pluginRepositories/>
+
   <build>
-
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-plugin-plugin</artifactId>
-          <version>${mavenPluginPluginVersion}</version>
-          <configuration>
-            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/main/assembly/bin.xml</descriptor>
             <descriptor>src/main/assembly/src.xml</descriptor>
           </descriptors>
           <tarLongFileMode>gnu</tarLongFileMode>
@@ -166,57 +160,42 @@ This is intended as a temporary measure until MGPG-43 is implemented.
                Since this is misleading, it is better to drop the goal
                The Maven Help plugin does show property names, so we create
                our own Help Mojo that extends it.
+               Unfortunately, it seems we cannot override the parent here
+               So we just delete the generated file below
           <execution>
             <id>generated-helpmojo</id>
             <goals>
               <goal>helpmojo</goal>
             </goals>
           </execution>
-           -->
+          -->
         </executions>
+      </plugin>
+      <!-- remove the faulty generated Help Mojo -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <target>
+            <delete>
+              <fileset dir="target/generated-sources" includes="**/HelpMojo.java"/>
+            </delete>
+          </target>
+        </configuration>
       </plugin>
     </plugins>
   </build>
 
-  <profiles>
-    <!-- This will eventually be merged into the parent pom -->
-    <profile>
-      <id>release</id>
-      <build>
-        <plugins>
-          <!-- We want to create the assemblies in their own directory -->
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <configuration>
-              <!-- Stop assemblies from being deployed to Nexus -->
-              <attach>false</attach>
-              <!-- put them here instead -->
-              <outputDirectory>${commons.packages.directory}</outputDirectory>
-            </configuration>
-          </plugin>
-          <!-- Create the signatures -->
-          <plugin>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>signfiles</goal>
-                </goals>
-                <!-- must run after assembly and before deploy -->
-                <phase>verify</phase>
-              </execution>
-            </executions>
-            <configuration>
-              <includes>
-                <include>${commons.packages.directory}/*.zip</include>
-                <include>${commons.packages.directory}/*.tar.gz</include>
-              </includes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    
-  </profiles>
+  <reporting/>
+
+  <profiles/>
 </project>
