@@ -30,7 +30,7 @@ import org.apache.maven.project.MavenProject;
  * Helper Mojo that extends the standard Maven help plugin describe goal. This is needed because the generated help mojo
  * does not handle annotation property names at present.
  */
-@Mojo( name = "helper" )
+@Mojo( name = "help" )
 public class HelperMojo
     extends DescribeMojo
 {

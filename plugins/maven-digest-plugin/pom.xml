@@ -162,6 +162,7 @@
                The Maven Help plugin does show property names, so we create
                our own Help Mojo that extends it.
                Unfortunately, it seems we cannot override the parent here
+               So we just delete the generated file below
           <execution>
             <id>generated-helpmojo</id>
             <goals>
@@ -170,6 +171,27 @@
           </execution>
           -->
         </executions>
+      </plugin>
+      <!-- remove the faulty generated Help Mojo -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <target>
+            <delete>
+              <fileset dir="target/generated-sources" includes="**/HelpMojo.java"/>
+            </delete>
+          </target>
+        </configuration>
       </plugin>
     </plugins>
   </build>
