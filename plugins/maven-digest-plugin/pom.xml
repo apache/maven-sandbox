@@ -15,8 +15,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -29,10 +28,11 @@
   <artifactId>maven-digest-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
+
   <name>maven-digest-plugin Apache Maven Mojo</name>
-<description>
-The Apache Maven Digest Mojo provides digest (hashing) facilities for files
-</description>
+  <description>
+    The Apache Maven Digest Mojo provides digest (hashing) facilities for files
+  </description>
   <!-- TODO fix URL -->
   <url>http://maven.apache.org/</url>
   <inceptionYear>2013</inceptionYear>
@@ -42,11 +42,10 @@ The Apache Maven Digest Mojo provides digest (hashing) facilities for files
   </organization>
   <!-- TODO -->
   <licenses>
-    <license>
-      
+    <license>    
     </license>
   </licenses>
-  
+
   <developers/>
   <contributors/>
 
@@ -56,7 +55,6 @@ The Apache Maven Digest Mojo provides digest (hashing) facilities for files
     <maven>${mavenVersion}</maven>
   </prerequisites>
 
-
   <modules/>
   
   <scm>
@@ -64,15 +62,12 @@ The Apache Maven Digest Mojo provides digest (hashing) facilities for files
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/commons-digest-plugin/trunk/</developerConnection>
     <url>http://svn.apache.org/viewvc/commons/proper/commons-digest-plugin/trunk/</url>
   </scm>
-
   <issueManagement>
     <system>jira</system>
     <!-- TODO fix -->
     <url>http://jira.codehaus.org/browse/M-TODO-FIX</url>
   </issueManagement>
-
   <ciManagement/>
-
   <distributionManagement/>
 
    <properties>
@@ -83,7 +78,6 @@ The Apache Maven Digest Mojo provides digest (hashing) facilities for files
   </properties>
 
   <dependencyManagement/>
-
   <dependencies>
     <!-- We use Commons Codec to create the hashes -->
     <dependency>
