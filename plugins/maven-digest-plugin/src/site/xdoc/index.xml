@@ -23,12 +23,12 @@
 
     <properties>
         <title>Overview</title>
-        <author email="dev@commons.apache.org">Apache Commons Documentation Team</author>
+        <author email="dev@maven.apache.org">Apache Maven Documentation Team</author>
     </properties>
 
     <body>
 
-        <section name="Apache Commons Digest Plugin">
+        <section name="Apache Maven Digest Plugin">
 
             <p>
             This is a <a href="http://maven.apache.org/">Maven 2.x</a> Plugin which is designed
@@ -41,8 +41,8 @@
             <p>
             Available Goals:
             <ul>
-                <li>commons-digest:digest - generate digests (MD5 and SHA1) of specified files</li>
-                <li>commons-digest:help - display the plugin help as per help:describe</li>
+                <li>commons-digest:digest - generate digests (default MD5 and SHA1) of specified files</li>
+                <li>commons-digest:helper - display the plugin help as per help:describe</li>
             </ul>
             </p>
         </section>
@@ -52,9 +52,9 @@
             Configure the plugin in the <code>&lt;build&gt;</code> section of the <code>pom.xml</code>
 <source><![CDATA[
 <plugin>
-  <groupId>org.apache.commons</groupId>
-  <artifactId>commons-digest-plugin</artifactId>
-  <version>1.0</version>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-digest-plugin</artifactId>
+  <version>0.1-SNAPSHOT</version>
   <configuration>
     <includes>
       <include>target/releases/*.zip</include>
@@ -63,8 +63,10 @@
     <excludes> <!-- Optional -->
       <exclude>target/release/README*</exclude>
     </excludes>
-    <createMD5>false</createMD5>   <!-- Optional -->
-    <createSHA1>false</createSHA1> <!-- Optional -->
+    <algorithms> <!-- Optional -->
+      <algorithm>MD5</algorithm>
+      <algorithm>SHA1>.sha</algorithm>
+    </algorithms>
     <appendFilename>true</appendFilename> <!-- append ' *filename' to the digest file contents -->
   </configuration>
   <executions>
@@ -82,11 +84,8 @@
             <p>
             The list of files to process can also be specified on the command line:
 <pre>
-mvn commons-digest:digest -Ddigest.files={comma-separated list of files}
+mvn digest:digest -Dmaven.digest.files={comma-separated list of files} [-Dmaven.digest.digests=comma-separated list of digest names]
 </pre>
-            Note that the configuration items (apart from includes/excludes) are also supported as
-            properties with the prefix "digest.", so for example the MD5 digest can be omitted by
-            using <code>-Ddigest.createMD5=false</code>
             </p>
         </section>
 
