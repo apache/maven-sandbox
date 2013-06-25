@@ -30,13 +30,40 @@
   <version>0.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>maven-digest-plugin Apache Maven Mojo</name>
-  <inceptionYear>2013</inceptionYear>
-  <!-- TODO fix URL -->
-  <url>http://maven.apache.org/</url>
-
 <description>
 The Apache Maven Digest Mojo provides digest (hashing) facilities for files
 </description>
+  <!-- TODO fix URL -->
+  <url>http://maven.apache.org/</url>
+  <inceptionYear>2013</inceptionYear>
+  <organization>
+    <name>The Apache Software Foundation</name>
+    <url>http://www.apache.org/</url>
+  </organization>
+  <!-- TODO -->
+  <licenses>
+    <license>
+      
+    </license>
+  </licenses>
+  
+  <developers/>
+  <contributors/>
+
+  <mailingLists/>
+
+  <prerequisites>
+    <maven>${mavenVersion}</maven>
+  </prerequisites>
+
+
+  <modules/>
+  
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/commons-digest-plugin/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/commons-digest-plugin/trunk/</developerConnection>
+    <url>http://svn.apache.org/viewvc/commons/proper/commons-digest-plugin/trunk/</url>
+  </scm>
 
   <issueManagement>
     <system>jira</system>
@@ -44,15 +71,9 @@ The Apache Maven Digest Mojo provides digest (hashing) facilities for files
     <url>http://jira.codehaus.org/browse/M-TODO-FIX</url>
   </issueManagement>
 
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/commons-digest-plugin/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/commons-digest-plugin/trunk/</developerConnection>
-    <url>http://svn.apache.org/viewvc/commons/proper/commons-digest-plugin/trunk/</url>
-  </scm>
+  <ciManagement/>
 
-  <prerequisites>
-    <maven>${mavenVersion}</maven>
-  </prerequisites>
+  <distributionManagement/>
 
    <properties>
     <mavenVersion>2.2.1</mavenVersion>
@@ -60,6 +81,8 @@ The Apache Maven Digest Mojo provides digest (hashing) facilities for files
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>
   </properties>
+
+  <dependencyManagement/>
 
   <dependencies>
     <!-- We use Commons Codec to create the hashes -->
@@ -111,6 +134,9 @@ The Apache Maven Digest Mojo provides digest (hashing) facilities for files
     </dependency>
   </dependencies>
 
+  <repositories/>
+  <pluginRepositories/>
+
   <build>
     <plugins>
       <plugin>
@@ -152,5 +178,9 @@ The Apache Maven Digest Mojo provides digest (hashing) facilities for files
         </executions>
       </plugin>
     </plugins>
- </build>
+  </build>
+
+  <reporting/>
+
+  <profiles/>
 </project>
