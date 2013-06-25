@@ -69,10 +69,19 @@ public class DigestMojo extends AbstractMojo {
     private String files;
 
     /**
+     * List of digests (algorithms) to create, comma-separated (intended for command-line usage).
+     * Overrides algorithms; uses same syntax
+     */
+    @Parameter (property="maven.digest.digests")
+    private String digests;
+
+    /**
      * The list of algorithm names with which to create digests.
      * If none specified, the default is {@code MD5} and {@code SHA1}.
      * By default the file extension is assumed to be the algorithm name
      * converted to lower-case, and any "-" characters removed.
+     * The extension name can be provided by suffixing the algorithm name
+     * with ">" followed by the extension, for example: "SHA-1>sha".
      */
     @Parameter
     private Set<String> algorithms;
@@ -87,8 +96,15 @@ public class DigestMojo extends AbstractMojo {
         String files[] = scanForSources();
         Log log = getLog();
         if (files.length == 0) {
-            log.warn("No files found. Please configure at least one <include> item or use -Ddigest.files");
+            log.warn("No files found. Please configure at least one <include> item or use -Dmaven.digest.files");
         } else {
+            if (digests != null && digests.length() > 0) {
+                String [] digest = digests.split(",");
+                algorithms = new HashSet<String>(digest.length);
+                for (String d : digest) {
+                   algorithms.add(d);
+                }
+            }
             if (algorithms == null || algorithms.size() == 0) {
                 algorithms = new HashSet<String>(2);
                 algorithms.add("MD5");
@@ -97,7 +113,7 @@ public class DigestMojo extends AbstractMojo {
             try {
                 for(String file : files) {
                     for(String algorithm : algorithms) {
-                        String[] parts = algorithm.split("|");
+                        String[] parts = algorithm.split(">");
                         String extension;
                         if (parts.length == 2) {
                             algorithm = parts[0];
@@ -126,10 +142,12 @@ public class DigestMojo extends AbstractMojo {
     }
 
     private void createDigest(String algorithm, String extension, String file) throws Exception {
+        // Unfortunately DigestUtils.getDigest is not public
+        // Do this before opening file in case not found
+        MessageDigest digest = MessageDigest.getInstance(algorithm);
         FileInputStream is = new FileInputStream(file);
         PrintWriter pw = new PrintWriter(file+extension, "UTF-8");
-        // Unfortunately DigestUtils.getDigest is not public
-        pw.print(digestHex(MessageDigest.getInstance(algorithm), is));
+        pw.print(digestHex(digest, is));
         if (appendFilename) {
             pw.println(" *" + file);
         } else {
