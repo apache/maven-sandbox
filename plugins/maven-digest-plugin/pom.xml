@@ -20,26 +20,28 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-parent</artifactId>
-      <version>30</version>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-plugins</artifactId>
+     <version>24</version>
   </parent>
  
-  <groupId>org.apache.commons</groupId>
-  <artifactId>commons-digest-plugin</artifactId>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-digest-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
-  <name>Apache Commons Digest Maven Mojo</name>
+  <name>maven-digest-plugin Apache Maven Mojo</name>
   <inceptionYear>2013</inceptionYear>
-  <url>http://commons.apache.org/proper/commons-digest-plugin/</url>
+  <!-- TODO fix URL -->
+  <url>http://maven.apache.org/</url>
 
 <description>
-Apache Commons Digest Maven plugin provides digest (hashing) facilities for files
+The Apache Maven Digest Mojo provides digest (hashing) facilities for files
 </description>
 
   <issueManagement>
     <system>jira</system>
-    <url>http://issues.apache.org/jira/browse/COMMONSSITE</url>
+    <!-- TODO fix -->
+    <url>http://jira.codehaus.org/browse/M-TODO-FIX</url>
   </issueManagement>
 
   <scm>
@@ -57,17 +59,6 @@ Apache Commons Digest Maven plugin provides digest (hashing) facilities for file
     <mavenPluginPluginVersion>3.2</mavenPluginPluginVersion>
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>
-    <commons.release.version>0.1</commons.release.version>
-    <commons.componentid>commons-digest-plugin</commons.componentid>
-    <commons.rc.version>RC2</commons.rc.version>
-    <commons.release.desc>(Requires Maven ${mavenVersion} or later)</commons.release.desc>
-    <!-- Avoid problems with jar & osgi builds in CP -->
-    <commons.manifestfile />
-    <!-- Temporary fix until CP31 is released -->
-    <maven.compile.source>${maven.compiler.source}</maven.compile.source>
-    <maven.compile.target>${maven.compiler.target}</maven.compile.target>
-    <!-- This should move to parent pom -->
-    <commons.packages.directory>target/packages</commons.packages.directory>
   </properties>
 
   <dependencies>
@@ -121,156 +112,16 @@ Apache Commons Digest Maven plugin provides digest (hashing) facilities for file
   </dependencies>
 
   <build>
-
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-plugin-plugin</artifactId>
-          <version>${mavenPluginPluginVersion}</version>
-          <configuration>
-            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/main/assembly/bin.xml</descriptor>
             <descriptor>src/main/assembly/src.xml</descriptor>
           </descriptors>
           <tarLongFileMode>gnu</tarLongFileMode>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-plugin-plugin</artifactId>
-        <configuration>
-          <!-- see http://jira.codehaus.org/browse/MNG-5346 -->
-          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-        </configuration>
-        <executions>
-          <execution>
-            <id>generate-descriptor</id>
-            <goals>
-              <goal>descriptor</goal>
-            </goals>
-          </execution>
-          <!-- The generated Mojo does not handle annotations properly,
-               and does not show any "User property" names.
-               Since this is misleading, it is better to drop the goal
-               The Maven Help plugin does show property names, so we create
-               our own Help Mojo that extends it.
-          <execution>
-            <id>generated-helpmojo</id>
-            <goals>
-              <goal>helpmojo</goal>
-            </goals>
-          </execution>
-           -->
-        </executions>
-      </plugin>
     </plugins>
-  </build>
-
-  <profiles>
-    <!-- This will eventually be merged into the parent pom -->
-    <profile>
-      <id>release</id>
-      <build>
-        <plugins>
-          <!-- We want to create the assemblies in their own directory -->
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <configuration>
-              <!-- Stop assemblies from being deployed to Nexus -->
-              <attach>false</attach>
-              <!-- put them here instead -->
-              <outputDirectory>${commons.packages.directory}</outputDirectory>
-            </configuration>
-          </plugin>
-          <!-- Create the hashes -->
-          <plugin>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-digest-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>digest</goal>
-                </goals>
-                <!-- must run after assembly and before deploy -->
-                <phase>verify</phase>
-              </execution>
-            </executions>
-            <configuration>
-              <includes>
-                <include>${commons.packages.directory}/*.zip</include>
-                <include>${commons.packages.directory}/*.tar.gz</include>
-              </includes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- 
-        Temporary helper profile that can be used if gpg and staging plugins are installed locally 
-        Will eventually be merged int release profile.
-    -->
-    <profile>
-      <id>release-part2</id>
-      <build>
-        <plugins>
-          <!-- Create the signatures -->
-          <plugin>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>signfiles</goal>
-                </goals>
-                <!-- must run after assembly and before deploy -->
-                <phase>verify</phase>
-              </execution>
-            </executions>
-            <configuration>
-              <includes>
-                <include>${commons.packages.directory}/*.zip</include>
-                <include>${commons.packages.directory}/*.tar.gz</include>
-              </includes>
-            </configuration>
-          </plugin>
-          <!-- Now create the staging scripts-->
-          <plugin>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-staging-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>create-scripts</goal>
-                </goals>
-                <!-- must run after assembly and before deploy -->
-                <phase>verify</phase>
-              </execution>
-            </executions>
-            <!-- This needs to be configured for the local project; sample below is for Apache Commons -->
-            <configuration>
-              <packageDirectory>${commons.packages.directory}</packageDirectory>
-              <asfProject>commons</asfProject>
-              <asfComponent>${commons.componentid}</asfComponent>
-              <stagingDirectory>${commons.release.name}-${commons.rc.version}</stagingDirectory>
-              <releaseNotes>RELEASE-NOTES.txt</releaseNotes>
-              <!-- safe place for upload and release testing -->
-              <rootUrl>https://dist.apache.org/repos/dist/dev/commons/TEST_PLS_IGNORE/</rootUrl>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    
-  </profiles>
+ </build>
 </project>

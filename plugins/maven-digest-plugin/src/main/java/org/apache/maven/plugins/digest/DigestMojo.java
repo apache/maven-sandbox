@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
@@ -63,25 +65,22 @@ public class DigestMojo extends AbstractMojo {
      * Overrides includes and excludes; uses same syntax as for {@code <include>}
      * Patterns are assumed to be relative to the project base directory.
      */
-    @Parameter (property="digest.files")
+    @Parameter (property="maven.digest.files")
     private String files;
 
     /**
-     * Whether to create the MD5 hash, default {@code true}
+     * The list of algorithm names with which to create digests.
+     * If none specified, the default is {@code MD5} and {@code SHA1}.
+     * By default the file extension is assumed to be the algorithm name
+     * converted to lower-case, and any "-" characters removed.
      */
-    @Parameter( property = "digest.md5", defaultValue = "true" )
-    private boolean createMD5;
-
-    /**
-     * Whether to create the SHA1 hash, default {@code true}
-     */
-    @Parameter( property = "digest.sha1", defaultValue = "true" )
-    private boolean createSHA1;
+    @Parameter
+    private Set<String> algorithms;
 
     /**
      * Whether to append ' *filename' to the hash in the generated file, default {@code false}
      */
-    @Parameter( property = "digest.appendFilename", defaultValue = "false" )
+    @Parameter( property = "maven.digest.appendFilename", defaultValue = "false" )
     private boolean appendFilename;
 
     public void execute() throws MojoExecutionException {
@@ -90,19 +89,40 @@ public class DigestMojo extends AbstractMojo {
         if (files.length == 0) {
             log.warn("No files found. Please configure at least one <include> item or use -Ddigest.files");
         } else {
+            if (algorithms == null || algorithms.size() == 0) {
+                algorithms = new HashSet<String>(2);
+                algorithms.add("MD5");
+                algorithms.add("SHA-1");
+            }
             try {
                 for(String file : files) {
-                    if (createMD5) {
-                        createDigest("MD5", ".md5", file);
-                    }
-                    if (createSHA1) {
-                        createDigest("SHA-1", ".sha1", file);
+                    for(String algorithm : algorithms) {
+                        String[] parts = algorithm.split("|");
+                        String extension;
+                        if (parts.length == 2) {
+                            algorithm = parts[0];
+                            extension = parts[1];
+                        } else {
+                            extension = getExtension(algorithm);
+                        }
+                        createDigest(algorithm, extension, file);         
                     }
                 }
             } catch (Exception ex) {
                 throw new MojoExecutionException("Failed to create hash", ex);
             }
         }
+    }
+
+    /**
+     * Creates the extension from the algortithm name, by converting to lower-case
+     * and dropping any "-" characters. The result is prefixed with ".".
+     * 
+     * @param algorithm the algorithm name
+     * @return the extension, e.g. ".md5", ".sha1"
+     */
+    private String getExtension(String algorithm) {
+        return "." + algorithm.toLowerCase(Locale.ENGLISH).replace("-", "");
     }
 
     private void createDigest(String algorithm, String extension, String file) throws Exception {

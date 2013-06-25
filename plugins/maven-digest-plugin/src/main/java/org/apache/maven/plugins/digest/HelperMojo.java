@@ -28,12 +28,12 @@ import org.apache.maven.plugins.help.DescribeMojo;
 import org.apache.maven.project.MavenProject;
 
 /**
- * Help Mojo that extends the standard Maven help plugin describe goal.
+ * Helper Mojo that extends the standard Maven help plugin describe goal.
  * This is needed because the generated help mojo 
  * does not handle annotation property names at present.
  */
-@Mojo (name = "help")
-public class HelpMojo extends DescribeMojo {
+@Mojo (name = "helper")
+public class HelperMojo extends DescribeMojo {
 
     @Component
     private MavenProject myProject; // Must not use same name as DescribeMojo
