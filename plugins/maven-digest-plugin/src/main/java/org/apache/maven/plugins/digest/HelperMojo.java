@@ -21,47 +21,82 @@ package org.apache.maven.plugins.digest;
 import java.lang.reflect.Field;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.help.DescribeMojo;
 import org.apache.maven.project.MavenProject;
 
 /**
- * Helper Mojo that extends the standard Maven help plugin describe goal.
- * This is needed because the generated help mojo 
+ * Helper Mojo that extends the standard Maven help plugin describe goal. This is needed because the generated help mojo
  * does not handle annotation property names at present.
  */
-@Mojo (name = "helper")
-public class HelperMojo extends DescribeMojo {
+@Mojo( name = "helper" )
+public class HelperMojo
+    extends DescribeMojo
+{
+
+    // ----------------------------------------------------------------------
+    // Mojo components
+    // ----------------------------------------------------------------------
 
     @Component
     private MavenProject myProject; // Must not use same name as DescribeMojo
 
-   /**
-     * @throws MojoExecutionException  
-     * @throws MojoFailureException 
+    // ----------------------------------------------------------------------
+    // Mojo parameters
+    // ----------------------------------------------------------------------
+
+    // ----------------------------------------------------------------------
+    // Mojo options
+    // ----------------------------------------------------------------------
+
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
      */
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute()
+        throws MojoExecutionException
+    {
         Field f = null;
         boolean isAccessible = true; // assume accessible
-        try {
+        try
+        {
             // Unfortunately the plugin field is private
-            f = DescribeMojo.class.getDeclaredField("plugin");
+            f = DescribeMojo.class.getDeclaredField( "plugin" );
             isAccessible = f.isAccessible();
-            if (!isAccessible) {
-                f.setAccessible(true);
+            if ( !isAccessible )
+            {
+                f.setAccessible( true );
             }
             String plugin = myProject.getGroupId() + ":" + myProject.getArtifactId();
-            f.set(this, plugin);
-            super.execute();        
-        } catch (Exception e) {
-            throw new MojoExecutionException("Could not set up plugin details");
-        } finally {
-            if (f != null && !isAccessible) {
-                f.setAccessible(isAccessible); // reset accessibility (prob not needed)
+            f.set( this, plugin );
+            super.execute();
+        }
+        catch ( Exception e )
+        {
+            throw new MojoExecutionException( "Could not set up plugin details" );
+        }
+        finally
+        {
+            if ( f != null && !isAccessible )
+            {
+                f.setAccessible( isAccessible ); // reset accessibility (prob not needed)
             }
         }
     }
+    // ----------------------------------------------------------------------
+    // Protected methods
+    // ----------------------------------------------------------------------
+
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
+
+    // ----------------------------------------------------------------------
+    // Static methods
+    // ----------------------------------------------------------------------
 }
