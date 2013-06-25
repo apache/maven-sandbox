@@ -58,9 +58,9 @@
   <modules/>
   
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/commons-digest-plugin/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/commons-digest-plugin/trunk/</developerConnection>
-    <url>http://svn.apache.org/viewvc/commons/proper/commons-digest-plugin/trunk/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/sandbox/trunk/plugins/maven-digest-plugin/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/sandbox/trunk/plugins/maven-digest-plugin/</developerConnection>
+    <url>http://svn.apache.org/viewvc/maven/sandbox/trunk/plugins/maven-digest-plugin/</url>
   </scm>
   <issueManagement>
     <system>jira</system>
