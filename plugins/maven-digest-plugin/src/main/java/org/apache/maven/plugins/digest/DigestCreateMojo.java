@@ -37,8 +37,8 @@ import org.codehaus.plexus.util.DirectoryScanner;
  * Creates digests (MD5 and SHA1 by default) for files specified by the configured includes and excludes. Also allows
  * specification of a list of files on the command line.
  */
-@Mojo( name = "digest" )
-public class DigestMojo
+@Mojo( name = "create" )
+public class DigestCreateMojo
     extends AbstractMojo
 {
 

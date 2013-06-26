@@ -40,7 +40,7 @@
             <p>
             Available Goals:
             <ul>
-                <li>digest:digest - generate digests (default MD5 and SHA1) of specified files</li>
+                <li>digest:create - generate digests (default MD5 and SHA1) of specified files</li>
                 <li>digest:helper - display the plugin help as per help:describe</li>
             </ul>
             </p>
@@ -71,7 +71,7 @@
   <executions>
     <execution>
       <goals>
-        <goal>digest</goal>
+        <goal>create</goal>
       </goals>
       <!-- must run after assembly and before deploy -->
       <phase>verify</phase>
@@ -83,7 +83,7 @@
             <p>
             The list of files to process can also be specified on the command line:
 <pre>
-mvn digest:digest -Dmaven.digest.files={comma-separated list of files} [-Dmaven.digest.digests=comma-separated list of digest names]
+mvn digest:create -Dmaven.digest.files={comma-separated list of files} [-Dmaven.digest.digests=comma-separated list of digest names]
 </pre>
             </p>
         </section>
