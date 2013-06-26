@@ -83,7 +83,7 @@ This is intended as a temporary measure until MGPG-43 is implemented.
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-gpg-plugin</artifactId>
-      <version>1.4</version>
+      <version>1.5-SNAPSHOT</version>
     </dependency>
 
     <!-- SignFilesMojo uses DirectoryScanner -->

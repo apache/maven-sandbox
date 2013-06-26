@@ -16,7 +16,7 @@
  * 
  */
 
-package org.apache.maven.plugins.gpgsignfiles;
+package org.apache.maven.plugin.gpg;
 
 import java.lang.reflect.Field;
 
