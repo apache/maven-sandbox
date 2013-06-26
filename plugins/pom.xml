@@ -47,8 +47,6 @@ under the License.
     <module>maven-zip-plugin</module>
     <module>maven-patch-tracker-plugin</module>
     <module>maven-digest-plugin</module>
-    <!-- Disable temporarily until conversion from Commons to Maven is completed 
     <module>maven-gpgsignfiles-plugin</module>
-     -->
   </modules>
 </project>
