@@ -18,50 +18,169 @@
 
 package org.apache.maven.plugin.gpg;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.help.DescribeMojo;
-import org.apache.maven.project.MavenProject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * Help Mojo that extends the standard Maven help plugin describe goal.
  * This is needed because the generated help mojo 
  * does not handle annotation property names at present.
+ * Nor does it handle default values
  */
-@Mojo (name = "help")
-public class HelpMojo extends DescribeMojo {
+@Mojo (name = "help", requiresProject=false )
+public class HelpMojo extends DescribeMojo 
+{
+    // Where to find plugin config
+    private static final String PLUGIN_PATH = "/META-INF/maven/plugin.xml";
 
-    @Component ( role = MavenProject.class )
-    private MavenProject myProject; // Must not use same name as DescribeMojo
+    // ----------------------------------------------------------------------
+    // Mojo components
+    // ----------------------------------------------------------------------
 
-   /**
-     * @throws MojoExecutionException  
-     * @throws MojoFailureException 
+    // ----------------------------------------------------------------------
+    // Mojo parameters
+    // ----------------------------------------------------------------------
+
+    // ----------------------------------------------------------------------
+    // Mojo options
+    // ----------------------------------------------------------------------
+
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
      */
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute()
+        throws MojoExecutionException
+    {
+        final String pluginId = getpluginGA();
         Field f = null;
         boolean isAccessible = true; // assume accessible
-        try {
+        try
+        {
             // Unfortunately the plugin field is private
-            f = DescribeMojo.class.getDeclaredField("plugin");
+            f = DescribeMojo.class.getDeclaredField( "plugin" );
             isAccessible = f.isAccessible();
-            if (!isAccessible) {
-                f.setAccessible(true);
+            if ( !isAccessible )
+            {
+                f.setAccessible( true );
             }
-            String plugin = myProject.getGroupId() + ":" + myProject.getArtifactId();
-            f.set(this, plugin);
-            super.execute();        
-        } catch (Exception e) {
-            throw new MojoExecutionException("Could not set up plugin details");
-        } finally {
-            if (f != null && !isAccessible) {
-                f.setAccessible(isAccessible); // reset accessibility (prob not needed)
+            f.set( this, pluginId );
+            super.execute();
+        }
+        catch ( Exception e )
+        {
+            throw new MojoExecutionException( "Could not set up plugin details" );
+        }
+        finally
+        {
+            if ( f != null && !isAccessible )
+            {
+                f.setAccessible( isAccessible ); // reset accessibility (prob not needed)
             }
         }
     }
+    // ----------------------------------------------------------------------
+    // Protected methods
+    // ----------------------------------------------------------------------
+
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
+    private String getpluginGA() throws MojoExecutionException {
+        Document doc = build();
+        Node plugin = getSingleChild( doc, "plugin" );
+        String id = getValue( plugin, "groupId" ) + ":" + getValue( plugin, "artifactId" );
+        return id;
+    }
+
+    private Document build()
+        throws MojoExecutionException
+    {
+        getLog().debug( "load plugin-help.xml: " + PLUGIN_PATH );
+        InputStream is = getClass().getResourceAsStream( PLUGIN_PATH );
+        try
+        {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            return dBuilder.parse( is );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+        catch ( ParserConfigurationException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+        catch ( SAXException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+        finally
+        {
+            try {
+                is.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    private List<Node> findNamedChild( Node node, String elementName )
+    {
+        List<Node> result = new ArrayList<Node>();
+        NodeList childNodes = node.getChildNodes();
+        for ( int i = 0; i < childNodes.getLength(); i++ )
+        {
+            Node item = childNodes.item( i );
+            if ( elementName.equals( item.getNodeName() ) )
+            {
+                result.add( item );
+            }
+        }
+        return result;
+    }
+
+    private Node getSingleChild( Node node, String elementName )
+        throws MojoExecutionException
+    {
+        List<Node> namedChild = findNamedChild( node, elementName );
+        if ( namedChild.isEmpty() )
+        {
+            throw new MojoExecutionException( "Could not find " + elementName + " in plugin-help.xml" );
+        }
+        if ( namedChild.size() > 1 )
+        {
+            throw new MojoExecutionException( "Multiple " + elementName + " in plugin-help.xml" );
+        }
+        return namedChild.get( 0 );
+    }
+
+    private String getValue( Node node, String elementName )
+        throws MojoExecutionException
+    {
+        return getSingleChild( node, elementName ).getTextContent();
+    }
+
+    // ----------------------------------------------------------------------
+    // Static methods
+    // ----------------------------------------------------------------------
 }
