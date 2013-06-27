@@ -14,18 +14,19 @@
 
 package org.apache.maven.plugins.digest;
 
-import java.io.PrintWriter;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
 
 /**
- * Creates digests (MD5 and SHA1 by default) for files specified by the configured includes and excludes. Also allows
- * specification of a list of files on the command line.
+ * Checks digests (MD5 and SHA1 by default) for files specified by the configured includes and excludes.
+ * Also allows specification of a list of files on the command line.
  */
-@Mojo( name = "create", requiresProject=false )
-public class DigestCreateMojo
+@Mojo( name = "check", requiresProject=false )
+public class DigestCheckMojo
     extends AbstractDigestMojo
 {
 
@@ -41,12 +42,6 @@ public class DigestCreateMojo
     // Mojo options
     // ----------------------------------------------------------------------
 
-    /**
-     * Whether to append ' *filename' to the hash in the generated file, default {@code false}
-     */
-    @Parameter( property = "maven.digest.appendFilename", defaultValue = "false" )
-    private boolean appendFilename;
-
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
@@ -60,12 +55,12 @@ public class DigestCreateMojo
         try
         {
             if (!super.process()) {
-                throw new MojoExecutionException( "Failed to create digests");
+                throw new MojoExecutionException( "Failed one or more digest checks");                
             }
         }
         catch ( Exception ex )
         {
-            throw new MojoExecutionException( "Failed to create digest", ex );
+            throw new MojoExecutionException( "Failed to check digest", ex );
         }
     }
 
@@ -77,19 +72,32 @@ public class DigestCreateMojo
     protected boolean processFile( String algorithm, String extension, String file )
         throws Exception
     {
+        final Log log = getLog();
+        final String algoPath = algorithm + " (" + extension + ")";
         final String digest = createDigest( algorithm, extension, file );
-        final PrintWriter pw = new PrintWriter( file + extension, "UTF-8" );
-        pw.print( digest );
-        if ( appendFilename )
+        boolean success = false;
+        try
         {
-            pw.println( " *" + file );
+            final FileInputStream is = new FileInputStream( file + extension );
+            final byte buffer[] = new byte[1024];// should be enough for any hash file
+            final int size = is.read(buffer);
+            is.close();
+            final String hash = new String(buffer, 0, size, "UTF-8").trim();
+            if (hash.contains( digest ))
+            {
+                success = true;
+                log.info( file + ": " + algoPath + " is OK" );
+            }
+            else
+            {
+                log.warn( file + ": " + algoPath + ". Expected " + digest + " Actual " + hash);
+            }
         }
-        else
+        catch ( IOException e )
         {
-            pw.println();
+            log.warn( file + ": could not process " + algoPath + " : " + e.getMessage() );
         }
-        pw.close();
-        return true;
+        return success;
     }
 
     // ----------------------------------------------------------------------
