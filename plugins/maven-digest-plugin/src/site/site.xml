@@ -23,6 +23,7 @@
     <body>
         <menu name="Digest Plugin">
             <item name="Overview"                href="index.html"/>
+            <item name="Goals"                   href="plugin-info.html"/>
             <item name="Download"                href="download.html"/>
         </menu>
     </body>
