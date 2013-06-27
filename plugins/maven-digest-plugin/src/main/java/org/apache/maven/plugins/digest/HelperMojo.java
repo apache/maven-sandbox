@@ -30,7 +30,7 @@ import org.apache.maven.project.MavenProject;
  * Helper Mojo that extends the standard Maven help plugin describe goal. This is needed because the generated help mojo
  * does not handle annotation property names at present.
  */
-@Mojo( name = "help" )
+@Mojo( name = "help", requiresProject = false )
 public class HelperMojo
     extends DescribeMojo
 {
@@ -38,9 +38,6 @@ public class HelperMojo
     // ----------------------------------------------------------------------
     // Mojo components
     // ----------------------------------------------------------------------
-
-    @Component
-    private MavenProject myProject; // Must not use same name as DescribeMojo
 
     // ----------------------------------------------------------------------
     // Mojo parameters
@@ -72,7 +69,10 @@ public class HelperMojo
             {
                 f.setAccessible( true );
             }
-            String plugin = myProject.getGroupId() + ":" + myProject.getArtifactId();
+            // N.B. Customise for each plugin
+            // We used to use project component to get the info, but that forces plugin to be used in a project
+            // Plugin should be able to be used standalone
+            final String plugin = "org.apache.maven.plugins:maven-digest-plugin";
             f.set( this, plugin );
             super.execute();
         }

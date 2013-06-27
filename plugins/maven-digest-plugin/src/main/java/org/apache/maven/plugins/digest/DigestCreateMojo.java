@@ -14,6 +14,7 @@
 
 package org.apache.maven.plugins.digest;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +38,7 @@ import org.codehaus.plexus.util.DirectoryScanner;
  * Creates digests (MD5 and SHA1 by default) for files specified by the configured includes and excludes. Also allows
  * specification of a list of files on the command line.
  */
-@Mojo( name = "create" )
+@Mojo( name = "create", requiresProject=false )
 public class DigestCreateMojo
     extends AbstractMojo
 {
@@ -226,7 +227,11 @@ public class DigestCreateMojo
     {
         DirectoryScanner ds = new DirectoryScanner();
         ds.setFollowSymlinks( true );
-        ds.setBasedir( project.getBasedir() ); // Cannot be omitted; implies that includes/excludes are relative
+        File basedir = project.getBasedir();
+        if (basedir == null) {
+            basedir = new File("."); // current directory
+        }
+        ds.setBasedir( basedir ); // Cannot be omitted; implies that includes/excludes are relative
         String[] inc;
         if ( files != null )
         { // Overrides includes / excludes
