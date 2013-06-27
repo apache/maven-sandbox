@@ -35,6 +35,11 @@ public abstract class AbstractDigestMojo
     extends AbstractMojo
 {
 
+    /**
+     * The empty string array.
+     */
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
     // ----------------------------------------------------------------------
     // Mojo components
     // ----------------------------------------------------------------------
@@ -151,7 +156,7 @@ public abstract class AbstractDigestMojo
         return success;
     }
 
-    protected String createDigest( String algorithm, String extension, String file )
+    protected final String createDigest( String algorithm, String extension, String file )
                     throws Exception
                 {
                     // Unfortunately DigestUtils.getDigest is not public
@@ -165,6 +170,14 @@ public abstract class AbstractDigestMojo
 
     protected abstract boolean processFile( String algorithm, String extension, String file)
         throws Exception;
+
+    /**
+     * Override this method to change the default includes.
+     * @return this implementation returns {@link #EMPTY_STRING_ARRAY}
+     */
+    protected String[] getDefaultIncludes() {
+        return EMPTY_STRING_ARRAY;
+    }
 
     // ----------------------------------------------------------------------
     // Private methods
@@ -221,7 +234,7 @@ public abstract class AbstractDigestMojo
         {
             if ( includes == null || includes.isEmpty() )
             {
-                inc = new String[0]; // overrides default of **
+                inc = getDefaultIncludes(); // overrides default of **
             }
             else
             {
