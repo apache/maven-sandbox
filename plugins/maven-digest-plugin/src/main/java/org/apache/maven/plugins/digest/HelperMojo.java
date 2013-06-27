@@ -21,10 +21,8 @@ package org.apache.maven.plugins.digest;
 import java.lang.reflect.Field;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.help.DescribeMojo;
-import org.apache.maven.project.MavenProject;
 
 /**
  * Helper Mojo that extends the standard Maven help plugin describe goal. This is needed because the generated help mojo
