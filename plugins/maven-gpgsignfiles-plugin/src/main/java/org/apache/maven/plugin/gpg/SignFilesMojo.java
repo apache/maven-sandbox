@@ -40,7 +40,7 @@ import org.codehaus.plexus.util.DirectoryScanner;
  * according to the configured include and exclude settings.
  * Alternatively the list of files can be provided as a command-line parameter.
  */
-@Mojo( name = "signfiles" )
+@Mojo( name = "signfiles", requiresProject=false )
 public class SignFilesMojo extends AbstractGpgMojo {
 
     @Component  ( role = MavenProject.class )
@@ -92,7 +92,11 @@ public class SignFilesMojo extends AbstractGpgMojo {
     private String[]  scanForSources() {
         DirectoryScanner ds = new DirectoryScanner();
         ds.setFollowSymlinks( true );
-        ds.setBasedir( project.getBasedir() );
+        File basedir = project.getBasedir();
+        if (basedir == null) {
+            basedir = new File("."); // current directory
+        }
+        ds.setBasedir( basedir ); // Cannot be omitted; implies that includes/excludes are relative
         String[] inc;
         if (files != null) {
             getLog().debug("files="+files);
