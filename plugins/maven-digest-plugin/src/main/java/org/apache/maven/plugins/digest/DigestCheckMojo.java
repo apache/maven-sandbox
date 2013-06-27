@@ -100,6 +100,11 @@ public class DigestCheckMojo
         return success;
     }
 
+    @Override
+    protected String[] getDefaultIncludes() {
+        return new String[]{"*.zip", "*.gz", "*.xml", "*.pom", "*.bz2"};
+    }
+
     // ----------------------------------------------------------------------
     // Private methods
     // ----------------------------------------------------------------------
