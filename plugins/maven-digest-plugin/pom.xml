@@ -40,12 +40,13 @@
     <name>The Apache Software Foundation</name>
     <url>http://www.apache.org/</url>
   </organization>
-  <!-- TODO -->
+  <!-- TODO
   <licenses>
     <license>    
     </license>
   </licenses>
-
+ -->
+ 
   <developers/>
   <contributors/>
 
