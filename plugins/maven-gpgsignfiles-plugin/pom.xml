@@ -189,6 +189,13 @@ This is intended as a temporary measure until MGPG-43 is implemented.
             <delete>
               <fileset dir="target/generated-sources" includes="**/HelpMojo.java"/>
             </delete>
+            <copy todir="target/generated-sources/plugin">
+              <fileset dir="src/main/templates" includes="**/HelperMojo.java"/>
+              <filterset>
+                <filter token="GAV" value="${project.groupId}:${project.artifactId}:${project.version}"/>
+              </filterset>
+            </copy>
+            <echo>Copied/replaced</echo>
           </target>
         </configuration>
       </plugin>
