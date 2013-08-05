@@ -73,14 +73,14 @@ public abstract class AbstractDigestMojo
     private String files;
 
     /**
-     * List of digests (algorithms) to create, comma-separated (intended for command-line usage). Overrides algorithms;
-     * uses same syntax
+     * List of digests (algorithms) to create (or check), comma-separated (intended for command-line usage). 
+     * Overrides algorithms; uses same syntax
      */
     @Parameter( property = "maven.digest.digests" )
     private String digests;
 
     /**
-     * The list of algorithm names with which to create digests. If none specified, the default is {@code MD5} and
+     * The list of algorithm names with which to create (or check) digests. If none specified, the default is {@code MD5} and
      * {@code SHA1}. By default the file extension is assumed to be the algorithm name converted to lower-case, and any
      * "-" characters removed. The extension name can be provided by suffixing the algorithm name with ">" followed by
      * the extension, for example: "SHA-1>sha".
@@ -91,12 +91,6 @@ public abstract class AbstractDigestMojo
     // ----------------------------------------------------------------------
     // Mojo options
     // ----------------------------------------------------------------------
-
-    /**
-     * Whether to append ' *filename' to the hash in the generated file, default {@code false}
-     */
-    @Parameter( property = "maven.digest.appendFilename", defaultValue = "false" )
-    private boolean appendFilename;
 
     // ----------------------------------------------------------------------
     // Public methods
