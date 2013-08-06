@@ -39,14 +39,14 @@
     test new plugin versions without actually changing the POMs.
   </description>
   <inceptionYear>2009</inceptionYear>
-
+<!--
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/maven/shared/trunk/maven/maven-plugin-enforcer</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/shared/trunk/maven/maven-plugin-enforcer
     </developerConnection>
     <url>http://svn.apache.org/viewcvs.cgi/maven/shared/trunk/maven/maven-plugin-enforcer</url>
   </scm>
-
+-->
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.outputEncoding>UTF-8</project.build.outputEncoding>

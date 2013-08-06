@@ -32,12 +32,13 @@
 
   <name>Apache Maven Shared Monitor API</name>
   <description>Basic API for lightweight logging</description>
-
+<!--
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/maven/shared/trunk/maven-shared-monitor</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/shared/trunk/maven-shared-monitor</developerConnection>
     <url>http://svn.apache.org/viewvc/maven/shared/trunk/maven-shared-monitor</url>
   </scm>
+-->
   <issueManagement>
     <system>jira</system>
     <url>http://jira.codehaus.org/browse/MSHARED/component/13280</url>
