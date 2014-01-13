@@ -46,13 +46,13 @@ under the License.
     <dependency>
         <groupId>org.apache.maven.scm</groupId>
         <artifactId>maven-scm-providers-standard</artifactId>
-        <version>1.4</version>
+        <version>1.9</version>
         <type>pom</type>
     </dependency>
     <dependency>
         <groupId>org.apache.maven.scm</groupId>
         <artifactId>maven-scm-manager-plexus</artifactId>
-        <version>1.4</version>
+        <version>1.9</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
