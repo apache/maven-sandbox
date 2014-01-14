@@ -64,6 +64,9 @@ public class MakeScmChanges
     /** make.ignoreRootPom: Ignore changes in the root POM file, which would normally cause a full rebuild */
     boolean ignoreRootPom = false;
 
+    /** make.failIfNothingToDo: There's no way to skip all projects, so we fail by default. If false, we do a full rebuild instead */
+    boolean failIfNothingToDo = true;
+
     /** Disabled by default; activate via -Dmake.scmChanges=true */
     boolean enabled = false;
     
@@ -157,8 +160,17 @@ public class MakeScmChanges
         }
 
         if ( includedProjects.isEmpty() )
-            throw new MavenExecutionException( "No SCM changes detected; nothing to do!",
-                                               topLevelProject.getFile() );
+        {
+            if ( failIfNothingToDo )
+            {
+                throw new MavenExecutionException( "No SCM changes detected; nothing to do!",
+                                                   topLevelProject.getFile() );
+            }
+            else
+            {
+                logger.warn( "No SCM changes detected; running full rebuild" );
+            }
+        }
 
         MavenExecutionRequest request = session.getRequest();
         String makeBehavior = request.getMakeBehavior();
@@ -197,6 +209,7 @@ public class MakeScmChanges
         enabled = Boolean.parseBoolean( sessionProps.getProperty( "make.scmChanges", "false" ) );
         ignoreUnknown = Boolean.parseBoolean( sessionProps.getProperty( "make.ignoreUnknown", "true" ) );
         ignoreRootPom = Boolean.parseBoolean( sessionProps.getProperty( "make.ignoreRootPom", "false" ) );
+        failIfNothingToDo = Boolean.parseBoolean( sessionProps.getProperty( "make.failIfNothingToDo", "true" ) );
         
         String basePath = sessionProps.getProperty( "make.baseDir" );
         if (basePath != null) {
