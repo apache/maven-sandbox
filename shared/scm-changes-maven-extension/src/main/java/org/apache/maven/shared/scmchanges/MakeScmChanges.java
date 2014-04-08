@@ -94,7 +94,7 @@ public class MakeScmChanges
         {
             logger.debug( changedScmFile.toString() );
             ScmFileStatus status = changedScmFile.getStatus();
-            if ( !status.isStatus() ) // isStatus means "isUnknown or isDiff"
+            if ( !isDiffStatus( status ) )
             {
                 logger.debug( "Not a diff: " + status );
                 continue;
@@ -219,7 +219,6 @@ public class MakeScmChanges
         }
     }
 
-    @SuppressWarnings( "unchecked" )
     List<ScmFile> getChangedFilesFromScm( File baseDir )
         throws MavenExecutionException
     {
@@ -235,5 +234,18 @@ public class MakeScmChanges
         }
 
         return (List<ScmFile>) result.getChangedFiles();
+    }
+    
+    boolean isDiffStatus( ScmFileStatus status )
+    {
+        if ( status.isStatus() // Added, deleted, modified, or Unknown
+             || ScmFileStatus.RENAMED.equals( status )
+             || ScmFileStatus.COPIED.equals( status )
+             || ScmFileStatus.CONFLICT.equals( status ) 
+        )
+        {
+            return true;
+        }
+        return false;
     }
 }
