@@ -33,7 +33,7 @@ under the License.
   <packaging>pom</packaging>
 
   <properties>
-    <wagonVersion>2.3-SNAPSHOT</wagonVersion>
+    <wagonVersion>2.9-SNAPSHOT</wagonVersion>
     <jettyVersion>7.4.5.v20110725</jettyVersion>
     <sisuInjectVersion>2.3.0</sisuInjectVersion>
     <slf4jVersion>1.6.1</slf4jVersion>
@@ -41,7 +41,7 @@ under the License.
     <wagon.benchmark.rq.number>1000</wagon.benchmark.rq.number>
     <!-- parallel request to do -->
     <wagon.benchmark.rq.parallel>8</wagon.benchmark.rq.parallel>
-    <surefireForkedVmArgs>-Xmx768m -Xms512m -client -Xss128k</surefireForkedVmArgs>
+    <surefireForkedVmArgs>-Xmx768m -Xms512m -client -Xss256k</surefireForkedVmArgs>
     <hugeFilePath>${basedir}/target/apache-maven-3.0.3-bin.zip</hugeFilePath>
     <mediumFilePath>${basedir}/target/httpclient-4.1.2.jar</mediumFilePath>
   </properties>
