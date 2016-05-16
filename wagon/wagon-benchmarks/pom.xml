@@ -42,8 +42,8 @@ under the License.
     <!-- parallel request to do -->
     <wagon.benchmark.rq.parallel>8</wagon.benchmark.rq.parallel>
     <surefireForkedVmArgs>-Xmx768m -Xms512m -client -Xss256k</surefireForkedVmArgs>
-    <hugeFilePath>${basedir}/target/apache-maven-3.0.3-bin.zip</hugeFilePath>
-    <mediumFilePath>${basedir}/target/httpclient-4.1.2.jar</mediumFilePath>
+    <hugeFilePath>${project.build.directory}/apache-maven-3.0.3-bin.zip</hugeFilePath>
+    <mediumFilePath>${project.build.directory}/httpclient-4.1.2.jar</mediumFilePath>
   </properties>
 
   <modules>
@@ -178,7 +178,7 @@ under the License.
                   <type>zip</type>
                   <classifier>bin</classifier>
                   <overWrite>false</overWrite>
-                  <outputDirectory>${basedir}/target</outputDirectory>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
                   <destFileName>apache-maven-3.0.3-bin.zip</destFileName>
                 </artifactItem>
                 <artifactItem>
@@ -187,7 +187,7 @@ under the License.
                   <version>4.1.2</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
-                  <outputDirectory>${basedir}/target</outputDirectory>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
                   <destFileName>httpclient-4.1.2.jar</destFileName>
                 </artifactItem>
               </artifactItems>
@@ -208,12 +208,12 @@ under the License.
           <configuration>
             <argLine>${surefireForkedVmArgs}</argLine>
             <systemPropertyVariables>
-              <test.keystore.path>${basedir}/src/test/ssl/keystore</test.keystore.path>
+              <test.keystore.path>${project.basedir}/src/test/ssl/keystore</test.keystore.path>
               <wagon.benchmark.rq.number>${wagon.benchmark.rq.number}</wagon.benchmark.rq.number>
               <wagon.benchmark.rq.parallel>${wagon.benchmark.rq.parallel}</wagon.benchmark.rq.parallel>
               <java.io.tmpdir>${project.build.directory}</java.io.tmpdir>
               <jub.consumers>CONSOLE,H2</jub.consumers>
-              <jub.db.file>target/.benchmarks</jub.db.file>
+              <jub.db.file>${project.build.directory}/.benchmarks</jub.db.file>
               <hugeFilePath>${hugeFilePath}</hugeFilePath>
               <mediumFilePath>${mediumFilePath}</mediumFilePath>
             </systemPropertyVariables>
@@ -221,22 +221,5 @@ under the License.
         </plugin>
       </plugins>
     </pluginManagement>
-
   </build>
-
-  <repositories>
-    <repository>
-      <id>sonatype-nexus-public</id>
-      <name>SonaType public snapshots</name>
-      <url>https://oss.sonatype.org/content/groups/public</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-
-  </repositories>
-
 </project>
