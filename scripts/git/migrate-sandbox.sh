@@ -64,8 +64,13 @@ if [ ! -d ${repo_name}/.git ]; then
     git reflog expire --expire=now --all
     git repack -Ad
     git gc --aggressive --prune=now
+
+    git remote add origin https://gitbox.apache.org/repos/asf/${repo_name}.git
+
     popd
     echo "Complete!"
 else
     echo "Already converted"
 fi
+
+echo "Launch 'git push --set-upstream origin master' once ready"
